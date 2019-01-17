@@ -220,6 +220,17 @@
                 ]
             } %}
             {% include 'base/admin/nav_link.html.twig' with {
+                route: 'todo_list',
+                icon: 'clipboard-list',
+                name: 'Sjekkliste',
+                activeRoutes: [
+                    'create_todoItem',
+                    'edit_todoItem',
+                    'toggle_isCompleted',
+                    'delete_todo_item',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
                 route: 'articleadmin_show',
                 icon: 'file',
                 name: 'Artikler',
@@ -284,9 +295,8 @@
 
             <li class="nav-item mt-auto">
                 <div class="p-4">
-
-                    {% include 'base/logo_link.html.twig' %}
                     <a href="{{ path('home') }}">
+                        <img class="img-fluid mx-4" src="{{ asset_with_version('images/vektor-logo-grey-notext.svg') }}">
                         <p class="text-center my-2 text-secondary"><i class="fa fa-chevron-left"></i> Tilbake til
                             forsiden</p>
                     </a>

@@ -8,6 +8,8 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="survey")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SurveyRepository")
+ *
  */
 class Survey implements \JsonSerializable
 {
@@ -31,6 +33,7 @@ class Survey implements \JsonSerializable
      */
     private $department;
 
+
     /**
      * @ORM\Column(type="string")
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
@@ -39,9 +42,17 @@ class Survey implements \JsonSerializable
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=true)
+     * @ORM\Column(type="boolean", nullable=false)
      */
     private $showCustomFinishPage;
+
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $showCustomPopUpMessage;
+
 
     /**
      * @var string
@@ -55,6 +66,28 @@ class Survey implements \JsonSerializable
      * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
      */
     private $confidential;
+
+    /**
+     * @var SurveyTaken[]
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\SurveyTaken", mappedBy="survey")
+     *
+     */
+    private $surveysTaken;
+
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
+     */
+    private $teamSurvey;
+
+
+    /**
+     * @var string
+     * @ORM\Column(type="text", nullable=false, options={"default" : "Svar på undersøkelse!"})
+     */
+    private $surveyPopUpMessage;
 
     /**
      * @var SurveyQuestion[]
@@ -131,7 +164,7 @@ class Survey implements \JsonSerializable
      *
      * @return Survey
      */
-    public function setDepartment(Department $department): Survey
+    public function setDepartment(?Department $department): Survey
     {
         $this->department = $department;
         return $this;
@@ -153,7 +186,12 @@ class Survey implements \JsonSerializable
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->showCustomFinishPage = false;
         $this->confidential = false;
+        $this->teamSurvey = false;
+        $this->surveysTaken = [];
+        $this->showCustomPopUpMessage = false;
+        $this->surveyPopUpMessage = "Svar på undersøkelse!";
     }
+
 
     /**
      * Get id.
@@ -194,7 +232,8 @@ class Survey implements \JsonSerializable
     {
         $ret = array('questions' => array());
         foreach ($this->surveyQuestions as $q) {
-            if (!$q->getOptional() && ($q->getType() == 'radio' || $q->getType() == 'list')) {
+            // !$q->getOptional() &&
+            if (($q->getType() == 'radio' || $q->getType() == 'list')) {
                 $ret['questions'][] = $q;
             } elseif ($q->getType() == 'check') {
                 $ret['questions'][] = $q;
@@ -202,36 +241,6 @@ class Survey implements \JsonSerializable
         }
 
         return $ret;
-    }
-
-    public function getTextAnswerWithSchoolResults(): array
-    {
-        $textQuestionArray = array();
-        $textQAarray = array();
-
-        // Get all text questions
-        foreach ($this->getSurveyQuestions() as $question) {
-            if ($question->getType() == 'text') {
-                $textQuestionArray[] = $question;
-            }
-        }
-
-        //Collect text answers
-        foreach ($textQuestionArray as $textQuestion) {
-            $questionText = $textQuestion->getQuestion();
-            $textQAarray[$questionText] = array();
-            foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
-                    continue;
-                }
-                $textQAarray[$questionText][] = array(
-                    'answerText' => $answer->getAnswer(),
-                    'schoolName' => $answer->getSurveyTaken()->getSchool()->getName()
-                );
-            }
-        }
-
-        return $textQAarray;
     }
 
     public function copy(): Survey
@@ -247,6 +256,8 @@ class Survey implements \JsonSerializable
             }
             $surveyClone->addSurveyQuestion($questionClone);
         }
+
+        $surveyClone->setTeamSurvey($this->isTeamSurvey());
 
         return $surveyClone;
     }
@@ -267,6 +278,24 @@ class Survey implements \JsonSerializable
         $this->showCustomFinishPage = $showCustomFinishPage;
     }
 
+
+    /**
+     * @return boolean
+     */
+    public function isShowCustomPopUpMessage()
+    {
+        return $this->showCustomPopUpMessage;
+    }
+
+    /**
+     * @param boolean $showCustomPopUpMessage
+     */
+    public function setShowCustomPopUpMessage($showCustomPopUpMessage)
+    {
+        $this->showCustomPopUpMessage = $showCustomPopUpMessage;
+    }
+
+
     /**
      * @return string
      */
@@ -280,6 +309,10 @@ class Survey implements \JsonSerializable
      */
     public function setFinishPageContent($finishPageContent)
     {
+        if ($finishPageContent === null) {
+            $finishPageContent = "";
+        }
+
         $this->finishPageContent = $finishPageContent;
     }
 
@@ -297,5 +330,57 @@ class Survey implements \JsonSerializable
     public function setConfidential($confidential)
     {
         $this->confidential = $confidential;
+    }
+
+    /**
+     * @param boolean $teamSurvey
+     */
+    public function setTeamSurvey($teamSurvey)
+    {
+        $this->teamSurvey = $teamSurvey;
+    }
+
+    /**
+     * @return boolean
+     */
+    public function isTeamSurvey() : bool
+    {
+        return $this->teamSurvey;
+    }
+
+    /**
+     * @param string surveyPopUpMessage
+     */
+    public function setSurveyPopUpMessage(?String $message)
+    {
+        if ($message === null) {
+            $message = "Svar på undersøkelse!";
+        }
+
+        $this->surveyPopUpMessage = $message;
+    }
+
+    /**
+     * @return string
+     */
+    public function getSurveyPopUpMessage() : string
+    {
+        return $this->surveyPopUpMessage;
+    }
+
+    /**
+     * @return SurveyTaken[]
+     */
+    public function getSurveysTaken(): array
+    {
+        return $this->surveysTaken;
+    }
+
+    /**
+     * @param SurveyTaken[] $surveysTaken
+     */
+    public function setSurveysTaken(array $surveysTaken): void
+    {
+        $this->surveysTaken = $surveysTaken;
     }
 }

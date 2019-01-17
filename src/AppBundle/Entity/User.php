@@ -98,6 +98,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $email;
 
+
     /**
      * @ORM\Column(type="string", unique=true, nullable=true)
      * @Assert\Email
@@ -110,6 +111,18 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="is_active", type="boolean")
      */
     private $isActive;
+
+
+    /**
+     * @ORM\Column(type="boolean", nullable=false)
+     */
+    private $reservedFromPopUp;
+
+
+    /**
+     * @ORM\Column(type="datetime", nullable=false)
+     */
+    private $lastPopUpTime;
 
     /**
      * @var Role[]
@@ -157,6 +170,7 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $receipts;
 
+
     public function __construct()
     {
         $this->roles = new ArrayCollection();
@@ -165,6 +179,8 @@ class User implements AdvancedUserInterface, \Serializable
         $this->isActive = true;
         $this->picture_path = 'images/defaultProfile.png';
         $this->receipts = new ArrayCollection();
+        $this->reservedFromPopUp = false;
+        $this->lastPopUpTime = new \DateTime("2000-01-01");
     }
 
     public function getId()
@@ -470,7 +486,7 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function hasBeenAssistant(): bool
     {
-        return count($this->assistantHistories) > 0;
+        return !empty($this->assistantHistories);
     }
 
     public function isActiveAssistant(): bool
@@ -766,7 +782,41 @@ class User implements AdvancedUserInterface, \Serializable
                 }
             }
         }
+
         return $activeTeamMemberships;
+    }
+
+
+    /**
+     * @return bool
+     */
+    public function getReservedFromPopUp() : bool
+    {
+        return $this->reservedFromPopUp;
+    }
+
+    /**
+     * @param bool $reservedFromPopUp
+     */
+    public function setReservedFromPopUp(bool $reservedFromPopUp): void
+    {
+        $this->reservedFromPopUp = $reservedFromPopUp;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getLastPopUpTime() : \DateTime
+    {
+        return $this->lastPopUpTime;
+    }
+
+    /**
+     * @param \DateTime $lastPopUpTime
+     */
+    public function setLastPopUpTime($lastPopUpTime): void
+    {
+        $this->lastPopUpTime = $lastPopUpTime;
     }
 
     /**

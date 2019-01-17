@@ -60,6 +60,46 @@ control_panel:
   defaults: { _controller: AppBundle:ControlPanel:show }
   methods: [GET]
 
+
+##########################################
+#               Todo List                #
+##########################################
+
+todo_list:
+ path: /kontrollpanel/sjekkliste
+ defaults: { _controller: AppBundle:TodoList:show }
+ methods: [GET]
+
+
+create_todoItem:
+  path: /kontrollpanel/sjekkliste/opprett
+  defaults: {_controller: AppBundle:TodoList:createTodo, id: null }
+  methods: [GET, POST]
+  requirements:
+   id: \d+
+
+edit_todoItem:
+  path: /kontrollpanel/sjekkliste/endre/{id}
+  defaults: {_controller: AppBundle:TodoList:editTodo }
+  methods: [GET, POST]
+  requirements:
+   id: \d+
+
+toggle_isCompleted:
+  path: /kontrollpanel/sjekkliste/utfor/{id}
+  defaults: {_controller: AppBundle:TodoList:toggle }
+  methods: [POST]
+  requirements:
+   id: \d+
+
+delete_todo_item:
+  path: /kontrollpanel/sjekkliste/slett/{id}
+  defaults: {_controller: AppBundle:TodoList:deleteTodoItem }
+  methods: [POST]
+  requirements:
+   id: \d+
+
+
 ##########################################
 #                Survey                  #
 ##########################################
@@ -71,12 +111,28 @@ survey_show:
   requirements:
     id: \d+
 
+survey_show_team:
+ path: /teamundersokelse/{id}
+ defaults: { _controller: AppBundle:Survey:showTeam }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+
 survey_show_admin:
+ path: /kontrollpanel/undersokelse/{id}
+ defaults: { _controller: AppBundle:Survey:showAdmin }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+survey_team_show_admin:
   path: /kontrollpanel/undersokelse/{id}
   defaults: { _controller: AppBundle:Survey:showAdmin }
   methods: [GET, POST]
   requirements:
-    id: \d+
+   id: \d+
+
 
 survey_create:
   path: /kontrollpanel/undersokelse/opprett
@@ -118,6 +174,19 @@ survey_get_all_results:
  requirements:
   id: \d+
 
+survey_popup_reserve:
+   path:   /togglepopup
+   defaults: { _controller: AppBundle:Survey:toggleReservedFromPopUp }
+   methods: [POST]
+   requirements:
+    id: \d+
+
+survey_popup_close:
+ path:   /closepopup
+ defaults: { _controller: AppBundle:Survey:closePopUp }
+ methods: [POST]
+ requirements:
+  id: \d+
 
 
 ##########################################

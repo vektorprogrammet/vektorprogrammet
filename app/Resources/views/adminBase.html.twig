@@ -71,6 +71,9 @@
     </main>
 </div>
 
+
+    {{ render(controller("AppBundle:SurveyPopup:nextSurvey")) }}
+
 <script src="{{ asset_with_version('js/access_control.js') }}"></script>
 
 {% if googleAnalyticsId %}
@@ -97,6 +100,7 @@
 
 <script src="{{ asset_with_version('/vendor/coreui.js') }}"></script>
 <script src="{{ asset_with_version('/js/control_panel.js') }}"></script>
+<script src="{{ asset_with_version('js/button_deactivator.js') }}"></script>
 
 <script>
   $(function () {

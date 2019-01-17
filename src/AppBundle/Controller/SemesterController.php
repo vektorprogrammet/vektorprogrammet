@@ -31,6 +31,7 @@ class SemesterController extends Controller
      * @param Request $request
      *
      * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function createSemesterAction(Request $request)
     {
@@ -49,8 +50,8 @@ class SemesterController extends Controller
                 ->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());
 
             //Return to semester page if semester already exists
-            if (count($existingSemester)) {
-                $this->addFlash('warning', "Semesteret $existingSemester[0] finnes allerede");
+            if ($existingSemester !== null) {
+                $this->addFlash('warning', "Semesteret $existingSemester finnes allerede");
                 return $this->redirectToRoute('semester_create');
             }
 

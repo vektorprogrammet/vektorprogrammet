@@ -9,6 +9,7 @@ class ApplicationStatisticsController extends BaseController
 {
     /**
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function showAction()
     {
