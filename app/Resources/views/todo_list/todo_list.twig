@@ -92,8 +92,8 @@
                                 <span class={{ item.isPastDeadlineBySemester(semester) ? "text-danger" : "text-warning" }}>
                                     {{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }}
                                 </span>
-                            {% elseif item.getTodoDeadlines() != null %}
-                                {{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }}
+                            {% elseif item.getDeadlineBySemester(semester) != null %}
+                                {{ item.getDeadlineBySemester(semester).getDeadDate.format('d/m-Y') }}
                             {% else %}
                                 Ingen
                             {% endif %}
