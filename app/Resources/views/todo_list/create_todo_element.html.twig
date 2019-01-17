@@ -26,20 +26,12 @@
                     {{ form_row(form.title) }}
                     {{ form_row(form.description) }}
                     {{ form_row(form.priority) }}
-                    {{ form_row(form.isMandatory) }}
-
-                    <div class="mt-3">
-                        <button type="submit" class="btn btn-success cta-link">{{ create_or_update_action }}</button>
-                        <a href="{{ path('todo_list', {'department': department.id, 'semester': semester.id}) }}">
-                            <button type="button" class=" btn btn-primary">Avbryt</button>
-                        </a>
-                    </div>
 
 
                 </div>
 
                 <div class="col-12 col-md-12 col-lg-6">
-                    {% if is_granted_team_leader() %}
+                    {% if has_access_to('all_departments') %}
                         {{ form_row(form.department) }}
                     {% else %}
                         {% do form.department.setRendered() %}
@@ -49,6 +41,18 @@
 
 
                 </div>
+
+            </div>
+            <div class="row">
+
+                <div class="col-12 col-md-12 col-lg-6">
+                    {{ form_row(form.isMandatory) }}
+                    <button type="submit" class="btn btn-success cta-link">{{ create_or_update_action }}</button>
+                    <a href="{{ path('todo_list', {'department': department.id, 'semester': semester.id}) }}">
+                        <button type="button" class=" btn btn-primary">Avbryt</button>
+                    </a>
+                </div>
+
 
             </div>
 
