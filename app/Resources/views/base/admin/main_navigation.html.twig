@@ -220,6 +220,17 @@
                 ]
             } %}
             {% include 'base/admin/nav_link.html.twig' with {
+                route: 'todo_list',
+                icon: 'clipboard-list',
+                name: 'Sjekkliste',
+                activeRoutes: [
+                    'create_todoItem',
+                    'edit_todoItem',
+                    'toggle_isCompleted',
+                    'delete_todo_item',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
                 route: 'articleadmin_show',
                 icon: 'file',
                 name: 'Artikler',
