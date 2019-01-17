@@ -10,9 +10,7 @@
 
 {% block breadcrumb_menu %}
     <div class="btn-group">
-        {% if is_granted_team_leader() %}
-            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'todo_list' } %}
-        {% endif %}
+        {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'todo_list' } %}
         <a class="btn text-success"
            href="{{ path('create_todoItem', {'department': department.id, 'semester': semester.id}) }}">
             <i class="fa fa-plus text-success"></i>
