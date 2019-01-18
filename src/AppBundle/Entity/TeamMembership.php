@@ -275,7 +275,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * @param bool $isTeamLeader
      */
-    public function setTeamLeader($isTeamLeader)
+    public function setIsTeamLeader($isTeamLeader)
     {
         $this->isTeamLeader = $isTeamLeader;
     }
