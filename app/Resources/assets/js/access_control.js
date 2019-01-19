@@ -6,3 +6,12 @@ for (let i = 0; i < links.length; i ++) {
     link.parentNode.removeChild(link);
   }
 }
+
+const forms = document.querySelectorAll('form');
+
+for (let i = 0; i < forms.length; i ++) {
+  const form = forms[i];
+  if (form.action.indexOf("#noaccess") !== -1) {
+    form.parentNode.removeChild(form);
+  }
+}
