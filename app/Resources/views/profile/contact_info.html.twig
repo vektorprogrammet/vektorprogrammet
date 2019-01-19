@@ -3,12 +3,17 @@
         <h6>Avdeling: {{ user.department }}</h6>
         {% if is_granted_assistant() %}
             <h6>Linje: {{ user.fieldOfStudy }}</h6>
-            <h6>Telefon: {{ user.phone|slice(0,3) }} {{ user.phone|slice(3,2) }} {{ user.phone|slice(5,3) }}</h6>
-            <h6 class="mb-0">E-post: {{ user.email }}</h6>
+            <h6>Telefon:
+                <a href="tel:{{ user.phone }}">{{ user.phone|slice(0,3) }} {{ user.phone|slice(3,2) }} {{ user.phone|slice(5,3) }}</a>
+            </h6>
+            <h6 class="mb-0">E-post:
+                <a href="mailto:{{ user.email }}">{{ user.email }}</a>
+            </h6>
         {% endif %}
         {% if user.companyEmail or is_granted_admin() %}
             <h6 class="mb-0 mt-2">
-                Vektorepost: {{ user.companyEmail }}
+                Vektorepost:
+                <a href="mailto:{{ user.companyEmail }}">{{ user.companyEmail }}</a>
                 {% if is_granted_admin() %}(<a href="{{ path('edit_user_company_email', {id: user.id}) }}">endre</a>){% endif %}
             </h6>
         {% endif %}
