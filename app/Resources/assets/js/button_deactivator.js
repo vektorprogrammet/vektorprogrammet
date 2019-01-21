@@ -1,14 +1,12 @@
 (function onclickDisable(){
-    $("form").submit(function(e){
-        var $submitButtons = $("button", this);
-        $submitButtons.each(function() {
-            if(!this.disabled && this.type === 'submit'){
-                disableElement($(this));
-            }
-        });
+    var $submitButtons = $("form button");
+    $submitButtons.click(function() {
+        var btn = $(this);
+        if(!btn.hasClass('disabled') && this.type === 'submit'){
+          btn.addClass('disabled');
+          btn.click(function(e){
+              e.preventDefault()
+            })
+        }
     });
-
-    function disableElement($ele){
-        $ele.attr('disabled', true);
-    }
 })();
