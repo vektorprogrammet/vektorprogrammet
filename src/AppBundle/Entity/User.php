@@ -486,7 +486,11 @@ class User implements AdvancedUserInterface, \Serializable
 
     public function hasBeenAssistant(): bool
     {
-        return !empty($this->assistantHistories);
+        if ($this->assistantHistories === null) {
+            return false;
+        }
+
+        return !empty($this->assistantHistories->toArray());
     }
 
     public function isActiveAssistant(): bool
