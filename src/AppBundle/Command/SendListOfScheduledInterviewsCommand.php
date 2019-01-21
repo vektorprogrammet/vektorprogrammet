@@ -40,10 +40,12 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
     {
         $departments = $this->em->getRepository('AppBundle:Department')->findActive();
         foreach ($departments as $department) {
-            $semester = $department->getCurrentAdmissionPeriod();
-            if (!$semester) {
+            $admissionPeriod = $department->getCurrentAdmissionPeriod();
+            if (!$admissionPeriod) {
                 continue;
             }
+
+            $semester = $admissionPeriod->getSemester();
             $interviewersInDepartment = $this->em->getRepository('AppBundle:Interview')->findInterviewersInSemester($semester);
             foreach ($interviewersInDepartment as $interviewer) {
                 $this->interviewManager->sendInterviewScheduleToInterviewer($interviewer);
