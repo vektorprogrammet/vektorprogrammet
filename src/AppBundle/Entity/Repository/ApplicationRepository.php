@@ -181,6 +181,7 @@ class ApplicationRepository extends EntityRepository
             ->setParameter('admissionPeriod', $admissionPeriod)
             ->setParameter('status', InterviewStatusType::CANCELLED)
             ->setParameter('user', $user)
+            ->orderBy('i.scheduled', 'ASC')
             ->getQuery()
             ->getResult();
     }
