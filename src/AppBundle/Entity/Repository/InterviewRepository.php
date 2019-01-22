@@ -123,7 +123,8 @@ class InterviewRepository extends EntityRepository
 
         return $this->createQueryBuilder('interview')
             ->join('interview.application', 'application')
-            ->where('application.semester = :semester')
+            ->join('application.admissionPeriod', 'admissionPeriod')
+            ->where('admissionPeriod.semester = :semester')
             ->setParameter('semester', $semester)
             ->andWhere('interview.interviewer = :interviewer OR interview.coInterviewer = :interviewer')
             ->andWhere('interview.interviewed = false')
@@ -145,7 +146,8 @@ class InterviewRepository extends EntityRepository
          */
         $interviews = $this->createQueryBuilder('interview')
                     ->join('interview.application', 'application')
-                    ->where('application.semester = :semester')
+                    ->join('application.admissionPeriod', 'admissionPeriod')
+                    ->where('admissionPeriod.semester = :semester')
                     ->setParameter('semester', $semester)
                     ->getQuery()
                     ->getResult();
