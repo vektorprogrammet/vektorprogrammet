@@ -277,7 +277,7 @@ class School
     /**
      * @return SchoolCapacity[]
      */
-    public function getCapacities(): array
+    public function getCapacities()
     {
         return $this->capacities;
     }

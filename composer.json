@@ -47,7 +47,9 @@
         "bcc/auto-mapper-bundle": "^1.2",
         "php-http/guzzle6-adapter": "^1.1",
         "excelwebzone/recaptcha-bundle": "^1.5",
-        "sentry/sentry-symfony": "^2.0"
+        "sentry/sentry-symfony": "^2.0",
+        "friendsofsymfony/rest-bundle": "^2.5",
+        "symfony/serializer": "3.4.*"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.4",

@@ -469,6 +469,7 @@ class ApplicationRepository extends EntityRepository
             ->select('a')
             ->where('a.admissionPeriod = :admissionPeriod')
             ->setParameter('admissionPeriod', $admissionPeriod)
+            ->orderBy('a.created', 'DESC')
             ->getQuery()
             ->getResult();
     }
