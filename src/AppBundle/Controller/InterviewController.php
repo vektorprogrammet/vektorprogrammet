@@ -76,6 +76,7 @@ class InterviewController extends BaseController
             $em->flush();
             if ($isNewInterview && $form->get('saveAndSend')->isClicked()) {
                 $interview->setInterviewed(true);
+                $interview->setConducted(new \DateTime());
                 $em->persist($interview);
                 $em->flush();
 
