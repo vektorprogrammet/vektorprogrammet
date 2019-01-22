@@ -1,0 +1,38 @@
+{% if has_access_to('receipts_show') %}
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-users"></i> Søkere {{ semester }}
+            </div>
+            <div class="card-body">
+                <canvas id="applicationsChart" width="400" height="100"></canvas>
+            </div>
+        </div>
+    </div>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+        <script>
+          var appCtx = document.getElementById('applicationsChart').getContext('2d');
+          new Chart(appCtx, {
+            type: 'line',
+            data: {
+              labels: [{% for date, appCount in appData %}'{{ date|date('d.M') }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+              datasets: [{
+                label: 'Antall påmeldte',
+                data: [{% for appCount in appData %}{{ appCount }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                backgroundColor:'rgba(111, 206, 238, 0.2)',borderColor:'rgba(111, 206, 238, 1)',pointBackgroundColor:'rgba(111, 206, 238, 1)',pointBorderColor:'#fff'
+              }],
+            },
+            options: {
+              scales: {
+                yAxes: [{
+                  ticks: {
+                    beginAtZero: true,
+                  },
+                }],
+              },
+            },
+          });
+        </script>
+
+{% endif %}
