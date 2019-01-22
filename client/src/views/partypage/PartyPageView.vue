@@ -28,6 +28,7 @@
                 number_of_applicants: 0
             }
         },
+
         computed: {
             animatedNumber: function() {
                 return this.tweenedNumber.toFixed(0);
@@ -38,11 +39,23 @@
                 TweenLite.to(this.$data, 10, { tweenedNumber: newValue });
             }
         },
+
+        methods:{
+            init_number_of_applicants_anim: function (initValue) {
+                TweenLite.fromTo(this.$data, 10, {tweenedNumber: 0},{ tweenedNumber: initValue });
+            }
+        },
+
         mounted () {
             axios
                 .get('localhost:8000/')
                 .then(this.tweenedNumber = 100)
                 .then(response => ( dataa = response ))
+
+            this.init_number_of_applicants_anim(this.tweenedNumber);
+
+
+
         }
     }
 </script>
