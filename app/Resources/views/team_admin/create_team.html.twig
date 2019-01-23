@@ -33,7 +33,7 @@
             {{ form_row(form.active) }}
             {{ form_row(form.description) }}
             <br>
-            {{ form_widget(form.preview, {'attr': {'class': 'btn btn-secondary', 'formtarget': '_blank'}}) }}
+            {{ form_widget(form.preview, {'attr': {'class': 'btn btn-secondary ignore-auto-disable', 'formtarget': '_blank'}}) }}
             <button class="btn btn-primary">Lagre</button>
             {{ form_end(form) }}
         </div>

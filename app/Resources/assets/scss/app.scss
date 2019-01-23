@@ -227,3 +227,10 @@ strong strong {
   display: block;
 }
 
+.not-clickable {
+  cursor: default!important;
+  &:focus{
+    box-shadow: none;
+  }
+}
+
