@@ -5,7 +5,9 @@
                 <i class="fa fa-users"></i> Søkere {{ semester }}
             </div>
             <div class="card-body">
-                <canvas id="applicationsChart" width="400" height="100"></canvas>
+                <div style="position: relative; width:100%">
+                    <canvas id="applicationsChart"></canvas>
+                </div>
             </div>
         </div>
     </div>
@@ -24,6 +26,8 @@
               }],
             },
             options: {
+              responsive: true,
+              aspectRatio: aspectRatio(),
               scales: {
                 yAxes: [{
                   ticks: {
@@ -33,6 +37,22 @@
               },
             },
           });
+          function aspectRatio() {
+            var width = document.body.clientWidth;
+            if (width < 768) {
+              return 2;
+            }
+            if (width < 1300) {
+              return 3;
+            }
+            if (width < 2000) {
+              return 5
+            }
+            if (width < 3000) {
+              return 6
+            }
+            return 8;
+          }
         </script>
 
 {% endif %}
