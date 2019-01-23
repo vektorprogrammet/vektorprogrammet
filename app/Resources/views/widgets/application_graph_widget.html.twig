@@ -1,0 +1,59 @@
+<div class="col-12">
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-users"></i> Søkere {{ semester }}
+        </div>
+        <div class="card-body">
+            <div style="position: relative; width:100%">
+                <canvas id="applicationsChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+<script>
+  var appCtx = document.getElementById('applicationsChart').getContext('2d');
+  new Chart(appCtx, {
+    type: 'line',
+    data: {
+      labels: [{% for date, appCount in appData %}'{{ date|date('d.M') }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+      datasets: [{
+        label: 'Antall påmeldte',
+        data: [{% for appCount in appData %}{{ appCount }}{% if not loop.last %}, {% endif %}{% endfor %}],
+        backgroundColor: 'rgba(111, 206, 238, 0.2)',
+        borderColor: 'rgba(111, 206, 238, 1)',
+        pointBackgroundColor: 'rgba(111, 206, 238, 1)',
+        pointBorderColor: '#fff',
+      }],
+    },
+    options: {
+      responsive: true,
+      aspectRatio: aspectRatio(),
+      scales: {
+        yAxes: [{
+          ticks: {
+            beginAtZero: true,
+          },
+        }],
+      },
+    },
+  });
+
+  function aspectRatio() {
+    var width = document.body.clientWidth;
+    if (width < 768) {
+      return 2;
+    }
+    if (width < 1300) {
+      return 3;
+    }
+    if (width < 2000) {
+      return 5;
+    }
+    if (width < 3000) {
+      return 6;
+    }
+    return 8;
+  }
+</script>

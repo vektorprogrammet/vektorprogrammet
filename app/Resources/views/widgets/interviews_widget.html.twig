@@ -1,0 +1,38 @@
+{% if applications|length > 0 %}
+    <div class="col-12 col-md-6 col-xxxl-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-comments-o"></i> Dine Intervjuer
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped mb-0">
+                    <tr>
+                        <th>Søker</th>
+                        <th>Dato</th>
+                        <th>Rom</th>
+                        <th>Status</th>
+                    </tr>
+                    {% for application in applications %}
+                        <tr>
+                            <td>
+                                {% if (application.interview.interviewStatus == 1) %}
+                                    <a href="{{ path('interview_conduct', { 'id': application.id }) }}">{{ application.user }}</a>
+                                {% else %}
+                                    <a href="{{ path('interview_schedule', { 'id': application.id }) }}">{{ application.user }}</a>
+                                {% endif %}
+                            </td>
+                            <td>{% if application.interview.scheduled %}{{ application.interview.scheduled | date("d.m.y - G:i") }}{% endif %}</td>
+                            <td>{{ application.interview.room }}</td>
+                            <td style="color: {{ application.interview.getInterviewStatusAsColor() }}">
+                        <span class="badge badge-success"
+                              style="background-color: {{ application.interview.getInterviewStatusAsColor() }}">
+                            {{ application.interview.getInterviewStatusAsString() }}
+                        </span>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}

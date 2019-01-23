@@ -299,6 +299,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application->setPreviousParticipation(mt_rand(0, 100) < 10 ? true : false);
         $application->setYearOfStudy(1);
         $application->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application->setCreated((new \DateTime('-'.mt_rand(0, 10).'days')));
         $randomArr = array( true, false, false, false, false );
         shuffle($randomArr);
         $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20);
