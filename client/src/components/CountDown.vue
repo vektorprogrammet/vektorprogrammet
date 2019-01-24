@@ -15,9 +15,19 @@
     }
 </script>
 
-<style scoped>
-    .flip-clock__piece flip{
-        color: #0b93d5;
+<style lang="scss">
+
+    .flip-card__top,
+    .flip-card__bottom,
+    .flip-card__back-bottom,
+    .flip-card__back::before,
+    .flip-card__back::after {
+        color: #0982c4 !important;
+    }
+
+    .flip-card__bottom,
+    .flip-card__back-bottom {
+        color: #0b93d5 !important;
     }
 
 </style>
