@@ -12,6 +12,10 @@
         <div id="number-of-applicants">
             <p>{{ number_of_applicants }}</p>
         </div>
+
+        <div>
+            <CountDown></CountDown>
+        </div>
     </div>
 
 </template>
@@ -19,8 +23,10 @@
 <script>
     import TweenLite from 'gsap'
     import axios from 'axios'
+    import CountDown from "../../components/CountDown";
     export default {
         name: "PartyPageView",
+        components: {CountDown},
         data() {
             return {
                 number: 0,
@@ -41,23 +47,40 @@
         },
 
         methods:{
-            init_number_of_applicants_anim: function (initValue) {
-                TweenLite.fromTo(this.$data, 10, {tweenedNumber: 0},{ tweenedNumber: initValue });
+            inc_number_of_applicants_anim: function (initValue, animLength) {
+                TweenLite.fromTo(this.$data, animLength, {tweenedNumber: this.tweenedNumber},{ tweenedNumber: initValue });
+                this.tweenedNumber = initValue;
             }
         },
 
+
+
         mounted () {
             axios
-                .get('localhost:8000/')
-                .then(this.tweenedNumber = 100)
-                .then(response => ( dataa = response ))
+                .get('http://10.22.20.43:8080/api/party/application_count/1/')
+                .then(response => {
+                    if(response.data !== c){
+                        this.inc_number_of_applicants_anim(response.data, 10);
 
-            this.init_number_of_applicants_anim(this.tweenedNumber);
+                    }
+                });
 
+            let c = this.tweenedNumber;
+            window.setInterval(()=>{
+                axios
+                    .get('http://10.22.20.43:8080/api/party/application_count/1/')
+                    .then(response => {
+                        if(response.data !== c){
+                            this.inc_number_of_applicants_anim(response.data, 1);
+                            c = this.tweenedNumber;
 
-
-        }
+                        }
+                    });
+            }, 2000);
+        },
     }
+
+
 </script>
 
 <style scoped lang="scss">
