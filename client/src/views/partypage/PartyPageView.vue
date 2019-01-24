@@ -1,10 +1,25 @@
 <template>
     <div id="party_page_view">
+
+        <transition
+                v-on:leave="overlay_leave"
+                v-bind:css="false">
+            <div v-if="show" id="overlay">
+                <h1 id="overlay-title">Vektor Party</h1>
+            </div>
+        </transition>
+
+        <transition
+                v-on:leave="button_leave"
+                v-bind:css="false">
+            <button v-if="show" id="btn-intro" v-on:click="btn_intro_click">My body is ready!</button>
+        </transition>
+
         <div id="Title">
             <h1 class="deepshadow">Vektor Party</h1>
         </div>
 
-        <div id="applicants_div">
+        <div id="applicants_div" >
             <h1 class="elegantshadow">{{ animatedNumber }}</h1>
         </div>
 
@@ -19,13 +34,18 @@
     import TweenLite from 'gsap'
     import axios from 'axios'
     import CountDown from "../../components/CountDown";
+    import Velocity from 'velocity-animate';
+
     export default {
         name: "PartyPageView",
         components: {CountDown},
         data() {
             return {
                 number: 0,
-                number_of_applicants: 0
+                number_of_applicants: 0,
+                show: true,
+                fetching_api: false,
+                last_number_of_applicants: 0,
             }
         },
 
@@ -36,30 +56,83 @@
         },
 
         methods:{
+            btn_intro_click: function(){
+                let overlay = document.getElementById('overlay');
+                //overlay.style.display = "none";
+                this.show = false;
+                axios
+                    .get('http://10.22.20.43:8080/api/party/application_count/1/')
+                    .then(response => {
+                        this.inc_number_of_applicants_anim(response.data, 10);
+                        this.fetching_api = true;
+                        this.last_number_of_applicants = response.data;
+                    });
+            },
+
             inc_number_of_applicants_anim: function (initValue, animLength) {
                 TweenLite.fromTo(this.$data, animLength, {number_of_applicants: this.number_of_applicants},{ number_of_applicants: initValue });
                 this.number_of_applicants = initValue;
-            }
+            },
+
+            play_notification_sound: function(){
+                let sound = new Audio(require('../../assets/johncenaintro.mp3'));
+                let sound2 = new Audio('http://159.65.58.116/Sigurd%20%20%20%20');
+                let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
+
+
+                sound2.addEventListener('loadeddata', function(){
+                    if(sound2.readyState === 4){
+                        sound.play();
+                    }
+                });
+
+                sound.addEventListener('ended', function(){
+                    sound2.play();
+                });
+
+                sound2.addEventListener('ended', function(){
+                    sound3.play();
+                });
+            },
+
+
+            button_leave: function (el, done) {
+                Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 200 })
+                Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+                Velocity(el, {
+                    rotateZ: '45deg',
+                    translateY: '30px',
+                    translateX: '30px',
+                    opacity: 0
+                }, { complete: done })
+            },
+
+            overlay_leave: function (el, done) {
+                Velocity(el, {opacity: 0}, { complete: done })
+            },
+
+
         },
 
-
-
         mounted () {
-
-            let c = this.number_of_applicants;
             window.setInterval(()=>{
                 axios
                     .get('http://10.22.20.43:8080/api/party/application_count/1/')
                     .then(response => {
-                        if(response.data !== c){
+                        if(this.fetching_api && response.data !== this.last_number_of_applicants){
+                            this.last_number_of_applicants = response.data;
                             this.inc_number_of_applicants_anim(response.data, 3);
-                            c = this.number_of_applicants;
-
+                            this.play_notification_sound();
                         }
                     });
             }, 3010);
+
         },
+
     }
+
+
+
 
 
 </script>
@@ -118,8 +191,8 @@
                         -28px 56px 1px #e4e3e2;
             }
             &.deepshadow {
-                color: #e0dfdc;
-                background-color: #333;
+                color: rgba(73, 72, 77, 0.52);
+               // background-color: #333;
                 letter-spacing: .1em;
                 text-shadow:
                         0 -1px 0 #fff,
@@ -142,7 +215,7 @@
             }
             &.insetshadow {
                 color: #202020;
-                background-color: #2d2d2d;
+               // background-color: #2d2d2d;
                 letter-spacing: .1em;
                 text-shadow:
                         -1px -1px 1px #111,
@@ -150,6 +223,26 @@
             }
 
         }
+
+        #overlay{
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            background-color: #6FCDEE;
+            z-index: 10;
+        }
+
+
+        #btn-intro{
+            position: fixed;
+            z-index: 11;
+            width: 20em;
+            height: 10em;
+            top: calc(50% - 3em);
+            left: calc(50% - 10em);
+        }
+
+
 
     }
 
