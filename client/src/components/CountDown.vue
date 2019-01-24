@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div id="countdown">
         <flip-countdown deadline = "2019-01-29 23:59:59"></flip-countdown>
     </div>
     
@@ -17,17 +17,23 @@
 
 <style lang="scss">
 
-    .flip-card__top,
-    .flip-card__bottom,
-    .flip-card__back-bottom,
-    .flip-card__back::before,
-    .flip-card__back::after {
-        color: #0982c4 !important;
+    #countdown {
+
+        .flip-card__top,
+        .flip-card__bottom,
+        .flip-card__back-bottom,
+        .flip-card__back::before,
+        .flip-card__back::after {
+            color: #CCC !important;
+        }
+
+        .flip-card__bottom,
+        .flip-card__back-bottom {
+            color: #FFF !important;
+        }
+
     }
 
-    .flip-card__bottom,
-    .flip-card__back-bottom {
-        color: #0b93d5 !important;
-    }
+
 
 </style>
