@@ -23,6 +23,8 @@
             <h1 class="elegantshadow">{{ animatedNumber }}</h1>
         </div>
 
+        <div id="user_info"></div>
+
         <div>
             <CountDown></CountDown>
         </div>
@@ -42,16 +44,17 @@
         data() {
             return {
                 number: 0,
-                number_of_applicants: 0,
+                sliding_number_of_applicants: 0,
                 show: true,
                 fetching_api: false,
                 last_number_of_applicants: 0,
+                new_users: [],
             }
         },
 
         computed: {
             animatedNumber: function() {
-                return this.number_of_applicants.toFixed(0);
+                return this.sliding_number_of_applicants.toFixed(0);
             },
         },
 
@@ -61,22 +64,22 @@
                 //overlay.style.display = "none";
                 this.show = false;
                 axios
-                    .get('http://10.22.20.43:8080/api/party/application_count/1/')
+                    .get('/api/party/application_count/1/')
                     .then(response => {
-                        this.inc_number_of_applicants_anim(response.data, 10);
+                        this.inc_number_of_applicants_anim(response.data, 2); //should be 10
                         this.fetching_api = true;
                         this.last_number_of_applicants = response.data;
                     });
             },
 
             inc_number_of_applicants_anim: function (initValue, animLength) {
-                TweenLite.fromTo(this.$data, animLength, {number_of_applicants: this.number_of_applicants},{ number_of_applicants: initValue });
-                this.number_of_applicants = initValue;
+                TweenLite.fromTo(this.$data, animLength, {sliding_number_of_applicants: this.sliding_number_of_applicants},{ sliding_number_of_applicants: initValue });
+                this.sliding_number_of_applicants = initValue;
             },
 
-            play_notification_sound: function(){
+            play_notification_sound: (firstname, lastname) => {
                 let sound = new Audio(require('../../assets/johncenaintro.mp3'));
-                let sound2 = new Audio('http://159.65.58.116/Sigurd%20%20%20%20');
+                let sound2 = new Audio('http://159.65.58.116/'+ firstname + ' ' +lastname);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
 
 
@@ -95,10 +98,31 @@
                 });
             },
 
+            display_user_info: (user) => {
+
+            },
+
+            show_users: function(number) {
+                axios
+                    .get('/api/party/newest_applications/1/')
+                    .then( response =>  {
+                        let limit = number > response.data.length ? response.data.length : number;
+                        for (let i = 0; i < limit; i++) {
+                            this.new_users.push(response.data[i].user);
+                        }
+                        for (let i = 0; i < this.new_users.length; i++) {
+                            let user = this.new_users.pop();
+                            this.play_notification_sound(user['firstName'], user['lastName']);
+                            //this.display_user_info(user);
+                            setTimeout(3000)
+                        }
+                    });
+            },
+
 
             button_leave: function (el, done) {
-                Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 200 })
-                Velocity(el, { rotateZ: '100deg' }, { loop: 2 })
+                Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 200 });
+                Velocity(el, { rotateZ: '100deg' }, { loop: 2 });
                 Velocity(el, {
                     rotateZ: '45deg',
                     translateY: '30px',
@@ -117,12 +141,13 @@
         mounted () {
             window.setInterval(()=>{
                 axios
-                    .get('http://10.22.20.43:8080/api/party/application_count/1/')
+                    .get('/api/party/application_count/1/')
                     .then(response => {
-                        if(this.fetching_api && response.data !== this.last_number_of_applicants){
-                            this.last_number_of_applicants = response.data;
+                        if(this.fetching_api && this.last_number_of_applicants !== response.data){
+                            let new_applicants = response.data - this.last_number_of_applicants;
+                            this.show_users(new_applicants);
                             this.inc_number_of_applicants_anim(response.data, 3);
-                            this.play_notification_sound();
+                            this.last_number_of_applicants = response.data;
                         }
                     });
             }, 3010);
@@ -240,6 +265,10 @@
             height: 10em;
             top: calc(50% - 3em);
             left: calc(50% - 10em);
+        }
+
+        #user_info {
+
         }
 
 
