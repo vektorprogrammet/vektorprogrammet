@@ -79,6 +79,24 @@ class PartyController extends AbstractFOSRestController
         return $this->handleView($view);
     }
 
+    /**
+     * @param Department $department
+     *
+     * @Route(
+     *     "api/party/deadline/{department}/",
+     *     methods={"GET"}
+     * )
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function ApplicationDeadlineAction(Department $department)
+    {
+        $admissionPeriod = $this->getAdmissionPeriod($department);
+        $deadline = $admissionPeriod->getAdmissionEndDate();
+        $view = $this->view($deadline->format('Y-m-d H:i:s'));
+        return $this->handleView($view);
+    }
 
     /**
      * @param Department $department
@@ -88,6 +106,21 @@ class PartyController extends AbstractFOSRestController
      */
     private function getApplications(Department $department)
     {
+        $admissionPeriod = $this->getAdmissionPeriod($department);
+
+        return $this->getDoctrine()
+            ->getRepository(Application::class)
+            ->findByAdmissionPeriod($admissionPeriod);
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @return AdmissionPeriod
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    private function getAdmissionPeriod(Department $department): AdmissionPeriod
+    {
         $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
             ->getRepository(AdmissionPeriod::class)
@@ -95,9 +128,6 @@ class PartyController extends AbstractFOSRestController
         if ($admissionPeriod === null) {
             throw new NotFoundHttpException();
         }
-
-        return $this->getDoctrine()
-            ->getRepository(Application::class)
-            ->findByAdmissionPeriod($admissionPeriod);
+        return $admissionPeriod;
     }
 }
