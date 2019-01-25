@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller\Api;
 
-
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
@@ -10,9 +9,13 @@ use AppBundle\Entity\Semester;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Serializer\Encoder\JsonEncoder;
+use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
+use Symfony\Component\Serializer\Serializer;
 
 class PartyController extends AbstractFOSRestController
 {
+    const NUM_APPLICATIONS = 5;
 
     /**
      * @param Department $department
@@ -26,7 +29,64 @@ class PartyController extends AbstractFOSRestController
      * @throws NotFoundHttpException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function ApplicationCountAction(Department $department = null)
+    public function ApplicationCountAction(Department $department)
+    {
+        $applications = $this->getApplications($department);
+        $view = $this->view(count($applications));
+        return $this->handleView($view);
+    }
+
+    /**
+     * @param Department $department
+     *
+     * @Route(
+     *     "api/party/newest_applications/{department}/",
+     *     methods={"GET"}
+     * )
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    public function NewestApplicationsAction(Department $department)
+    {
+        $applications = $this->getApplications($department);
+        $newestApplications = array_slice($applications, 0, self::NUM_APPLICATIONS, true);
+
+        $normalizer = new ObjectNormalizer();
+        $encoder = new JsonEncoder();
+        $serializer = new Serializer([$normalizer], [$encoder]);
+
+        $newestApplications = $serializer->normalize(
+            $newestApplications,
+            null,
+            ['attributes' =>
+                [
+                    'id',
+                    'user' => [
+                        'firstName',
+                        'lastName',
+                        'fieldOfStudy' =>
+                        [
+                            'name',
+                            'shortName'
+                        ],
+                    ],
+                    'yearOfStudy',
+                ]
+            ]
+        );
+        $view = $this->view($newestApplications);
+        return $this->handleView($view);
+    }
+
+
+    /**
+     * @param Department $department
+     *
+     * @return Application[]
+     * @throws \Doctrine\ORM\NonUniqueResultException
+     */
+    private function getApplications(Department $department)
     {
         $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
@@ -36,11 +96,8 @@ class PartyController extends AbstractFOSRestController
             throw new NotFoundHttpException();
         }
 
-        $applications = $this->getDoctrine()
+        return $this->getDoctrine()
             ->getRepository(Application::class)
             ->findByAdmissionPeriod($admissionPeriod);
-
-        $view = $this->view(count($applications));
-        return $this->handleView($view);
     }
 }
