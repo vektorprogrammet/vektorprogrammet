@@ -23,7 +23,11 @@
             <h1 class="elegantshadow">{{ animatedNumber }}</h1>
         </div>
 
-        <div id="user_info"></div>
+        <transition name="slide-fade">
+            <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant">Hello: {{ newest_applicant }} er Vektors nyeste assistent!</h2>
+        </transition>
+
+        <button id="btn-test" v-on:click="show_newest_applicant = !show_newest_applicant">(dev) toggle show</button>
 
         <div>
             <CountDown></CountDown>
@@ -49,6 +53,8 @@
                 fetching_api: false,
                 last_number_of_applicants: 0,
                 new_users: [],
+                newest_applicant: 'Viktor Johansen',
+                show_newest_applicant: false,
             }
         },
 
@@ -60,7 +66,7 @@
 
         methods:{
             btn_intro_click: function(){
-                let overlay = document.getElementById('overlay');
+                //let overlay = document.getElementById('overlay');
                 //overlay.style.display = "none";
                 this.show = false;
                 axios
@@ -77,7 +83,7 @@
                 this.sliding_number_of_applicants = initValue;
             },
 
-            play_notification_sound: (firstname, lastname) => {
+            play_notification_sound: function(firstname, lastname) {
                 let sound = new Audio(require('../../assets/johncenaintro.mp3'));
                 let sound2 = new Audio('http://159.65.58.116/'+ firstname + ' ' +lastname);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
@@ -96,10 +102,17 @@
                 sound2.addEventListener('ended', function(){
                     sound3.play();
                 });
+
+                sound3.addEventListener('ended', function(){
+                    this.show_newest_applicant = false;
+                });
+
             },
 
-            display_user_info: (user) => {
-
+            display_user_info: function(user){
+                this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
+                this.show_newest_applicant = true;
+                //document.getElementById('user_info').style.visibility = 'hidden';
             },
 
             show_users: function(number) {
@@ -113,8 +126,7 @@
                         for (let i = 0; i < this.new_users.length; i++) {
                             let user = this.new_users.pop();
                             this.play_notification_sound(user['firstName'], user['lastName']);
-                            //this.display_user_info(user);
-                            setTimeout(3000)
+                            this.display_user_info(user);
                         }
                     });
             },
@@ -267,11 +279,42 @@
             left: calc(50% - 10em);
         }
 
-        #user_info {
+        #newest_applicant {
+            text-align: center;
+            position: fixed;
+            z-index: 20;
+            width: 20em;
+            height: 10em;
+            top: calc(30%);
+            left: calc(50% - 10em);
 
         }
 
+        #user_info_background {
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            background-color: #6FCDEE;
+            z-index: 8;
+        }
 
+        .slide-fade-enter-active {
+            transition: all .3s ease;
+        }
+        .slide-fade-leave-active {
+            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+        }
+        .slide-fade-enter{
+            transform: translateX(100px);
+            opacity: 0;
+        }
+
+        //not working:
+        .slide-fade-leave-to
+            /* .slide-fade-leave-active below version 2.1.8 */ {
+            transform: translateX(100px);
+            opacity: 0;
+        }
 
     }
 
