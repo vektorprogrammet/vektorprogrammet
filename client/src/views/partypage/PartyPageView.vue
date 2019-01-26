@@ -17,13 +17,13 @@
             <button v-if="show" id="btn-intro" v-on:click="btn_intro_click">My body is ready!</button>
         </transition>
 
-        <div class="animatedBackground" v-bind:style="bgc">
-            <div id="Title">
-                <h1 class="deepshadow">Vektor Party</h1>
+        <div class="animatedBackground color-anim" v-bind:style="bgc">
+            <div id="Title" class = "color-anim">
+                <h1 class="deepshadow" v-bind:style="tc">Vektor Party</h1>
             </div>
 
             <div id="applicants_div" >
-                <h1 class="elegantshadow">{{ animatedNumber }}</h1>
+                <h1 class="elegantshadow color-anim" id="applicants_number" v-bind:style="tc2"> {{ animatedNumber }}</h1>
             </div>
 
             <transition name="slide-fade">
@@ -65,8 +65,18 @@
 
                 bgc: {
                     backgroundColor: '',
+                },
+
+                tc: {
+                    color: '',
+                },
+
+                tc2: {
+                    color: '',
+                    fontSize: '',
                 }
             }
+
         },
 
         computed: {
@@ -129,9 +139,20 @@
                 let colors = ["#ff6d4b","#ffc527","#a7ff42","#2cfff3","#f953ff"];
                 for(let i=0; i<150; i++){
                     window.setTimeout(()=>{
-                        this.bgc.backgroundColor = colors[i % colors.length]
+                        this.bgc.backgroundColor = colors[i % colors.length];
+                        this.tc.color = colors[(i+2) % colors.length];
+                        this.tc2.color = colors[3*(i+2) % colors.length]
+                        this.tc2.fontSize = (150+ (i % 25))
+
+
                     }, 100*i);
                 }
+                window.setTimeout(()=>{
+                    this.bgc.backgroundColor = "#fafdff";
+                    this.tc.color ="#000";
+                    this.tc2.color ="#000";
+
+                }, 100*150);
             },
 
             show_users: function(number) {
@@ -197,14 +218,25 @@
 
     #party_page_view{
 
-        .animatedBackground{
+        #applicants_number{
+            font-size: 150px;
+        }
+
+        .color-anim{
             transition: 0.1s;
             transition-timing-function: linear;
+
+        }
+        #Title {
+            color: #000;
+        }
+
+        .animatedBackground{
             position: fixed;
-            background-color: #000;
+            background-color: #fafdff;
+
             height:100vh;
             width: 100vw;
-
         }
 
         p {
@@ -221,42 +253,40 @@
             text-rendering: optimizeLegibility;
 
             &.elegantshadow {
-                color: #131313;
+                color: #fff;
                 letter-spacing: .15em;
                 text-shadow:
-                        1px -1px 0 #767676,
-                        -1px 2px 1px #737272,
-                        -2px 4px 1px #767474,
-                        -3px 6px 1px #787777,
-                        -4px 8px 1px #7b7a7a,
-                        -5px 10px 1px #7f7d7d,
-                        -6px 12px 1px #828181,
-                        -7px 14px 1px #868585,
-                        -8px 16px 1px #8b8a89,
-                        -9px 18px 1px #8f8e8d,
-                        -10px 20px 1px #949392,
-                        -11px 22px 1px #999897,
-                        -12px 24px 1px #9e9c9c,
-                        -13px 26px 1px #a3a1a1,
-                        -14px 28px 1px #a8a6a6,
-                        -15px 30px 1px #adabab,
-                        -16px 32px 1px #b2b1b0,
-                        -17px 34px 1px #b7b6b5,
-                        -18px 36px 1px #bcbbba,
-                        -19px 38px 1px #c1bfbf,
-                        -20px 40px 1px #c6c4c4,
-                        -21px 42px 1px #cbc9c8,
-                        -22px 44px 1px #cfcdcd,
-                        -23px 46px 1px #d4d2d1,
-                        -24px 48px 1px #d8d6d5,
-                        -25px 50px 1px #dbdad9,
-                        -26px 52px 1px #dfdddc,
-                        -27px 54px 1px #e2e0df,
-                        -28px 56px 1px #e4e3e2;
+                        1px -1px 0 rgba(0,0,0,0.5),
+                        -1px 2px 1px rgba(0,0,0,0.48),
+                        -2px 4px 1px rgba(0,0,0,0.46),
+                        -3px 6px 1px rgba(0,0,0,0.44),
+                        -4px 8px 1px rgba(0,0,0,0.42),
+                        -5px 10px 1px rgba(0,0,0,0.40),
+                        -6px 12px 1px rgba(0,0,0,0.38),
+                        -7px 14px 1px rgba(0,0,0,0.36),
+                        -8px 16px 1px rgba(0,0,0,0.32),
+                        -9px 18px 1px rgba(0,0,0,0.30),
+                        -10px 20px 1px rgba(0,0,0,0.28),
+                        -11px 22px 1px rgba(0,0,0,0.26),
+                        -12px 24px 1px rgba(0,0,0,0.24),
+                        -13px 26px 1px rgba(0,0,0,0.22),
+                        -14px 28px 1px rgba(0,0,0,0.20),
+                        -15px 30px 1px rgba(0,0,0,0.18),
+                        -16px 32px 1px rgba(0,0,0,0.16),
+                        -17px 34px 1px rgba(0,0,0,0.14),
+                        -18px 36px 1px rgba(0,0,0,0.12),
+                        -19px 38px 1px rgba(0,0,0,0.10),
+                        -20px 40px 1px rgba(0,0,0,0.08),
+                        -21px 42px 1px rgba(0,0,0,0.06),
+                        -22px 44px 1px rgba(0,0,0,0.04),
+                        -23px 46px 1px rgba(0,0,0,0.02),
+                        -24px 48px 1px rgba(0,0,0,0.0),
+                        -25px 50px 1px rgba(0,0,0,0.0),
+                        -26px 52px 1px rgba(0,0,0,0),
+                        -27px 54px 1px rgba(0,0,0,0),
+                        -28px 56px 1px rgba(0,0,0,0),
             }
             &.deepshadow {
-                color: rgba(73, 72, 77, 0.52);
-               // background-color: #333;
                 letter-spacing: .1em;
                 text-shadow:
                         0 -1px 0 #fff,
