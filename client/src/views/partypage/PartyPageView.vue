@@ -1,10 +1,12 @@
 <template>
     <div id="party_page_view">
 
+
+
         <transition
                 v-on:leave="overlay_leave"
                 v-bind:css="false">
-            <div v-if="show" id="overlay">
+            <div v-if="show" id="overlay" class="hue-anim">
                 <h1 id="overlay-title">Vektor Party</h1>
             </div>
         </transition>
@@ -15,23 +17,28 @@
             <button v-if="show" id="btn-intro" v-on:click="btn_intro_click">My body is ready!</button>
         </transition>
 
-        <div id="Title">
-            <h1 class="deepshadow">Vektor Party</h1>
+        <div class="animatedBackground" v-bind:style="bgc">
+            <div id="Title">
+                <h1 class="deepshadow">Vektor Party</h1>
+            </div>
+
+            <div id="applicants_div" >
+                <h1 class="elegantshadow">{{ animatedNumber }}</h1>
+            </div>
+
+            <transition name="slide-fade">
+                <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant">Hello: {{ newest_applicant }} er Vektors nyeste assistent!</h2>
+            </transition>
+
+            <button id="btn-test" v-on:click="show_newest_applicant = !show_newest_applicant">(dev) toggle show</button>
+
+            <div>
+                <CountDown></CountDown>
+            </div>
         </div>
 
-        <div id="applicants_div" >
-            <h1 class="elegantshadow">{{ animatedNumber }}</h1>
-        </div>
 
-        <transition name="slide-fade">
-            <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant">Hello: {{ newest_applicant }} er Vektors nyeste assistent!</h2>
-        </transition>
 
-        <button id="btn-test" v-on:click="show_newest_applicant = !show_newest_applicant">(dev) toggle show</button>
-
-        <div>
-            <CountDown></CountDown>
-        </div>
     </div>
 
 </template>
@@ -55,6 +62,10 @@
                 new_users: [],
                 newest_applicant: 'Viktor Johansen',
                 show_newest_applicant: false,
+
+                bgc: {
+                    backgroundColor: '',
+                }
             }
         },
 
@@ -81,6 +92,7 @@
             inc_number_of_applicants_anim: function (initValue, animLength) {
                 TweenLite.fromTo(this.$data, animLength, {sliding_number_of_applicants: this.sliding_number_of_applicants},{ sliding_number_of_applicants: initValue });
                 this.sliding_number_of_applicants = initValue;
+
             },
 
             play_notification_sound: function(firstname, lastname) {
@@ -113,6 +125,13 @@
                 this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
                 this.show_newest_applicant = true;
                 //document.getElementById('user_info').style.visibility = 'hidden';
+
+                let colors = ["#ff6d4b","#ffc527","#a7ff42","#2cfff3","#f953ff"];
+                for(let i=0; i<150; i++){
+                    window.setTimeout(()=>{
+                        this.bgc.backgroundColor = colors[i % colors.length]
+                    }, 100*i);
+                }
             },
 
             show_users: function(number) {
@@ -148,6 +167,7 @@
             },
 
 
+
         },
 
         mounted () {
@@ -163,7 +183,6 @@
                         }
                     });
             }, 3010);
-
         },
 
     }
@@ -174,11 +193,20 @@
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
     #party_page_view{
-        background-color: #e7e5e4;
-        height:100vh;
+
+        .animatedBackground{
+            transition: 0.1s;
+            transition-timing-function: linear;
+            position: fixed;
+            background-color: #000;
+            height:100vh;
+            width: 100vw;
+
+        }
+
         p {
             text-align: center;
             font-size: 10em;
@@ -194,7 +222,6 @@
 
             &.elegantshadow {
                 color: #131313;
-                background-color: #e7e5e4;
                 letter-spacing: .15em;
                 text-shadow:
                         1px -1px 0 #767676,
@@ -265,7 +292,6 @@
             height: 100vh;
             width: 100vw;
             position: fixed;
-            background-color: #6FCDEE;
             z-index: 10;
         }
 
@@ -316,7 +342,22 @@
             opacity: 0;
         }
 
+        .hue-anim{
+            background-color: #fff;
+            height: 100vh;
+            width: 100vw;
+        }
+        .hue-anim.animated {
+            animation: background-animation 8s infinite;
+            -webkit-animation: background-animation 8s infinite;
+        }
+
+
+
+
+
     }
+
 
 
 </style>
