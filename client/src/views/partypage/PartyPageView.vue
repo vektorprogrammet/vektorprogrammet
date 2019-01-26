@@ -48,6 +48,7 @@
     import axios from 'axios'
     import CountDown from "../../components/CountDown";
     import Velocity from 'velocity-animate';
+    import confetti from 'dom-confetti';
 
     export default {
         name: "PartyPageView",
@@ -166,6 +167,13 @@
                 Velocity(el, {opacity: 0}, { complete: done })
             },
 
+            blastConfetti() {
+                window.setTimeout(() => {
+                    const confettiDiv = document.querySelector("newest_applicant");
+                    confetti(confettiDiv);
+                }, 2000);
+
+            }
 
 
         },
@@ -180,9 +188,10 @@
                             this.show_users(new_applicants);
                             this.inc_number_of_applicants_anim(response.data, 3);
                             this.last_number_of_applicants = response.data;
+                            this.blastConfetti();
                         }
                     });
-            }, 3010);
+            }, 3000);
         },
 
     }
