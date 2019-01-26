@@ -7,18 +7,17 @@
                 v-on:leave="overlay_leave"
                 v-bind:css="false">
             <div v-if="show" id="overlay" class="hue-anim">
-                <h1 id="overlay-title">Vektor Party</h1>
+                <h1 class="Title deepshadow">Vektor Party</h1>
             </div>
         </transition>
 
         <transition
-                v-on:leave="button_leave"
                 v-bind:css="false">
-            <button v-if="show" id="btn-intro" v-on:click="btn_intro_click">My body is ready!</button>
+            <button v-if="show" id="btn-intro" v-on:click="btn_intro_click" class="deepshadow">My body is ready!</button>
         </transition>
 
         <div class="animatedBackground color-anim" v-bind:style="bgc">
-            <div id="Title" class = "color-anim">
+            <div class = "Title color-anim">
                 <h1 class="deepshadow" v-bind:style="tc">Vektor Party</h1>
             </div>
 
@@ -27,12 +26,12 @@
             </div>
 
             <transition name="slide-fade">
-                <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant">Hello: {{ newest_applicant }} er Vektors nyeste assistent!</h2>
+                <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant" class = "insetshadow">{{ newest_applicant }} er Vektors nyeste søker!</h2>
             </transition>
 
             <button id="btn-test" v-on:click="show_newest_applicant = !show_newest_applicant">(dev) toggle show</button>
 
-            <div>
+            <div id="CountDown">
                 <CountDown></CountDown>
             </div>
         </div>
@@ -142,16 +141,16 @@
                     window.setTimeout(()=>{
                         this.bgc.backgroundColor = colors[i % colors.length];
                         this.tc.color = colors[(i+2) % colors.length];
-                        this.tc2.color = colors[3*(i+2) % colors.length]
-                        this.tc2.fontSize = (150+ (i % 25))
-
-
+                        this.tc2.color = colors[3*(i+2) % colors.length];
+                        this.tc2.fontSize = (150+ 50*Math.sin(6.28318530718/16.25*i)).toString() + "px";
                     }, 100*i);
                 }
                 window.setTimeout(()=>{
                     this.bgc.backgroundColor = "#fafdff";
-                    this.tc.color ="#000";
-                    this.tc2.color ="#000";
+                    this.tc.color ="#6fcfec";
+                    this.tc2.color ="#6fcfec";
+                    this.tc2.fontSize = "150px";
+                    this.show_newest_applicant=false;
 
                 }, 100*150);
             },
@@ -170,18 +169,6 @@
                             this.display_user_info(user);
                         }
                     });
-            },
-
-
-            button_leave: function (el, done) {
-                Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 200 });
-                Velocity(el, { rotateZ: '100deg' }, { loop: 2 });
-                Velocity(el, {
-                    rotateZ: '45deg',
-                    translateY: '30px',
-                    translateX: '30px',
-                    opacity: 0
-                }, { complete: done })
             },
 
             overlay_leave: function (el, done) {
@@ -231,17 +218,22 @@
 
     #party_page_view{
 
+        .Title {
+            color: #6fcfec;
+        }
+
+
         #applicants_number{
             font-size: 150px;
+            color: #6fcfec;
+            position: center;
+            margin-top: -80px;
         }
 
         .color-anim{
             transition: 0.1s;
             transition-timing-function: linear;
 
-        }
-        #Title {
-            color: #000;
         }
 
         .animatedBackground{
@@ -270,30 +262,30 @@
                 letter-spacing: .15em;
                 text-shadow:
                         1px -1px 0 rgba(0,0,0,0.5),
-                        -1px 2px 1px rgba(0,0,0,0.48),
-                        -2px 4px 1px rgba(0,0,0,0.46),
-                        -3px 6px 1px rgba(0,0,0,0.44),
-                        -4px 8px 1px rgba(0,0,0,0.42),
-                        -5px 10px 1px rgba(0,0,0,0.40),
-                        -6px 12px 1px rgba(0,0,0,0.38),
-                        -7px 14px 1px rgba(0,0,0,0.36),
-                        -8px 16px 1px rgba(0,0,0,0.32),
-                        -9px 18px 1px rgba(0,0,0,0.30),
-                        -10px 20px 1px rgba(0,0,0,0.28),
-                        -11px 22px 1px rgba(0,0,0,0.26),
-                        -12px 24px 1px rgba(0,0,0,0.24),
-                        -13px 26px 1px rgba(0,0,0,0.22),
-                        -14px 28px 1px rgba(0,0,0,0.20),
-                        -15px 30px 1px rgba(0,0,0,0.18),
-                        -16px 32px 1px rgba(0,0,0,0.16),
-                        -17px 34px 1px rgba(0,0,0,0.14),
-                        -18px 36px 1px rgba(0,0,0,0.12),
-                        -19px 38px 1px rgba(0,0,0,0.10),
-                        -20px 40px 1px rgba(0,0,0,0.08),
-                        -21px 42px 1px rgba(0,0,0,0.06),
-                        -22px 44px 1px rgba(0,0,0,0.04),
-                        -23px 46px 1px rgba(0,0,0,0.02),
-                        -24px 48px 1px rgba(0,0,0,0.0),
+                        -1px 2px 1px rgba(0,0,0,0.38),
+                        -2px 4px 1px rgba(0,0,0,0.36),
+                        -3px 6px 1px rgba(0,0,0,0.34),
+                        -4px 8px 1px rgba(0,0,0,0.32),
+                        -5px 10px 1px rgba(0,0,0,0.30),
+                        -6px 12px 1px rgba(0,0,0,0.28),
+                        -7px 14px 1px rgba(0,0,0,0.26),
+                        -8px 16px 1px rgba(0,0,0,0.22),
+                        -9px 18px 1px rgba(0,0,0,0.20),
+                        -10px 20px 1px rgba(0,0,0,0.18),
+                        -11px 22px 1px rgba(0,0,0,0.16),
+                        -12px 24px 1px rgba(0,0,0,0.14),
+                        -13px 26px 1px rgba(0,0,0,0.12),
+                        -14px 28px 1px rgba(0,0,0,0.10),
+                        -15px 30px 1px rgba(0,0,0,0.09),
+                        -16px 32px 1px rgba(0,0,0,0.08),
+                        -17px 34px 1px rgba(0,0,0,0.07),
+                        -18px 36px 1px rgba(0,0,0,0.06),
+                        -19px 38px 1px rgba(0,0,0,0.05),
+                        -20px 40px 1px rgba(0,0,0,0.04),
+                        -21px 42px 1px rgba(0,0,0,0.03),
+                        -22px 44px 1px rgba(0,0,0,0.02),
+                        -23px 46px 1px rgba(0,0,0,0.01),
+                        -24px 48px 1px rgba(0,0,0,0.005),
                         -25px 50px 1px rgba(0,0,0,0.0),
                         -26px 52px 1px rgba(0,0,0,0),
                         -27px 54px 1px rgba(0,0,0,0),
@@ -336,19 +328,24 @@
             width: 100vw;
             position: fixed;
             z-index: 10;
+            background-color: #022346;
         }
 
 
         #btn-intro{
+            font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
             position: fixed;
             z-index: 11;
             width: 20em;
-            height: 10em;
+            height: 7.5em;
             top: calc(50% - 3em);
             left: calc(50% - 10em);
+            border-radius: 30px;
+            background-color: #4caf50;
         }
 
         #newest_applicant {
+            font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
             text-align: center;
             position: fixed;
             z-index: 20;
@@ -356,6 +353,8 @@
             height: 10em;
             top: calc(30%);
             left: calc(50% - 10em);
+            color : #575757;
+            font-size: 32.5px;
 
         }
 
@@ -371,12 +370,13 @@
             transition: all .3s ease;
         }
         .slide-fade-leave-active {
-            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+            transition: all .3s ease;
         }
         .slide-fade-enter{
             transform: translateX(100px);
             opacity: 0;
         }
+
 
         //not working:
         .slide-fade-leave-to
@@ -385,14 +385,12 @@
             opacity: 0;
         }
 
-        .hue-anim{
-            background-color: #fff;
-            height: 100vh;
-            width: 100vw;
-        }
-        .hue-anim.animated {
-            animation: background-animation 8s infinite;
-            -webkit-animation: background-animation 8s infinite;
+
+        #CountDown{
+            bottom:50px;
+            position: fixed;
+            width: 500px;
+            left: calc(50% - 250px);
         }
 
         .center-point {
@@ -400,6 +398,8 @@
             left:50%;
             top:50%;
         }
+
+
 
 
 
