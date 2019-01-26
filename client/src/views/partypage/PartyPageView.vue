@@ -38,7 +38,7 @@
         </div>
 
 
-
+        <div class="center-point"></div>
     </div>
 
 </template>
@@ -48,7 +48,7 @@
     import axios from 'axios'
     import CountDown from "../../components/CountDown";
     import Velocity from 'velocity-animate';
-    import confetti from 'dom-confetti';
+    import { confetti } from 'dom-confetti';
 
     export default {
         name: "PartyPageView",
@@ -190,9 +190,13 @@
 
             blastConfetti() {
                 window.setTimeout(() => {
-                    const confettiDiv = document.querySelector("newest_applicant");
-                    confetti(confettiDiv);
-                }, 2000);
+                    for (let i = 0; i < 8; i++) {
+                        window.setTimeout(() => {
+                            const confettiDiv = document.querySelector(".center-point");
+                            confetti(confettiDiv, {angle: 67.5 + 45 * Math.random()});
+                        }, 1500 * i);
+                    }
+                }, 3000);
 
             }
 
@@ -391,7 +395,11 @@
             -webkit-animation: background-animation 8s infinite;
         }
 
-
+        .center-point {
+            position: fixed;
+            left:50%;
+            top:50%;
+        }
 
 
 
