@@ -153,15 +153,6 @@ function clientStaticFiles () {
     .pipe(gulp.dest('web/js/client'));
 }
 
-function clientStaticFilesProd () {
-  var r = gulp.src(path.client.src + '/dist/js/**/*.js')
-    .pipe(concat('app.js'))
-    .pipe(gulp.dest('web/js/client'));
-  return r && gulp.src(path.client.src + '/dist/css/**/*.css')
-    .pipe(concat('app.css'))
-    .pipe(gulp.dest('web/css/client'));
-}
-
 gulp.task('frontEnd', function () {
   gulp.src(path.frontEnd + '/**/*')
       .pipe(gulp.dest('web/'));
@@ -180,5 +171,5 @@ function watch () {
 gulp.task('build:prod', gulp.parallel([stylesProd, scriptsProd, imagesProd, files, icons, vendor]));
 gulp.task('build:dev', gulp.parallel([stylesDev, scriptsDev, imagesDev, files, icons, vendor]));
 gulp.task('default', gulp.series(['build:dev', watch]));
-gulp.task('build:client', gulp.series([buildClientApp, clientStaticFilesProd]));
+gulp.task('build:client', gulp.series([buildClientApp, clientStaticFiles]));
 gulp.task('build:scheduling', gulp.series([assistantSchedulingStaticFiles]));
