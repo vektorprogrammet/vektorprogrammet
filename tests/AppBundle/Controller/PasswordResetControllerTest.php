@@ -24,6 +24,7 @@ class PasswordResetControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Logg inn')->form();
         $form['_username'] = self::username;
         $form['_password'] = $password;
+        $form['_remember_me'] = false;
         $client = $this->createAnonymousClient();
         $client->submit($form);
 
