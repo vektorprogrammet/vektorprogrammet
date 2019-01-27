@@ -52,6 +52,11 @@ security:
                 require_previous_session: false
                 #Added this line to prevent the SessionUnavailable Exception
                 #See here for explanation: http://stackoverflow.com/questions/32802932/symfony2-sessionunavailable-exception
+            remember_me:
+                secret: "%secret%"
+                name: "%remember_me.name%"
+                lifetime: 31536000
+                path: /
             logout:
                 path:  /logout
                 target:  /
