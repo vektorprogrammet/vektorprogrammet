@@ -42,6 +42,7 @@ parameters:
     secret:            CreateASuperDuperSecretHere
 
     session.name: VPSESSID
+    remember_me.name: VPREMEMBER
 
     google_api_client_id: 'xxxxx'
     google_api_client_secret: 'xxxxx'
