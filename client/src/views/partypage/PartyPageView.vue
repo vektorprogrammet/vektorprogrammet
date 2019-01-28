@@ -155,14 +155,14 @@
                 }, 100*150);
             },
 
-            add_users: function(number) {
+            add_users: function(number, old_applicant_number) {
                 axios
                     .get('/api/party/newest_applications/1/')
                     .then( response =>  {
                         //API allows for maximum 5 last entries:
                         let limit = number > response.data.length ? response.data.length : number;
                         for (let i = 0; i < limit; i++) {
-                            this.new_users.push(response.data[i].user);
+                            this.new_users.push([response.data[i].user, old_applicant_number + i]);
                         }
                     });
             },
@@ -172,19 +172,19 @@
             },
 
             devReplayLast1: function(){
-                this.add_users(1);
+                this.add_users(1, 15);
             },
             devReplayLast2: function(){
-                this.add_users(2)
+                this.add_users(2, 15)
             },
             devReplayLast3: function(){
-                this.add_users(3)
+                this.add_users(3, 15)
             },
             devReplayLast4: function(){
-                this.add_users(4)
+                this.add_users(4, 15)
             },
             devReplayLast5: function(){
-                this.add_users(5)
+                this.add_users(5, 15)
             },
             blastConfetti() {
                 window.setTimeout(() => {
@@ -197,9 +197,6 @@
                 }, 3000);
 
             }
-
-
-
         },
 
         mounted () {
@@ -209,7 +206,7 @@
                     .then(response => {
                         if(this.fetching_api && this.last_number_of_applicants !== response.data){
                             let new_applicants = response.data - this.last_number_of_applicants;
-                            this.add_users(new_applicants);
+                            this.add_users(new_applicants, this.last_number_of_applicants);
                             this.inc_number_of_applicants_anim(response.data, 3);
                             this.last_number_of_applicants = response.data;
                         }
@@ -217,10 +214,15 @@
             }, 3000);
             window.setInterval(() => {
                 if (this.new_users.length > 0 && !this.show_newest_applicant){
-                    //this.currently_showing = true;
                     this.show_newest_applicant = true;
-                    let user = this.new_users.pop();
-                    this.play_10s_notification_sound(user.firstName, user.lastName);
+                    let [user, applicant_number] = this.new_users.pop();
+                    if (applicant_number % 10 === 0) {
+                        this.play_10s_notification_sound(user.firstName, user.lastName);
+                    } else {
+                        //make:
+                        //this.play_regular_notification_sound(user.firstName, user.lastName);
+                        this.play_10s_notification_sound(user.firstName, user.lastName);
+                    }
                     this.display_user_info(user);
                     this.blastConfetti();
                 }
