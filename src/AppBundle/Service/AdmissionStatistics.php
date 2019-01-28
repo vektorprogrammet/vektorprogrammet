@@ -33,6 +33,18 @@ class AdmissionStatistics
         return $this->populateApplicationDataWithApplications($appData, $applications);
     }
 
+    /**
+     * @param Application[] $applications
+     * @param Semester $semester
+     *
+     * @return array
+     */
+    public function generateCumulativeGraphDataFromApplicationsInSemester($applications, Semester $semester)
+    {
+        $appData = $this->initializeDataArray($semester);
+        return $this->populateCumulativeApplicationDataWithApplications($appData, $applications);
+    }
+
     private function initializeDataArray(Semester $semester)
     {
         $subData = [];
@@ -69,6 +81,28 @@ class AdmissionStatistics
         ksort($appData);
 
         return $appData;
+    }
+
+    /**
+     * @param array $appData
+     * @param Application[] $applications
+     *
+     * @return array
+     */
+    private function populateCumulativeApplicationDataWithApplications($appData, $applications)
+    {
+        $populatedAppData = $this->populateApplicationDataWithApplications($appData, $applications);
+        $dates = array_keys($populatedAppData);
+        foreach ($populatedAppData as $date => $count) {
+            $index = array_search($date, $dates);
+            if ($index === false || $index === 0) {
+                continue;
+            }
+            $cumulative = $populatedAppData[$dates[$index-1]];
+            $populatedAppData[$date] = $populatedAppData[$date] + $cumulative;
+        }
+
+        return $populatedAppData;
     }
 
     /**

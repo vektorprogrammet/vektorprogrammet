@@ -858,3 +858,10 @@ button.secretly-not-a-button {
   width: 20px;
   min-width: 100%;
 }
+
+.not-clickable {
+  cursor: default!important;
+  &:focus{
+    box-shadow: none;
+  }
+}
