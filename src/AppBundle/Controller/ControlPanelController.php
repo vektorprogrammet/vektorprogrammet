@@ -8,11 +8,15 @@ class ControlPanelController extends BaseController
 {
     public function showAction()
     {
-        $departments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
+
+        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
 
         // Return the view to be rendered
         return $this->render('control_panel/index.html.twig', array(
-            'departments' => $departments,
+            'admissionPeriod' => $admissionPeriod
         ));
     }
 

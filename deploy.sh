@@ -10,6 +10,7 @@ date >>$log
 git checkout . >>$log 2>&1
 git pull origin master >>$log 2>&1
 SYMFONY_ENV=prod php ./composer.phar install --no-dev --optimize-autoloader >>$log 2>&1
+export NODE_ENV=prod
 npm install >>$log 2>&1
 ./node_modules/.bin/gulp build:prod >>$log 2>&1
 npm run setup:client >>$log 2>&1
