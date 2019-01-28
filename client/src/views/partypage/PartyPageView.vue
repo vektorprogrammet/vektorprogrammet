@@ -6,17 +6,18 @@
         <transition
                 v-on:leave="overlay_leave"
                 v-bind:css="false">
-            <div v-if="show" id="overlay" class="hue-anim">
+            <div v-if="show" id="overlay" v-bind:style="bgcIntro">
                 <h1 class="Title deepshadow">Vektor Party</h1>
             </div>
         </transition>
 
         <transition
                 v-bind:css="false">
-            <button v-if="show" id="btn-intro" v-on:click="btn_intro_click" class="deepshadow">My body is ready!</button>
+            <button v-if="show" id="btn-intro" v-on:click="btn_intro_click" class="bdeepshadow insetshadow">My body is ready!</button>
         </transition>
 
         <div class="animatedBackground color-anim" v-bind:style="bgc">
+
             <div class = "Title color-anim">
                 <h1 class="deepshadow" v-bind:style="tc">Vektor Party</h1>
             </div>
@@ -26,7 +27,7 @@
             </div>
 
             <transition name="slide-fade">
-                <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant" class = "insetshadow">{{ newest_applicant }} er Vektors nyeste søker!</h2>
+                <h1 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant" class="deepshadow">{{ newest_applicant }} er Vektors nyeste søker!</h1>
             </transition>
 
             <div id="CountDown">
@@ -70,6 +71,10 @@
                 newest_applicant: 'Viktor Johansen',
                 show_newest_applicant: false,
 
+                bgcIntro: {
+                    backgroundColor: '',
+                },
+
                 bgc: {
                     backgroundColor: '',
                 },
@@ -92,7 +97,49 @@
             },
         },
 
+        watch: {
+            fetching_api: function () {
+                this.fetch_applicants();
+                this.pop_applicants();
+
+            }
+        },
+
         methods:{
+            fetch_applicants: function(){
+                window.setInterval(()=>{
+                    axios
+                        .get('/api/party/application_count/1/')
+                        .then(response => {
+                            if(this.last_number_of_applicants !== response.data){
+                                let new_applicants = response.data - this.last_number_of_applicants;
+                                this.add_users(new_applicants, this.last_number_of_applicants);
+                                this.inc_number_of_applicants_anim(response.data, 3);
+                                this.last_number_of_applicants = response.data;
+                            }
+                        });
+                }, 3000);
+            },
+
+            pop_applicants: function(){
+                window.setInterval(() => {
+                    if (this.new_users.length > 0 && !this.show_newest_applicant){
+                        this.show_newest_applicant = true;
+                        let [user, applicant_number] = this.new_users.pop();
+                        if (applicant_number % 10 === 0) {
+                            this.play_10s_notification_sound(user.firstName, user.lastName);
+                        } else {
+                            //make:
+                            //this.play_regular_notification_sound(user.firstName, user.lastName);
+                            this.play_10s_notification_sound(user.firstName, user.lastName);
+                        }
+                        this.display_user_info(user);
+                    }
+                }, 1000);
+            },
+
+
+
             btn_intro_click: function(){
                 //let overlay = document.getElementById('overlay');
                 //overlay.style.display = "none";
@@ -106,6 +153,15 @@
                     });
             },
 
+            intro_background_animate: function(){
+                window.setInterval(() => {
+                    this.bgcIntro.backgroundColor = "#022346";
+                    window.setTimeout(()=>{
+                        this.bgcIntro.backgroundColor = "#025576";
+                    }, 5000);
+                }, 10000);
+            },
+
             inc_number_of_applicants_anim: function (initValue, animLength) {
                 TweenLite.fromTo(this.$data, animLength, {sliding_number_of_applicants: this.sliding_number_of_applicants},{ sliding_number_of_applicants: initValue });
                 this.sliding_number_of_applicants = initValue;
@@ -117,10 +173,17 @@
                 let sound2 = new Audio('http://159.65.58.116/'+ firstname + ' ' +lastname);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
 
+                sound.volume = 0.6;
+                sound2.volume = 1.0;
+                sound3.volume = 0.6;
+
+                let self = this;
 
                 sound2.addEventListener('loadeddata', function(){
                     if(sound2.readyState === 4){
                         sound.play();
+                        self.colorParty();
+
                     }
                 });
 
@@ -128,16 +191,18 @@
                     sound2.play();
                 });
 
-                let self = this
                 sound2.addEventListener('ended', function(){
                     sound3.play();
-                    self.blastConfetti()
+                    self.blastConfetti();
                 });
 
             },
 
             display_user_info: function(user){
                 this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
+            },
+
+            colorParty: function(){
                 let colors = ["#ff6d4b","#ffc527","#a7ff42","#2cfff3","#f953ff"];
                 for(let i=0; i<150; i++){
                     window.setTimeout(()=>{
@@ -202,32 +267,9 @@
         },
 
         mounted () {
-            window.setInterval(()=>{
-                axios
-                    .get('/api/party/application_count/1/')
-                    .then(response => {
-                        if(this.fetching_api && this.last_number_of_applicants !== response.data){
-                            let new_applicants = response.data - this.last_number_of_applicants;
-                            this.add_users(new_applicants, this.last_number_of_applicants);
-                            this.inc_number_of_applicants_anim(response.data, 3);
-                            this.last_number_of_applicants = response.data;
-                        }
-                    });
-            }, 3000);
-            window.setInterval(() => {
-                if (this.new_users.length > 0 && !this.show_newest_applicant){
-                    this.show_newest_applicant = true;
-                    let [user, applicant_number] = this.new_users.pop();
-                    if (applicant_number % 10 === 0) {
-                        this.play_10s_notification_sound(user.firstName, user.lastName);
-                    } else {
-                        //make:
-                        //this.play_regular_notification_sound(user.firstName, user.lastName);
-                        this.play_10s_notification_sound(user.firstName, user.lastName);
-                    }
-                    this.display_user_info(user);
-                }
-            }, 1000)
+            if(!this.fetching_api){
+                this.intro_background_animate();
+            }
         },
 
     }
@@ -241,6 +283,12 @@
 
         .Title {
             color: #6fcfec;
+        }
+
+        #vektor-logo{
+            width: 200px;
+            text-align: center;
+
         }
 
 
@@ -279,43 +327,47 @@
             text-transform: uppercase;
             text-rendering: optimizeLegibility;
 
-            &.elegantshadow {
-                color: #fff;
-                letter-spacing: .15em;
-                text-shadow:
-                        1px -1px 0 rgba(0,0,0,0.5),
-                        -1px 2px 1px rgba(0,0,0,0.38),
-                        -2px 4px 1px rgba(0,0,0,0.36),
-                        -3px 6px 1px rgba(0,0,0,0.34),
-                        -4px 8px 1px rgba(0,0,0,0.32),
-                        -5px 10px 1px rgba(0,0,0,0.30),
-                        -6px 12px 1px rgba(0,0,0,0.28),
-                        -7px 14px 1px rgba(0,0,0,0.26),
-                        -8px 16px 1px rgba(0,0,0,0.22),
-                        -9px 18px 1px rgba(0,0,0,0.20),
-                        -10px 20px 1px rgba(0,0,0,0.18),
-                        -11px 22px 1px rgba(0,0,0,0.16),
-                        -12px 24px 1px rgba(0,0,0,0.14),
-                        -13px 26px 1px rgba(0,0,0,0.12),
-                        -14px 28px 1px rgba(0,0,0,0.10),
-                        -15px 30px 1px rgba(0,0,0,0.09),
-                        -16px 32px 1px rgba(0,0,0,0.08),
-                        -17px 34px 1px rgba(0,0,0,0.07),
-                        -18px 36px 1px rgba(0,0,0,0.06),
-                        -19px 38px 1px rgba(0,0,0,0.05),
-                        -20px 40px 1px rgba(0,0,0,0.04),
-                        -21px 42px 1px rgba(0,0,0,0.03),
-                        -22px 44px 1px rgba(0,0,0,0.02),
-                        -23px 46px 1px rgba(0,0,0,0.01),
-                        -24px 48px 1px rgba(0,0,0,0.005),
-                        -25px 50px 1px rgba(0,0,0,0.0),
-                        -26px 52px 1px rgba(0,0,0,0),
-                        -27px 54px 1px rgba(0,0,0,0),
-                        -28px 56px 1px rgba(0,0,0,0),
-            }
-            &.deepshadow {
-                letter-spacing: .1em;
-                text-shadow:
+        }
+
+
+
+        #overlay{
+            height: 100vh;
+            width: 100vw;
+            position: fixed;
+            z-index: 10;
+            background-color: #022346;
+            transition: 10s;
+            transition-timing-function: linear;
+            transition-property: background-color;
+        }
+
+
+
+        #btn-intro{
+            font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
+            position: fixed;
+            font-weight: bold;
+            z-index: 11;
+            width: 20em;
+            height: 7.5em;
+            top: calc(50% - 3em);
+            left: calc(50% - 10em);
+            border-radius: 30px;
+            background-color: #4caf50;
+            color : #deebdf;
+            outline:none;
+            transition: 0.5s;
+        }
+
+        #btn-intro:active{
+            transition: 0.1s;
+            background-color: #4caf50;
+            outline: none;
+            margin-top: 12px;
+
+            &.bdeepshadow {
+                box-shadow:
                         0 -1px 0 #fff,
                         0 1px 0 #2e2e2e,
                         0 2px 0 #2c2c2c,
@@ -326,44 +378,7 @@
                         0 7px 0 #222,
                         0 8px 0 #202020,
                         0 9px 0 #1e1e1e,
-                        0 10px 0 #1c1c1c,
-                        0 11px 0 #1a1a1a,
-                        0 12px 0 #181818,
-                        0 13px 0 #161616,
-                        0 14px 0 #141414,
-                        0 15px 0 #121212,
-                        0 22px 30px rgba(0, 0, 0, 0.9);
             }
-            &.insetshadow {
-                color: #202020;
-               // background-color: #2d2d2d;
-                letter-spacing: .1em;
-                text-shadow:
-                        -1px -1px 1px #111,
-                        2px 2px 1px #363636;
-            }
-
-        }
-
-        #overlay{
-            height: 100vh;
-            width: 100vw;
-            position: fixed;
-            z-index: 10;
-            background-color: #022346;
-        }
-
-
-        #btn-intro{
-            font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
-            position: fixed;
-            z-index: 11;
-            width: 20em;
-            height: 7.5em;
-            top: calc(50% - 3em);
-            left: calc(50% - 10em);
-            border-radius: 30px;
-            background-color: #4caf50;
         }
 
         #newest_applicant {
@@ -373,10 +388,11 @@
             z-index: 20;
             width: 20em;
             height: 10em;
-            top: calc(30%);
+            top: calc(15%);
             left: calc(50% - 10em);
-            color : #575757;
             font-size: 32.5px;
+            color: #fff;
+
 
         }
 
@@ -419,6 +435,93 @@
             position: fixed;
             left:50%;
             top:50%;
+        }
+
+
+        .elegantshadow {
+            color: #fff;
+            letter-spacing: .15em;
+            text-shadow:
+                    1px -1px 0 rgba(0,0,0,0.5),
+                    -1px 2px 1px rgba(0,0,0,0.38),
+                    -2px 4px 1px rgba(0,0,0,0.36),
+                    -3px 6px 1px rgba(0,0,0,0.34),
+                    -4px 8px 1px rgba(0,0,0,0.32),
+                    -5px 10px 1px rgba(0,0,0,0.30),
+                    -6px 12px 1px rgba(0,0,0,0.28),
+                    -7px 14px 1px rgba(0,0,0,0.26),
+                    -8px 16px 1px rgba(0,0,0,0.22),
+                    -9px 18px 1px rgba(0,0,0,0.20),
+                    -10px 20px 1px rgba(0,0,0,0.18),
+                    -11px 22px 1px rgba(0,0,0,0.16),
+                    -12px 24px 1px rgba(0,0,0,0.14),
+                    -13px 26px 1px rgba(0,0,0,0.12),
+                    -14px 28px 1px rgba(0,0,0,0.10),
+                    -15px 30px 1px rgba(0,0,0,0.09),
+                    -16px 32px 1px rgba(0,0,0,0.08),
+                    -17px 34px 1px rgba(0,0,0,0.07),
+                    -18px 36px 1px rgba(0,0,0,0.06),
+                    -19px 38px 1px rgba(0,0,0,0.05),
+                    -20px 40px 1px rgba(0,0,0,0.04),
+                    -21px 42px 1px rgba(0,0,0,0.03),
+                    -22px 44px 1px rgba(0,0,0,0.02),
+                    -23px 46px 1px rgba(0,0,0,0.01),
+                    -24px 48px 1px rgba(0,0,0,0.005),
+                    -25px 50px 1px rgba(0,0,0,0.0),
+                    -26px 52px 1px rgba(0,0,0,0),
+                    -27px 54px 1px rgba(0,0,0,0),
+                    -28px 56px 1px rgba(0,0,0,0),
+        }
+        .deepshadow {
+            letter-spacing: .1em;
+            text-shadow:
+                    0 -1px 0 #fff,
+                    0 1px 0 #2e2e2e,
+                    0 2px 0 #2c2c2c,
+                    0 3px 0 #2a2a2a,
+                    0 4px 0 #282828,
+                    0 5px 0 #262626,
+                    0 6px 0 #242424,
+                    0 7px 0 #222,
+                    0 8px 0 #202020,
+                    0 9px 0 #1e1e1e,
+                    0 10px 0 #1c1c1c,
+                    0 11px 0 #1a1a1a,
+                    0 12px 0 #181818,
+                    0 13px 0 #161616,
+                    0 14px 0 #141414,
+                    0 15px 0 #121212,
+                    0 22px 30px rgba(0, 0, 0, 0.9);
+        }
+
+        .bdeepshadow {
+            letter-spacing: .1em;
+            box-shadow:
+                    0 -1px 0 #fff,
+                    0 1px 0 #2e2e2e,
+                    0 2px 0 #2c2c2c,
+                    0 3px 0 #2a2a2a,
+                    0 4px 0 #282828,
+                    0 5px 0 #262626,
+                    0 6px 0 #242424,
+                    0 7px 0 #222,
+                    0 8px 0 #202020,
+                    0 9px 0 #1e1e1e,
+                    0 10px 0 #1c1c1c,
+                    0 11px 0 #1a1a1a,
+                    0 12px 0 #181818,
+                    0 13px 0 #161616,
+                    0 14px 0 #141414,
+                    0 15px 0 #121212,
+                    0 22px 30px rgba(0, 0, 0, 0.9);
+        }
+        .insetshadow {
+            color: #202020;
+            // background-color: #2d2d2d;
+            letter-spacing: .1em;
+            text-shadow:
+                    -1px -1px 1px rgba(0, 0, 0, 0.3),
+                    2px 2px 1px rgba(0, 0, 0, 0.1);
         }
 
 
