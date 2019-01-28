@@ -24,10 +24,21 @@
         </div>
 
         <transition name="slide-fade">
-            <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant">Hello: {{ newest_applicant }} er Vektors nyeste assistent!</h2>
+            <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant">{{ newest_applicant }} er Vektors nyeste assistent!</h2>
         </transition>
 
-        <button id="btn-test" v-on:click="show_newest_applicant = !show_newest_applicant">(dev) toggle show</button>
+        <div id="Dev-tools">
+            <h5>Dev:</h5>
+            <button id="btn-test" v-on:click="show_newest_applicant = !show_newest_applicant">Toggle show</button>
+            <button id="btn-test1" v-on:click="devTestUser">Run test user</button>
+            <button id="btn-last-1" v-on:click="devReplayLast1">Rerun 1</button>
+            <button id="btn-last-2" v-on:click="devReplayLast2">Rerun 2</button>
+            <button id="btn-last-3" v-on:click="devReplayLast3">Rerun 3</button>
+            <button id="btn-last-4" v-on:click="devReplayLast4">Rerun 4</button>
+            <button id="btn-last-5" v-on:click="devReplayLast5">Rerun 5</button>
+        </div>
+
+        <br><br>
 
         <div>
             <CountDown></CountDown>
@@ -55,6 +66,15 @@
                 new_users: [],
                 newest_applicant: 'Viktor Johansen',
                 show_newest_applicant: false,
+                test_users: [
+                    {firstName: 'Sigurd', lastName: 'Totland'},
+                    {firstName: 'John', lastName: 'Cena'},
+                    {firstName: 'Navn', lastName: 'Navnesen'},
+                    {firstName: 'Sara', lastName: 'Assistent'},
+                    {firstName: 'Tore', lastName: 'Fjell'},
+                    {firstName: 'Karoline', lastName: 'Solgård'},
+                    {firstName: 'Magnus', lastName: 'Jespersen'},
+                ]
             }
         },
 
@@ -112,7 +132,8 @@
             display_user_info: function(user){
                 this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
                 this.show_newest_applicant = true;
-                //document.getElementById('user_info').style.visibility = 'hidden';
+                //Dont know where to put this:
+                //this.show_newest_applicant = false;
             },
 
             show_users: function(number) {
@@ -123,9 +144,11 @@
                         for (let i = 0; i < limit; i++) {
                             this.new_users.push(response.data[i].user);
                         }
+                        console.log(number);
+                        console.log(this.new_users);
                         for (let i = 0; i < this.new_users.length; i++) {
                             let user = this.new_users.pop();
-                            this.play_notification_sound(user['firstName'], user['lastName']);
+                            this.play_notification_sound(user.firstName, user.lastName);
                             this.display_user_info(user);
                         }
                     });
@@ -145,6 +168,30 @@
 
             overlay_leave: function (el, done) {
                 Velocity(el, {opacity: 0}, { complete: done })
+            },
+
+            devTestUser:  function() {
+                //let user = randomElement(this.test_users);
+                let user = this.test_users[Math.floor(Math.random()*this.test_users.length)];
+                this.play_notification_sound(user.firstName, user.lastName);
+                this.display_user_info(user);
+
+            },
+
+            devReplayLast1: function(){
+                this.show_users(1)
+            },
+            devReplayLast2: function(){
+                this.show_users(2)
+            },
+            devReplayLast3: function(){
+                this.show_users(3)
+            },
+            devReplayLast4: function(){
+                this.show_users(4)
+            },
+            devReplayLast5: function(){
+                this.show_users(5)
             },
 
 
