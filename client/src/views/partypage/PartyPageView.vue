@@ -122,7 +122,7 @@
 
             },
 
-            play_notification_sound: function(firstname, lastname) {
+            play_10s_notification_sound: function(firstname, lastname) {
                 let sound = new Audio(require('../../assets/johncenaintro.mp3'));
                 let sound2 = new Audio('http://159.65.58.116/'+ firstname + ' ' +lastname);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
@@ -140,10 +140,6 @@
 
                 sound2.addEventListener('ended', function(){
                     sound3.play();
-                });
-
-                sound3.addEventListener('ended', function(){
-                    this.show_newest_applicant = false;
                 });
 
             },
@@ -174,14 +170,23 @@
                 axios
                     .get('/api/party/newest_applications/1/')
                     .then( response =>  {
+
+                        //API allows for maximum 5 last entries:
                         let limit = number > response.data.length ? response.data.length : number;
                         for (let i = 0; i < limit; i++) {
                             this.new_users.push(response.data[i].user);
                         }
-                        for (let i = 0; i < this.new_users.length; i++) {
-                            let user = this.new_users.pop();
-                            this.play_notification_sound(user.firstName, user.lastName);
-                            this.display_user_info(user);
+                        // this should be a different component alltogether, running
+                        // side by side with mount(), constantly showing new users from new_users
+                        while (this.new_users.length !== 0) {
+                                //setTimeout( function(){
+                                    let user = this.new_users.pop();
+                                    //if user.applicantNumber % 10 == 0:
+                                    this.play_10s_notification_sound(user.firstName, user.lastName);
+                                    //else:
+                                    // this.play_regular_notification_sound(user.firstName, user.lastName);
+                                    this.display_user_info(user);
+                                //}, 100*150);
                         }
                     });
             },
@@ -191,15 +196,15 @@
             },
 
             devTestUser:  function() {
-                //let user = randomElement(this.test_users);
                 let user = this.test_users[Math.floor(Math.random()*this.test_users.length)];
-                this.play_notification_sound(user.firstName, user.lastName);
+                this.play_10s_notification_sound(user.firstName, user.lastName);
                 this.display_user_info(user);
+                this.blastConfetti();
 
             },
 
             devReplayLast1: function(){
-                this.show_users(1)
+                this.show_users(1);
             },
             devReplayLast2: function(){
                 this.show_users(2)
@@ -239,16 +244,12 @@
                             this.show_users(new_applicants);
                             this.inc_number_of_applicants_anim(response.data, 3);
                             this.last_number_of_applicants = response.data;
-                            this.blastConfetti();
                         }
                     });
             }, 3000);
         },
 
     }
-
-
-
 
 
 </script>
@@ -437,9 +438,6 @@
             left:50%;
             top:50%;
         }
-
-
-
 
 
     }
