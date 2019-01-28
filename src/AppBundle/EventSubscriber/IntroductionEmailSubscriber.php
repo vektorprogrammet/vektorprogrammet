@@ -54,7 +54,8 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
                 'team' => $team->getName(),
                 'position' => $position,
                 'companyEmail' => $user->getCompanyEmail()
-            )));
+            )))
+            ->setContentType('text/html');
         $this->mailer->send($message);
     }
 
@@ -73,7 +74,8 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
             ->setTo($user->getCompanyEmail())
             ->setBody($this->twig->render(':team_admin:welcome_google_mail.html.twig', array(
                 'name' => $user->getFirstName(),
-            )));
+            )))
+            ->setContentType('text/html');
         $this->mailer->send($message);
     }
 }

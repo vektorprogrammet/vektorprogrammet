@@ -1,0 +1,35 @@
+{% if has_access_to('receipts_show') %}
+    <div class="col-12 col-md-6 col-xxxl-4">
+        <div class="card">
+            <div class="card-header">
+                <i class="fa fa-usd"></i> Nye utlegg
+            </div>
+            <div class="card-body table-responsive">
+                <table class="table table-striped mb-0">
+                    <tr>
+                        <th>Navn</th>
+                        <th class="text-right">Beløp</th>
+                    </tr>
+                    {% for user in users_with_receipts if user.hasPendingReceipts %}
+                        <tr>
+                            <td class="d-flex">
+                                <div class="number-of-pending-receipts-indicator has-tip" data-tooltip
+                                     aria-haspopup="true"
+                                     title="{{ user.numberOfPendingReceipts }} {{ user.numberOfPendingReceipts == 1 ? 'ubehandlet' : 'ubehandlede' }} utlegg">
+                                    {{ user.numberOfPendingReceipts }}</div>
+                                <a class="ml-2" href="{{ path('receipts_show_individual', {'user': user.id}) }}"> {{ user.fullName }} </a>
+                            </td>
+                            <td class="text-right"> {{ user.totalPendingReceiptSum|number_format(2, ',', ' ') }} kr</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <td><strong>Totalt</strong></td>
+                        <td class="text-right">
+                            <strong>{{ statistics.totalAmount|number_format(2, ',', ' ') }} kr</strong>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}

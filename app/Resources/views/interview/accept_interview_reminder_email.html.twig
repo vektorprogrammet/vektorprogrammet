@@ -1,5 +1,5 @@
-Hei!
-Dette er en daglig påminnelse om at vi har satt opp intervju for deg.
+Hei {{ interview.user.firstName }}!
+Dette er en påminnelse om at vi har satt opp intervju for deg.
 
 <br/>
 Tidspunkt: {{ interview.scheduled|date("d.m.y - G:i") }}.
@@ -10,10 +10,12 @@ Rom: {{ interview.room }}{% if interview.mapLink %} (<a href="{{ interview.mapLi
 
 <p>
     Vi vil gjerne vite om tidspunktet passer for deg!
-    Gå inn på følgende link for å akseptere eller kansellere intervjuet:  <p/>
-<a href="https://vektorprogrammet.no{{ path('interview_response', { 'responseCode' : interview.responseCode}) }}">
-    https://vektorprogrammet.no{{ path('interview_response', {'responseCode' : interview.responseCode})}}
-</a>
+    Gå inn på følgende link for å akseptere eller kansellere intervjuet:
+    <br>
+    <a href="https://vektorprogrammet.no{{ path('interview_response', { 'responseCode' : interview.responseCode}) }}">
+        https://vektorprogrammet.no{{ path('interview_response', {'responseCode' : interview.responseCode})}}
+    </a>
+</p>
 <br/>
 Mvh. Vektorprogrammet
 <br/>
