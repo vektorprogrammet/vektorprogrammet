@@ -191,7 +191,10 @@
                     for (let i = 0; i < 8; i++) {
                         window.setTimeout(() => {
                             const confettiDiv = document.querySelector(".center-point");
-                            confetti(confettiDiv, {angle: 67.5 + 45 * Math.random()});
+                            confetti(confettiDiv, {
+                              angle: 45 + 90 * Math.random(),
+                              startVelocity: 70,
+                            });
                         }, 1500 * i);
                     }
                 }, 3000);
