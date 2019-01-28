@@ -30,6 +30,10 @@
                 <h1 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant" class="deepshadow">{{ newest_applicant }} er Vektors nyeste søker!</h1>
             </transition>
 
+            <transition name="tor" v-on:enter="tor_in" v-on:leave="tor_out">
+                <img  v-show="show_tor" src="../../assets/tor.png" alt="Tor" id="tor">
+            </transition>
+
             <div id="CountDown">
                 <CountDown></CountDown>
             </div>
@@ -76,7 +80,7 @@
                 new_users: [],
                 newest_applicant: 'Viktor Johansen',
                 show_newest_applicant: false,
-
+                show_tor: false,
                 bgcIntro: {
                     backgroundColor: '',
                 },
@@ -138,14 +142,11 @@
                     if (this.new_users.length > 0 && !this.show_newest_applicant){
                         this.show_newest_applicant = true;
                         let [user, applicant_number] = this.new_users.pop();
-                        if (applicant_number % 10 === 0) {
-                            this.play_10s_notification_sound(user.firstName, user.lastName);
-                        } else {
-                            //make:
-                            //this.play_regular_notification_sound(user.firstName, user.lastName);
-                            this.play_10s_notification_sound(user.firstName, user.lastName);
+                        if (applicant_number % 5 === 0) {
+                            this.show_tor = true;
                         }
-                        this.display_user_info(user);
+                        this.play_10s_notification_sound(user.firstName, user.lastName);
+                        this.display_user_info(user, applicant_number);
                     }
                 }, 1000);
             },
@@ -224,8 +225,9 @@
 
             },
 
-            display_user_info: function(user){
+            display_user_info: function(user, applicant_number){
                 this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
+                //this.sliding_number_of_applicants = applicant_number;
             },
 
             colorParty: function(){
@@ -247,6 +249,7 @@
                     this.$refs.mainlogo.vectorlogo1.fill = "#A9DDF1";
                     this.$refs.mainlogo.vectorlogo2.fill = "#6FCCEA";
                     this.show_newest_applicant=false;
+                    this.show_tor=false;
                     this.main_background_animate();
                     this.bgMain = "#bdd5d6";
 
@@ -262,7 +265,7 @@
                         //API allows for maximum 5 last entries:
                         let limit = number > response.data.length ? response.data.length : number;
                         for (let i = 0; i < limit; i++) {
-                            this.new_users.push([response.data[i].user, old_applicant_number + i]);
+                            this.new_users.push([response.data[i].user, old_applicant_number + limit - i]);
                         }
                     });
             },
@@ -271,20 +274,34 @@
                 Velocity(el, {opacity: 0}, { complete: done })
             },
 
+            tor_in: function(el, done) {
+                Velocity(el, {
+                    translateX: 1000,
+                    rotateZ: "+=360",
+                    translateY: -200,
+                },{duration: 3000, easing: "linear", loop: true, complete: done})
+            },
+            tor_out: function(el, done) {
+                Velocity(el, {
+                    top: 0,
+                    left: 0,
+                },{duration: 0, complete: done})
+            },
+
             devReplayLast1: function(){
-                this.add_users(1, 15);
+                this.add_users(1, this.last_number_of_applicants);
             },
             devReplayLast2: function(){
-                this.add_users(2, 15)
+                this.add_users(2, this.last_number_of_applicants)
             },
             devReplayLast3: function(){
-                this.add_users(3, 15)
+                this.add_users(3, this.last_number_of_applicants)
             },
             devReplayLast4: function(){
-                this.add_users(4, 15)
+                this.add_users(4, this.last_number_of_applicants)
             },
             devReplayLast5: function(){
-                this.add_users(5, 15)
+                this.add_users(5, this.last_number_of_applicants)
             },
             blastConfetti: function() {
                 for (let i = 0; i < 8; i++) {
@@ -588,8 +605,15 @@
         }
 
         #Dev-tools{
-            background-color: #ffffff;
+            bottom:10px;
             position: fixed;
+            width: 500px;
+            left: calc(50% - 170px);
+
+        }
+
+        #tor{
+            z-index: -1000;
         }
 
 
