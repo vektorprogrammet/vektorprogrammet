@@ -16,14 +16,14 @@
             <button v-if="show" id="btn-intro" v-on:click="btn_intro_click" class="bdeepshadow insetshadow">My body is ready!</button>
         </transition>
 
-        <div class="animatedBackground color-anim" v-bind:style="bgc">
-            <div class = "title-div color-anim">
+        <div>
+            <div class = "title-div color-party">
                 <Vektorlogo ref="mainlogo"></Vektorlogo>
                 <h1 Title class="Title deepshadow" v-bind:style="tc">Party</h1>
             </div>
 
             <div id="applicants_div" >
-                <h1 class="elegantshadow color-anim" id="applicants_number" v-bind:style="tc2"> {{ animatedNumber }}</h1>
+                <h1 class="elegantshadow color-party" id="applicants_number" v-bind:style="tc2"> {{ animatedNumber }}</h1>
             </div>
 
             <transition name="slide-fade">
@@ -41,6 +41,11 @@
                 <button id="btn-last-4" v-on:click="devReplayLast4">Add 4</button>
                 <button id="btn-last-5" v-on:click="devReplayLast5">Add 5</button>
             </div>
+
+
+            <div id="mainbg1" v-bind:style="bgMain" v-if="!show_newest_applicant"></div>
+            <div id="mainbg2" class="animatedBackground color-party" v-bind:style="bgc" v-if="show_newest_applicant"></div>
+
 
         </div>
 
@@ -80,6 +85,10 @@
                     backgroundColor: '',
                 },
 
+                bgMain: {
+                    backgroundColor: '',
+                },
+
                 tc: {
                     color: '',
                 },
@@ -89,13 +98,6 @@
                     fontSize: '',
                 },
 
-                vectorlogo1: {
-                    fill: '',
-                },
-
-                vectorlogo2: {
-                    fill: '',
-                }
             }
 
         },
@@ -110,8 +112,9 @@
             fetching_api: function () {
                 this.fetch_applicants();
                 this.pop_applicants();
+                this.main_background_animate();
+            },
 
-            }
         },
 
         methods:{
@@ -171,6 +174,20 @@
                 }, 10000);
             },
 
+            main_background_animate: function(){
+                let self = this;
+                if(!this.show_newest_applicant && this.fetching_api){
+                    self.bgMain.backgroundColor = "#bdd5d6";
+                    window.setTimeout(()=>{
+                        self.bgMain.backgroundColor = "#7492a9";
+                    }, 10000);
+                    window.setTimeout(()=>{
+                        this.main_background_animate();
+                    }, 20000);
+                }
+            },
+
+
             inc_number_of_applicants_anim: function (initValue, animLength) {
                 TweenLite.fromTo(this.$data, animLength, {sliding_number_of_applicants: this.sliding_number_of_applicants},{ sliding_number_of_applicants: initValue });
                 this.sliding_number_of_applicants = initValue;
@@ -212,28 +229,28 @@
             },
 
             colorParty: function(){
-                let colors = ["#ff6d4b","#ffc527","#a7ff42","#2cfff3","#f953ff"];
+                let colors = ["#f953ff", "#ff6d4b","#ffc527","#a7ff42", "#2cfff3"];
                 for(let i=0; i<150; i++){
                     window.setTimeout(()=>{
                         this.bgc.backgroundColor = colors[i % colors.length];
                         this.tc.color = colors[(i+2) % colors.length];
                         this.tc2.color = colors[3*(i+2) % colors.length];
-                        this.$refs.mainlogo.vectorlogo1.fill = colors[(i+2) % colors.length];
+                        this.$refs.mainlogo.vectorlogo1.fill = colors[(i+3) % colors.length];
                         this.$refs.mainlogo.vectorlogo2.fill = colors[3*(i) % colors.length];
-
-
                         this.tc2.fontSize = (150+ 50*Math.sin(6.28318530718/16.25*i)).toString() + "px";
                     }, 100*i);
                 }
                 window.setTimeout(()=>{
-                    this.bgc.backgroundColor = "#fafdff";
                     this.tc.color ="#6fcfec";
                     this.tc2.color ="#6fcfec";
                     this.tc2.fontSize = "150px";
                     this.$refs.mainlogo.vectorlogo1.fill = "#A9DDF1";
                     this.$refs.mainlogo.vectorlogo2.fill = "#6FCCEA";
-
                     this.show_newest_applicant=false;
+                    this.main_background_animate();
+                    this.bgMain = "#bdd5d6";
+
+
 
                 }, 100*150);
             },
@@ -304,7 +321,7 @@
         .Title {
             position: fixed;
             color: #6fcfec;
-            margin-top: 20px;
+            margin-top: 12px;
             margin-left: 270px;
         }
 
@@ -335,18 +352,18 @@
             top:calc(50% - 170px);
         }
 
-        .color-anim{
+        .color-party{
             transition: 0.1s;
             transition-timing-function: linear;
+            transition-property: background-color, font-size;
 
         }
 
         .animatedBackground{
             position: fixed;
-            background-color: #fafdff;
-
             height:100vh;
             width: 100vw;
+            z-index: -1;
         }
 
         p {
@@ -375,6 +392,18 @@
             transition: 10s;
             transition-timing-function: linear;
             transition-property: background-color;
+        }
+
+
+        #mainbg1{
+            position: fixed;
+            height:100vh;
+            width: 100vw;
+            background-color: #bdd5d6;
+            transition: 20s;
+            transition-property: background-color;
+            transition-timing-function: linear;
+            z-index: -2;
         }
 
 
@@ -474,7 +503,6 @@
 
 
         .elegantshadow {
-            color: #fff;
             letter-spacing: .15em;
             text-shadow:
                     1px -1px 0 rgba(0,0,0,0.5),
@@ -557,6 +585,11 @@
             text-shadow:
                     -1px -1px 1px rgba(0, 0, 0, 0.3),
                     2px 2px 1px rgba(0, 0, 0, 0.1);
+        }
+
+        #Dev-tools{
+            background-color: #ffffff;
+            position: fixed;
         }
 
 
