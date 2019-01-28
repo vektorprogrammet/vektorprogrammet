@@ -1,48 +1,51 @@
 <template>
     <div id="party_page_view">
 
+
+
         <transition
                 v-on:leave="overlay_leave"
                 v-bind:css="false">
-            <div v-if="show" id="overlay">
-                <h1 id="overlay-title">Vektor Party</h1>
+            <div v-if="show" id="overlay" class="hue-anim">
+                <h1 class="Title deepshadow">Vektor Party</h1>
             </div>
         </transition>
 
         <transition
-                v-on:leave="button_leave"
                 v-bind:css="false">
-            <button v-if="show" id="btn-intro" v-on:click="btn_intro_click">My body is ready!</button>
+            <button v-if="show" id="btn-intro" v-on:click="btn_intro_click" class="deepshadow">My body is ready!</button>
         </transition>
 
-        <div id="Title">
-            <h1 class="deepshadow">Vektor Party</h1>
+        <div class="animatedBackground color-anim" v-bind:style="bgc">
+            <div class = "Title color-anim">
+                <h1 class="deepshadow" v-bind:style="tc">Vektor Party</h1>
+            </div>
+
+            <div id="applicants_div" >
+                <h1 class="elegantshadow color-anim" id="applicants_number" v-bind:style="tc2"> {{ animatedNumber }}</h1>
+            </div>
+
+            <transition name="slide-fade">
+                <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant" class = "insetshadow">{{ newest_applicant }} er Vektors nyeste søker!</h2>
+            </transition>
+
+            <div id="CountDown">
+                <CountDown></CountDown>
+            </div>
+
+            <div id="Dev-tools">
+                <button id="btn-test1" v-on:click="devTestUser">Run test user</button>
+                <button id="btn-last-1" v-on:click="devReplayLast1">Rerun 1</button>
+                <button id="btn-last-2" v-on:click="devReplayLast2">Rerun 2</button>
+                <button id="btn-last-3" v-on:click="devReplayLast3">Rerun 3</button>
+                <button id="btn-last-4" v-on:click="devReplayLast4">Rerun 4</button>
+                <button id="btn-last-5" v-on:click="devReplayLast5">Rerun 5</button>
+            </div>
+
         </div>
 
-        <div id="applicants_div" >
-            <h1 class="elegantshadow">{{ animatedNumber }}</h1>
-        </div>
 
-        <transition name="slide-fade">
-            <h2 v-show="show_newest_applicant" v-if="show_newest_applicant" id="newest_applicant">{{ newest_applicant }} er Vektors nyeste assistent!</h2>
-        </transition>
-
-        <div id="Dev-tools">
-            <h5>Dev:</h5>
-            <button id="btn-test" v-on:click="show_newest_applicant = !show_newest_applicant">Toggle show</button>
-            <button id="btn-test1" v-on:click="devTestUser">Run test user</button>
-            <button id="btn-last-1" v-on:click="devReplayLast1">Rerun 1</button>
-            <button id="btn-last-2" v-on:click="devReplayLast2">Rerun 2</button>
-            <button id="btn-last-3" v-on:click="devReplayLast3">Rerun 3</button>
-            <button id="btn-last-4" v-on:click="devReplayLast4">Rerun 4</button>
-            <button id="btn-last-5" v-on:click="devReplayLast5">Rerun 5</button>
-        </div>
-
-        <br><br>
-
-        <div>
-            <CountDown></CountDown>
-        </div>
+        <div class="center-point"></div>
     </div>
 
 </template>
@@ -52,6 +55,7 @@
     import axios from 'axios'
     import CountDown from "../../components/CountDown";
     import Velocity from 'velocity-animate';
+    import { confetti } from 'dom-confetti';
 
     export default {
         name: "PartyPageView",
@@ -74,8 +78,22 @@
                     {firstName: 'Tore', lastName: 'Fjell'},
                     {firstName: 'Karoline', lastName: 'Solgård'},
                     {firstName: 'Magnus', lastName: 'Jespersen'},
-                ]
+                ],
+
+                bgc: {
+                    backgroundColor: '',
+                },
+
+                tc: {
+                    color: '',
+                },
+
+                tc2: {
+                    color: '',
+                    fontSize: '',
+                }
             }
+
         },
 
         computed: {
@@ -101,6 +119,7 @@
             inc_number_of_applicants_anim: function (initValue, animLength) {
                 TweenLite.fromTo(this.$data, animLength, {sliding_number_of_applicants: this.sliding_number_of_applicants},{ sliding_number_of_applicants: initValue });
                 this.sliding_number_of_applicants = initValue;
+
             },
 
             play_notification_sound: function(firstname, lastname) {
@@ -132,8 +151,23 @@
             display_user_info: function(user){
                 this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
                 this.show_newest_applicant = true;
-                //Dont know where to put this:
-                //this.show_newest_applicant = false;
+                let colors = ["#ff6d4b","#ffc527","#a7ff42","#2cfff3","#f953ff"];
+                for(let i=0; i<150; i++){
+                    window.setTimeout(()=>{
+                        this.bgc.backgroundColor = colors[i % colors.length];
+                        this.tc.color = colors[(i+2) % colors.length];
+                        this.tc2.color = colors[3*(i+2) % colors.length];
+                        this.tc2.fontSize = (150+ 50*Math.sin(6.28318530718/16.25*i)).toString() + "px";
+                    }, 100*i);
+                }
+                window.setTimeout(()=>{
+                    this.bgc.backgroundColor = "#fafdff";
+                    this.tc.color ="#6fcfec";
+                    this.tc2.color ="#6fcfec";
+                    this.tc2.fontSize = "150px";
+                    this.show_newest_applicant=false;
+
+                }, 100*150);
             },
 
             show_users: function(number) {
@@ -144,26 +178,12 @@
                         for (let i = 0; i < limit; i++) {
                             this.new_users.push(response.data[i].user);
                         }
-                        console.log(number);
-                        console.log(this.new_users);
                         for (let i = 0; i < this.new_users.length; i++) {
                             let user = this.new_users.pop();
                             this.play_notification_sound(user.firstName, user.lastName);
                             this.display_user_info(user);
                         }
                     });
-            },
-
-
-            button_leave: function (el, done) {
-                Velocity(el, { translateX: '15px', rotateZ: '50deg' }, { duration: 200 });
-                Velocity(el, { rotateZ: '100deg' }, { loop: 2 });
-                Velocity(el, {
-                    rotateZ: '45deg',
-                    translateY: '30px',
-                    translateX: '30px',
-                    opacity: 0
-                }, { complete: done })
             },
 
             overlay_leave: function (el, done) {
@@ -193,6 +213,18 @@
             devReplayLast5: function(){
                 this.show_users(5)
             },
+            blastConfetti() {
+                window.setTimeout(() => {
+                    for (let i = 0; i < 8; i++) {
+                        window.setTimeout(() => {
+                            const confettiDiv = document.querySelector(".center-point");
+                            confetti(confettiDiv, {angle: 67.5 + 45 * Math.random()});
+                        }, 1500 * i);
+                    }
+                }, 3000);
+
+            }
+
 
 
         },
@@ -207,10 +239,10 @@
                             this.show_users(new_applicants);
                             this.inc_number_of_applicants_anim(response.data, 3);
                             this.last_number_of_applicants = response.data;
+                            this.blastConfetti();
                         }
                     });
-            }, 3010);
-
+            }, 3000);
         },
 
     }
@@ -221,11 +253,36 @@
 
 </script>
 
-<style scoped lang="scss">
+<style lang="scss">
 
     #party_page_view{
-        background-color: #e7e5e4;
-        height:100vh;
+
+        .Title {
+            color: #6fcfec;
+        }
+
+
+        #applicants_number{
+            font-size: 150px;
+            color: #6fcfec;
+            position: center;
+            margin-top: -80px;
+        }
+
+        .color-anim{
+            transition: 0.1s;
+            transition-timing-function: linear;
+
+        }
+
+        .animatedBackground{
+            position: fixed;
+            background-color: #fafdff;
+
+            height:100vh;
+            width: 100vw;
+        }
+
         p {
             text-align: center;
             font-size: 10em;
@@ -240,43 +297,40 @@
             text-rendering: optimizeLegibility;
 
             &.elegantshadow {
-                color: #131313;
-                background-color: #e7e5e4;
+                color: #fff;
                 letter-spacing: .15em;
                 text-shadow:
-                        1px -1px 0 #767676,
-                        -1px 2px 1px #737272,
-                        -2px 4px 1px #767474,
-                        -3px 6px 1px #787777,
-                        -4px 8px 1px #7b7a7a,
-                        -5px 10px 1px #7f7d7d,
-                        -6px 12px 1px #828181,
-                        -7px 14px 1px #868585,
-                        -8px 16px 1px #8b8a89,
-                        -9px 18px 1px #8f8e8d,
-                        -10px 20px 1px #949392,
-                        -11px 22px 1px #999897,
-                        -12px 24px 1px #9e9c9c,
-                        -13px 26px 1px #a3a1a1,
-                        -14px 28px 1px #a8a6a6,
-                        -15px 30px 1px #adabab,
-                        -16px 32px 1px #b2b1b0,
-                        -17px 34px 1px #b7b6b5,
-                        -18px 36px 1px #bcbbba,
-                        -19px 38px 1px #c1bfbf,
-                        -20px 40px 1px #c6c4c4,
-                        -21px 42px 1px #cbc9c8,
-                        -22px 44px 1px #cfcdcd,
-                        -23px 46px 1px #d4d2d1,
-                        -24px 48px 1px #d8d6d5,
-                        -25px 50px 1px #dbdad9,
-                        -26px 52px 1px #dfdddc,
-                        -27px 54px 1px #e2e0df,
-                        -28px 56px 1px #e4e3e2;
+                        1px -1px 0 rgba(0,0,0,0.5),
+                        -1px 2px 1px rgba(0,0,0,0.38),
+                        -2px 4px 1px rgba(0,0,0,0.36),
+                        -3px 6px 1px rgba(0,0,0,0.34),
+                        -4px 8px 1px rgba(0,0,0,0.32),
+                        -5px 10px 1px rgba(0,0,0,0.30),
+                        -6px 12px 1px rgba(0,0,0,0.28),
+                        -7px 14px 1px rgba(0,0,0,0.26),
+                        -8px 16px 1px rgba(0,0,0,0.22),
+                        -9px 18px 1px rgba(0,0,0,0.20),
+                        -10px 20px 1px rgba(0,0,0,0.18),
+                        -11px 22px 1px rgba(0,0,0,0.16),
+                        -12px 24px 1px rgba(0,0,0,0.14),
+                        -13px 26px 1px rgba(0,0,0,0.12),
+                        -14px 28px 1px rgba(0,0,0,0.10),
+                        -15px 30px 1px rgba(0,0,0,0.09),
+                        -16px 32px 1px rgba(0,0,0,0.08),
+                        -17px 34px 1px rgba(0,0,0,0.07),
+                        -18px 36px 1px rgba(0,0,0,0.06),
+                        -19px 38px 1px rgba(0,0,0,0.05),
+                        -20px 40px 1px rgba(0,0,0,0.04),
+                        -21px 42px 1px rgba(0,0,0,0.03),
+                        -22px 44px 1px rgba(0,0,0,0.02),
+                        -23px 46px 1px rgba(0,0,0,0.01),
+                        -24px 48px 1px rgba(0,0,0,0.005),
+                        -25px 50px 1px rgba(0,0,0,0.0),
+                        -26px 52px 1px rgba(0,0,0,0),
+                        -27px 54px 1px rgba(0,0,0,0),
+                        -28px 56px 1px rgba(0,0,0,0),
             }
             &.deepshadow {
-                color: rgba(73, 72, 77, 0.52);
-               // background-color: #333;
                 letter-spacing: .1em;
                 text-shadow:
                         0 -1px 0 #fff,
@@ -312,21 +366,25 @@
             height: 100vh;
             width: 100vw;
             position: fixed;
-            background-color: #6FCDEE;
             z-index: 10;
+            background-color: #022346;
         }
 
 
         #btn-intro{
+            font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
             position: fixed;
             z-index: 11;
             width: 20em;
-            height: 10em;
+            height: 7.5em;
             top: calc(50% - 3em);
             left: calc(50% - 10em);
+            border-radius: 30px;
+            background-color: #4caf50;
         }
 
         #newest_applicant {
+            font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
             text-align: center;
             position: fixed;
             z-index: 20;
@@ -334,6 +392,8 @@
             height: 10em;
             top: calc(30%);
             left: calc(50% - 10em);
+            color : #575757;
+            font-size: 32.5px;
 
         }
 
@@ -349,12 +409,13 @@
             transition: all .3s ease;
         }
         .slide-fade-leave-active {
-            transition: all .8s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+            transition: all .3s ease;
         }
         .slide-fade-enter{
             transform: translateX(100px);
             opacity: 0;
         }
+
 
         //not working:
         .slide-fade-leave-to
@@ -363,7 +424,26 @@
             opacity: 0;
         }
 
+
+        #CountDown{
+            bottom:50px;
+            position: fixed;
+            width: 500px;
+            left: calc(50% - 250px);
+        }
+
+        .center-point {
+            position: fixed;
+            left:50%;
+            top:50%;
+        }
+
+
+
+
+
     }
+
 
 
 </style>
