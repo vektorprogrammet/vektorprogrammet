@@ -265,7 +265,7 @@ class InterviewManager
     private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
     {
         $message = (new \Swift_Message())
-            ->setSubject('Påminnelse om intervjuinvitasjon med Vektorprogrammet')
+            ->setSubject('Påminnelse om intervju med Vektorprogrammet')
             ->setTo($interview->getUser()->getEmail())
             ->setBody(
                 $this->twig->render(
