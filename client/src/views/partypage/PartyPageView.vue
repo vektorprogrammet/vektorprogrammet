@@ -311,7 +311,7 @@
 
         .Title {
             color: #6fcfec;
-            margin-top: 30px;
+            margin-top: 20px;
         }
 
 
