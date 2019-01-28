@@ -4,8 +4,10 @@
                 v-on:leave="overlay_leave"
                 v-bind:css="false">
             <div v-if="show" id="overlay" v-bind:style="bgcIntro">
-                <Vektorlogo></Vektorlogo>
-                <h1 class="Title deepshadow">Party</h1>
+                <div class="title-div">
+                    <Vektorlogo></Vektorlogo>
+                    <h1 class="Title deepshadow">Party</h1>
+                </div>
             </div>
         </transition>
 
@@ -15,9 +17,9 @@
         </transition>
 
         <div class="animatedBackground color-anim" v-bind:style="bgc">
-            <div class = "Title color-anim">
-                <Vektorlogo class="vlogo" ref="mainlogo"></Vektorlogo>
-                <h1 class="deepshadow" v-bind:style="tc">Party</h1>
+            <div class = "title-div color-anim">
+                <Vektorlogo ref="mainlogo"></Vektorlogo>
+                <h1 Title class="Title deepshadow" v-bind:style="tc">Party</h1>
             </div>
 
             <div id="applicants_div" >
@@ -295,13 +297,21 @@
 
     #party_page_view{
 
+        .title-div{
+            position: fixed;
+            margin-left: calc(50% - 320px);
+        }
         .Title {
+            position: fixed;
             color: #6fcfec;
             margin-top: 20px;
+            margin-left: 270px;
         }
 
-        #vektor-logo{
+        .vektor-logo{
+            position: fixed;
             width: 300px;
+            margin-top: 25px;
             filter:
                 drop-shadow(0px  0.8px #2e2e2e)
                 drop-shadow(0px  1.3px #2c2c2c)
