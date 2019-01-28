@@ -249,8 +249,9 @@
         #applicants_number{
             font-size: 150px;
             color: #6fcfec;
-            position: center;
-            margin-top: -80px;
+            position: fixed;
+            width:100%;
+            top:calc(50% - 170px);
         }
 
         .color-anim{
