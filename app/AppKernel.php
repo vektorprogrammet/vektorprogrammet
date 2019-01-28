@@ -26,6 +26,7 @@ class AppKernel extends Kernel
 	        new Nexy\SlackBundle\NexySlackBundle(),
 	        new BCC\AutoMapperBundle\BCCAutoMapperBundle(),
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
+            new FOS\RestBundle\FOSRestBundle(),
         );
 
 	    if ( in_array( $this->getEnvironment(), array( 'prod', 'staging' ) ) ) {
