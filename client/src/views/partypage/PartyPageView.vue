@@ -128,8 +128,10 @@
                     sound2.play();
                 });
 
+                let self = this
                 sound2.addEventListener('ended', function(){
                     sound3.play();
+                    self.blastConfetti()
                 });
 
             },
@@ -186,19 +188,16 @@
             devReplayLast5: function(){
                 this.add_users(5, 15)
             },
-            blastConfetti() {
-                window.setTimeout(() => {
-                    for (let i = 0; i < 8; i++) {
-                        window.setTimeout(() => {
-                            const confettiDiv = document.querySelector(".center-point");
-                            confetti(confettiDiv, {
-                              angle: 45 + 90 * Math.random(),
-                              startVelocity: 70,
-                            });
-                        }, 1500 * i);
-                    }
-                }, 3000);
-
+            blastConfetti: function() {
+                for (let i = 0; i < 8; i++) {
+                    window.setTimeout(() => {
+                        const confettiDiv = document.querySelector(".center-point");
+                        confetti(confettiDiv, {
+                          angle: 45 + 90 * Math.random(),
+                          startVelocity: 70,
+                        });
+                    }, 1500 * i);
+                }
             }
         },
 
@@ -227,7 +226,6 @@
                         this.play_10s_notification_sound(user.firstName, user.lastName);
                     }
                     this.display_user_info(user);
-                    this.blastConfetti();
                 }
             }, 1000)
         },
