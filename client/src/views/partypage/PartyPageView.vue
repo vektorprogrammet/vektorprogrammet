@@ -34,12 +34,11 @@
             </div>
 
             <div id="Dev-tools">
-                <button id="btn-test1" v-on:click="devTestUser">Run test user</button>
-                <button id="btn-last-1" v-on:click="devReplayLast1">Rerun 1</button>
-                <button id="btn-last-2" v-on:click="devReplayLast2">Rerun 2</button>
-                <button id="btn-last-3" v-on:click="devReplayLast3">Rerun 3</button>
-                <button id="btn-last-4" v-on:click="devReplayLast4">Rerun 4</button>
-                <button id="btn-last-5" v-on:click="devReplayLast5">Rerun 5</button>
+                <button id="btn-last-1" v-on:click="devReplayLast1">Add 1</button>
+                <button id="btn-last-2" v-on:click="devReplayLast2">Add 2</button>
+                <button id="btn-last-3" v-on:click="devReplayLast3">Add 3</button>
+                <button id="btn-last-4" v-on:click="devReplayLast4">Add 4</button>
+                <button id="btn-last-5" v-on:click="devReplayLast5">Add 5</button>
             </div>
 
         </div>
@@ -70,15 +69,6 @@
                 new_users: [],
                 newest_applicant: 'Viktor Johansen',
                 show_newest_applicant: false,
-                test_users: [
-                    {firstName: 'Sigurd', lastName: 'Totland'},
-                    {firstName: 'John', lastName: 'Cena'},
-                    {firstName: 'Navn', lastName: 'Navnesen'},
-                    {firstName: 'Sara', lastName: 'Assistent'},
-                    {firstName: 'Tore', lastName: 'Fjell'},
-                    {firstName: 'Karoline', lastName: 'Solgård'},
-                    {firstName: 'Magnus', lastName: 'Jespersen'},
-                ],
 
                 bgc: {
                     backgroundColor: '',
@@ -146,7 +136,6 @@
 
             display_user_info: function(user){
                 this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
-                this.show_newest_applicant = true;
                 let colors = ["#ff6d4b","#ffc527","#a7ff42","#2cfff3","#f953ff"];
                 for(let i=0; i<150; i++){
                     window.setTimeout(()=>{
@@ -166,27 +155,14 @@
                 }, 100*150);
             },
 
-            show_users: function(number) {
+            add_users: function(number) {
                 axios
                     .get('/api/party/newest_applications/1/')
                     .then( response =>  {
-
                         //API allows for maximum 5 last entries:
                         let limit = number > response.data.length ? response.data.length : number;
                         for (let i = 0; i < limit; i++) {
                             this.new_users.push(response.data[i].user);
-                        }
-                        // this should be a different component alltogether, running
-                        // side by side with mount(), constantly showing new users from new_users
-                        while (this.new_users.length !== 0) {
-                                //setTimeout( function(){
-                                    let user = this.new_users.pop();
-                                    //if user.applicantNumber % 10 == 0:
-                                    this.play_10s_notification_sound(user.firstName, user.lastName);
-                                    //else:
-                                    // this.play_regular_notification_sound(user.firstName, user.lastName);
-                                    this.display_user_info(user);
-                                //}, 100*150);
                         }
                     });
             },
@@ -195,28 +171,20 @@
                 Velocity(el, {opacity: 0}, { complete: done })
             },
 
-            devTestUser:  function() {
-                let user = this.test_users[Math.floor(Math.random()*this.test_users.length)];
-                this.play_10s_notification_sound(user.firstName, user.lastName);
-                this.display_user_info(user);
-                this.blastConfetti();
-
-            },
-
             devReplayLast1: function(){
-                this.show_users(1);
+                this.add_users(1);
             },
             devReplayLast2: function(){
-                this.show_users(2)
+                this.add_users(2)
             },
             devReplayLast3: function(){
-                this.show_users(3)
+                this.add_users(3)
             },
             devReplayLast4: function(){
-                this.show_users(4)
+                this.add_users(4)
             },
             devReplayLast5: function(){
-                this.show_users(5)
+                this.add_users(5)
             },
             blastConfetti() {
                 window.setTimeout(() => {
@@ -241,12 +209,22 @@
                     .then(response => {
                         if(this.fetching_api && this.last_number_of_applicants !== response.data){
                             let new_applicants = response.data - this.last_number_of_applicants;
-                            this.show_users(new_applicants);
+                            this.add_users(new_applicants);
                             this.inc_number_of_applicants_anim(response.data, 3);
                             this.last_number_of_applicants = response.data;
                         }
                     });
             }, 3000);
+            window.setInterval(() => {
+                if (this.new_users.length > 0 && !this.show_newest_applicant){
+                    //this.currently_showing = true;
+                    this.show_newest_applicant = true;
+                    let user = this.new_users.pop();
+                    this.play_10s_notification_sound(user.firstName, user.lastName);
+                    this.display_user_info(user);
+                    this.blastConfetti();
+                }
+            }, 1000)
         },
 
     }
