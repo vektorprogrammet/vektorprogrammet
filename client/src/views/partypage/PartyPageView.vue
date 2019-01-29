@@ -210,7 +210,7 @@
                 sound2.addEventListener('loadeddata', function(){
                     if(sound2.readyState === 4){
                         sound.play();
-                        self.colorParty();
+                        self.colorParty(sound.duration+sound2.duration+sound3.duration);
                         self.display_user_info(user, applicant_number);
 
                         if (applicant_number % 5 === 0) {
@@ -236,10 +236,11 @@
                 //this.sliding_number_of_applicants = applicant_number;
             },
 
-            colorParty: function(){
+            colorParty: function(duration){
+                duration = Math.ceil(duration) * 10;
                 let self = this;
                 let colors = ["#f953ff", "#ff6d4b","#ffc527","#a7ff42", "#2cfff3"];
-                for(let i=0; i<150; i++){
+                for(let i=0; i<duration; i++){
                     window.setTimeout(()=>{
                         self.colorPartyBg.backgroundColor = colors[i % colors.length];
                         self.textParty1.color = colors[(i+2) % colors.length];
@@ -265,7 +266,7 @@
 
 
 
-                }, 100*150);
+                }, 100*duration);
             },
 
             add_users: function(number, old_applicant_number) {
