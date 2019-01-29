@@ -68,10 +68,13 @@ class InfoMeeting
 
     /**
      * @param \DateTime $date
+     *
+     * @return InfoMeeting
      */
-    public function setDate($date)
+    public function setDate($date): InfoMeeting
     {
         $this->date = $date;
+        return $this;
     }
 
     /**
@@ -84,10 +87,13 @@ class InfoMeeting
 
     /**
      * @param string $room
+     *
+     * @return InfoMeeting
      */
-    public function setRoom($room)
+    public function setRoom($room): InfoMeeting
     {
         $this->room = $room;
+        return $this;
     }
 
     public function __toString()
@@ -105,10 +111,13 @@ class InfoMeeting
 
     /**
      * @param bool $showOnPage
+     *
+     * @return InfoMeeting
      */
-    public function setShowOnPage($showOnPage)
+    public function setShowOnPage($showOnPage): InfoMeeting
     {
         $this->showOnPage = $showOnPage;
+        return $this;
     }
 
     /**
@@ -121,14 +130,17 @@ class InfoMeeting
 
     /**
      * @param string $link
+     *
+     * @return InfoMeeting
      */
-    public function setLink($link)
+    public function setLink($link): InfoMeeting
     {
         if (strlen($link) > 0 && substr($link, 0, 4) !== 'http') {
             $link = "http://$link";
         }
 
         $this->link = $link;
+        return $this;
     }
 
     /**
@@ -141,9 +153,12 @@ class InfoMeeting
 
     /**
      * @param string $description
+     *
+     * @return InfoMeeting
      */
-    public function setDescription($description)
+    public function setDescription($description): InfoMeeting
     {
         $this->description = $description;
+        return $this;
     }
 }
