@@ -161,4 +161,26 @@ class InfoMeeting
         $this->description = $description;
         return $this;
     }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function isToday(): bool
+    {
+        $today = (new \DateTime())->format('Y-m-d');
+        $infoMeetingDate = $this->getDate()->format('Y-m-d');
+        return $today === $infoMeetingDate;
+    }
+
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function isTomorrow(): bool
+    {
+        $tomorrow = (new \DateTime())->modify('+1 day')->format('Y-m-d');
+        $infoMeetingDate = $this->getDate()->format('Y-m-d');
+        return $tomorrow === $infoMeetingDate;
+    }
 }
