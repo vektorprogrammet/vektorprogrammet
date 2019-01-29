@@ -132,7 +132,6 @@
                             if(this.last_number_of_applicants !== response.data){
                                 let new_applicants = response.data - this.last_number_of_applicants;
                                 this.add_users(new_applicants, this.last_number_of_applicants);
-                                this.inc_number_of_applicants_anim(response.data, 3);
                                 this.last_number_of_applicants = response.data;
                             }
                         });
@@ -144,6 +143,7 @@
                     if (this.new_users.length > 0 && !this.show_newest_applicant){
                         this.show_newest_applicant = true;
                         let [user, applicant_number] = this.new_users.pop();
+                        this.inc_number_of_applicants_anim(applicant_number, 3);
                         this.play_10s_notification(user, applicant_number);
                     }
                 }, 1000);
