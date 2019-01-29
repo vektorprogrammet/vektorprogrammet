@@ -121,6 +121,8 @@
                 this.main_background_animate();
             },
 
+
+
         },
 
         methods:{
@@ -132,7 +134,6 @@
                             if(this.last_number_of_applicants !== response.data){
                                 let new_applicants = response.data - this.last_number_of_applicants;
                                 this.add_users(new_applicants, this.last_number_of_applicants);
-                                this.inc_number_of_applicants_anim(response.data, 3);
                                 this.last_number_of_applicants = response.data;
                             }
                         });
@@ -212,6 +213,7 @@
                         sound.play();
                         self.colorParty(sound.duration+sound2.duration+sound3.duration);
                         self.display_user_info(user, applicant_number);
+                        self.sliding_number_of_applicants += 1;
 
                         if (applicant_number % 5 === 0) {
                             self.show_tor = true;
