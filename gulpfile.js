@@ -151,8 +151,11 @@ function buildClientApp (cb) {
 function clientStaticFiles () {
     var r = gulp.src(path.client.src + '/dist/app.js')
       .pipe(gulp.dest('web/js/client'));
-    return r && gulp.src(path.client.src + '/dist/media/*')
+    var r2 = gulp.src(path.client.src + '/dist/media/*')
       .pipe(gulp.dest('web/media'));
+    return r && r2 && gulp.src(path.client.src + '/dist/img/*')
+      .pipe(gulp.dest('web/img'));
+
 }
 
 gulp.task('frontEnd', function () {
