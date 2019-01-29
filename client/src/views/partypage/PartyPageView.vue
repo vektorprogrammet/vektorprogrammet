@@ -3,7 +3,7 @@
         <transition
                 v-on:leave="overlay_leave"
                 v-bind:css="false">
-            <div v-if="show" id="overlay" v-bind:style="bgcIntro">
+            <div v-if="show" id="overlay" v-bind:style="colorIntroBg">
                 <div class="title-div">
                     <Vektorlogo></Vektorlogo>
                     <h1 class="Title deepshadow">Party</h1>
@@ -16,14 +16,14 @@
             <button v-if="show" id="btn-intro" v-on:click="btn_intro_click" class="bdeepshadow insetshadow">My body is ready!</button>
         </transition>
 
-        <div>
+        <div class="animatedBackground color-party" v-bind:style="colorPartyBg">
             <div class = "title-div color-party">
                 <Vektorlogo ref="mainlogo"></Vektorlogo>
-                <h1 Title class="Title deepshadow" v-bind:style="tc">Party</h1>
+                <h1 Title class="Title deepshadow" v-bind:style="textParty1">Party</h1>
             </div>
 
             <div id="applicants_div" >
-                <h1 class="elegantshadow color-party" id="applicants_number" v-bind:style="tc2"> {{ animatedNumber }}</h1>
+                <h1 class="elegantshadow color-party" id="applicants_number" v-bind:style="textParty2"> {{ animatedNumber }}</h1>
             </div>
 
             <transition name="slide-fade">
@@ -31,14 +31,14 @@
             </transition>
 
             <transition name="tor" v-on:enter="tor_in" v-on:leave="tor_out">
-                <img  v-show="show_tor" src="../../assets/tor.png" alt="Tor" id="tor">
+                <img  v-show="show_tor" src="../../assets/tor.png" alt="Tor" id="tor"/>
             </transition>
 
             <div id="CountDown">
                 <CountDown></CountDown>
             </div>
 
-            <div id="Dev-tools">
+            <div id="Dev-tools" v-if="isDev">
                 <button id="btn-last-1" v-on:click="devReplayLast1">Add 1</button>
                 <button id="btn-last-2" v-on:click="devReplayLast2">Add 2</button>
                 <button id="btn-last-3" v-on:click="devReplayLast3">Add 3</button>
@@ -47,8 +47,8 @@
             </div>
 
 
-            <div id="mainbg1" v-bind:style="bgMain" v-if="!show_newest_applicant"></div>
-            <div id="mainbg2" class="animatedBackground color-party" v-bind:style="bgc" v-if="show_newest_applicant"></div>
+            <div id="mainbg1" v-bind:style="colorMainBg" v-if="!show_newest_applicant"></div>
+            <div id="mainbg2" class="animatedBackground color-party" v-bind:style="colorPartyBg" v-if="show_newest_applicant"></div>
 
 
         </div>
@@ -81,26 +81,28 @@
                 newest_applicant: 'Viktor Johansen',
                 show_newest_applicant: false,
                 show_tor: false,
-                bgcIntro: {
+                colorIntroBg: {
                     backgroundColor: '',
                 },
 
-                bgc: {
+                colorPartyBg: {
+                    backgroundColor: 'transperant',
+                },
+
+                colorMainBg: {
                     backgroundColor: '',
                 },
 
-                bgMain: {
-                    backgroundColor: '',
-                },
-
-                tc: {
+                textParty1: {
                     color: '',
                 },
 
-                tc2: {
+                textParty2: {
                     color: '',
                     fontSize: '',
                 },
+
+                isDev:false,
 
             }
 
@@ -142,11 +144,7 @@
                     if (this.new_users.length > 0 && !this.show_newest_applicant){
                         this.show_newest_applicant = true;
                         let [user, applicant_number] = this.new_users.pop();
-                        if (applicant_number % 5 === 0) {
-                            this.show_tor = true;
-                        }
-                        this.play_10s_notification_sound(user.firstName, user.lastName);
-                        this.display_user_info(user, applicant_number);
+                        this.play_10s_notification(user, applicant_number);
                     }
                 }, 1000);
             },
@@ -168,9 +166,9 @@
 
             intro_background_animate: function(){
                 window.setInterval(() => {
-                    this.bgcIntro.backgroundColor = "#022346";
+                    this.colorIntroBg.backgroundColor = "#022346";
                     window.setTimeout(()=>{
-                        this.bgcIntro.backgroundColor = "#025576";
+                        this.colorIntroBg.backgroundColor = "#025576";
                     }, 5000);
                 }, 10000);
             },
@@ -178,9 +176,9 @@
             main_background_animate: function(){
                 let self = this;
                 if(!this.show_newest_applicant && this.fetching_api){
-                    self.bgMain.backgroundColor = "#bdd5d6";
+                    self.colorMainBg.backgroundColor = "#bdd5d6";
                     window.setTimeout(()=>{
-                        self.bgMain.backgroundColor = "#7492a9";
+                        self.colorMainBg.backgroundColor = "#7492a9";
                     }, 10000);
                     window.setTimeout(()=>{
                         this.main_background_animate();
@@ -195,9 +193,12 @@
 
             },
 
-            play_10s_notification_sound: function(firstname, lastname) {
+            play_10s_notification: function(user, applicant_number) {
+
+                let firstName = user.firstName;
+                let lastName = user.lastName;
                 let sound = new Audio(require('../../assets/johncenaintro.mp3'));
-                let sound2 = new Audio('http://159.65.58.116/'+ firstname + ' ' +lastname);
+                let sound2 = new Audio('http://159.65.58.116/'+ firstName + ' ' +lastName);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
 
                 sound.volume = 0.6;
@@ -210,6 +211,11 @@
                     if(sound2.readyState === 4){
                         sound.play();
                         self.colorParty();
+                        self.display_user_info(user, applicant_number);
+
+                        if (applicant_number % 5 === 0) {
+                            self.show_tor = true;
+                        }
 
                     }
                 });
@@ -231,27 +237,31 @@
             },
 
             colorParty: function(){
+                let self = this;
                 let colors = ["#f953ff", "#ff6d4b","#ffc527","#a7ff42", "#2cfff3"];
                 for(let i=0; i<150; i++){
                     window.setTimeout(()=>{
-                        this.bgc.backgroundColor = colors[i % colors.length];
-                        this.tc.color = colors[(i+2) % colors.length];
-                        this.tc2.color = colors[3*(i+2) % colors.length];
-                        this.$refs.mainlogo.vectorlogo1.fill = colors[(i+3) % colors.length];
-                        this.$refs.mainlogo.vectorlogo2.fill = colors[3*(i) % colors.length];
-                        this.tc2.fontSize = (150+ 50*Math.sin(6.28318530718/16.25*i)).toString() + "px";
+                        self.colorPartyBg.backgroundColor = colors[i % colors.length];
+                        self.textParty1.color = colors[(i+2) % colors.length];
+                        self.textParty2.color = colors[3*(i+2) % colors.length];
+                        self.$refs.mainlogo.vectorLogo1.fill = colors[(i+3) % colors.length];
+                        self.$refs.mainlogo.vectorLogo2.fill = colors[3*(i) % colors.length];
+                        self.textParty2.fontSize = (150+ 50*Math.sin(6.28318530718/16.25*i)).toString() + "px";
                     }, 100*i);
                 }
                 window.setTimeout(()=>{
-                    this.tc.color ="#6fcfec";
-                    this.tc2.color ="#6fcfec";
-                    this.tc2.fontSize = "150px";
-                    this.$refs.mainlogo.vectorlogo1.fill = "#A9DDF1";
-                    this.$refs.mainlogo.vectorlogo2.fill = "#6FCCEA";
-                    this.show_newest_applicant=false;
-                    this.show_tor=false;
-                    this.main_background_animate();
-                    this.bgMain = "#bdd5d6";
+                    self.colorMainBg.backgroundColor = "#bdd5d6";
+                    self.colorPartyBg.backgroundColor = "transperant";
+                    self.textParty1.color ="#6fcfec";
+                    self.textParty2.color ="#6fcfec";
+                    self.textParty2.fontSize = "150px";
+                    self.$refs.mainlogo.vectorLogo1.fill = "#A9DDF1";
+                    self.$refs.mainlogo.vectorLogo2.fill = "#6FCCEA";
+                    self.show_newest_applicant=false;
+                    self.show_tor=false;
+                    self.main_background_animate();
+
+
 
 
 
@@ -425,6 +435,7 @@
 
 
 
+
         #btn-intro{
             font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
             position: fixed;
@@ -466,7 +477,6 @@
             font-family: "Avant Garde", Avantgarde, "Century Gothic", CenturyGothic, "AppleGothic", sans-serif;
             text-align: center;
             position: fixed;
-            z-index: 20;
             width: 20em;
             height: 10em;
             top: calc(15%);
@@ -481,8 +491,6 @@
             height: 100vh;
             width: 100vw;
             position: fixed;
-            background-color: #6FCDEE;
-            z-index: 8;
         }
 
         .slide-fade-enter-active {
@@ -597,7 +605,6 @@
         }
         .insetshadow {
             color: #202020;
-            // background-color: #2d2d2d;
             letter-spacing: .1em;
             text-shadow:
                     -1px -1px 1px rgba(0, 0, 0, 0.3),
@@ -613,7 +620,8 @@
         }
 
         #tor{
-            z-index: -1000;
+            z-index: 2;
+
         }
 
 
