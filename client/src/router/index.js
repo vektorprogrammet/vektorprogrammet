@@ -9,6 +9,7 @@ import Error403View from '../views/Error403View';
 import StagingServerView from '../views/controlpanel/StagingServerView';
 import AdminBaseView from '../views/controlpanel/AdminBaseView';
 import AssistantBaseView from '../views/assistant/AssistantBaseView';
+import PartyPageView from '../views/partypage/PartyPageView';
 
 Vue.use(Router);
 
@@ -53,6 +54,11 @@ const router = new Router({
           component: MyPageView,
         },
       ],
+    },
+    {
+      path: '/party',
+      name: 'party',
+      component: PartyPageView,
     },
   ],
 });
