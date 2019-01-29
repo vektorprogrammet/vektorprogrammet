@@ -112,7 +112,7 @@ class EmailSender
     public function sendInfoMeetingNotification(AdmissionSubscriber $subscriber)
     {
         $message = (new \Swift_Message())
-            ->setSubject('Infomøte i morgen!')
+            ->setSubject('Infomøte i dag!')
             ->setFrom($this->defaultEmail)
             ->setTo($subscriber->getEmail())
             ->setBody($this->twig->render('admission/info_meeting_email.html.twig', array(
