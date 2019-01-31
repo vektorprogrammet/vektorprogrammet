@@ -129,11 +129,6 @@ security:
         - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/utlegg/rediger, roles: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/utlegg/status, roles: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/bildegallerier, roles: ROLE_TEAM_LEADER, method: POST }
-        - { path: ^/kontrollpanel/bildegallerier/galleri, roles: ROLE_TEAM_LEADER, method: POST }
-        - { path: ^/kontrollpanel/bildegallerier/galleri/slett, roles: ROLE_TEAM_LEADER }
 
           #ROLE_TEAM_MEMBER = team user
         - { path: ^/signatures, roles: ROLE_TEAM_MEMBER }
