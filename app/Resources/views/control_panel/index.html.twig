@@ -26,6 +26,10 @@
                 {{ render(controller("AppBundle:Widget:applicationGraph")) }}
             {% endif %}
 
+            {% if isAvailableSurveys %}
+                {{ render(controller("AppBundle:Widget:availableSurveys")) }}
+            {% endif %}
+
             {{ render(controller("AppBundle:Widget:interviews")) }}
             {{ render(controller("AppBundle:Widget:receipts")) }}
 
