@@ -19,6 +19,11 @@ home:
  defaults: { _controller: AppBundle:Home:show }
  methods: [GET]
 
+home_post:
+ path: /
+ defaults: { _controller: AppBundle:Home:post }
+ methods: [POST]
+
 students:
  path: /studenter
  defaults: { _controller: AppBundle:Assistant:index }
