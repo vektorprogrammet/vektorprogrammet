@@ -167,7 +167,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         // Not allowed to refund
         $client = $this->createTeamMemberClient();
         $client->request('POST', '/kontrollpanel/utlegg/status/6', ['status' => 'refunded']);
-        $this->assertEquals(403, $client->getResponse()->getStatusCode());
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
 
         // Make team leader refund the receipt
         $client = $this->createTeamLeaderClient();
