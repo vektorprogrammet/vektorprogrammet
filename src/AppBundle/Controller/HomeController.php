@@ -33,4 +33,9 @@ class HomeController extends BaseController
             'news' => $articles,
         ]);
     }
+
+    public function postAction()
+    {
+        return $this->redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ?autoplay=1", 301);
+    }
 }
