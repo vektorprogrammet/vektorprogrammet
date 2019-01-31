@@ -3,9 +3,9 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\InfoMeeting;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
-use AppBundle\Mailer\Mailer;
 use AppBundle\Mailer\MailerInterface;
 use Symfony\Component\Routing\Router;
 
@@ -109,17 +109,21 @@ class EmailSender
         $this->mailer->send($message, true);
     }
 
-    public function sendInfoMeetingNotification(AdmissionSubscriber $subscriber)
-    {
+    public function sendInfoMeetingNotification(
+        AdmissionSubscriber $subscriber,
+        InfoMeeting $infoMeeting
+    ) {
         $message = (new \Swift_Message())
             ->setSubject('Infomøte i dag!')
             ->setFrom($this->defaultEmail)
             ->setTo($subscriber->getEmail())
-            ->setBody($this->twig->render('admission/info_meeting_email.html.twig', array(
-                'department' => $subscriber->getDepartment(),
-                'infoMeeting' => $subscriber->getDepartment()->getCurrentAdmissionPeriod()->getInfoMeeting(),
-                'subscriber' => $subscriber,
-            )))
+            ->setBody($this->twig->render(
+                'admission/info_meeting_email.html.twig',
+                array(
+                    'infoMeeting' => $infoMeeting,
+                    'subscriber' => $subscriber,
+                )
+            ))
             ->setContentType('text/html');
         $this->mailer->send($message, true);
     }

@@ -4,6 +4,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionNotification;
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
@@ -147,7 +148,7 @@ class AdmissionNotifier
                     if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo || !$subscriber->getInfoMeeting()) {
                         continue;
                     }
-                    $this->sendInfoMeetingNotification($subscriber, $semester, $department);
+                    $this->sendInfoMeetingNotification($subscriber, $admissionPeriod);
                     $notificationsSent++;
                 }
                 if ($notificationsSent > 0) {
@@ -161,18 +162,17 @@ class AdmissionNotifier
 
     /**
      * @param AdmissionSubscriber $subscriber
-     * @param Semester $semester
-     * @param Department $department
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
-    private function sendInfoMeetingNotification(AdmissionSubscriber $subscriber, Semester $semester, Department $department)
+    private function sendInfoMeetingNotification(AdmissionSubscriber $subscriber, AdmissionPeriod $admissionPeriod)
     {
-        $this->emailSender->sendInfoMeetingNotification($subscriber);
+        $this->emailSender->sendInfoMeetingNotification($subscriber, $admissionPeriod);
         $notification = new AdmissionNotification();
-        $notification->setSemester($semester);
-        $notification->setDepartment($department);
+        $notification->setSemester($admissionPeriod->getSemester());
+        $notification->setDepartment($admissionPeriod->getDepartment());
         $notification->setSubscriber($subscriber);
         $notification->setInfoMeeting(true);
         $this->em->persist($notification);
