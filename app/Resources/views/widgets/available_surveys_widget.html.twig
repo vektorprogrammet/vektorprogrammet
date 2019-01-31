@@ -1,42 +1,36 @@
-{% if available.service %}<link rel="stylesheet" href="{{ asset_with_version('css/pages/widgets.css') }}">
+<link rel="stylesheet" href="{{ asset_with_version('css/pages/widgets.css') }}">
 {% for survey in availableSurveys  %}
 
 <div class="col-12 col-md-6 col-xxxl-4">
-    <div class="card">
+    <div class="card text-center">
         <div class="card-header">
-            <i class="fa  fa-comment"></i> Tilgjenglige undersøkelser
+            <i class="fa  fa-comment"></i> Tilgjenglig undersøkelse
+        </div>
+        <div class="card-body">
+            <h5 class="card-title">{{ survey.name | safe_html }}</h5>
+            <p class="card-text"> Om du ikke svarer på denne undersøkelsen spår jeg deg ett liv med sur kaffe.</p>
+            <a href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="btn btn-primary">
+                {{survey.surveyPopUpMessage|safe_html|raw}}</a>
+        </div>
+        <div class="card-footer text-muted">
+            Vår 2029 | - 3650 dager siden
         </div>
 
-        <div class="card-body table-responsive">
-            <table class="table table-striped mb-0">
-                <tr>
-                    <th>Ubesvarte</th>
-                </tr>
-                    <tr>
-                        <td class="d-flex">
-                            <a class="ml-2" href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank"> {{ survey.name }}
-                            </a>
+    </div>
+</div>
 
-
-                        </td>
-                    </tr>
-            </table>
+<div class="col-12 col-md-6 col-xxxl-4">
+    <div class="card">
+        <div class="card-body">
+            <h5 class="card-title"><i class="fa  fa-comment"></i>  {{ survey.name | safe_html | raw}}</h5>
+            <p class="text-muted"> Vår 2029 | - 3650 dager siden </p>
+            <p class="card-text"> Om du ikke svarer på denne undersøkelsen spår jeg deg ett liv med sur kaffe.</p>
+            <div href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="btn btn-primary survey-widget-btn">
+                {{ survey.surveyPopUpMessage|safe_html|raw}}
+            </div>
         </div>
     </div>
 </div>
 
 
-    <div class="card text-center">
-        <div class="card-header">
-            Featured
-        </div>
-        <div class="card-body">
-            <h5 class="card-title">Special title treatment</h5>
-            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-            <a href="#" class="btn btn-primary">Go somewhere</a>
-        </div>
-        <div class="card-footer text-muted">
-            2 days ago
-        </div>
-    </div>
 {% endfor %}
