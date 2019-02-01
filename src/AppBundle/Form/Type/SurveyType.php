@@ -76,8 +76,9 @@ class SurveyType extends AbstractType
 
             ])
 
-            ->add('surveyPopUpMessage', CKEditorType::class, [
+            ->add('surveyPopUpMessage', TextType::class, [
                 'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
+                'attr' => array('placeholder' => 'Pop-up melding'),
             ])
 
 
