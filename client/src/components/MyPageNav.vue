@@ -10,11 +10,14 @@
       <li class="breadcrumb-menu">
       </li>
     </ol>
+    <UserDropdownComponent></UserDropdownComponent>
   </div>
 </template>
 
 <script>
+  import UserDropdownComponent from "./UserDropdownComponent";
   export default {
     name: 'AssistantNav',
+      components: {UserDropdownComponent},
   };
 </script>

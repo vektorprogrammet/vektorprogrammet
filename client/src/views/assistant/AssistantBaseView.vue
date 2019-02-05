@@ -1,6 +1,5 @@
 <template>
     <div class="assisstant-base">
-        <AssistantNav></AssistantNav>
         <router-view></router-view>
     </div>
 </template>
