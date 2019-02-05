@@ -126,9 +126,10 @@ class AdmissionNotifier
                     continue;
                 }
 
-                $infoMeetingDate = $admissionPeriod->getInfoMeeting()->getDate();
-                $diffTime = intval(date_diff(new \DateTime(), $infoMeetingDate)->format('%r%d'))*24 + intval(date_diff(new \DateTime(), $infoMeetingDate)->format('%r%H'));
-                if (!$diffTime >= 30 && $diffTime < 0) {
+                $now = new \DateTime();
+                $infoMeetingLessThanOneDay = $admissionPeriod->getInfoMeeting()->getDate()->diff($now)->d <= 1;
+                $lessThanOneDayLeft = $infoMeetingLessThanOneDay && $admissionPeriod->getInfoMeeting()->getDate() > $now;
+                if (!$lessThanOneDayLeft) {
                     continue;
                 }
 
