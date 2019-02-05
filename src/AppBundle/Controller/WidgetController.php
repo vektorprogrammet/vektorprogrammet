@@ -71,10 +71,8 @@ class WidgetController extends BaseController
             ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
 
 
-        return $this->render('widgets/available_surveys_widget.html.twig',[
+        return $this->render('widgets/available_surveys_widget.html.twig', [
             'availableSurveys' => $surveys,
         ]);
-
-
     }
 }
