@@ -3,7 +3,7 @@
         <div class="card-header">
             <i class="fa fa-users"></i> Søkere {{ semester }}
         </div>
-        <div class="card-body">
+        <div class="card-body p-0 p-lg-3">
             <div style="position: relative; width:100%">
                 <canvas id="applicationsChart"></canvas>
             </div>
@@ -19,7 +19,7 @@
     data: {
       labels: [{% for date, appCount in appData %}'{{ date|date('d.M') }}'{% if not loop.last %}, {% endif %}{% endfor %}],
       datasets: [{
-        label: 'Antall påmeldte',
+        label: 'Antall søkere',
         data: [{% for appCount in appData %}{{ appCount }}{% if not loop.last %}, {% endif %}{% endfor %}],
         backgroundColor: 'rgba(111, 206, 238, 0.2)',
         borderColor: 'rgba(111, 206, 238, 1)',
@@ -42,6 +42,9 @@
 
   function aspectRatio() {
     var width = document.body.clientWidth;
+    if (width < 550) {
+      return 1;
+    }
     if (width < 768) {
       return 2;
     }

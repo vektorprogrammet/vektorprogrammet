@@ -28,6 +28,10 @@ body {
   }
 }
 
+.main .container-fluid {
+  padding: 0 15px;
+}
+
 .dropdown-item, .btn {
   font-size: 14px;
 }
@@ -864,4 +868,12 @@ button.secretly-not-a-button {
   &:focus{
     box-shadow: none;
   }
+}
+
+.vertical-middle {
+  vertical-align: middle;
+}
+
+table.table {
+  margin-bottom: 0;
 }

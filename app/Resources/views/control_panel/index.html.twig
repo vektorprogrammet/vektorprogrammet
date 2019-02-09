@@ -22,14 +22,14 @@
         </div>
 
         <div class="row">
-            {% if admissionPeriod.hasActiveAdmission %}
+            {% if admissionPeriod and admissionPeriod.hasActiveAdmission %}
                 {{ render(controller("AppBundle:Widget:applicationGraph")) }}
             {% endif %}
 
             {{ render(controller("AppBundle:Widget:interviews")) }}
             {{ render(controller("AppBundle:Widget:receipts")) }}
 
-            {% if not admissionPeriod.hasActiveAdmission %}
+            {% if not admissionPeriod or not admissionPeriod.hasActiveAdmission %}
                 {{ render(controller("AppBundle:Widget:applicationGraph")) }}
             {% endif %}
         </div>

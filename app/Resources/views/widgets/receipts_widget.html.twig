@@ -1,11 +1,14 @@
 {% if has_access_to('receipts_show') %}
     <div class="col-12 col-md-6 col-xxxl-4">
         <div class="card">
-            <div class="card-header">
-                <i class="fa fa-usd"></i> Nye utlegg
+            <div class="card-header d-flex justify-content-between">
+                <span>
+                    <i class="fa fa-usd"></i> Nye utlegg
+                </span>
+                <a class="text-muted" href="{{ path('receipts_show') }}">Vis alle <i class="fa fa-chevron-right vertical-middle"></i></a>
             </div>
-            <div class="card-body table-responsive">
-                <table class="table table-striped mb-0">
+            <div class="table-responsive">
+                <table class="table mb-0">
                     <tr>
                         <th>Navn</th>
                         <th class="text-right">Beløp</th>

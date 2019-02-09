@@ -45,10 +45,10 @@
     <div class="row">
         <div class="col-12">
             <div class="tab-content" id="myTabContent">
-                <div class="tab-pane fade show active" id="active" role="tabpanel" aria-labelledby="active-tab">
+                <div class="tab-pane fade show active p-0" id="active" role="tabpanel" aria-labelledby="active-tab">
                     {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: activeAssistantHistories} %}
                 </div>
-                <div class="tab-pane fade" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                <div class="tab-pane fade p-0" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
                     {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: inactiveAssistantHistories} %}
                 </div>
             </div>

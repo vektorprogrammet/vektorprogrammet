@@ -38,7 +38,7 @@
                 <div class="card-header">
                     <i class="fa fa-align-justify"></i> Opptaksperioder {{ department }}
                 </div>
-                <div class="card-body table-responsive">
+                <div class="table-responsive">
                     <table class="table">
 
                         <thead>
@@ -56,7 +56,7 @@
                         {% for a in admissionPeriods %}
                             <tr class="text-nowrap">
                                 {% if is_granted_team_leader() %}
-                                    <td>
+                                    <td class="table-menu">
                                         <div class="dropdown">
                                             <div class="clickable" id="options-{{ a.id }}" data-toggle="dropdown"
                                                  aria-haspopup="true" aria-expanded="false">

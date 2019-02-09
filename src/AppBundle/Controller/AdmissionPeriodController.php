@@ -93,9 +93,13 @@ class AdmissionPeriodController extends BaseController
     public function deleteAction(AdmissionPeriod $admissionPeriod)
     {
         $em = $this->getDoctrine()->getManager();
+        $infoMeeting = $admissionPeriod->getInfoMeeting();
+        if ($infoMeeting) {
+        	$em->remove($infoMeeting);
+        }
         $em->remove($admissionPeriod);
         $em->flush();
 
-        return new JsonResponse(array('success' => true));
+        return $this->redirectToRoute('admission_period_admin_show_by_department', ['id' => $admissionPeriod->getDepartment()->getId()]);
     }
 }
