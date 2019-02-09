@@ -95,7 +95,7 @@ class AdmissionPeriodController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $infoMeeting = $admissionPeriod->getInfoMeeting();
         if ($infoMeeting) {
-        	$em->remove($infoMeeting);
+            $em->remove($infoMeeting);
         }
         $em->remove($admissionPeriod);
         $em->flush();

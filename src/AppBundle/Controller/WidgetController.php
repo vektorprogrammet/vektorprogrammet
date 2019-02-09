@@ -28,12 +28,12 @@ class WidgetController extends BaseController
     public function receiptsAction()
     {
         $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
-	    $sorter = $this->container->get(Sorter::class);
+        $sorter = $this->container->get(Sorter::class);
 
-	    $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
-	    $sorter->sortUsersByReceiptStatus($usersWithReceipts);
+        $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
+        $sorter->sortUsersByReceiptStatus($usersWithReceipts);
 
-	    $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
+        $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
 
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
 
