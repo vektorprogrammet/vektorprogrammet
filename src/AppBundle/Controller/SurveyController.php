@@ -329,7 +329,7 @@ class SurveyController extends BaseController
 
     public function resultSurveyAction(Survey $survey)
     {
-        if ($survey->isConfidential() || !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+        if ($survey->isConfidential() && !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
             throw new AccessDeniedException();
         }
 
