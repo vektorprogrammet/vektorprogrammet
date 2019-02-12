@@ -66,4 +66,19 @@ class WidgetController extends BaseController
             'semester' => $semester,
         ]);
     }
+
+
+    public function availableSurveysAction()
+    {
+        $semester = $this->getSemesterOrThrow404();
+
+        $surveys = $this->getDoctrine()
+            ->getRepository('AppBundle:Survey')
+            ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
+
+
+        return $this->render('widgets/available_surveys_widget.html.twig', [
+            'availableSurveys' => $surveys,
+        ]);
+    }
 }
