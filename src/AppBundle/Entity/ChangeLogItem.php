@@ -31,14 +31,14 @@ class ChangeLogItem
     /**
      * @var string
      *
-     * @ORM\Column(name="description", type="string", length=5000)
+     * @ORM\Column(name="description", type="string", nullable=true, length=5000)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="githubLink", type="string", length=1000)
+     * @ORM\Column(name="githubLink", type="string", nullable=true, length=1000)
      */
     private $githubLink;
 

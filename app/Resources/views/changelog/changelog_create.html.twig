@@ -1,0 +1,35 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Ny Changelog
+{% endblock %}
+
+<!-- todo: add breadcrumb
+-->
+
+{% block javascripts %}
+    <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', QuestionManager.onReady);
+    </script>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-comment-o"></i> Changelog</div>
+                <div class="card-body">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.description ) }}
+                    {{ form_row(form.gitHubLink ) }}
+                    {{ form_row(form.date) }}
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}

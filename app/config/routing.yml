@@ -104,6 +104,15 @@ delete_todo_item:
   requirements:
    id: \d+
 
+##########################################
+#                Survey                  #
+##########################################
+
+changelog_create:
+ path: /kontrollpanel/changelog/create
+ defaults: { _controller: AppBundle:ChangeLog:createChangeLog }
+ methods: [GET, POST]
+
 
 ##########################################
 #                Survey                  #
