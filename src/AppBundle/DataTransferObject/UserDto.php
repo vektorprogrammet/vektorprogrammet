@@ -12,4 +12,5 @@ class UserDto
     public $email;
     public $companyEmail;
     public $isAdmin;
+    public $picture_path;
 }

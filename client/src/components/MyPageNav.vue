@@ -21,4 +21,5 @@
     components: { UserDropdownComponent },
   })
   export default class MyPageNav extends Vue {}
+
 </script>

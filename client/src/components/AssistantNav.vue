@@ -7,7 +7,8 @@
       <li class="breadcrumb-item">
         Min side
       </li>
-      <li class="breadcrumb-menu"></li>
+      <li class="breadcrumb-menu">
+      </li>
     </ol>
   </div>
 </template>
