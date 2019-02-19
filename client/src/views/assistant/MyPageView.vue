@@ -1,8 +1,10 @@
 <template>
   <div class="content">
-    <MyPageNav></MyPageNav>
-    <PageHeader><h1>Min side</h1></PageHeader>
+    <!--MyPageNav></MyPageNav-->
+    <PageHeader class="header-component"><h1>Min side</h1></PageHeader>
+    <ScheduleInfo class="schedule-component"></ScheduleInfo>
     <PartnerInfo class="partner-component"></PartnerInfo>
+
   </div>
 </template>
 
@@ -10,9 +12,11 @@
 import PageHeader from '../../components/PageHeader.vue';
 import MyPageNav from '../../components/MyPageNav.vue';
 import PartnerInfo from '../../components/PartnerInfo.vue';
-import {Component, Vue} from 'vue-property-decorator';
+import ScheduleInfo from '../../components/ScheduleInfo.vue';
+import Vue from 'vue';
+import Component from 'vue-class-component'
 @Component({
-  components: {PageHeader, MyPageNav, PartnerInfo},
+  components: {PageHeader, MyPageNav, PartnerInfo, ScheduleInfo},
 })
 export default class MyPageView extends Vue {}
 </script>
@@ -21,6 +25,7 @@ export default class MyPageView extends Vue {}
 .partner-component {
   width: 100%;
   text-align: center;
+  background-color: #0b58a2;
 }
 
 .content {
@@ -28,4 +33,13 @@ export default class MyPageView extends Vue {}
   align-items: center;
   width: 100%;
 }
+
+.header-component {
+  background-color: #0b58a2;
+}
+
+.partner-component {
+    background-color: #00A6C7;
+}
+
 </style>

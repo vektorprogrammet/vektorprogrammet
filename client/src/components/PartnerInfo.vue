@@ -17,12 +17,14 @@
 <script lang="ts">
   import {accountService} from '../services';
   import Vue from 'vue';
+  import Component from 'vue-class-component'
+  @Component
   export default class AssistantNav extends Vue {
     public myProfilePicture: string = '';
     public mounted() {
-      accountService.getProfilePicture().then((result) => {
-        console.log(result);
-      });
+        accountService.getProfilePicture().then((result) => {
+            console.log(result);
+        });
     }
   }
 </script>

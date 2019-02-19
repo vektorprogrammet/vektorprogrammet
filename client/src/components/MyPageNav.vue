@@ -14,10 +14,11 @@
 </template>
 
 <script lang="ts">
-import UserDropdownComponent from './UserDropdownComponent.vue';
-import { Component, Vue } from 'vue-property-decorator';
-@Component({
-  components: { UserDropdownComponent },
-})
-export default class MyPageNav extends Vue {}
+  import UserDropdownComponent from './UserDropdownComponent.vue';
+  import Vue from 'vue';
+  import Component from 'vue-class-component'
+  @Component({
+    components: { UserDropdownComponent },
+  })
+  export default class MyPageNav extends Vue {}
 </script>
