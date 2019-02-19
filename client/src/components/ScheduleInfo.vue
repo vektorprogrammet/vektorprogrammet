@@ -52,7 +52,7 @@
         border-radius: 50em;
     }
 
-    //TODO: find id / class to set style for fa-icons
+    //fix asap: find id / class to set style for fa-icons
     #clock {
         font-size: 5em;
     }
