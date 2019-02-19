@@ -10,15 +10,15 @@
 </template>
 
 <script lang="ts">
-import Vue from "vue";
+import Vue from 'vue';
 interface VectorLogo {
   fill: string;
 }
 export default class Vektorlogo extends Vue {
-  vectorLogo1: VectorLogo = {
+  public vectorLogo1: VectorLogo = {
     fill: '',
   };
-  vectorLogo2: VectorLogo = {
+  public vectorLogo2: VectorLogo = {
     fill: '',
   };
 }

@@ -16,15 +16,15 @@
 
 <script lang="ts">
   import {accountService} from '../services';
-  import Vue from 'vue'
+  import Vue from 'vue';
   export default class AssistantNav extends Vue {
-    myProfilePicture: string = '';
-    mounted () {
+    public myProfilePicture: string = '';
+    public mounted() {
       accountService.getProfilePicture().then((result) => {
         console.log(result);
       });
     }
-  };
+  }
 </script>
 
 <style scoped lang="scss">

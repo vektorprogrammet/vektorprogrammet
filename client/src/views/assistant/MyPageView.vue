@@ -7,14 +7,14 @@
 </template>
 
 <script lang="ts">
-import PageHeader from "../../components/PageHeader.vue";
-import MyPageNav from "../../components/MyPageNav.vue";
-import PartnerInfo from "../../components/PartnerInfo.vue";
-import {Component, Vue} from 'vue-property-decorator'
+import PageHeader from '../../components/PageHeader.vue';
+import MyPageNav from '../../components/MyPageNav.vue';
+import PartnerInfo from '../../components/PartnerInfo.vue';
+import {Component, Vue} from 'vue-property-decorator';
 @Component({
-  components: {PageHeader, MyPageNav, PartnerInfo}
+  components: {PageHeader, MyPageNav, PartnerInfo},
 })
-export default class MyPageView extends Vue {};
+export default class MyPageView extends Vue {}
 </script>
 
 <style scoped lang="scss">

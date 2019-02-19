@@ -5,10 +5,8 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  export default class PageHeader extends Vue {
-    name: string = 'PageHeader';
-  };
+  import Vue from 'vue';
+  export default class PageHeader extends Vue {}
 </script>
 
 <style lang="scss" scoped>

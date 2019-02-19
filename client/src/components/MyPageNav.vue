@@ -17,7 +17,7 @@
 import UserDropdownComponent from './UserDropdownComponent.vue';
 import { Component, Vue } from 'vue-property-decorator';
 @Component({
-  components: { UserDropdownComponent }
+  components: { UserDropdownComponent },
 })
 export default class MyPageNav extends Vue {}
 </script>

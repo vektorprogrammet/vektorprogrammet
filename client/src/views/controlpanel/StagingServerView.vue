@@ -31,38 +31,38 @@
 </template>
 
 <script lang="ts">
-import PageHeader from "../../components/PageHeader.vue";
+import PageHeader from '../../components/PageHeader.vue';
 import {Action, Getter} from 'vuex-class';
-import Vue from "vue";
-import {Component} from 'vue-property-decorator'
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
 
 const namespace: string = 'staging';
 @Component({
   components: { PageHeader },
 })
 export default class StagingServerView extends Vue {
-  @Action('getServers', {namespace}) getServers: any;
-  @Action('getDiskSpace', {namespace}) getDiskSpace: any;
-  @Getter('servers', {namespace}) servers: any;
-  @Getter('diskSpaceSize', {namespace}) diskSpaceSize: any;
-  @Getter('diskSpaceUsed', {namespace}) diskSpaceUsed: any;
-  @Getter('diskSpacePercent', {namespace}) diskSpacePercent: any;
-  fields: any[] = [
+  @Action('getServers', {namespace}) public getServers: any;
+  @Action('getDiskSpace', {namespace}) public getDiskSpace: any;
+  @Getter('servers', {namespace}) public servers: any;
+  @Getter('diskSpaceSize', {namespace}) public diskSpaceSize: any;
+  @Getter('diskSpaceUsed', {namespace}) public diskSpaceUsed: any;
+  @Getter('diskSpacePercent', {namespace}) public diskSpacePercent: any;
+  public fields: any[] = [
     {
-      key: "repo"
+      key: 'repo',
     },
     {
-      key: "branch"
+      key: 'branch',
     },
     {
-      key: "url"
-    }
+      key: 'url',
+    },
   ];
-  mounted() {
+  public mounted() {
     this.getServers();
     this.getDiskSpace();
-  };
-};
+  }
+}
 </script>
 
 <style scoped></style>

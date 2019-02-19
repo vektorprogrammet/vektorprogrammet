@@ -35,8 +35,8 @@
 </template>
 
 <script lang="ts">
-  import Vue from "vue";
-  export default class UserDropdownComponent extends Vue {};
+  import Vue from 'vue';
+  export default class UserDropdownComponent extends Vue {}
 </script>
 
 <style scoped>

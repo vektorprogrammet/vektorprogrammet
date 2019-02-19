@@ -6,10 +6,10 @@
 </template>
 
 <script lang="ts">
-import AdminNav from "../../components/AdminNav.vue";
-import { Component, Vue } from "vue-property-decorator";
+import AdminNav from '../../components/AdminNav.vue';
+import { Component, Vue } from 'vue-property-decorator';
 @Component({
-  components: { AdminNav }
+  components: { AdminNav },
 })
 export default class AdminBaseView extends Vue {}
 </script>

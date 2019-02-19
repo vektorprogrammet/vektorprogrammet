@@ -6,11 +6,11 @@
 </template>
 
 <script lang="ts">
-import AssistantNav from "../../components/AssistantNav.vue";
-import Vue from "vue";
-import {Component} from 'vue-property-decorator'
+import AssistantNav from '../../components/AssistantNav.vue';
+import Vue from 'vue';
+import {Component} from 'vue-property-decorator';
 @Component({
-  components: {AssistantNav}
+  components: {AssistantNav},
 })
 export default class AssistantBaseView extends Vue {}
 </script>
