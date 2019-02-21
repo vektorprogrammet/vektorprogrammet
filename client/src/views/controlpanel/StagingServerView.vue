@@ -18,12 +18,12 @@
         v-bind:class="[
           'progress-bar',
           'progress-bar-striped',
-          'progress-bar-animated'
+          'progress-bar-animated',
         ]"
         role="progressbar"
         v-bind:style="{ width: this.diskSpacePercent + '%' }"
       >
-        {{ diskSpacePercent + "%" }} full
+        {{ diskSpacePercent + '%' }} full
       </div>
     </div>
     <p>{{ diskSpaceUsed }} GB used out of {{ diskSpaceSize }} GB total</p>
@@ -32,21 +32,21 @@
 
 <script lang="ts">
 import PageHeader from '../../components/PageHeader.vue';
-import {Action, Getter} from 'vuex-class';
+import { Action, Getter } from 'vuex-class';
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
+import { Component } from 'vue-property-decorator';
 
 const namespace: string = 'staging';
 @Component({
   components: { PageHeader },
 })
 export default class StagingServerView extends Vue {
-  @Action('getServers', {namespace}) public getServers: any;
-  @Action('getDiskSpace', {namespace}) public getDiskSpace: any;
-  @Getter('servers', {namespace}) public servers: any;
-  @Getter('diskSpaceSize', {namespace}) public diskSpaceSize: any;
-  @Getter('diskSpaceUsed', {namespace}) public diskSpaceUsed: any;
-  @Getter('diskSpacePercent', {namespace}) public diskSpacePercent: any;
+  @Action('getServers', { namespace }) public getServers: any;
+  @Action('getDiskSpace', { namespace }) public getDiskSpace: any;
+  @Getter('servers', { namespace }) public servers: any;
+  @Getter('diskSpaceSize', { namespace }) public diskSpaceSize: any;
+  @Getter('diskSpaceUsed', { namespace }) public diskSpaceUsed: any;
+  @Getter('diskSpacePercent', { namespace }) public diskSpacePercent: any;
   public fields: any[] = [
     {
       key: 'repo',

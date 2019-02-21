@@ -38,15 +38,15 @@
 <script lang="ts">
 import PageHeader from '../components/PageHeader.vue';
 import Vue from 'vue';
-import {Component} from 'vue-property-decorator';
-import {Action} from 'vuex-class';
-import {Credentials} from '../store/account.module';
+import { Component } from 'vue-property-decorator';
+import { Action } from 'vuex-class';
+import { Credentials } from '../store/account.module';
 
 @Component({
-  components: {PageHeader},
+  components: { PageHeader },
 })
 export default class LoginView extends Vue {
-  @Action('login', {namespace: 'account'}) public login: any;
+  @Action('login', { namespace: 'account' }) public login: any;
   public form: Credentials = {
     username: '',
     password: '',
@@ -54,7 +54,7 @@ export default class LoginView extends Vue {
   public onSubmit(evt: any) {
     evt.preventDefault();
     this.login(this.form).then(() => {
-      this.$router.push({name: 'my_page'});
+      this.$router.push({ name: 'my_page' });
     });
   }
 }

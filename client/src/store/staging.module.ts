@@ -27,7 +27,7 @@ const state: StagingState = {
 };
 
 const actions = {
-  async getServers({commit}: any) {
+  async getServers({ commit }: any) {
     commit('getServersRequest');
 
     try {
@@ -37,7 +37,7 @@ const actions = {
       commit('getServersFailure', e);
     }
   },
-  async getDiskSpace({commit}: any) {
+  async getDiskSpace({ commit }: any) {
     commit('getDiskSpaceRequest');
 
     try {
@@ -51,9 +51,10 @@ const actions = {
 
 const getters = {
   servers(state: StagingState) {
-    return state.servers.map((s) => (
-      {...s, repo: s.repo.replace('https://github.com/', '')}
-    ));
+    return state.servers.map(s => ({
+      ...s,
+      repo: s.repo.replace('https://github.com/', ''),
+    }));
   },
   diskSpaceSize(state: StagingState) {
     return fileSize.kbToGb(state.diskSpace.size).toFixed(1);
@@ -62,7 +63,7 @@ const getters = {
     return fileSize.kbToGb(state.diskSpace.used).toFixed(1);
   },
   diskSpacePercent(state: StagingState) {
-    return (state.diskSpace.used / state.diskSpace.size * 100).toFixed(1);
+    return ((state.diskSpace.used / state.diskSpace.size) * 100).toFixed(1);
   },
 };
 

@@ -1,6 +1,6 @@
 import { accountService } from '@/services';
-import {ActionTree, GetterTree, Module, MutationTree} from 'vuex';
-import {RootState} from '@/store/types';
+import { ActionTree, GetterTree, Module, MutationTree } from 'vuex';
+import { RootState } from '@/store/types';
 
 export interface User {
   loaded: boolean;
@@ -23,20 +23,23 @@ const defaultState: AccountState = {
   },
 };
 
-const state: AccountState = {...defaultState};
+const state: AccountState = { ...defaultState };
 
 const actions: ActionTree<AccountState, RootState> = {
-  async login({commit}: any, credentials: Credentials) {
+  async login({ commit }: any, credentials: Credentials) {
     commit('loginRequest');
 
     try {
-      const user = await accountService.login(credentials.username, credentials.password);
+      const user = await accountService.login(
+        credentials.username,
+        credentials.password,
+      );
       commit('loginSuccessful', user);
     } catch (e) {
       commit('loginFailure', e);
     }
   },
-  async logout({commit}: any) {
+  async logout({ commit }: any) {
     try {
       await accountService.logout();
       commit('logoutSuccessful');
@@ -44,7 +47,7 @@ const actions: ActionTree<AccountState, RootState> = {
       commit('logoutFailure');
     }
   },
-  async getUser({commit}: any) {
+  async getUser({ commit }: any) {
     try {
       const user = await accountService.getUser();
       commit('loginSuccessful', user);
@@ -67,11 +70,11 @@ const mutations: MutationTree<AccountState> = {
   },
   loginSuccessful(state, user) {
     if (!user.hasOwnProperty('username')) {
-      state.user = {...defaultState.user};
+      state.user = { ...defaultState.user };
       return;
     }
 
-    state.user = {...state.user, ...user};
+    state.user = { ...state.user, ...user };
     state.user.loading = false;
     state.user.loaded = true;
   },
@@ -80,7 +83,7 @@ const mutations: MutationTree<AccountState> = {
     // console.log('ERROR: ', e.message);
   },
   logoutSuccessful(state) {
-    state.user = {...defaultState.user};
+    state.user = { ...defaultState.user };
   },
   logoutFailure() {
     // TODO: Handle error

@@ -4,7 +4,6 @@
     <PageHeader class="header-component"><h1>Min side</h1></PageHeader>
     <ScheduleInfo class="schedule-component"></ScheduleInfo>
     <PartnerInfo class="partner-component"></PartnerInfo>
-
   </div>
 </template>
 
@@ -16,7 +15,7 @@ import ScheduleInfo from '../../components/ScheduleInfo.vue';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 @Component({
-  components: {PageHeader, MyPageNav, PartnerInfo, ScheduleInfo},
+  components: { PageHeader, MyPageNav, PartnerInfo, ScheduleInfo },
 })
 export default class MyPageView extends Vue {}
 </script>
@@ -34,12 +33,11 @@ export default class MyPageView extends Vue {}
   width: 100%;
 }
 
-.header-component {
+.header-component  {
   background-color: #0b58a2;
 }
 
 .partner-component {
-    background-color: #00A6C7;
+  background-color: #00a6c7;
 }
-
 </style>

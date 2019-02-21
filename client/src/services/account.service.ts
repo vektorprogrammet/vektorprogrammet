@@ -1,7 +1,10 @@
 import http from './http.service';
 
 async function login(username: string, password: string) {
-  const response = await http.post('/api/account/login', {username, password});
+  const response = await http.post('/api/account/login', {
+    username,
+    password,
+  });
   return await response.json();
 }
 
@@ -15,8 +18,8 @@ async function getUser() {
 }
 
 async function getProfilePicture() {
-    const response = await http.get('/api/account/profilepicture');
-    return await response.json();
+  const response = await http.get('/api/account/profilepicture');
+  return await response.json();
 }
 
 export const accountService = {

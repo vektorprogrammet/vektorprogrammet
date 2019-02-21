@@ -6,7 +6,7 @@
 
 <style lang="scss">
 #app {
-  font-family: "Montserrat", sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: #333;
   background: #fafdff;
 
@@ -15,7 +15,7 @@
   h3,
   h4,
   h5 {
-    font-family: "Lato", sans-serif;
+    font-family: 'Lato', sans-serif;
     line-height: 1.2;
     font-weight: 700;
   }
