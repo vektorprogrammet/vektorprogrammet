@@ -189,7 +189,7 @@ class Survey implements \JsonSerializable
         $this->teamSurvey = false;
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
-        $this->surveyPopUpMessage = "Svar på undersøkelse!";
+        $this->surveyPopUpMessage = "";
     }
 
 

@@ -66,7 +66,7 @@ class SurveyType extends AbstractType
         ])
 
             ->add('showCustomPopUpMessage', ChoiceType::class, [
-                'label' => 'Egen pop-up melding?',
+                'label' => 'Egendefinert pop-up melding?',
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
@@ -77,8 +77,9 @@ class SurveyType extends AbstractType
             ])
 
             ->add('surveyPopUpMessage', TextType::class, [
-                'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
-                'attr' => array('placeholder' => 'Pop-up melding'),
+                'label' => 'Egendefinert pop-up melding (vises kun hvis ja er valgt)',
+                'attr' => array('placeholder' => 'Svar på undersøkelse!'),
+                'required' => false,
             ])
 
 
