@@ -14,7 +14,7 @@ import MyPageNav from '../../components/MyPageNav.vue';
 import PartnerInfo from '../../components/PartnerInfo.vue';
 import ScheduleInfo from '../../components/ScheduleInfo.vue';
 import Vue from 'vue';
-import Component from 'vue-class-component'
+import Component from 'vue-class-component';
 @Component({
   components: {PageHeader, MyPageNav, PartnerInfo, ScheduleInfo},
 })

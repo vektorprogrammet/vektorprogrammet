@@ -8,7 +8,7 @@
 <script lang="ts">
 import AssistantNav from '../../components/AssistantNav.vue';
 import Vue from 'vue';
-import Component from 'vue-class-component'
+import Component from 'vue-class-component';
 @Component({
   components: {AssistantNav},
 })
