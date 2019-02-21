@@ -72,3 +72,7 @@ services:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         public: false
         tags: [serializer.normalizer]
+
+    AppBundle\MappingProfiles\:
+        resource: '../../src/AppBundle/MappingProfiles/'
+        tags: ['bcc_auto_mapper.map']

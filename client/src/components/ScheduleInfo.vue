@@ -9,10 +9,12 @@
           style="font-size: 5em"
         />
         <h4>Gimse</h4>
+        <h4>Ungdomsskole</h4>
       </b-col>
       <b-col>
         <font-awesome-icon icon="clock" id="clock" style="font-size: 5em" />
         <h4>Mandager</h4>
+        <h4>12:00-14:00</h4>
       </b-col>
       <b-col>
         <font-awesome-icon
@@ -37,23 +39,22 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { accountService } from '../services';
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { accountService } from '../services';
 
 library.add(faMapMarkerAlt, faClock, faCalendarAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 @Component
-export default class AssistantNav extends Vue {
+export default class ScheduleInfo extends Vue {
   public myProfilePicture: string = '';
   public SchoolName: string = '';
   public Weekdays: string = '';
   public Weeknumbers: string = '';
   public mounted() {
-    /*
-            accountService.getScheduleData().then((result) => {
-                console.log(result);
-            });
-        */
-    console.log('Loaded schedulecomponent');
+    accountService.getSheduleInfo().then((result) => {
+      console.log(result);
+      console.log('sup')
+    });
   }
 }
 </script>

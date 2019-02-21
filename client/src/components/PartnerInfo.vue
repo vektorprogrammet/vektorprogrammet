@@ -1,19 +1,19 @@
 <template>
   <div class="content">
-    <h2>Din Vektorpartner:</h2>
+    <h2>Ditt Vektorteam:</h2>
     <b-row>
       <b-col>
         <img
-          src="../assets/logo.png"
+          :src="this.full_path"
           alt="tor1"
           id="Me"
           class="profile-photo"
         />
-        <p>Deg</p>
+        <p>{{this.user_me.fullName}}</p>
       </b-col>
       <b-col>
-        <img v-bind:src="myProfilePicture" alt="tor2" class="profile-photo" />
-        <p>Amir</p>
+        <img  src="../assets/logo.png" alt="tor2" class="profile-photo">
+        <p>Assistent Assistentsson</p>
       </b-col>
     </b-row>
   </div>
@@ -25,10 +25,12 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 @Component
 export default class AssistantNav extends Vue {
-  public myProfilePicture: string = '';
+  private user_me: any;
+  private full_path: string = '';
   public mounted() {
-    accountService.getProfilePicture().then(result => {
-      console.log(result);
+    accountService.getUser().then(result => {
+      this.user_me = result;
+      this.full_path = 'http://localhost:8000/' + this.user_me.picture_path
     });
   }
 }

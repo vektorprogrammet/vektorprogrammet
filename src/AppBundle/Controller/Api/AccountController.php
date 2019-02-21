@@ -2,8 +2,11 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\DataTransferObject\AssistantHistoryDto;
 use AppBundle\DataTransferObject\UserDto;
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\User;
+use BCC\AutoMapperBundle\Mapper\FieldFilter\ObjectMappingFilter;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use AppBundle\Controller\BaseController;
@@ -56,7 +59,6 @@ class AccountController extends BaseController
         $this->get('session')->set('_security_secured_area', serialize($token));
 
         $mapper = $this->get('bcc_auto_mapper.mapper');
-        $mapper->createMap(User::class, UserDto::class);
         $userDto = new UserDto();
         $mapper->map($user, $userDto);
 
@@ -82,4 +84,55 @@ class AccountController extends BaseController
 
         return new JsonResponse($userDto);
     }
+
+    /**
+     * @Route("api/account/mypartner", name="my_partner")
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getMyPartnerAction()
+    {
+        if (!$this->getUser()->isActive()) {
+            throw $this->createAccessDeniedException();
+        }
+        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($this->getUser());
+        if (empty($activeAssistantHistories)) {
+            throw $this->createNotFoundException();
+        }
+
+        $partnerInformations = [];
+        $partnerCount = 0;
+
+        foreach ($activeAssistantHistories as $activeHistory) {
+            $schoolHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
+            $partners = [];
+
+            foreach ($schoolHistories as $sh) {
+                if ($sh->getUser() === $this->getUser()) {
+                    continue;
+                }
+                if ($sh->getDay() !== $activeHistory->getDay()) {
+                    continue;
+                }
+                if ($activeHistory->activeInGroup(1) && $sh->activeInGroup(1) ||
+                    $activeHistory->activeInGroup(2) && $sh->activeInGroup(2)) {
+                    $partners[] = $sh;
+                    $partnerCount++;
+                }
+            }
+            $partnerInformations[] = [
+                'school' => $activeHistory->getSchool(),
+                'assistantHistory' => $activeHistory,
+                'partners' => $partners,
+            ];
+        }
+
+        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $info = [$partnerInformations, $partnerCount, $semester];
+        $mapper = $this->get('bcc_auto_mapper.mapper');
+        $assistantHistoryDto = new AssistantHistoryDto();
+        $mapper->map($activeAssistantHistories[0], $assistantHistoryDto);
+        return new JsonResponse($assistantHistoryDto);
+    }
+
 }

@@ -17,8 +17,9 @@ async function getUser() {
   return await response.json();
 }
 
-async function getProfilePicture() {
-  const response = await http.get('/api/account/profilepicture');
+async function getSheduleInfo() {
+  const response = await http.get('/api/account/mypartner');
+  console.log(await response);
   return await response.json();
 }
 
@@ -26,5 +27,5 @@ export const accountService = {
   login,
   logout,
   getUser,
-  getProfilePicture,
+  getSheduleInfo,
 };
