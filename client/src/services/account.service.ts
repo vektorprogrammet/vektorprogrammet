@@ -17,7 +17,7 @@ async function getUser() {
   return await response.json();
 }
 
-async function getSheduleInfo() {
+async function getScheduleInfo() {
   const response = await http.get('/api/account/mypartner');
   console.log(await response);
   return await response.json();
@@ -27,5 +27,5 @@ export const accountService = {
   login,
   logout,
   getUser,
-  getSheduleInfo,
+  getScheduleInfo,
 };

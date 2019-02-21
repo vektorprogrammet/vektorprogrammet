@@ -1,6 +1,7 @@
 <template>
-  <div class="content" style="padding: 20px 0 150px 0">
+  <div class="content" style="padding: 20px 0 100px 0; align-items: center">
     <h2>Din Assistentstilling:</h2>
+    <br><br><br>
     <b-row>
       <b-col>
         <font-awesome-icon
@@ -8,13 +9,12 @@
           id="marker"
           style="font-size: 5em"
         />
-        <h4>Gimse</h4>
-        <h4>Ungdomsskole</h4>
+        <h4>{{scheduleInfo.school.name}}</h4>
+        <!--h4>Ungdomsskole</h4-->
       </b-col>
       <b-col>
         <font-awesome-icon icon="clock" id="clock" style="font-size: 5em" />
-        <h4>Mandager</h4>
-        <h4>12:00-14:00</h4>
+        <h4>{{scheduleInfo.day}}</h4>
       </b-col>
       <b-col>
         <font-awesome-icon
@@ -22,7 +22,7 @@
           id="calendar"
           style="font-size: 5em"
         />
-        <h4>Uke 33-37</h4>
+        <h4>{{scheduleInfo.bolk}}</h4>
       </b-col>
     </b-row>
   </div>
@@ -36,26 +36,16 @@ import {
   faCalendarAlt,
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { accountService } from '../services';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { accountService } from '../services';
+import { Prop, Watch } from 'vue-property-decorator';
 
 library.add(faMapMarkerAlt, faClock, faCalendarAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 @Component
 export default class ScheduleInfo extends Vue {
-  public myProfilePicture: string = '';
-  public SchoolName: string = '';
-  public Weekdays: string = '';
-  public Weeknumbers: string = '';
-  public mounted() {
-    accountService.getSheduleInfo().then((result) => {
-      console.log(result);
-      console.log('sup')
-    });
-  }
+  @Prop() scheduleInfo: any;
 }
 </script>
 
@@ -70,4 +60,11 @@ export default class ScheduleInfo extends Vue {
 #clock {
   font-size: 5em;
 }
+
+.row {
+  size: auto;
+  text-align: right;
+  background-color: #0b2e13;
+}
+
 </style>

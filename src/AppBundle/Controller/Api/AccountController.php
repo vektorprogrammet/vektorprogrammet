@@ -100,12 +100,13 @@ class AccountController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $partnerInformations = [];
-        $partnerCount = 0;
+        //$partnerInformations = [];
+        //$partnerCount = 0;
+        $partnerHistory = $activeAssistantHistories[0];
 
         foreach ($activeAssistantHistories as $activeHistory) {
             $schoolHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
-            $partners = [];
+            //$partners = [];
 
             foreach ($schoolHistories as $sh) {
                 if ($sh->getUser() === $this->getUser()) {
@@ -116,22 +117,24 @@ class AccountController extends BaseController
                 }
                 if ($activeHistory->activeInGroup(1) && $sh->activeInGroup(1) ||
                     $activeHistory->activeInGroup(2) && $sh->activeInGroup(2)) {
-                    $partners[] = $sh;
-                    $partnerCount++;
+                    //$partners[] = $sh;
+                    //$partnerCount++;
+                    $partnerHistory = $sh;
                 }
             }
-            $partnerInformations[] = [
-                'school' => $activeHistory->getSchool(),
-                'assistantHistory' => $activeHistory,
-                'partners' => $partners,
-            ];
+        //    $partnerInformations[] = [
+        //        'school' => $activeHistory->getSchool(),
+        //        'assistantHistory' => $activeHistory,
+        //        'partners' => $partners,
+        //    ];
         }
 
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
-        $info = [$partnerInformations, $partnerCount, $semester];
+        //$semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        //$info = [$partnerInformations, $partnerCount, $semester];
+
         $mapper = $this->get('bcc_auto_mapper.mapper');
         $assistantHistoryDto = new AssistantHistoryDto();
-        $mapper->map($activeAssistantHistories[0], $assistantHistoryDto);
+        $mapper->map($partnerHistory, $assistantHistoryDto);
         return new JsonResponse($assistantHistoryDto);
     }
 
