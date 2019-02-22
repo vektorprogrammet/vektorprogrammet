@@ -194,17 +194,17 @@ class SurveyController extends BaseController
     {
         $this->ensureAccess($survey);
 
+        $surveyClone = $survey->copy();
+
         $em = $this->getDoctrine()->getManager();
         $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
-        $surveyClone = $survey->copy();
         $surveyClone->setSemester($currentSemester);
 
         if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
-            $form = $this->createForm(SurveyAdminType::class, $survey);
+            $form = $this->createForm(SurveyAdminType::class, $surveyClone);
         } else {
-            $form = $this->createForm(SurveyType::class, $survey);
+            $form = $this->createForm(SurveyType::class, $surveyClone);
         }
-
 
         $em->flush();
 
@@ -221,7 +221,7 @@ class SurveyController extends BaseController
 
         return $this->render('survey/survey_create.html.twig', array(
             'form' => $form->createView(),
-            'survey' => $survey
+            'survey' => $surveyClone
         ));
     }
 
