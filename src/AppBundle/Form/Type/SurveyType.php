@@ -21,9 +21,7 @@ class SurveyType extends AbstractType
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
             'query_builder' => function (SemesterRepository $sr) {
-                return $sr->queryForAllSemestersOrderedByAge()
-                    ->andWhere('Semester.year > :limit')
-                    ->setParameter('limit', SemesterUtil::timeToYear(new \DateTime('now')) - 1);
+                return $sr->queryForAllSemestersOrderedByAge();
             },
         ))
 

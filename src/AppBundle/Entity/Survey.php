@@ -258,6 +258,7 @@ class Survey implements \JsonSerializable
         }
 
         $surveyClone->setTeamSurvey($this->isTeamSurvey());
+        $surveyClone->setName("Kopi av {$surveyClone->getName()}");
 
         return $surveyClone;
     }
