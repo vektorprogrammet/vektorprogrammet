@@ -1,5 +1,5 @@
 <template>
-      <div class="card text-left">
+      <div class="card text-left" style="width: 50%;">
             <div class="card-body">
                   <div class="card-text">
                         <h3 class="card-title">Din vektorpartner</h3>
@@ -35,4 +35,5 @@ export default class MyPartner extends Vue {
 </script>
 
 <style scoped lang="scss">
+
 </style>

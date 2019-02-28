@@ -1,8 +1,10 @@
 <template>
   <div class="content">
     <!--MyPageNav></MyPageNav-->
-    <PageHeader class="header-component"><h1>Min side</h1></PageHeader>
+    <!-- PageHeader class="header-component"><h1>Min side</h1></PageHeader -->
     <ScheduleInfo :scheduleInfo="scheduleInfo" class="schedule-component"></ScheduleInfo>
+    <UpcomingEvents ></UpcomingEvents>
+    <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
     <PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
     <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
     <MyPartner :user_partner="scheduleInfo.user"></MyPartner>
@@ -20,10 +22,12 @@ import Vue from 'vue';
 import Component from 'vue-class-component';
 import {accountService} from "../../services";
 import {Prop} from "vue-property-decorator";
+import UpcomingEvents from "../../components/UpcomingEvents";
+import ContactInfo from "../../components/ContactInfo";
 
 
 @Component({
-  components: { PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, MyPartner},
+  components: {ContactInfo, UpcomingEvents, PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, MyPartner},
 })
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: any;
@@ -31,7 +35,7 @@ export default class MyPageView extends Vue {
     public async mounted() {
         this.user = await accountService.getUser();
         this.scheduleInfo = await  accountService.getScheduleInfo();
-        this.scheduleInfo = (this.scheduleInfo[0])
+        this.scheduleInfo = (this.scheduleInfo[0]);
     }
 
 }

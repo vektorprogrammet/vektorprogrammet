@@ -100,7 +100,7 @@ class AccountController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $partnertHistories = [];
+        $partnerHistories = [];
 
         foreach ($activeAssistantHistories as $activeHistory) {
             $schoolHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
@@ -115,14 +115,14 @@ class AccountController extends BaseController
                 if ($activeHistory->activeInGroup(1) && $sh->activeInGroup(1) ||
                     $activeHistory->activeInGroup(2) && $sh->activeInGroup(2)) {
                     $partners[] = $sh;
-                    $partnertHistories[] = $sh;
+                    $partnerHistories[] = $sh;
                 }
             }
         }
 
         $mapper = $this->get('bcc_auto_mapper.mapper');
         $partnerHistoryDtos = [];
-        foreach ($partnertHistories as $ph) {
+        foreach ($partnerHistories as $ph) {
             $assistantHistoryDto = new AssistantHistoryDto();
             $mapper->map($ph, $assistantHistoryDto);
             $partnerHistoryDtos[] = $assistantHistoryDto;
