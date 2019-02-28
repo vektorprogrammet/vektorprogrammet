@@ -24,9 +24,11 @@
 
 <script lang="ts">
 import Vue from 'vue';
+import Component from "vue-class-component";
 interface VectorLogo {
   fill: string;
 }
+@Component
 export default class Vektorlogo extends Vue {
   public vectorLogo1: VectorLogo = {
     fill: '',

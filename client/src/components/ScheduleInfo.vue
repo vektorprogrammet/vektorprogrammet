@@ -1,6 +1,6 @@
 <template>
   <div class="content" style="padding: 20px 0 100px 0; align-items: center">
-    <h2>Din Assistentstilling:</h2>
+    <h2>Min Assistentstilling:</h2>
     <br><br><br>
     <b-row>
       <b-col>
@@ -8,12 +8,18 @@
           icon="map-marker-alt"
           id="marker"
           style="font-size: 5em"
+          class="mb-4"
         />
         <h4>{{scheduleInfo.school.name}}</h4>
         <!--h4>Ungdomsskole</h4-->
       </b-col>
       <b-col>
-        <font-awesome-icon icon="clock" id="clock" style="font-size: 5em" />
+        <font-awesome-icon
+                icon="clock"
+                id="clock"
+                style="font-size: 5em"
+                class="mb-4"
+        />
         <h4>{{scheduleInfo.day}}</h4>
       </b-col>
       <b-col>
@@ -21,6 +27,7 @@
           icon="calendar-alt"
           id="calendar"
           style="font-size: 5em"
+          class="mb-4"
         />
         <h4>{{scheduleInfo.bolk}}</h4>
       </b-col>

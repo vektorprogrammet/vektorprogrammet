@@ -103,6 +103,7 @@ class AccountController extends BaseController
         //$partnerInformations = [];
         //$partnerCount = 0;
         $partnerHistory = $activeAssistantHistories[0];
+        $partnertHistories = [];
 
         foreach ($activeAssistantHistories as $activeHistory) {
             $schoolHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
@@ -117,9 +118,10 @@ class AccountController extends BaseController
                 }
                 if ($activeHistory->activeInGroup(1) && $sh->activeInGroup(1) ||
                     $activeHistory->activeInGroup(2) && $sh->activeInGroup(2)) {
-                    //$partners[] = $sh;
+                    $partners[] = $sh;
                     //$partnerCount++;
                     $partnerHistory = $sh;
+                    $partnertHistories[] = $sh;
                 }
             }
         //    $partnerInformations[] = [
@@ -133,9 +135,14 @@ class AccountController extends BaseController
         //$info = [$partnerInformations, $partnerCount, $semester];
 
         $mapper = $this->get('bcc_auto_mapper.mapper');
-        $assistantHistoryDto = new AssistantHistoryDto();
-        $mapper->map($partnerHistory, $assistantHistoryDto);
-        return new JsonResponse($assistantHistoryDto);
+        $partnerHistoryDtos = [];
+        foreach ($partnertHistories as $ph) {
+            $assistantHistoryDto = new AssistantHistoryDto();
+            $mapper->map($ph, $assistantHistoryDto);
+            $partnerHistoryDtos[] = $assistantHistoryDto;
+        }
+        //dump($partnerHistoryDtos);
+        return new JsonResponse($partnerHistoryDtos);
     }
 
 }

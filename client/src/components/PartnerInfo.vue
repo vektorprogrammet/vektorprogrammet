@@ -1,24 +1,16 @@
 <template>
   <div class="content">
     <br><br><br>
-    <h2>Ditt Vektorteam:</h2>
+    <h2>Mitt Vektorteam:</h2>
     <b-row>
       <b-col>
-        <img
-          :src="this.full_path_me"
-          alt="Mitt Profilbilde"
-          class="profile-photo"
-        />
+        <ProfilePicture :picture_path="full_path_me" :picture_width="picture_width"/>
           <br><br>
         <h5>{{user_me.fullName}}</h5>
         <p>{{user_me.email}}</p>
       </b-col>
       <b-col>
-        <img
-          :src="this.full_path_partner"
-          alt="Partners profilbilde"
-          class="profile-photo"
-        />
+        <ProfilePicture :picture_path="full_path_partner" :picture_width="picture_width"/>
         <br><br>
         <h5>{{user_partner.fullName}}</h5>
         <p>{{user_partner.email}}</p>
@@ -31,24 +23,16 @@
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import { Prop, Watch } from 'vue-property-decorator';
-
-@Component
-export default class AssistantNav extends Vue {
+import ProfilePicture from "./ProfilePicture";
+@Component({
+    components: {ProfilePicture}
+})
+export default class PartnerInfo extends Vue {
   @Prop() private user_me: any;
   @Prop() private user_partner: any;
+  @Prop() private picture_width: string = '50%';
   private full_path_partner: string = 'http://localhost:8000/' +this.user_partner.picture_path;
   private full_path_me: string = 'http://localhost:8000/' +this.user_me.picture_path;
-  /*@Watch('user_me')
-  onPropertyChanged() {
-    this.full_path_me = 'http://localhost:8000/' +this.user_me.picture_path;
-    this.full_path_partner = 'http://localhost:8000/' + this.user_partner.picture_path;
-    console.log(this.full_path_me)
-  };*/
-  @Watch('user_partner')
-  onPropertyChanged() {
-    this.full_path_partner = 'http://localhost:8000/' + this.user_partner.picture_path;
-    this.full_path_me = 'http://localhost:8000/' +this.user_me.picture_path;
-  };
 }
 </script>
 
@@ -57,5 +41,10 @@ export default class AssistantNav extends Vue {
   max-width: 50%;
   height: auto;
   border-radius: 50em;
+  height: auto;
+  width: 100%;
+  object-fit: fill
 }
+
+
 </style>

@@ -4,6 +4,8 @@
     <PageHeader class="header-component"><h1>Min side</h1></PageHeader>
     <ScheduleInfo :scheduleInfo="scheduleInfo" class="schedule-component"></ScheduleInfo>
     <PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
+    <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
+    <MyPartner :user_partner="scheduleInfo.user"></MyPartner>
   </div>
 </template>
 
@@ -12,24 +14,24 @@ import PageHeader from '../../components/PageHeader.vue';
 import MyPageNav from '../../components/MyPageNav.vue';
 import PartnerInfo from '../../components/PartnerInfo.vue';
 import ScheduleInfo from '../../components/ScheduleInfo.vue';
+import SchoolInfo from '../../components/SchoolInfo.vue';
+import MyPartner from '../../components/MyPartner.vue';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {accountService} from "../../services";
-import { Prop } from 'vue-property-decorator';
+import {Prop} from "vue-property-decorator";
+
+
 @Component({
-  components: { PageHeader, MyPageNav, PartnerInfo, ScheduleInfo },
+  components: { PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, MyPartner},
 })
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: any;
     @Prop() private user: any;
-    public mounted() {
-        accountService.getUser().then(result => {
-            this.user = result;
-        });
-        accountService.getScheduleInfo().then((result) => {
-            this.scheduleInfo = result;
-            console.log(this.scheduleInfo)
-        });
+    public async mounted() {
+        this.user = await accountService.getUser();
+        this.scheduleInfo = await  accountService.getScheduleInfo();
+        this.scheduleInfo = (this.scheduleInfo[0])
     }
 
 }
