@@ -1,9 +1,9 @@
 <template>
     <div class="contact-info">
         <h3>Kontaktinfo</h3>
-        <b-row class="">
+        <b-row class="mt-4 mb-4">
             <b-col>
-                <div class="card accent-info text-left m-lg-5">
+                <div class="card accent-info text-left ml-5 mr-3">
                     <div class="card-body">
                         <div class="card-text">
                             <h3 class="card-title text-dark-blue">Din skolekoordinator</h3>
@@ -15,17 +15,18 @@
                 </div>
             </b-col>
             <b-col>
-                <div class="card accent-info text-left  m-lg-5">
+                <div class="card accent-info text-left  ml-3 mr-3">
                     <div class="card-body">
                         <div class="card-text">
                             <h3 class="card-title text-dark-blue">Din vektorpartner</h3>
                             <b-row>
-                                <b-col class="w-25">
-                                    <ProfilePicture :picture_path="partner.picture_path" :picture_width="picture_width"/>
+                                <b-col cols="5">
+                                    <ProfilePicture :picture_path="full_path" :picture_width="'100%'"/>
                                 </b-col>
                                 <b-col>
-                                    <div class="content">
-                                        <p>{{partner.fullName}} <br>{{partner.email}}</p>
+                                    <div class="content text-md-left">
+                                        <p class="text-dark-blue text-bold">{{partner.fullName}}</p>
+                                        <p class="text-info">{{partner.email}}</p>
                                     </div>
                                 </b-col>
                             </b-row>
@@ -34,12 +35,12 @@
                 </div>
             </b-col>
             <b-col>
-                <div class="card accent-info text-left  m-lg-5">
+                <div class="card accent-info text-left ml-3 mr-5">
                     <div class="card-body">
                         <div class="card-text">
                             <h3 class="card-title text-dark-blue">Kontakt {{school.name}}</h3>
                             <div class="content">
-                                <p>{{school.contactPerson}}<br>
+                                <p class="text-info">{{school.contactPerson}}<br>
                                     {{school.email}}<br>
                                     {{school.phone}}
                                 </p>
@@ -64,9 +65,13 @@
         @Prop() private coordinator: any;
         @Prop() private partner: any;
         @Prop() private school: object;
-        private picture_width: string = '50%';
+        private full_path: string = 'http://localhost:8000/' +this.partner.picture_path;
+        contact_info_picture_width: string = '20%';
     }
 </script>
 
 <style scoped lang="scss">
+    .card {
+        height: 100%;
+    }
 </style>
