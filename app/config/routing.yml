@@ -195,6 +195,41 @@ survey_popup_close:
 
 
 ##########################################
+#             Arrangement                #
+##########################################
+events:
+ path: /kontrollpanel/arrangementer
+ defaults: { _controller: AppBundle:Event:createEvent }
+ methods: [GET]
+
+
+event_create:
+ path: /kontrollpanel/arrangement/opprett
+ defaults: { _controller: AppBundle:Event:createEvent }
+ methods: [GET, POST]
+
+event_edit:
+ path: /kontrollpanel/arrangement/endre/{id}
+ defaults: { _controller: AppBundle:Event:editEvent }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+event_delete:
+ path: /kontrollpanel/arrangement/slett/{id}
+ defaults: { _controller: AppBundle:Event:deleteEvent }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+event_copy:
+ path: /kontrollpanel/arrangement/kopier/{id}
+ defaults: { _controller: AppBundle:Event:copyEvent }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+##########################################
 #             Statistics                 #
 ##########################################
 

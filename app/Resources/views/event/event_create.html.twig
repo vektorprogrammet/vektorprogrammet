@@ -1,0 +1,56 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Nytt Arrangement
+{% endblock %}
+
+{% block stylesheets %}
+
+{% endblock %}
+
+{% block breadcrumb %}
+    {% if event.id %}
+        {# TODO: FIX THIS #}
+        <li class="breadcrumb-item">
+            <a href="{{ path('surveys', {'id': survey.semester.id}) }}">Arrangementer</a>
+        </li>
+        <li class="breadcrumb-item active">{{ event.title }}</li>
+    {% else %}
+        <li class="breadcrumb-item">
+            <a href="{{ path('surveys') }}">Arrangementer</a>
+        </li>
+        <li class="breadcrumb-item active">Nytt arrangement</li>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-comment-o"></i> Arrangement</div>
+                <div class="card-body">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.description ) }}
+                    {{ form_row(form.startTime ) }}
+                    {{ form_row(form.endTime) }}
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-body">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+            </div>
+            <div class="hide">
+                {{ form_rest(form) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
