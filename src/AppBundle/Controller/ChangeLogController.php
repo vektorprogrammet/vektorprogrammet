@@ -18,6 +18,19 @@ class ChangeLogController extends BaseController
         $form = $this->createForm(ChangeLogType::class);
         $form->handleRequest($request);
 
+        if ($form->isValid()) {
+            $this->ensureAccess($changelog);
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($changelog);
+            $em->flush();
+
+            dump($changelog);
+
+            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
+            // after a valid submit, without remaking the form with up to date question objects from the database.
+            return $this->redirect($this->generateUrl('surveys'));
+        }
+
         return $this->render('changelog/changelog_create.html.twig',array(
             'form' => $form->createView(),
             'changelog' => $changelog,

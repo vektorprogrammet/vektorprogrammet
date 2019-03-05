@@ -28,6 +28,7 @@
 
             {{ render(controller("AppBundle:Widget:interviews")) }}
             {{ render(controller("AppBundle:Widget:receipts")) }}
+            {{ render(controller("AppBundle:Widget:changelog")) }}
 
             {% if not admissionPeriod.hasActiveAdmission %}
                 {{ render(controller("AppBundle:Widget:applicationGraph")) }}

@@ -1,0 +1,12 @@
+<div class="col-12 col-md-6 col-xxxl-4">
+    <div class="card">
+        <div class="card-header">
+            <i class="fas fa-list-ul"></i> Changelog
+        </div>
+        <div class="card-body">
+            {% for changeLogItem in changeLogItems %}
+                {{ changeLogItem.title }}
+            {% endfor %}
+        </div>
+    </div>
+</div>

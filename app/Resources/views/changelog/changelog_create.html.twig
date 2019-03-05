@@ -4,8 +4,7 @@
     Ny Changelog
 {% endblock %}
 
-<!-- todo: add breadcrumb
--->
+
 
 {% block javascripts %}
     <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
@@ -27,9 +26,33 @@
                     {{ form_row(form.date) }}
 
                 </div>
+                <button id="submitBtn" class="btn btn-primary right">Send inn</button>
+
+                <div id="sending" style="display: none">
+                    <i class="fa fa-paper-plane fa-2x"></i>
+
+                    <p>Sender svar...</p>
+                </div>
             </div>
 
         </div>
     </div>
+    <script>
+        var btn = document.getElementById("submitBtn");
+        var sending = document.getElementById("sending");
+        //var form = document.getElementsByName("surveyTaken")[0];
+        btn.addEventListener("click", function (e) {
+            if (form.checkValidity()) {
+                btn.style.display = "none";
+                sending.style.display = "block";
+            } else {
+                e.preventDefault();
+                $('#error').show();
+                setTimeout(function () {
+                    $('#error').fadeOut(300);
+                }, 3000)
+            }
+        })
+    </script>
     {{ form_end(form) }}
 {% endblock %}

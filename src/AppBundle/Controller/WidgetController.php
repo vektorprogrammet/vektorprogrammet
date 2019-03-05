@@ -60,4 +60,13 @@ class WidgetController extends BaseController
             'semester' => $semester,
         ]);
     }
+
+    public function changelogAction()
+    {
+        $changeLogItems = $this->getDoctrine()->getRepository('AppBundle:ChangeLogItem')->findAllOrderedByDate();
+
+        return $this->render('widgets/changelog_widget.html.twig', [
+            'changeLogItems' => $changeLogItems,
+        ]);
+    }
 }
