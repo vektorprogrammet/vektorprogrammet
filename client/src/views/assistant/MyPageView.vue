@@ -5,9 +5,10 @@
     <ScheduleInfo :scheduleInfo="scheduleInfo" class="schedule-component"></ScheduleInfo>
     <UpcomingEvents ></UpcomingEvents>
     <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
-    <PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
+    <!--PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
     <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
-    <MyPartner :user_partner="scheduleInfo.user"></MyPartner>
+    <MyPartner :user_partner="scheduleInfo.user"></MyPartner-->
+    <Map class="mb-5"></Map>
   </div>
 </template>
 
@@ -24,17 +25,18 @@ import {accountService} from "../../services";
 import {Prop} from "vue-property-decorator";
 import UpcomingEvents from "../../components/UpcomingEvents";
 import ContactInfo from "../../components/ContactInfo";
+import Map from "../../components/Map";
 
 
 @Component({
-  components: {ContactInfo, UpcomingEvents, PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, MyPartner},
+  components: {ContactInfo, UpcomingEvents, PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, MyPartner, Map},
 })
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: any;
     @Prop() private user: any;
     public async mounted() {
         this.user = await accountService.getUser();
-        this.scheduleInfo = await  accountService.getScheduleInfo();
+        this.scheduleInfo = await accountService.getScheduleInfo();
         this.scheduleInfo = (this.scheduleInfo[0]);
     }
 

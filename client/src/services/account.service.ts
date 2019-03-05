@@ -19,8 +19,16 @@ async function getUser() {
 
 async function getScheduleInfo() {
   const response = await http.get('/api/account/mypartner');
-  console.log(await response);
   return await response.json();
+}
+
+async function getLocationByName(input: string='Gimse Ungdomsskole') {
+    const formatted_input = input.replace(/\s+/g, '+');
+    console.log(formatted_input);
+    const api_key = 'AIzaSyCfhjte_te7uOqtXmZkvtrhdZaNMaVIGso';
+    const response = await http.get('https://maps.googleapis.com/maps/api/geocode/json?address=' +
+    formatted_input + '&key=' + api_key);
+    return await response.json()
 }
 
 export const accountService = {
@@ -28,4 +36,5 @@ export const accountService = {
   logout,
   getUser,
   getScheduleInfo,
+  getLocationByName,
 };
