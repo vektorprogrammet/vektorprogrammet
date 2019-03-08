@@ -6,7 +6,6 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Form\Type\SurveyExecuteType;
-use AppBundle\Form\Type\SurveySchoolSpecificExecuteType;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
@@ -39,7 +38,7 @@ class SurveyController extends BaseController
 
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
 
-        $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken, array(
+        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
             'validation_groups' => array('schoolSpecific'),
         ));
         $form->handleRequest($request);
@@ -134,7 +133,7 @@ class SurveyController extends BaseController
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
         $surveyTaken = $this->get(SurveyManager::class)->predictSurveyTakenAnswers($surveyTaken);
 
-        $form = $this->createForm(SurveySchoolSpecificExecuteType::class, $surveyTaken);
+        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
