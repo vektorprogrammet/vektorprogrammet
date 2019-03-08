@@ -30,7 +30,8 @@ class SurveyExecuteType extends AbstractType
                         'school.departments',
                         'department',
                         'WITH',
-                        'department.id = :departmentId')
+                        'department.id = :departmentId'
+                    )
                     ->where('assistantHistories.semester = :semester')
                     ->orderBy('school.name', 'ASC')
                     ->setParameters([
