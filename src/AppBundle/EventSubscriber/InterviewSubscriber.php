@@ -84,7 +84,7 @@ class InterviewSubscriber implements EventSubscriberInterface
             ->setReplyTo(array($interviewer->getDepartment()->getEmail() => 'Vektorprogrammet'))
             ->setTo($application->getUser()->getEmail())
             ->setReplyTo($interviewer->getEmail())
-            ->setBody($this->twig->render('interview/interview_summary_email.html.twig', array(
+            ->setBody($this->twig->render('interview/survey_email_notification.html.twig', array(
                 'application' => $application,
                 'interviewer' => $interviewer,
             )))

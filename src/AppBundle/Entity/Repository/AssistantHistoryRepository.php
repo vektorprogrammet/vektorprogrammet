@@ -245,7 +245,5 @@ class AssistantHistoryRepository extends EntityRepository
         $bolkNames = array_combine($names, $names);
 
         return $bolkNames;
-
     }
-
 }
