@@ -55,7 +55,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey1->setName("Team Survey");
         $teamSurvey1->setSurveyPopUpMessage("Svar på undersøkelse!");
         $teamSurvey1->setConfidential(false);
-        $teamSurvey1->setTeamSurvey(true);
+        $teamSurvey1->setTargetAudience(1);
         $teamSurvey1->addSurveyQuestion($surveyQuestion1);
         $teamSurvey1->addSurveyQuestion($surveyQuestion2);
         $teamSurvey1->setShowCustomPopUpMessage(true);
@@ -70,7 +70,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey2->setName("Team Survey");
         $teamSurvey2->setSurveyPopUpMessage("Svar på undersøkelse!");
         $teamSurvey2->setConfidential(false);
-        $teamSurvey2->setTeamSurvey(true);
+        $teamSurvey2->setTargetAudience(1);
         $teamSurvey2->addSurveyQuestion($surveyQuestion1);
         $teamSurvey2->addSurveyQuestion($surveyQuestion2);
         $teamSurvey2->setShowCustomPopUpMessage(true);
@@ -84,7 +84,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey3->setName("Team Survey");
         $teamSurvey3->setSurveyPopUpMessage("Svar på undersøkelse!");
         $teamSurvey3->setConfidential(false);
-        $teamSurvey3->setTeamSurvey(true);
+        $teamSurvey3->setTargetAudience(1);
         $teamSurvey3->addSurveyQuestion($surveyQuestion1);
         $teamSurvey3->addSurveyQuestion($surveyQuestion2);
         $teamSurvey3->setShowCustomPopUpMessage(true);
@@ -98,7 +98,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey4->setName("Team Survey");
         $teamSurvey4->setSurveyPopUpMessage("Svar på undersøkelse!");
         $teamSurvey4->setConfidential(false);
-        $teamSurvey4->setTeamSurvey(true);
+        $teamSurvey4->setTargetAudience(1);
         $teamSurvey4->addSurveyQuestion($surveyQuestion1);
         $teamSurvey4->addSurveyQuestion($surveyQuestion2);
         $teamSurvey4->setShowCustomPopUpMessage(true);
@@ -109,7 +109,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $schoolSurvey1->setShowCustomFinishPage(false);
         $schoolSurvey1->setName("School Survey");
         $schoolSurvey1->setConfidential(false);
-        $schoolSurvey1->setTeamSurvey(false);
+        $schoolSurvey1->setTargetAudience(0);
         $schoolSurvey1->addSurveyQuestion($surveyQuestion3);
 
 

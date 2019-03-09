@@ -11,7 +11,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use AppBundle\Utils\SemesterUtil;
 
 class SurveyType extends AbstractType
 {
@@ -52,13 +51,15 @@ class SurveyType extends AbstractType
             ))
 
 
-        ->add('team_survey', ChoiceType::class, [
-            'label' => 'Dette er en undersøkelse rettet mot teammedlem (popup)',
+        ->add('targetAudience', ChoiceType::class, [
+            'label' => 'Denne undersøkelsen er rettet mot:',
             'multiple' => false,
             'expanded' => true,
             'choices' => [
-                'Ja' => true,
-                'Nei' => false,
+                'Skoler/Elever' => 0,
+                'Teammedlemmer' => 1,
+                'Assistenter' => 2,
+
             ]
 
         ])

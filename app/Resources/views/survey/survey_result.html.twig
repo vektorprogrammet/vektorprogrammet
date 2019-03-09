@@ -33,7 +33,7 @@
                 {% if textAnswers[key] %}
                     <h4>{{ key }}</h4>
                     {% for answer in textAnswers[key] %}
-                        {% if survey.teamsurvey %}
+                        {% if surveyTargetAudience == 1%}
                             <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.teamName }}</b></p>
                         {% else %}
                             <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.schoolName }}</b></p>

@@ -123,6 +123,20 @@ survey_show_team:
  requirements:
   id: \d+
 
+survey_show_assistant:
+ path: /assistentundersokelse/{id}
+ defaults: { _controller: AppBundle:Survey:showAssistant }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+survey_show_assistant_id:
+ path: /assistentundersokelse/{id}/{userid}
+ defaults: { _controller: AppBundle:Survey:showAssistantId }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
 
 survey_show_admin:
  path: /kontrollpanel/undersokelse/{id}
@@ -130,6 +144,7 @@ survey_show_admin:
  methods: [GET, POST]
  requirements:
   id: \d+
+
 
 survey_team_show_admin:
   path: /kontrollpanel/undersokelse/{id}
@@ -193,6 +208,19 @@ survey_popup_close:
  requirements:
   id: \d+
 
+##########################################
+#                AB-Test-Groups          #
+##########################################
+ab_group_create:
+ path: /kontrollpanel/abgroup/opprett
+ defaults: { _controller: AppBundle:ABTest:createABTest }
+ methods: [GET, POST]
+ab_group_delete:
+ path: /kontrollpanel/abgroup/slett/{id}
+ defaults: { _controller: AppBundle:ABTest:deleteABTest }
+ methods: [POST]
+ requirements:
+  id: \d+
 
 ##########################################
 #             Statistics                 #

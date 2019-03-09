@@ -76,11 +76,11 @@ class Survey implements \JsonSerializable
 
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
+     * @var int
+     * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
+     *
      */
-    private $teamSurvey;
+    private $targetAudience;
 
 
     /**
@@ -186,7 +186,7 @@ class Survey implements \JsonSerializable
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
         $this->showCustomFinishPage = false;
         $this->confidential = false;
-        $this->teamSurvey = false;
+        $this->targetAudience = 0;
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
         $this->surveyPopUpMessage = "";
@@ -257,7 +257,7 @@ class Survey implements \JsonSerializable
             $surveyClone->addSurveyQuestion($questionClone);
         }
 
-        $surveyClone->setTeamSurvey($this->isTeamSurvey());
+        $surveyClone->setTargetAudience($this->getTargetAudience());
         $surveyClone->setName("Kopi av {$surveyClone->getName()}");
 
         return $surveyClone;
@@ -333,20 +333,21 @@ class Survey implements \JsonSerializable
         $this->confidential = $confidential;
     }
 
+
     /**
-     * @param boolean $teamSurvey
+     * @param int $targetAudience
      */
-    public function setTeamSurvey($teamSurvey)
+    public function setTargetAudience($targetAudience)
     {
-        $this->teamSurvey = $teamSurvey;
+        $this->targetAudience = $targetAudience;
     }
 
     /**
-     * @return boolean
+     * @return int
      */
-    public function isTeamSurvey() : bool
+    public function getTargetAudience() : int
     {
-        return $this->teamSurvey;
+        return $this->targetAudience;
     }
 
     /**

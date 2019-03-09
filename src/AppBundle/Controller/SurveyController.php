@@ -12,6 +12,7 @@ use AppBundle\Service\SurveyManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -31,7 +32,7 @@ class SurveyController extends BaseController
      */
     public function showAction(Request $request, Survey $survey)
     {
-        if ($survey->isTeamSurvey()) {
+        if ($survey->getTargetAudience() !== 0) {
             return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
         }
 
@@ -66,19 +67,31 @@ class SurveyController extends BaseController
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
-            'teamSurvey' => $survey->isTeamSurvey(),
+            'surveyTargetAudience' => $survey->getTargetAudience(),
 
 
         ));
     }
 
+    public function showAssistantAction(Request $request, Survey $survey)
+    {
+        # TODO : SHOULD ADD SUPPORT FOR BEING LOGGED IN
+        #$user = $this->getUser();
+        if ($survey->getTargetAudience() !== 2) {
+            return $this->redirectToCorrectSurvey($survey);
+        }
+
+    }
+
+
+
     public function showTeamAction(Request $request, Survey $survey)
     {
         $user = $this->getUser();
-        if (!$survey->isTeamSurvey()) {
-            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
+        if ($survey->getTargetAudience() !== 1) {
+            return $this->redirectToCorrectSurvey($survey);
         } elseif ($user === null) {
-            throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!");
+            throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!"); #TODO: Denne burde vel heller vise til logg inn siden
         }
         $surveyTaken = $this->get(SurveyManager::class)->initializeTeamSurveyTaken($survey, $user);
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
@@ -120,14 +133,15 @@ class SurveyController extends BaseController
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
-            'teamSurvey' => $survey->isTeamSurvey(),
+            'surveyTargetAudience' => $survey->getTargetAudience(),
 
         ));
     }
 
     public function showAdminAction(Request $request, Survey $survey)
     {
-        if ($survey->isTeamSurvey()) {
+        if ($survey->getTargetAudience() === 1)
+        {
             throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
@@ -155,7 +169,7 @@ class SurveyController extends BaseController
 
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
-            'teamSurvey' => $survey->isTeamSurvey(),
+            'surveyTargetAudience' => $survey->getTargetAudience(),
         ));
     }
 
@@ -332,18 +346,18 @@ class SurveyController extends BaseController
             throw new AccessDeniedException();
         }
 
-        if ($survey->isTeamSurvey()) {
+        if ($survey->getTargetAudience() === 0) {
             return $this->render('survey/survey_result.html.twig', array(
                 'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithTeamResults($survey),
                 'survey' => $survey,
-                'teamSurvey' => $survey->isTeamSurvey(),
+                'surveyTargetAudience' => $survey->getTargetAudience(),
             ));
         }
 
         return $this->render('survey/survey_result.html.twig', array(
             'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithSchoolResults($survey),
             'survey' => $survey,
-            'teamSurvey' => $survey->isTeamSurvey(),
+            'surveyTargetAudience' => $survey->getTargetAudience(),
 
         ));
     }
@@ -376,7 +390,21 @@ class SurveyController extends BaseController
         return new JsonResponse();
     }
 
-    /**
+
+    private function redirectToCorrectSurvey(Survey $survey)
+    {
+        if ($survey->getTargetAudience() === 0) {
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
+        } else if ($survey->getTargetAudience() === 1) {
+            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
+        } else if ($survey->getTargetAudience() === 2) {
+            return $this->redirectToRoute('survey_show_assistant', array('id' => $survey->getId()));
+        }
+        throw new RouteNotFoundException();
+    }
+
+
+            /**
      * @param Survey $survey
      *
      * @throws AccessDeniedException

@@ -225,4 +225,27 @@ class AssistantHistoryRepository extends EntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    /**
+     * @return string[]
+     *
+     */
+    public function findAllBolkNames() : array
+    {
+        $bolkNames = $this->createQueryBuilder('ah')
+            ->select('ah.bolk')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+        $names = array();
+        foreach ($bolkNames as $name) {
+            $names[] = array_pop($name);
+        }
+        $bolkNames = array_combine($names, $names);
+
+        return $bolkNames;
+
+    }
+
 }
