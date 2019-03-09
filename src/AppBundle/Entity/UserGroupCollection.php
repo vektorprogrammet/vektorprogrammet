@@ -6,11 +6,11 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="ab_test")
+ * @ORM\Table(name="usergroup_collection")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ABTestRepository")
  *
  */
-class ABTest
+class UserGroupCollection
 {
     /**
      * @ORM\Id
@@ -36,7 +36,7 @@ class ABTest
 
     /**
      * @var UserGroup[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\UserGroup")
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\UserGroup", mappedBy="usergroupcollection_usergroup")
      */
     private $userGroups;
 
@@ -69,7 +69,7 @@ class ABTest
 
     public function __construct(){
         $this->userGroups = array();
-        $this->name = "ABTestGroup";
+        $this->name = "Brukerinndeling";
         $this->teams = array();
         $this->semesters = array();
         $this->assistantsDepartments = array();
@@ -77,6 +77,10 @@ class ABTest
         $this->numberUserGroups = 2;
     }
 
+    public function __toString()
+    {
+        return $this->name;
+    }
 
     /**
      * @param UserGroup[] $userGroups

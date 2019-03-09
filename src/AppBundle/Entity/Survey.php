@@ -192,6 +192,16 @@ class Survey implements \JsonSerializable
         $this->surveyPopUpMessage = "";
     }
 
+    public function __toString()
+    {
+        $str = $this->name;
+        if ($this->getDepartment())
+        {
+            $str = $str.", ".$this->getDepartment();
+        }
+        return $str;
+    }
+
 
     /**
      * Get id.

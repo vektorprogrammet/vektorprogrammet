@@ -3,7 +3,7 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\ABTest;
+use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\User;
@@ -13,7 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
-class ABTestManager
+class UserGroupCollectionManager
 {
     private $em;
 
@@ -24,15 +24,15 @@ class ABTestManager
     }
 
     /**
-     * @param ABTest $ABTest
-     * @return ABTest
+     * @param UserGroupCollection $userGroupCollection
+     * @return UserGroupCollection
      */
-    public function initializeABTest(ABTest $ABTest)
+    public function initializeABTest(UserGroupCollection $userGroupCollection)
     {
-        $users = $this->findUsers($ABTest);
+        $users = $this->findUsers($userGroupCollection);
         shuffle($users);
-        $groupSize = intdiv(sizeof($users), $ABTest->getNumberUserGroups());
-        if ($ABTest->getNumberUserGroups() < 1){
+        $groupSize = intdiv(sizeof($users), $userGroupCollection->getNumberUserGroups());
+        if ($userGroupCollection->getNumberUserGroups() < 1){
             throw new \InvalidArgumentException("Ugyldig antall grupper. Må være over 1.");
         }
         elseif($groupSize<1)
@@ -44,7 +44,7 @@ class ABTestManager
 
         // Divide the remainder users over the first few groups
         $i = 0;
-        while(sizeof($userGroupings)>$ABTest->getNumberUserGroups())
+        while(sizeof($userGroupings)>$userGroupCollection->getNumberUserGroups())
         {
             $userRemainderGroup = array_pop($userGroupings);
             foreach($userRemainderGroup as $user)
@@ -54,36 +54,39 @@ class ABTestManager
             }
         }
 
+        $this->em->persist($userGroupCollection);
+
         $userGroups = array();
         $groupName = 'A';
         foreach($userGroupings as $userGrouping)
         {
             $userGroup = new UserGroup();
             $userGroup->setName($groupName);
+            $userGroup->setUserGroupCollection($userGroupCollection);
             $groupName++;
             $this->em->persist($userGroup);
             $userGroup->setUsers($userGrouping);
             $userGroups[] = $userGroup;
         }
+
+        $userGroupCollection->setUserGroups($userGroups);
         $this->em->flush();
 
-        $ABTest->setUserGroups($userGroups);
-
-        return $ABTest;
+        return $userGroupCollection;
 
     }
 
-    private function findUsers(ABTest $ABTest){
+    private function findUsers(UserGroupCollection $userGroupCollection){
         $teamMembershipRepository = $this->em->getRepository('AppBundle:TeamMembership');
 
         $teamMemberships = array();
-        foreach ($ABTest->getTeams() as $team)
+        foreach ($userGroupCollection->getTeams() as $team)
         {
             $teamMemberships = array_merge($teamMemberships, $teamMembershipRepository->findByTeam($team));
         }
 
         $teamMembershipsFilteredBySemesters = array();
-        foreach ($ABTest->getSemesters() as $semester)
+        foreach ($userGroupCollection->getSemesters() as $semester)
         {
             $teamMembershipsFilteredBySemesters = array_merge($teamMembershipsFilteredBySemesters,
                 $teamMembershipRepository->filterNotInSemester($teamMemberships, $semester));
@@ -96,13 +99,13 @@ class ABTestManager
 
         $assistantHistoryRepository = $this->em->getRepository('AppBundle:AssistantHistory');
         $assistantHistories = array();
-        foreach ($ABTest->getAssistantsDepartments() as $department){
-            foreach ($ABTest->getSemesters() as $semester){
+        foreach ($userGroupCollection->getAssistantsDepartments() as $department){
+            foreach ($userGroupCollection->getSemesters() as $semester){
                 $assistantHistories = array_merge($assistantHistories,
                     $assistantHistoryRepository->findByDepartmentAndSemester($department, $semester));
             }
         }
-        $bolks = $ABTest->getAssistantBolks();
+        $bolks = $userGroupCollection->getAssistantBolks();
 
         $assistantHistories = array_filter(
             $assistantHistories,

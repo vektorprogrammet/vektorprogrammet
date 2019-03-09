@@ -38,11 +38,23 @@ class UserGroup
      */
     private $users;
 
+
+    /**
+     * @var UserGroupCollection
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserGroupCollection")
+     */
+    private $userGroupCollection;
+
     public function __construct()
     {
         $this->users = array();
         $this->name = "";
         $this->isInUse = false;
+    }
+
+    public function __toString()
+    {
+        return $this->name;
     }
 
     /**
@@ -100,6 +112,24 @@ class UserGroup
     {
         $this->isInUse = $isInUse;
     }
+
+    /**
+     * @return UserGroupCollection
+     */
+    public function getUserGroupCollection(): UserGroupCollection
+    {
+        return $this->userGroupCollection;
+    }
+
+    /**
+     * @param UserGroupCollection $userGroupCollection
+     */
+    public function setUserGroupCollection(UserGroupCollection $userGroupCollection): void
+    {
+        $this->userGroupCollection = $userGroupCollection;
+    }
+
+
 
 
 

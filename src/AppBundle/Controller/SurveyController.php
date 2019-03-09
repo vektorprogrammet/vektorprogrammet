@@ -84,6 +84,14 @@ class SurveyController extends BaseController
     }
 
 
+    public function showAssistantIdAction(Request $request, Survey $survey)
+    {
+        if ($survey->getTargetAudience() !== 2) {
+            return $this->redirectToCorrectSurvey($survey);
+        }
+
+    }
+
 
     public function showTeamAction(Request $request, Survey $survey)
     {

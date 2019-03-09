@@ -208,16 +208,23 @@ survey_popup_close:
  requirements:
   id: \d+
 
-##########################################
-#                AB-Test-Groups          #
-##########################################
-ab_group_create:
- path: /kontrollpanel/abgroup/opprett
- defaults: { _controller: AppBundle:ABTest:createABTest }
+survey_notifier_create:
+ path: /kontrollpanel/undersokelsepaaminner/opprett
+ defaults: { _controller: AppBundle:SurveyNotifier:createSurveyNotifier }
  methods: [GET, POST]
-ab_group_delete:
- path: /kontrollpanel/abgroup/slett/{id}
- defaults: { _controller: AppBundle:ABTest:deleteABTest }
+
+
+
+##########################################
+#                Usergroupings           #
+##########################################
+usergroup_collection_create:
+ path: /kontrollpanel/userbasegrouping/opprett
+ defaults: { _controller: AppBundle:UserGroupCollection:createUserGroupCollection }
+ methods: [GET, POST]
+usergroup_collection_delete:
+ path: /kontrollpanel/userbasegrouping/slett/{id}
+ defaults: { _controller: AppBundle:UserGroupCollection:deleteUserGroupCollection }
  methods: [POST]
  requirements:
   id: \d+

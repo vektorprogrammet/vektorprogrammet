@@ -3,7 +3,7 @@
 namespace AppBundle\Form\Type;
 
 
-use AppBundle\Entity\ABTest;
+use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
@@ -15,7 +15,7 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ABTestType extends AbstractType
+class UserGroupCollectionType extends AbstractType
 {
     private $isCreate;
     private $bolkNames;
@@ -80,7 +80,7 @@ class ABTestType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            "data_class" => ABTest::class,
+            "data_class" => UserGroupCollection::class,
             'bolkNames' => array(),
             'isCreate' => true,
 
@@ -89,6 +89,6 @@ class ABTestType extends AbstractType
 
     public function getName()
     {
-        return 'app_bundle_ab_test_type';
+        return 'app_bundle_usergroup_collection_type';
     }
 }
