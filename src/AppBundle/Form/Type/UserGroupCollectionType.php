@@ -2,7 +2,6 @@
 
 namespace AppBundle\Form\Type;
 
-
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
@@ -25,12 +24,12 @@ class UserGroupCollectionType extends AbstractType
         $this->bolkNames =  $options['bolkNames'];
 
         $builder
-            ->add("name", TextType::class,[
+            ->add("name", TextType::class, [
                 'label' => 'Navn på inndeling'
 
             ])
 
-            ->add("numberUserGroups", IntegerType::class,[
+            ->add("numberUserGroups", IntegerType::class, [
                 'label' => "Antall inndelinger brukere skal deles inn i",
                 'disabled' => !$this->isCreate
 
@@ -55,7 +54,7 @@ class UserGroupCollectionType extends AbstractType
 
             ])
 
-            ->add("assistantsDepartments", EntityType::class,[
+            ->add("assistantsDepartments", EntityType::class, [
                 'label' => false,
                 "expanded" => true,
                 "multiple" => true,
@@ -64,7 +63,10 @@ class UserGroupCollectionType extends AbstractType
 
             ])
 
-            ->add('assistantBolks', ChoiceType::class, [
+            ->add(
+                'assistantBolks',
+                ChoiceType::class,
+                [
                 'label' => 'Bolk',
                 'multiple' => true,
                 'expanded' => true,
@@ -74,7 +76,6 @@ class UserGroupCollectionType extends AbstractType
             ]
 
             );
-
     }
 
     public function configureOptions(OptionsResolver $resolver)

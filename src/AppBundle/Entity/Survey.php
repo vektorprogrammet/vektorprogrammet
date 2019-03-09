@@ -195,8 +195,7 @@ class Survey implements \JsonSerializable
     public function __toString()
     {
         $str = $this->name;
-        if ($this->getDepartment())
-        {
+        if ($this->getDepartment()) {
             $str = $str.", ".$this->getDepartment();
         }
         return $str;

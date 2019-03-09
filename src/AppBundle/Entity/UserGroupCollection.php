@@ -1,13 +1,14 @@
 <?php
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Table(name="usergroup_collection")
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ABTestRepository")
+ * @ORM\Entity
  *
  */
 class UserGroupCollection
@@ -35,25 +36,25 @@ class UserGroupCollection
 
 
     /**
-     * @var UserGroup[]
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\UserGroup", mappedBy="usergroupcollection_usergroup")
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="userGroupCollection")
      */
     private $userGroups;
 
     /**
-     * @var Team[]
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Team")
      */
     private $teams;
 
     /**
-     * @var Semester[]
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Semester")
      */
     private $semesters;
 
     /**
-     * @var Department[]
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Department")
      */
     private $assistantsDepartments;
@@ -67,7 +68,8 @@ class UserGroupCollection
 
 
 
-    public function __construct(){
+    public function __construct()
+    {
         $this->userGroups = array();
         $this->name = "Brukerinndeling";
         $this->teams = array();
@@ -101,7 +103,7 @@ class UserGroupCollection
     /**
      * @return UserGroup[]
      */
-    public function getUserGroups(): array
+    public function getUserGroups()
     {
         return $this->userGroups;
     }
@@ -109,7 +111,7 @@ class UserGroupCollection
     /**
      * @return Team[]
      */
-    public function getTeams() : array
+    public function getTeams()
     {
         return $this->teams;
     }
@@ -117,7 +119,7 @@ class UserGroupCollection
     /**
      * @return Semester[]
      */
-    public function getSemesters() : array
+    public function getSemesters()
     {
         return $this->semesters;
     }
@@ -125,7 +127,7 @@ class UserGroupCollection
     /**
      * @return Department[]
      */
-    public function getAssistantsDepartments() : array
+    public function getAssistantsDepartments()
     {
         return $this->assistantsDepartments;
     }
@@ -133,7 +135,7 @@ class UserGroupCollection
     /**
      * @return array
      */
-    public function getAssistantBolks() : array
+    public function getAssistantBolks()
     {
         return $this->assistantBolks;
     }
@@ -202,9 +204,4 @@ class UserGroupCollection
     {
         $this->numberUserGroups = $numberUserGroups;
     }
-
-
-
-
-
 }

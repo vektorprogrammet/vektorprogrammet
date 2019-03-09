@@ -24,27 +24,27 @@ class SurveyNotification
 
     /**
      * @var User
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      */
     private $user;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $timeOfFirstVisit;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=true)
      */
     private $timeNotificationSent;
 
     /**
-     * @var Survey
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Survey")
+     * @var SurveyNotifier
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SurveyNotifier", inversedBy="surveyNotifications")
      */
-    private $survey;
+    private $surveyNotifier;
 
     /**
      * @var string
@@ -68,6 +68,14 @@ class SurveyNotification
         return $this->id;
     }
 
+    /**
+     * @return User
+     */
+    public function getUser(): User
+    {
+        return $this->user;
+    }
+
 
     /**
      * @param User $user
@@ -87,9 +95,19 @@ class SurveyNotification
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime?
      */
-    public function getTimeNotificationSent(): \DateTime
+    public function getTimeOfFirstVisit(): ?\DateTime
+    {
+        return $this->timeOfFirstVisit;
+    }
+
+
+
+    /**
+     * @return \DateTime?
+     */
+    public function getTimeNotificationSent(): ?\DateTime
     {
         return $this->timeNotificationSent;
     }
@@ -103,19 +121,19 @@ class SurveyNotification
     }
 
     /**
-     * @return Survey
+     * @return SurveyNotifier
      */
-    public function getSurvey(): Survey
+    public function getSurveyNotifier(): SurveyNotifier
     {
-        return $this->survey;
+        return $this->surveyNotifier;
     }
 
     /**
-     * @param Survey $survey
+     * @param SurveyNotifier $surveyNotifier
      */
-    public function setSurvey(Survey $survey): void
+    public function setSurveyNotifier(SurveyNotifier $surveyNotifier): void
     {
-        $this->survey = $survey;
+        $this->surveyNotifier = $surveyNotifier;
     }
 
     /**
@@ -125,6 +143,4 @@ class SurveyNotification
     {
         return $this->userIdentifier;
     }
-
 }
-

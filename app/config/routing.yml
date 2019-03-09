@@ -118,21 +118,21 @@ survey_show:
 
 survey_show_team:
  path: /teamundersokelse/{id}
- defaults: { _controller: AppBundle:Survey:showTeam }
+ defaults: { _controller: AppBundle:Survey:showUser}
  methods: [GET, POST]
  requirements:
   id: \d+
 
 survey_show_assistant:
  path: /assistentundersokelse/{id}
- defaults: { _controller: AppBundle:Survey:showAssistant }
+ defaults: { _controller: AppBundle:Survey:showUser }
  methods: [GET, POST]
  requirements:
   id: \d+
 
 survey_show_assistant_id:
  path: /assistentundersokelse/{id}/{userid}
- defaults: { _controller: AppBundle:Survey:showAssistantId }
+ defaults: { _controller: AppBundle:Survey:showId }
  methods: [GET, POST]
  requirements:
   id: \d+

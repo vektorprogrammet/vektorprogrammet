@@ -2,8 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
@@ -33,17 +34,20 @@ class UserGroup
 
 
     /**
-     * @var User[]
-     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User", mappedBy = "usergroup_user")
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\User")
      */
     private $users;
 
 
+
     /**
      * @var UserGroupCollection
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserGroupCollection")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserGroupCollection", inversedBy="userGroups")
+     * @ORM\JoinColumn
      */
     private $userGroupCollection;
+
 
     public function __construct()
     {
@@ -68,7 +72,7 @@ class UserGroup
     /**
      * @return User[]
      */
-    public function getUsers(): array
+    public function getUsers()
     {
         return $this->users;
     }
@@ -128,11 +132,4 @@ class UserGroup
     {
         $this->userGroupCollection = $userGroupCollection;
     }
-
-
-
-
-
-
-
 }

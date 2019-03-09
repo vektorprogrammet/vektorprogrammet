@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
+use AppBundle\Entity\SurveyNotification;
+use AppBundle\Entity\User;
 use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveyType;
@@ -32,16 +34,14 @@ class SurveyController extends BaseController
      */
     public function showAction(Request $request, Survey $survey)
     {
-        if ($survey->getTargetAudience() !== 0) {
-            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
-        }
-
-
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
-
-        $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
-            'validation_groups' => array('schoolSpecific'),
-        ));
+        if ($survey->getTargetAudience() === 0) {
+            $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
+                'validation_groups' => array('schoolSpecific'),
+            ));
+        }else{
+            $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
+        }
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
@@ -68,40 +68,46 @@ class SurveyController extends BaseController
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
             'surveyTargetAudience' => $survey->getTargetAudience(),
-
-
         ));
     }
 
-    public function showAssistantAction(Request $request, Survey $survey)
-    {
-        # TODO : SHOULD ADD SUPPORT FOR BEING LOGGED IN
-        #$user = $this->getUser();
-        if ($survey->getTargetAudience() !== 2) {
-            return $this->redirectToCorrectSurvey($survey);
-        }
 
-    }
-
-
-    public function showAssistantIdAction(Request $request, Survey $survey)
+    /**
+     * @param Request $request
+     * @param Survey $survey
+     * @param string $userid
+     *
+     *
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function showIdAction(Request $request, Survey $survey, string $userid)
     {
         if ($survey->getTargetAudience() !== 2) {
             return $this->redirectToCorrectSurvey($survey);
         }
 
+        $em = $this->getDoctrine()->getManager();
+        $notification = $em->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
+        if($notification === null) return $this->redirectToCorrectSurvey($survey);
+        if ($notification->getTimeOfFirstVisit() !== null) $notification->setTimeOfFirstVisit(new \DateTime());
+        $user = $notification->getUser();
+
+        return $this->showUserAction($request, $survey, $user, $userid);
     }
 
 
-    public function showTeamAction(Request $request, Survey $survey)
+    public function showUserAction(Request $request, Survey $survey)
     {
         $user = $this->getUser();
-        if ($survey->getTargetAudience() !== 1) {
-            return $this->redirectToCorrectSurvey($survey);
-        } elseif ($user === null) {
-            throw new AccessDeniedException("Dette er en teamundersøkese. Logg inn for å ta den!"); #TODO: Denne burde vel heller vise til logg inn siden
+        if ($user === null) {
+            throw new AccessDeniedException("Logg inn for å ta undersøkelsen!");
         }
-        $surveyTaken = $this->get(SurveyManager::class)->initializeTeamSurveyTaken($survey, $user);
+        return $this->showUserMainAction($request, $survey, $user);
+    }
+
+    private function showUserMainAction(Request $request, Survey $survey, User $user, string $identifier = null)
+    {
+        $surveyTaken = $this->get(SurveyManager::class)->initializeUserSurveyTaken($survey, $user);
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
@@ -112,7 +118,6 @@ class SurveyController extends BaseController
                 $allTakenSurveys = $em
                     ->getRepository('AppBundle:SurveyTaken')
                     ->findAllBySurveyAndUser($survey, $user);
-
 
                 if (!empty($allTakenSurveys)) {
                     foreach ($allTakenSurveys as $oldTakenSurvey) {
@@ -133,10 +138,17 @@ class SurveyController extends BaseController
                 $this->addFlash('success', 'Mottatt svar!');
             } else {
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
-            }
 
-            //New form without previous answers
-            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
+                if ($survey->getTargetAudience() === 1) $route = 'survey_show_team';
+                elseif($survey->getTargetAudience() === 2  && $identifier !== null) $route = 'survey_show_assistant_id';
+                else return $this->redirectToCorrectSurvey($survey);
+
+                $parameters = array('id' => $survey->getId());
+                if($identifier !== null) $parameters += array('userid' => $identifier);
+
+                //New form without previous answers
+                return $this->redirectToRoute($route, $parameters);
+            }
         }
 
         return $this->render('survey/takeSurvey.html.twig', array(
@@ -148,8 +160,7 @@ class SurveyController extends BaseController
 
     public function showAdminAction(Request $request, Survey $survey)
     {
-        if ($survey->getTargetAudience() === 1)
-        {
+        if ($survey->getTargetAudience() === 1) {
             throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
@@ -403,16 +414,16 @@ class SurveyController extends BaseController
     {
         if ($survey->getTargetAudience() === 0) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-        } else if ($survey->getTargetAudience() === 1) {
+        } elseif ($survey->getTargetAudience() === 1) {
             return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
-        } else if ($survey->getTargetAudience() === 2) {
+        } elseif ($survey->getTargetAudience() === 2) {
             return $this->redirectToRoute('survey_show_assistant', array('id' => $survey->getId()));
         }
         throw new RouteNotFoundException();
     }
 
 
-            /**
+    /**
      * @param Survey $survey
      *
      * @throws AccessDeniedException

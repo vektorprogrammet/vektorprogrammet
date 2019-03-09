@@ -32,14 +32,13 @@ class SurveyManager
             $answer = new SurveyAnswer();
             $answer->setSurveyQuestion($surveyQuestion);
             $answer->setSurveyTaken($surveyTaken);
-
             $surveyTaken->addSurveyAnswer($answer);
         }
 
         return $surveyTaken;
     }
 
-    public function initializeTeamSurveyTaken(Survey $survey, User $user)
+    public function initializeUserSurveyTaken(Survey $survey, User $user)
     {
         $surveyTaken = $this->initializeSurveyTaken($survey);
         $surveyTaken->setUser($user);
@@ -230,9 +229,9 @@ class SurveyManager
 
     public function getSurveyTargetAudienceString(Survey $survey) : string
     {
-        if ($survey->getTargetAudience() === 1){
+        if ($survey->getTargetAudience() === 1) {
             return "Team";
-        }elseif ($survey->getTargetAudience() === 2) {
+        } elseif ($survey->getTargetAudience() === 2) {
             return "Assistent";
         }
 

@@ -2,12 +2,13 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="surveynotifier")
+ * @ORM\Table(name="survey_notifier")
  */
 class SurveyNotifier
 {
@@ -28,9 +29,16 @@ class SurveyNotifier
 
     /**
      * @var UserGroup
-     * @ORM\OneToOne(targetEntity="UserGroup")
+     * @ORM\ManyToOne(targetEntity="UserGroup")
      */
     private $usergroup;
+
+
+    /**
+     * @var ArrayCollection
+     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotifier")
+     */
+    private $surveyNotifications;
 
 
     /**
@@ -63,6 +71,8 @@ class SurveyNotifier
         $this->name ="";
         $this->isEmail = false;
         $this->isSMS = false;
+        $this->surveyNotifications = array();
+        $this->timeOfNotification = new \DateTime('tomorrow');
 
     }
 
@@ -171,6 +181,21 @@ class SurveyNotifier
         $this->name = $name;
     }
 
+    /**
+     * @return SurveyNotification[]
+     */
+    public function getSurveyNotifications(): array
+    {
+        return $this->surveyNotifications;
+    }
+
+    /**
+     * @param SurveyNotification[] $surveyNotifications
+     */
+    public function setSurveyNotifications(array $surveyNotifications): void
+    {
+        $this->surveyNotifications = $surveyNotifications;
+    }
 
 
 

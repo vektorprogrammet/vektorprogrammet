@@ -15,10 +15,8 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyNotifierType extends AbstractType
 {
-
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-
         $builder
             ->add("name", TextType::class, [
                 'label' => 'Navn på varsel',
@@ -57,11 +55,11 @@ class SurveyNotifierType extends AbstractType
 
 
             ->add("survey", EntityType::class, [
-            'label' => "Varsel skal sendes om følgende undersøkelse",
-            "expanded" => false,
-            "multiple" => false,
-            "class" => Survey::class,
-            "group_by" => "semester",
+                'label' => "Varsel skal sendes om følgende undersøkelse",
+                "expanded" => false,
+                "multiple" => false,
+                "class" => Survey::class,
+                "group_by" => "semester",
         ]);
     }
 

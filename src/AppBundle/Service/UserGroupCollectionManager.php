@@ -10,8 +10,7 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroup;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Route;
-use Symfony\Component\Routing\RouterInterface;
+
 
 class UserGroupCollectionManager
 {
@@ -25,18 +24,15 @@ class UserGroupCollectionManager
 
     /**
      * @param UserGroupCollection $userGroupCollection
-     * @return UserGroupCollection
      */
-    public function initializeABTest(UserGroupCollection $userGroupCollection)
+    public function initializeUserGroupCollection(UserGroupCollection $userGroupCollection)
     {
         $users = $this->findUsers($userGroupCollection);
         shuffle($users);
         $groupSize = intdiv(sizeof($users), $userGroupCollection->getNumberUserGroups());
-        if ($userGroupCollection->getNumberUserGroups() < 1){
+        if ($userGroupCollection->getNumberUserGroups() < 1) {
             throw new \InvalidArgumentException("Ugyldig antall grupper. Må være over 1.");
-        }
-        elseif($groupSize<1)
-        {
+        } elseif ($groupSize<1) {
             throw new \UnexpectedValueException("For få brukere til slik inndeling. Valgt inndeling ga ".sizeof($users)." brukere");
         }
 
@@ -44,11 +40,9 @@ class UserGroupCollectionManager
 
         // Divide the remainder users over the first few groups
         $i = 0;
-        while(sizeof($userGroupings)>$userGroupCollection->getNumberUserGroups())
-        {
+        while (sizeof($userGroupings)>$userGroupCollection->getNumberUserGroups()) {
             $userRemainderGroup = array_pop($userGroupings);
-            foreach($userRemainderGroup as $user)
-            {
+            foreach ($userRemainderGroup as $user) {
                 $userGroupings[$i][] = $user;
                 $i += 1;
             }
@@ -56,64 +50,70 @@ class UserGroupCollectionManager
 
         $this->em->persist($userGroupCollection);
 
-        $userGroups = array();
         $groupName = 'A';
-        foreach($userGroupings as $userGrouping)
-        {
+        foreach ($userGroupings as $userGrouping) {
             $userGroup = new UserGroup();
             $userGroup->setName($groupName);
             $userGroup->setUserGroupCollection($userGroupCollection);
             $groupName++;
-            $this->em->persist($userGroup);
             $userGroup->setUsers($userGrouping);
-            $userGroups[] = $userGroup;
+            $this->em->persist($userGroup);
         }
-
-        $userGroupCollection->setUserGroups($userGroups);
         $this->em->flush();
 
-        return $userGroupCollection;
 
     }
 
-    private function findUsers(UserGroupCollection $userGroupCollection){
+    private function findUsers(UserGroupCollection $userGroupCollection)
+    {
         $teamMembershipRepository = $this->em->getRepository('AppBundle:TeamMembership');
 
         $teamMemberships = array();
-        foreach ($userGroupCollection->getTeams() as $team)
-        {
+        foreach ($userGroupCollection->getTeams() as $team) {
             $teamMemberships = array_merge($teamMemberships, $teamMembershipRepository->findByTeam($team));
         }
 
         $teamMembershipsFilteredBySemesters = array();
-        foreach ($userGroupCollection->getSemesters() as $semester)
-        {
-            $teamMembershipsFilteredBySemesters = array_merge($teamMembershipsFilteredBySemesters,
-                $teamMembershipRepository->filterNotInSemester($teamMemberships, $semester));
+        foreach ($userGroupCollection->getSemesters() as $semester) {
+            $teamMembershipsFilteredBySemesters = array_merge(
+                $teamMembershipsFilteredBySemesters,
+                $teamMembershipRepository->filterNotInSemester($teamMemberships, $semester)
+            );
         }
 
         $teamUsersFiltered = array_map(
-            function (TeamMembership $teammembership){return $teammembership->getUser();},
-            $teamMembershipsFilteredBySemesters);
+            function (TeamMembership $teammembership) {
+                return $teammembership->getUser();
+            },
+            $teamMembershipsFilteredBySemesters
+        );
 
 
         $assistantHistoryRepository = $this->em->getRepository('AppBundle:AssistantHistory');
         $assistantHistories = array();
-        foreach ($userGroupCollection->getAssistantsDepartments() as $department){
-            foreach ($userGroupCollection->getSemesters() as $semester){
-                $assistantHistories = array_merge($assistantHistories,
-                    $assistantHistoryRepository->findByDepartmentAndSemester($department, $semester));
+        foreach ($userGroupCollection->getAssistantsDepartments() as $department) {
+            foreach ($userGroupCollection->getSemesters() as $semester) {
+                $assistantHistories = array_merge(
+                    $assistantHistories,
+                    $assistantHistoryRepository->findByDepartmentAndSemester($department, $semester)
+                );
             }
         }
         $bolks = $userGroupCollection->getAssistantBolks();
 
         $assistantHistories = array_filter(
             $assistantHistories,
-            function (AssistantHistory $assistantHistory) use ($bolks){ return in_array($assistantHistory->getBolk(),$bolks);});
+            function (AssistantHistory $assistantHistory) use ($bolks) {
+                return in_array($assistantHistory->getBolk(), $bolks);
+            }
+        );
 
         $assistantsFiltered= array_map(
-            function (AssistantHistory $assistantHistory){return $assistantHistory->getUser();},
-            $assistantHistories);
+            function (AssistantHistory $assistantHistory) {
+                return $assistantHistory->getUser();
+            },
+            $assistantHistories
+        );
 
 
         $users = array_merge($teamUsersFiltered, $assistantsFiltered);
@@ -121,8 +121,4 @@ class UserGroupCollectionManager
 
         return $usersUnique;
     }
-
-
-
-
 }
