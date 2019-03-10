@@ -85,8 +85,6 @@ class SurveyNotifier
         $this->isAllSent = false;
         $this->isActive = false;
         $this->notificationType = SurveyNotifier::$EMAIL_NOTIFICATION;
-
-
     }
 
     /**
@@ -226,9 +224,4 @@ class SurveyNotifier
     {
         $this->isActive = $isActive;
     }
-
-
-
-
-
 }

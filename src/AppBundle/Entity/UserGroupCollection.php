@@ -226,7 +226,4 @@ class UserGroupCollection
     {
         $this->isActive = $isActive;
     }
-
-
-
 }

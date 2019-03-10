@@ -166,6 +166,4 @@ class SurveyNotification
     {
         $this->isSent = $isSent;
     }
-
-
 }
