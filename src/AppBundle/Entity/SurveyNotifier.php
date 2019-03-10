@@ -12,6 +12,10 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  */
 class SurveyNotifier
 {
+    public static $EMAIL_NOTIFICATION = 0;
+    public static $SMS_NOTIFICATION = 1;
+
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -29,14 +33,14 @@ class SurveyNotifier
 
     /**
      * @var UserGroup
-     * @ORM\ManyToOne(targetEntity="UserGroup")
+     * @ORM\ManyToOne(targetEntity="UserGroup", cascade={"persist"})
      */
-    private $usergroup;
+    private $userGroup;
 
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotifier")
+     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotifier", cascade={"remove"})
      */
     private $surveyNotifications;
 
@@ -54,25 +58,34 @@ class SurveyNotifier
     private $timeOfNotification;
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean")
+     * @var int
+     * @ORM\Column(type="integer")
      */
-    private $isEmail;
+    private $notificationType;
 
     /**
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $isSMS;
+    private $isAllSent;
+
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean", options={"default"=false})
+     */
+    private $isActive;
+
 
 
     public function __construct()
     {
         $this->name ="";
-        $this->isEmail = false;
-        $this->isSMS = false;
         $this->surveyNotifications = array();
         $this->timeOfNotification = new \DateTime('tomorrow');
+        $this->isAllSent = false;
+        $this->isActive = false;
+        $this->notificationType = SurveyNotifier::$EMAIL_NOTIFICATION;
+
 
     }
 
@@ -88,17 +101,17 @@ class SurveyNotifier
     /**
      * @return UserGroup?
      */
-    public function getUsergroup(): ?UserGroup
+    public function getUserGroup(): ?UserGroup
     {
-        return $this->usergroup;
+        return $this->userGroup;
     }
 
     /**
-     * @param UserGroup $usergroup
+     * @param UserGroup $userGroup
      */
-    public function setUsergroup(UserGroup $usergroup): void
+    public function setUserGroup(UserGroup $userGroup): void
     {
-        $this->usergroup = $usergroup;
+        $this->userGroup = $userGroup;
     }
 
     /**
@@ -133,37 +146,6 @@ class SurveyNotifier
         $this->timeOfNotification = $timeOfNotification;
     }
 
-    /**S
-     * @return bool
-     */
-    public function isEmail(): bool
-    {
-        return $this->isEmail;
-    }
-
-    /**
-     * @param bool $isEmail
-     */
-    public function setIsEmail(bool $isEmail): void
-    {
-        $this->isEmail = $isEmail;
-    }
-
-    /**
-     * @return bool
-     */
-    public function isSMS(): bool
-    {
-        return $this->isSMS;
-    }
-
-    /**
-     * @param bool $isSMS
-     */
-    public function setIsSMS(bool $isSMS): void
-    {
-        $this->isSMS = $isSMS;
-    }
 
     /**
      * @return string
@@ -184,7 +166,7 @@ class SurveyNotifier
     /**
      * @return SurveyNotification[]
      */
-    public function getSurveyNotifications(): array
+    public function getSurveyNotifications()
     {
         return $this->surveyNotifications;
     }
@@ -196,6 +178,56 @@ class SurveyNotifier
     {
         $this->surveyNotifications = $surveyNotifications;
     }
+
+    /**
+     * @return bool
+     */
+    public function isAllSent(): bool
+    {
+        return $this->isAllSent;
+    }
+
+    /**
+     * @param bool $isAllSent
+     */
+    public function setIsAllSent(bool $isAllSent): void
+    {
+        $this->isAllSent = $isAllSent;
+    }
+
+    /**
+     * @return int
+     */
+    public function getNotificationType(): int
+    {
+        return $this->notificationType;
+    }
+
+    /**
+     * @param int $notificationType
+     */
+    public function setNotificationType(int $notificationType): void
+    {
+        $this->notificationType = $notificationType;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     */
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+
 
 
 

@@ -9,7 +9,6 @@ use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
 
-
 class SurveyNotificationRepository extends EntityRepository
 {
 

@@ -42,7 +42,7 @@ class SurveyNotification
 
     /**
      * @var SurveyNotifier
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\SurveyNotifier", inversedBy="surveyNotifications")
+     * @ORM\ManyToOne(targetEntity="SurveyNotifier", inversedBy="surveyNotifications")
      */
     private $surveyNotifier;
 
@@ -52,10 +52,17 @@ class SurveyNotification
      */
     private $userIdentifier;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $isSent;
+
 
     public function __construct()
     {
         $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(12));
+        $this->isSent = false;
     }
 
     /**
@@ -143,4 +150,22 @@ class SurveyNotification
     {
         return $this->userIdentifier;
     }
+
+    /**
+     * @return bool
+     */
+    public function isSent(): bool
+    {
+        return $this->isSent;
+    }
+
+    /**
+     * @param bool $isSent
+     */
+    public function setIsSent(bool $isSent): void
+    {
+        $this->isSent = $isSent;
+    }
+
+
 }

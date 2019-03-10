@@ -66,6 +66,11 @@ class UserGroupCollection
      */
     private $assistantBolks;
 
+    /**
+     * @var bool
+     * @ORM\Column(type="boolean")
+     */
+    private $isActive;
 
 
     public function __construct()
@@ -77,6 +82,7 @@ class UserGroupCollection
         $this->assistantsDepartments = array();
         $this->assistantBolks = array();
         $this->numberUserGroups = 2;
+        $this->isActive = false;
     }
 
     public function __toString()
@@ -204,4 +210,23 @@ class UserGroupCollection
     {
         $this->numberUserGroups = $numberUserGroups;
     }
+
+    /**
+     * @return bool
+     */
+    public function isActive(): bool
+    {
+        return $this->isActive;
+    }
+
+    /**
+     * @param bool $isActive
+     */
+    public function setIsActive(bool $isActive): void
+    {
+        $this->isActive = $isActive;
+    }
+
+
+
 }

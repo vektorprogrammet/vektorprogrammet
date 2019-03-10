@@ -219,6 +219,18 @@
                     'survey_results',
                 ]
             } %}
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'survey_notifiers',
+                icon: 'bell',
+                name: 'Undersøkelsevarsler',
+                activeRoutes: [
+                    'survey_notifier_create',
+                    'survey_notifier_edit',
+                    'survey_notifier_delete',
+                ]
+            } %}
+
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'todo_list',
                 icon: 'clipboard-list',

@@ -15,15 +15,19 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyNotifierType extends AbstractType
 {
+    private $canEdit;
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->canEdit = $options['canEdit'];
         $builder
             ->add("name", TextType::class, [
                 'label' => 'Navn på varsel',
             ])
 
             ->add("timeOfNotification", DateTimeType::class, [
-                'label' => "Varsel skal sendes fra",
+                'label' => "Varsel skal sendes fra (merk: vil bare tillate å sende fra gitt dato, vil ikke skje automatisk)",
+                'disabled' => !$this->canEdit
+
             ])
 
             ->add("usergroup", EntityType::class, [
@@ -32,26 +36,21 @@ class SurveyNotifierType extends AbstractType
                 "multiple" => false,
                 "class" => UserGroup::class,
                 "group_by" => "userGroupCollection",
+                'disabled' => !$this->canEdit
 
             ])
 
-            ->add("isEmail", ChoiceType::class, [
-                'label' => "Skal varsel sendes på e-post?",
+            ->add("notificationType", ChoiceType::class, [
+                'label' => "Varselstype",
                 "multiple" => false,
+                "expanded" => false,
                 "choices" => array(
-                    "Ja" => true,
-                    "Nei" => false,
+                    "E-post" => SurveyNotifier::$EMAIL_NOTIFICATION,
+                    "SMS" => SurveyNotifier::$SMS_NOTIFICATION,
                 ),
+                'disabled' => !$this->canEdit
             ])
 
-            ->add("isSMS", ChoiceType::class, [
-                'label' => "Skal varsel sendes på e-post?",
-                "multiple" => false,
-                "choices" => array(
-                    "Ja" => true,
-                    "Nei" => false,
-                ),
-            ])
 
 
             ->add("survey", EntityType::class, [
@@ -60,13 +59,16 @@ class SurveyNotifierType extends AbstractType
                 "multiple" => false,
                 "class" => Survey::class,
                 "group_by" => "semester",
-        ]);
+                'disabled' => !$this->canEdit
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
             "data_class" => SurveyNotifier::class,
+            "canEdit" => true,
+
         ]);
     }
 

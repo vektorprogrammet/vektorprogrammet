@@ -39,7 +39,7 @@ class SurveyController extends BaseController
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
                 'validation_groups' => array('schoolSpecific'),
             ));
-        }else{
+        } else {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         }
         $form->handleRequest($request);
@@ -88,11 +88,17 @@ class SurveyController extends BaseController
 
         $em = $this->getDoctrine()->getManager();
         $notification = $em->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
-        if($notification === null) return $this->redirectToCorrectSurvey($survey);
-        if ($notification->getTimeOfFirstVisit() !== null) $notification->setTimeOfFirstVisit(new \DateTime());
+        if ($notification === null) {
+            return $this->redirectToCorrectSurvey($survey);
+        }
+        if ($notification->getTimeOfFirstVisit() === null) {
+            $notification->setTimeOfFirstVisit(new \DateTime());
+            $em->persist($notification);
+            $em->flush();
+        }
         $user = $notification->getUser();
 
-        return $this->showUserAction($request, $survey, $user, $userid);
+        return $this->showUserMainAction($request, $survey, $user, $userid);
     }
 
 
@@ -139,12 +145,18 @@ class SurveyController extends BaseController
             } else {
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
 
-                if ($survey->getTargetAudience() === 1) $route = 'survey_show_team';
-                elseif($survey->getTargetAudience() === 2  && $identifier !== null) $route = 'survey_show_assistant_id';
-                else return $this->redirectToCorrectSurvey($survey);
+                if ($survey->getTargetAudience() === 1) {
+                    $route = 'survey_show_team';
+                } elseif ($survey->getTargetAudience() === 2  && $identifier !== null) {
+                    $route = 'survey_show_assistant_id';
+                } else {
+                    return $this->redirectToCorrectSurvey($survey);
+                }
 
                 $parameters = array('id' => $survey->getId());
-                if($identifier !== null) $parameters += array('userid' => $identifier);
+                if ($identifier !== null) {
+                    $parameters += array('userid' => $identifier);
+                }
 
                 //New form without previous answers
                 return $this->redirectToRoute($route, $parameters);
@@ -355,7 +367,6 @@ class SurveyController extends BaseController
         $em->remove($survey);
         $em->flush();
         $response['success'] = true;
-
         return new JsonResponse($response);
     }
 

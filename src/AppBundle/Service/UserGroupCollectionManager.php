@@ -11,7 +11,6 @@ use AppBundle\Entity\UserGroup;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 
-
 class UserGroupCollectionManager
 {
     private $em;
@@ -60,8 +59,6 @@ class UserGroupCollectionManager
             $this->em->persist($userGroup);
         }
         $this->em->flush();
-
-
     }
 
     private function findUsers(UserGroupCollection $userGroupCollection)

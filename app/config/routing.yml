@@ -208,11 +208,36 @@ survey_popup_close:
  requirements:
   id: \d+
 
+survey_notifiers:
+ path: /kontrollpanel/undersokelse_varsel
+ defaults: { _controller: AppBundle:SurveyNotifier:showSurveyNotifier }
+ methods: [GET]
+
 survey_notifier_create:
- path: /kontrollpanel/undersokelsepaaminner/opprett
+ path: /kontrollpanel/undersokelse_varsel/opprett
  defaults: { _controller: AppBundle:SurveyNotifier:createSurveyNotifier }
  methods: [GET, POST]
 
+survey_notifier_edit:
+  path: /kontrollpanel/undersokelse_varsel/rediger/{id}
+  defaults: { _controller: AppBundle:SurveyNotifier:createSurveyNotifier }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
+survey_notifier_delete:
+  path: /kontrollpanel/undersokelse_varsel/slett/{id}
+  defaults: { _controller: AppBundle:SurveyNotifier:deleteSurveyNotifier }
+  methods: [POST]
+  requirements:
+    id: \d+
+
+survey_notifier_send:
+ path: /kontrollpanel/undersokelse_varsel/send/{id}
+ defaults: { _controller: AppBundle:SurveyNotifier:sendSurveyNotifications }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
 
 
 ##########################################

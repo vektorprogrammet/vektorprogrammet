@@ -28,9 +28,9 @@ class UserGroup
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable = false)
+     * @ORM\Column(type="boolean")
      */
-    private $isInUse;
+    private $isActive;
 
 
     /**
@@ -43,17 +43,18 @@ class UserGroup
 
     /**
      * @var UserGroupCollection
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserGroupCollection", inversedBy="userGroups")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserGroupCollection", inversedBy="userGroups", cascade={"persist"})
      * @ORM\JoinColumn
      */
     private $userGroupCollection;
+
 
 
     public function __construct()
     {
         $this->users = array();
         $this->name = "";
-        $this->isInUse = false;
+        $this->isActive = false;
     }
 
     public function __toString()
@@ -104,17 +105,17 @@ class UserGroup
     /**
      * @return bool
      */
-    public function isInUse(): bool
+    public function isActive(): bool
     {
-        return $this->isInUse;
+        return $this->isActive;
     }
 
     /**
-     * @param bool $isInUse
+     * @param bool $isActive
      */
-    public function setIsInUse(bool $isInUse): void
+    public function setIsActive(bool $isActive): void
     {
-        $this->isInUse = $isInUse;
+        $this->isActive = $isActive;
     }
 
     /**
