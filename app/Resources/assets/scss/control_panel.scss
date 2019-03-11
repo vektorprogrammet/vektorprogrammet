@@ -863,6 +863,11 @@ button.secretly-not-a-button {
   min-width: 100%;
 }
 
+.table {
+  min-height: 140px;
+
+}
+
 .not-clickable {
   cursor: default!important;
   &:focus{

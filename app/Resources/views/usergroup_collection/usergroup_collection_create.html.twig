@@ -2,9 +2,9 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item">
-        <a href="{{ path('access_rules_show') }}">Samlinger av brukergrupper</a>
+        <a href="{{ path('usergroup_collections') }}">Brukergruppersamlinger</a>
     </li>
-    <li class="breadcrumb-item active">{{ isCreate ? 'Create rule' : accessRule.name }}</li>
+    <li class="breadcrumb-item active">{{ isCreate ? 'Lag brukergruppesamling' : userGroupCollection.name }}</li>
 {% endblock %}
 
 {% block body %}
@@ -12,7 +12,7 @@
         <div class="col-12 col-xl-10 col-xxl-9 col-xxxl-7">
             {{ form_start(form) }}
             <div class="card">
-                <div class="card-header"><i class="fa fa-align-justify"></i> {{ isCreate ? 'Inndel i brukergrupper' : userGroupCollection.name }}</div>
+                <div class="card-header"><i class="fa fa-align-justify"></i> {{ isCreate ? 'Generelt' : userGroupCollection.name }}</div>
                 <div class="card-body">
                     <div class="row">
                         <div class="col-12">
@@ -42,7 +42,7 @@
                         </div>
                     </div>
                     <div class="card">
-                        <div class="card-header"><i class="fas fa-users"></i> Brukergrupper</div>
+                        <div class="card-header"><i class="fas fa-users"></i> Tilhørighet</div>
                         <div class="card-body">
                             {{ form_row(form.teams) }}
                                 <label class="mb-0">

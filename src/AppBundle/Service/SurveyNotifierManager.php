@@ -22,6 +22,8 @@ class SurveyNotifierManager
     private $logger;
     private $router;
     private $smsSender;
+    private $userGroupCollectionManager;
+
 
 
     /**
@@ -33,7 +35,7 @@ class SurveyNotifierManager
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender, UserGroupCollectionManager $userGroupCollectionManager)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -41,12 +43,20 @@ class SurveyNotifierManager
         $this->em = $em;
         $this->router = $router;
         $this->smsSender = $smsSender;
+        $this->userGroupCollectionManager = $userGroupCollectionManager;
     }
     public function initializeSurveyNotifier(SurveyNotifier $surveyNotifier)
     {
+        $userGroup = $surveyNotifier->getUserGroup();
+        $userGroup->setIsActive(true);
+        $userGroupCollection = $userGroup ->getUserGroupCollection();
+        $this->userGroupCollectionManager->updateActive($userGroupCollection);
         $this->em->persist($surveyNotifier);
+        $this->em->persist($userGroup);
+
         $survey = $surveyNotifier->getSurvey();
         $users = $surveyNotifier->getUserGroup()->getUsers();
+
 
         $notifications = array();
         foreach ($users as $user) {
@@ -69,12 +79,10 @@ class SurveyNotifierManager
     {
         $this->isAllSent($surveyNotifier);
         $surveyNotifier->setIsActive(true);
-        $surveyNotifier->getUserGroup()->setIsActive(true);
-        $surveyNotifier->getUserGroup()->getUserGroupCollection()->setIsActive(true);
         $this->em->persist($surveyNotifier);
         $this->em->flush();
 
-        if ($surveyNotifier->isAllSent()) {
+        if ($surveyNotifier->isAllSent()){
             return;
         } elseif ($surveyNotifier->getNotificationType() === SurveyNotifier::$SMS_NOTIFICATION) {
             $this->sendSMS($surveyNotifier);
@@ -82,7 +90,6 @@ class SurveyNotifierManager
             $this->sendEmail($surveyNotifier);
         }
     }
-    ## TODO : REMOVE DATETIME PICKER
 
     ## TODO: REWRITE MESSAGES
 
@@ -94,14 +101,9 @@ class SurveyNotifierManager
     {
         $surveyid = $surveyNotifier->getSurvey()->getId();
         foreach ($surveyNotifier->getSurveyNotifications() as $notification) {
-            if ($notification->isSent()) {
-                return;
-            }
+            if ($notification->isSent()) return;
             $notification->setIsSent(true);
             $this->em->persist($notification);
-            $this->em->flush();
-
-
             $notification->setTimeNotificationSent(new \DateTime());
             $user = $notification->getUser();
             $identifier = $notification->getUserIdentifier();
@@ -134,6 +136,8 @@ class SurveyNotifierManager
         }
 
         $this->isAllSent($surveyNotifier);
+        $this->em->flush();
+
     }
 
     private function sendEmail(SurveyNotifier $surveyNotifier)
@@ -141,12 +145,9 @@ class SurveyNotifierManager
         $fromEmail = 'amir@vektorprogrammet.no'; ## TODO : CREATE TO EMAIL
         $surveyid = $surveyNotifier->getSurvey()->getId();
         foreach ($surveyNotifier->getSurveyNotifications() as $notification) {
-            if ($notification->isSent()) {
-                return;
-            }
+            if ($notification->isSent()) return;
             $notification->setIsSent(true);
             $this->em->persist($notification);
-            $this->em->flush();
 
             $notification->setTimeNotificationSent(new \DateTime());
             $user = $notification->getUser();
@@ -171,23 +172,21 @@ class SurveyNotifierManager
         }
 
         $this->isAllSent($surveyNotifier);
+        $this->em->flush();
+
     }
 
-    private function isAllSent(SurveyNotifier $surveyNotifier)
-    {
-        if ($surveyNotifier->isAllSent()) {
-            return true;
-        }
+    private function isAllSent(SurveyNotifier $surveyNotifier){
+        if ($surveyNotifier->isAllSent()) return true;
 
-        foreach ($surveyNotifier->getSurveyNotifications() as $notification) {
-            if (!$notification->isSent()) {
-                return false;
-            }
+        foreach ($surveyNotifier->getSurveyNotifications() as $notification){
+            if (!$notification->isSent()) return false;
         }
 
         $surveyNotifier->setIsAllSent(true);
         $this->em->persist($surveyNotifier);
         $this->em->flush();
         return true;
+
     }
 }

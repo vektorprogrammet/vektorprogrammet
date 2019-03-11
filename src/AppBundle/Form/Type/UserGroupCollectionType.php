@@ -16,11 +16,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class UserGroupCollectionType extends AbstractType
 {
-    private $isCreate;
+    private $isEdit;
     private $bolkNames;
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $this->isCreate =  $options['isCreate'];
+        $this->isEdit =  $options['isEdit'];
         $this->bolkNames =  $options['bolkNames'];
 
         $builder
@@ -31,7 +31,7 @@ class UserGroupCollectionType extends AbstractType
 
             ->add("numberUserGroups", IntegerType::class, [
                 'label' => "Antall inndelinger brukere skal deles inn i",
-                'disabled' => !$this->isCreate
+                'disabled' => $this->isEdit
 
             ])
 
@@ -41,7 +41,7 @@ class UserGroupCollectionType extends AbstractType
                 "expanded" => true,
                 "multiple" => true,
                 "class" => Semester::class,
-                'disabled' => !$this->isCreate
+                'disabled' => $this->isEdit
 
             ])
             ->add("teams", EntityType::class, [
@@ -50,7 +50,7 @@ class UserGroupCollectionType extends AbstractType
                 "multiple" => true,
                 "class" => Team::class,
                 "group_by" => "department.city",
-                'disabled' => !$this->isCreate
+                'disabled' => $this->isEdit
 
             ])
 
@@ -59,7 +59,7 @@ class UserGroupCollectionType extends AbstractType
                 "expanded" => true,
                 "multiple" => true,
                 "class" => Department::class,
-                'disabled' => !$this->isCreate
+                'disabled' => $this->isEdit
 
             ])
 
@@ -70,8 +70,8 @@ class UserGroupCollectionType extends AbstractType
                 'label' => 'Bolk',
                 'multiple' => true,
                 'expanded' => true,
-                'choices' =>  $this->bolkNames, # TODO: SHOULD INCLUDE NULL
-                'disabled' => !$this->isCreate
+                'choices' =>  $this->bolkNames,
+                'disabled' => $this->isEdit
 
             ]
 
@@ -83,7 +83,7 @@ class UserGroupCollectionType extends AbstractType
         $resolver->setDefaults([
             "data_class" => UserGroupCollection::class,
             'bolkNames' => array(),
-            'isCreate' => true,
+            'isEdit' => true,
 
         ]);
     }

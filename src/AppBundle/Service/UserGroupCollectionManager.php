@@ -27,12 +27,13 @@ class UserGroupCollectionManager
     public function initializeUserGroupCollection(UserGroupCollection $userGroupCollection)
     {
         $users = $this->findUsers($userGroupCollection);
+        $userGroupCollection->setNumberTotalUsers(sizeof($users));
         shuffle($users);
         $groupSize = intdiv(sizeof($users), $userGroupCollection->getNumberUserGroups());
         if ($userGroupCollection->getNumberUserGroups() < 1) {
-            throw new \InvalidArgumentException("Ugyldig antall grupper. Må være over 1.");
+            throw new \InvalidArgumentException("Ugyldig antall grupper. Må være over eller lik 1.");
         } elseif ($groupSize<1) {
-            throw new \UnexpectedValueException("For få brukere til slik inndeling. Valgt inndeling ga ".sizeof($users)." brukere");
+            throw new \UnexpectedValueException("Ugyldig inndeling. Valgt inndeling ga ".sizeof($users)." brukere");
         }
 
         $userGroupings = array_chunk($users, $groupSize);
@@ -117,5 +118,18 @@ class UserGroupCollectionManager
         $usersUnique = array_unique($users, SORT_REGULAR);
 
         return $usersUnique;
+    }
+
+
+    public function updateActive(UserGroupCollection $userGroupCollection){
+        $userGroups  = $userGroupCollection->getUserGroups();
+        foreach ($userGroups as $userGroup){
+            if($userGroup->isActive()){
+                return;
+            }
+        }
+        $userGroupCollection->setIsActive(false);
+        $this->em->persist($userGroupCollection);
+        $this->em->flush();
     }
 }

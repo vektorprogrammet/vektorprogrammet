@@ -27,6 +27,7 @@
                         <th>Tittel</th>
                         <th>Brukergruppe</th>
                         <th>Del av brukergruppe</th>
+                        <th>Varselstatus</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -45,7 +46,7 @@
                                                 {% if surveyNotifier.isActive %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
                                             </a>
                                             {% if not surveyNotifier.isActive %}
-                                                <a class="delete-survey-notifier dropdown-item" href="{{ path('survey_notifier_delete', {'id': surveyNotifier.id }) }}">
+                                                <a class="post-a dropdown-item" href="{{ path('survey_notifier_delete', {'id': surveyNotifier.id }) }}">
                                                     <i class="fas fa-trash-alt text-primary"></i> Slett
                                                 </a>
                                             {% endif %}
@@ -58,7 +59,7 @@
                             <td>
                                 {% if not surveyNotifier.isAllSent %}
                                     {% if date(surveyNotifier.timeOfNotification) < date()  %}
-                                        <a href="{{ path('survey_notifier_send', {'id': surveyNotifier.id }) }}">
+                                        <a class ="post-a" href="{{ path('survey_notifier_send', {'id': surveyNotifier.id }) }}">
                                             <i class="fas fa-bullhorn"></i> Send varsel
                                         </a>
                                     {% else %}
@@ -86,7 +87,7 @@
 {% block javascripts %}
     <script>
         window.onload = function() {
-            $('.delete-survey-notifier').on('click', function(event) {
+            $('.post-a').on('click', function(event) {
                 event.preventDefault();
                 $.ajax({
                     type: "POST",
@@ -103,5 +104,4 @@
         }
 
     </script>
-
 {% endblock %}

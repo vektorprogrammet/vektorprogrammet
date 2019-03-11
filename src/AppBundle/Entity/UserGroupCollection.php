@@ -36,8 +36,15 @@ class UserGroupCollection
 
 
     /**
+     * @var int
+     * @ORM\Column(type="integer", nullable = true)
+     */
+    private $numberTotalUsers;
+
+
+    /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="userGroupCollection")
+     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="userGroupCollection", cascade={"remove"})
      */
     private $userGroups;
 
@@ -214,7 +221,7 @@ class UserGroupCollection
     /**
      * @return bool
      */
-    public function isActive(): bool
+    public function activityCounter(): bool
     {
         return $this->isActive;
     }
@@ -226,4 +233,26 @@ class UserGroupCollection
     {
         $this->isActive = $isActive;
     }
+
+    /**
+     * @return int?
+     */
+    public function getNumberTotalUsers(): ?int
+    {
+        return $this->numberTotalUsers;
+    }
+
+    /**
+     * @param int $numberTotalUsers
+     */
+    public function setNumberTotalUsers(int $numberTotalUsers): void
+    {
+        $this->numberTotalUsers = $numberTotalUsers;
+    }
+
+
+
+
+
+
 }

@@ -82,15 +82,20 @@ class SurveyController extends BaseController
      */
     public function showIdAction(Request $request, Survey $survey, string $userid)
     {
-        if ($survey->getTargetAudience() !== 2) {
-            return $this->redirectToCorrectSurvey($survey);
-        }
 
         $em = $this->getDoctrine()->getManager();
         $notification = $em->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
+
+
         if ($notification === null) {
             return $this->redirectToCorrectSurvey($survey);
         }
+
+        $sameSurvey = $notification->getSurveyNotifier()->getSurvey() == $survey;
+        if (!$sameSurvey) {
+            return $this->redirectToCorrectSurvey($survey);
+        }
+
         if ($notification->getTimeOfFirstVisit() === null) {
             $notification->setTimeOfFirstVisit(new \DateTime());
             $em->persist($notification);

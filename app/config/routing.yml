@@ -209,31 +209,31 @@ survey_popup_close:
   id: \d+
 
 survey_notifiers:
- path: /kontrollpanel/undersokelse_varsel
- defaults: { _controller: AppBundle:SurveyNotifier:showSurveyNotifier }
+ path: /kontrollpanel/undersokelsevarsel
+ defaults: { _controller: AppBundle:SurveyNotifier:surveyNotifiers }
  methods: [GET]
 
 survey_notifier_create:
- path: /kontrollpanel/undersokelse_varsel/opprett
+ path: /kontrollpanel/undersokelsevarsel/opprett
  defaults: { _controller: AppBundle:SurveyNotifier:createSurveyNotifier }
  methods: [GET, POST]
 
 survey_notifier_edit:
-  path: /kontrollpanel/undersokelse_varsel/rediger/{id}
+  path: /kontrollpanel/undersokelsevarsel/rediger/{id}
   defaults: { _controller: AppBundle:SurveyNotifier:createSurveyNotifier }
   methods: [GET, POST]
   requirements:
     id: \d+
 
 survey_notifier_delete:
-  path: /kontrollpanel/undersokelse_varsel/slett/{id}
+  path: /kontrollpanel/undersokelsevarsel/slett/{id}
   defaults: { _controller: AppBundle:SurveyNotifier:deleteSurveyNotifier }
   methods: [POST]
   requirements:
     id: \d+
 
 survey_notifier_send:
- path: /kontrollpanel/undersokelse_varsel/send/{id}
+ path: /kontrollpanel/undersokelsevarsel/send/{id}
  defaults: { _controller: AppBundle:SurveyNotifier:sendSurveyNotifications }
  methods: [GET, POST]
  requirements:
@@ -243,12 +243,28 @@ survey_notifier_send:
 ##########################################
 #                Usergroupings           #
 ##########################################
+usergroup_collections:
+ path: /kontrollpanel/brukergruppesamling
+ defaults: { _controller: AppBundle:UserGroupCollection:userGroupCollections }
+ methods: [GET, POST]
+
+
 usergroup_collection_create:
- path: /kontrollpanel/userbasegrouping/opprett
+ path: /kontrollpanel/brukergruppesamling/opprett
  defaults: { _controller: AppBundle:UserGroupCollection:createUserGroupCollection }
  methods: [GET, POST]
+
+
+usergroup_collection_edit:
+ path: /kontrollpanel/brukergruppesamling/opprett/{id}
+ defaults: { _controller: AppBundle:UserGroupCollection:createUserGroupCollection }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+
 usergroup_collection_delete:
- path: /kontrollpanel/userbasegrouping/slett/{id}
+ path: /kontrollpanel/brukergruppesamling/slett/{id}
  defaults: { _controller: AppBundle:UserGroupCollection:deleteUserGroupCollection }
  methods: [POST]
  requirements:
