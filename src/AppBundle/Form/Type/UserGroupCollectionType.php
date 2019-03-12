@@ -25,7 +25,9 @@ class UserGroupCollectionType extends AbstractType
 
         $builder
             ->add("name", TextType::class, [
-                'label' => 'Navn på inndeling'
+                'label' => 'Navn på inndeling',
+                'disabled' => $this->isEdit
+
 
             ])
 

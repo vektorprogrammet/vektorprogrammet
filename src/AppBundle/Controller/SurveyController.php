@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
+use AppBundle\Entity\SurveyLinkClick;
 use AppBundle\Entity\SurveyNotification;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\SurveyAdminType;
@@ -96,11 +97,11 @@ class SurveyController extends BaseController
             return $this->redirectToCorrectSurvey($survey);
         }
 
-        if ($notification->getTimeOfFirstVisit() === null) {
-            $notification->setTimeOfFirstVisit(new \DateTime());
-            $em->persist($notification);
-            $em->flush();
-        }
+        $surveyLinkClick = new SurveyLinkClick();
+        $surveyLinkClick->setNotification($notification);
+        $em->persist($surveyLinkClick);
+        $em->flush();
+
         $user = $notification->getUser();
 
         return $this->showUserMainAction($request, $survey, $user, $userid);

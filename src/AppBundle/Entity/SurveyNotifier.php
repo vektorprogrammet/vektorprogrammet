@@ -75,6 +75,12 @@ class SurveyNotifier
      */
     private $isActive;
 
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="User")
+     */
+    private $senderUser;
+
 
 
     public function __construct()
@@ -224,4 +230,23 @@ class SurveyNotifier
     {
         $this->isActive = $isActive;
     }
+
+    /**
+     * @return User
+     */
+    public function getSenderUser(): User
+    {
+        return $this->senderUser;
+    }
+
+    /**
+     * @param User $senderUser
+     */
+    public function setSenderUser(User $senderUser): void
+    {
+        $this->senderUser = $senderUser;
+    }
+
+
+
 }

@@ -82,17 +82,13 @@ class SurveyNotifierController extends BaseController
 
    public function deleteSurveyNotifierAction(SurveyNotifier $surveyNotifier)
    {
+       dump("1234");
+
        if ($surveyNotifier->isActive()){
            throw new AccessDeniedException();
        }
 
-       $userGroup = $surveyNotifier->getUserGroup();
-       $userGroup->setIsActive(false);
-       $userGroupCollection = $userGroup ->getUserGroupCollection();
-       $this->get(SurveyNotifierManager::class)->updateActive($userGroupCollection);
-       $em = $this->getDoctrine()->getManager();
-       $em->remove($surveyNotifier);
-       $em->flush();
+       $this->getDoctrine()->getManager()->remove($surveyNotifier);
        $response['success'] = true;
        return new JsonResponse($response);
    }

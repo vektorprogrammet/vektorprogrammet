@@ -45,7 +45,7 @@
                                        class="dropdown-item">
                                         {% if not userGroupCollection.isDeletable %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
                                     </a>
-                                    {% if not userGroupCollection.isDeletable %}
+                                    {% if userGroupCollection.isDeletable %}
                                         <a class="post-a dropdown-item" href="{{ path('usergroup_collection_delete', {'id': userGroupCollection.id }) }}">
                                             <i class="fas fa-trash-alt text-primary"></i> Slett
                                         </a>

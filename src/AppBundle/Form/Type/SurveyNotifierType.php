@@ -2,8 +2,10 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Repository\UserRepository;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyNotifier;
+use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroup;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -60,7 +62,20 @@ class SurveyNotifierType extends AbstractType
                 "class" => Survey::class,
                 "group_by" => "semester",
                 'disabled' => !$this->canEdit
-            ]);
+            ])
+
+
+            ->add("senderUser", EntityType::class), [
+                'label' => "Avsender",
+                "expanded" => false,
+                "multiple" => false,
+                "class" => User::class,
+                'query_builder' => function (UserRepository $ur) {
+                    return $ur->findTeamMembers();
+                },
+
+
+        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -29,10 +29,10 @@ class SurveyNotification
     private $user;
 
     /**
-     * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @var SurveyLinkClick[]
+     * @ORM\OneToMany(targetEntity="SurveyLinkClick", mappedBy="notification")
      */
-    private $timeOfFirstVisit;
+    private $surveyLinkClick;
 
     /**
      * @var \DateTime
@@ -63,6 +63,7 @@ class SurveyNotification
     {
         $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(12));
         $this->isSent = false;
+        $this->surveyLinkClick = array();
     }
 
     /**
@@ -94,19 +95,19 @@ class SurveyNotification
 
 
     /**
-     * @param \DateTime $timeOfFirstVisit
+     * @param \DateTime[] $surveyLinkClick
      */
-    public function setTimeOfFirstVisit(\DateTime $timeOfFirstVisit): void
+    public function setSurveyLinkClick(array $surveyLinkClick): void
     {
-        $this->timeOfFirstVisit = $timeOfFirstVisit;
+        $this->surveyLinkClick = $surveyLinkClick;
     }
 
     /**
-     * @return \DateTime?
+     * @return \DateTime[]
      */
-    public function getTimeOfFirstVisit(): ?\DateTime
+    public function getSurveyLinkClick()
     {
-        return $this->timeOfFirstVisit;
+        return $this->surveyLinkClick;
     }
 
 
