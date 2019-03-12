@@ -18,7 +18,7 @@ class UserGroupCollectionController extends BaseController
             $userGroupCollection = new UserGroupCollection();
         }
 
-        $isEdit = $userGroupCollection->activityCounter();
+        $isEditable = !$userGroupCollection->isDeletable();
 
         $em = $this->getDoctrine()->getManager();
         $bolkNames = $em
@@ -28,7 +28,7 @@ class UserGroupCollectionController extends BaseController
 
         $form = $this->createForm(UserGroupCollectionType::class, $userGroupCollection, array(
             'bolkNames' => $bolkNames,
-            'isEdit' => $isEdit,
+            'isEdit' => $isEditable,
         ));
 
         $form->handleRequest($request);
@@ -57,26 +57,6 @@ class UserGroupCollectionController extends BaseController
         ));
     }
 
-
-    /**
-     * Deletes the given UserGroupCollection.
-     * This method is intended to be called by an Ajax request.
-     *
-     * @param UserGroupCollection $userGroupCollection
-     * @return JsonResponse
-     */
-    public function deleteUserGroupCollectionAction(UserGroupCollection $userGroupCollection)
-    {
-        if ($userGroupCollection->activityCounter()){
-            throw new AccessDeniedException();
-        }
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($userGroupCollection);
-        $em->flush();
-        $response['success'] = true;
-        return new JsonResponse($response);
-    }
-
     public function userGroupCollectionsAction()
     {
         $userGroupCollections =$this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll();
@@ -85,6 +65,21 @@ class UserGroupCollectionController extends BaseController
             'userGroupCollections' => $userGroupCollections,
         ));
 
+    }
+
+    public function deleteUserGroupCollectionAction(UserGroupCollection $userGroupCollection)
+    {
+        if(!$userGroupCollection->isDeletable())
+        {
+            $response['success'] = false;
+            return new JsonResponse($response);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($userGroupCollection);
+        $em->flush();
+        $response['success'] = true;
+        return new JsonResponse($response);
     }
 
 

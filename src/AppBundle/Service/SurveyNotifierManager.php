@@ -35,7 +35,7 @@ class SurveyNotifierManager
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender, UserGroupCollectionManager $userGroupCollectionManager)
+    public function __construct(Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -43,14 +43,14 @@ class SurveyNotifierManager
         $this->em = $em;
         $this->router = $router;
         $this->smsSender = $smsSender;
-        $this->userGroupCollectionManager = $userGroupCollectionManager;
     }
     public function initializeSurveyNotifier(SurveyNotifier $surveyNotifier)
     {
         $userGroup = $surveyNotifier->getUserGroup();
         $userGroup->setIsActive(true);
         $userGroupCollection = $userGroup ->getUserGroupCollection();
-        $this->userGroupCollectionManager->updateActive($userGroupCollection);
+        $userGroupCollection->setIsDeletable(false);
+
         $this->em->persist($surveyNotifier);
         $this->em->persist($userGroup);
 

@@ -37,12 +37,6 @@ class SurveyNotifierController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($oldUserGroup === $surveyNotifier->getUserGroup()) {
-                $oldUserGroup->setIsActive(false);
-                $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($oldUserGroup);
-
-                $oldUserGroup->getUserGroupCollection()->setIsActive(false);
-            }
             $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($surveyNotifier);
 
             return $this->redirect($this->generateUrl('survey_notifiers'));

@@ -74,10 +74,13 @@ class UserGroupCollection
     private $assistantBolks;
 
     /**
-     * @var bool
+     * @var boolean
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $isDeletable;
+
+
+
 
 
     public function __construct()
@@ -89,7 +92,7 @@ class UserGroupCollection
         $this->assistantsDepartments = array();
         $this->assistantBolks = array();
         $this->numberUserGroups = 2;
-        $this->isActive = false;
+        $this->isDeletable = true;
     }
 
     public function __toString()
@@ -218,21 +221,6 @@ class UserGroupCollection
         $this->numberUserGroups = $numberUserGroups;
     }
 
-    /**
-     * @return bool
-     */
-    public function activityCounter(): bool
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * @param bool $isActive
-     */
-    public function setIsActive(bool $isActive): void
-    {
-        $this->isActive = $isActive;
-    }
 
     /**
      * @return int?
@@ -248,6 +236,22 @@ class UserGroupCollection
     public function setNumberTotalUsers(int $numberTotalUsers): void
     {
         $this->numberTotalUsers = $numberTotalUsers;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isDeletable(): bool
+    {
+        return $this->isDeletable;
+    }
+
+    /**
+     * @param bool $isDeletable
+     */
+    public function setIsDeletable(bool $isDeletable): void
+    {
+        $this->isDeletable = $isDeletable;
     }
 
 

@@ -120,16 +120,4 @@ class UserGroupCollectionManager
         return $usersUnique;
     }
 
-
-    public function updateActive(UserGroupCollection $userGroupCollection){
-        $userGroups  = $userGroupCollection->getUserGroups();
-        foreach ($userGroups as $userGroup){
-            if($userGroup->isActive()){
-                return;
-            }
-        }
-        $userGroupCollection->setIsActive(false);
-        $this->em->persist($userGroupCollection);
-        $this->em->flush();
-    }
 }
