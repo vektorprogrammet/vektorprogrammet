@@ -64,13 +64,11 @@ class UserGroupCollectionController extends BaseController
         return $this->render('usergroup_collection/usergroup_collections.html.twig', array(
             'userGroupCollections' => $userGroupCollections,
         ));
-
     }
 
     public function deleteUserGroupCollectionAction(UserGroupCollection $userGroupCollection)
     {
-        if(!$userGroupCollection->isDeletable())
-        {
+        if (!$userGroupCollection->isDeletable()) {
             $response['success'] = false;
             return new JsonResponse($response);
         }
@@ -81,10 +79,4 @@ class UserGroupCollectionController extends BaseController
         $response['success'] = true;
         return new JsonResponse($response);
     }
-
-
-
-
-
-
 }

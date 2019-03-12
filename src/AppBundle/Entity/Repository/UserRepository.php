@@ -296,5 +296,4 @@ class UserRepository extends EntityRepository implements UserProviderInterface
                     ->getQuery()
                     ->getResult();
     }
-
 }

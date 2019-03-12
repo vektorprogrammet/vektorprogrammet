@@ -253,10 +253,4 @@ class UserGroupCollection
     {
         $this->isDeletable = $isDeletable;
     }
-
-
-
-
-
-
 }

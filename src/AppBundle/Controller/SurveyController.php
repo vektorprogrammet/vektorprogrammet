@@ -83,7 +83,6 @@ class SurveyController extends BaseController
      */
     public function showIdAction(Request $request, Survey $survey, string $userid)
     {
-
         $em = $this->getDoctrine()->getManager();
         $notification = $em->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
 
