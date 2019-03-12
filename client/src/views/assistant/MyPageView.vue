@@ -8,7 +8,7 @@
     <!--PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
     <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
     <MyPartner :user_partner="scheduleInfo.user"></MyPartner-->
-    <Map class="mb-5"></Map>
+    <Map class="mb-5" :school_name="this.scheduleInfo.school.name" home_name="Prestekrageveien 6, Trondheim"></Map>
   </div>
 </template>
 
