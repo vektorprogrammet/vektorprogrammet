@@ -65,7 +65,7 @@ class SurveyNotifierType extends AbstractType
             ])
 
 
-            ->add("senderUser", EntityType::class), [
+            ->add("senderUser", EntityType::class, [
                 'label' => "Avsender",
                 "expanded" => false,
                 "multiple" => false,

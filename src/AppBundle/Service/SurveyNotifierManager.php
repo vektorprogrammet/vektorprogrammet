@@ -142,7 +142,7 @@ class SurveyNotifierManager
 
     private function sendEmail(SurveyNotifier $surveyNotifier)
     {
-        $fromEmail = 'amir@vektorprogrammet.no'; ## TODO : CREATE TO EMAIL
+        $fromEmail = $surveyNotifier->getSenderUser()->getEmail();
         $surveyid = $surveyNotifier->getSurvey()->getId();
         foreach ($surveyNotifier->getSurveyNotifications() as $notification) {
             if ($notification->isSent()) return;
