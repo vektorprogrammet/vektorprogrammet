@@ -24,9 +24,8 @@ class SurveyNotifierController extends BaseController
         $canEdit = true;
         if ($isCreate = $surveyNotifier === null) {
             $surveyNotifier = new SurveyNotifier();
-        }else{
+        } else {
             $canEdit = !$surveyNotifier->isActive();
-            $oldUserGroup = $surveyNotifier->getUserGroup();
         }
 
 
@@ -37,10 +36,11 @@ class SurveyNotifierController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $surveyNotifier->setSenderUser($this->getUser());
             $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($surveyNotifier);
 
             return $this->redirect($this->generateUrl('survey_notifiers'));
-
         }
 
 
@@ -53,44 +53,39 @@ class SurveyNotifierController extends BaseController
     }
 
 
-     public function surveyNotifiersAction()
-     {
-         $surveyNotifiers =$this->getDoctrine()->getManager()->getRepository(SurveyNotifier::class)->findAll();
+    public function surveyNotifiersAction()
+    {
+        $surveyNotifiers =$this->getDoctrine()->getManager()->getRepository(SurveyNotifier::class)->findAll();
 
-         return $this->render('survey/survey_notifiers.html.twig', array(
+        return $this->render('survey/survey_notifiers.html.twig', array(
              'surveyNotifiers' => $surveyNotifiers,
          ));
-
-     }
+    }
 
 
     public function sendSurveyNotificationsAction(SurveyNotifier $surveyNotifier)
     {
-
-        if ($surveyNotifier->getTimeOfNotification() > new \DateTime() || $surveyNotifier->isAllSent())
-        {
+        if ($surveyNotifier->getTimeOfNotification() > new \DateTime() || $surveyNotifier->isAllSent()) {
             throw new AccessDeniedException();
         }
         $this->get(SurveyNotifierManager::class)->sendNotifications($surveyNotifier);
 
         $response['success'] = true;
         return new JsonResponse($response);
-
     }
 
 
 
-   public function deleteSurveyNotifierAction(SurveyNotifier $surveyNotifier)
-   {
-       dump("1234");
+    public function deleteSurveyNotifierAction(SurveyNotifier $surveyNotifier)
+    {
+        dump("1234");
 
-       if ($surveyNotifier->isActive()){
-           throw new AccessDeniedException();
-       }
+        if ($surveyNotifier->isActive()) {
+            throw new AccessDeniedException();
+        }
 
-       $this->getDoctrine()->getManager()->remove($surveyNotifier);
-       $response['success'] = true;
-       return new JsonResponse($response);
-   }
-
+        $this->getDoctrine()->getManager()->remove($surveyNotifier);
+        $response['success'] = true;
+        return new JsonResponse($response);
+    }
 }

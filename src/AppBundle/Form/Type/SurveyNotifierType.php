@@ -62,20 +62,8 @@ class SurveyNotifierType extends AbstractType
                 "class" => Survey::class,
                 "group_by" => "semester",
                 'disabled' => !$this->canEdit
-            ])
+            ]);
 
-
-            ->add("senderUser", EntityType::class, [
-                'label' => "Avsender",
-                "expanded" => false,
-                "multiple" => false,
-                "class" => User::class,
-                'query_builder' => function (UserRepository $ur) {
-                    return $ur->findTeamMembers();
-                },
-
-
-        ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)

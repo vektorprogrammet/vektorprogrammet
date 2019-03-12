@@ -43,6 +43,10 @@ services:
         arguments:
             $env: '%kernel.environment%'
 
+    AppBundle\Service\SurveyNotifierManager:
+        arguments:
+            $fromEmail: '%default_survey_email%'
+
     AppBundle\Service\GeoLocation:
         arguments:
             $ipinfoToken: '%ipinfo_token%'

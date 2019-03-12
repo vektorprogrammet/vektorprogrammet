@@ -6,7 +6,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-
 /**
  * @ORM\Entity
  * @ORM\Table(name="survey_link_click")
@@ -87,7 +86,4 @@ class SurveyLinkClick
     {
         $this->notification = $notification;
     }
-
-
-
 }

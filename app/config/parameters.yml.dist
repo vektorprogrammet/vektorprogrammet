@@ -38,6 +38,8 @@ parameters:
 
     economy_email: okonomi@vektorprogrammet.no
 
+    default_survey_email: evaluering.ntnu@vektorprogrammet.no
+
     # A secret key that's used to generate certain security-related tokens
     secret:            CreateASuperDuperSecretHere
 
