@@ -36,7 +36,6 @@ class SurveyNotifierController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $surveyNotifier->setSenderUser($this->getUser());
             $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($surveyNotifier);
 

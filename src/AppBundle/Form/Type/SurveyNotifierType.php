@@ -63,7 +63,6 @@ class SurveyNotifierType extends AbstractType
                 "group_by" => "semester",
                 'disabled' => !$this->canEdit
             ]);
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
