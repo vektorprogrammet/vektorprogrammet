@@ -43,7 +43,7 @@
                                     <div class="dropdown-header mb-2"><strong>{{ userGroupCollection.name }} </strong></div>
                                     <a href="{{ path('usergroup_collection_edit', {'id': userGroupCollection.id }) }}"
                                        class="dropdown-item">
-                                        {% if userGroupCollection.isDeletable %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
+                                        {% if not userGroupCollection.isDeletable %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
                                     </a>
                                     {% if not userGroupCollection.isDeletable %}
                                         <a class="post-a dropdown-item" href="{{ path('usergroup_collection_delete', {'id': userGroupCollection.id }) }}">
@@ -57,7 +57,7 @@
                         <td>{{ userGroupCollection.numberTotalUsers }}</td>
                         <td>{{ userGroupCollection.numberUserGroups }}</td>
                         <td>
-                            {% if userGroupCollection.isDeletable %}
+                            {% if not userGroupCollection.isDeletable %}
                                 <i class="fas fa-lock"></i>
                             {% else %}
                                 <i class="fas fa-lock-open"></i>
