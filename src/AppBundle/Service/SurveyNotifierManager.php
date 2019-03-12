@@ -57,11 +57,18 @@ class SurveyNotifierManager
 
         $this->em->persist($surveyNotifier);
         $this->em->persist($userGroup);
+        $this->em->flush();
 
+    }
+
+    private function createSurveyNotifications(SurveyNotifier $surveyNotifier)
+    {
+        if ($surveyNotifier->isActive())
+        {
+            return;
+        }
         $survey = $surveyNotifier->getSurvey();
         $users = $surveyNotifier->getUserGroup()->getUsers();
-
-
         $notifications = array();
         foreach ($users as $user) {
             $isSurveyTakenByUser = !empty($this->em->getRepository(SurveyTaken::class)->findAllBySurveyAndUser($survey, $user));
@@ -81,6 +88,7 @@ class SurveyNotifierManager
 
     public function sendNotifications(SurveyNotifier $surveyNotifier)
     {
+        $this->createSurveyNotifications($surveyNotifier);
         $this->isAllSent($surveyNotifier);
         $surveyNotifier->setIsActive(true);
         $this->em->persist($surveyNotifier);
@@ -95,11 +103,6 @@ class SurveyNotifierManager
         }
     }
 
-    ## TODO: REWRITE MESSAGES
-
-    ## TODO : FIND OUT HOW THIS IS TESTED
-
-    ## TODO: MAKE SURE THAT THIS WORKS
 
     private function sendSMS(SurveyNotifier $surveyNotifier)
     {
