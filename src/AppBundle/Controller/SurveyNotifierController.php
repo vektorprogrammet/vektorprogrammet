@@ -68,8 +68,7 @@ class SurveyNotifierController extends BaseController
             throw new AccessDeniedException();
         }
         $isIdentifierCollison = $this->get(SurveyNotifierManager::class)->sendNotifications($surveyNotifier);
-        if ($isIdentifierCollison)
-        {
+        if ($isIdentifierCollison) {
             $this->addFlash("danger", "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!");
             $response['cause'] = "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!";
             return $this->redirect($this->generateUrl('survey_notifiers'));

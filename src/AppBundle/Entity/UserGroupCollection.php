@@ -276,7 +276,4 @@ class UserGroupCollection
     {
         $this->users = $users;
     }
-
-
-
 }
