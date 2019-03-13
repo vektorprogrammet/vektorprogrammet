@@ -70,15 +70,21 @@ class SurveyNotifierType extends AbstractType
             ->add('smsMessage', TextareaType::class, array(
                 'attr' => array('rows' => '5'),
                 'label' => false,
+                'disabled' => !$this->canEdit
+
 
             ))
 
             ->add('emailSubject', TextType::class, array(
                 'label' => 'Epostemne',
+                'disabled' => !$this->canEdit
+
             ))
 
             ->add('emailMessage', CKEditorType::class, array(
                 'label' => false,
+                'disabled' => !$this->canEdit
+
 
             ))
 

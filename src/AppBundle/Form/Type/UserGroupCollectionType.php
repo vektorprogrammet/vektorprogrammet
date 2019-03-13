@@ -65,6 +65,7 @@ class UserGroupCollectionType extends AbstractType
                 "class" => User::class,
                 "group_by" => "fieldOfStudy.department",
                 'required' => false,
+                'disabled' => $this->isEdit
 
             ])
 
