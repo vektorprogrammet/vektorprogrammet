@@ -63,7 +63,8 @@ class UserGroupCollectionType extends AbstractType
                 "expanded" => false,
                 "multiple" => true,
                 "class" => User::class,
-                "group_by" => "fieldOfStudy.department"
+                "group_by" => "fieldOfStudy.department",
+                'required' => false,
 
             ])
 

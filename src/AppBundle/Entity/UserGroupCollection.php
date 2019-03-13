@@ -103,6 +103,7 @@ class UserGroupCollection
         $this->assistantBolks = array();
         $this->numberUserGroups = 2;
         $this->isDeletable = true;
+
     }
 
     public function __toString()
