@@ -137,7 +137,7 @@ class SurveyNotifierManager
 
             $message =
                 "Hei, ".$notification->getUser()->getFirstName()."\n".
-                $customMessage.
+                $customMessage."\n".
                 $this->router->generate(
                     'survey_show_user_id',
                     ['id' => $surveyid, 'userid'=>$identifier],
