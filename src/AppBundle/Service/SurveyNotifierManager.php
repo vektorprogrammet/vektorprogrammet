@@ -58,13 +58,11 @@ class SurveyNotifierManager
         $this->em->persist($surveyNotifier);
         $this->em->persist($userGroup);
         $this->em->flush();
-
     }
 
     private function createSurveyNotifications(SurveyNotifier $surveyNotifier)
     {
-        if ($surveyNotifier->isActive())
-        {
+        if ($surveyNotifier->isActive()) {
             return false;
         }
 
@@ -81,24 +79,24 @@ class SurveyNotifierManager
             $notification->setSurveyNotifier($surveyNotifier);
 
             $this->em->persist($notification);
-
         }
         $surveyNotifier->getUserGroup()->setIsActive(true);
         $this->em->persist($surveyNotifier->getUserGroup());
 
-        try{
+        try {
             $this->em->flush();
-        }catch (UniqueConstraintViolationException $e){
+        } catch (UniqueConstraintViolationException $e) {
             return true;
         }
-
     }
 
 
     public function sendNotifications(SurveyNotifier $surveyNotifier)
     {
         $isIdentifierCollision = $this->createSurveyNotifications($surveyNotifier);
-        if ($isIdentifierCollision) return true;
+        if ($isIdentifierCollision) {
+            return true;
+        }
 
         $this->isAllSent($surveyNotifier);
         $surveyNotifier->setIsActive(true);
