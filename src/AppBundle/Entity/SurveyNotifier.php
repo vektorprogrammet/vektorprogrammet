@@ -76,6 +76,26 @@ class SurveyNotifier
     private $isActive;
 
     /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $smsMessage;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string")
+     */
+    private $emailSubject;
+
+
+
+    /**
+     * @var string
+     * @ORM\Column(type="text")
+     */
+    private $emailMessage;
+
+    /**
      * @var User
      * @ORM\ManyToOne(targetEntity="User")
      */
@@ -91,6 +111,11 @@ class SurveyNotifier
         $this->isAllSent = false;
         $this->isActive = false;
         $this->notificationType = SurveyNotifier::$EMAIL_NOTIFICATION;
+        $this->smsMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
+        $this->emailMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
+        $this->emailSubject = "Undersøkelse fra Vektor";
+
+
     }
 
     /**
@@ -246,6 +271,55 @@ class SurveyNotifier
     {
         $this->senderUser = $senderUser;
     }
+
+    /**
+     * @return string
+     */
+    public function getSmsMessage(): string
+    {
+        return $this->smsMessage;
+    }
+
+    /**
+     * @param string $smsMessage
+     */
+    public function setSmsMessage(string $smsMessage): void
+    {
+        $this->smsMessage = $smsMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailMessage(): string
+    {
+        return $this->emailMessage;
+    }
+
+    /**
+     * @param string $emailMessage
+     */
+    public function setEmailMessage(string $emailMessage): void
+    {
+        $this->emailMessage = $emailMessage;
+    }
+
+    /**
+     * @return string
+     */
+    public function getEmailSubject(): string
+    {
+        return $this->emailSubject;
+    }
+
+    /**
+     * @param string $emailSubject
+     */
+    public function setEmailSubject(string $emailSubject): void
+    {
+        $this->emailSubject = $emailSubject;
+    }
+
 
 
 }

@@ -2,12 +2,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\SurveyNotifier;
+use AppBundle\Entity\UserGroup;
 use AppBundle\Form\Type\SurveyNotifierType;
 use AppBundle\Service\SurveyNotifierManager;
 use AppBundle\Service\UserGroupCollectionManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SurveyNotifierController extends BaseController
@@ -37,6 +39,18 @@ class SurveyNotifierController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $surveyNotifier->setSenderUser($this->getUser());
+
+            if ($form->get('preview')->isClicked()) {
+                return $this->render(
+                    'survey/survey_email_notification.html.twig',
+                    array(
+                        'firstname' => $this->getUser()->getFirstName(),
+                        'route' => $this->generateUrl('survey_show', ['id' => $surveyNotifier->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
+                        'content' => $surveyNotifier->getEmailMessage(),
+
+                    ));
+            }
+
             $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($surveyNotifier);
 
             return $this->redirect($this->generateUrl('survey_notifiers'));

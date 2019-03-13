@@ -7,10 +7,13 @@ use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyNotifier;
 use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroup;
+use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -55,8 +58,6 @@ class SurveyNotifierType extends AbstractType
                 'disabled' => !$this->canEdit
             ])
 
-
-
             ->add("survey", EntityType::class, [
                 'label' => "Varsel skal sendes om følgende undersøkelse",
                 "expanded" => false,
@@ -64,7 +65,29 @@ class SurveyNotifierType extends AbstractType
                 "class" => Survey::class,
                 "group_by" => "semester",
                 'disabled' => !$this->canEdit
-            ]);
+            ])
+
+            ->add('smsMessage', TextareaType::class, array(
+                'attr' => array('rows' => '5'),
+                'label' => false,
+
+            ))
+
+            ->add('emailSubject', TextType::class, array(
+                'label' => 'Epostemne',
+            ))
+
+            ->add('emailMessage', CKEditorType::class, array(
+                'label' => false,
+
+            ))
+
+
+            ->add('preview', SubmitType::class, array(
+                'label' => 'Forhåndsvis epost'
+            ));
+
+
     }
 
     public function configureOptions(OptionsResolver $resolver)

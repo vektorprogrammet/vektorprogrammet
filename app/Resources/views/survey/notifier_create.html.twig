@@ -8,9 +8,10 @@
 {% endblock %}
 
 {% block body %}
+    {{ form_start(form) }}
+
     <div class="row">
-        <div class="col-12 col-xl-10 col-xxl-9 col-xxxl-7">
-            {{ form_start(form) }}
+        <div class="col-12 col-lg-6">
             <div class="card">
                 <div class="card-header"><i class="fa fa-align-justify"></i> {{ isCreate ? 'Lag påminnelse til undersøkelse' : surveyNotifier.name }}</div>
                 <div class="card-body">
@@ -37,26 +38,59 @@
             </div>
 
 
-            <div class="row">
-                <div class="col-12">
-                    <div class="card">
-                        <div class="card-header"><i class="fas fa-users"></i> Brukergrupper</div>
-                        <div class="card-body">
-                            {{ form_row(form.usergroup) }}
-
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-
             <div class="card">
+                <div class="card-header"><i class="fas fa-users"></i> Brukergrupper</div>
                 <div class="card-body">
-                    <button class="btn btn-primary">Lagre</button>
+                    {{ form_row(form.usergroup) }}
+
                 </div>
             </div>
-            {{ form_end(form) }}
+
+        </div>
+
+        <div class="col-12 col-lg-6">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-at"></i> Epost</div>
+                    <div class="card-body">
+                        {{ form_row(form.emailSubject) }}
+                        <br>
+
+                        <strong> Epost melding: </strong><br>
+                        Hei, {Fornavn} <br>
+                        {{ form_row(form.emailMessage) }}
+                        {undersøkelselenke} <br><br>
+                        Med vennlig hilsen <br>
+                        Vektorevaluering
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-mobile-alt"></i>SMS</div>
+                    <div class="card-body">
+                        Hei, {Fornavn} <br>
+                        {{ form_row(form.smsMessage) }}
+                        {undersøkelselenke} <br><br>
+                        Med vennlig hilsen <br>
+                        Vektorevaluering
+                    </div>
+                </div>
         </div>
     </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {{ form_widget(form.preview, {'attr': {'class': 'btn btn-outline-secondary ignore-auto-disable', 'formtarget': '_blank'}}) }}
+                    <button class="btn btn-primary">Lagre</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
 {% endblock %}

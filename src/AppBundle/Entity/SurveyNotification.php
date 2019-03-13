@@ -154,7 +154,7 @@ class SurveyNotification
     /**
      * @param string $userIdentifier
      */
-    public function setUSerIdentifier(string $userIdentifier) : void
+    public function setUserIdentifier(string $userIdentifier) : void
     {
         $this->userIdentifier = $userIdentifier;
     }

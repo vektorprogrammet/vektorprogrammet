@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\UserGroupCollectionType;
 use AppBundle\Service\UserGroupCollectionManager;
@@ -17,7 +18,6 @@ class UserGroupCollectionController extends BaseController
         if ($isCreate = $userGroupCollection === null) {
             $userGroupCollection = new UserGroupCollection();
         }
-
         $isEditable = !$userGroupCollection->isDeletable();
 
         $em = $this->getDoctrine()->getManager();
@@ -53,7 +53,6 @@ class UserGroupCollectionController extends BaseController
             'form' => $form->createView(),
             'isCreate' => $isCreate,
             'userGroupCollection' => $userGroupCollection,
-
         ));
     }
 
