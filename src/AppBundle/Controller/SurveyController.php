@@ -36,7 +36,7 @@ class SurveyController extends BaseController
     public function showAction(Request $request, Survey $survey)
     {
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
-        if ($survey->getTargetAudience() === 0) {
+        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
                 'validation_groups' => array('schoolSpecific'),
             ));
@@ -177,7 +177,7 @@ class SurveyController extends BaseController
 
     public function showAdminAction(Request $request, Survey $survey)
     {
-        if ($survey->getTargetAudience() === 1) {
+        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);

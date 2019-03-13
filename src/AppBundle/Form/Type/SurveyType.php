@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Repository\SemesterRepository;
+use AppBundle\Entity\Survey;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -56,9 +57,11 @@ class SurveyType extends AbstractType
             'multiple' => false,
             'expanded' => true,
             'choices' => [
-                'Skoler/Elever' => 0,
-                'Teammedlemmer' => 1,
-                'Assistenter' => 2,
+                'Skoler/Elever' => Survey::$SCHOOL_SURVEY,
+                'Teammedlemmer' => Survey::$TEAM_SURVEY,
+                'Assistenter' => Survey::$ASSISTANT_SURVEY,
+                'Andre' => Survey::$OTHER_SURVEY,
+
 
             ]
 

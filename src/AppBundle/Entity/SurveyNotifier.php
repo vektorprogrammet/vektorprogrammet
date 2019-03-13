@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
@@ -34,6 +35,7 @@ class SurveyNotifier
     /**
      * @var UserGroup
      * @ORM\ManyToOne(targetEntity="UserGroup", cascade={"persist"})
+     * @Assert\NotBlank
      */
     private $userGroup;
 
@@ -48,12 +50,13 @@ class SurveyNotifier
     /**
      * @var Survey
      * @ORM\ManyToOne(targetEntity="Survey")
+     * @Assert\NotBlank
      */
     private $survey;
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime", nullable=false)
      */
     private $timeOfNotification;
 
@@ -78,6 +81,7 @@ class SurveyNotifier
     /**
      * @var string
      * @ORM\Column(type="string")
+     *
      */
     private $smsMessage;
 

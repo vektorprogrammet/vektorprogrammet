@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\SurveyNotifier;
 use AppBundle\Entity\UserGroup;
+use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\SurveyNotifierType;
 use AppBundle\Service\SurveyNotifierManager;
 use AppBundle\Service\UserGroupCollectionManager;
@@ -30,14 +31,23 @@ class SurveyNotifierController extends BaseController
             $canEdit = !$surveyNotifier->isActive();
         }
 
+        $isUserGroupCollectionEmpty = empty($this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll());
+
 
         $form = $this->createForm(SurveyNotifierType::class, $surveyNotifier, array(
             'canEdit' => $canEdit,
+
         ));
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if ($isUserGroupCollectionEmpty)
+            {
+                $this->addFlash("danger", "Brukergruppesamling må lages først");
+                return $this->redirect($this->generateUrl('survey_notifiers'));
+
+            }
             $surveyNotifier->setSenderUser($this->getUser());
 
             if ($form->get('preview')->isClicked()) {
@@ -62,6 +72,7 @@ class SurveyNotifierController extends BaseController
             'form' => $form->createView(),
             'surveyNotifier' => $surveyNotifier,
             'isCreate' => $isCreate,
+            'isUserGroupCollectionEmpty' => $isUserGroupCollectionEmpty,
         ));
     }
 

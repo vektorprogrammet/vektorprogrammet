@@ -31,6 +31,9 @@ class UserGroupCollection
     /**
      * @var int
      * @ORM\Column(type="integer", nullable = false)
+     * @Assert\GreaterThan(
+     *     value = 0
+     * )
      */
     private $numberUserGroups;
 
@@ -93,7 +96,7 @@ class UserGroupCollection
     public function __construct()
     {
         $this->userGroups = array();
-        $this->name = "Brukerinndeling";
+        $this->name = "";
         $this->teams = array();
         $this->semesters = array();
         $this->assistantsDepartments = array();
