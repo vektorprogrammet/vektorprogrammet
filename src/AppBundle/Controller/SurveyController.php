@@ -153,7 +153,7 @@ class SurveyController extends BaseController
                 if ($survey->getTargetAudience() === 1) {
                     $route = 'survey_show_user';
                 } elseif ($survey->getTargetAudience() === 2  && $identifier !== null) {
-                    $route = 'survey_show_assistant_user';
+                    $route = 'survey_show_user';
                 } else {
                     return $this->redirectToCorrectSurvey($survey);
                 }

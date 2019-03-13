@@ -139,7 +139,7 @@ class SurveyNotifierManager
                 "Hei, ".$notification->getUser()->getFirstName()."\n".
                 $customMessage.
                 $this->router->generate(
-                    'survey_show_assistant_user',
+                    'survey_show_user_id',
                     ['id' => $surveyid, 'userid'=>$identifier],
                     RouterInterface::ABSOLUTE_URL
                 ) .
@@ -185,7 +185,7 @@ class SurveyNotifierManager
                         'survey/survey_email_notification.html.twig',
                         array(
                             'firstname' => $notification->getUser()->getFirstName(),
-                            'route' => $this->router->generate('survey_show_assistant_user', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
+                            'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
                             'content' => $content,
 
                         )
