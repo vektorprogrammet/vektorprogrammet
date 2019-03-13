@@ -116,22 +116,15 @@ survey_show:
   requirements:
     id: \d+
 
-survey_show_team:
- path: /teamundersokelse/{id}
+survey_show_user:
+ path: /undersokelse/u/{id}
  defaults: { _controller: AppBundle:Survey:showUser}
  methods: [GET, POST]
  requirements:
   id: \d+
 
-survey_show_assistant:
- path: /assistentundersokelse/{id}
- defaults: { _controller: AppBundle:Survey:showUser }
- methods: [GET, POST]
- requirements:
-  id: \d+
-
-survey_show_assistant_id:
- path: /assistentundersokelse/{id}/{userid}
+survey_show_user_id:
+ path: /undersokelse/u/{id}/{userid}
  defaults: { _controller: AppBundle:Survey:showId }
  methods: [GET, POST]
  requirements:

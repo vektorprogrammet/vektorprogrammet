@@ -151,9 +151,9 @@ class SurveyController extends BaseController
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
 
                 if ($survey->getTargetAudience() === 1) {
-                    $route = 'survey_show_team';
+                    $route = 'survey_show_user';
                 } elseif ($survey->getTargetAudience() === 2  && $identifier !== null) {
-                    $route = 'survey_show_assistant_id';
+                    $route = 'survey_show_assistant_user';
                 } else {
                     return $this->redirectToCorrectSurvey($survey);
                 }
@@ -431,9 +431,9 @@ class SurveyController extends BaseController
         if ($survey->getTargetAudience() === 0) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         } elseif ($survey->getTargetAudience() === 1) {
-            return $this->redirectToRoute('survey_show_team', array('id' => $survey->getId()));
+            return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
         } elseif ($survey->getTargetAudience() === 2) {
-            return $this->redirectToRoute('survey_show_assistant', array('id' => $survey->getId()));
+            return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
         }
         throw new RouteNotFoundException();
     }
