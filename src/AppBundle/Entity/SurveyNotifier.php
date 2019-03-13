@@ -118,8 +118,6 @@ class SurveyNotifier
         $this->smsMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
         $this->emailMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
         $this->emailSubject = "Undersøkelse fra Vektor";
-
-
     }
 
     /**
@@ -323,7 +321,4 @@ class SurveyNotifier
     {
         $this->emailSubject = $emailSubject;
     }
-
-
-
 }

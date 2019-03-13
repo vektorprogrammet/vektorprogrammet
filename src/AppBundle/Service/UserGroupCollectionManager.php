@@ -124,6 +124,4 @@ class UserGroupCollectionManager
 
         return $usersUnique;
     }
-
-
 }

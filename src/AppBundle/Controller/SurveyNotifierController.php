@@ -42,11 +42,9 @@ class SurveyNotifierController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($isUserGroupCollectionEmpty)
-            {
+            if ($isUserGroupCollectionEmpty) {
                 $this->addFlash("danger", "Brukergruppesamling må lages først");
                 return $this->redirect($this->generateUrl('survey_notifiers'));
-
             }
             $surveyNotifier->setSenderUser($this->getUser());
 
@@ -58,7 +56,8 @@ class SurveyNotifierController extends BaseController
                         'route' => $this->generateUrl('survey_show', ['id' => $surveyNotifier->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
                         'content' => $surveyNotifier->getEmailMessage(),
 
-                    ));
+                    )
+                );
             }
 
             $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($surveyNotifier);

@@ -86,8 +86,6 @@ class SurveyNotifierType extends AbstractType
             ->add('preview', SubmitType::class, array(
                 'label' => 'Forhåndsvis epost'
             ));
-
-
     }
 
     public function configureOptions(OptionsResolver $resolver)
