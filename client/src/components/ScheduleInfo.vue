@@ -1,37 +1,39 @@
 <template>
-  <div class="content" style="padding: 20px 0 100px 0; align-items: center">
-    <h2>Min Assistentstilling:</h2>
-    <br><br><br>
-    <b-row>
-      <b-col>
-        <font-awesome-icon
-          icon="map-marker-alt"
-          id="marker"
-          style="font-size: 5em"
-          class="mb-4"
-        />
-        <h4>{{scheduleInfo.school.name}}</h4>
-        <!--h4>Ungdomsskole</h4-->
-      </b-col>
-      <b-col>
-        <font-awesome-icon
-                icon="clock"
-                id="clock"
-                style="font-size: 5em"
-                class="mb-4"
-        />
-        <h4>{{scheduleInfo.day}}</h4>
-      </b-col>
-      <b-col>
-        <font-awesome-icon
-          icon="calendar-alt"
-          id="calendar"
-          style="font-size: 5em"
-          class="mb-4"
-        />
-        <h4>{{scheduleInfo.bolk}}</h4>
-      </b-col>
-    </b-row>
+  <div class="container">
+    <div class="background"></div>
+    <div class="content">
+      <h2 class="pt-5 pb-5">Min Assistentstilling:</h2>
+      <b-row>
+        <b-col>
+          <font-awesome-icon
+            icon="map-marker-alt"
+            id="marker"
+            style="font-size: 5em; color: #FFFFFF;"
+            class="mb-4"
+          />
+          <h4 class="label">{{scheduleInfo.school.name}}</h4>
+          <!--h4>Ungdomsskole</h4-->
+        </b-col>
+        <b-col>
+          <font-awesome-icon
+                  icon="clock"
+                  id="clock"
+                  style="font-size: 5em; color: #FFFFFF;"
+                  class="mb-4"
+          />
+          <h4 class="label">{{scheduleInfo.day}}</h4>
+        </b-col>
+        <b-col>
+          <font-awesome-icon
+            icon="calendar-alt"
+            id="calendar"
+            style="font-size: 5em; color: #FFFFFF;"
+            class="mb-4"
+          />
+          <h4 class="label">{{scheduleInfo.bolk}}</h4>
+        </b-col>
+      </b-row>
+    </div>
   </div>
 </template>
 
@@ -68,10 +70,49 @@ export default class ScheduleInfo extends Vue {
   font-size: 5em;
 }
 
+#marker #clock #calendar {
+  color: white;
+}
+
 .row {
   size: auto;
   text-align: right;
-  background-color: #0b2e13;
+}
+
+.container {
+  width: 100%;
+  height: 20%;
+}
+
+.background {
+  background: url("../../public/img/schools/gimse.jpg") center no-repeat;
+  background-size: cover;
+  filter: blur(5px);
+  position: absolute;
+  z-index: 0;
+  width: 100%;
+  height: 50%;
+  top: 60px;
+  left: 0;
+
+}
+
+.content {
+  //background-image: url("../../public/img/schools/gimse.jpg");
+  //background-color: lightgrey;
+  padding: 0 0 100px 0;
+  align-items: center;
+  background-color: rgba(0,0,0,0);
+  //position: absolute;
+  top: 0;
+  left: 0;
+  /*-webkit-filter: blur(5px);
+  -ms-filter: blur(5px);*/
+
+}
+
+.label {
+  color: white;
 }
 
 </style>

@@ -18,3 +18,15 @@ import Component from 'vue-class-component';
 @Component
 export default class AssistantNav extends Vue {}
 </script>
+
+<style scoped lang="scss">
+  .breadcrumb{
+    margin-bottom: 0;
+  }
+
+  .assistant-nav {
+    z-index: 100;
+    display: block;
+  }
+
+</style>

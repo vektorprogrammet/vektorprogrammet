@@ -1,6 +1,6 @@
 <template>
     <div class="contact-info">
-        <h3>Kontaktinfo</h3>
+        <h3 class="mt-5 mb-5">Kontaktinfo</h3>
         <b-row class="mt-4 mb-4">
             <b-col>
                 <div class="card accent-info text-left ml-5 mr-3">

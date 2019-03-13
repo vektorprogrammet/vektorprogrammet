@@ -2,13 +2,16 @@
   <div class="content">
     <!--MyPageNav></MyPageNav-->
     <!-- PageHeader class="header-component"><h1>Min side</h1></PageHeader -->
-    <ScheduleInfo :scheduleInfo="scheduleInfo" class="schedule-component"></ScheduleInfo>
+    <ScheduleInfo
+            :scheduleInfo="scheduleInfo"
+            class="schedule-component">
+    </ScheduleInfo>
     <UpcomingEvents ></UpcomingEvents>
     <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
     <!--PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
     <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
     <MyPartner :user_partner="scheduleInfo.user"></MyPartner-->
-    <Map class="mb-5" :school_name="this.scheduleInfo.school.name" home_name="Trondheim sentrum"></Map>
+    <Map class="mb-5" :school_name="this.scheduleInfo.school.name" home_name="Trondheim Sentrum"></Map>
   </div>
 </template>
 

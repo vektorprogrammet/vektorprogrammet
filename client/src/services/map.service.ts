@@ -1,7 +1,7 @@
 const API_KEY = 'AIzaSyCfhjte_te7uOqtXmZkvtrhdZaNMaVIGso';
 const CALLBACK_NAME = 'gmapsCallback';
 
-let initialized = !! window.google;
+let initialized: any = !! window.google;
 let resolveInitPromise: any;
 let rejectInitPromise: any;
 // This promise handles the initialization

@@ -1,6 +1,6 @@
 <template>
     <div class="events">
-        <h3>Kommende hendelser</h3>
+        <h3 class="mt-5">Kommende hendelser</h3>
         <div class="card accent-info text-left mt-3 m-lg-5"
              v-for="event in this.events">
             <div class="card-body ">
