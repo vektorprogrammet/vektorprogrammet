@@ -259,7 +259,7 @@ class UserGroupCollection
     /**
      * @param bool $isDeletable
      */
-    public function setIsDeletable(bool $isDeletable): void
+    public function setDeletable(bool $isDeletable): void
     {
         $this->isDeletable = $isDeletable;
     }

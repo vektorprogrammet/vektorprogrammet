@@ -221,7 +221,7 @@ class SurveyNotifier
     /**
      * @param bool $isAllSent
      */
-    public function setIsAllSent(bool $isAllSent): void
+    public function setAllSent(bool $isAllSent): void
     {
         $this->isAllSent = $isAllSent;
     }
@@ -253,7 +253,7 @@ class SurveyNotifier
     /**
      * @param bool $isActive
      */
-    public function setIsActive(bool $isActive): void
+    public function setActive(bool $isActive): void
     {
         $this->isActive = $isActive;
     }

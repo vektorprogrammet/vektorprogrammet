@@ -170,7 +170,7 @@ class SurveyNotification
     /**
      * @param bool $isSent
      */
-    public function setIsSent(bool $isSent): void
+    public function setSent(bool $isSent): void
     {
         $this->isSent = $isSent;
     }

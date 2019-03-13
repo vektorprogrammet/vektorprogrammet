@@ -51,9 +51,9 @@ class SurveyNotifierManager
     public function initializeSurveyNotifier(SurveyNotifier $surveyNotifier)
     {
         $userGroup = $surveyNotifier->getUserGroup();
-        $userGroup->setIsActive(true);
+        $userGroup->setActive(true);
         $userGroupCollection = $userGroup ->getUserGroupCollection();
-        $userGroupCollection->setIsDeletable(false);
+        $userGroupCollection->setDeletable(false);
 
         $this->em->persist($surveyNotifier);
         $this->em->persist($userGroup);
@@ -80,7 +80,7 @@ class SurveyNotifierManager
 
             $this->em->persist($notification);
         }
-        $surveyNotifier->getUserGroup()->setIsActive(true);
+        $surveyNotifier->getUserGroup()->setActive(true);
         $this->em->persist($surveyNotifier->getUserGroup());
 
         try {
@@ -99,7 +99,7 @@ class SurveyNotifierManager
         }
 
         $this->isAllSent($surveyNotifier);
-        $surveyNotifier->setIsActive(true);
+        $surveyNotifier->setActive(true);
         $this->em->persist($surveyNotifier);
         $this->em->flush();
 
@@ -123,7 +123,7 @@ class SurveyNotifierManager
             if ($notification->isSent()) {
                 return;
             }
-            $notification->setIsSent(true);
+            $notification->setSent(true);
             $this->em->persist($notification);
             $notification->setTimeNotificationSent(new \DateTime());
             $user = $notification->getUser();
@@ -167,7 +167,7 @@ class SurveyNotifierManager
             if ($notification->isSent()) {
                 return;
             }
-            $notification->setIsSent(true);
+            $notification->setSent(true);
             $this->em->persist($notification);
 
             $notification->setTimeNotificationSent(new \DateTime());
@@ -211,7 +211,7 @@ class SurveyNotifierManager
             }
         }
 
-        $surveyNotifier->setIsAllSent(true);
+        $surveyNotifier->setAllSent(true);
         $this->em->persist($surveyNotifier);
         $this->em->flush();
         return true;

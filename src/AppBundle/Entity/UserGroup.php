@@ -113,7 +113,7 @@ class UserGroup
     /**
      * @param bool $isActive
      */
-    public function setIsActive(bool $isActive): void
+    public function setActive(bool $isActive): void
     {
         $this->isActive = $isActive;
     }
