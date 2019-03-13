@@ -115,6 +115,11 @@ class UserGroupCollectionManager
 
 
         $users = array_merge($teamUsersFiltered, $assistantsFiltered);
+
+        $selectedUsers = $userGroupCollection->getUsers()->toArray();
+        $users = array_merge($users, $selectedUsers);
+
+
         $usersUnique = array_unique($users, SORT_REGULAR);
 
         return $usersUnique;

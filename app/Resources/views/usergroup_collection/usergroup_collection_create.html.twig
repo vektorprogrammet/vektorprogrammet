@@ -7,6 +7,12 @@
     <li class="breadcrumb-item active">{{ isCreate ? 'Lag brukergruppesamling' : userGroupCollection.name }}</li>
 {% endblock %}
 
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/usergroupcollection.css') }}">
+{% endblock %}
+
+
 {% block body %}
     <div class="row">
         <div class="col-12 col-xl-10 col-xxl-9 col-xxxl-7">
@@ -34,7 +40,16 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12">
+                <div class="col-6">
+                    <div class="card">
+                        <div class="card-header"><i class="fa fa-users"></i> Users</div>
+                        <div class="card-body">
+                            {{ form_row(form.users) }}
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-6">
                     <div class="card">
                         <div class="card-header"><i class="fas fa-calendar-alt"></i> Semester</div>
                         <div class="card-body">

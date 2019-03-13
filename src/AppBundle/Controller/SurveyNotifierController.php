@@ -67,7 +67,14 @@ class SurveyNotifierController extends BaseController
         if ($surveyNotifier->getTimeOfNotification() > new \DateTime() || $surveyNotifier->isAllSent()) {
             throw new AccessDeniedException();
         }
-        $this->get(SurveyNotifierManager::class)->sendNotifications($surveyNotifier);
+        $isIdentifierCollison = $this->get(SurveyNotifierManager::class)->sendNotifications($surveyNotifier);
+        if ($isIdentifierCollison)
+        {
+            $this->addFlash("danger", "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!");
+            $response['cause'] = "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!";
+            return $this->redirect($this->generateUrl('survey_notifiers'));
+        }
+        $this->addFlash("suksess", "Sendt");
 
         $response['success'] = true;
         return new JsonResponse($response);
@@ -77,8 +84,6 @@ class SurveyNotifierController extends BaseController
 
     public function deleteSurveyNotifierAction(SurveyNotifier $surveyNotifier)
     {
-        dump("1234");
-
         if ($surveyNotifier->isActive()) {
             throw new AccessDeniedException();
         }

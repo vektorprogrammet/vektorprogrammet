@@ -24,6 +24,8 @@ class SurveyNotifierType extends AbstractType
         $builder
             ->add("name", TextType::class, [
                 'label' => 'Navn på varsel',
+                'disabled' => !$this->canEdit
+
             ])
 
             ->add("timeOfNotification", DateTimeType::class, [

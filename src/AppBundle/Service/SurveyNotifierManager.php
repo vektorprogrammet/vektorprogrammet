@@ -6,11 +6,12 @@ namespace AppBundle\Service;
 use AppBundle\Entity\SurveyNotification;
 use AppBundle\Entity\SurveyNotifier;
 use AppBundle\Entity\SurveyTaken;
+use AppBundle\Entity\User;
 use AppBundle\Mailer\Mailer;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
+use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
-use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -22,7 +23,6 @@ class SurveyNotifierManager
     private $logger;
     private $router;
     private $smsSender;
-    private $userGroupCollectionManager;
     private $fromEmail;
 
 
@@ -65,30 +65,41 @@ class SurveyNotifierManager
     {
         if ($surveyNotifier->isActive())
         {
-            return;
+            return false;
         }
+
         $survey = $surveyNotifier->getSurvey();
         $users = $surveyNotifier->getUserGroup()->getUsers();
-        $notifications = array();
         foreach ($users as $user) {
             $isSurveyTakenByUser = !empty($this->em->getRepository(SurveyTaken::class)->findAllBySurveyAndUser($survey, $user));
             if ($isSurveyTakenByUser) {
                 continue;
             }
+
             $notification = new SurveyNotification();
             $notification->setUser($user);
             $notification->setSurveyNotifier($surveyNotifier);
-            $notifications[] = $notification;
+
             $this->em->persist($notification);
+
         }
         $surveyNotifier->getUserGroup()->setIsActive(true);
         $this->em->persist($surveyNotifier->getUserGroup());
-        $this->em->flush();
+
+        try{
+            $this->em->flush();
+        }catch (UniqueConstraintViolationException $e){
+            return true;
+        }
+
     }
+
 
     public function sendNotifications(SurveyNotifier $surveyNotifier)
     {
-        $this->createSurveyNotifications($surveyNotifier);
+        $isIdentifierCollision = $this->createSurveyNotifications($surveyNotifier);
+        if ($isIdentifierCollision) return true;
+
         $this->isAllSent($surveyNotifier);
         $surveyNotifier->setIsActive(true);
         $this->em->persist($surveyNotifier);
@@ -101,6 +112,8 @@ class SurveyNotifierManager
         } elseif ($surveyNotifier->getNotificationType() === SurveyNotifier::$EMAIL_NOTIFICATION) {
             $this->sendEmail($surveyNotifier);
         }
+
+        return false;
     }
 
 
@@ -164,7 +177,7 @@ class SurveyNotifierManager
             $email = $user->getEmail();
 
             $message = (new \Swift_Message())
-                ->setFrom('Vektorprogrammet')
+                ->setFrom(array($this->fromEmail => 'Vektorprogrammet'))
                 ->setSubject('Takk for din innsats i Vektorprogrammet!')
                 ->setTo($email)
                 ->setReplyTo($this->fromEmail)

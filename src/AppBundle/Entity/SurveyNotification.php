@@ -8,7 +8,6 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SurveyNotificationRepository")
  * @ORM\Table(name="survey_notification")
- *
  * @UniqueEntity(
  *      fields={"userIdentifier"}
  * )
@@ -48,7 +47,7 @@ class SurveyNotification
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", unique=true)
      */
     private $userIdentifier;
 
@@ -61,7 +60,7 @@ class SurveyNotification
 
     public function __construct()
     {
-        $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(12));
+        $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(2));
         $this->isSent = false;
         $this->surveyLinkClick = array();
     }
@@ -150,6 +149,14 @@ class SurveyNotification
     public function getUserIdentifier(): string
     {
         return $this->userIdentifier;
+    }
+
+    /**
+     * @param string $userIdentifier
+     */
+    public function setUSerIdentifier(string $userIdentifier) : void
+    {
+        $this->userIdentifier = $userIdentifier;
     }
 
     /**

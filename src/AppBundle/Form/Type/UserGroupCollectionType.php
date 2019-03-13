@@ -2,10 +2,12 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -53,6 +55,15 @@ class UserGroupCollectionType extends AbstractType
                 "class" => Team::class,
                 "group_by" => "department.city",
                 'disabled' => $this->isEdit
+
+            ])
+
+            ->add("users", EntityType::class, [
+                'label' => false,
+                "expanded" => false,
+                "multiple" => true,
+                "class" => User::class,
+                "group_by" => "fieldOfStudy.department"
 
             ])
 

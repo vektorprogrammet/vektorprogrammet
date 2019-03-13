@@ -62,6 +62,13 @@ class UserGroupCollection
 
     /**
      * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="User")
+     */
+    private $users;
+
+
+    /**
+     * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="Department")
      */
     private $assistantsDepartments;
@@ -253,4 +260,23 @@ class UserGroupCollection
     {
         $this->isDeletable = $isDeletable;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+    public function getUsers()
+    {
+        return $this->users;
+    }
+
+    /**
+     * @param ArrayCollection $users
+     */
+    public function setUsers(ArrayCollection $users): void
+    {
+        $this->users = $users;
+    }
+
+
+
 }

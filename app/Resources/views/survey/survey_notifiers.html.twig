@@ -27,6 +27,7 @@
                         <th>Tittel</th>
                         <th>Brukergruppe</th>
                         <th>Del av brukergruppe</th>
+                        <th>Redigeringsstatus</th>
                         <th>Varselstatus</th>
                     </tr>
                     </thead>
@@ -56,6 +57,13 @@
                             <td>{{ surveyNotifier.name }}</td>
                             <td>{{ surveyNotifier.userGroup.userGroupCollection.name }}</td>
                             <td>{{ surveyNotifier.userGroup.name }}</td>
+                            <td>
+                                {% if surveyNotifier.isActive %}
+                                    <i class="fas fa-lock"></i>
+                                {% else %}
+                                    <i class="fas fa-lock-open"></i>
+                                {% endif %}
+                            </td>
                             <td>
                                 {% if not surveyNotifier.isAllSent %}
                                     {% if date(surveyNotifier.timeOfNotification) < date()  %}
