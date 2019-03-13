@@ -246,7 +246,7 @@ survey_notifier_send:
 usergroup_collections:
  path: /kontrollpanel/brukergruppesamling
  defaults: { _controller: AppBundle:UserGroupCollection:userGroupCollections }
- methods: [GET, POST]
+ methods: [GET]
 
 
 usergroup_collection_create:
