@@ -90,9 +90,6 @@ class UserGroupCollection
     private $deletable;
 
 
-
-
-
     public function __construct()
     {
         $this->userGroups = array();

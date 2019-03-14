@@ -41,8 +41,9 @@ final class Version20190314230440 extends AbstractMigration
         $this->addSql('ALTER TABLE survey_notifier ADD CONSTRAINT FK_7A119AA2B3FE509D FOREIGN KEY (survey_id) REFERENCES survey (id)');
         $this->addSql('ALTER TABLE survey_notification ADD CONSTRAINT FK_CF867A9AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE survey_notification ADD CONSTRAINT FK_CF867A9A45F6A4BB FOREIGN KEY (surveyNotifier_id) REFERENCES survey_notifier (id)');
-        $this->addSql('ALTER TABLE survey ADD targetAudience INT DEFAULT 0 NOT NULL, DROP teamSurvey');
-    }
+        $this->addSql('ALTER TABLE survey ADD targetAudience INT DEFAULT 0 NOT NULL');
+        $this->addSql('UPDATE survey SET targetAudience=1 WHERE teamSurvey=\'1\'');
+        $this->addSql('ALTER TABLE survey DROP teamSurvey');    }
 
     public function down(Schema $schema) : void
     {
