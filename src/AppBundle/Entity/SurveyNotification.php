@@ -28,13 +28,13 @@ class SurveyNotification
 
     /**
      * @var SurveyLinkClick[]
-     * @ORM\OneToMany(name="survey_link_click", targetEntity="SurveyLinkClick", mappedBy="notification")
+     * @ORM\OneToMany(targetEntity="SurveyLinkClick", mappedBy="notification")
      */
-    private $surveyLinkClick;
+    private $surveyLinkClicks;
 
     /**
      * @var SurveyNotifier
-     * @ORM\ManyToOne(name="survey_notifier", targetEntity="SurveyNotifier", inversedBy="survey_notification")
+     * @ORM\ManyToOne(targetEntity="SurveyNotifier", inversedBy="surveyNotification")
      */
     private $surveyNotifier;
 
@@ -63,7 +63,7 @@ class SurveyNotification
     {
         $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(3));
         $this->sent = false;
-        $this->surveyLinkClick = array();
+        $this->surveyLinkClicks = array();
     }
 
     /**
@@ -95,19 +95,19 @@ class SurveyNotification
 
 
     /**
-     * @param \DateTime[] $surveyLinkClick
+     * @param \DateTime[] $surveyLinkClicks
      */
-    public function setSurveyLinkClick(array $surveyLinkClick): void
+    public function setSurveyLinkClicks(array $surveyLinkClicks): void
     {
-        $this->surveyLinkClick = $surveyLinkClick;
+        $this->surveyLinkClicks = $surveyLinkClicks;
     }
 
     /**
      * @return \DateTime[]
      */
-    public function getSurveyLinkClick()
+    public function getSurveyLinkClicks()
     {
-        return $this->surveyLinkClick;
+        return $this->surveyLinkClicks;
     }
 
 

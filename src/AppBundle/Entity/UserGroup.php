@@ -43,7 +43,7 @@ class UserGroup
 
     /**
      * @var UserGroupCollection
-     * @ORM\ManyToOne(name="user_group_collection" ,targetEntity="AppBundle\Entity\UserGroupCollection", inversedBy="user_group", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserGroupCollection", inversedBy="userGroups", cascade={"persist"})
      * @ORM\JoinColumn
      */
     private $userGroupCollection;

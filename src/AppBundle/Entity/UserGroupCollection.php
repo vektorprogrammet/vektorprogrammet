@@ -30,7 +30,7 @@ class UserGroupCollection
 
     /**
      * @var int
-     * @ORM\Column(name="number_of_user_groups" type="integer", nullable = false)
+     * @ORM\Column(name="number_of_user_groups", type="integer", nullable = false)
      * @Assert\GreaterThan(
      *     value = 0
      * )
@@ -47,7 +47,7 @@ class UserGroupCollection
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(name="user_group", targetEntity="UserGroup", mappedBy="user_group_collection", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="userGroupCollection", cascade={"remove"})
      */
     private $userGroups;
 

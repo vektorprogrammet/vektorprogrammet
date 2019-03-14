@@ -34,7 +34,7 @@ class SurveyNotifier
 
     /**
      * @var UserGroup
-     * @ORM\ManyToOne(name="user_group" targetEntity="UserGroup", cascade={"persist"})
+     * @ORM\ManyToOne(targetEntity="UserGroup", cascade={"persist"})
      * @Assert\NotBlank
      */
     private $userGroup;
@@ -42,7 +42,7 @@ class SurveyNotifier
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(name="survey_notification", targetEntity="SurveyNotification", mappedBy="survey_notifier", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotifier", cascade={"remove"})
      */
     private $surveyNotifications;
 

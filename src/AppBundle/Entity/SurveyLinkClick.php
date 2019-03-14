@@ -29,7 +29,7 @@ class SurveyLinkClick
 
     /**
      * @var SurveyNotification
-     * @ORM\ManyToOne(targetEntity="SurveyNotification", inversedBy="survey_link_click")
+     * @ORM\ManyToOne(targetEntity="SurveyNotification", inversedBy="surveyLinkClicks")
      */
     private $notification;
 
