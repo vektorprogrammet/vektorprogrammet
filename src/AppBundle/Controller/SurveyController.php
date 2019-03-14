@@ -40,10 +40,14 @@ class SurveyController extends BaseController
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
                 'validation_groups' => array('schoolSpecific'),
             ));
-        } else {
+        } elseif($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
+            $this->redirectToCorrectSurvey($survey);
+        }
+        else {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         }
         $form->handleRequest($request);
+
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
@@ -110,7 +114,9 @@ class SurveyController extends BaseController
     public function showUserAction(Request $request, Survey $survey)
     {
         $user = $this->getUser();
-        if ($user === null) {
+        if($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY || $survey->getTargetAudience() === Survey::$OTHER_SURVEY){
+            $this->redirectToCorrectSurvey($survey);
+        }elseif ($user === null) {
             throw new AccessDeniedException("Logg inn for å ta undersøkelsen!");
         }
         return $this->showUserMainAction($request, $survey, $user);
@@ -177,7 +183,7 @@ class SurveyController extends BaseController
 
     public function showAdminAction(Request $request, Survey $survey)
     {
-        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
+        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
@@ -434,6 +440,8 @@ class SurveyController extends BaseController
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
         } elseif ($survey->getTargetAudience() === 2) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
+        }elseif ($survey->getTargetAudience() === 3) {
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
         throw new RouteNotFoundException();
     }
