@@ -6,7 +6,6 @@ namespace AppBundle\Service;
 use AppBundle\Entity\SurveyNotification;
 use AppBundle\Entity\SurveyNotifier;
 use AppBundle\Entity\SurveyTaken;
-use AppBundle\Entity\User;
 use AppBundle\Mailer\Mailer;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
@@ -88,23 +87,26 @@ class SurveyNotifierManager
         } catch (UniqueConstraintViolationException $e) {
             return true;
         }
+        return false;
     }
 
 
     public function sendNotifications(SurveyNotifier $surveyNotifier)
     {
-        $isIdentifierCollision = $this->createSurveyNotifications($surveyNotifier);
-        if ($isIdentifierCollision) {
-            return true;
+        if (!$surveyNotifier->isActive()) {
+            $isIdentifierCollision = $this->createSurveyNotifications($surveyNotifier);
+            if ($isIdentifierCollision) {
+                return true;
+            }
         }
 
-        $this->isAllSent($surveyNotifier);
         $surveyNotifier->setActive(true);
+        $this->isAllSent($surveyNotifier);
         $this->em->persist($surveyNotifier);
         $this->em->flush();
 
         if ($surveyNotifier->isAllSent()) {
-            return;
+            return false;
         } elseif ($surveyNotifier->getNotificationType() === SurveyNotifier::$SMS_NOTIFICATION) {
             $this->sendSMS($surveyNotifier);
         } elseif ($surveyNotifier->getNotificationType() === SurveyNotifier::$EMAIL_NOTIFICATION) {
@@ -124,8 +126,9 @@ class SurveyNotifierManager
                 return;
             }
             $notification->setSent(true);
-            $this->em->persist($notification);
             $notification->setTimeNotificationSent(new \DateTime());
+            $this->em->persist($notification);
+
             $user = $notification->getUser();
             $identifier = $notification->getUserIdentifier();
             $phoneNumber = $user->getPhone();
@@ -168,9 +171,10 @@ class SurveyNotifierManager
                 return;
             }
             $notification->setSent(true);
+            $notification->setTimeNotificationSent(new \DateTime());
             $this->em->persist($notification);
 
-            $notification->setTimeNotificationSent(new \DateTime());
+
             $user = $notification->getUser();
             $identifier = $notification->getUserIdentifier();
             $email = $user->getEmail();
@@ -182,7 +186,7 @@ class SurveyNotifierManager
                 ->setReplyTo($this->fromEmail)
                 ->setBody(
                     $this->twig->render(
-                        'survey/survey_email_notification.html.twig',
+                        'survey/email_notification.html.twig',
                         array(
                             'firstname' => $notification->getUser()->getFirstName(),
                             'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),

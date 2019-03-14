@@ -7,7 +7,6 @@ use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Team;
-use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

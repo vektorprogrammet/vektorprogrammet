@@ -2,14 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\UserGroupCollectionType;
 use AppBundle\Service\UserGroupCollectionManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class UserGroupCollectionController extends BaseController
 {
@@ -44,8 +41,7 @@ class UserGroupCollectionController extends BaseController
                 return $this->redirect($this->generateUrl('usergroup_collection_create'));
             }
             $this->addFlash("success", "Brukergruppering laget");
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
+
             return $this->redirect($this->generateUrl('usergroup_collections'));
         }
 

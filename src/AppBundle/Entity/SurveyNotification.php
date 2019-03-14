@@ -34,16 +34,18 @@ class SurveyNotification
     private $surveyLinkClick;
 
     /**
+     * @var SurveyNotifier
+     * @ORM\ManyToOne(targetEntity="SurveyNotifier", inversedBy="surveyNotifications")
+     */
+    private $surveyNotifier;
+
+
+    /**
      * @var \DateTime
      * @ORM\Column(type="datetime", nullable=true)
      */
     private $timeNotificationSent;
 
-    /**
-     * @var SurveyNotifier
-     * @ORM\ManyToOne(targetEntity="SurveyNotifier", inversedBy="surveyNotifications")
-     */
-    private $surveyNotifier;
 
     /**
      * @var string
@@ -55,13 +57,13 @@ class SurveyNotification
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $isSent;
+    private $sent;
 
 
     public function __construct()
     {
-        $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(2));
-        $this->isSent = false;
+        $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(3));
+        $this->sent = false;
         $this->surveyLinkClick = array();
     }
 
@@ -164,14 +166,14 @@ class SurveyNotification
      */
     public function isSent(): bool
     {
-        return $this->isSent;
+        return $this->sent;
     }
 
     /**
-     * @param bool $isSent
+     * @param bool $sent
      */
-    public function setSent(bool $isSent): void
+    public function setSent(bool $sent): void
     {
-        $this->isSent = $isSent;
+        $this->sent = $sent;
     }
 }

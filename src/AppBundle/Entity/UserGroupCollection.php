@@ -87,7 +87,7 @@ class UserGroupCollection
      * @var boolean
      * @ORM\Column(type="boolean")
      */
-    private $isDeletable;
+    private $deletable;
 
 
 
@@ -102,7 +102,7 @@ class UserGroupCollection
         $this->assistantsDepartments = array();
         $this->assistantBolks = array();
         $this->numberUserGroups = 2;
-        $this->isDeletable = true;
+        $this->deletable = true;
     }
 
     public function __toString()
@@ -253,15 +253,15 @@ class UserGroupCollection
      */
     public function isDeletable(): bool
     {
-        return $this->isDeletable;
+        return $this->deletable;
     }
 
     /**
-     * @param bool $isDeletable
+     * @param bool $deletable
      */
-    public function setDeletable(bool $isDeletable): void
+    public function setDeletable(bool $deletable): void
     {
-        $this->isDeletable = $isDeletable;
+        $this->deletable = $deletable;
     }
 
     /**

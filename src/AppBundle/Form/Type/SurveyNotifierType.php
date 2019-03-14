@@ -2,10 +2,8 @@
 
 namespace AppBundle\Form\Type;
 
-use AppBundle\Entity\Repository\UserRepository;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyNotifier;
-use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroup;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

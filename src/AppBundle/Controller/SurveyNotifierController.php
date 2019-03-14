@@ -24,48 +24,38 @@ class SurveyNotifierController extends BaseController
     */
     public function createSurveyNotifierAction(Request $request, SurveyNotifier $surveyNotifier = null)
     {
-        $canEdit = true;
-        if ($isCreate = $surveyNotifier === null) {
-            $surveyNotifier = new SurveyNotifier();
-        } else {
-            $canEdit = !$surveyNotifier->isActive();
+        $isUserGroupCollectionEmpty = empty($this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll());
+        if ($isUserGroupCollectionEmpty) {
+            $this->addFlash("danger", "Brukergruppesamling må lages først");
+            return $this->redirect($this->generateUrl('survey_notifiers'));
         }
 
-        $isUserGroupCollectionEmpty = empty($this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll());
-
+        if ($isCreate = $surveyNotifier === null) {
+            $surveyNotifier = new SurveyNotifier();
+        }
+        $canEdit = !$surveyNotifier->isActive();
 
         $form = $this->createForm(SurveyNotifierType::class, $surveyNotifier, array(
             'canEdit' => $canEdit,
-
         ));
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($isUserGroupCollectionEmpty) {
-                $this->addFlash("danger", "Brukergruppesamling må lages først");
-                return $this->redirect($this->generateUrl('survey_notifiers'));
-            }
-            $surveyNotifier->setSenderUser($this->getUser());
-
             if ($form->get('preview')->isClicked()) {
                 return $this->render(
-                    'survey/survey_email_notification.html.twig',
+                    'survey/email_notification.html.twig',
                     array(
                         'firstname' => $this->getUser()->getFirstName(),
                         'route' => $this->generateUrl('survey_show', ['id' => $surveyNotifier->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
                         'content' => $surveyNotifier->getEmailMessage(),
-
                     )
                 );
             }
 
             $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($surveyNotifier);
-
             return $this->redirect($this->generateUrl('survey_notifiers'));
         }
-
-
 
         return $this->render('survey/notifier_create.html.twig', array(
             'form' => $form->createView(),
@@ -80,7 +70,7 @@ class SurveyNotifierController extends BaseController
     {
         $surveyNotifiers =$this->getDoctrine()->getManager()->getRepository(SurveyNotifier::class)->findAll();
 
-        return $this->render('survey/survey_notifiers.html.twig', array(
+        return $this->render('survey/notifiers.html.twig', array(
              'surveyNotifiers' => $surveyNotifiers,
          ));
     }
@@ -91,8 +81,8 @@ class SurveyNotifierController extends BaseController
         if ($surveyNotifier->getTimeOfNotification() > new \DateTime() || $surveyNotifier->isAllSent()) {
             throw new AccessDeniedException();
         }
-        $isIdentifierCollison = $this->get(SurveyNotifierManager::class)->sendNotifications($surveyNotifier);
-        if ($isIdentifierCollison) {
+        $isIdentifierCollisson = $this->get(SurveyNotifierManager::class)->sendNotifications($surveyNotifier);
+        if ($isIdentifierCollisson) {
             $this->addFlash("danger", "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!");
             $response['cause'] = "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!";
             return $this->redirect($this->generateUrl('survey_notifiers'));

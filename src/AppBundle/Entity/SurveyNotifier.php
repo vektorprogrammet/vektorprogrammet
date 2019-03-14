@@ -70,13 +70,13 @@ class SurveyNotifier
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $isAllSent;
+    private $allSent;
 
     /**
      * @var bool
      * @ORM\Column(type="boolean", options={"default"=false})
      */
-    private $isActive;
+    private $active;
 
     /**
      * @var string
@@ -99,12 +99,6 @@ class SurveyNotifier
      */
     private $emailMessage;
 
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     */
-    private $senderUser;
-
 
 
     public function __construct()
@@ -112,8 +106,8 @@ class SurveyNotifier
         $this->name ="";
         $this->surveyNotifications = array();
         $this->timeOfNotification = new \DateTime('tomorrow');
-        $this->isAllSent = false;
-        $this->isActive = false;
+        $this->allSent = false;
+        $this->active = false;
         $this->notificationType = SurveyNotifier::$EMAIL_NOTIFICATION;
         $this->smsMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
         $this->emailMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
@@ -215,15 +209,15 @@ class SurveyNotifier
      */
     public function isAllSent(): bool
     {
-        return $this->isAllSent;
+        return $this->allSent;
     }
 
     /**
-     * @param bool $isAllSent
+     * @param bool $allSent
      */
-    public function setAllSent(bool $isAllSent): void
+    public function setAllSent(bool $allSent): void
     {
-        $this->isAllSent = $isAllSent;
+        $this->allSent = $allSent;
     }
 
     /**
@@ -247,7 +241,7 @@ class SurveyNotifier
      */
     public function isActive(): bool
     {
-        return $this->isActive;
+        return $this->active;
     }
 
     /**
@@ -255,23 +249,7 @@ class SurveyNotifier
      */
     public function setActive(bool $isActive): void
     {
-        $this->isActive = $isActive;
-    }
-
-    /**
-     * @return User
-     */
-    public function getSenderUser(): User
-    {
-        return $this->senderUser;
-    }
-
-    /**
-     * @param User $senderUser
-     */
-    public function setSenderUser(User $senderUser): void
-    {
-        $this->senderUser = $senderUser;
+        $this->active = $isActive;
     }
 
     /**
