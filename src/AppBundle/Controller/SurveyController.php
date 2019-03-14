@@ -40,10 +40,9 @@ class SurveyController extends BaseController
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
                 'validation_groups' => array('schoolSpecific'),
             ));
-        } elseif($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
+        } elseif ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             $this->redirectToCorrectSurvey($survey);
-        }
-        else {
+        } else {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         }
         $form->handleRequest($request);
@@ -114,9 +113,9 @@ class SurveyController extends BaseController
     public function showUserAction(Request $request, Survey $survey)
     {
         $user = $this->getUser();
-        if($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY || $survey->getTargetAudience() === Survey::$OTHER_SURVEY){
+        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY || $survey->getTargetAudience() === Survey::$OTHER_SURVEY) {
             $this->redirectToCorrectSurvey($survey);
-        }elseif ($user === null) {
+        } elseif ($user === null) {
             throw new AccessDeniedException("Logg inn for å ta undersøkelsen!");
         }
         return $this->showUserMainAction($request, $survey, $user);
@@ -440,7 +439,7 @@ class SurveyController extends BaseController
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
         } elseif ($survey->getTargetAudience() === 2) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        }elseif ($survey->getTargetAudience() === 3) {
+        } elseif ($survey->getTargetAudience() === 3) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
         throw new RouteNotFoundException();
