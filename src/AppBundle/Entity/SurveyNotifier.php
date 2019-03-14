@@ -34,7 +34,7 @@ class SurveyNotifier
 
     /**
      * @var UserGroup
-     * @ORM\ManyToOne(targetEntity="UserGroup", cascade={"persist"})
+     * @ORM\ManyToOne(name="user_group" targetEntity="UserGroup", cascade={"persist"})
      * @Assert\NotBlank
      */
     private $userGroup;
@@ -42,7 +42,7 @@ class SurveyNotifier
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotifier", cascade={"remove"})
+     * @ORM\OneToMany(name="survey_notification", targetEntity="SurveyNotification", mappedBy="survey_notifier", cascade={"remove"})
      */
     private $surveyNotifications;
 
@@ -56,19 +56,19 @@ class SurveyNotifier
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=false)
+     * @ORM\Column(name="time_of_notification", type="datetime", nullable=false)
      */
     private $timeOfNotification;
 
     /**
      * @var int
-     * @ORM\Column(type="integer")
+     * @ORM\Column(name="notification_type", type="integer")
      */
     private $notificationType;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="all_sent", type="boolean")
      */
     private $allSent;
 
@@ -80,14 +80,14 @@ class SurveyNotifier
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="sms_message", type="string")
      *
      */
     private $smsMessage;
 
     /**
      * @var string
-     * @ORM\Column(type="string")
+     * @ORM\Column(name="email_subject", type="string")
      */
     private $emailSubject;
 
@@ -95,7 +95,7 @@ class SurveyNotifier
 
     /**
      * @var string
-     * @ORM\Column(type="text")
+     * @ORM\Column(name="email_message", type="text")
      */
     private $emailMessage;
 

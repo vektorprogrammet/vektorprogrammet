@@ -3,7 +3,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SurveyNotificationRepository")
@@ -29,27 +28,27 @@ class SurveyNotification
 
     /**
      * @var SurveyLinkClick[]
-     * @ORM\OneToMany(targetEntity="SurveyLinkClick", mappedBy="notification")
+     * @ORM\OneToMany(name="survey_link_click", targetEntity="SurveyLinkClick", mappedBy="notification")
      */
     private $surveyLinkClick;
 
     /**
      * @var SurveyNotifier
-     * @ORM\ManyToOne(targetEntity="SurveyNotifier", inversedBy="surveyNotifications")
+     * @ORM\ManyToOne(name="survey_notifier", targetEntity="SurveyNotifier", inversedBy="survey_notification")
      */
     private $surveyNotifier;
 
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime", nullable=true)
+     * @ORM\Column(name="time_notification_Sent", type="datetime", nullable=true)
      */
     private $timeNotificationSent;
 
 
     /**
      * @var string
-     * @ORM\Column(type="string", unique=true)
+     * @ORM\Column(name="user_identifier", type="string", unique=true)
      */
     private $userIdentifier;
 

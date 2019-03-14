@@ -22,14 +22,14 @@ class SurveyLinkClick
 
     /**
      * @var \DateTime
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(name="time_of_visit", type="datetime")
      */
     private $timeOfVisit;
 
 
     /**
      * @var SurveyNotification
-     * @ORM\ManyToOne(targetEntity="SurveyNotification", inversedBy="surveyLinkClick")
+     * @ORM\ManyToOne(targetEntity="SurveyNotification", inversedBy="survey_link_click")
      */
     private $notification;
 

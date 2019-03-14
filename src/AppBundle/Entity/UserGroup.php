@@ -30,7 +30,7 @@ class UserGroup
      * @var bool
      * @ORM\Column(type="boolean")
      */
-    private $isActive;
+    private $active;
 
 
     /**
@@ -43,7 +43,7 @@ class UserGroup
 
     /**
      * @var UserGroupCollection
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\UserGroupCollection", inversedBy="userGroups", cascade={"persist"})
+     * @ORM\ManyToOne(name="user_group_collection" ,targetEntity="AppBundle\Entity\UserGroupCollection", inversedBy="user_group", cascade={"persist"})
      * @ORM\JoinColumn
      */
     private $userGroupCollection;
@@ -54,7 +54,7 @@ class UserGroup
     {
         $this->users = array();
         $this->name = "";
-        $this->isActive = false;
+        $this->active = false;
     }
 
     public function __toString()
@@ -107,15 +107,15 @@ class UserGroup
      */
     public function isActive(): bool
     {
-        return $this->isActive;
+        return $this->active;
     }
 
     /**
-     * @param bool $isActive
+     * @param bool $active
      */
-    public function setActive(bool $isActive): void
+    public function setActive(bool $active): void
     {
-        $this->isActive = $isActive;
+        $this->active = $active;
     }
 
     /**

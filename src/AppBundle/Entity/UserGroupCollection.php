@@ -7,7 +7,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * @ORM\Table(name="usergroup_collection")
+ * @ORM\Table(name="user_group_collection")
  * @ORM\Entity
  *
  */
@@ -30,7 +30,7 @@ class UserGroupCollection
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable = false)
+     * @ORM\Column(name="number_of_user_groups" type="integer", nullable = false)
      * @Assert\GreaterThan(
      *     value = 0
      * )
@@ -40,14 +40,14 @@ class UserGroupCollection
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable = true)
+     * @ORM\Column(name="number_of_total_users", type="integer", nullable = true)
      */
     private $numberTotalUsers;
 
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="userGroupCollection", cascade={"remove"})
+     * @ORM\OneToMany(name="user_group", targetEntity="UserGroup", mappedBy="user_group_collection", cascade={"remove"})
      */
     private $userGroups;
 
@@ -79,7 +79,7 @@ class UserGroupCollection
 
     /**
      * @var array
-     * @ORM\Column(type="array")
+     * @ORM\Column(name="assistant_bolk", type="array")
      */
     private $assistantBolks;
 
