@@ -15,7 +15,7 @@
 
     export default class Map extends Vue {
         @Prop() private school_name: string;
-        @Prop() private home_name: string;
+        @Prop() private home_name: string = 'Trondheim Sentrum';
         @Prop() private school_location: JSON;
         private duration: string = ' X min';
 

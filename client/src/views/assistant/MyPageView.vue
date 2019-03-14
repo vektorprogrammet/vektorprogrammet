@@ -11,7 +11,7 @@
     <!--PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
     <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
     <MyPartner :user_partner="scheduleInfo.user"></MyPartner-->
-    <Map class="mb-5" :school_name="this.scheduleInfo.school.name" home_name="Trondheim Sentrum"></Map>
+    <Map class="mb-5" :school_name="this.scheduleInfo.school.name" :home_name="this.home_name"></Map>
   </div>
 </template>
 
@@ -37,6 +37,7 @@ import Map from "../../components/Map";
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: any;
     @Prop() private user: any;
+    private home_name: string;
     public async mounted() {
         this.user = await accountService.getUser();
         this.scheduleInfo = await accountService.getScheduleInfo();

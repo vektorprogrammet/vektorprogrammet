@@ -1,14 +1,14 @@
 <template>
-  <div class="container">
-    <div class="background"></div>
+  <!--div class="container">
+    <!--div class="background"></div-->
     <div class="content">
-      <h2 class="pt-5 pb-5">Min Assistentstilling:</h2>
+      <h2 class="title pt-5 pb-5">Min Assistentstilling:</h2>
       <b-row>
         <b-col>
           <font-awesome-icon
             icon="map-marker-alt"
             id="marker"
-            style="font-size: 5em; color: #FFFFFF;"
+            style="font-size: 5em; color: white;"
             class="mb-4"
           />
           <h4 class="label">{{scheduleInfo.school.name}}</h4>
@@ -18,7 +18,7 @@
           <font-awesome-icon
                   icon="clock"
                   id="clock"
-                  style="font-size: 5em; color: #FFFFFF;"
+                  style="font-size: 5em; color: white;"
                   class="mb-4"
           />
           <h4 class="label">{{scheduleInfo.day}}</h4>
@@ -27,14 +27,14 @@
           <font-awesome-icon
             icon="calendar-alt"
             id="calendar"
-            style="font-size: 5em; color: #FFFFFF;"
+            style="font-size: 5em; color: white;"
             class="mb-4"
           />
           <h4 class="label">{{scheduleInfo.bolk}}</h4>
         </b-col>
       </b-row>
     </div>
-  </div>
+  <!--/div-->
 </template>
 
 <script lang="ts">
@@ -59,60 +59,64 @@ export default class ScheduleInfo extends Vue {
 </script>
 
 <style scoped lang="scss">
-.profile-photo {
-  max-width: 50%;
-  height: auto;
-  border-radius: 50em;
-}
+  .profile-photo {
+    max-width: 50%;
+    height: auto;
+    border-radius: 50em;
+  }
 
-//fix asap: find id / class to set style for fa-icons
-#clock {
-  font-size: 5em;
-}
+  //fix asap: find id / class to set style for fa-icons
+  #clock {
+    font-size: 5em;
+  }
 
-#marker #clock #calendar {
-  color: white;
-}
+  #marker #clock #calendar {
+    color: white;
+  }
 
-.row {
-  size: auto;
-  text-align: right;
-}
+  .row {
+    size: auto;
+    text-align: right;
+  }
 
-.container {
-  width: 100%;
-  height: 20%;
-}
+  /*.container {
+    width: 100%;
+    height: 20%;
+  }
 
-.background {
-  background: url("../../public/img/schools/gimse.jpg") center no-repeat;
-  background-size: cover;
-  filter: blur(5px);
-  position: absolute;
-  z-index: 0;
-  width: 100%;
-  height: 50%;
-  top: 60px;
-  left: 0;
+  /*.background {
+    background: url("../../public/img/schools/gimse.jpg") center no-repeat;
+    background-size: cover;
+    filter: blur(5px);
+    position: absolute;
+    z-index: 0;
+    width: 100%;
+    height: 50%;
+    top: 60px;
+    left: 0;
 
-}
+  }*/
 
-.content {
-  //background-image: url("../../public/img/schools/gimse.jpg");
-  //background-color: lightgrey;
-  padding: 0 0 100px 0;
-  align-items: center;
-  background-color: rgba(0,0,0,0);
-  //position: absolute;
-  top: 0;
-  left: 0;
-  /*-webkit-filter: blur(5px);
-  -ms-filter: blur(5px);*/
+  .content {
+    background: url("../../public/img/schools/gimse_blurred.jpg") center center no-repeat;
+    background-size: cover;
+    //background-color: lightgrey;
+    padding: 0 0 100px 0;
+    align-items: center;
+    color: white;
+    text-shadow: 0 0 10px grey;
+    /*position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    /*-webkit-filter: blur(5px);
+    -ms-filter: blur(5px);*/
 
-}
+  }
 
-.label {
-  color: white;
-}
+  .label {
+    color: white;
+  }
+
 
 </style>
