@@ -158,7 +158,6 @@ class SurveyNotifier
             $this->smsSender->send($sms);
             $numSmsSent += 1;
             $this->em->flush();
-
         }
 
         $this->logger->info("*$numSmsSent* notifications SMSs' sent about survey");

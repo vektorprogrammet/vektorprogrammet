@@ -229,11 +229,10 @@ class UserGroupCollection
     public function getNumberTotalUsers(): ?int
     {
         $numberUsers = 0;
-        foreach ($this->getUserGroups() as $userGroup){
+        foreach ($this->getUserGroups() as $userGroup) {
             $numberUsers += count($userGroup->getUsers());
         }
         return $numberUsers;
-
     }
 
     /**
