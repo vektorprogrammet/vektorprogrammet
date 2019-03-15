@@ -86,7 +86,7 @@ class SurveyManager
         $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
         $userAffiliation = array();
         $semester = $survey->getSemester();
-        if ($survey->getTargetAudience() === 1) {
+        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             foreach ($surveysTaken as $surveyTaken) {
                 $user = $surveyTaken->getUser();
                 $userAffiliation = $this->getUserAffiliationOfUserBySemester($user, $semester, $userAffiliation);
@@ -229,12 +229,14 @@ class SurveyManager
 
     public function getSurveyTargetAudienceString(Survey $survey) : string
     {
-        if ($survey->getTargetAudience() === 1) {
+        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             return "Team";
-        } elseif ($survey->getTargetAudience() === 2) {
+        } elseif ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             return "Assistent";
+        } elseif ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
+            return "Skole";
         }
 
-        return "Skole";
+        return "Andre";
     }
 }

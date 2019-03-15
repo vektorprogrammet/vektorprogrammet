@@ -16,7 +16,6 @@ class Survey implements \JsonSerializable
     public static $SCHOOL_SURVEY = 0;
     public static $TEAM_SURVEY = 1;
     public static $ASSISTANT_SURVEY = 2;
-    public static $OTHER_SURVEY = 3;
 
 
     /**

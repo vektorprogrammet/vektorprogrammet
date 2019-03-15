@@ -35,7 +35,7 @@
                     {% for answer in textAnswers[key] %}
                         {% if surveyTargetAudience == 1%}
                             <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.teamName }}</b></p>
-                        {% else %}
+                        {% elseif surveyTargetAudience == 0 or surveyTargetAudience == 2 %}
                             <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.schoolName }}</b></p>
                         {% endif %}
                     {% endfor %}

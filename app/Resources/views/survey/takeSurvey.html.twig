@@ -44,7 +44,7 @@
                 {{ form_errors(form) }}
                 {% set QuestionNumber = 1 %}
 
-                {% if surveyTargetAudience == 0%}
+                {% if surveyTargetAudience == 0 or surveyTargetAudience == 2%}
                     <div class="row mt-4">
                         <div class="col-12">
                             <label class="form-control-label">Hvilken skole går du på?</label>

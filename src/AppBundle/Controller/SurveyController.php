@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyLinkClick;
@@ -36,7 +37,7 @@ class SurveyController extends BaseController
     public function showAction(Request $request, Survey $survey)
     {
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
-        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
+        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY || $survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
                 'validation_groups' => array('schoolSpecific'),
             ));
@@ -109,7 +110,7 @@ class SurveyController extends BaseController
     public function showUserAction(Request $request, Survey $survey)
     {
         $user = $this->getUser();
-        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY || $survey->getTargetAudience() === Survey::$OTHER_SURVEY) {
+        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             $this->redirectToCorrectSurvey($survey);
         } elseif ($user === null) {
             throw new AccessDeniedException("Logg inn for å ta undersøkelsen!");
@@ -123,8 +124,22 @@ class SurveyController extends BaseController
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
+        $em = $this->getDoctrine()->getManager();
+
+        if($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY){
+            $assistantHistory = $em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
+
+            if(empty($assistantHistory)){
+                $this->redirectToCorrectSurvey($survey);
+
+            }
+            $assistantHistory = $assistantHistory[0];
+            $school = $assistantHistory->getSchool();
+            $surveyTaken->setSchool($school);
+        }
+
+
         if ($form->isSubmitted()) {
-            $em = $this->getDoctrine()->getManager();
             $surveyTaken->removeNullAnswers();
             if ($form->isValid()) {
                 $allTakenSurveys = $em
@@ -136,6 +151,7 @@ class SurveyController extends BaseController
                         $em->remove($oldTakenSurvey);
                     }
                 }
+
                 $user->setLastPopUpTime(new \DateTime());
                 $em->persist($user);
                 $em->persist($surveyTaken);
@@ -427,16 +443,13 @@ class SurveyController extends BaseController
 
     private function redirectToCorrectSurvey(Survey $survey)
     {
-        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
-            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-        } elseif ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
+       if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
         } elseif ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        } elseif ($survey->getTargetAudience() === Survey::$OTHER_SURVEY) {
-            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
-        throw new RouteNotFoundException();
+
+        return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
     }
 
 

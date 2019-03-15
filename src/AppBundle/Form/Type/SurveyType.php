@@ -60,7 +60,6 @@ class SurveyType extends AbstractType
                 'Skoler/Elever' => Survey::$SCHOOL_SURVEY,
                 'Teammedlemmer' => Survey::$TEAM_SURVEY,
                 'Assistenter' => Survey::$ASSISTANT_SURVEY,
-                'Andre' => Survey::$OTHER_SURVEY,
 
 
             ]

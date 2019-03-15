@@ -13,6 +13,13 @@ use Doctrine\ORM\EntityRepository;
 class AssistantHistoryRepository extends EntityRepository
 {
 
+    private function findByUserInit(User $user){
+        return $this->createQueryBuilder('assistantHistory')
+            ->select('assistantHistory')
+            ->where('assistantHistory.user = :user')
+            ->setParameter('user', $user);
+    }
+
     /**
      * @param User $user
      *
@@ -20,10 +27,22 @@ class AssistantHistoryRepository extends EntityRepository
      */
     public function findByUser(User $user): array
     {
-        return $this->createQueryBuilder('assistantHistory')
-            ->select('assistantHistory')
-            ->where('assistantHistory.user = :user')
-            ->setParameter('user', $user)
+        return $this->findByUserInit($user)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return AssistantHistory[]
+     */
+    public function findMostRecentByUser(User $user): array
+    {
+        return $this
+            ->findByUserInit($user)
+            ->orderBy('assistantHistory.semester.semesterTime','DESC')
             ->getQuery()
             ->getResult();
     }
