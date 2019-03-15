@@ -126,12 +126,11 @@ class SurveyController extends BaseController
 
         $em = $this->getDoctrine()->getManager();
 
-        if($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY){
+        if ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             $assistantHistory = $em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
 
-            if(empty($assistantHistory)){
+            if (empty($assistantHistory)) {
                 $this->redirectToCorrectSurvey($survey);
-
             }
             $assistantHistory = $assistantHistory[0];
             $school = $assistantHistory->getSchool();
@@ -443,7 +442,7 @@ class SurveyController extends BaseController
 
     private function redirectToCorrectSurvey(Survey $survey)
     {
-       if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
+        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
         } elseif ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));

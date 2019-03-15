@@ -12,8 +12,8 @@ use Doctrine\ORM\EntityRepository;
 
 class AssistantHistoryRepository extends EntityRepository
 {
-
-    private function findByUserInit(User $user){
+    private function findByUserInit(User $user)
+    {
         return $this->createQueryBuilder('assistantHistory')
             ->select('assistantHistory')
             ->where('assistantHistory.user = :user')
@@ -42,7 +42,7 @@ class AssistantHistoryRepository extends EntityRepository
     {
         return $this
             ->findByUserInit($user)
-            ->orderBy('assistantHistory.semester.semesterTime','DESC')
+            ->orderBy('assistantHistory.semester.semesterTime', 'DESC')
             ->getQuery()
             ->getResult();
     }
