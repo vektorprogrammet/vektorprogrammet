@@ -26,6 +26,11 @@ class UserGroupCollectionManager
      */
     public function initializeUserGroupCollection(UserGroupCollection $userGroupCollection)
     {
+        if (!empty($userGroupCollection->getUserGroups())){
+            foreach ($userGroupCollection->getUserGroups() as $userGroup){
+                $this->em->remove($userGroup);
+            }
+        }
         $users = $this->findUsers($userGroupCollection);
         $userGroupCollection->setNumberTotalUsers(sizeof($users));
         shuffle($users);
