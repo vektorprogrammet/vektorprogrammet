@@ -70,6 +70,10 @@ final class Version20190314234634 extends AbstractMigration
         $this->addSql('DROP TABLE survey_link_click');
         $this->addSql('DROP TABLE survey_notifier');
         $this->addSql('DROP TABLE survey_notification');
-        $this->addSql('ALTER TABLE survey ADD teamSurvey TINYINT(1) DEFAULT \'0\' NOT NULL, DROP targetAudience');
+        $this->addSql('ALTER TABLE survey ADD teamSurvey TINYINT(1) DEFAULT \'0\' NOT NULL');
+        $this->addSql('UPDATE survey SET teamSurvey=\'1\' WHERE targetAudience="1"');
+        $this->addSql('ALTER TABLE survey DROP targetAudience');
+
+
     }
 }
