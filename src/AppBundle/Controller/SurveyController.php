@@ -90,12 +90,8 @@ class SurveyController extends BaseController
         $notification = $em->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
 
 
-        if ($notification === null) {
-            return $this->redirectToCorrectSurvey($survey);
-        }
-
-        $sameSurvey = $notification->getSurveyNotifier()->getSurvey() == $survey;
-        if (!$sameSurvey) {
+        $sameSurvey = $notification->getSurveyNotificationCollection()->getSurvey() == $survey;
+        if ($notification === null || !$sameSurvey) {
             return $this->redirectToCorrectSurvey($survey);
         }
 
@@ -155,9 +151,7 @@ class SurveyController extends BaseController
             } else {
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
 
-                if ($survey->getTargetAudience() === 1) {
-                    $route = 'survey_show_user';
-                } elseif ($survey->getTargetAudience() === 2  && $identifier !== null) {
+                if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY || ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY  && $identifier !== null)) {
                     $route = 'survey_show_user';
                 } else {
                     return $this->redirectToCorrectSurvey($survey);
@@ -386,7 +380,7 @@ class SurveyController extends BaseController
             throw new AccessDeniedException();
         }
 
-        if ($survey->getTargetAudience() === 0) {
+        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             return $this->render('survey/survey_result.html.twig', array(
                 'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithTeamResults($survey),
                 'survey' => $survey,
@@ -433,13 +427,13 @@ class SurveyController extends BaseController
 
     private function redirectToCorrectSurvey(Survey $survey)
     {
-        if ($survey->getTargetAudience() === 0) {
+        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-        } elseif ($survey->getTargetAudience() === 1) {
+        } elseif ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        } elseif ($survey->getTargetAudience() === 2) {
+        } elseif ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        } elseif ($survey->getTargetAudience() === 3) {
+        } elseif ($survey->getTargetAudience() === Survey::$OTHER_SURVEY) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
         throw new RouteNotFoundException();

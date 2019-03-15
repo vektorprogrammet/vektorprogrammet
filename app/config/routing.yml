@@ -203,7 +203,7 @@ survey_popup_close:
 
 survey_notifiers:
  path: /kontrollpanel/undersokelsevarsel
- defaults: { _controller: AppBundle:SurveyNotifier:surveyNotifiers }
+ defaults: { _controller: AppBundle:SurveyNotifier:surveyNotificationCollections }
  methods: [GET]
 
 survey_notifier_create:

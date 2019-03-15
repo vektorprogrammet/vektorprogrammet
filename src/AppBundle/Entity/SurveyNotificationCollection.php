@@ -9,9 +9,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="survey_notifier")
+ * @ORM\Table(name="survey_notification_collection")
  */
-class SurveyNotifier
+class SurveyNotificationCollection
 {
     public static $EMAIL_NOTIFICATION = 0;
     public static $SMS_NOTIFICATION = 1;
@@ -42,7 +42,7 @@ class SurveyNotifier
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotifier", cascade={"remove"})
+     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotificationCollection", cascade={"remove"})
      */
     private $surveyNotifications;
 
@@ -101,6 +101,7 @@ class SurveyNotifier
 
 
 
+
     public function __construct()
     {
         $this->name ="";
@@ -108,7 +109,7 @@ class SurveyNotifier
         $this->timeOfNotification = new \DateTime('tomorrow');
         $this->allSent = false;
         $this->active = false;
-        $this->notificationType = SurveyNotifier::$EMAIL_NOTIFICATION;
+        $this->notificationType = SurveyNotificationCollection::$EMAIL_NOTIFICATION;
         $this->smsMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
         $this->emailMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
         $this->emailSubject = "Undersøkelse fra Vektor";

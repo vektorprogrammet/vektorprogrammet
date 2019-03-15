@@ -4,7 +4,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\SurveyNotification;
-use AppBundle\Entity\SurveyNotifier;
+use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\SurveyTaken;
 use AppBundle\Mailer\Mailer;
 use AppBundle\Sms\Sms;
@@ -14,7 +14,7 @@ use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
 
-class SurveyNotifierManager
+class SurveyNotifier
 {
     private $em;
     private $mailer;
@@ -27,7 +27,7 @@ class SurveyNotifierManager
 
 
     /**
-     * SurveyNotifierManager constructor.
+     * SurveyNotifier constructor.
      * @param string $fromEmail
      * @param Mailer $mailer
      * @param \Twig_Environment $twig
@@ -47,26 +47,26 @@ class SurveyNotifierManager
         $this->smsSender = $smsSender;
     }
 
-    public function initializeSurveyNotifier(SurveyNotifier $surveyNotifier)
+    public function initializeSurveyNotifier(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        $userGroup = $surveyNotifier->getUserGroup();
+        $userGroup = $surveyNotificationCollection->getUserGroup();
         $userGroup->setActive(true);
         $userGroupCollection = $userGroup ->getUserGroupCollection();
         $userGroupCollection->setDeletable(false);
 
-        $this->em->persist($surveyNotifier);
+        $this->em->persist($surveyNotificationCollection);
         $this->em->persist($userGroup);
         $this->em->flush();
     }
 
-    private function createSurveyNotifications(SurveyNotifier $surveyNotifier)
+    private function createSurveyNotifications(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if ($surveyNotifier->isActive()) {
+        if ($surveyNotificationCollection->isActive()) {
             return false;
         }
 
-        $survey = $surveyNotifier->getSurvey();
-        $users = $surveyNotifier->getUserGroup()->getUsers();
+        $survey = $surveyNotificationCollection->getSurvey();
+        $users = $surveyNotificationCollection->getUserGroup()->getUsers();
         foreach ($users as $user) {
             $isSurveyTakenByUser = !empty($this->em->getRepository(SurveyTaken::class)->findAllBySurveyAndUser($survey, $user));
             if ($isSurveyTakenByUser) {
@@ -75,12 +75,12 @@ class SurveyNotifierManager
 
             $notification = new SurveyNotification();
             $notification->setUser($user);
-            $notification->setSurveyNotifier($surveyNotifier);
+            $notification->setSurveyNotificationCollection($surveyNotificationCollection);
 
             $this->em->persist($notification);
         }
-        $surveyNotifier->getUserGroup()->setActive(true);
-        $this->em->persist($surveyNotifier->getUserGroup());
+        $surveyNotificationCollection->getUserGroup()->setActive(true);
+        $this->em->persist($surveyNotificationCollection->getUserGroup());
 
         try {
             $this->em->flush();
@@ -91,37 +91,38 @@ class SurveyNotifierManager
     }
 
 
-    public function sendNotifications(SurveyNotifier $surveyNotifier)
+    public function sendNotifications(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if (!$surveyNotifier->isActive()) {
-            $isIdentifierCollision = $this->createSurveyNotifications($surveyNotifier);
+        if (!$surveyNotificationCollection->isActive()) {
+            $isIdentifierCollision = $this->createSurveyNotifications($surveyNotificationCollection);
             if ($isIdentifierCollision) {
                 return true;
             }
         }
 
-        $surveyNotifier->setActive(true);
-        $this->isAllSent($surveyNotifier);
-        $this->em->persist($surveyNotifier);
+        $surveyNotificationCollection->setActive(true);
+        $this->isAllSent($surveyNotificationCollection);
+        $this->em->persist($surveyNotificationCollection);
         $this->em->flush();
 
-        if ($surveyNotifier->isAllSent()) {
+        if ($surveyNotificationCollection->isAllSent()) {
             return false;
-        } elseif ($surveyNotifier->getNotificationType() === SurveyNotifier::$SMS_NOTIFICATION) {
-            $this->sendSMS($surveyNotifier);
-        } elseif ($surveyNotifier->getNotificationType() === SurveyNotifier::$EMAIL_NOTIFICATION) {
-            $this->sendEmail($surveyNotifier);
+        } elseif ($surveyNotificationCollection->getNotificationType() === SurveyNotificationCollection::$SMS_NOTIFICATION) {
+            $this->sendSMS($surveyNotificationCollection);
+        } elseif ($surveyNotificationCollection->getNotificationType() === SurveyNotificationCollection::$EMAIL_NOTIFICATION) {
+            $this->sendEmail($surveyNotificationCollection);
         }
 
         return false;
     }
 
 
-    private function sendSMS(SurveyNotifier $surveyNotifier)
+    private function sendSMS(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        $surveyid = $surveyNotifier->getSurvey()->getId();
-        $customMessage = $surveyNotifier->getSmsMessage();
-        foreach ($surveyNotifier->getSurveyNotifications() as $notification) {
+        $numSmsSent = 0;
+        $surveyid = $surveyNotificationCollection->getSurvey()->getId();
+        $customMessage = $surveyNotificationCollection->getSmsMessage();
+        foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
             if ($notification->isSent()) {
                 return;
             }
@@ -155,18 +156,22 @@ class SurveyNotifierManager
             $sms->setSender("Vektor");
             $sms->setRecipients([$phoneNumber]);
             $this->smsSender->send($sms);
+            $numSmsSent += 1;
+            $this->em->flush();
+
         }
 
-        $this->isAllSent($surveyNotifier);
-        $this->em->flush();
+        $this->logger->info("*$numSmsSent* notifications SMSs' sent about survey");
+        $this->isAllSent($surveyNotificationCollection);
     }
 
-    private function sendEmail(SurveyNotifier $surveyNotifier)
+    private function sendEmail(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        $surveyId = $surveyNotifier->getSurvey()->getId();
-        $content = $surveyNotifier->getEmailMessage();
-        $subject = $surveyNotifier->getEmailSubject();
-        foreach ($surveyNotifier->getSurveyNotifications() as $notification) {
+        $numEmailSent = 0;
+        $surveyId = $surveyNotificationCollection->getSurvey()->getId();
+        $content = $surveyNotificationCollection->getEmailMessage();
+        $subject = $surveyNotificationCollection->getEmailSubject();
+        foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
             if ($notification->isSent()) {
                 return;
             }
@@ -197,26 +202,27 @@ class SurveyNotifierManager
                     'text/html'
                 );
             $this->mailer->send($message);
+            $numEmailSent += 1;
+            $this->em->flush();
         }
-
-        $this->isAllSent($surveyNotifier);
-        $this->em->flush();
+        $this->logger->info("*$numEmailSent* notifications emails sent about survey");
+        $this->isAllSent($surveyNotificationCollection);
     }
 
-    private function isAllSent(SurveyNotifier $surveyNotifier)
+    private function isAllSent(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if ($surveyNotifier->isAllSent()) {
+        if ($surveyNotificationCollection->isAllSent()) {
             return true;
         }
 
-        foreach ($surveyNotifier->getSurveyNotifications() as $notification) {
+        foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
             if (!$notification->isSent()) {
                 return false;
             }
         }
 
-        $surveyNotifier->setAllSent(true);
-        $this->em->persist($surveyNotifier);
+        $surveyNotificationCollection->setAllSent(true);
+        $this->em->persist($surveyNotificationCollection);
         $this->em->flush();
         return true;
     }

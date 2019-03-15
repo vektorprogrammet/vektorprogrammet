@@ -38,12 +38,6 @@ class UserGroupCollection
     private $numberUserGroups;
 
 
-    /**
-     * @var int
-     * @ORM\Column(name="number_of_total_users", type="integer", nullable = true)
-     */
-    private $numberTotalUsers;
-
 
     /**
      * @var ArrayCollection
@@ -230,11 +224,16 @@ class UserGroupCollection
 
 
     /**
-     * @return int?
+     * @return int
      */
     public function getNumberTotalUsers(): ?int
     {
-        return $this->numberTotalUsers;
+        $numberUsers = 0;
+        foreach ($this->getUserGroups() as $userGroup){
+            $numberUsers += count($userGroup->getUsers());
+        }
+        return $numberUsers;
+
     }
 
     /**

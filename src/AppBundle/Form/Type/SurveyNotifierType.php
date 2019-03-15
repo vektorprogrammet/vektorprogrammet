@@ -3,7 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Survey;
-use AppBundle\Entity\SurveyNotifier;
+use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\UserGroup;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -50,8 +50,8 @@ class SurveyNotifierType extends AbstractType
                 "multiple" => false,
                 "expanded" => false,
                 "choices" => array(
-                    "E-post" => SurveyNotifier::$EMAIL_NOTIFICATION,
-                    "SMS" => SurveyNotifier::$SMS_NOTIFICATION,
+                    "E-post" => SurveyNotificationCollection::$EMAIL_NOTIFICATION,
+                    "SMS" => SurveyNotificationCollection::$SMS_NOTIFICATION,
                 ),
                 'disabled' => !$this->canEdit
             ])
@@ -95,7 +95,7 @@ class SurveyNotifierType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            "data_class" => SurveyNotifier::class,
+            "data_class" => SurveyNotificationCollection::class,
             "canEdit" => true,
 
         ]);

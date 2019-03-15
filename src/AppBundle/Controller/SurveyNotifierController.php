@@ -1,11 +1,11 @@
 <?php
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\SurveyNotifier;
+use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\UserGroup;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\SurveyNotifierType;
-use AppBundle\Service\SurveyNotifierManager;
+use AppBundle\Service\SurveyNotifier;
 use AppBundle\Service\UserGroupCollectionManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,10 +19,10 @@ class SurveyNotifierController extends BaseController
 
     /**
     * @param Request $request
-    * @param SurveyNotifier $surveyNotifier
+    * @param SurveyNotificationCollection $surveyNotificationCollection
     * @return \Symfony\Component\HttpFoundation\Response
     */
-    public function createSurveyNotifierAction(Request $request, SurveyNotifier $surveyNotifier = null)
+    public function createSurveyNotifierAction(Request $request, SurveyNotificationCollection $surveyNotificationCollection = null)
     {
         $isUserGroupCollectionEmpty = empty($this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll());
         if ($isUserGroupCollectionEmpty) {
@@ -30,12 +30,12 @@ class SurveyNotifierController extends BaseController
             return $this->redirect($this->generateUrl('survey_notifiers'));
         }
 
-        if ($isCreate = $surveyNotifier === null) {
-            $surveyNotifier = new SurveyNotifier();
+        if ($isCreate = $surveyNotificationCollection === null) {
+            $surveyNotificationCollection = new SurveyNotificationCollection();
         }
-        $canEdit = !$surveyNotifier->isActive();
+        $canEdit = !$surveyNotificationCollection->isActive();
 
-        $form = $this->createForm(SurveyNotifierType::class, $surveyNotifier, array(
+        $form = $this->createForm(SurveyNotifierType::class, $surveyNotificationCollection, array(
             'canEdit' => $canEdit,
         ));
 
@@ -47,47 +47,48 @@ class SurveyNotifierController extends BaseController
                     'survey/email_notification.html.twig',
                     array(
                         'firstname' => $this->getUser()->getFirstName(),
-                        'route' => $this->generateUrl('survey_show', ['id' => $surveyNotifier->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
-                        'content' => $surveyNotifier->getEmailMessage(),
+                        'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
+                        'content' => $surveyNotificationCollection->getEmailMessage(),
                     )
                 );
             }
 
-            $this->get(SurveyNotifierManager::class)->initializeSurveyNotifier($surveyNotifier);
+            $this->get(SurveyNotifier::class)->initializeSurveyNotifier($surveyNotificationCollection);
             return $this->redirect($this->generateUrl('survey_notifiers'));
         }
 
         return $this->render('survey/notifier_create.html.twig', array(
             'form' => $form->createView(),
-            'surveyNotifier' => $surveyNotifier,
+            'surveyNotificationCollection' => $surveyNotificationCollection,
             'isCreate' => $isCreate,
             'isUserGroupCollectionEmpty' => $isUserGroupCollectionEmpty,
         ));
     }
 
 
-    public function surveyNotifiersAction()
+    public function surveyNotificationCollectionsAction()
     {
-        $surveyNotifiers =$this->getDoctrine()->getManager()->getRepository(SurveyNotifier::class)->findAll();
+        $surveyNotificationCollections =$this->getDoctrine()->getManager()->getRepository(SurveyNotificationCollection::class)->findAll();
 
         return $this->render('survey/notifiers.html.twig', array(
-             'surveyNotifiers' => $surveyNotifiers,
+             'surveyNotificationCollections' => $surveyNotificationCollections,
          ));
     }
 
 
-    public function sendSurveyNotificationsAction(SurveyNotifier $surveyNotifier)
+    public function sendSurveyNotificationsAction(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if ($surveyNotifier->getTimeOfNotification() > new \DateTime() || $surveyNotifier->isAllSent()) {
+        if ($surveyNotificationCollection->getTimeOfNotification() > new \DateTime() || $surveyNotificationCollection->isAllSent()) {
             throw new AccessDeniedException();
         }
-        $isIdentifierCollisson = $this->get(SurveyNotifierManager::class)->sendNotifications($surveyNotifier);
-        if ($isIdentifierCollisson) {
-            $this->addFlash("danger", "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!");
+        $isIdentifierCollison = $this->get(SurveyNotifier::class)->sendNotifications($surveyNotificationCollection);
+        if ($isIdentifierCollison) {
             $response['cause'] = "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!";
+            $this->addFlash("danger", $response['cause']);
+
             return $this->redirect($this->generateUrl('survey_notifiers'));
         }
-        $this->addFlash("suksess", "Sendt");
+        $this->addFlash("success", "Sendt");
 
         $response['success'] = true;
         return new JsonResponse($response);
@@ -95,13 +96,13 @@ class SurveyNotifierController extends BaseController
 
 
 
-    public function deleteSurveyNotifierAction(SurveyNotifier $surveyNotifier)
+    public function deleteSurveyNotifierAction(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if ($surveyNotifier->isActive()) {
+        if ($surveyNotificationCollection->isActive()) {
             throw new AccessDeniedException();
         }
 
-        $this->getDoctrine()->getManager()->remove($surveyNotifier);
+        $this->getDoctrine()->getManager()->remove($surveyNotificationCollection);
         $response['success'] = true;
         return new JsonResponse($response);
     }

@@ -43,7 +43,7 @@ services:
         arguments:
             $env: '%kernel.environment%'
 
-    AppBundle\Service\SurveyNotifierManager:
+    AppBundle\Service\SurveyNotifier:
         arguments:
             $fromEmail: '%default_survey_email%'
 

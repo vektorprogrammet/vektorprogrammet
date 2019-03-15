@@ -33,10 +33,10 @@ class SurveyNotification
     private $surveyLinkClicks;
 
     /**
-     * @var SurveyNotifier
-     * @ORM\ManyToOne(targetEntity="SurveyNotifier", inversedBy="surveyNotification")
+     * @var SurveyNotificationCollection
+     * @ORM\ManyToOne(targetEntity="SurveyNotificationCollection", inversedBy="surveyNotification")
      */
-    private $surveyNotifier;
+    private $surveyNotificationCollection;
 
 
     /**
@@ -129,19 +129,19 @@ class SurveyNotification
     }
 
     /**
-     * @return SurveyNotifier
+     * @return SurveyNotificationCollection
      */
-    public function getSurveyNotifier(): SurveyNotifier
+    public function getSurveyNotificationCollection(): SurveyNotificationCollection
     {
-        return $this->surveyNotifier;
+        return $this->surveyNotificationCollection;
     }
 
     /**
-     * @param SurveyNotifier $surveyNotifier
+     * @param SurveyNotificationCollection $surveyNotificationCollection
      */
-    public function setSurveyNotifier(SurveyNotifier $surveyNotifier): void
+    public function setSurveyNotificationCollection(SurveyNotificationCollection $surveyNotificationCollection): void
     {
-        $this->surveyNotifier = $surveyNotifier;
+        $this->surveyNotificationCollection = $surveyNotificationCollection;
     }
 
     /**

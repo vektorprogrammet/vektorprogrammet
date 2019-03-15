@@ -32,7 +32,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    {% for surveyNotifier in surveyNotifiers %}
+                    {% for surveyNotificationCollection in surveyNotificationCollections %}
                         <tr>
                             <td class="table-menu">
                                     <div class="dropdown">
@@ -41,33 +41,33 @@
                                             <i class="fa fa-ellipsis-v text-secondary"></i>
                                         </div>
                                         <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
-                                            <div class="dropdown-header mb-2"><strong>{{ surveyNotifier.name }} </strong></div>
-                                            <a href="{{ path('survey_notifier_edit', {'id': surveyNotifier.id }) }}"
+                                            <div class="dropdown-header mb-2"><strong>{{ surveyNotificationCollection.name }} </strong></div>
+                                            <a href="{{ path('survey_notifier_edit', {'id': surveyNotificationCollection.id }) }}"
                                                class="dropdown-item">
-                                                {% if surveyNotifier.isActive %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
+                                                {% if surveyNotificationCollection.isActive %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
                                             </a>
-                                            {% if not surveyNotifier.isActive %}
-                                                <a class="post-a dropdown-item" href="{{ path('survey_notifier_delete', {'id': surveyNotifier.id }) }}">
+                                            {% if not surveyNotificationCollection.isActive %}
+                                                <a class="post-a dropdown-item" href="{{ path('survey_notifier_delete', {'id': surveyNotificationCollection.id }) }}">
                                                     <i class="fas fa-trash-alt text-primary"></i> Slett
                                                 </a>
                                             {% endif %}
                                         </div>
                                     </div>
                             </td>
-                            <td>{{ surveyNotifier.name }}</td>
-                            <td>{{ surveyNotifier.userGroup.userGroupCollection.name }}</td>
-                            <td>{{ surveyNotifier.userGroup.name }}</td>
+                            <td>{{ surveyNotificationCollection.name }}</td>
+                            <td>{{ surveyNotificationCollection.userGroup.userGroupCollection.name }}</td>
+                            <td>{{ surveyNotificationCollection.userGroup.name }}</td>
                             <td>
-                                {% if surveyNotifier.isActive %}
+                                {% if surveyNotificationCollection.isActive %}
                                     <i class="fas fa-lock"></i>
                                 {% else %}
                                     <i class="fas fa-lock-open"></i>
                                 {% endif %}
                             </td>
                             <td>
-                                {% if not surveyNotifier.isAllSent %}
-                                    {% if date(surveyNotifier.timeOfNotification) < date()  %}
-                                        <a class ="post-a" href="{{ path('survey_notifier_send', {'id': surveyNotifier.id }) }}">
+                                {% if not surveyNotificationCollection.isAllSent %}
+                                    {% if date(surveyNotificationCollection.timeOfNotification) < date()  %}
+                                        <a class ="post-a" href="{{ path('survey_notifier_send', {'id': surveyNotificationCollection.id }) }}">
                                             <i class="fas fa-bullhorn"></i> Send varsel
                                         </a>
                                     {% else %}
