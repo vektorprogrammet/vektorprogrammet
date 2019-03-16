@@ -63,10 +63,10 @@ class SurveyNotifier
         $this->em->flush();
     }
 
-    private function createSurveyNotifications(SurveyNotificationCollection $surveyNotificationCollection) : bool
+    private function createSurveyNotifications(SurveyNotificationCollection $surveyNotificationCollection)
     {
         if ($surveyNotificationCollection->isActive()) {
-            return false;
+            return;
         }
 
         $survey = $surveyNotificationCollection->getSurvey();
@@ -92,6 +92,7 @@ class SurveyNotifier
     public function sendNotifications(SurveyNotificationCollection $surveyNotificationCollection)
     {
 
+        $this->createSurveyNotifications($surveyNotificationCollection);
         $surveyNotificationCollection->setActive(true);
         $this->isAllSent($surveyNotificationCollection);
         $this->em->persist($surveyNotificationCollection);
@@ -219,14 +220,11 @@ class SurveyNotifier
 
     private function isAllSent(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if ($surveyNotificationCollection->isAllSent()) {
-            return true;
-        }
+        if ($surveyNotificationCollection->isAllSent()) return true;
+        elseif(empty($surveyNotificationCollection->getSurveyNotifications())) return false;
 
         foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
-            if (!$notification->isSent()) {
-                return false;
-            }
+            if (!$notification->isSent()) return false;
         }
 
         $surveyNotificationCollection->setAllSent(true);
