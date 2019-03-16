@@ -348,7 +348,4 @@ class SurveyNotificationCollection
     {
         $this->emailType = $emailType;
     }
-
-
-
 }

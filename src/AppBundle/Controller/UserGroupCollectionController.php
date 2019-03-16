@@ -42,7 +42,6 @@ class UserGroupCollectionController extends BaseController
                 $this->addFlash("danger", $e->getMessage());
                 return $this->redirect($this->generateUrl('usergroup_collection_create'));
             }
-
         }
 
         return $this->render('usergroup_collection/usergroup_collection_create.html.twig', array(
