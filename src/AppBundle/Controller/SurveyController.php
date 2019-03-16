@@ -73,6 +73,8 @@ class SurveyController extends BaseController
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
             'surveyTargetAudience' => $survey->getTargetAudience(),
+            'userIdentified' => false,
+
         ));
     }
 
@@ -182,6 +184,7 @@ class SurveyController extends BaseController
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
             'surveyTargetAudience' => $survey->getTargetAudience(),
+            'userIdentified' => true,
 
         ));
     }
@@ -217,6 +220,8 @@ class SurveyController extends BaseController
         return $this->render('survey/takeSurvey.html.twig', array(
             'form' => $form->createView(),
             'surveyTargetAudience' => $survey->getTargetAudience(),
+            'userIdentified' => false,
+
         ));
     }
 
