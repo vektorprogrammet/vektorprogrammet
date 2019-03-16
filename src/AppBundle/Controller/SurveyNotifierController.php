@@ -64,6 +64,7 @@ class SurveyNotifierController extends BaseController
                         'firstname' => $this->getUser()->getFirstName(),
                         'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
                         'content' => $surveyNotificationCollection->getEmailMessage(),
+                        'endMessage' => $surveyNotificationCollection->getEmailEndMessage(),
                     )
                 );
 
@@ -97,15 +98,8 @@ class SurveyNotifierController extends BaseController
         if ($surveyNotificationCollection->getTimeOfNotification() > new \DateTime() || $surveyNotificationCollection->isAllSent()) {
             throw new AccessDeniedException();
         }
-        $isIdentifierCollison = $this->get(SurveyNotifier::class)->sendNotifications($surveyNotificationCollection);
-        if ($isIdentifierCollison) {
-            $response['cause'] = "Genererte identifikasjonslenker som ikke er unike, prøv på nytt!";
-            $this->addFlash("danger", $response['cause']);
-
-            return $this->redirect($this->generateUrl('survey_notifiers'));
-        }
+        $this->get(SurveyNotifier::class)->sendNotifications($surveyNotificationCollection);
         $this->addFlash("success", "Sendt");
-
         $response['success'] = true;
         return new JsonResponse($response);
     }

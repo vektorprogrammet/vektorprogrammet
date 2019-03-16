@@ -50,24 +50,28 @@ class SurveyNotifier
 
     public function initializeSurveyNotifier(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        $userGroup = $surveyNotificationCollection->getUserGroup();
-        $userGroup->setActive(true);
-        $userGroupCollection = $userGroup ->getUserGroupCollection();
-        $userGroupCollection->setDeletable(false);
+        $userGroups = $surveyNotificationCollection->getUserGroups();
+
+        foreach ($userGroups as $userGroup){
+            $userGroup->setActive(true);
+            $userGroupCollection = $userGroup ->getUserGroupCollection();
+            $userGroupCollection->setDeletable(false);
+            $this->em->persist($userGroup);
+        }
 
         $this->em->persist($surveyNotificationCollection);
-        $this->em->persist($userGroup);
         $this->em->flush();
     }
 
-    private function createSurveyNotifications(SurveyNotificationCollection $surveyNotificationCollection)
+    private function createSurveyNotifications(SurveyNotificationCollection $surveyNotificationCollection) : bool
     {
         if ($surveyNotificationCollection->isActive()) {
             return false;
         }
 
         $survey = $surveyNotificationCollection->getSurvey();
-        $users = $surveyNotificationCollection->getUserGroup()->getUsers();
+
+        $users = $this->findUsers($surveyNotificationCollection);
         foreach ($users as $user) {
             $isSurveyTakenByUser = !empty($this->em->getRepository(SurveyTaken::class)->findAllBySurveyAndUser($survey, $user));
             if ($isSurveyTakenByUser) {
@@ -76,30 +80,17 @@ class SurveyNotifier
 
             $notification = new SurveyNotification();
             $notification->setUser($user);
+            $this->createUniqueIdentifier($notification);
             $notification->setSurveyNotificationCollection($surveyNotificationCollection);
-
             $this->em->persist($notification);
-        }
-        $surveyNotificationCollection->getUserGroup()->setActive(true);
-        $this->em->persist($surveyNotificationCollection->getUserGroup());
-
-        try {
             $this->em->flush();
-        } catch (UniqueConstraintViolationException $e) {
-            return true;
+
         }
-        return false;
     }
 
 
     public function sendNotifications(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if (!$surveyNotificationCollection->isActive()) {
-            $isIdentifierCollision = $this->createSurveyNotifications($surveyNotificationCollection);
-            if ($isIdentifierCollision) {
-                return true;
-            }
-        }
 
         $surveyNotificationCollection->setActive(true);
         $this->isAllSent($surveyNotificationCollection);
@@ -107,14 +98,13 @@ class SurveyNotifier
         $this->em->flush();
 
         if ($surveyNotificationCollection->isAllSent()) {
-            return false;
+            return;
         } elseif ($surveyNotificationCollection->getNotificationType() === SurveyNotificationCollection::$SMS_NOTIFICATION) {
             $this->sendSMS($surveyNotificationCollection);
         } elseif ($surveyNotificationCollection->getNotificationType() === SurveyNotificationCollection::$EMAIL_NOTIFICATION) {
             $this->sendEmail($surveyNotificationCollection);
         }
 
-        return false;
     }
 
 
@@ -140,10 +130,7 @@ class SurveyNotifier
 
             $message =
                 "Hei, ".$notification->getUser()->getFirstName()."\n".
-                $customMessage.
-                "\n\n" .
-                "Med vennlig hilsen\n" .
-                "Vektorevaluering";
+                $customMessage;
 
             $sms = new Sms();
             $sms->setMessage($message);
@@ -246,5 +233,33 @@ class SurveyNotifier
         $this->em->persist($surveyNotificationCollection);
         $this->em->flush();
         return true;
+    }
+
+    private function findUsers(SurveyNotificationCollection $surveyNotificationCollection){
+        $userGroups = $surveyNotificationCollection->getUserGroups();
+        $users = array();
+        foreach ($userGroups as $userGroup){
+            $userGroup->setActive(true);
+            $this->em->persist($userGroup);
+
+
+            $userGroupUsers = $userGroup->getUsers();
+            foreach ($userGroupUsers as $user){
+                $users[] = $user;
+            }
+        }
+        $users = array_unique($users, SORT_REGULAR);
+
+        $this->em->flush();
+        return $users;
+    }
+
+    private function createUniqueIdentifier(SurveyNotification $notification)
+    {
+
+        while ($this->em->getRepository(SurveyNotification::class)->findByUserIdentifier($notification->getUserIdentifier()))
+        {
+            $notification->setUserIdentifier(bin2hex(openssl_random_pseudo_bytes(12)));
+        }
     }
 }

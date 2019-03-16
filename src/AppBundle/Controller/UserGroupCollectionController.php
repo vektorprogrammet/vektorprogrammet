@@ -33,6 +33,8 @@ class UserGroupCollectionController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             try {
                 $this->get(UserGroupCollectionManager::class)->initializeUserGroupCollection($userGroupCollection);
+                $this->addFlash("success", "Brukergruppering laget");
+                return $this->redirect($this->generateUrl('usergroup_collections'));
             } catch (\InvalidArgumentException $e) {
                 $this->addFlash("danger", $e->getMessage());
                 return $this->redirect($this->generateUrl('usergroup_collection_create'));
@@ -40,9 +42,7 @@ class UserGroupCollectionController extends BaseController
                 $this->addFlash("danger", $e->getMessage());
                 return $this->redirect($this->generateUrl('usergroup_collection_create'));
             }
-            $this->addFlash("success", "Brukergruppering laget");
 
-            return $this->redirect($this->generateUrl('usergroup_collections'));
         }
 
         return $this->render('usergroup_collection/usergroup_collection_create.html.twig', array(

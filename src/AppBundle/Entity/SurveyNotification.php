@@ -61,7 +61,7 @@ class SurveyNotification
 
     public function __construct()
     {
-        $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(3));
+        $this->userIdentifier = bin2hex(openssl_random_pseudo_bytes(12));
         $this->sent = false;
         $this->surveyLinkClicks = array();
     }

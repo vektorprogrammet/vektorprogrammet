@@ -33,11 +33,11 @@ class SurveyNotificationCollection
 
 
     /**
-     * @var UserGroup
-     * @ORM\ManyToOne(targetEntity="UserGroup", cascade={"persist"})
+     * @var ArrayCollection
+     * @ORM\ManyToMany(targetEntity="UserGroup", cascade={"persist"})
      * @Assert\NotBlank
      */
-    private $userGroup;
+    private $userGroups;
 
 
     /**
@@ -126,6 +126,7 @@ class SurveyNotificationCollection
         $this->emailEndMessage = "<p>Med vennlig hilsen,<br/>Vektorevaluering</p>";
         $this->emailSubject = "Undersøkelse fra Vektor";
         $this->emailType = 0;
+        $this->userGroups = array();
     }
 
     /**
@@ -136,21 +137,23 @@ class SurveyNotificationCollection
         return $this->id;
     }
 
-
     /**
-     * @return UserGroup?
+     * @return ArrayCollection
      */
-    public function getUserGroup(): ?UserGroup
+    public function getUserGroups()
     {
-        return $this->userGroup;
+        return $this->userGroups;
     }
 
+
+
+
     /**
-     * @param UserGroup $userGroup
+     * @param UserGroup[] $userGroups
      */
-    public function setUserGroup(UserGroup $userGroup): void
+    public function setUserGroups(array $userGroups): void
     {
-        $this->userGroup = $userGroup;
+        $this->userGroups = $userGroups;
     }
 
     /**
@@ -345,6 +348,7 @@ class SurveyNotificationCollection
     {
         $this->emailType = $emailType;
     }
+
 
 
 }

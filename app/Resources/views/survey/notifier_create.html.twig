@@ -42,7 +42,7 @@
                 <div class="card-header"><i class="fas fa-users"></i> Brukergrupper</div>
                 <div class="card-body">
                     {% if isUserGroupCollectionEmpty %} <strong class="text-danger">Brukergruppesamling må lages </strong>{% endif %}
-                    {{ form_row(form.usergroup) }}
+                    {{ form_row(form.usergroups) }}
 
                 </div>
             </div>
@@ -72,11 +72,13 @@
                 <div class="card">
                     <div class="card-header"><i class="fas fa-mobile-alt"></i>SMS</div>
                     <div class="card-body">
+                        Merk: En lenke vil ikke sendes ut med SMSen
+                        <br>
+                        <br>
+                        <strong>SMS som skal sendes:</strong>
+                        <br>
                         Hei, {Fornavn} <br>
                         {{ form_row(form.smsMessage) }}
-                        <br><br>
-                        Med vennlig hilsen <br>
-                        Vektorevaluering
                     </div>
                 </div>
         </div>

@@ -35,10 +35,10 @@ class SurveyNotifierType extends AbstractType
 
             ])
 
-            ->add("usergroup", EntityType::class, [
+            ->add("usergroups", EntityType::class, [
                 'label' => false,
                 "expanded" => true,
-                "multiple" => false,
+                "multiple" => true,
                 "class" => UserGroup::class,
                 "group_by" => "userGroupCollection",
                 'disabled' => !$this->canEdit

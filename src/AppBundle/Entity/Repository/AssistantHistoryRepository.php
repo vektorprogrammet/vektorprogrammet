@@ -42,7 +42,9 @@ class AssistantHistoryRepository extends EntityRepository
     {
         return $this
             ->findByUserInit($user)
-            ->orderBy('assistantHistory.semester.semesterTime', 'DESC')
+            ->join('assistantHistory.semester', 'sm')
+            ->addOrderBy('sm.year', 'DESC')
+            ->addOrderBy('sm.semesterTime', 'ASC') // Vår < Høst
             ->getQuery()
             ->getResult();
     }

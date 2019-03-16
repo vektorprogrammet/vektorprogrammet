@@ -1,12 +1,7 @@
 <p> Hei, {{ firstname }}</p>
 
-{{ content | safe_html }}
+{{ mainMessage | safe_html }}
 
-<p><a href="{{ route }}">{{ route }}</a></p>
+<p><a href="{{ route }}">Ta undersøkelse!</a></p>
 
-
-
-<p>
-    Med vennlig hilsen<br>
-    Vektorevaluering<br>
-</p>
+{{ endMessage | safe_html}}
