@@ -56,6 +56,17 @@ class SurveyNotifierType extends AbstractType
                 'disabled' => !$this->canEdit
             ])
 
+            ->add("emailType", ChoiceType::class, [
+                'label' => "Eposttype",
+                "multiple" => false,
+                "expanded" => false,
+                "choices" => array(
+                    "Selvskrevet" => 0,
+                    "Assistenttakkebrev" => 1,
+                ),
+                'disabled' => !$this->canEdit
+            ])
+
             ->add("survey", EntityType::class, [
                 'label' => "Varsel skal sendes om følgende undersøkelse",
                 "expanded" => false,
@@ -69,9 +80,14 @@ class SurveyNotifierType extends AbstractType
                 'attr' => array('rows' => '5'),
                 'label' => false,
                 'disabled' => !$this->canEdit
-
-
             ))
+
+            ->add('emailEndMessage', CKEditorType::class, array(
+                'attr' => array('rows' => '5'),
+                'label' => false,
+                'disabled' => !$this->canEdit
+            ))
+
 
             ->add('emailSubject', TextType::class, array(
                 'label' => 'Epostemne',

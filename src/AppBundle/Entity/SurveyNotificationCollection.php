@@ -92,12 +92,23 @@ class SurveyNotificationCollection
     private $emailSubject;
 
 
-
     /**
      * @var string
      * @ORM\Column(name="email_message", type="text")
      */
     private $emailMessage;
+
+    /**
+     * @var string
+     * @ORM\Column(name="email_end_message", type="text")
+     */
+    private $emailEndMessage;
+
+    /**
+     * @var int
+     * @ORM\Column(name="email_type", type="integer")
+     */
+    private $emailType;
 
 
 
@@ -112,7 +123,9 @@ class SurveyNotificationCollection
         $this->notificationType = SurveyNotificationCollection::$EMAIL_NOTIFICATION;
         $this->smsMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
         $this->emailMessage = "Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i trekning av flotte premier da vel!";
+        $this->emailEndMessage = "<p>Med vennlig hilsen,<br/>Vektorevaluering</p>";
         $this->emailSubject = "Undersøkelse fra Vektor";
+        $this->emailType = 0;
     }
 
     /**
@@ -300,4 +313,38 @@ class SurveyNotificationCollection
     {
         $this->emailSubject = $emailSubject;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmailEndMessage(): string
+    {
+        return $this->emailEndMessage;
+    }
+
+    /**
+     * @param string $emailEndMessage
+     */
+    public function setEmailEndMessage(string $emailEndMessage): void
+    {
+        $this->emailEndMessage = $emailEndMessage;
+    }
+
+    /**
+     * @return int
+     */
+    public function getEmailType(): int
+    {
+        return $this->emailType;
+    }
+
+    /**
+     * @param int $emailType
+     */
+    public function setEmailType(int $emailType): void
+    {
+        $this->emailType = $emailType;
+    }
+
+
 }

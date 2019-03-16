@@ -43,6 +43,21 @@ class SurveyNotifierController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('preview')->isClicked()) {
+
+                $emailType = $surveyNotificationCollection->getEmailType();
+                if($emailType === 1){
+                    return $this->render(
+                        'survey/default_assistant_survey_notification_email.html.twig',
+                        array(
+                            'firstname' => $this->getUser()->getFirstName(),
+                            'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
+                            'day' => "Mandag",
+                            'school' => "Blussvoll",
+                            'subject' => $surveyNotificationCollection->getEmailSubject(),
+                        )
+                    );
+
+                }
                 return $this->render(
                     'survey/email_notification.html.twig',
                     array(
@@ -51,6 +66,7 @@ class SurveyNotifierController extends BaseController
                         'content' => $surveyNotificationCollection->getEmailMessage(),
                     )
                 );
+
             }
 
             $this->get(SurveyNotifier::class)->initializeSurveyNotifier($surveyNotificationCollection);

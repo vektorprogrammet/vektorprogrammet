@@ -3,6 +3,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\SurveyNotification;
 use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\SurveyTaken;
@@ -120,7 +121,6 @@ class SurveyNotifier
     private function sendSMS(SurveyNotificationCollection $surveyNotificationCollection)
     {
         $numSmsSent = 0;
-        $surveyid = $surveyNotificationCollection->getSurvey()->getId();
         $customMessage = $surveyNotificationCollection->getSmsMessage();
         foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
             if ($notification->isSent()) {
@@ -131,7 +131,6 @@ class SurveyNotifier
             $this->em->persist($notification);
 
             $user = $notification->getUser();
-            $identifier = $notification->getUserIdentifier();
             $phoneNumber = $user->getPhone();
             $validNumber = $this->smsSender->validatePhoneNumber($phoneNumber);
             if (!$validNumber) {
@@ -141,12 +140,7 @@ class SurveyNotifier
 
             $message =
                 "Hei, ".$notification->getUser()->getFirstName()."\n".
-                $customMessage."\n".
-                $this->router->generate(
-                    'survey_show_user_id',
-                    ['id' => $surveyid, 'userid'=>$identifier],
-                    RouterInterface::ABSOLUTE_URL
-                ) .
+                $customMessage.
                 "\n\n" .
                 "Med vennlig hilsen\n" .
                 "Vektorevaluering";
@@ -168,8 +162,10 @@ class SurveyNotifier
     {
         $numEmailSent = 0;
         $surveyId = $surveyNotificationCollection->getSurvey()->getId();
-        $content = $surveyNotificationCollection->getEmailMessage();
+        $mainMessage = $surveyNotificationCollection->getEmailMessage();
         $subject = $surveyNotificationCollection->getEmailSubject();
+        $emailMessage = $surveyNotificationCollection->getEmailEndMessage();
+        $emailType = $surveyNotificationCollection->getEmailType();
         foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
             if ($notification->isSent()) {
                 return;
@@ -183,21 +179,47 @@ class SurveyNotifier
             $identifier = $notification->getUserIdentifier();
             $email = $user->getEmail();
 
+            $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
+            if(empty($assistantHistory)){
+                continue;
+            }
+            $assistantHistory = $assistantHistory[0];
+            $day = $assistantHistory->getDay();
+            $school = $assistantHistory->getSchool()->getName();
+
+            if($emailType === 1){
+                $content = $this->twig->render(
+                    'survey/newsletter_template.html.twig',
+                    array(
+                        'firstname' => $notification->getUser()->getFirstName(),
+                        'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
+                        'day' => $day,
+                        'school' => $school,
+                        'subject' => $subject,
+                    )
+                );
+
+            }else{
+                $content = $this->twig->render(
+                    'survey/email_notification.html.twig',
+                    array(
+                        'firstname' => $notification->getUser()->getFirstName(),
+                        'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
+                        'mainMessage' => $mainMessage,
+                        'endMessage' => $emailMessage,
+                    )
+                );
+            }
+
+
+
             $message = (new \Swift_Message())
                 ->setFrom(array($this->fromEmail => 'Vektorprogrammet'))
                 ->setSubject($subject)
                 ->setTo($email)
                 ->setReplyTo($this->fromEmail)
                 ->setBody(
-                    $this->twig->render(
-                        'survey/email_notification.html.twig',
-                        array(
-                            'firstname' => $notification->getUser()->getFirstName(),
-                            'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
-                            'content' => $content,
-
-                        )
-                    ),
+                    $content,
                     'text/html'
                 );
             $this->mailer->send($message);

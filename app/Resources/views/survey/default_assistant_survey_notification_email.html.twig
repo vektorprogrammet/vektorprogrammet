@@ -1,0 +1,74 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <title>{{ subject }}</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+
+<table align="center" border="1px" cellpadding="10" cellspacing="0" width="600" style="border-collapse: collapse; border: 1px solid #dfdfdf;
+; width:600px; background-color: #f9fdff; font-family: Helvetica, Arial, sans-serif;">
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="https://vektorprogrammet.no{{ path('home') }}" >
+                                        <img width="120px" src="https://vektorprogrammet.no/images/vektor.png" alt="https://vektorprogrammet.no{{ path('home') }}">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <table>
+                            <table>
+                                <tr>
+                                    <td>
+                                        <h1 style="margin:10; mso-line-height-rule:exactly;"> Takk for at du var assistent, {{ firstname }}!</h1>
+                                    </td>
+                                </tr>
+                                <tr style="min-height: 400px;">
+                                    <td>
+                                        {{ day }}er på {{ school }} blir ikke det samme uten deg, så vi håper du melder deg opp til neste semester og.
+                                        <br>
+                                        <br>
+                                        Vi i vektor jobber kontinuerlig for å forbedre assistentopplevelsen, men for
+                                        å kunne gjøre det er vi avhengig tilbakemelding. Svar på følgende undersøkelse og vær med i
+                                        trekning av flotte premier da vel!
+                                        <br>
+                                        <br>
+                                    </td>
+                                </tr>
+                            </table>
+                            <tr>
+                                <td> <a style="border:none;     text-decoration: none;
+border-radius:5000px;background-color:#003763; color: #ffffff; display:inline-block; font-size:16px;font-weight:bold;line-height:1.3;margin:0;padding:8px 16px 8px 16px;text-align:left;" href="{{ route }}"> Ta undersøkelse </a></td>
+                            </tr>
+                            <tr style="height: 30px;">
+
+                            </tr>
+                            <tr align="center">
+                                <td>
+                                    <small>Gjør knappen opprør?<a href="{{ route }}"> Trykk her istedet</a> </small>
+                                </td>
+
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

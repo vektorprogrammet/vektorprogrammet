@@ -42,7 +42,7 @@ class SurveyController extends BaseController
                 'validation_groups' => array('schoolSpecific'),
             ));
         } elseif ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
-            $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToCorrectSurvey($survey);
         } else {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         }
@@ -111,7 +111,7 @@ class SurveyController extends BaseController
     {
         $user = $this->getUser();
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
-            $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToCorrectSurvey($survey);
         } elseif ($user === null) {
             throw new AccessDeniedException("Logg inn for å ta undersøkelsen!");
         }
@@ -130,7 +130,7 @@ class SurveyController extends BaseController
             $assistantHistory = $em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
 
             if (empty($assistantHistory)) {
-                $this->redirectToCorrectSurvey($survey);
+                return $this->redirectToCorrectSurvey($survey);
             }
             $assistantHistory = $assistantHistory[0];
             $school = $assistantHistory->getSchool();

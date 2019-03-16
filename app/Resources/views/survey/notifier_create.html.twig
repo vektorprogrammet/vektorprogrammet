@@ -53,15 +53,19 @@
                 <div class="card">
                     <div class="card-header"><i class="fas fa-at"></i> Epost</div>
                     <div class="card-body">
+                        <br>
                         {{ form_row(form.emailSubject) }}
                         <br>
 
-                        <strong> Epost melding: </strong><br>
+                        {{ form_row(form.emailType) }}
+                        <br>
+                        <strong> Selvskrevet e-post melding: </strong>
+                        <br>
                         Hei, {Fornavn} <br>
                         {{ form_row(form.emailMessage) }}
                         {undersøkelselenke} <br><br>
-                        Med vennlig hilsen <br>
-                        Vektorevaluering
+                        {{ form_row(form.emailEndMessage) }}
+
                     </div>
                 </div>
 
@@ -70,7 +74,7 @@
                     <div class="card-body">
                         Hei, {Fornavn} <br>
                         {{ form_row(form.smsMessage) }}
-                        {undersøkelselenke} <br><br>
+                        <br><br>
                         Med vennlig hilsen <br>
                         Vektorevaluering
                     </div>
