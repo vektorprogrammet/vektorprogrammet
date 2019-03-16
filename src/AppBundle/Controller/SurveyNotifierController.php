@@ -61,7 +61,7 @@ class SurveyNotifierController extends BaseController
                     array(
                         'firstname' => $this->getUser()->getFirstName(),
                         'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
-                        'content' => $surveyNotificationCollection->getEmailMessage(),
+                        'mainMessage' => $surveyNotificationCollection->getEmailMessage(),
                         'endMessage' => $surveyNotificationCollection->getEmailEndMessage(),
                     )
                 );
