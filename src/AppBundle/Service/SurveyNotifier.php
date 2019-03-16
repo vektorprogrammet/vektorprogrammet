@@ -52,7 +52,7 @@ class SurveyNotifier
     {
         $userGroups = $surveyNotificationCollection->getUserGroups();
 
-        foreach ($userGroups as $userGroup){
+        foreach ($userGroups as $userGroup) {
             $userGroup->setActive(true);
             $userGroupCollection = $userGroup ->getUserGroupCollection();
             $userGroupCollection->setDeletable(false);
@@ -84,14 +84,12 @@ class SurveyNotifier
             $notification->setSurveyNotificationCollection($surveyNotificationCollection);
             $this->em->persist($notification);
             $this->em->flush();
-
         }
     }
 
 
     public function sendNotifications(SurveyNotificationCollection $surveyNotificationCollection)
     {
-
         $surveyNotificationCollection->setActive(true);
         $this->isAllSent($surveyNotificationCollection);
         $this->em->persist($surveyNotificationCollection);
@@ -104,7 +102,6 @@ class SurveyNotifier
         } elseif ($surveyNotificationCollection->getNotificationType() === SurveyNotificationCollection::$EMAIL_NOTIFICATION) {
             $this->sendEmail($surveyNotificationCollection);
         }
-
     }
 
 
@@ -167,14 +164,14 @@ class SurveyNotifier
             $email = $user->getEmail();
 
             $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
-            if(empty($assistantHistory)){
+            if (empty($assistantHistory)) {
                 continue;
             }
             $assistantHistory = $assistantHistory[0];
             $day = $assistantHistory->getDay();
             $school = $assistantHistory->getSchool()->getName();
 
-            if($emailType === 1){
+            if ($emailType === 1) {
                 $content = $this->twig->render(
                     'survey/newsletter_template.html.twig',
                     array(
@@ -185,8 +182,7 @@ class SurveyNotifier
                         'subject' => $subject,
                     )
                 );
-
-            }else{
+            } else {
                 $content = $this->twig->render(
                     'survey/email_notification.html.twig',
                     array(
@@ -235,16 +231,17 @@ class SurveyNotifier
         return true;
     }
 
-    private function findUsers(SurveyNotificationCollection $surveyNotificationCollection){
+    private function findUsers(SurveyNotificationCollection $surveyNotificationCollection)
+    {
         $userGroups = $surveyNotificationCollection->getUserGroups();
         $users = array();
-        foreach ($userGroups as $userGroup){
+        foreach ($userGroups as $userGroup) {
             $userGroup->setActive(true);
             $this->em->persist($userGroup);
 
 
             $userGroupUsers = $userGroup->getUsers();
-            foreach ($userGroupUsers as $user){
+            foreach ($userGroupUsers as $user) {
                 $users[] = $user;
             }
         }
@@ -256,9 +253,7 @@ class SurveyNotifier
 
     private function createUniqueIdentifier(SurveyNotification $notification)
     {
-
-        while ($this->em->getRepository(SurveyNotification::class)->findByUserIdentifier($notification->getUserIdentifier()))
-        {
+        while ($this->em->getRepository(SurveyNotification::class)->findByUserIdentifier($notification->getUserIdentifier())) {
             $notification->setUserIdentifier(bin2hex(openssl_random_pseudo_bytes(12)));
         }
     }
