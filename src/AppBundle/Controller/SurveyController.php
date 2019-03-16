@@ -61,8 +61,6 @@ class SurveyController extends BaseController
                 return $this->render('survey/finish_page.html.twig', [
                         'content' => $survey->getFinishPageContent(),
                     ]);
-
-
             } else {
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
             }
