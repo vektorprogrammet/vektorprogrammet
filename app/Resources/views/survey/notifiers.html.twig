@@ -63,9 +63,13 @@
                             <td>
                                 {% if not surveyNotificationCollection.isAllSent %}
                                     {% if date(surveyNotificationCollection.timeOfNotification) < date()  %}
-                                        <a class ="post-a" href="{{ path('survey_notifier_send', {'id': surveyNotificationCollection.id }) }}">
-                                            <i class="fas fa-bullhorn"></i> Send varsel
-                                        </a>
+                                        <form method="POST"
+                                              action="{{ path('survey_notifier_send', {'id': surveyNotificationCollection.id }) }}"
+                                              onsubmit="return confirm('Er du sikker på at du vil sende?')">
+                                            <button id="send-notifier" class="btn btn-link p-0" type="submit">
+                                                <i class="fas fa-bullhorn"></i> Send varsel
+                                            </button>
+                                        </form>
                                     {% else %}
                                         Varsel skal ikke sendes ennå
                                     {% endif %}
@@ -91,6 +95,23 @@
 {% block javascripts %}
     <script>
         window.onload = function() {
+
+            $('#send-notifier').on('click', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: $("form").attr("action"),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.reload();
+                        } else {
+                            alert(response.cause);
+                        }
+                    }
+                });
+            });
+
+
             $('.post-a').on('click', function(event) {
                 event.preventDefault();
                 $.ajax({

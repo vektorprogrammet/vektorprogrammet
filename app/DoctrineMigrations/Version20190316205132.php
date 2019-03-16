@@ -43,7 +43,10 @@ final class Version20190316205132 extends AbstractMigration
         $this->addSql('ALTER TABLE survey_link_click ADD CONSTRAINT FK_503794C9EF1A9D84 FOREIGN KEY (notification_id) REFERENCES survey_notification (id)');
         $this->addSql('ALTER TABLE survey_notification ADD CONSTRAINT FK_CF867A9AA76ED395 FOREIGN KEY (user_id) REFERENCES user (id)');
         $this->addSql('ALTER TABLE survey_notification ADD CONSTRAINT FK_CF867A9ADF059805 FOREIGN KEY (surveyNotificationCollection_id) REFERENCES survey_notification_collection (id)');
-        $this->addSql('ALTER TABLE survey ADD targetAudience INT DEFAULT 0 NOT NULL, DROP showCustomFinishPage, DROP teamSurvey, CHANGE finishPageContent finishPageContent LONGTEXT NOT NULL');
+        $this->addSql('ALTER TABLE survey ADD targetAudience INT DEFAULT 0 NOT NULL');
+        $this->addSql('UPDATE survey SET targetAudience=1 WHERE teamSurvey=\'1\'');
+        $this->addSql('UPDATE survey SET finishPageContent="Takk for svaret!" WHERE finishPageContent= NULL');
+        $this->addSql('ALTER TABLE survey DROP teamSurvey, DROP showCustomFinishPage, CHANGE finishPageContent finishPageContent LONGTEXT NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -72,6 +75,10 @@ final class Version20190316205132 extends AbstractMigration
         $this->addSql('DROP TABLE surveynotificationcollection_usergroup');
         $this->addSql('DROP TABLE survey_link_click');
         $this->addSql('DROP TABLE survey_notification');
-        $this->addSql('ALTER TABLE survey ADD showCustomFinishPage TINYINT(1) NOT NULL, ADD teamSurvey TINYINT(1) DEFAULT \'0\' NOT NULL, DROP targetAudience, CHANGE finishPageContent finishPageContent LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci');
+        $this->addSql('ALTER TABLE survey ADD showCustomFinishPage TINYINT(1) NOT NULL, CHANGE finishPageContent finishPageContent LONGTEXT DEFAULT NULL COLLATE utf8mb4_unicode_ci');
+        $this->addSql('ALTER TABLE survey ADD teamSurvey TINYINT(1) DEFAULT \'0\' NOT NULL');
+        $this->addSql('UPDATE survey SET teamSurvey=\'1\' WHERE targetAudience="1"');
+        $this->addSql('ALTER TABLE survey DROP targetAudience');
+
     }
 }

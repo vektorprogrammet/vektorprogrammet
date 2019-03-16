@@ -96,9 +96,20 @@ class SurveyNotifierController extends BaseController
             throw new AccessDeniedException();
         }
         $this->get(SurveyNotifier::class)->sendNotifications($surveyNotificationCollection);
-        $this->addFlash("success", "Sendt");
-        $response['success'] = true;
+
+        if($surveyNotificationCollection->isAllSent())
+        {
+            $this->addFlash("success", "Sendt");
+            $response['success'] = true;
+        }else
+        {
+            $this->addFlash("warning", "Alle ble ikke sendt");
+            $response['success'] = false;
+        }
+
         return new JsonResponse($response);
+
+
     }
 
 

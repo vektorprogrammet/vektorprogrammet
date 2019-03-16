@@ -35,7 +35,7 @@ class SurveyNotificationCollection
     /**
      * @var ArrayCollection
      * @ORM\ManyToMany(targetEntity="UserGroup", cascade={"persist"})
-     * @Assert\NotBlank
+     * @Assert\NotNull
      */
     private $userGroups;
 
