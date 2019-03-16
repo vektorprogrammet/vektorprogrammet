@@ -45,12 +45,6 @@ class Survey implements \JsonSerializable
      */
     private $name;
 
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $showCustomFinishPage;
-
 
     /**
      * @var bool
@@ -61,7 +55,8 @@ class Survey implements \JsonSerializable
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=true)
+     * @ORM\Column(type="text", nullable=false, options={"default" : "Takk for svaret!"})
+     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
      */
     private $finishPageContent;
 
@@ -189,12 +184,12 @@ class Survey implements \JsonSerializable
     public function __construct()
     {
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->showCustomFinishPage = false;
         $this->confidential = false;
         $this->targetAudience = 0;
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
         $this->surveyPopUpMessage = "";
+        $this->finishPageContent = "Takk for svaret!";
     }
 
     public function __toString()
@@ -277,22 +272,6 @@ class Survey implements \JsonSerializable
         return $surveyClone;
     }
 
-    /**
-     * @return boolean
-     */
-    public function isShowCustomFinishPage()
-    {
-        return $this->showCustomFinishPage;
-    }
-
-    /**
-     * @param boolean $showCustomFinishPage
-     */
-    public function setShowCustomFinishPage($showCustomFinishPage)
-    {
-        $this->showCustomFinishPage = $showCustomFinishPage;
-    }
-
 
     /**
      * @return boolean
@@ -325,7 +304,7 @@ class Survey implements \JsonSerializable
     public function setFinishPageContent($finishPageContent)
     {
         if ($finishPageContent === null) {
-            $finishPageContent = "";
+            $finishPageContent = "Takk for svaret!";
         }
 
         $this->finishPageContent = $finishPageContent;

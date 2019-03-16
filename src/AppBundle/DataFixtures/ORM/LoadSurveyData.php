@@ -50,7 +50,6 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey1 = new Survey();
         $teamSurvey1->setSemester($semester);
         $teamSurvey1->setDepartment($department);
-        $teamSurvey1->setShowCustomFinishPage(true);
         $teamSurvey1->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
         $teamSurvey1->setName("Team Survey");
         $teamSurvey1->setSurveyPopUpMessage("Svar på undersøkelse!");
@@ -65,7 +64,6 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey2 = new Survey();
         $teamSurvey2->setSemester($semester);
         $teamSurvey2->setDepartment($department);
-        $teamSurvey2->setShowCustomFinishPage(true);
         $teamSurvey2->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
         $teamSurvey2->setName("Team Survey");
         $teamSurvey2->setSurveyPopUpMessage("Svar på undersøkelse!");
@@ -79,7 +77,6 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey3 = new Survey();
         $teamSurvey3->setSemester($semester);
         $teamSurvey3->setDepartment($department);
-        $teamSurvey3->setShowCustomFinishPage(true);
         $teamSurvey3->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
         $teamSurvey3->setName("Team Survey");
         $teamSurvey3->setSurveyPopUpMessage("Svar på undersøkelse!");
@@ -93,7 +90,6 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $teamSurvey4 = new Survey();
         $teamSurvey4->setSemester($semester);
         $teamSurvey4->setDepartment($department);
-        $teamSurvey4->setShowCustomFinishPage(true);
         $teamSurvey4->setFinishPageContent("Takk for at du svarte på vår undersøkelse");
         $teamSurvey4->setName("Team Survey");
         $teamSurvey4->setSurveyPopUpMessage("Svar på undersøkelse!");
@@ -106,7 +102,6 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $schoolSurvey1 = new Survey();
         $schoolSurvey1->setSemester($semester);
         $schoolSurvey1->setDepartment($department);
-        $schoolSurvey1->setShowCustomFinishPage(false);
         $schoolSurvey1->setName("School Survey");
         $schoolSurvey1->setConfidential(false);
         $schoolSurvey1->setTargetAudience(Survey::$ASSISTANT_SURVEY);

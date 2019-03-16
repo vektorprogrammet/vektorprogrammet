@@ -80,7 +80,7 @@ class SurveyNotifier
 
             $notification = new SurveyNotification();
             $notification->setUser($user);
-            $this->createUniqueIdentifier($notification);
+            $this->ensureUniqueIdentifier($notification);
             $notification->setSurveyNotificationCollection($surveyNotificationCollection);
             $this->em->persist($notification);
             $this->em->flush();
@@ -250,7 +250,7 @@ class SurveyNotifier
         return $users;
     }
 
-    private function createUniqueIdentifier(SurveyNotification $notification)
+    private function ensureUniqueIdentifier(SurveyNotification $notification)
     {
         while ($this->em->getRepository(SurveyNotification::class)->findByUserIdentifier($notification->getUserIdentifier())) {
             $notification->setUserIdentifier(bin2hex(openssl_random_pseudo_bytes(12)));

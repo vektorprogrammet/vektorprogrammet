@@ -30,15 +30,6 @@ class SurveyType extends AbstractType
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
         ))
 
-        ->add('showCustomFinishPage', ChoiceType::class, [
-            'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
-            'multiple' => false,
-            'expanded' => true,
-            'choices' => [
-                'Standard' => false,
-                'Tilpasset' => true,
-            ]
-        ])
 
 
         ->add('confidential', ChoiceType::class, array(
@@ -86,7 +77,9 @@ class SurveyType extends AbstractType
 
 
         ->add('finishPageContent', CKEditorType::class, [
-            'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
+            'label' => 'Melding på sluttside',
+            'required' => true,
+
         ])
 
         ->add('surveyQuestions', CollectionType::class, array(

@@ -56,13 +56,13 @@ class SurveyController extends BaseController
                 $em->persist($surveyTaken);
                 $em->flush();
 
-                if ($survey->isShowCustomFinishPage()) {
-                    return $this->render('survey/finish_page.html.twig', [
+                $this->addFlash('success', 'Mottatt svar!');
+
+                return $this->render('survey/finish_page.html.twig', [
                         'content' => $survey->getFinishPageContent(),
                     ]);
-                }
 
-                $this->addFlash('success', 'Mottatt svar!');
+
             } else {
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
             }
@@ -156,13 +156,10 @@ class SurveyController extends BaseController
                 $em->persist($surveyTaken);
                 $em->flush();
 
-
-                if ($survey->isShowCustomFinishPage()) {
-                    return $this->render('survey/finish_page.html.twig', [
-                        'content' => $survey->getFinishPageContent(),
-                    ]);
-                }
                 $this->addFlash('success', 'Mottatt svar!');
+                return $this->render('survey/finish_page.html.twig', [
+                    'content' => $survey->getFinishPageContent(),
+                ]);
             } else {
                 $this->addFlash('warning', 'Svaret ditt ble ikke sendt! Du må fylle ut alle obligatoriske felter.');
 
