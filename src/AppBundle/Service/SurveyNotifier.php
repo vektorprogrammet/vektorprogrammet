@@ -164,23 +164,23 @@ class SurveyNotifier
             $identifier = $notification->getUserIdentifier();
             $email = $user->getEmail();
 
-            $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
-            if (empty($assistantHistory)) {
-                continue;
-            }
-            $assistantHistory = $assistantHistory[0];
-            $day = $assistantHistory->getDay();
-            $school = $assistantHistory->getSchool()->getName();
-
             if ($emailType === 1) {
+                $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
+                if (empty($assistantHistory)) {
+                    continue;
+                }
+                $assistantHistory = $assistantHistory[0];
+                $day = $assistantHistory->getDay();
+                $school = $assistantHistory->getSchool()->getName();
+
                 $content = $this->twig->render(
-                    'survey/newsletter_template.html.twig',
+                    'survey/default_assistant_survey_notification_email.html.twig',
                     array(
-                        'firstname' => $notification->getUser()->getFirstName(),
-                        'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
+                        'firstname' => $this->getUser()->getFirstName(),
+                        'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
                         'day' => $day,
                         'school' => $school,
-                        'subject' => $subject,
+                        'subject' => $surveyNotificationCollection->getEmailSubject(),
                     )
                 );
             } else {

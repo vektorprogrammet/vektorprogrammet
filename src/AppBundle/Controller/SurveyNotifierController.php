@@ -2,11 +2,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\SurveyNotificationCollection;
-use AppBundle\Entity\UserGroup;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\SurveyNotifierType;
 use AppBundle\Service\SurveyNotifier;
-use AppBundle\Service\UserGroupCollectionManager;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
