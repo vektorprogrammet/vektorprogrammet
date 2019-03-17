@@ -10,7 +10,6 @@ use AppBundle\Entity\SurveyTaken;
 use AppBundle\Mailer\Mailer;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
-use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -176,8 +175,8 @@ class SurveyNotifier
                 $content = $this->twig->render(
                     'survey/default_assistant_survey_notification_email.html.twig',
                     array(
-                        'firstname' => $this->getUser()->getFirstName(),
-                        'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
+                        'firstname' => $user->getFirstName(),
+                        'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
                         'day' => $day,
                         'school' => $school,
                         'subject' => $surveyNotificationCollection->getEmailSubject(),
@@ -187,13 +186,15 @@ class SurveyNotifier
                 $content = $this->twig->render(
                     'survey/email_notification.html.twig',
                     array(
-                        'firstname' => $notification->getUser()->getFirstName(),
+                        'firstname' => $user->getFirstName(),
                         'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
                         'mainMessage' => $mainMessage,
                         'endMessage' => $emailMessage,
                     )
                 );
             }
+
+            dump($content);
 
 
 
