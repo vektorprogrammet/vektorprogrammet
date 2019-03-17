@@ -55,7 +55,7 @@ class Survey implements \JsonSerializable
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=true, options={"default" : "Takk for svaret!"})
+     * @ORM\Column(type="text", nullable=true)
      */
     private $finishPageContent;
 
@@ -188,6 +188,8 @@ class Survey implements \JsonSerializable
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
         $this->surveyPopUpMessage = "";
+        $this->finishPageContent = "";
+
     }
 
     public function __toString()
