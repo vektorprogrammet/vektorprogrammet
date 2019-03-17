@@ -97,19 +97,15 @@ class SurveyNotifierController extends BaseController
         }
         $this->get(SurveyNotifier::class)->sendNotifications($surveyNotificationCollection);
 
-        if($surveyNotificationCollection->isAllSent())
-        {
+        if ($surveyNotificationCollection->isAllSent()) {
             $this->addFlash("success", "Sendt");
             $response['success'] = true;
-        }else
-        {
+        } else {
             $this->addFlash("warning", "Alle ble ikke sendt");
             $response['success'] = false;
         }
 
         return new JsonResponse($response);
-
-
     }
 
 
