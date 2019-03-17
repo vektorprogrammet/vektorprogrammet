@@ -31,9 +31,8 @@ class UserGroupCollectionController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if(!$isCreate){
-                foreach ($userGroupCollection->getUserGroups() as $userGroup)
-                {
+            if (!$isCreate) {
+                foreach ($userGroupCollection->getUserGroups() as $userGroup) {
                     $em->remove($userGroup);
                 }
             }
