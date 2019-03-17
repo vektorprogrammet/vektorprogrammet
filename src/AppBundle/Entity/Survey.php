@@ -189,7 +189,6 @@ class Survey implements \JsonSerializable
         $this->showCustomPopUpMessage = false;
         $this->surveyPopUpMessage = "";
         $this->finishPageContent = "";
-
     }
 
     public function __toString()
@@ -295,8 +294,7 @@ class Survey implements \JsonSerializable
      */
     public function getFinishPageContent()
     {
-        if ($this->finishPageContent === null)
-        {
+        if ($this->finishPageContent === null) {
             return "Takk for svaret!";
         }
 
