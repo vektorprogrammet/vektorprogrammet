@@ -55,8 +55,7 @@ class Survey implements \JsonSerializable
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=false, options={"default" : "Takk for svaret!"})
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
+     * @ORM\Column(type="text", nullable=true, options={"default" : "Takk for svaret!"})
      */
     private $finishPageContent;
 
@@ -189,7 +188,6 @@ class Survey implements \JsonSerializable
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
         $this->surveyPopUpMessage = "";
-        $this->finishPageContent = "Takk for svaret!";
     }
 
     public function __toString()
@@ -295,6 +293,11 @@ class Survey implements \JsonSerializable
      */
     public function getFinishPageContent()
     {
+        if ($this->finishPageContent === null)
+        {
+            return "Takk for svaret!";
+        }
+
         return $this->finishPageContent;
     }
 
@@ -303,10 +306,6 @@ class Survey implements \JsonSerializable
      */
     public function setFinishPageContent($finishPageContent)
     {
-        if ($finishPageContent === null) {
-            $finishPageContent = "Takk for svaret!";
-        }
-
         $this->finishPageContent = $finishPageContent;
     }
 

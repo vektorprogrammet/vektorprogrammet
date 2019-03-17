@@ -77,8 +77,7 @@ class SurveyType extends AbstractType
 
 
         ->add('finishPageContent', CKEditorType::class, [
-            'label' => 'Melding på sluttside',
-            'required' => true,
+            'label' => 'Melding på sluttside (viser "Takk for svaret!" om tom)',
 
         ])
 
