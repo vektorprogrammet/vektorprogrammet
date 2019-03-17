@@ -1,0 +1,72 @@
+
+
+<link rel="stylesheet" href="{{ asset_with_version('css/pages/survey.css') }}">
+
+<p> Hei, {{ firstname }}</p>
+
+{{ content | safe_html }}
+
+<p><a href="{{ route }}">{{ route }}</a></p>
+
+
+
+<p>
+    Med vennlig hilsen<br>
+    Vektorevaluering<br>
+</p>
+
+
+<div class="container mt-5 surveypage">
+    <img src="{{ asset_with_version('images/vektor-logo.svg') }}" alt="Vektor logo">
+
+    <div class="card mt-4 mb-5">
+        <div class="card-body p-4">
+            <br/>
+
+            <div class="row">
+                <div class="col-12">
+                    <h1>{{ form.vars.data.survey.name }}</h1>
+                </div>
+            </div>
+
+            {{ form_start(form) }} {#This is everything that is needed to show a form/survey#}
+            {{ form_errors(form) }}
+            {% set QuestionNumber = 1 %}
+
+            {% if surveyTargetAudience == 0%}
+                <div class="row mt-4">
+                    <div class="col-12">
+                        <label class="form-control-label">Hvilken skole går du på?</label>
+                        {{ form_widget(form.school) }}
+                        <br/>
+
+                    </div>
+                </div>
+            {% endif %}
+            {% for surveyAnswer in form.surveyAnswers           %}
+                <div class="row mt-2">
+                    <div class="col-12">
+                        {% if surveyAnswer.vars.value.surveyQuestion.type == 'check' %}
+                            {{ form_row(surveyAnswer.answerArray) }}
+                        {% else %}
+                            {{ form_row(surveyAnswer.answer) }}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+            {{ form_row(form._token) }}
+            <div id="error" style="display: none">Noen obligatoriske spørsmål mangler svar</div>
+
+            <button class="btn">Send inn</button>
+
+            <div id="sending" style="display: none">
+                <i class="fa fa-paper-plane fa-2x"></i>
+
+                <p>Sender svar...</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -194,9 +194,6 @@ class SurveyNotifier
                 );
             }
 
-            dump($content);
-
-
 
             $message = (new \Swift_Message())
                 ->setFrom(array($this->fromEmail => 'Vektorprogrammet'))
