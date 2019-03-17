@@ -26,8 +26,8 @@ class UserGroupCollectionManager
      */
     public function initializeUserGroupCollection(UserGroupCollection $userGroupCollection)
     {
-        if (!empty($userGroupCollection->getUserGroups())){
-            foreach ($userGroupCollection->getUserGroups() as $userGroup){
+        if (!empty($userGroupCollection->getUserGroups())) {
+            foreach ($userGroupCollection->getUserGroups() as $userGroup) {
                 $this->em->remove($userGroup);
             }
         }
