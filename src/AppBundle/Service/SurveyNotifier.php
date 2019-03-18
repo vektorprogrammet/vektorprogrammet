@@ -151,6 +151,7 @@ class SurveyNotifier
         $emailMessage = $surveyNotificationCollection->getEmailEndMessage();
         $emailType = $surveyNotificationCollection->getEmailType();
         $emailFromName = $surveyNotificationCollection->getEmailFromName();
+
         foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
             if ($notification->isSent()) {
                 return;
@@ -164,6 +165,8 @@ class SurveyNotifier
             $identifier = $notification->getUserIdentifier();
             $email = $user->getEmail();
 
+
+
             if ($emailType === 1) {
                 $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
                 if (empty($assistantHistory)) {
@@ -172,6 +175,7 @@ class SurveyNotifier
                 $assistantHistory = $assistantHistory[0];
                 $day = $assistantHistory->getDay();
                 $school = $assistantHistory->getSchool()->getName();
+
 
                 $content = $this->twig->render(
                     'survey/default_assistant_survey_notification_email.html.twig',
@@ -185,6 +189,7 @@ class SurveyNotifier
 
                     )
                 );
+
             } elseif ($emailType === 2) {
                 $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
                 if (empty($assistantHistory)) {
@@ -209,6 +214,7 @@ class SurveyNotifier
 
                     )
                 );
+
             } else {
                 $content = $this->twig->render(
                     'survey/email_notification.html.twig',
