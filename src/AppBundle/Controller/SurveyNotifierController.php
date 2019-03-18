@@ -42,25 +42,21 @@ class SurveyNotifierController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->get('preview')->isClicked()) {
                 $emailType = $surveyNotificationCollection->getEmailType();
-                if ($emailType === 1) {
-                    return $this->render(
-                        'survey/default_assistant_survey_notification_email.html.twig',
-                        array(
-                            'firstname' => $this->getUser()->getFirstName(),
-                            'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
-                            'day' => "Mandag",
-                            'school' => "Blussvoll",
-                            'subject' => $surveyNotificationCollection->getEmailSubject(),
-                        )
-                    );
+                $view = 'survey/email_notification.html.twig';
+                if($emailType === 1){
+                    $view = 'survey/default_assistant_survey_notification_email.html.twig';
+                }
+                elseif ($emailType === 2) {
+                    $view = 'survey/personal_email_notification.html.twig';
                 }
                 return $this->render(
-                    'survey/email_notification.html.twig',
+                    $view,
                     array(
                         'firstname' => $this->getUser()->getFirstName(),
                         'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
-                        'mainMessage' => $surveyNotificationCollection->getEmailMessage(),
-                        'endMessage' => $surveyNotificationCollection->getEmailEndMessage(),
+                        'day' => "Mandag",
+                        'school' => "Blussvoll",
+                        'subject' => $surveyNotificationCollection->getEmailSubject(),
                     )
                 );
             }

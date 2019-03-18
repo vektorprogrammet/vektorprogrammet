@@ -62,7 +62,9 @@ class SurveyNotifierType extends AbstractType
                 "expanded" => false,
                 "choices" => array(
                     "Selvskrevet" => 0,
-                    "Assistenttakkebrev" => 1,
+                    "Generell assistenttakkebrev" => 1,
+                    "Personlig assistenttakkebrev" => 2,
+
                 ),
                 'disabled' => !$this->canEdit
             ])
@@ -86,6 +88,12 @@ class SurveyNotifierType extends AbstractType
                 'attr' => array('rows' => '5'),
                 'label' => false,
                 'disabled' => !$this->canEdit
+            ))
+
+            ->add('emailFromName', TextType::class, array(
+                'label' => 'Navn på avsender. (E-post til avsender vil være evaluering.ntnu@vektorprogrammet.no)',
+                'disabled' => !$this->canEdit
+
             ))
 
 

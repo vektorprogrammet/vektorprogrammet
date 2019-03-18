@@ -87,6 +87,13 @@ class SurveyNotificationCollection
 
     /**
      * @var string
+     * @ORM\Column(name="email_from_name", type="string")
+     */
+    private $emailFromName;
+
+
+    /**
+     * @var string
      * @ORM\Column(name="email_subject", type="string")
      */
     private $emailSubject;
@@ -127,6 +134,7 @@ class SurveyNotificationCollection
         $this->emailSubject = "Undersøkelse fra Vektor";
         $this->emailType = 0;
         $this->userGroups = array();
+        $this->emailFromName = "Vektorprogrammet";
     }
 
     /**
@@ -348,4 +356,22 @@ class SurveyNotificationCollection
     {
         $this->emailType = $emailType;
     }
+
+    /**
+     * @return string
+     */
+    public function getEmailFromName(): string
+    {
+        return $this->emailFromName;
+    }
+
+    /**
+     * @param string $emailFromName
+     */
+    public function setEmailFromName(string $emailFromName): void
+    {
+        $this->emailFromName = $emailFromName;
+    }
+
+
 }

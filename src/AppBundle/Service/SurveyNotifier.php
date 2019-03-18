@@ -150,6 +150,7 @@ class SurveyNotifier
         $subject = $surveyNotificationCollection->getEmailSubject();
         $emailMessage = $surveyNotificationCollection->getEmailEndMessage();
         $emailType = $surveyNotificationCollection->getEmailType();
+        $emailFromName = $surveyNotificationCollection->getEmailFromName();
         foreach ($surveyNotificationCollection->getSurveyNotifications() as $notification) {
             if ($notification->isSent()) {
                 return;
@@ -176,12 +177,32 @@ class SurveyNotifier
                     'survey/default_assistant_survey_notification_email.html.twig',
                     array(
                         'firstname' => $user->getFirstName(),
-                        'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
+                        'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid' => $identifier], RouterInterface::ABSOLUTE_URL),
                         'day' => $day,
                         'school' => $school,
                         'subject' => $surveyNotificationCollection->getEmailSubject(),
                     )
                 );
+            } elseif ($emailType === 2){
+                $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
+                if (empty($assistantHistory)) {
+                    continue;
+                }
+                $assistantHistory = $assistantHistory[0];
+                $day = $assistantHistory->getDay();
+                $school = $assistantHistory->getSchool()->getName();
+
+                $content = $this->twig->render(
+                    'survey/personal_email_notification.html.twig',
+                    array(
+                        'firstname' => $user->getFirstName(),
+                        'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid' => $identifier], RouterInterface::ABSOLUTE_URL),
+                        'day' => $day,
+                        'school' => $school,
+                        'subject' => $surveyNotificationCollection->getEmailSubject(),
+                    )
+                );
+
             } else {
                 $content = $this->twig->render(
                     'survey/email_notification.html.twig',
@@ -196,7 +217,7 @@ class SurveyNotifier
 
 
             $message = (new \Swift_Message())
-                ->setFrom(array($this->fromEmail => 'Vektorprogrammet'))
+                ->setFrom(array($this->fromEmail => $emailFromName))
                 ->setSubject($subject)
                 ->setTo($email)
                 ->setReplyTo($this->fromEmail)
