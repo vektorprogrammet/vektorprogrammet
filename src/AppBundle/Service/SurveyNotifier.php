@@ -189,7 +189,6 @@ class SurveyNotifier
 
                     )
                 );
-
             } elseif ($emailType === 2) {
                 $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
                 if (empty($assistantHistory)) {
@@ -214,7 +213,6 @@ class SurveyNotifier
 
                     )
                 );
-
             } else {
                 $content = $this->twig->render(
                     'survey/email_notification.html.twig',
