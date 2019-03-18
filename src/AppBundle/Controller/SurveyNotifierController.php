@@ -43,10 +43,9 @@ class SurveyNotifierController extends BaseController
             if ($form->get('preview')->isClicked()) {
                 $emailType = $surveyNotificationCollection->getEmailType();
                 $view = 'survey/email_notification.html.twig';
-                if($emailType === 1){
+                if ($emailType === 1) {
                     $view = 'survey/default_assistant_survey_notification_email.html.twig';
-                }
-                elseif ($emailType === 2) {
+                } elseif ($emailType === 2) {
                     $view = 'survey/personal_email_notification.html.twig';
                 }
                 return $this->render(

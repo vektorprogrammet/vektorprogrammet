@@ -372,6 +372,4 @@ class SurveyNotificationCollection
     {
         $this->emailFromName = $emailFromName;
     }
-
-
 }
