@@ -28,7 +28,6 @@ class SurveyTaken implements \JsonSerializable
 
 
     /**
-
      * @ORM\Column(type="datetime", nullable=false)
      *
      * @var \DateTime
@@ -45,6 +44,7 @@ class SurveyTaken implements \JsonSerializable
     protected $school;
 
     /**
+     * @var Survey
      * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"}, inversedBy="surveysTaken")
      *
      */
@@ -62,6 +62,7 @@ class SurveyTaken implements \JsonSerializable
     public function __construct()
     {
         $this->surveyAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->time = new \DateTime();
     }
 
     /**
@@ -134,13 +135,6 @@ class SurveyTaken implements \JsonSerializable
         $this->survey = $survey;
     }
 
-    /**
-     * @param \DateTime $time
-     */
-    public function setTime($time)
-    {
-        $this->time = $time;
-    }
 
     /**
      * @return User
@@ -148,15 +142,6 @@ class SurveyTaken implements \JsonSerializable
     public function getUser(): ?User
     {
         return $this->user;
-    }
-
-
-    /**
-     * @return \DateTime
-     */
-    public function getTime(): ?\DateTime
-    {
-        return $this->time;
     }
 
     /**
@@ -183,7 +168,7 @@ class SurveyTaken implements \JsonSerializable
     {
         $ret = array();
 
-        if ($this->survey->isTeamSurvey()) {
+        if ($this->survey->getTargetAudience() === 1) {
             $semester = $this->getSurvey()->getSemester();
             $teamMemberships = $this->getUser()->getTeamMemberships();
             $teamNames = array();

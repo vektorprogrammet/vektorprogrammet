@@ -7,7 +7,7 @@
             <div class="card-body">
                 <h5 class="card-title">{{ survey.name | safe_html}}</h5>
                 <p class="text-muted"> {{ survey.semester.getName()}} </p>
-                <a href="{{ path('survey_show_team',{'id':survey.id}) }}" target="_blank" class="btn btn-primary survey-widget-btn">
+                <a href="{{ path('survey_show_user',{'id':survey.id}) }}" target="_blank" class="btn btn-primary survey-widget-btn">
                     {{ survey.surveyPopUpMessage|safe_html}}
                 </a>
             </div>

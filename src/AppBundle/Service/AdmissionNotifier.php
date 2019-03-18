@@ -26,6 +26,7 @@ class AdmissionNotifier
         $this->logger = $logger;
         $this->validator = $validator;
         $this->sendLimit = $sendLimit;
+        $this->validator = $validator;
     }
 
     /**

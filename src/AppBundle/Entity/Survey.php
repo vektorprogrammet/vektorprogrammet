@@ -13,6 +13,11 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Survey implements \JsonSerializable
 {
+    public static $SCHOOL_SURVEY = 0;
+    public static $TEAM_SURVEY = 1;
+    public static $ASSISTANT_SURVEY = 2;
+
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")
@@ -39,12 +44,6 @@ class Survey implements \JsonSerializable
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $name;
-
-    /**
-     * @var bool
-     * @ORM\Column(type="boolean", nullable=false)
-     */
-    private $showCustomFinishPage;
 
 
     /**
@@ -76,11 +75,11 @@ class Survey implements \JsonSerializable
 
 
     /**
-     * @var bool
-     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
+     * @var int
+     * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
+     *
      */
-    private $teamSurvey;
+    private $targetAudience;
 
 
     /**
@@ -184,12 +183,21 @@ class Survey implements \JsonSerializable
     public function __construct()
     {
         $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->showCustomFinishPage = false;
         $this->confidential = false;
-        $this->teamSurvey = false;
+        $this->targetAudience = 0;
         $this->surveysTaken = [];
         $this->showCustomPopUpMessage = false;
         $this->surveyPopUpMessage = "";
+        $this->finishPageContent = "";
+    }
+
+    public function __toString()
+    {
+        $str = $this->name;
+        if ($this->getDepartment()) {
+            $str = $str.", ".$this->getDepartment();
+        }
+        return $str;
     }
 
 
@@ -257,26 +265,10 @@ class Survey implements \JsonSerializable
             $surveyClone->addSurveyQuestion($questionClone);
         }
 
-        $surveyClone->setTeamSurvey($this->isTeamSurvey());
+        $surveyClone->setTargetAudience($this->getTargetAudience());
         $surveyClone->setName("Kopi av {$surveyClone->getName()}");
 
         return $surveyClone;
-    }
-
-    /**
-     * @return boolean
-     */
-    public function isShowCustomFinishPage()
-    {
-        return $this->showCustomFinishPage;
-    }
-
-    /**
-     * @param boolean $showCustomFinishPage
-     */
-    public function setShowCustomFinishPage($showCustomFinishPage)
-    {
-        $this->showCustomFinishPage = $showCustomFinishPage;
     }
 
 
@@ -302,6 +294,10 @@ class Survey implements \JsonSerializable
      */
     public function getFinishPageContent()
     {
+        if ($this->finishPageContent === null) {
+            return "Takk for svaret!";
+        }
+
         return $this->finishPageContent;
     }
 
@@ -310,10 +306,6 @@ class Survey implements \JsonSerializable
      */
     public function setFinishPageContent($finishPageContent)
     {
-        if ($finishPageContent === null) {
-            $finishPageContent = "";
-        }
-
         $this->finishPageContent = $finishPageContent;
     }
 
@@ -333,20 +325,21 @@ class Survey implements \JsonSerializable
         $this->confidential = $confidential;
     }
 
+
     /**
-     * @param boolean $teamSurvey
+     * @param int $targetAudience
      */
-    public function setTeamSurvey($teamSurvey)
+    public function setTargetAudience($targetAudience)
     {
-        $this->teamSurvey = $teamSurvey;
+        $this->targetAudience = $targetAudience;
     }
 
     /**
-     * @return boolean
+     * @return int
      */
-    public function isTeamSurvey() : bool
+    public function getTargetAudience() : int
     {
-        return $this->teamSurvey;
+        return $this->targetAudience;
     }
 
     /**
