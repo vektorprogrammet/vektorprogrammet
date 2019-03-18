@@ -87,7 +87,7 @@ class SurveyNotificationCollection
 
     /**
      * @var string
-     * @ORM\Column(name="email_from_name", type="string")
+     * @ORM\Column(name="email_from_name", nullable=false, type="string")
      */
     private $emailFromName;
 

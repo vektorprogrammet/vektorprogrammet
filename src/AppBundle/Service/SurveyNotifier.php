@@ -180,7 +180,9 @@ class SurveyNotifier
                         'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid' => $identifier], RouterInterface::ABSOLUTE_URL),
                         'day' => $day,
                         'school' => $school,
-                        'subject' => $surveyNotificationCollection->getEmailSubject(),
+                        'fromName' => $surveyNotificationCollection->getEmailFromName(),
+                        'title' => $subject,
+
                     )
                 );
             } elseif ($emailType === 2) {
@@ -192,6 +194,8 @@ class SurveyNotifier
                 $day = $assistantHistory->getDay();
                 $school = $assistantHistory->getSchool()->getName();
 
+                $subject = "Hvordan var det på ".$school."?";
+
                 $content = $this->twig->render(
                     'survey/personal_email_notification.html.twig',
                     array(
@@ -199,7 +203,10 @@ class SurveyNotifier
                         'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid' => $identifier], RouterInterface::ABSOLUTE_URL),
                         'day' => $day,
                         'school' => $school,
-                        'subject' => $surveyNotificationCollection->getEmailSubject(),
+                        'fromName' => $surveyNotificationCollection->getEmailFromName(),
+                        'title' => $subject,
+
+
                     )
                 );
             } else {
@@ -210,6 +217,8 @@ class SurveyNotifier
                         'route' => $this->router->generate('survey_show_user_id', ['id' => $surveyId, 'userid'=>$identifier], RouterInterface::ABSOLUTE_URL),
                         'mainMessage' => $mainMessage,
                         'endMessage' => $emailMessage,
+                        'fromName' => $surveyNotificationCollection->getEmailFromName(),
+                        'title'  => $subject,
                     )
                 );
             }
