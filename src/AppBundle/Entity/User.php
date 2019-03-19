@@ -170,6 +170,11 @@ class User implements AdvancedUserInterface, \Serializable
      */
     private $receipts;
 
+    /**
+     * @var QuickLink[]
+     * @ORM\OneToMany(targetEntity="QuickLink", mappedBy="owner")
+     */
+    private $quickLinks;
 
     public function __construct()
     {
@@ -864,5 +869,24 @@ class User implements AdvancedUserInterface, \Serializable
         }
 
         return false;
+    }
+
+    /**
+     * @return QuickLink[]
+     */
+    public function getQuickLinks(): array
+    {
+        return $this->quickLinks;
+    }
+
+    /**
+     * @param QuickLink[] $quickLinks
+     * @return User
+     */
+    public function setQuickLinks(array $quickLinks): User
+    {
+        $this->quickLinks = $quickLinks;
+
+        return $this;
     }
 }

@@ -33,19 +33,20 @@ class QuickLink
      *
      * @ORM\Column(name="title", type="string", length=255)
      */
+
     private $title;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="iconUrl", type="string", length=255)
+     * @ORM\Column(name="icon_url", type="string", length=255, nullable=true)
      */
     private $iconUrl;
 
     /**
      * @var int
      *
-     * @ORM\Column(name="orderNum", type="integer")
+     * @ORM\Column(name="order_num", type="integer")
      */
     private $orderNum;
 
@@ -56,12 +57,18 @@ class QuickLink
      */
     private $visible;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="User", inversedBy="quickLinks")
+     * @ORM\JoinColumn(onDelete="CASCADE")
+     **/
+    private $owner;
 
     /**
      * Get id.
      *
      * @return int
      */
+
     public function getId()
     {
         return $this->id;
@@ -185,5 +192,24 @@ class QuickLink
     public function getVisible()
     {
         return $this->visible;
+    }
+
+    /**
+     * @return User
+     */
+    public function getOwner()
+    {
+        return $this->owner;
+    }
+
+    /**
+     * @param User $owner
+     * @return QuickLink
+     */
+    public function setOwner(User $owner): QuickLink
+    {
+        $this->owner = $owner;
+
+        return $this;
     }
 }
