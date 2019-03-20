@@ -49,6 +49,11 @@ faq:
  defaults: {_controller: AppBundle:AboutVektor:show}
  methods: [GET]
 
+foreldre:
+ path: /foreldre
+ defaults: {_controller: AppBundle:Parents:index}
+ methods: [GET]
+
 # Updates static content
 # Not meant for rendering a page. Receives a post request and updates the database.
 update_static_content:
