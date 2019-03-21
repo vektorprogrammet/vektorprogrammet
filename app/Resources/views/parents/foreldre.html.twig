@@ -9,41 +9,88 @@
 {% endblock %}
 
 {% block stylesheets %}
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-    <!-- <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-theme-black.css"> -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/parents.css') }}">
 {% endblock %}
 
 {% block body %}
-    <center><h1>Side med informasjon til foreldre</h1></center>
 
     <div class="container-fluid">
-        <div class="row">
-            <div class="col-lg-6">
-                Venstre div-boks
-                <br>
-                <h3>Oversikt</h3>
-                <img src="http://0.0.0.0:8000/images/teacher2.png" width="90%">
 
-            </div>
-            <div class="col-lg-6">
-                Høyre div-boks<br>
-                <p>Innhold
-                </p>
 
+        <div class="parents-infosite"><!-- style="background-color: #fafdfe"> -->
+            <div class="page-header">
+                <h1>Informasjon for foreldre</h1>
+                <p>Lurer du som forelder på mer om vektorprogrammet? Her finner du informasjon om våre assistenter, kvalitetssikring, foreldrekurs, og annet. Siden er ikke ferdig enda, og noe av teksten er her rett og slett kun for fyll, slik at siden skal få rett form.</p>
             </div>
+
+
+
+            <section class="row">
+                <div class="col-lg-8"><!-- style="background-color: none #f0fff0"> -->
+                    <h2>Kvalitet</h2>
+                    <p>Her skal det etter hvert komme tekst om hvordan vi kvalitetssikrer våre assistenter, slik at alle som blir sendt ut til skolene er egnede, dedikerte, og pedagogiske.
+                        Dessuten skal det nevnes at alle assistentene blir sendt på pedagogikkkurs før de blir assistenter
+                    </p>
+                </div>
+                <div class="col-lg-4"><!-- style="background-color: none #f0fafb"> -->
+                    <img src="https://via.placeholder.com/200">
+                </div>
+            </section>
+
+
+            <br><br><br><br>
+
+
+            <section class="row">
+                <div class="col-lg-4"><!-- style="background-color: none #f0fff0"> -->
+                    <img src="https://via.placeholder.com/200/">
+                </div>
+                <div class="col-lg-8"><!-- style="background-color: none #f0fafb"> -->
+                    <h2>Overskrift</h2>
+                    <p>Noe som gjør at Vektorprogrammet kan velge ut de aller beste til jobben.</p>
+                    <p>Statistikk om assistentene, og mer tekst skal komme her. Noe må tross alt stå her mens siden er under construction.</p>
+                </div>
+            </section>
+
+
+
+            <br><br><br><br>
+
+
+            <section class="row">
+                <div class="col-lg-12"><!-- style="background-color: none whitesmoke;"> -->
+                    <h2>Foreldrekurs</h2>
+                    <p>Visste du at Vektor også arrangerer foreldrekurs for foreldre? <a href="">link?</a></p>
+                    <p>Informasjon om forrige foreldrekurs, opplegg, agenda. Når er neste foreldrekurs?</p>
+                </div>
+            </section>
+
+
+            <br><br><br><br>
+
+            <section class="row"><!-- style="background-color: none #f1f1e3;"> -->
+                <div class="col-lg-12">
+                    <h2>Bildeseksjon</h2>
+                    <p>Her kommer det bilder etter hvert.</p>
+                </div>
+                <div class="col-lg-3">
+                    <img src="https://via.placeholder.com/180" alt="bilde1">
+                </div>
+                <div class="col-lg-3">
+                    <img src="https://via.placeholder.com/180" alt="bilde2">
+                </div>
+                <div class="col-lg-3">
+                    <img src="https://via.placeholder.com/180" alt="bilde3">
+                </div>
+                <div class="col-lg-3">
+                    <img src="https://via.placeholder.com/180" alt="bilde4">
+                </div>
+            </section>
+
         </div>
+
+
     </div>
-
-
-
-
-
-
-
-    <!-- A few linechanges just to adjust footer of site -->
-    <br><br><br><br><br>
 
 {% endblock %}
 
