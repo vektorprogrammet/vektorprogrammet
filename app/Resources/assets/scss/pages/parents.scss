@@ -1,16 +1,27 @@
 @import "../colors";
 
 .parents-infosite {
-  overflow:hidden;
+/*overflow:hidden;
   width: 400px;
 
 
   width: 800px;
-  margin-left:23%;
 
+*/
   .space {
-    margin-bottom:100px;
+    margin-bottom:60px;
   }
+
+
+  .image-grid {
+
+    width: 450px;
+    max-width: 100%;
+    max-height: 450px;
+
+    border-radius: 8px;
+  }
+
 }
 
 
