@@ -197,11 +197,11 @@ survey_popup_close:
 ##########################################
 #             Arrangement                #
 ##########################################
-events:
- path: /kontrollpanel/arrangementer
- defaults: { _controller: AppBundle:Event:createEvent }
- methods: [GET]
 
+#events:
+# path: /kontrollpanel/arrangementer
+# defaults: { _controller: AppBundle:Event:createEvent }
+# methods: [GET]
 
 event_create:
  path: /kontrollpanel/arrangement/opprett

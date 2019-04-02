@@ -22,12 +22,14 @@ class ScheduleInterviewType extends AbstractType
             ->add('to', EmailType::class, array(
                 'label' => 'Mottaker',
             ))
+
             ->add('datetime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Tidspunkt',
                 'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
+
             ->add('room', TextType::class, array(
                 'label' => 'Rom',
             ))

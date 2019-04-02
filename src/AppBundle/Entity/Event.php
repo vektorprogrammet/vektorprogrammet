@@ -13,6 +13,24 @@ class Event
 {
     ## TODO : RENAME THIS "EVENT" confusing name
 
+
+    /**
+     * @return Department
+     */
+    public function getDepartment(): Department
+    {
+        return $this->getFieldOfStudy()->getDepartment();
+    }
+
+    public function setDepartment($department): void
+    {
+        $this->department = $department;
+    }
+
+
+    ////                    ////                       ////
+
+
     /**
      * @ORM\Id
      * @ORM\Column(type="integer")

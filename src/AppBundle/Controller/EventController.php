@@ -18,7 +18,7 @@ class EventController extends BaseController
         $event = new Event();
 
 
-        #TODO SETUP ACCSESS RULES
+        #TODO SETUP ACCESS RULES
         /*
         if ($this->get(AccessControlService::class)->checkAccess("create_event")) {
         } else {
@@ -32,6 +32,7 @@ class EventController extends BaseController
         if ($form->isValid()) {
             ## $this->ensureAccess($event);
             $em = $this->getDoctrine()->getManager();
+
             $em->persist($event);
             $em->flush();
 

@@ -1,4 +1,5 @@
 <?php
+
 namespace AppBundle\Form\Type;
 
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
@@ -8,7 +9,6 @@ use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-
 
 class EventType extends AbstractType
 {
@@ -26,15 +26,26 @@ class EventType extends AbstractType
 
 
             ->add('startTime', DateTimeType::class, array(
-                'label' => "Starttid for arrangement",
+                'widget' => 'single_text',
+                'format' => 'dd.MM.yyyy HH:mm',
+                'label' => 'Tidspunkt',
+                'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
 
             ## TODO: MULIHET FOR IKKE Å HA TID
 
 
+            #->add('endTime', DateTimeType::class, array(
+            #    'label' => "Slutttid for arrangement",
+            #))
+
             ->add('endTime', DateTimeType::class, array(
-                'label' => "Slutttid for arrangement",
+                'widget' => 'single_text',
+                'format' => 'dd.MM.yyyy HH:mm',
+                'label' => 'Tidspunkt',
+                'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
+
 
 
             ->add('save', SubmitType::class, array(
