@@ -155,7 +155,10 @@ class SurveyManager
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
             foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships())) {
+                $noTeamMemberships = $answer->getSurveyTaken()->getUser() === null
+                    || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships());
+
+                if ($answer->getSurveyTaken() === null || $noTeamMemberships) {
                     continue;
                 }
 
