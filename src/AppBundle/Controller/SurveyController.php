@@ -397,14 +397,14 @@ class SurveyController extends BaseController
 
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             return $this->render('survey/survey_result.html.twig', array(
-                'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithTeamResults($survey),
+                'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithSchoolResults($survey),
                 'survey' => $survey,
                 'surveyTargetAudience' => $survey->getTargetAudience(),
             ));
         }
 
         return $this->render('survey/survey_result.html.twig', array(
-            'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithSchoolResults($survey),
+            'textAnswers' => $this->get(SurveyManager::class)->getTextAnswerWithTeamResults($survey),
             'survey' => $survey,
             'surveyTargetAudience' => $survey->getTargetAudience(),
 
