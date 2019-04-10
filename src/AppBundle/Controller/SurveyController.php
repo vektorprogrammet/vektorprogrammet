@@ -91,11 +91,15 @@ class SurveyController extends BaseController
         $notification = $em->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
 
 
-        if ($notification === null) return $this->redirectToCorrectSurvey($survey);
+        if ($notification === null) {
+            return $this->redirectToCorrectSurvey($survey);
+        }
 
         $sameSurvey = $notification->getSurveyNotificationCollection()->getSurvey() == $survey;
 
-        if(!$sameSurvey) return $this->redirectToCorrectSurvey($survey);
+        if (!$sameSurvey) {
+            return $this->redirectToCorrectSurvey($survey);
+        }
 
 
         $surveyLinkClick = new SurveyLinkClick();
