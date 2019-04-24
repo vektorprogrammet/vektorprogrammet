@@ -25,10 +25,10 @@ class EventType extends AbstractType
             ))
 
 
-            ->add('startTime', DateTimeType::class, array(
+            ->add('start_time', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
-                'label' => 'Tidspunkt',
+                'label' => 'Starttidspunkt',
                 'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
 
@@ -39,10 +39,10 @@ class EventType extends AbstractType
             #    'label' => "Slutttid for arrangement",
             #))
 
-            ->add('endTime', DateTimeType::class, array(
+            ->add('end_time', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
-                'label' => 'Tidspunkt',
+                'label' => 'Sluttidspunkt',
                 'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
 

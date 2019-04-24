@@ -41,7 +41,7 @@ class EventController extends BaseController
             return $this->redirect($this->generateUrl('control_panel'));
         }
 
-        return $this->render('event/event_create.html.twig', array(
+        return $this->render('event/social_event_create.html.twig', array(
             'form' => $form->createView(),
             'event' => $event
         ));

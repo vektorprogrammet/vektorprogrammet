@@ -14,6 +14,9 @@ class Event
     ## TODO : RENAME THIS "EVENT" confusing name
 
 
+
+
+    // // // // // // // --------------- // // // // // // //
     /**
      * @return Department
      */
@@ -28,7 +31,7 @@ class Event
     }
 
 
-    ////                    ////                       ////
+    // // // // // // // --------------- // // // // // // //
 
 
     /**
@@ -53,13 +56,13 @@ class Event
     /**
      * @ORM\Column(type="datetime")
      */
-    private $startTime;
+    private $start_time;
 
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $endTime;
+    private $end_time;
 
     /**
      * Constructor.
@@ -132,15 +135,15 @@ class Event
      */
     public function getStartTime()
     {
-        return $this->startTime;
+        return $this->start_time;
     }
 
     /**
-     * @param \DateTime $startTime
+     * @param \DateTime $start_time
      */
-    public function setStartTime($startTime): void
+    public function setStartTime($start_time): void
     {
-        $this->startTime = $startTime;
+        $this->start_time = $start_time;
     }
 
     /**
@@ -148,15 +151,15 @@ class Event
      */
     public function getEndTime()
     {
-        return $this->endTime;
+        return $this->end_time;
     }
 
     /**
-     * @param \DateTime $endTime
+     * @param \DateTime $end_time
      */
-    public function setEndTime($endTime): void
+    public function setEndTime($end_time): void
     {
-        $this->endTime = $endTime;
+        $this->end_time = $end_time;
     }
 
 
