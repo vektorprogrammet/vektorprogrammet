@@ -3,19 +3,19 @@
 namespace AppBundle\Controller;
 
 
-use AppBundle\Entity\Event;
-use AppBundle\Form\Type\EventType;
+use AppBundle\Entity\SocialEvent;
+use AppBundle\Form\Type\SocialEventType;
 use Symfony\Component\HttpFoundation\Request;
 
 
 
-class EventController extends BaseController
+class SocialEventController extends BaseController
 {
 
 
-    public function createEventAction(Request $request)
+    public function createSocialEventAction(Request $request)
     {
-        $event = new Event();
+        $social_event = new SocialEvent();
 
 
         #TODO SETUP ACCESS RULES
@@ -26,14 +26,14 @@ class EventController extends BaseController
         }
         */
 
-        $form = $this->createForm(EventType::class, $event);
+        $form = $this->createForm(SocialEventType::class, $social_event);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             ## $this->ensureAccess($event);
             $em = $this->getDoctrine()->getManager();
 
-            $em->persist($event);
+            $em->persist($social_event);
             $em->flush();
 
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
@@ -41,11 +41,15 @@ class EventController extends BaseController
             return $this->redirect($this->generateUrl('control_panel'));
         }
 
-        return $this->render('event/social_event_create.html.twig', array(
+        return $this->render('social_event/social_event_create.html.twig', array(
             'form' => $form->createView(),
-            'event' => $event
+            'event' => $social_event
         ));
     }
 
+    #TODO: functions yet to be implemented:
+    //public function editSocialEventAction
+    //public function deleteSocialEventAction
+    //public function copySocialEventAction
 
 }

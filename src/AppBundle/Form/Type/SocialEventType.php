@@ -10,7 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 
-class EventType extends AbstractType
+class SocialEventType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
@@ -28,7 +28,7 @@ class EventType extends AbstractType
             ->add('start_time', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
-                'label' => 'Starttidspunkt',
+                'label' => 'Starttid for arrangement',
                 'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
 
@@ -42,7 +42,7 @@ class EventType extends AbstractType
             ->add('end_time', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
-                'label' => 'Sluttidspunkt',
+                'label' => 'Sluttid for arrangement',
                 'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))
 

@@ -7,9 +7,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 /**
  * @ORM\Entity
  * @ORM\Table(name="event")
- * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\EventRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SocialEventRepository")
  */
-class Event
+class SocialEvent
 {
     ## TODO : RENAME THIS "EVENT" confusing name
 

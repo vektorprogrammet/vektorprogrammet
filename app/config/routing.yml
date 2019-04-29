@@ -200,31 +200,31 @@ survey_popup_close:
 
 #events:
 # path: /kontrollpanel/arrangementer
-# defaults: { _controller: AppBundle:Event:createEvent }
+# defaults: { _controller: AppBundle:SocialEvent:createSocialEvent }
 # methods: [GET]
 
-event_create:
+social_event_create:
  path: /kontrollpanel/arrangement/opprett
- defaults: { _controller: AppBundle:Event:createEvent }
+ defaults: { _controller: AppBundle:SocialEvent:createSocialEvent }
  methods: [GET, POST]
 
-event_edit:
+social_event_edit:
  path: /kontrollpanel/arrangement/endre/{id}
- defaults: { _controller: AppBundle:Event:editEvent }
+ defaults: { _controller: AppBundle:SocialEvent:editSocialEvent }
  methods: [GET, POST]
  requirements:
   id: \d+
 
-event_delete:
+social_event_delete:
  path: /kontrollpanel/arrangement/slett/{id}
- defaults: { _controller: AppBundle:Event:deleteEvent }
+ defaults: { _controller: AppBundle:SocialEvent:deleteSocialEvent }
  methods: [POST]
  requirements:
   id: \d+
 
-event_copy:
+social_event_copy:
  path: /kontrollpanel/arrangement/kopier/{id}
- defaults: { _controller: AppBundle:Event:copyEvent }
+ defaults: { _controller: AppBundle:SocialEvent:copySocialEvent }
  methods: [GET, POST]
  requirements:
   id: \d+
