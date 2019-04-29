@@ -7,6 +7,9 @@ use AppBundle\Entity\SocialEvent;
 use AppBundle\Form\Type\SocialEventType;
 use Symfony\Component\HttpFoundation\Request;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
+
 
 
 class SocialEventController extends BaseController
@@ -15,9 +18,6 @@ class SocialEventController extends BaseController
 
     public function createSocialEventAction(Request $request)
     {
-        $social_event = new SocialEvent();
-
-
         #TODO SETUP ACCESS RULES
         /*
         if ($this->get(AccessControlService::class)->checkAccess("create_event")) {
@@ -26,12 +26,25 @@ class SocialEventController extends BaseController
         }
         */
 
+
+        $em = $this->getDoctrine()->getManager();
+
+        $social_event = new SocialEvent();
+
+
         $form = $this->createForm(SocialEventType::class, $social_event);
+
+
         $form->handleRequest($request);
+
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
+
+
 
         if ($form->isValid()) {
             ## $this->ensureAccess($event);
-            $em = $this->getDoctrine()->getManager();
+
 
             $em->persist($social_event);
             $em->flush();
@@ -43,9 +56,15 @@ class SocialEventController extends BaseController
 
         return $this->render('social_event/social_event_create.html.twig', array(
             'form' => $form->createView(),
+            'department' => $department,
+            'semester' => $semester,
             'event' => $social_event
         ));
     }
+
+
+
+
 
     #TODO: functions yet to be implemented:
     //public function editSocialEventAction

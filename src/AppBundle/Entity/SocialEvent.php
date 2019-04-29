@@ -11,28 +11,23 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class SocialEvent
 {
-    ## TODO : RENAME THIS "EVENT" confusing name
 
-
-
-
-    // // // // // // // --------------- // // // // // // //
     /**
-     * @return Department
+     * @var Department
+     *
+     * @ORM\ManyToOne(targetEntity="Department")
+     * @@ORM\JoinColumn(referencedColumnName="id", nullable=true)
      */
-    public function getDepartment(): Department
-    {
-        return $this->getFieldOfStudy()->getDepartment();
-    }
-
-    public function setDepartment($department): void
-    {
-        $this->department = $department;
-    }
+    private $department;
 
 
-    // // // // // // // --------------- // // // // // // //
-
+    /**
+     * @var Semester
+     *
+     * @ORM\ManyToOne(targetEntity="Semester")
+     * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
+     */
+    private $semester;
 
     /**
      * @ORM\Id
@@ -161,6 +156,43 @@ class SocialEvent
     {
         $this->end_time = $end_time;
     }
+
+
+    /**
+     * @return Department
+     */
+    public function getDepartment(): ? Department
+    {
+        return $this->department;
+    }
+
+    /**
+     * @param Department $department
+     *
+     */
+    public function setDepartment(? Department $department)
+    {
+        $this->department = $department;
+    }
+
+    /**
+     * @param \AppBundle\Entity\Semester|null $semester
+     * @return $this
+     */
+    public function setSemester(? Semester $semester)
+    {
+        $this->semester = $semester;
+        return $this;
+    }
+
+    /**
+     * @return Semester
+     */
+    public function getSemester(): ? Semester
+    {
+        return $this->semester;
+    }
+
 
 
 

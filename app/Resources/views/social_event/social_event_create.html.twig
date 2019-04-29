@@ -10,6 +10,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
+
     {% if event.id %}
         {# TODO: FIX THIS #}
         <li class="breadcrumb-item">
@@ -22,11 +23,13 @@
         </li>
         <li class="breadcrumb-item active">Nytt arrangement</li>
     {% endif %}
+
 {% endblock %}
 
 
 {% block body %}
     {{ form_start(form) }}
+
     <div class="row">
         <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
             <div class="card">
@@ -36,15 +39,28 @@
                     {{ form_row(form.description ) }}
 
                     {{ form_row(form.start_time) }}
-
                     {{ form_row(form.end_time) }}
+
+
+
+                    <!--// Continue from here           -->
+                    {{ form_row(form.semester) }}
+                    {{ form_row(form.department) }}
+
+
                 </div>
             </div>
 
 
             <div class="card">
                 <div class="card-body">
-                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+
+
+
+                    <a href="{{ path('control_panel', {'department': department.id, 'semester': semester.id}) }}">
+                        <button type="button" class=" btn btn-primary">Avbryt</button>
+                    </a>
                 </div>
             </div>
             <div class="hide">
