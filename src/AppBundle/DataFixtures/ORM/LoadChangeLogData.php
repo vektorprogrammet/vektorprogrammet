@@ -37,6 +37,30 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
+
+        $changeLogItem = new ChangeLogItem();
+        $changeLogItem->setTitle('Nye teammehehheehhehehhehevitert til Slack');
+        $changeLogItem->setDescription('Når et nytt medlem blir lagt til i team får han/hun tilgang til sin @vektorprogrammet.no-epost ved å logge inn på gmail.com med sin bruker på vektorprogrammet.no. Når det nye medlemmet logger inn på Gmail for første gang vil det ligge en invitasjon til Slack der.');
+        $changeLogItem->setGithubLink('https://github.com');
+        $changeLogItem->setDate(new \DateTime());
+
+        $manager->persist($changeLogItem);
+
+        $changeLogItem = new ChangeLogItem();
+        $changeLogItem->setTitle('Ny test, pliis scroll');
+        $changeLogItem->setDescription('Håper denne virker sånn som den skal nå altså');
+        $changeLogItem->setGithubLink('https://github.com');
+        $changeLogItem->setDate(new \DateTime());
+
+        $manager->persist($changeLogItem);
+
+        $changeLogItem = new ChangeLogItem();
+        $changeLogItem->setTitle('Enda en test, værsåsnill');
+        $changeLogItem->setDescription('hallo, kom igjen');
+        $changeLogItem->setGithubLink('https://vg.no');
+        $changeLogItem->setDate(new \DateTime());
+
+        $manager->persist($changeLogItem);
         $manager->flush();
 
     }

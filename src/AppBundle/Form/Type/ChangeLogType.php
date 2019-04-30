@@ -34,6 +34,19 @@ class ChangeLogType extends AbstractType
             ))
         ->add('date',DateType::class, array(
 
+            ))
+        ->add('description', CKEditorType::class, array(
+        'required' => false,
+        'config' => array(
+            'height' => 500,
+            'filebrowserBrowseRoute' => 'elfinder',
+            'filebrowserBrowseRouteParameters' => array('instance' => 'team_editor'), ),
+        'label' => 'Lang beskrivelse (valgfritt)',
+        'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
+            ))
+
+        ->add('save', SubmitType::class, array(
+            'label' => 'Lagre',
             ));
 
        }

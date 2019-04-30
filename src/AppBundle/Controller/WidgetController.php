@@ -66,7 +66,7 @@ class WidgetController extends BaseController
         $changeLogItems = $this->getDoctrine()->getRepository('AppBundle:ChangeLogItem')->findAllOrderedByDate();
 
         return $this->render('widgets/changelog_widget.html.twig', [
-            'changeLogItems' => $changeLogItems,
+            'changeLogItems' => array_slice($changeLogItems, 0, 5)
         ]);
     }
 }

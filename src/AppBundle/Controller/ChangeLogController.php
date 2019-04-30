@@ -15,11 +15,10 @@ class ChangeLogController extends BaseController
     public function createChangeLogAction(Request $request)
     {
         $changelog = new ChangeLogItem();
-        $form = $this->createForm(ChangeLogType::class);
+        $form = $this->createForm(ChangeLogType::class, $changelog);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $this->ensureAccess($changelog);
             $em = $this->getDoctrine()->getManager();
             $em->persist($changelog);
             $em->flush();

@@ -1,12 +1,24 @@
-<div class="col-12 col-md-6 col-xxxl-4">
+<div class="col-12 col-md-6 col-xxxl-4 scrollable">
     <div class="card">
         <div class="card-header">
             <i class="fas fa-list-ul"></i> Changelog
         </div>
-        <div class="card-body">
-            {% for changeLogItem in changeLogItems %}
-                {{ changeLogItem.title }}
-            {% endfor %}
-        </div>
+        {% for changeLogItem in changeLogItems %}
+                <div class="card m-2 p-3 {{ loop.first ? "changelog_card1" : "changelog_card2" }}">
+                    <div class="card-body">
+                        <h5>{{ changeLogItem.title }}</h5>
+                        <p>
+                            {{ changeLogItem.description | safe_html }}
+                        </p>
+                        <a class="float-right" href="{{ changeLogItem.githubLink | trim('https://') }}">
+                            {{ changeLogItem.githubLink | trim('https://') }}
+                        </a>
+                    </div>
+                    <p class="dato mx-3">
+                        {{ changeLogItem.date | date('d-m-Y H:i') }}
+                    </p>
+                </div>
+        {% endfor %}
     </div>
+
 </div>

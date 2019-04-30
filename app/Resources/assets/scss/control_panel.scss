@@ -865,3 +865,28 @@ button.secretly-not-a-button {
     box-shadow: none;
   }
 }
+
+.scrollable{
+  overflow-y: auto;
+  max-height: 500px;
+}
+
+.changelog_card1{
+  background-color: #023874;
+  color: white;
+  border-radius: 6px;
+  .dato {
+    color: #b2b5bf;
+  }
+  a {
+    color: white;
+  }
+}
+
+.changelog_card2{
+  border-radius: 6px;
+  .dato {
+    color: grey;
+  }
+}
+

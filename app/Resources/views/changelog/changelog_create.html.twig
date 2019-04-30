@@ -26,15 +26,16 @@
                     {{ form_row(form.date) }}
 
                 </div>
-                <button id="submitBtn" class="btn btn-primary right">Send inn</button>
-
-                <div id="sending" style="display: none">
-                    <i class="fa fa-paper-plane fa-2x"></i>
-
-                    <p>Sender svar...</p>
-                </div>
             </div>
 
+            <div class="card">
+                <div class="card-body">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+            </div>
+            <div class="hide">
+                {{ form_rest(form) }}
+            </div>
         </div>
     </div>
     <script>
