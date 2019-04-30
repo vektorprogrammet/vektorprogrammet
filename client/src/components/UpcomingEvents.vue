@@ -21,7 +21,7 @@
                         <span class="place-time-detail">{{event.time}}</span>
                     </span>
                     <!-- if link -->
-                    <span v-if="event.link" class="link"> <a href="#">Link til arrangement</a></span>
+                    <span v-if="event.link" class="link"> <a :href="event.url">Link til arrangement</a></span>
 
 
                 </div>
@@ -50,11 +50,14 @@
             },
             {
                 'title': 'Hyttetur',
-                'content': 'Du skal på hyttetur med vektorprogrammet til Heinfjordstua. Det er et stykke å gå, så pass på at du har godt utstur. Vi møtes felles for å ta buss sammen utenfor samfundet klokken 15 på fredag. God tur!',
+                'content': 'Du skal på hyttetur med vektorprogrammet til Heinfjordstua. Det er et ' +
+                    'stykke å gå, så pass på at du har godt utstur. Vi møtes felles for å ta buss' +
+                    ' sammen utenfor samfundet klokken 15 på fredag. God tur!',
                 'location' : 'Heinfjordstua',
                 'date': 'fredag 20 mars til søn 22 mars',
                 'time' : '15:00',
-                'link' : 'Link til facebook arrangement'
+                'link' : 'Link til facebook arrangement',
+                'url' : 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
             },
         ];
 

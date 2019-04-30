@@ -26,7 +26,7 @@
                                 <b-col>
                                     <div class="content text-md-left">
                                         <p class="text-dark-blue text-bold">{{partner.fullName}}</p>
-                                        <p class="text-info">{{partner.email}}</p>
+                                        <p class="link"><a :href="'mailto:' + partner.email">{{partner.email}}</a></p>
                                     </div>
                                 </b-col>
                             </b-row>
@@ -40,10 +40,9 @@
                         <div class="card-text">
                             <h3 class="card-title text-dark-blue">Kontakt {{school.name}}</h3>
                             <div class="content">
-                                <p class="text-info">{{school.contactPerson}}<br>
-                                    {{school.email}}<br>
-                                    {{school.phone}}
-                                </p>
+                                <p>{{school.contactPerson}}</p>
+                                <p class="m-0">E-post:   <a :href="'mailto:' + school.email">{{school.email}}</a></p>
+                                <p class="m-0">Tlf:   <a :href="'tel:' + school.phone">{{school.phone}}</a></p>
                             </div>
                         </div>
                     </div>
@@ -66,7 +65,7 @@
         @Prop() private partner: any;
         @Prop() private school: object;
         private full_path: string = 'http://localhost:8000/' +this.partner.picture_path;
-        contact_info_picture_width: string = '20%';
+        //contact_info_picture_width: string = '20%';
     }
 </script>
 

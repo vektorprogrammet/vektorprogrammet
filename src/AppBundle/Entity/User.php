@@ -75,6 +75,11 @@ class User implements AdvancedUserInterface, \Serializable
     private $phone;
 
     /**
+     * @ORM\OneToOne(targetEntity="Address", mappedBy="user")
+     */
+    private $address;
+
+    /**
      * @ORM\Column(type="string", length=45, nullable=true)
      */
     private $accountNumber;
@@ -864,5 +869,22 @@ class User implements AdvancedUserInterface, \Serializable
         }
 
         return false;
+    }
+
+
+    /**
+     * @return Address|null
+     */
+    public function getAddress():? Address
+    {
+        return $this->address;
+    }
+
+    /**
+     * @param Address $address
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
     }
 }

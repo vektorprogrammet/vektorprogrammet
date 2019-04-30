@@ -3,7 +3,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Address;
 use AppBundle\Event\UserEvent;
+use AppBundle\Form\Type\CreateAddressType;
 use AppBundle\Form\Type\NewUserType;
 use AppBundle\Form\Type\UserCompanyEmailType;
 use AppBundle\Service\LogService;
@@ -11,6 +13,7 @@ use AppBundle\Service\RoleManager;
 use AppBundle\Service\UserRegistration;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
+use AppBundle\Form\Type\EditAddressType;
 use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -36,12 +39,16 @@ class ProfileController extends BaseController
         // Find the executive board history of the user
         $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
 
+        // Find user address, if it exists
+        $address = $em->getRepository('AppBundle:Address')->findOneBy(array('user'=>$user));
+
         // Render the view
         return $this->render('profile/profile.html.twig', array(
             'user'                      => $user,
             'assistantHistory'          => $assistantHistory,
-            'teamMemberships'            => $teamMemberships,
-            'executiveBoardMemberships'  => $executiveBoardMemberships,
+            'teamMemberships'           => $teamMemberships,
+            'executiveBoardMemberships' => $executiveBoardMemberships,
+            'address'                   => $address,
         ));
     }
 
@@ -200,28 +207,44 @@ class ProfileController extends BaseController
 
     public function editProfileInformationAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $user            = $this->getUser();
         $oldCompanyEmail = $user->getCompanyEmail();
+        $address         = $em->getRepository('AppBundle:Address')->getAddressByUser($user);
 
-        $form = $this->createForm(EditUserType::class, $user, array(
+        $userForm = $this->createForm(EditUserType::class, $user, array(
             'department'        => $user->getDepartment(),
             'validation_groups' => array( 'edit_user' ),
         ));
 
-        $form->handleRequest($request);
+        if ($address !== null) {
+            $addressForm = $this->createForm(EditAddressType::class, $address);
+        } else {
+            $address = new Address();
+            $address->setUser($user);
+            $addressForm = $this->createForm(CreateAddressType::class, $address);
+        }
 
-        if ($form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+
+        $userForm->handleRequest($request);
+        $addressForm->handleRequest($request);
+
+        if ($userForm->isSubmitted() && $userForm->isValid()) {
             $em->persist($user);
             $em->flush();
-
             $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+            return $this->redirect($this->generateUrl('profile'));
+        }
 
+        if ($addressForm->isSubmitted() && $addressForm->isValid()) {
+            $em->persist($address);
+            $em->flush();
             return $this->redirect($this->generateUrl('profile'));
         }
 
         return $this->render('profile/edit_profile.html.twig', array(
-            'form' => $form->createView(),
+            'userForm' => $userForm->createView(),
+            'addressForm' => $addressForm->createView(),
             'user' => $user,
         ));
     }

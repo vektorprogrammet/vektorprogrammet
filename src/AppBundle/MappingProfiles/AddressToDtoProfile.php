@@ -2,19 +2,17 @@
 namespace AppBundle\MappingProfiles;
 
 use AppBundle\DataTransferObject\AddressDto;
-use AppBundle\DataTransferObject\UserDto;
-use AppBundle\Entity\User;
+use AppBundle\Entity\Address;
 use BCC\AutoMapperBundle\Mapper\AbstractMap;
-use BCC\AutoMapperBundle\Mapper\FieldFilter\ObjectMappingFilter;
 
-class UserToDtoProfile extends AbstractMap {
+class AddressToDtoProfile extends AbstractMap {
 
     /**
      * @return string The source type
      */
     public function getSourceType()
     {
-        return User::class;
+        return Address::class;
     }
 
     /**
@@ -22,13 +20,12 @@ class UserToDtoProfile extends AbstractMap {
      */
     public function getDestinationType()
     {
-        return UserDto::class;
+        return AddressDto::class;
     }
 
 
     public function __construct()
     {
         $this->buildDefaultMap();
-        $this->filter('address', new ObjectMappingFilter(AddressDto::class));
     }
 }

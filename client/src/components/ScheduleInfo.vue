@@ -11,7 +11,7 @@
             style="font-size: 5em; color: white;"
             class="mb-4"
           />
-          <h4 class="label">{{scheduleInfo.school.name}}</h4>
+          <h4 v-if="this.scheduleInfo" class="label">{{scheduleInfo.school.name}}</h4>
           <!--h4>Ungdomsskole</h4-->
         </b-col>
         <b-col>
@@ -21,7 +21,7 @@
                   style="font-size: 5em; color: white;"
                   class="mb-4"
           />
-          <h4 class="label">{{scheduleInfo.day}}</h4>
+          <h4 v-if="this.scheduleInfo" class="label">{{scheduleInfo.day}}</h4>
         </b-col>
         <b-col>
           <font-awesome-icon
@@ -30,7 +30,7 @@
             style="font-size: 5em; color: white;"
             class="mb-4"
           />
-          <h4 class="label">{{scheduleInfo.bolk}}</h4>
+          <h4 v-if="this.scheduleInfo" class="label">{{scheduleInfo.bolk}}</h4>
         </b-col>
       </b-row>
     </div>

@@ -8,7 +8,7 @@
     <div class="container">
         <div class="row mt-3">
             <div class="col-12">
-                <div class="card">
+                <div class="card mb-5">
                     <div class="card-body">
                         <div class="card-title">
                             {% if app.user == user %}
@@ -22,10 +22,30 @@
                         </div>
 
 
-                        {{ form_start(form) }}
-                        {{ form_rest(form) }}
+                        {{ form_start(userForm) }}
+                        {{ form_rest(userForm) }}
                         <button class="btn btn-lg btn-primary mt-3">Lagre</button>
-                        {{ form_end(form) }}
+                        {{ form_end(userForm) }}
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            {% if app.user == user %}
+                                <h1 class="text-dark-blue"> Redigerer din addresse </h1>
+                            {% else %}
+                                <h1 class="text-dark-blue"> Redigerer addresse </h1>
+                                <p>
+                                    Redigerer addressen til {{ user }}
+                                </p>
+                            {% endif %}
+                            <h4>Dersom du ønsker kan du også legge inn addressen din, slik at vi kan foreslå en rute til skolen din</h4>
+                        </div>
+
+                        {{ form_start(addressForm) }}
+                        {{ form_rest(addressForm) }}
+                        <button class="btn btn-lg btn-primary mt-3">Lagre</button>
+                        {{ form_end(addressForm) }}
                     </div>
                 </div>
 

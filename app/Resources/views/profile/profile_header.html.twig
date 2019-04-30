@@ -5,6 +5,10 @@
             {% for r in user.roles %}
                 {{ r.name | replace({'Bruker': user.isActiveAssistant ? 'Assistent': 'Bruker'}) }}
             {% endfor %}
+            <br>
+            {% if user.address %}
+            {{ user.address.address }}, {{ user.address.city }}
+            {%  endif %}
         </h6>
     </div>
 </div>

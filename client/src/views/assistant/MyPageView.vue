@@ -7,11 +7,18 @@
             class="schedule-component">
     </ScheduleInfo>
     <UpcomingEvents ></UpcomingEvents>
-    <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
-    <!--PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
-    <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
-    <MyPartner :user_partner="scheduleInfo.user"></MyPartner-->
-    <Map class="mb-5" :school_name="this.scheduleInfo.school.name" :home_name="this.home_name"></Map>
+
+    <div class="requires-partner" v-if="this.scheduleInfo !== ''">
+      <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
+      <PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
+      <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
+      <MyPartner :user_partner="scheduleInfo.user"></MyPartner>
+    </div>
+
+    <div v-else class="no-partner m-5">
+      <h2> Du har ingen partner :( </h2>
+    </div>
+    <Map class="mb-5" school_name="Gimse" :home_name="this.home_name"></Map>
   </div>
 </template>
 
@@ -35,13 +42,20 @@ import Map from "../../components/Map";
   components: {ContactInfo, UpcomingEvents, PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, MyPartner, Map},
 })
 export default class MyPageView extends Vue {
-    @Prop() private scheduleInfo: any;
+    @Prop() private scheduleInfo: any = '';
     @Prop() private user: any;
-    private home_name: string;
+    @Prop() private home_name: string;
     public async mounted() {
         this.user = await accountService.getUser();
-        this.scheduleInfo = await accountService.getScheduleInfo();
-        this.scheduleInfo = (this.scheduleInfo[0]);
+        /*if (this.user.address) {
+            this.home_name = this.user.address.address + ', ' + this.user.address.city;
+        }*/
+        console.log(this.user);
+
+        let scheduleInfoResult = await accountService.getScheduleInfo();
+        if (scheduleInfoResult.length > 1){
+            this.scheduleInfo = scheduleInfoResult[0]
+        }
     }
 
 }
@@ -67,4 +81,9 @@ export default class MyPageView extends Vue {
 .partner-component {
   background-color: #00a6c7;
 }
+
+.no-partner {
+
+}
+
 </style>
