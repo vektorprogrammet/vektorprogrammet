@@ -1,0 +1,73 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Arrangementer
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Sjekkliste</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <!--<div class="btn-group">
+        {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'todo_list' } %} combine with todo
+        <a class="btn text-success"
+           href="{{ path('social_event_create')}}">
+             TODO: combine line below so that department and semester is included (also above needed)
+           , {'department': department.id, 'semester': semester.id}) }}">
+            <i class="fa fa-plus text-success"></i>
+            Nytt Arrangement
+        </a>
+    </div>
+    -->
+
+    <div class="btn-group">
+        {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'social_event_show' } %}
+        <a class="btn text-success"
+           href="{{ path('social_event_create', {'department': department.id, 'semester': semester.id}) }}">
+            <i class="fa fa-plus text-success"></i>
+            Nytt Arrangement
+        </a>
+    </div>
+
+
+{% endblock %}
+
+
+{% block body %}
+
+    <h2 class="text-center my-5">Arrangementer</h2>
+
+    <div class="card">
+
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Arrangementer </div>
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Gjøremål ({{ SocialEventList|length }})</div>
+        <div class="table-responsive">
+
+            <table width="100%" class="application-table table table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Tittel</th>
+                    <th>Beskrivelse</th>
+                    <th>Start</th>
+                    <th>Sted</th>
+                    <th>Semester</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                <!-- here -->
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+

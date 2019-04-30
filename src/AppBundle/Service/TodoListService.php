@@ -5,6 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
+
 use AppBundle\Entity\TodoItem;
 use AppBundle\Entity\TodoMandatory;
 use AppBundle\Entity\TodoDeadline;
