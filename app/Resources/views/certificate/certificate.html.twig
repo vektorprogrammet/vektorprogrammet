@@ -4,6 +4,7 @@
 <html class="no-js" lang="no">
 <head>
     <meta charset="UTF-8">
+    <title>Attest – {{ user }}</title>
     <style>
         table {
             border-collapse: collapse;
@@ -41,7 +42,7 @@
         }
 
         p {
-            font-size: 1rem;
+            font-size: 11pt;
             font-weight: 400;
             margin-bottom: 1.25rem;
             text-rendering: optimizeLegibility;
@@ -56,6 +57,11 @@
             margin-bottom: .5rem;
             margin-top: .2rem;
             text-rendering: optimizeLegibility
+        }
+
+        h1 {
+            font-size: 25px;
+            margin-bottom: 50px;
         }
 
         @media print {
@@ -77,7 +83,7 @@
             padding-top: 55px;
         }
 
-        .bottom {
+        .footer {
             position:absolute;
             bottom: 50px;
             left: 0;
@@ -85,106 +91,106 @@
         .padded {
             padding: 0 85px;
         }
+        .courtesy-of {
+            margin-top:15px;
+            margin-bottom: 15px;
+        }
+        .bold {
+            font-weight: bold;
+        }
+        .signature-image {
+            max-height: 75px;
+            max-width: 100%;
+            margin-bottom: 10px;
+            border-bottom:1px solid gray;
+        }
+        p.small {
+            font-size: 10pt;
+        }
+        img.logo {
+            float: right;
+            height: 60px;
+        }
+        .title {
+            text-align: center;
+            margin-bottom: 55px;
+        }
+        .table-title {
+            margin-top: 20px;
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <div>
-
-        <div class="top">
-
-            <div class="row" style="margin-bottom: 50px">
-                <div class="col-12" style="text-align: center;">
-                    <h1 style="font-size: 25px;">Attest - Vektorprogrammet</h1>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-12">
-                    <p style="font-weight: bold; margin-bottom: 15px;">{{ user }} har vært deltagende i Vektorprogrammet
-                        ved {{ user.fieldOfStudy.department.shortName }} som vektorassistent.</p>
-                </div>
-            </div>
-
-            <div class="row">
-                <div class="col-1">
-                    {% if assistantHistory is not empty %}
-                        <p>I sitt arbeid for det frivillighetsbaserte Vektorprogrammet har {{ user }} deltatt
-                            som assistent i undervisningen ved en ungdomsskole.
-                            Arbeidsoppgavene varierer fra undervisning i mindre grupper til oppgaveløsning i klasserommet.
-                            For assistenten innebærer dette å forplikte seg til
-                            å delta i matematikkundervisningen på skolen følgende dager på følgende skoler:
-                        </p>
-                        <br>
-                        <h3 style="margin-top: 20px; margin-bottom: 5px; font-size: 20px;">Assistentoversikt</h3>
-                        <table style="width:60%;">
-                            <tr>
-                                <th style="width:120px;padding:8px;">Skole</th>
-                                <th style="width:100px;padding:8px;">Semester</th>
-                                <th style="text-align: center; width:100px;padding:8px;">Antall Dager</th>
-                            </tr>
-                            {% for as in assistantHistory %}
-                                {% if as.semester is not null and as.school is not null %}
-                                    <tr>
-                                        <td style="padding:5px 8px;">{{ as.getSchool.getName }}</td>
-                                        <td style="padding:5px 8px;">{{ as.getSemester.name }}</td>
-                                        <td style="text-align: center;padding:5px 8px;">{{ as.workdays }}</td>
-                                    </tr>
-                                {% else %}
-                                    <tr>
-                                        <td>Semesteret og/eller skolen har blitt slettet.</td>
-                                        <td>Semesteret og/eller skolen har blitt slettet.</td>
-                                    </tr>
-                                {% endif %}
-
-                            {% endfor %}
-                        </table>
-
-                    {% endif %}
-                </div>
-            </div>
-            <br>
-            <br>
-        </div>
-
+    <div class="container">
+        <h1 class="title">Attest - Vektorprogrammet</h1>
         <div>
-            <div>
-                <div class="col-6" style="width: 35%; float:left; vertical-align: baseline; display: inline-block">
-                    <p style="font-weight: bold; margin-top:15px; margin-bottom: 15px;">På vegne av Vektorprogrammet.</p>
-                    <img src="{{ base_dir ~ "/../" ~ signature.signaturePath }}"
-                         style="max-height: 75px; max-width: 100%; margin-bottom: 10px; border-bottom:1px solid gray"
-                         alt="Signatur ble ikke funnet. Prøv å last ned attesten på nytt eller oppdater signaturen.">
-                    <p>
-                        <span style="font-weight: bold">{{ app.user }}</span>,
-                        <br>
-                        {{ signature.description }} <br>
-                        <!--{{ 'now'|date ('d/m-y') }}, {{ department.city }} <br/>-->
-                    </p>
-                </div>
-            </div>
+            <p class="bold">
+                {{ user }} har vært deltagende i Vektorprogrammet ved {{ user.fieldOfStudy.department.shortName }} som
+                vektorassistent.
+            </p>
         </div>
-    </div>
-</div>
-<div class="bottom">
-    <div class="padded">
-        <hr>
-            <div style="font-size: 11px;">
+        <div>
+            {% if assistantHistory is not empty %}
+            <p>I sitt arbeid for det frivillighetsbaserte Vektorprogrammet har {{ user }} deltatt
+                som assistent i undervisningen ved en ungdomsskole.
+                Arbeidsoppgavene varierer fra undervisning i mindre grupper til oppgaveløsning i klasserommet.
+                For assistenten innebærer dette å forplikte seg til
+                å delta i matematikkundervisningen på skolen følgende dager på følgende skoler:
+            </p>
+            <br>
+            <h3 class="table-title">Assistentoversikt</h3>
+            <table style="width:60%;">
+                <tr>
+                    <th style="width:120px;padding:8px;">Skole</th>
+                    <th style="width:100px;padding:8px;">Semester</th>
+                    <th style="text-align: center; width:100px;padding:8px;">Antall dager</th>
+                </tr>
+                {% for as in assistantHistory %}
+                    {% if as.semester is not null and as.school is not null %}
+                        <tr>
+                            <td style="padding:5px 8px;">{{ as.getSchool.getName }}</td>
+                            <td style="padding:5px 8px;">{{ as.getSemester.name }}</td>
+                            <td style="text-align: center;padding:5px 8px;">{{ as.workdays }}</td>
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>Semesteret og/eller skolen har blitt slettet.</td>
+                            <td>Semesteret og/eller skolen har blitt slettet.</td>
+                        </tr>
+                    {% endif %}
 
-                <img src="{{ base_dir ~ asset('images/vektor-logo.svg') }}" style="float: right; height: 70px;"
-                     alt="Logo ble ikke funnet. Prøv å laste ned attesten på nytt.">
-                <p>
+                {% endfor %}
+            </table>
+            {% endif %}
+        </div>
+        <br>
+        <br>
+
+        <p class="bold courtesy-of">På vegne av Vektorprogrammet.</p>
+        <img src="{{ base_dir ~ "/../" ~ signature.signaturePath }}"
+             class="signature-image"
+             alt="Signatur ble ikke funnet. Prøv å last ned attesten på nytt eller oppdater signaturen.">
+        <p>
+            <span class="bold">{{ app.user }}</span>, <br>
+            {{ signature.description }} <br>
+            {{ 'now'|date ('d/m-Y') }}, {{ department.city }}
+        </p>
+    </div>
+    <div class="footer">
+        <div class="padded">
+            <hr>
+            <img src="{{ base_dir ~ asset('images/vektor-logo.svg') }}"
+                 class="logo"
+                 alt="Logo ble ikke funnet. Prøv å laste ned attesten på nytt.">
+            <p class="small">
                 Vektorprogrammet <br/>
                 Høgskoleringen 5,
                 7491 Trondheim <br/>
                 Org. nr.: 998 744 814 <br/>
-                    </p>
-
-
-            </div>
+            </p>
         </div>
     </div>
-</div>
 </body>
-
-
 </html>
