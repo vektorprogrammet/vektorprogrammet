@@ -9,9 +9,9 @@ use \AppBundle\Entity\Semester;
 
 
 /**
- * Class SocialEventRepository
+ * Class SocialEventItemRepository
  */
-class SocialEventRepository extends EntityRepository
+class SocialEventItemRepository extends EntityRepository
 {
 
     /**

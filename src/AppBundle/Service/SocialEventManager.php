@@ -6,7 +6,7 @@ use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
 
 use AppBundle\Entity\SocialEvent;
-
+use Appbundle\Entity\Repository\SocialEventItemRepository;
 
 
 class SocialEventManager
@@ -35,8 +35,10 @@ class SocialEventManager
      */
     public function getOrderedList(Department $department, Semester $semester)
     {
-        //$repository = $this->em->getRepository('SocialEvent');
-        $repository = $this->em->getRepository('SocialEvent');
+
+        //$repository = $this->em->getRepository('AppBundle:TodoItem');
+        $repository = $this->em->getRepository('AppBundle:SocialEventItem');
+
 
 
         $allSocialEvents = $repository->findTodoListItemsBySemesterAndDepartment($semester, $department);
