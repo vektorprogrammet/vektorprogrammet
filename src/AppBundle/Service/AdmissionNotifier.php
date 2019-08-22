@@ -125,7 +125,7 @@ class AdmissionNotifier
             foreach ($departments as $department) {
                 $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
 
-                if ($admissionPeriod === null || !InfoMeetingUtil::shouldSendInfoMeetingNotification($admissionPeriod->getInfoMeeting())) {
+                if ($admissionPeriod === null || !$admissionPeriod->shouldSendInfoMeetingNotifications()) {
                     continue;
                 }
 
