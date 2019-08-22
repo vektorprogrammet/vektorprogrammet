@@ -26,6 +26,7 @@ class AdmissionNotifier
         $this->logger = $logger;
         $this->validator = $validator;
         $this->sendLimit = $sendLimit;
+        $this->validator = $validator;
     }
 
     /**
@@ -126,8 +127,10 @@ class AdmissionNotifier
                     continue;
                 }
 
-                $infoMeetingLessThanOneDay = $admissionPeriod->getInfoMeeting()->getDate()->diff(new \DateTime())->d <= 1;
-                if (!$infoMeetingLessThanOneDay) {
+                $now = new \DateTime();
+                $infoMeetingLessThanOneDay = $admissionPeriod->getInfoMeeting()->getDate()->diff($now)->d <= 1;
+                $lessThanOneDayLeft = $infoMeetingLessThanOneDay && $admissionPeriod->getInfoMeeting()->getDate() > $now;
+                if (!$lessThanOneDayLeft) {
                     continue;
                 }
 

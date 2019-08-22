@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Receipt;
 use AppBundle\Service\AdmissionStatistics;
+use AppBundle\Service\Sorter;
 use AppBundle\Utils\ReceiptStatistics;
 
 class WidgetController extends BaseController
@@ -27,6 +28,11 @@ class WidgetController extends BaseController
     public function receiptsAction()
     {
         $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
+        $sorter = $this->container->get(Sorter::class);
+
+        $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
+        $sorter->sortUsersByReceiptStatus($usersWithReceipts);
+
         $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
 
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
@@ -58,6 +64,21 @@ class WidgetController extends BaseController
         return $this->render('widgets/application_graph_widget.html.twig', [
             'appData' => $appData,
             'semester' => $semester,
+        ]);
+    }
+
+
+    public function availableSurveysAction()
+    {
+        $semester = $this->getSemesterOrThrow404();
+
+        $surveys = $this->getDoctrine()
+            ->getRepository('AppBundle:Survey')
+            ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
+
+
+        return $this->render('widgets/available_surveys_widget.html.twig', [
+            'availableSurveys' => $surveys,
         ]);
     }
 

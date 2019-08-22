@@ -20,7 +20,7 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header"><i class="fa fa-align-justify"></i> Artikler ({{ articles|length }})</div>
-                <div class="card-body">
+                <div class="table-responsive">
                     <table class="table" id="article-table">
                         <thead>
                         <tr>
@@ -35,7 +35,7 @@
                         <tbody>
                         {% for a in pagination %}
                             <tr id="{{ a.id }}">
-                                <td>
+                                <td class="table-menu">
                                     <div class="dropdown">
                                         <div class="clickable px-2" id="options-{{ a.id }}" data-toggle="dropdown"
                                              aria-haspopup="true" aria-expanded="false">

@@ -17,8 +17,8 @@
     <tbody>
     {% for receipt in receipts %}
         <tr>
-            <td>
-                {% if is_granted_team_leader() %}
+            <td class="table-menu">
+                {% if has_access_to('receipt_admin_edit') or has_access_to('receipt_admin_delete') %}
                     <div class="dropdown">
                         <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
                              aria-haspopup="true" aria-expanded="false">

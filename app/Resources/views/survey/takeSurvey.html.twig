@@ -44,7 +44,7 @@
                 {{ form_errors(form) }}
                 {% set QuestionNumber = 1 %}
 
-                {% if not teamSurvey %}
+                {% if surveyTargetAudience == 0 or (surveyTargetAudience == 2 and not userIdentified)%}
                     <div class="row mt-4">
                         <div class="col-12">
                             <label class="form-control-label">Hvilken skole går du på?</label>
@@ -54,7 +54,7 @@
                         </div>
                     </div>
                 {% endif %}
-                {% for surveyAnswer in form.surveyAnswers           %}
+                {% for surveyAnswer in form.surveyAnswers %}
                     <div class="row mt-2">
                         <div class="col-12">
                             {% if surveyAnswer.vars.value.surveyQuestion.type == 'check' %}

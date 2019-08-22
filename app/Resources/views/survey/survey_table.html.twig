@@ -1,7 +1,7 @@
 <div class="card">
     <div class="card-header"><i class="fa fa-align-justify"></i>
         {{ cardTitle }}</div>
-    <div class="card-body">
+    <div class="table-responsive">
 
         <table class="table">
             <thead>
@@ -17,7 +17,7 @@
             {% for survey in surveys
                 if ((not survey.confidential) or has_access_to('survey_admin'))  %}
                 <tr>
-                    <td>
+                    <td class="table-menu">
                             {% if has_access_to('survey_admin') %}
                             <div class="dropdown">
                                 <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
@@ -33,7 +33,7 @@
                                         <i class="fa fa-copy text-primary"></i> Kopier
                                     </a>
 
-                                    {% if not survey.teamSurvey %}
+                                    {% if not survey.targetAudience == 1 %}
                                         <a href="{{ path('survey_show_admin', {'id': survey.id }) }}" class="dropdown-item">
                                             <i class="fa fa-file-signature text-primary"></i> Admin-utfylling
                                         </a>
@@ -45,8 +45,8 @@
                     <td>{{ survey.name }}</td>
                     <td>{{ survey.getTotalAnswered }}</td>
                     <td>
-                        {% if survey.teamSurvey %}
-                            <a href="{{ path('survey_show_team', {'id': survey.id }) }}">
+                        {% if survey.targetAudience == 1 %}
+                            <a href="{{ path('survey_show_user', {'id': survey.id }) }}">
                                 <i class="fa fa-comment-o"></i> Vis undersøkelse
                             </a>
                         {% else %}

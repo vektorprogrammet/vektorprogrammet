@@ -1,0 +1,22 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <title>{{ title }}</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+
+    <p> Hei {{ firstname |capitalize}}!</p>
+
+    <p> Takk for innsatsen din som Vektorassistent! {{ school | capitalize}} er en av satningsskolene våre, derfor hadde jeg satt stor pris på om du kunne svare på <a href="{{ route }}"> denne </a> undersøkelsen for å fortelle hvordan du syntes {{ day |lower}}er der var.</p>
+    <p>Som takk vil du være en av få som er med i trekningen av en termokopp.
+    </p>
+    <p><a href="{{ route }}">{{ route }}</a></p>
+
+    <p>Med vennlig hilsen, <br>
+        {{ fromName | capitalize}}</p>
+
+</body>

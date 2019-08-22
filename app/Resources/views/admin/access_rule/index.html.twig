@@ -23,7 +23,7 @@
             <div class="col-12 col-xxxl-6 order-last order-xxxl-first">
                 <div class="card">
                     <div class="card-header"><i class="fa fa-shield-alt"></i> Routing Rules</div>
-                    <div class="card-body table-responsive">
+                    <div class="table-responsive">
                         {% include 'admin/access_rule/access_rule_table.html.twig' with {rules: routingRules} %}
                     </div>
                 </div>
@@ -34,7 +34,7 @@
             <div class="col-12 col-xxxl-6 order-first order-xxxl-last">
                 <div class="card">
                     <div class="card-header"><i class="fa fa-shield-alt"></i> Custom Rules</div>
-                    <div class="card-body table-responsive">
+                    <div class="table-responsive">
                         {% include 'admin/access_rule/access_rule_table.html.twig' with {rules: customRules} %}
                     </div>
                 </div>

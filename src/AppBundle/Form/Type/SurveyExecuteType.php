@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
+use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -15,17 +16,27 @@ class SurveyExecuteType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $semester = $builder->getData()->getSurvey()->getSemester();
+        /** @var Department $department */
+        $department = $builder->getData()->getSurvey()->getDepartment();
         $builder->add('school', EntityType::class, array(
             'label' => 'School',
             'placeholder' => 'Velg Skole',
             'class' => 'AppBundle:School',
-            'query_builder' => function (EntityRepository $er) use ($semester) {
+            'query_builder' => function (EntityRepository $er) use ($semester, $department) {
                 return $er
                     ->createQueryBuilder('school')
                     ->join('school.assistantHistories', 'assistantHistories')
+                    ->innerJoin(
+                        'school.departments',
+                        'department',
+                        'WITH',
+                        'department.id = :departmentId'
+                    )
                     ->where('assistantHistories.semester = :semester')
                     ->orderBy('school.name', 'ASC')
-                    ->setParameter('semester', $semester);
+                    ->setParameters([
+                        'semester' => $semester,
+                        'departmentId' => $department->getId()]);
             },
         ));
         $builder->add('surveyAnswers', CollectionType::class, array('entry_type' => SurveyAnswerType::class));

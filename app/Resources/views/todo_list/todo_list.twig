@@ -28,12 +28,12 @@
     <div class="card">
 
         <div class="card-header"><i class="fa fa-clipboard-list"></i> Gjøremål ({{ correctList|length }})</div>
-        <div class="card-body table-responsive">
+        <div class="table-responsive">
 
             <table width="100%" class="application-table table table-striped">
                 <thead>
                 <tr>
-                    <th/>
+                    <th></th>
                     <th>Tittel</th>
                     <th>Beskrivelse</th>
                     <th>Påbudt</th>
@@ -47,7 +47,7 @@
                 {% for item in correctList %}
 
                     <tr id="{{ item.id }}">
-                        <td>
+                        <td class="table-menu">
                             {% if has_access_to('edit_todo') %}
                                 <div class="dropdown">
                                     <div class="clickable px-2" id="options-{{ item.id }}" data-toggle="dropdown"
