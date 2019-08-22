@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\QuickLink;
 use AppBundle\Entity\Receipt;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
@@ -81,4 +82,21 @@ class WidgetController extends BaseController
             'availableSurveys' => $surveys,
         ]);
     }
+
+    public function quickLinkAction(){
+
+
+        $semester = $this->getSemesterOrThrow404();
+        $quickLink = new QuickLink();
+        $defaults = $quickLink->getDefaults();
+
+
+
+        return $this -> render( 'widgets/quickLink.html.twig', [
+            'quickLinks' => $defaults,
+        ]);
+    }
+
+
+
 }

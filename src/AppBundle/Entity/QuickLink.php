@@ -177,7 +177,7 @@ class QuickLink
      *
      * @return QuickLink
      */
-    public function setVisible($visible)
+    public function setVisible(bool $visible): QuickLink
     {
         $this->visible = $visible;
 
@@ -189,27 +189,51 @@ class QuickLink
      *
      * @return bool
      */
-    public function getVisible()
+    public function getVisible(): bool
     {
         return $this->visible;
     }
 
     /**
-     * @return User
+     * @return User | null
      */
-    public function getOwner()
+    public function getOwner(): ?User
     {
         return $this->owner;
     }
 
     /**
-     * @param User $owner
+     * @param User|null $owner
      * @return QuickLink
      */
-    public function setOwner(User $owner): QuickLink
+    public function setOwner(?User $owner): QuickLink
     {
         $this->owner = $owner;
 
         return $this;
+    }
+
+    public static function getDefaults(){
+        $quickLink1 = new QuickLink();
+        $quickLink2 = new QuickLink();
+        $quickLink3 = new QuickLink();
+        $quickLink4 = new QuickLink();
+        $quickLink1->setUrl("www.google.no")
+            ->setVisible(true)
+            ->setTitle('Google')
+            ->setOrderNum(1);
+        $quickLink2->setUrl("test")
+            ->setTitle("tester2")
+            ->setVisible(true)
+            ->setOrderNum(2);
+        $quickLink3->setUrl("test3")
+            ->setTitle("test3")
+            ->setVisible(true)
+            ->setOrderNum(3);
+        $quickLink4->setUrl("test 4")
+            ->setTitle("test 4")
+            ->setVisible(true)
+            ->setOrderNum(4);
+        return [$quickLink1,$quickLink2,$quickLink3,$quickLink4];
     }
 }

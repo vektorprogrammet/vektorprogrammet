@@ -24,7 +24,7 @@ class LoadQuickLinkData extends AbstractFixture implements OrderedFixtureInterfa
             ->setOrderNum(1)
             ->setTitle("Link til drive")
             ->setUrl("https://drive.google.com")
-            ->setVisible(1)
+            ->setVisible(true)
             ->setOwner($this->getReference('user-admin'));
         $manager->persist($quickLink);
 
@@ -33,7 +33,7 @@ class LoadQuickLinkData extends AbstractFixture implements OrderedFixtureInterfa
             ->setOrderNum(3)
             ->setTitle("Link til gmail")
             ->setUrl("https://mail.google.com")
-            ->setVisible(1)
+            ->setVisible(true)
             ->setOwner($this->getReference('user-admin'));
         $manager->persist($quickLink);
 
