@@ -13,13 +13,4 @@ use Doctrine\ORM\EntityRepository;
  */
 class QuickLinkRepository extends EntityRepository
 {
-    public function findAllByOwner(User $owner)
-    {
-        return $this->createQueryBuilder('quickLink')
-            ->select('quickLink')
-            ->where('quickLink.owner = :owner')
-            ->setParameter('owner', $owner)
-            ->getQuery()
-            ->getResult();
-    }
 }

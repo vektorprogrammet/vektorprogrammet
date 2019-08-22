@@ -87,7 +87,7 @@ class WidgetController extends BaseController
 
         $quickLinks = $this->getDoctrine()
             ->getRepository('AppBundle:QuickLink')
-            ->findAllByOwner($user);
+            ->findBy(['owner' => $user]);
 
         return $this->render( 'widgets/quickLink.html.twig', [
             'quickLinks' => $quickLinks,
