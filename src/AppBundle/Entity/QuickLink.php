@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * QuickLink
  *
  * @ORM\Table(name="quick_link")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\QuickLinkRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\QuickLinkRepository")
  */
 class QuickLink
 {
@@ -41,6 +41,9 @@ class QuickLink
      *
      * @ORM\Column(name="icon_url", type="string", length=255, nullable=true)
      */
+
+
+
     private $iconUrl;
 
     /**

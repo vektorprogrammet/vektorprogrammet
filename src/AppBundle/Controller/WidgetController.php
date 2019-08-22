@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\QuickLink;
 use AppBundle\Entity\Receipt;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
@@ -84,19 +83,14 @@ class WidgetController extends BaseController
     }
 
     public function quickLinkAction(){
+        $user = $this->getUser();
 
+        $quickLinks = $this->getDoctrine()
+            ->getRepository('AppBundle:QuickLink')
+            ->findAllByOwner($user);
 
-        $semester = $this->getSemesterOrThrow404();
-        $quickLink = new QuickLink();
-        $defaults = $quickLink->getDefaults();
-
-
-
-        return $this -> render( 'widgets/quickLink.html.twig', [
-            'quickLinks' => $defaults,
+        return $this->render( 'widgets/quickLink.html.twig', [
+            'quickLinks' => $quickLinks,
         ]);
     }
-
-
-
 }
