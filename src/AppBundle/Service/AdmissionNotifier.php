@@ -7,6 +7,7 @@ use AppBundle\Entity\AdmissionNotification;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Utils\InfoMeetingUtil;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -123,14 +124,8 @@ class AdmissionNotifier
         try {
             foreach ($departments as $department) {
                 $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
-                if ($admissionPeriod === null || $admissionPeriod->getInfoMeeting() === null || !$admissionPeriod->getInfoMeeting()->isShowOnPage()) {
-                    continue;
-                }
 
-                $now = new \DateTime();
-                $infoMeetingLessThanOneDay = $admissionPeriod->getInfoMeeting()->getDate()->diff($now)->d <= 1;
-                $lessThanOneDayLeft = $infoMeetingLessThanOneDay && $admissionPeriod->getInfoMeeting()->getDate() > $now;
-                if (!$lessThanOneDayLeft) {
+                if ($admissionPeriod === null || !InfoMeetingUtil::shouldSendInfoMeetingNotification($admissionPeriod->getInfoMeeting())) {
                     continue;
                 }
 
