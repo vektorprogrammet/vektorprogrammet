@@ -7,7 +7,6 @@ use AppBundle\Entity\AdmissionNotification;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use AppBundle\Utils\InfoMeetingUtil;
 use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
