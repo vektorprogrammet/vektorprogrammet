@@ -197,6 +197,7 @@ class AdmissionPeriod
         return $this->infoMeeting !== null &&
             $this->infoMeeting->getDate() !== null &&
             $this->infoMeeting->isShowOnPage() &&
-            TimeUtil::dateIsToday($this->infoMeeting->getDate());
+            TimeUtil::dateTimeIsToday($this->infoMeeting->getDate()) &&
+            TimeUtil::dateTimeIsInTheFuture($this->infoMeeting->getDate());
     }
 }

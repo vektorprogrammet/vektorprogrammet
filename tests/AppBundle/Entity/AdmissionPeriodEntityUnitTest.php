@@ -13,7 +13,7 @@ class AdmissionPeriodEntityUnitTest extends TestCase
     {
         $admissionPeriod = new AdmissionPeriod();
         $admissionPeriod->setInfoMeeting(new InfoMeeting());
-        $admissionPeriod->getInfoMeeting()->setDate(new \DateTime());
+        $admissionPeriod->getInfoMeeting()->setDate((new \DateTime())->modify('+1 hour'));
         $admissionPeriod->getInfoMeeting()->setShowOnPage(true);
         $this->assertTrue($admissionPeriod->shouldSendInfoMeetingNotifications());
     }
@@ -29,7 +29,7 @@ class AdmissionPeriodEntityUnitTest extends TestCase
     {
         $admissionPeriod = new AdmissionPeriod();
         $admissionPeriod->setInfoMeeting(new InfoMeeting());
-        $admissionPeriod->getInfoMeeting()->setDate(new \DateTime());
+        $admissionPeriod->getInfoMeeting()->setDate((new \DateTime())->modify('+1 hour'));
         $admissionPeriod->getInfoMeeting()->setShowOnPage(false);
         $this->assertFalse($admissionPeriod->shouldSendInfoMeetingNotifications());
     }
@@ -39,6 +39,15 @@ class AdmissionPeriodEntityUnitTest extends TestCase
         $admissionPeriod = new AdmissionPeriod();
         $admissionPeriod->setInfoMeeting(new InfoMeeting());
         $admissionPeriod->getInfoMeeting()->setDate((new \DateTime())->modify('-1 day'));
+        $admissionPeriod->getInfoMeeting()->setShowOnPage(true);
+        $this->assertFalse($admissionPeriod->shouldSendInfoMeetingNotifications());
+    }
+
+    public function testShouldSendInfoMeetingNotificationOneHourAgo()
+    {
+        $admissionPeriod = new AdmissionPeriod();
+        $admissionPeriod->setInfoMeeting(new InfoMeeting());
+        $admissionPeriod->getInfoMeeting()->setDate((new \DateTime())->modify('-1 hour'));
         $admissionPeriod->getInfoMeeting()->setShowOnPage(true);
         $this->assertFalse($admissionPeriod->shouldSendInfoMeetingNotifications());
     }
