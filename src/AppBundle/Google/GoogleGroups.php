@@ -173,7 +173,8 @@ class GoogleGroups extends GoogleService
         return false;
     }
 
-    private function setGroupNameEmailDescription(\Google_Service_Directory_Group $googleGroup, Team $team){
+    private function setGroupNameEmailDescription(\Google_Service_Directory_Group $googleGroup, Team $team)
+    {
         $googleGroup->setName($team->getName() - $team->getDepartment());
         $googleGroup->setEmail($team->getEmail());
         $googleGroup->setDescription($team->getShortDescription());
