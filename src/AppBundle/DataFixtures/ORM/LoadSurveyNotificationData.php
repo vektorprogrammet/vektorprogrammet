@@ -117,6 +117,6 @@ class LoadSurveyNotificationData extends AbstractFixture implements OrderedFixtu
 
     public function getOrder()
     {
-        return 8;
+        return 40;
     }
 }

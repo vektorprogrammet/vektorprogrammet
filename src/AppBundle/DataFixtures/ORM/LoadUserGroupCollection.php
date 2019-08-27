@@ -2,14 +2,14 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use AppBundle\Entity\Survey;
-use AppBundle\Entity\SurveyQuestion;
-use AppBundle\Entity\SurveyQuestionAlternative;
+
 use AppBundle\Entity\UserGroup;
 use AppBundle\Entity\UserGroupCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+
+
 
 class LoadUserGroupCollection extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -55,10 +55,10 @@ class LoadUserGroupCollection extends AbstractFixture implements OrderedFixtureI
         $userGroupCollection1->setName("Brukergruppe 1");
         $userGroupCollection2->setName("Brukergruppe 2");
 
-        $this->addReference('usergroup1A', $userGroupCollection1);
-        $this->addReference('usergroup1B', $userGroupCollection1);
-        $this->addReference('usergroup2A', $userGroupCollection1);
-        $this->addReference('usergroup2B', $userGroupCollection1);
+        $this->addReference('usergroup1A', $userGroup1A);
+        $this->addReference('usergroup1B', $userGroup1B);
+        $this->addReference('usergroup2A', $userGroup2A);
+        $this->addReference('usergroup2B', $userGroup2B);
 
         $this->addReference('usergroupcollection-1', $userGroupCollection1);
         $this->addReference('usergroupcollection-2', $userGroupCollection2);
@@ -76,6 +76,6 @@ class LoadUserGroupCollection extends AbstractFixture implements OrderedFixtureI
 
     public function getOrder()
     {
-        return 6;
+        return 35;
     }
 }
