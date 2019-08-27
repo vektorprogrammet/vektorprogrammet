@@ -174,9 +174,9 @@
             main_background_animate: function(){
                 let self = this;
                 if(!this.show_newest_applicant && this.fetching_api){
-                    self.colorMainBg.backgroundColor = "#bdd5d6";
+                    self.colorMainBg.backgroundColor = "#00d6ca";
                     window.setTimeout(()=>{
-                        self.colorMainBg.backgroundColor = "#7492a9";
+                        self.colorMainBg.backgroundColor = "#4849a9";
                     }, 10000);
                     window.setTimeout(()=>{
                         this.main_background_animate();
