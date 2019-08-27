@@ -16,20 +16,40 @@ class SurveyNotifierControllerTest extends BaseWebTestCase
         $this->assertTrue( $crawler->filter('td:contains("Brukergruppe 2")')->count() > 0);
 
         $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $client);
-
         $form = $crawler->selectButton('Lagre')->form();
         $form["user_group_collection[name]"] = "Brukergruppe 3";
         $form["user_group_collection[numberUserGroups]"] = "2";
-        $form["user_group_collection[semesters]"]->array(11);
-        $form["user_group_collection[assistantsDepartments]"]->select(0);
-        $form["user_group_collection[assistantBolks]"]->select(0);
-        $form["user_group_collection[assistantBolks]"]->select(1);
+        $form["user_group_collection[semesters][0]"]->tick();
+        $form["user_group_collection[assistantsDepartments][0]"]->tick();
+        $form["user_group_collection[assistantBolks][0]"]->tick();
+        $form["user_group_collection[assistantBolks][1]"]->tick();
         $client->submit($form);
-
         $crawler = $client->followRedirect();
-        $this->assertEquals(1, $crawler->filter('td:contains("Brukergruppe 3")')->count());
+        $this->assertTrue($crawler->filter('td:contains("Brukergruppe 3")')->count() > 0);
 
 
+        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["user_group_collection[name]"] = "Brukergruppe 4";
+        $form["user_group_collection[numberUserGroups]"] = "4";
+        $form["user_group_collection[semesters][0]"]->tick();
+        $form["user_group_collection[assistantsDepartments][0]"]->tick();
+        $form["user_group_collection[assistantBolks][0]"]->tick();
+        $form["user_group_collection[assistantBolks][1]"]->tick();
+        $form["user_group_collection[users]"] = array("100","101", "102", "103", "104", "105");
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("Brukergruppe 4")')->count() > 0);
+
+
+        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["user_group_collection[name]"] = "Brukergruppe 5";
+        $form["user_group_collection[numberUserGroups]"] = "4";
+        $form["user_group_collection[users]"] = array("100","101", "102");
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+        $this->assertEquals(0,$crawler->filter('td:contains("Brukergruppe 5")')->count());
 
     }
 
