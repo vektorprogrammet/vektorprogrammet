@@ -36,12 +36,12 @@ class WidgetController extends BaseController
         $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
 
-        $noReceipts = empty($usersWithReceipts);
+        $hasReceipts = !empty($pendingReceipts);
 
         return $this->render('widgets/receipts_widget.html.twig', [
             'users_with_receipts' => $usersWithReceipts,
             'statistics' => $pendingReceiptStatistics,
-            'no_receipts' => $noReceipts,
+            'has_receipts' => $hasReceipts,
         ]);
     }
 
