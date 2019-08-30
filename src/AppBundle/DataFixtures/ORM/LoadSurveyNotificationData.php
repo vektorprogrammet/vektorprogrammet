@@ -17,7 +17,7 @@ class LoadSurveyNotificationData extends AbstractFixture implements OrderedFixtu
 {
     public function load(ObjectManager $manager)
     {
-        $survey1 = $this->getReference("team-survey-1");
+        $survey1 = $this->getReference("school-survey-1");
 
         $user1 = $this->getReference("user-1");
         $user2 = $this->getReference("user-2");

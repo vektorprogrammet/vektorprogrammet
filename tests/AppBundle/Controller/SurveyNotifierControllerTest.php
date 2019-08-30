@@ -53,6 +53,19 @@ class SurveyNotifierControllerTest extends BaseWebTestCase
 
     }
 
+    public function testSurveyNotificationsUrls(){
+        $client = $this->createAdminClient();
+        $crawler = $this->goTo('/kontrollpanel/undersokelse/opprett', $client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey[name]"] = "TestSurveyForNotifications";
+        $client->submit($form);
+        $crawler = $client->followRedirect();
+        $this->assertEquals("/undersokelse/46",
+            $crawler->filterXPath(("(//td[contains(text(),'TestSurveyForNotifications')]/../td/a/@href)[1]"))[0]);
+
+
+    }
+
 
 
 }

@@ -103,7 +103,7 @@ class SurveyNotifierController extends BaseController
             $response['success'] = false;
         }
 
-        return new JsonResponse($response);
+        return $this->redirect($this->generateUrl("survey_notifiers"));
     }
 
 
@@ -116,6 +116,6 @@ class SurveyNotifierController extends BaseController
 
         $this->getDoctrine()->getManager()->remove($surveyNotificationCollection);
         $response['success'] = true;
-        return new JsonResponse($response);
+        return $this->redirect($this->generateUrl("survey_notifiers"));
     }
 }
