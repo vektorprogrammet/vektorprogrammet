@@ -60,8 +60,8 @@ class SurveyNotifierControllerTest extends BaseWebTestCase
         $form["survey[name]"] = "TestSurveyForNotifications";
         $client->submit($form);
         $crawler = $client->followRedirect();
-        $this->assertEquals("/undersokelse/46",
-            $crawler->filterXPath(("(//td[contains(text(),'TestSurveyForNotifications')]/../td/a/@href)[1]"))[0]);
+        $url = $crawler->filterXPath(("(//td[contains(text(),'TestSurveyForNotifications')]/../td/a/@href)[1]"))->text();
+        $surveyId = explode("/",$url)
 
 
     }
