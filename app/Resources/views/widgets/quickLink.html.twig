@@ -1,6 +1,20 @@
 
-<div class="col-4">
-    {% for quicklink in quickLinks %}
-        {{quicklink.getUrl()}}
-    {% endfor %}
+<div class="col-12">
+    <div class="card">
+        <div class="card-header"> QuickLink
+        </div>
+        <div class="card-body">
+            <div class="container">
+                <div class="row align-items-start">
+                {% for quicklink in quickLinks%}
+                    <div class="col-sm-6 text-center">
+                        <img src="{{ quicklink.iconUrl }}" alt="Quicklink image" height="42" width="42">
+                        <h5 class="card-title"> {{quicklink.title}}</h5>
+                        <a href="{{quicklink.url}}">Klikk her</a>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
