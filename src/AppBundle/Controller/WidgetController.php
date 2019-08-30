@@ -34,13 +34,14 @@ class WidgetController extends BaseController
         $sorter->sortUsersByReceiptStatus($usersWithReceipts);
 
         $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
-
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
+
+        $noReceipts = empty($usersWithReceipts);
 
         return $this->render('widgets/receipts_widget.html.twig', [
             'users_with_receipts' => $usersWithReceipts,
-            'receitps' => $pendingReceipts,
-            'statistics' => $pendingReceiptStatistics
+            'statistics' => $pendingReceiptStatistics,
+            'no_receipts' => $noReceipts,
         ]);
     }
 
