@@ -76,6 +76,6 @@ class LoadUserGroupCollection extends AbstractFixture implements OrderedFixtureI
 
     public function getOrder()
     {
-        return 35;
+        return 6;
     }
 }

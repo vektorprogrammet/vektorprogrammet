@@ -249,7 +249,7 @@ usergroup_collection_create:
 
 
 usergroup_collection_edit:
- path: /kontrollpanel/brukergruppesamling/opprett/{id}
+ path: /kontrollpanel/brukergruppesamling/rediger/{id}
  defaults: { _controller: AppBundle:UserGroupCollection:createUserGroupCollection }
  methods: [GET, POST]
  requirements:

@@ -977,6 +977,8 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $userAssistant->setPicturePath('images/defaultProfile.png');
         $userAssistant->setAccountNumber('1234.56.78903');
         $manager->persist($userAssistant);
+        $this->setReference('user-assistant', $userAssistant);
+
 
         $userTeamMember = new User();
         $userTeamMember->setActive('1');
@@ -1081,6 +1083,29 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
             $manager->persist($user);
         }
 
+
+        for ($i = 0; $i < 200; ++$i) {
+            $userAssistant = new User();
+            $userAssistant->setActive('1');
+            $userAssistant->setEmail('scheduling-assistant-'.$i.'@mail.com');
+            $userAssistant->setFirstName('scheduling-assistant-'.$i);
+            $userAssistant->setLastName('assistant-lastName-'.$i);
+            $userAssistant->setGender($i % 2 == 0 ? '0' : '1');
+            $userAssistant->setPhone((string)(10000000+$i));
+            $userAssistant->setUserName('scheduling-assistant-'.$i);
+            $userAssistant->addRole($this->getReference('role-1'));
+            $userAssistant->setPicturePath('images/defaultProfile.png');
+            $userAssistant->setFieldOfStudy($this->getReference('fos-1'));
+            $userAssistant->setPassword('1234');
+
+
+            $this->setReference('scheduling-assistant-'.$i, $userAssistant);
+            $manager->persist($userAssistant);
+        }
+
+
+
+
         $manager->flush();
 
         $this->setReference('user-1', $user1);
@@ -1098,7 +1123,6 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         $this->setReference('user-21', $user21);
         $this->setReference('user-14', $user14);
         $this->setReference('userInTeam1', $userInTeam1);
-        $this->setReference('user-assistant', $userAssistant);
         $this->setReference('user-team-member', $userTeamMember);
         $this->setReference('user-team-leader', $userTeamLeader);
         $this->setReference('user-admin', $userAdmin);
