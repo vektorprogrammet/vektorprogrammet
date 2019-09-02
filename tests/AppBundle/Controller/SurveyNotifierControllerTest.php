@@ -114,6 +114,37 @@ class SurveyNotifierControllerTest extends BaseWebTestCase
         }
     }
 
+    public function testCorrectTeamSelection(){
+        $teams = $this->em->getRepository('AppBundle:Team')->findAll();
+        $team = array_pop($teams);
+        $teamId = $team->getId();
+
+
+
+        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["user_group_collection[name]"] = "Brukergruppe 7";
+        $form["user_group_collection[numberUserGroups]"] = "1";
+        $form["user_group_collection[semesters][0]"]->tick();
+        $form["user_group_collection[assistantsDepartments][0]"]->tick();
+        $form["user_group_collection[teams]"]->array($teamId);
+        $this->client->submit($form);
+
+        $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
+        $userGroupCollection = array_pop($userGroupCollections);
+
+        $department = $this->em->getRepository('AppBundle:Department')->findDepartmentByShortName("NTNU");
+        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
+
+
+
+        $userIdsInDatabaseTemporary = $this->em->getRepository('AppBundle:User')->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
+
+
+
+
+    }
+
     public function testEditCorrectAssistantSelection(){
         $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
         $userGroupCollection = array_pop($userGroupCollections);
