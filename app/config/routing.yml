@@ -105,13 +105,28 @@ delete_todo_item:
    id: \d+
 
 ##########################################
-#                Survey                  #
+#                Changelog               #
 ##########################################
 
 changelog_create:
  path: /kontrollpanel/changelog/create
  defaults: { _controller: AppBundle:ChangeLog:createChangeLog }
  methods: [GET, POST]
+
+changelogitem_edit:
+ path: /kontrollpanel/changelog/edit/{id}
+ defaults: { _controller: AppBundle:ChangeLog:editChangeLog }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+changelogitem_delete:
+ path: /kontrollpanel/changelog/delete/{id}
+ defaults: { _controller: AppBundle:ChangeLog:deleteChangeLog }
+ methods: [POST]
+ requirements:
+  id: \d+
+
 
 
 ##########################################

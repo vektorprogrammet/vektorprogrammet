@@ -3,22 +3,33 @@
         <div class="card-header">
             <i class="fas fa-list-ul"></i> Changelog
         </div>
+
         {% for changeLogItem in changeLogItems %}
-                <div class="card m-2 p-3 {{ loop.first ? "changelog_card1" : "changelog_card2" }}">
+                <div id= "changelog-item-{{ changeLogItem.id }}" class="card m-2 p-3 {{ loop.first ? "changelog_card1" : "changelog_card2" }}">
                     <div class="card-body">
                         <h5>{{ changeLogItem.title }}</h5>
                         <p>
                             {{ changeLogItem.description | safe_html }}
                         </p>
-                        <a class="float-right" href="{{ changeLogItem.githubLink | trim('https://') }}">
-                            {{ changeLogItem.githubLink | trim('https://') }}
-                        </a>
+                        <div class="d-flex justify-content-between">
+                            <p class="dato">
+                                {{ changeLogItem.date | date('d-m-Y H:i') }}
+                            </p>
+                            <a href="{{ changeLogItem.githubLink }}">
+                                {{ changeLogItem.githubLink | trim('https://') }}
+                            </a>
+                        </div>
+                        <a id="edit" href="{{ path('changelogitem_edit', { 'id': changeLogItem.id }) }}"><i class="fas fa-edit"></i></a>
+                        <form method="POST"
+                              onsubmit="return confirm('Vil du virkelig slette denne?')"
+                              action="{{ path('changelogitem_delete', { 'id': changeLogItem.id }) }}">
+                            <button class="button-link">
+                                <i class="fas fa-trash"></i>
+                            </button>
+                        </form>
+
                     </div>
-                    <p class="dato mx-3">
-                        {{ changeLogItem.date | date('d-m-Y H:i') }}
-                    </p>
                 </div>
         {% endfor %}
     </div>
-
 </div>

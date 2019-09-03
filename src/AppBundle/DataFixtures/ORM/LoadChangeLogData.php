@@ -61,6 +61,32 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
+
+        $changeLogItem = new ChangeLogItem();
+        $changeLogItem->setTitle('YESSSSSSS');
+        $changeLogItem->setDescription('Kjørrr');
+        $changeLogItem->setGithubLink('https://vg17i63i.no');
+        $changeLogItem->setDate(new \DateTime());
+
+        $manager->persist($changeLogItem);
+
+        $changeLogItem = new ChangeLogItem();
+        $changeLogItem->setTitle('Kjørda');
+        $changeLogItem->setDescription('JUpp');
+        $changeLogItem->setGithubLink('https://gitlab.no');
+        $changeLogItem->setDate(new \DateTime());
+
+        $manager->persist($changeLogItem);
+
+        $changeLogItem = new ChangeLogItem();
+        $changeLogItem->setTitle('OUFFFF');
+        $changeLogItem->setDescription('JSJJSJDKJHLK');
+        $changeLogItem->setGithubLink('https://gitlabsnjhjvbj.no');
+        $changeLogItem->setDate(new \DateTime());
+
+        $manager->persist($changeLogItem);
+
+        $manager->persist($changeLogItem);
         $manager->flush();
 
     }

@@ -889,6 +889,12 @@ button.secretly-not-a-button {
   }
   a {
     color: white;
+    #edit {
+      display: inline;
+    }
+  }
+  form{
+    display: inline;
   }
 }
 
@@ -897,8 +903,21 @@ button.secretly-not-a-button {
   .dato {
     color: grey;
   }
-}
+  a {
+    color: #007bff;
+    &#edit {
+      display: inline;
+      color: #007bff;
+    }
+  }
+  form {
+    display: inline;
+    button {
+      color: red;
+    }
+  }
 
+}
 
 .vertical-middle {
   vertical-align: middle;
