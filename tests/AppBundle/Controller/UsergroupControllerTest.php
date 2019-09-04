@@ -6,7 +6,7 @@ use AppBundle\AppBundle;
 use AppBundle\Entity\Survey;
 use Tests\BaseWebTestCase;
 
-class SurveyNotifierControllerTest extends BaseWebTestCase
+class UsergroupControllerTest extends BaseWebTestCase
 {
     /**
      * @var \Doctrine\ORM\EntityManager
@@ -114,6 +114,7 @@ class SurveyNotifierControllerTest extends BaseWebTestCase
         }
     }
 
+
     public function testEditCorrectAssistantSelection(){
         $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
         $userGroupCollection = array_pop($userGroupCollections);
@@ -158,59 +159,23 @@ class SurveyNotifierControllerTest extends BaseWebTestCase
         }
     }
 
-
-
-    public function testSurveyNotificationsUrls(){
-        $client = $this->createAdminClient();
-
-        $teammembers = $this->em->getRepository('AppBundle:User')->findTeamMembers();
-        $teammemberIds = array_map(function($user){ return $user->getId();}, $teammembers);
-        $teammemberIds = array_map('strval', $teammemberIds);
-
-
-        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $client);
+    public function testDeleteUserGroup(){
+        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $this->client);
         $form = $crawler->selectButton('Lagre')->form();
-        $form["user_group_collection[name]"] = "Brukergruppe 4";
-        $form["user_group_collection[numberUserGroups]"] = "4";
+        $form["user_group_collection[name]"] = "Brukergruppe 10";
+        $form["user_group_collection[numberUserGroups]"] = "2";
         $form["user_group_collection[semesters][0]"]->tick();
         $form["user_group_collection[assistantsDepartments][0]"]->tick();
         $form["user_group_collection[assistantBolks][0]"]->tick();
         $form["user_group_collection[assistantBolks][1]"]->tick();
-        $form["user_group_collection[users]"] = $teammemberIds;
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-        $this->assertTrue($crawler->filter('td:contains("Brukergruppe 4")')->count() > 0);
-
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("Brukergruppe 10")')->count() > 0);
 
         $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
         $userGroupCollection = array_pop($userGroupCollections);
-        $userGroup = $userGroupCollection->getUserGroups()[0];
-        $userGroupId = $userGroup->getId();
-
-
-        $surveyName =  "TestSurveyForNotifications";
-        $client = $this->createAdminClient();
-        $crawler = $this->goTo('/kontrollpanel/undersokelse/opprett', $client);
-        $form = $crawler->selectButton('Lagre')->form();
-        $form["survey[name]"] = $surveyName;
-        $client->submit($form);
-        $client->followRedirect();
-
-
-        $survey = $this->em->getRepository('AppBundle:Survey')->findByName($surveyName)[0];
-        $surveyId = $survey->getId();
-
-        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $client);
-        $form = $crawler->selectButton('Lagre')->form();
-        $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
-        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
-        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
-        $form["survey_notifier[usergroups]"]=array((string)$userGroupId);
-        $form["survey_notifier[name]"]="TestSurveyNotifier1234";
-        $form["survey_notifier[survey]"]=(string)$surveyId;
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-        $this->assertTrue($crawler->filter('td:contains("TestSurveyNotifier1234")')->count()>0);
+        $this->client->request('POST', "/kontrollpanel/brukergruppesamling/slett/".$userGroupCollection->getId());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode()); // Successful if redirected
     }
 
     protected function tearDown()
