@@ -80,7 +80,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
             $manager->persist($ah);
         }
 
-        for ($i = 10; $i < 200; ++$i) {
+        for ($i = 10; $i < 50; ++$i) {
             $userAssistant = $this->getReference('scheduling-assistant-'.$i);
             $ah = new AssistantHistory();
             $ah->setUser($userAssistant);

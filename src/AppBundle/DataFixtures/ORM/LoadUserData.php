@@ -1084,7 +1084,7 @@ class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, C
         }
 
 
-        for ($i = 0; $i < 200; ++$i) {
+        for ($i = 0; $i < 50; ++$i) {
             $userAssistant = new User();
             $userAssistant->setActive('1');
             $userAssistant->setEmail('scheduling-assistant-'.$i.'@mail.com');

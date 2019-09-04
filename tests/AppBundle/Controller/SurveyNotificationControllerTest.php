@@ -13,6 +13,8 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
      */
     private $em;
     private $client;
+    private $userGroups;
+    private $survey;
     public function setUp()
     {
         self::bootKernel();
@@ -20,18 +22,12 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
             ->get('doctrine')
             ->getManager();
         $this->client = $this->createAdminClient();
-    }
-
-
-    public function testSurveyNotificationsUrls(){
-        $client = $this->createAdminClient();
 
         $teammembers = $this->em->getRepository('AppBundle:User')->findTeamMembers();
         $teammemberIds = array_map(function($user){ return $user->getId();}, $teammembers);
         $teammemberIds = array_map('strval', $teammemberIds);
 
-
-        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $client);
+        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $this->client);
         $form = $crawler->selectButton('Lagre')->form();
         $form["user_group_collection[name]"] = "Brukergruppe 4";
         $form["user_group_collection[numberUserGroups]"] = "4";
@@ -40,41 +36,121 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $form["user_group_collection[assistantBolks][0]"]->tick();
         $form["user_group_collection[assistantBolks][1]"]->tick();
         $form["user_group_collection[users]"] = $teammemberIds;
-        $client->submit($form);
-        $crawler = $client->followRedirect();
-        $this->assertTrue($crawler->filter('td:contains("Brukergruppe 4")')->count() > 0);
-
-
-        $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
-        $userGroupCollection = array_pop($userGroupCollections);
-        $userGroup = $userGroupCollection->getUserGroups()[0];
-        $userGroupId = $userGroup->getId();
+        $this->client->submit($form);
+        $this->userGroups = $this->em->getRepository('AppBundle:UserGroup')->findAll();
 
 
         $surveyName =  "TestSurveyForNotifications";
-        $client = $this->createAdminClient();
-        $crawler = $this->goTo('/kontrollpanel/undersokelse/opprett', $client);
+        $this->client = $this->createAdminClient();
+        $crawler = $this->goTo('/kontrollpanel/undersokelse/opprett', $this->client);
         $form = $crawler->selectButton('Lagre')->form();
         $form["survey[name]"] = $surveyName;
-        $client->submit($form);
-        $client->followRedirect();
+        $this->client->submit($form);
+        $this->client->followRedirect();
+        $this->survey = $this->em->getRepository('AppBundle:Survey')->findByName($surveyName)[0];
 
 
-        $survey = $this->em->getRepository('AppBundle:Survey')->findByName($surveyName)[0];
-        $surveyId = $survey->getId();
 
-        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $client);
+    }
+
+
+    public function testCreateSurveyNotifier(){
+        $userGroupIds = array_map(function($userGroup){ return $userGroup->getId();}, $this->userGroups);
+        $userGroupIds = array_map('strval', $userGroupIds);
+        $surveyId = (string)$this->survey->getId();
+
+
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
         $form = $crawler->selectButton('Lagre')->form();
         $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
         $form["survey_notifier[timeOfNotification][date][month]"] = "1";
         $form["survey_notifier[timeOfNotification][date][day]"] = "1";
-        $form["survey_notifier[usergroups]"]=array((string)$userGroupId);
+        $form["survey_notifier[usergroups]"] = $userGroupIds;
         $form["survey_notifier[name]"]="TestSurveyNotifier1234";
-        $form["survey_notifier[survey]"]=(string)$surveyId;
-        $client->submit($form);
-        $crawler = $client->followRedirect();
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
         $this->assertTrue($crawler->filter('td:contains("TestSurveyNotifier1234")')->count()>0);
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
+        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
+        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
+        $form["survey_notifier[usergroups]"] = array($userGroupIds[0]);
+        $form["survey_notifier[name]"]="TestSurveyNotifier12345";
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestSurveyNotifier12345")')->count()>0);
+
     }
+
+    public function testEditSurveyNotifier(){
+
+    }
+
+    public function testDeleteSurveyNotifier(){
+
+    }
+
+    public function testSurveyNotificationContent(){
+
+    }
+
+    public function testSurveyNotificationClick(){
+    //anon client
+    }
+
+
+
+    public function testSendSurveyNotifier(){
+        $userGroupIds = array_map(function($userGroup){ return $userGroup->getId();}, $this->userGroups);
+        $userGroupIds = array_map('strval', $userGroupIds);
+        $surveyId = (string)$this->survey->getId();
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
+        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
+        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
+        $form["survey_notifier[usergroups]"] = array($userGroupIds[0]);
+        $form["survey_notifier[name]"]="TestSurveyNotifier123456";
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestSurveyNotifier123456")')->count()>0);
+
+
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findAll()[0];
+
+        $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode()); // Successful if redirected
+
+        $nextYear = new \DateTime();
+        $nextYear->add(new \DateInterval("P1Y"));
+        $nextYear = $nextYear->format("Y");
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[timeOfNotification][date][year]"] = $nextYear;
+        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
+        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
+        $form["survey_notifier[usergroups]"] = $userGroupIds;
+        $form["survey_notifier[name]"]="TestSurveyNotifier1234567";
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestSurveyNotifier1234567")')->count()>0);
+
+
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findAll()[0];
+
+        $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
+    }
+
 
 
     protected function tearDown()
@@ -83,11 +159,6 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $this->em->close();
     }
 
-    private function getTeamMemberIds(){
-        $teammembers = $this->em->getRepository('AppBundle:User')->findTeamMembers();
-        $teammemberIds = array_map(function($user){ return $user->getId();}, $teammembers);
-        return array_map('strval', $teammemberIds);
-    }
 
 
 }
