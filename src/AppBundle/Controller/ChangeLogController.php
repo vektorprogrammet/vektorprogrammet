@@ -12,8 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 
 class ChangeLogController extends BaseController
 {
-
-
     public function createChangeLogAction(Request $request)
     {
         $changelogitem = new ChangeLogItem();
@@ -28,7 +26,7 @@ class ChangeLogController extends BaseController
             return $this->redirect($this->generateUrl('control_panel'));
         }
 
-        return $this->render('changelog/changelog_create.html.twig',array(
+        return $this->render('changelog/changelog_create.html.twig', array(
             'form' => $form->createView(),
             'changelog' => $changelogitem,
         ));
@@ -47,7 +45,7 @@ class ChangeLogController extends BaseController
             return $this->redirect($this->generateUrl('control_panel'));
         }
 
-        return $this->render('changelog/changelog_create.html.twig',array(
+        return $this->render('changelog/changelog_create.html.twig', array(
             'form' => $form->createView(),
             'changelog' => $changeLogItem,
         ));
