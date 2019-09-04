@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Utils\TimeUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -41,6 +42,7 @@ class AdmissionPeriod
     private $admissionEndDate;
 
     /**
+     * @var InfoMeeting
      * @ORM\OneToOne(targetEntity="InfoMeeting", cascade={"remove", "persist"})
      * @Assert\Valid
      */
@@ -188,5 +190,14 @@ class AdmissionPeriod
     {
         $this->semester = $semester;
         return $this;
+    }
+
+    public function shouldSendInfoMeetingNotifications()
+    {
+        return $this->infoMeeting !== null &&
+            $this->infoMeeting->getDate() !== null &&
+            $this->infoMeeting->isShowOnPage() &&
+            TimeUtil::dateTimeIsToday($this->infoMeeting->getDate()) &&
+            TimeUtil::dateTimeIsInTheFuture($this->infoMeeting->getDate());
     }
 }

@@ -926,3 +926,25 @@ button.secretly-not-a-button {
 table.table {
   margin-bottom: 0;
 }
+
+.smiley-box {
+  padding: 1.25rem;
+  display:flex;
+  align-items: center;
+}
+
+.big-green-smiley {
+  vertical-align: middle;
+  font-size: 70px;
+  width: 70px;
+  color: $green;
+  display: inline-block;
+  margin-right: 1.25rem;
+}
+
+.big-green-text {
+  vertical-align: middle;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #555;
+}
