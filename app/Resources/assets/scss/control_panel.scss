@@ -877,3 +877,15 @@ button.secretly-not-a-button {
 table.table {
   margin-bottom: 0;
 }
+
+.unstyled-link {
+  text-decoration: none;
+  color: black;
+}
+
+.quicklink-box {
+  width: 150px;
+  &:hover {
+    background: #eee;
+  }
+}
