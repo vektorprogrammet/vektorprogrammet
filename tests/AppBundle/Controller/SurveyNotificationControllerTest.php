@@ -2,8 +2,6 @@
 
 namespace Tests\AppBundle\Controller;
 
-use AppBundle\AppBundle;
-use AppBundle\Entity\Survey;
 use Tests\BaseWebTestCase;
 
 class SurveyNotificationControllerTest extends BaseWebTestCase
@@ -87,11 +85,107 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
 
     }
 
-    public function testEditSurveyNotifier(){
+    public function testEditSurveyNotifier()
+    {
+        $userGroupIds = array_map(function($userGroup){ return $userGroup->getId();}, $this->userGroups);
+        $userGroupIds = array_map('strval', $userGroupIds);
+        $surveyId = (string)$this->survey->getId();
+
+
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
+        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
+        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
+        $form["survey_notifier[usergroups]"] = $userGroupIds;
+        $form["survey_notifier[name]"]="TestEdit1";
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestEdit1")')->count()>0);
+
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
+            'name' => "TestEdit1"
+        ]);
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/rediger/".$surveyNotifier->getId(), $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[name]"]="TestEdit2";
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestEdit2")')->count()>0);
+        $this->assertEquals(0,$crawler->filter('td:contains("TestEdit1")')->count());
+
+        $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/rediger/".$surveyNotifier->getId(), $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[name]"]="TestEdit3";
+        $this->client->submit($form);
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+
+
+
+
+
 
     }
 
     public function testDeleteSurveyNotifier(){
+        $userGroupIds = array_map(function($userGroup){ return $userGroup->getId();}, $this->userGroups);
+        $userGroupIds = array_map('strval', $userGroupIds);
+        $surveyId = (string)$this->survey->getId();
+
+
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
+        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
+        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
+        $form["survey_notifier[usergroups]"] = $userGroupIds;
+        $form["survey_notifier[name]"]="TestDelete1";
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestDelete1")')->count()>0);
+
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
+            'name' => "TestDelete1"
+        ]);
+
+        $this->client->request('POST','/kontrollpanel/undersokelsevarsel/slett/'.$surveyNotifier->getId());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
+        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
+        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
+        $form["survey_notifier[usergroups]"] = $userGroupIds;
+        $form["survey_notifier[name]"]="TestDelete2";
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestDelete12)')->count()>0);
+
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
+            'name' => "TestDelete2"
+        ]);
+
+        $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
+        $this->client->request('POST','/kontrollpanel/undersokelsevarsel/slett/'.$surveyNotifier->getId());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+
+
+
+
+
+
 
     }
 
