@@ -2,8 +2,6 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-
-
 use AppBundle\Entity\ChangeLogItem;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -88,6 +86,5 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
 
         $manager->persist($changeLogItem);
         $manager->flush();
-
     }
 }

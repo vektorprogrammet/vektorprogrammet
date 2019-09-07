@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity\Repository;
 
-
 use AppBundle\Entity\ChangeLogItem;
 use Doctrine\ORM\EntityRepository;
 

@@ -26,13 +26,13 @@ class ChangeLogType extends AbstractType
                 'attr' => array('placeholder' => 'Fyll inn tittel til endring'),
             ))
 
-        ->add( 'description', TextAreaType::class, array(
+        ->add('description', TextAreaType::class, array(
             'attr' => array('placeholder' => "Beskriv endringen"),
             ))
         ->add('gitHubLink', UrlType::class, array(
 
             ))
-        ->add('date',DateType::class, array(
+        ->add('date', DateType::class, array(
 
             ))
         ->add('description', CKEditorType::class, array(
@@ -48,8 +48,7 @@ class ChangeLogType extends AbstractType
         ->add('save', SubmitType::class, array(
             'label' => 'Lagre',
             ));
-
-       }
+    }
     
 
     public function getBlockPrefix()
