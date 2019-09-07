@@ -52,9 +52,14 @@ faq:
 # Updates static content
 # Not meant for rendering a page. Receives a post request and updates the database.
 update_static_content:
- path: /updatestaticcontent
+ path: /updatestaticcontentassi
  defaults: {_controller: AppBundle:StaticContent:update }
  methods: [POST]
+
+parent_registration:
+  path: /foreldrekurs/pamelding
+  defaults: {_controller: AppBundle:ParentAssignment:show }
+  methods: [GET]
 
 ##########################################
 #                Control Panel           #
@@ -1260,7 +1265,7 @@ team:
 
 teachers:
     path: /laerere
-    defaults: { _controller: AppBundle:Teacher:index }
+    defaults: { _controller: AppBundle:Teacher:idex }
 
 about_new:
     path: /om

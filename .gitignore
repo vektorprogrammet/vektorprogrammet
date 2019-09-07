@@ -2,6 +2,8 @@
 .env.*.php
 .env.php
 .env
+.DS_Store
+.vagrant
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
@@ -64,3 +66,5 @@ crashlytics-build.properties
 /node_modules/
 
 .php_cs.cache
+
+
