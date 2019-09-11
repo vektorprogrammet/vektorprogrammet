@@ -884,8 +884,11 @@ table.table {
 }
 
 .quicklink-box {
+  padding: 20px;
   width: 150px;
+  text-align:center;
   &:hover {
     background: #eee;
   }
+
 }

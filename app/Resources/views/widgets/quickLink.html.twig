@@ -4,16 +4,18 @@
         </div>
         <div class="card-body"> <!--Sånn her kommenterer vi! :D -->
 
-            <div class="container">
+            <div>
                 <div class="row align-items-start">
                 {% for quicklink in quickLinks%}
-                    <div class="col-sm-3 text-center">
-                        <a href="{{quicklink.url}}">
-                            <div class="quicklink-box">
-                                <img src="{{ quicklink.iconUrl }}" alt="Quicklink image" height="42" width="42">
+                    <div class="col-sm-3 text-center"  >
+                       <div class="mx-auto">
+                        <a href="{{quicklink.url}}" >
+                            <div class= "quicklink-box" >
+                            <img src="{{ asset_with_version(quicklink.iconUrl) }}" alt="Quicklink image" height="42" width="42" >
                                 <h5 class="card-title unstyled-link"> {{quicklink.title}}  </h5>
                             </div>
                         </a>
+                       </div>
                     </div>
                 {% endfor %}
                 </div>

@@ -1002,6 +1002,14 @@ interview_edit_status:
        id: \d+
 
 ##########################################
+#              Interview                 #
+##########################################
+quicklink_show:
+    path: kontrollpanel/quicklinks
+    defaults: { _controller: AppBundle:QuickLink:show}
+    methods: [GET, POST]
+
+##########################################
 #                File browser            #
 ##########################################
 #ElFinder routes

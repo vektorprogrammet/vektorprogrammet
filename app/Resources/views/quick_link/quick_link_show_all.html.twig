@@ -1,0 +1,49 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    QuickLinks
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">QuickLinks</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a href="{{ path('sponsor_create') }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Endre quickLink
+    </a>
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Dine Quicklinks</div>
+        <div class="table-responsive">
+            <table class="table">
+
+
+                {% for quicklink in quickLinks %}
+                    <tr>
+                        <td>
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                            </div>
+                        </td>
+
+                        <td>{{quicklink.title}}</td>
+
+                        <td>
+                            <img class="img-fluid" src="{{ asset_with_version(quicklink.iconUrl) }}"
+                                 style="max-width: 100px; max-height: 50px;">
+                        </td>
+
+                    </tr>
+                {% endfor %}
+
+            </table>
+        </div>
+    </div>
+{% endblock %}
