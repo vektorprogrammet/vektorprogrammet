@@ -40,8 +40,7 @@
 
     <div class="card">
 
-        <div class="card-header"><i class="fa fa-clipboard-list"></i> Arrangementer </div>
-        <div class="card-header"><i class="fa fa-clipboard-list"></i> Gjøremål ({{ SocialEventList|length }})</div>
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Arrangementer ({{ SocialEventList|length }})</div>
         <div class="table-responsive">
 
             <table width="100%" class="application-table table table-striped">
@@ -58,7 +57,16 @@
 
                 <tbody>
 
-                <!-- here -->
+                {% for event in SocialEventList %}
+                    <tr>
+                    <td></td>
+                    <td>{{ event.title }}</td>
+                    <td>{{ event.description }}</td>
+                    <td>En tid</td>
+                    <td>{{ event.department ? event.department : 'Alle regioner' }}</td>
+                    <td>{{ event.semester ? event.semester : 'Alle semestre' }}</td>
+                    </tr>
+                {% endfor %}
 
                 </tbody>
 

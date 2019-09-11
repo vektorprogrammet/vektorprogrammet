@@ -14,12 +14,12 @@
     {% if event.id %}
         {# TODO: FIX THIS #}
         <li class="breadcrumb-item">
-            <a href="{{ path('surveys', {'id': survey.semester.id}) }}">Arrangementer</a>
+            <a href="{{ path('social_event_show') }}">Arrangementer</a>
         </li>
         <li class="breadcrumb-item active">{{ event.title }}</li>
     {% else %}
         <li class="breadcrumb-item">
-            <a href="{{ path('surveys') }}">Arrangementer</a>
+            <a href="{{ path('social_event_show') }}">Arrangementer</a>
         </li>
         <li class="breadcrumb-item active">Nytt arrangement</li>
     {% endif %}

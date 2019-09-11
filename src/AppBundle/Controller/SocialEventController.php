@@ -68,6 +68,7 @@ class SocialEventController extends BaseController
 
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
+
         if ($form->isValid()) {
             ## $this->ensureAccess($event);
 

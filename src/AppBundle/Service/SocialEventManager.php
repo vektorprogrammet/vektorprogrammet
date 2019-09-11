@@ -30,22 +30,17 @@ class SocialEventManager
 
     /**
      * @param Department $department
-     * @param Semester £$semester
-     * @return // WHAT? []
+     * @param Semester $semester
+     * @return array
      */
     public function getOrderedList(Department $department, Semester $semester)
     {
+        $repository = $this->em->getRepository('AppBundle:SocialEvent');
+        $allSocialEvents = $repository->findSocialEventsBySemesterAndDepartment($semester, $department);
+        //$orderedList = array($allSocialEvents);
+        //return $orderedList;
 
-        //$repository = $this->em->getRepository('AppBundle:TodoItem');
-        $repository = $this->em->getRepository('AppBundle:SocialEventItem');
-
-
-
-        $allSocialEvents = $repository->findTodoListItemsBySemesterAndDepartment($semester, $department);
-
-        $orderedList = array($allSocialEvents);
-
-        return $orderedList;
+        return $allSocialEvents;
 
     }
 
