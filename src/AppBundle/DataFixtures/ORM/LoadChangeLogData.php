@@ -30,61 +30,60 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
     {
         $changeLogItem = new ChangeLogItem();
         $changeLogItem->setTitle('Nye teammedlemmer blir automatisk invitert til Slack');
-        $changeLogItem->setDescription('Når et nytt medlem blir lagt til i team får han/hun tilgang til sin @vektorprogrammet.no-epost ved å logge inn på gmail.com med sin bruker på vektorprogrammet.no. Når det nye medlemmet logger inn på Gmail for første gang vil det ligge en invitasjon til Slack der.');
+        $changeLogItem->setDescription('Når et nytt medlem blir lagt til i team får han/hun tilgang til sin vektorprogrammet.no-epost ved å logge inn på gmail.com med sin bruker på vektorprogrammet.no. Når det nye medlemmet logger inn på Gmail for første gang vil det ligge en invitasjon til Slack der.');
         $changeLogItem->setGithubLink('https://github.com');
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('Nye teammehehheehhehehhehevitert til Slack');
-        $changeLogItem->setDescription('Når et nytt medlem blir lagt til i team får han/hun tilgang til sin @vektorprogrammet.no-epost ved å logge inn på gmail.com med sin bruker på vektorprogrammet.no. Når det nye medlemmet logger inn på Gmail for første gang vil det ligge en invitasjon til Slack der.');
-        $changeLogItem->setGithubLink('https://github.com');
+        $changeLogItem->setTitle('Changelog-widget lagt til i kontrollpanelet');
+        $changeLogItem->setDescription('Changelog-widgeten er ferdig, og kan tas i bruk. Den kan brukes til å holde styr på endringer IT-teamet gjør. Klikk deg videre i kontrollpanel-menyen på venstre side for å opprette en ny endring. Denne vil deretter bli synlig i widgeten.  ');
+        $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet/tree/master/app');
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('Ny test, pliis scroll');
-        $changeLogItem->setDescription('Håper denne virker sånn som den skal nå altså');
-        $changeLogItem->setGithubLink('https://github.com');
+        $changeLogItem->setTitle('Påmelding til foreldrekurs. ');
+        $changeLogItem->setDescription('På nettsiden med informasjon til foreldre finnes det en lenke til påmelding til foreldrekurs!');
+        $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet/tree/parent-registration/src/AppBundle/Controller');
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('Enda en test, værsåsnill');
-        $changeLogItem->setDescription('hallo, kom igjen');
-        $changeLogItem->setGithubLink('https://vg.no');
+        $changeLogItem->setTitle('Informasjon til foreldre.');
+        $changeLogItem->setDescription('Det er nå blitt lagt til en nettside med informasjon til foreldre om Vektorprogrammet. Denne kan man klikke seg inn på via hovedmenyen.');
+        $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet/tree/Parents-Info/src/AppBundle/Controller');
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('YESSSSSSS');
-        $changeLogItem->setDescription('Kjørrr');
-        $changeLogItem->setGithubLink('https://vg17i63i.no');
+        $changeLogItem->setTitle('Man kan nå endre sin medintervjuer!');
+        $changeLogItem->setDescription('Du kan nå gå inn i kontrollpanelet, og endre på din medintervjuer.');
+        $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet/tree/edit_co_interviewer');
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('Kjørda');
-        $changeLogItem->setDescription('JUpp');
-        $changeLogItem->setGithubLink('https://gitlab.no');
+        $changeLogItem->setTitle('Søknadsfrist på team er optional!');
+        $changeLogItem->setDescription('Søknadsfristen er ikke helt statisk lenger');
+        $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet');
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('OUFFFF');
-        $changeLogItem->setDescription('JSJJSJDKJHLK');
-        $changeLogItem->setGithubLink('https://gitlabsnjhjvbj.no');
+        $changeLogItem->setTitle('Man kan nå legge til quicklinks i kontrollpanelet!');
+        $changeLogItem->setDescription('Fra og med nå kan man legge til quicklinks til andre steder via sitt eget kontrollpanel. Dermed vil man raskere kunne navigere mellom ofte brukte sider, i stedet for å trykke seg gjennom mange sider hver gang.');
+        $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet/tree/quicklinks');
         $changeLogItem->setDate(new \DateTime());
 
         $manager->persist($changeLogItem);
-
-        $manager->persist($changeLogItem);
+        
         $manager->flush();
     }
 }

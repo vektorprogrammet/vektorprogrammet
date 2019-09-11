@@ -5,22 +5,19 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\ChangeLogItem;
 use AppBundle\Form\Type\ChangeLogType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ChangeLogController extends BaseController
 {
     public function createChangeLogAction(Request $request)
     {
-        $changelogitem = new ChangeLogItem();
-        $form = $this->createForm(ChangeLogType::class, $changelogitem);
+        $changeLogItem = new ChangeLogItem();
+        $form = $this->createForm(ChangeLogType::class, $changeLogItem);
         $form->handleRequest($request);
 
         if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
-            $em->persist($changelogitem);
+            $em->persist($changeLogItem);
             $em->flush();
 
             return $this->redirect($this->generateUrl('control_panel'));
@@ -28,7 +25,7 @@ class ChangeLogController extends BaseController
 
         return $this->render('changelog/changelog_create.html.twig', array(
             'form' => $form->createView(),
-            'changelog' => $changelogitem,
+            'changelog' => $changeLogItem,
         ));
     }
 

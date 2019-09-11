@@ -86,6 +86,7 @@ class WidgetController extends BaseController
     public function changelogAction()
     {
         $changeLogItems = $this->getDoctrine()->getRepository('AppBundle:ChangeLogItem')->findAllOrderedByDate();
+        $changeLogItems = array_reverse($changeLogItems);
 
         return $this->render('widgets/changelog_widget.html.twig', [
             'changeLogItems' => array_slice($changeLogItems, 0, 5)
