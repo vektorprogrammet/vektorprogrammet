@@ -25,6 +25,7 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $teammemberIds = array_map(function($user){ return $user->getId();}, $teammembers);
         $teammemberIds = array_map('strval', $teammemberIds);
 
+
         $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $this->client);
         $form = $crawler->selectButton('Lagre')->form();
         $form["user_group_collection[name]"] = "Brukergruppe 4";
@@ -46,6 +47,7 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $this->client->submit($form);
         $this->client->followRedirect();
         $this->survey = $this->em->getRepository('AppBundle:Survey')->findByName($surveyName)[0];
+
 
 
 
@@ -138,8 +140,6 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $userGroupIds = array_map('strval', $userGroupIds);
         $surveyId = (string)$this->survey->getId();
 
-
-
         $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
         $form = $crawler->selectButton('Lagre')->form();
         $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
@@ -153,7 +153,7 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $this->assertTrue($crawler->filter('td:contains("TestDelete1")')->count()>0);
 
         $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
-            'name' => "TestDelete1"
+            'name' => "TestDelete1",
         ]);
 
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/slett/'.$surveyNotifier->getId());
@@ -170,7 +170,7 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $form["survey_notifier[survey]"] = $surveyId;
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
-        $this->assertTrue($crawler->filter('td:contains("TestDelete12)')->count()>0);
+        $this->assertTrue($crawler->filter('td:contains("TestDelete2")')->count()>0);
 
         $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
             'name' => "TestDelete2"
@@ -178,24 +178,10 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
 
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/slett/'.$surveyNotifier->getId());
-        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
-
-
-
-
-
-
-
+        $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
 
     }
 
-    public function testSurveyNotificationContent(){
-
-    }
-
-    public function testSurveyNotificationClick(){
-    //anon client
-    }
 
 
 
@@ -219,6 +205,8 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
 
         $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findAll()[0];
 
+
+
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode()); // Successful if redirected
 
@@ -239,12 +227,77 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $this->assertTrue($crawler->filter('td:contains("TestSurveyNotifier1234567")')->count()>0);
 
 
-        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findAll()[0];
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
+            'name' => "TestSurveyNotifier1234567",
+        ]);
 
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
+
+    public function testSurveyNotificationClick(){
+        $userGroupIds = array_map(function($userGroup){ return $userGroup->getId();}, $this->userGroups);
+        $userGroupIds = array_map('strval', $userGroupIds);
+        $surveyId = (string)$this->survey->getId();
+
+        $crawler = $this->goTo("/kontrollpanel/undersokelsevarsel/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["survey_notifier[timeOfNotification][date][year]"] = "2016";
+        $form["survey_notifier[timeOfNotification][date][month]"] = "1";
+        $form["survey_notifier[timeOfNotification][date][day]"] = "1";
+        $form["survey_notifier[usergroups]"] = $userGroupIds;
+        $form["survey_notifier[name]"]="TestClick1";
+        $form["survey_notifier[survey]"] = $surveyId;
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        $this->assertTrue($crawler->filter('td:contains("TestClick")')->count()>0);
+
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
+            'name' => "TestClick1"
+        ]);
+
+        $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+
+
+
+        $surveyNotification = $this->em->getRepository('AppBundle:SurveyNotification')->findOneBy([
+            'surveyNotificationCollection' => $surveyNotifier->getId(),
+        ]);
+
+        $this->assertTrue($surveyNotification->isSent());
+        $userIdentifier = $surveyNotification->getUserIdentifier();
+
+        $client = $this->createAnonymousClient();
+        $crawler = $this->goTo("/undersokelse/u/".$surveyId."/".$userIdentifier, $client);
+        $form = $crawler->selectButton('Send inn')->form();
+        $this->client->submit($form);
+        $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+
+        $surveyNotificationClicks = $this->em->getRepository('AppBundle:SurveyLinkClick')->findBy([
+            'notification' => (string)$surveyNotification->getId()
+        ]);
+        $numberOfsurveyNotificationClicks = sizeof($surveyNotificationClicks);
+
+
+        $this->goTo("/undersokelse/u/".$surveyId."/".$userIdentifier, $client);
+        $surveyNotificationClicks = $this->em->getRepository('AppBundle:SurveyLinkClick')->findBy([
+            'notification' => (string)$surveyNotification->getId()
+        ]);
+        $this->assertEquals($numberOfsurveyNotificationClicks + 1, sizeof($surveyNotificationClicks));
+
+
+        $this->goTo("/undersokelse/u/".$surveyId."/".$userIdentifier, $client);
+        $surveyNotificationClicks = $this->em->getRepository('AppBundle:SurveyLinkClick')->findBy([
+            'notification' => (string)$surveyNotification->getId()
+        ]);
+        $this->assertEquals($numberOfsurveyNotificationClicks + 2, sizeof($surveyNotificationClicks));
+
+
+
+    }
 
 
     protected function tearDown()

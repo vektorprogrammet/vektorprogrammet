@@ -83,8 +83,12 @@ class UsergroupControllerTest extends BaseWebTestCase
         $form["user_group_collection[assistantBolks][0]"]->tick();
         $this->client->submit($form);
 
-        $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
-        $userGroupCollection = array_pop($userGroupCollections);
+
+        $userGroupCollection = $this->em->getRepository('AppBundle:UserGroupCollection')->findOneBy([
+            'name' => "Brukergruppe 6",
+        ]);
+
+
 
         $this->assertEquals(3, $userGroupCollection->getNumberUserGroups());
 
@@ -116,21 +120,28 @@ class UsergroupControllerTest extends BaseWebTestCase
 
 
     public function testEditCorrectAssistantSelection(){
-        $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
-        $userGroupCollection = array_pop($userGroupCollections);
+        $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/opprett", $this->client);
+        $form = $crawler->selectButton('Lagre')->form();
+        $form["user_group_collection[name]"] = "Brukergruppe 7";
+        $form["user_group_collection[numberUserGroups]"] = "3";
+        $form["user_group_collection[semesters][0]"]->tick();
+        $form["user_group_collection[assistantsDepartments][0]"]->tick();
+        $form["user_group_collection[assistantBolks][0]"]->tick();
+        $this->client->submit($form);
+
+
+        $userGroupCollection = $this->em->getRepository('AppBundle:UserGroupCollection')->findOneBy([
+            'name' => "Brukergruppe 7",
+        ]);
 
         $crawler = $this->goTo("/kontrollpanel/brukergruppesamling/rediger/".$userGroupCollection->getId(), $this->client);
         $form = $crawler->selectButton('Lagre')->form();
-        $form["user_group_collection[name]"] = "Brukergruppe 7";
+        $form["user_group_collection[name]"] = "Brukergruppe 8";
         $form["user_group_collection[numberUserGroups]"] = "1";
-        $form["user_group_collection[semesters][0]"]->tick();
-        $form["user_group_collection[assistantsDepartments][0]"]->tick();
-        $form["user_group_collection[assistantBolks][1]"]->tick();
-        $form["user_group_collection[assistantBolks][2]"]->tick();
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
-        $this->assertEquals(0,$crawler->filter('td:contains("Brukergruppe 6")')->count());
-        $this->assertEquals(2,$crawler->filter('td:contains("Brukergruppe 7")')->count());
+        $this->assertEquals(0,$crawler->filter('td:contains("Brukergruppe 7")')->count());
+        $this->assertEquals(2,$crawler->filter('td:contains("Brukergruppe 8")')->count());
 
 
         $department = $this->em->getRepository('AppBundle:Department')->findDepartmentByShortName("NTNU");
@@ -143,11 +154,14 @@ class UsergroupControllerTest extends BaseWebTestCase
         $userIdsInDatabase = array();
         foreach ($userIdsInDatabaseTemporary as $user){
             $ah = $this->em->getRepository("AppBundle:AssistantHistory")->findMostRecentByUser($user)[0];
-            if($ah->getBolk()!=="Bolk 2"){
+            if($ah->getBolk()==="Bolk 2"){
                 array_push($userIdsInDatabase, $user->getId());
             }
         }
 
+        $userGroupCollection = $this->em->getRepository('AppBundle:UserGroupCollection')->findOneBy([
+            'name' => "Brukergruppe 8",
+        ]);
 
         $numUsersInUsergroup = $userGroupCollection->getNumberTotalUsers();
         $this->assertEquals(sizeof($userIdsInDatabase), $numUsersInUsergroup);
@@ -169,12 +183,14 @@ class UsergroupControllerTest extends BaseWebTestCase
         $form["user_group_collection[assistantBolks][0]"]->tick();
         $form["user_group_collection[assistantBolks][1]"]->tick();
         $this->client->submit($form);
-        $crawler = $this->client->followRedirect();
+        $this->client->followRedirect();
 
-        $userGroupCollections = $this->em->getRepository('AppBundle:UserGroupCollection')->findAll();
-        $userGroupCollection = array_pop($userGroupCollections);
+        $userGroupCollection = $this->em->getRepository('AppBundle:UserGroupCollection')->findOneBy([
+            'name' => "Brukergruppe 10",
+        ]);
+
         $this->client->request('POST', "/kontrollpanel/brukergruppesamling/slett/".$userGroupCollection->getId());
-        $this->assertEquals(200, $this->client->getResponse()->getStatusCode()); // Successful if redirected
+        $this->assertEquals(200, $this->client->getResponse()->getStatusCode());
     }
 
     protected function tearDown()
