@@ -65,6 +65,6 @@ class ChangeLogController extends BaseController
 
         $changeLogItems = $em->getRepository('AppBundle:ChangeLogItem')->findAll();
 
-        return $this->render('changelog/changelog_show_all.html.twig',array('changeLogItems' => $changeLogItems));
+        return $this->render('changelog/changelog_show_all.html.twig', array('changeLogItems' => $changeLogItems));
     }
 }
