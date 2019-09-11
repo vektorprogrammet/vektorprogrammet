@@ -15,6 +15,7 @@
 {% block stylesheets %}
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/schedule.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -51,32 +52,23 @@
                 <div class="card-header"><i class="fa fa-users"></i> Intervjuere</div>
                 <div class="card-body d-flex justify-content-center">
                     <div class="d-flex flex-row">
-
-
-                        <!--- INTERVIEWER START --->
                         <div class="interviewer">
                             <h5 class="text-center">Intervjuer</h5>
                             <p class="text-center">{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
 
                             <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
-
-                                <img class="scheduler-photo profile-photo bordered rounded-circle "
-
+                            <img class="scheduler-photo profile-photo bordered rounded-circle "
                                  src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
                             </a>
                         </div>
-                        <!--- INTERVIEWER END --->
-
-                        
-                        <!--- COINTERVIEWER START --->
                         <div class="mx-3"></div>
                         <div class="interviewer">
                             <h5 class="text-center">Medintervjuer</h5>
                             {% if interview.cointerviewer %}
                                 <p class="text-center">{{ interview.coInterviewer.firstName }} {{ interview.coInterviewer.lastName }}
+                                <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">(endre)</a>
                                 <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
                                     <div class="no-co-interviewer img-blur-container rounded-circle bordered">
-
                                         <img class="scheduler-photo profile-photo bordered rounded-circle"
                                              src="{{ asset(interview.coInterviewer.picturePath | imagine_filter('profile_img')) }}">
                                         <div class="profile-photo-overlay">Velg intervjuer</div>
@@ -92,7 +84,6 @@
                                         <div class="profile-photo-overlay">Velg intervjuer</div>
                                 </div>
                                     </a>
-                            <!--- COINTERVIEWER END --->
                             {% endif %}
 
                         </div>
@@ -120,7 +111,7 @@
                             {{ form_row(form.campus) }}
                         </div>
                         <div class="col-12 col-lg-6">
-                            <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
+                            <label>Link til kart <a href="https://use.mazemap.com/" target="_blank" rel="noopener">(MazeMap)</a></label>
                             {{ form_row(form.mapLink) }}
                         </div>
                     </div>
