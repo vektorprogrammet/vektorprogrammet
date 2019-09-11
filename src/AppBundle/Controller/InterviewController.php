@@ -600,4 +600,5 @@ class InterviewController extends BaseController
 
         return $this->redirectToRoute('applications_show_assigned');
     }
+
 }
