@@ -31,33 +31,14 @@
             </div>
         </div>
 
-        <!-------------------------------------------------->
         <div class="col-12 col-lg-4">
             <div class="card">
                 <div class="card-header"><i class="fa fa-user-o"></i> Intervjuer</div>
                 <div class="card-body">
                     <p><strong>{{ interview.interviewer }}</strong> er registrert som intervjuer</p>
-
-                    <!---
-                    <div class="clear-button">
-                        <form method="POST"
-                              action="{{ path('interview_clear_co_interviewer', { id: interview.id }) }}">
-                            <div class="row">
-                                <div class="col-12">
-                                    <button type="submit"
-                                            class="btn btn-danger">
-                                        <i class="fa fa-share-alt"></i>
-                                        Fjern intervjuer
-                                    </button>
-                                </div>
-                            </div>
-                        </form>
-                    </div> -->
-
                 </div>
             </div>
         </div>
-        <!------------------------------------------------>
 
         {% if interview.coInterviewer %}
         <div class="col-12 col-lg-4">
