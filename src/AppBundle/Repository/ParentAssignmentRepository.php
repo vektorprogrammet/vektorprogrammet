@@ -10,4 +10,5 @@ namespace AppBundle\Repository;
  */
 class ParentAssignmentRepository extends \Doctrine\ORM\EntityRepository
 {
+
 }

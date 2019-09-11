@@ -10,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Table(name="parent_assignment_entity")
  * @ORM\Entity(repositoryClass="ParentAssignmentRepository")
  */
-class ParentAssignmentEntity //Hvorfor er entityen rød? //Sigurd må hjelpe meg med filene (vagrant blant annet) som jeg ikke vil adde til commitene mine. Er noen filer jeg ikke vet hva er?
+class ParentAssignmentEntity
 {
     /**
      * @var int

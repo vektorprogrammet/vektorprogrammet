@@ -38,10 +38,9 @@ class LoadStatic_contentData extends AbstractFixture
             'vektor_i_media' => '<p>Vektorprogrammet i media:</p><p>VG: Studenter hjelper elever med matte</p><p>NRK: Studenter hjelper elever med matte</p><p>DAGBLADET: Studenter hjelper elever med matte</p><p>AFTENPOSTEN: Studenter hjelper elever med matte</p>',
             'contact-header' => '<h1>Organisasjonen</h1><p>Vektorprogrammet er en stor organisasjon med assistenter i 4 norske byer. Under kan du kontakte vektorprogrammet i n&aelig;rmeste by eller hovedstyret for generelle henvendelser.&nbsp;</p>',
 
-            'parent-assignment-header' => '<h1> Foreldrekurs </h1><p>Vektorprogrammet holder foreldrekurs hvert semester. Dette er et fint tiltak for dere foreldre som vil lære mer om matematikk-undervisning.</p>',
-            'parent-assignment-info' => '<h2>Innhold i kurset</h2><p>Kurset inneholder </p>',
-            'parent-assignment-more-info' => '<h2>Motivere studenter</h2><p>Hvordan kan du som forelder bidra til barnets læring? Dette kan du lære om på dette kurset</p>',
-            'parent-assignment-interessert?' => '<h2> Høres dette interessant ut?</h2><p>Meld deg på i skjemaet under! Du vil få tilsendt en bekreftelse av påmeldingen din på oppgitt mailadresse. </p>',
+            'parent-assignment-header' => '<h1> Foreldrekurs </h1><p>Foreldrekurs er et kurs på kveldstid, og er hovedsaklig rettet mot foreldre. Dette blir arrangert 1-3 ganger i året av skolekoordineringsteamet i Vektorprogrammet Trondheim. </p>',
+            'parent-assignment-info' => '<h2>Hvorfor foreldrekurs?</h2></h2><p>Målet er at foreldre skal kunne hjelpe barnet sitt med matematikk, og lære om hvorfor matematikk er et så viktig og spennende fag. Det har tidligere blitt holdt kurs innen innføring i motivasjon, pedagogikk og matematikk tilpasset ungdomsskolenivå. Eksamenskurs, der det har blitt gjennomgått gamle eksamensoppgaver, har også blitt holdt tidligere. I tillegg til å være et kurs for foreldre, er det også en sosial arena for Vektorprogrammet. Skolekoordinering inviterer alle team til å bli med å hjelpe til under kurskveldene, og det er god stemning på vektorkontoret under hele arrangementet med både kake og pizza.</p>',
+            'parent-assignment-interessert?' => '<h2> Høres dette interessant ut?</h2><p>Meld deg på i skjemaet under! Du vil få tilsendt en påmeldingsbekrefelse</p>',
         );
         foreach ($elements as $html_id => $content) {
             $staticElement = new StaticContent();

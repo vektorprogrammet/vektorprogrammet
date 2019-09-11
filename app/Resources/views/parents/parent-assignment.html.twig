@@ -18,10 +18,6 @@
                     {% include 'statictext/static_content.html.twig' with {'id': 'parent-assignment-info'} %}
                 </div>
                 <br>
-                <div class="col-sm-12 text-center">
-                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-assignment-more-info'} %}
-                </div>
-                <br>
             </section>
             <section class="row">
                 <div class="col-12 text-center">
@@ -30,24 +26,21 @@
             </section>
             <br>
             {{ form_start(form) }}
-            <div class="row">
-                <div class="col-12 card">
+            <div class="card">
                     <div class="card-header text-center">
                         <h3>Meld deg på!</h3>
                     </div>
-                    <div>
+                    <div class="card-body">
                         {{ form_row(form.navn) }}
                         {{ form_row(form.epost ) }}
                         {{ form_row(form.tidspunkt ) }}
                     </div>
-
-                    <div class="col-12 ">
-                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                    <div class="card-body">
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
                     </div>
                     <div class="hide">
                         {{ form_rest(form) }}
                     </div>
-                </div>
             </div>
         </div>
     </div>
