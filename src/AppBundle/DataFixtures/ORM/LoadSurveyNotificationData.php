@@ -112,7 +112,6 @@ class LoadSurveyNotificationData extends AbstractFixture implements OrderedFixtu
         $manager->persist($surveyNotificationCollection1);
         $manager->persist($surveyNotificationCollection2);
         $manager->flush();
-
     }
 
     public function getOrder()

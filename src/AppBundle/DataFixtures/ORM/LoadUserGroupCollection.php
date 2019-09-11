@@ -2,14 +2,11 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-
 use AppBundle\Entity\UserGroup;
 use AppBundle\Entity\UserGroupCollection;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
-
-
 
 class LoadUserGroupCollection extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -70,8 +67,6 @@ class LoadUserGroupCollection extends AbstractFixture implements OrderedFixtureI
         $manager->persist($userGroupCollection1);
         $manager->persist($userGroupCollection2);
         $manager->flush();
-
-
     }
 
     public function getOrder()

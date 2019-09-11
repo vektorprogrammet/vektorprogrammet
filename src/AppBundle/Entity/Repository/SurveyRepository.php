@@ -42,7 +42,8 @@ class SurveyRepository extends EntityRepository
      * @param string $name
      * @return Survey[]
      */
-    public function findByName(String $name){
+    public function findByName(String $name)
+    {
         return $this->createQueryBuilder('survey')
             ->select("survey")
             ->where('survey.name = :surveyName')
