@@ -880,43 +880,14 @@ button.secretly-not-a-button {
   max-height: 500px;
 }
 
-.changelog_card1{
-  background-color: #023874;
-  color: white;
-  border-radius: 6px;
-  .dato {
-    color: #b2b5bf;
-  }
-  a {
-    color: white;
-    #edit {
-      display: inline;
-    }
-  }
-  form{
-    display: inline;
-  }
-}
-
-.changelog_card2{
+.changelog_card{
   border-radius: 6px;
   .dato {
     color: grey;
   }
   a {
     color: #007bff;
-    &#edit {
-      display: inline;
-      color: #007bff;
-    }
   }
-  form {
-    display: inline;
-    button {
-      color: red;
-    }
-  }
-
 }
 
 .vertical-middle {

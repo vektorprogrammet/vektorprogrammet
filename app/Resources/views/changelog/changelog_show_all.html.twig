@@ -25,6 +25,46 @@ Changelog-objekter
                             <th>Github-link</th>
                         </tr>
                         </thead>
+                        {% for item in changeLogItems %}
+                            <tr id="{{ item.id }}">
+                                <td class="table-menu">
+                                    <div class="dropdown">
+                                        <div class="clickable px-2" id="options-{{ item.id }}" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </div>
+                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ item.id }}">
+                                            <div class="dropdown-header mb-2"><strong>Changelog-objekt {{ item.id }}</strong></div>
+                                            <a href="{{ path('changelogitem_edit', { 'id': item.id }) }}"
+                                               class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                            </a>
+                                            {% if is_granted_team_leader() %}
+                                                <form method="POST"
+                                                      onsubmit="return confirm('Vil du virkelig slette artikkel {{ item.title }}?')"
+                                                      action="{{ path('changelogitem_delete', { id: item.id }) }}">
+                                                    <button type="submit"
+                                                            class="dropdown-item">
+                                                        <i class="fa fa-trash text-danger"></i> Slett
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ item.title | safe_html }}
+                                </td>
+                                <td>
+                                    {{ item.description }}
+                                </td>
+                                <td>
+                                    {{ item.date | date("d.m.y") }}
+                                </td>
+                                <td>
+                                    <a href="{{ item.githublink }}">{{ item.githublink | trim('https://') | split("/")[0]}}</a>
+                                </td>
+                            </tr>
+                        {% endfor %}
                     </table>
                 </div>
             </div>

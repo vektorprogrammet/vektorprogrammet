@@ -48,7 +48,7 @@ class ChangeLogController extends BaseController
         ));
     }
 
-    public function deleteChangeLogAction(Request $request, ChangeLogItem $changeLogItem)
+    public function deleteChangeLogAction(ChangeLogItem $changeLogItem)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($changeLogItem);
@@ -56,14 +56,14 @@ class ChangeLogController extends BaseController
 
         $this->addFlash("success", "\"".$changeLogItem->getTitle()."\" ble slettet");
 
-        return $this->redirect($this->generateUrl('control_panel'));
+        return $this->redirect($this->generateUrl('changelog_show_all'));
     }
 
-    public function showAction(Request $request)
+    public function showAction()
     {
         $em = $this->getDoctrine()->getManager();
-
-        $changeLogItems = $em->getRepository('AppBundle:ChangeLogItem')->findAll();
+        $changeLogItems = $em->getRepository('AppBundle:ChangeLogItem')->findAllOrderedByDate();
+        $changeLogItems = array_reverse($changeLogItems);
 
         return $this->render('changelog/changelog_show_all.html.twig',array('changeLogItems' => $changeLogItems));
     }
