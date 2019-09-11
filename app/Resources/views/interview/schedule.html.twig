@@ -53,14 +53,15 @@
                     <div class="d-flex flex-row">
 
 
-
                         <!--- INTERVIEWER START --->
                         <div class="interviewer">
                             <h5 class="text-center">Intervjuer</h5>
                             <p class="text-center">{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
 
                             <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
-                            <img class="scheduler-photo profile-photo bordered rounded-circle "
+
+                                <img class="scheduler-photo profile-photo bordered rounded-circle "
+
                                  src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
                             </a>
                         </div>
