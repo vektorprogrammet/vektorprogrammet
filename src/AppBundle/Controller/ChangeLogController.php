@@ -58,4 +58,13 @@ class ChangeLogController extends BaseController
 
         return $this->redirect($this->generateUrl('control_panel'));
     }
+
+    public function showAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $changeLogItems = $em->getRepository('AppBundle:ChangeLogItem')->findAll();
+
+        return $this->render('changelog/changelog_show_all.html.twig',array('changeLogItems' => $changeLogItems));
+    }
 }

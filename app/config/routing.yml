@@ -127,7 +127,10 @@ changelogitem_delete:
  requirements:
   id: \d+
 
-
+changelog_show_all:
+ path: /kontrollpanel/changelog/show/all
+ defaults: { _controller: AppBundle:ChangeLog:show }
+ methods: [GET]
 
 ##########################################
 #                Survey                  #

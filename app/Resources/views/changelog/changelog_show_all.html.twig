@@ -1,0 +1,33 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+Changelog-objekter
+{% endblock %}
+
+{% block breadcrumb %}
+<li class="breadcrumb-item active">Changelog-objekter</li>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-list-ul"></i> Changelog-objekter ({{ changeLogItems|length }})</div>
+                <div class="table-responsive">
+                    <table class="table" id="article-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Tittel</th>
+                            <th>Beskrivelse</th>
+                            <th>Dato</th>
+                            <th>Github-link</th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
