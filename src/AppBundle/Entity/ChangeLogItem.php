@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ChangeLogItem
@@ -24,21 +25,25 @@ class ChangeLogItem
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string", length=1000)
+     * @ORM\Column(name="title", type="string",nullable=false)
+     * @Assert\Length(
+     *     max=40,
+     *     maxMessage="Tittelen kan ikke være mer enn 40 tegn"
+     * )
      */
     private $title;
 
     /**
      * @var string
+     * @ORM\Column(name="description", type="string", length=1000, nullable=true)
      *
-     * @ORM\Column(name="description", type="string", nullable=true, length=5000)
      */
     private $description;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="githubLink", type="string", nullable=true, length=1000)
+     * @ORM\Column(name="githubLink", type="string", nullable=false, length=1000)
      */
     private $githubLink;
 

@@ -18,7 +18,7 @@ class ChangeLogType extends AbstractType
         $builder->add('title', TextType::class, array(
                 'required' => true,
                 'label' => false,
-                'attr' => array('placeholder' => 'Fyll inn tittel til endring'),
+                'attr' => array('placeholder' => 'Fyll inn tittel til objektet'),
             ))
 
         ->add('description', TextAreaType::class, array(
@@ -37,17 +37,11 @@ class ChangeLogType extends AbstractType
             'filebrowserBrowseRoute' => 'elfinder',
             'filebrowserBrowseRouteParameters' => array('instance' => 'team_editor'), ),
         'label' => 'Lang beskrivelse (valgfritt)',
-        'attr' => array('class' => 'hide'), // Graceful loading, hides the textarea that is replaced by ckeditor
+        'attr' => array('class' => 'hide'),
             ))
 
         ->add('save', SubmitType::class, array(
             'label' => 'Lagre',
             ));
-    }
-    
-
-    public function getBlockPrefix()
-    {
-        return 'survey';
     }
 }

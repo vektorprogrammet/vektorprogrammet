@@ -20,7 +20,7 @@ class ChangeLogController extends BaseController
             $em->persist($changeLogItem);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('control_panel'));
+            return $this->redirect($this->generateUrl('changelog_show_all'));
         }
 
         return $this->render('changelog/changelog_create.html.twig', array(
@@ -39,7 +39,7 @@ class ChangeLogController extends BaseController
             $em->persist($changeLogItem);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('control_panel'));
+            return $this->redirect($this->generateUrl('changelog_show_all'));
         }
 
         return $this->render('changelog/changelog_create.html.twig', array(

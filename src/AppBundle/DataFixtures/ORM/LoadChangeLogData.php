@@ -29,7 +29,7 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
     public function load(ObjectManager $manager)
     {
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('Nye teammedlemmer blir automatisk invitert til Slack');
+        $changeLogItem->setTitle('Automatisk invitasjon til Slack for nye');
         $changeLogItem->setDescription('Når et nytt medlem blir lagt til i team får han/hun tilgang til sin vektorprogrammet.no-epost ved å logge inn på gmail.com med sin bruker på vektorprogrammet.no. Når det nye medlemmet logger inn på Gmail for første gang vil det ligge en invitasjon til Slack der.');
         $changeLogItem->setGithubLink('https://github.com');
         $changeLogItem->setDate(new \DateTime());
@@ -77,7 +77,7 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('Man kan nå legge til quicklinks i kontrollpanelet!');
+        $changeLogItem->setTitle('Quicklinks i kontrollpanelet!');
         $changeLogItem->setDescription('Fra og med nå kan man legge til quicklinks til andre steder via sitt eget kontrollpanel. Dermed vil man raskere kunne navigere mellom ofte brukte sider, i stedet for å trykke seg gjennom mange sider hver gang.');
         $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet/tree/quicklinks');
         $changeLogItem->setDate(new \DateTime());

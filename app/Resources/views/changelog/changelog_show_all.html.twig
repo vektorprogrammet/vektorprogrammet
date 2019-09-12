@@ -13,7 +13,7 @@ Changelog-objekter
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header"><i class="fa fa-list-ul"></i> Changelog-objekter ({{ changeLogItems|length }})</div>
+                <div class="card-header"><i class="fa fa-list-ul"></i> Changelog-objekter ({{ changeLogItems|length }}) <a href="{{ path('changelog_create') }}" class="d-inline-block float-right">Lag nytt objekt</a></div>
                 <div class="table-responsive">
                     <table class="table" id="article-table">
                         <thead>
@@ -38,16 +38,14 @@ Changelog-objekter
                                             <a href="{{ path('changelogitem_edit', { 'id': item.id }) }}"
                                                class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
                                             </a>
-                                            {% if is_granted_team_leader() %}
-                                                <form method="POST"
-                                                      onsubmit="return confirm('Vil du virkelig slette artikkel {{ item.title }}?')"
-                                                      action="{{ path('changelogitem_delete', { id: item.id }) }}">
-                                                    <button type="submit"
-                                                            class="dropdown-item">
-                                                        <i class="fa fa-trash text-danger"></i> Slett
-                                                    </button>
-                                                </form>
-                                            {% endif %}
+                                            <form method="POST"
+                                                  onsubmit="return confirm('Vil du virkelig slette artikkel {{ item.title }}?')"
+                                                  action="{{ path('changelogitem_delete', { id: item.id }) }}">
+                                                <button type="submit"
+                                                        class="dropdown-item">
+                                                    <i class="fa fa-trash text-danger"></i> Slett
+                                                </button>
+                                            </form>
                                         </div>
                                     </div>
                                 </td>
@@ -55,7 +53,7 @@ Changelog-objekter
                                     {{ item.title | safe_html }}
                                 </td>
                                 <td>
-                                    {{ item.description }}
+                                    {{ item.description | safe_html }}
                                 </td>
                                 <td>
                                     {{ item.date | date("d.m.y") }}
