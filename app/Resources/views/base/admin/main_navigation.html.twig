@@ -298,6 +298,12 @@
                 } %}
             {% endif %}
 
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'feedback_admin',
+                icon: 'hands-helping',
+                name: 'Feedback',
+            } %}
+
             {% if is_granted_admin() %}
                 <li class="nav-title">Admin</li>
                 {% include 'base/admin/nav_link.html.twig' with {

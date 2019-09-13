@@ -1265,3 +1265,9 @@ teachers:
 about_new:
     path: /om
     defaults: { _controller: AppBundle:AboutVektor:show }
+##########################################
+#               Feedback                 #
+##########################################
+feedback_admin:
+    path: /kontrollpanel/feedback
+    defaults: {_controller: AppBundle:Feedback:index }
