@@ -1,0 +1,32 @@
+{% extends 'adminBase.html.twig' %}
+{% block title %}
+    Gi oss feedback!
+{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    Send en melding til IT-teamet!
+                </div>
+                <div class="card-body">
+                    <ul>
+                        <li>Har du et spørsmål til IT-teamet?</li>
+                        <li>Får du opp en feilmelding når du prøver å gjøre noe?</li>
+                        <li>Har du en god ide til en ny funksjonalitet?</li>
+                    </ul>
+                    <strong>IT-teamet vil gjerne høre fra deg.</strong>
+                    <br><br>
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+
+                    {{dump(messenger)}}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
