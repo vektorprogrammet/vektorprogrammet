@@ -18,7 +18,7 @@
             {% for s in schools %}
                 <tr>
                     {% if is_granted_team_leader() %}
-                        <td class="table-menu">
+                        <td>
                             <div class="dropdown">
                                 <div class="clickable" id="options-{{ s.id }}" data-toggle="dropdown"
                                      aria-haspopup="true" aria-expanded="false">
