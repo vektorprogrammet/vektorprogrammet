@@ -401,4 +401,13 @@ class Team implements TeamInterface
     {
         $this->applications = $applications;
     }
+
+    /**
+     * @return bool
+     */
+    public function getAcceptApplicationAndDeadline()
+    {
+        $now = new \DateTime();
+        return (($this->acceptApplication and $now < $this->deadline) or ($this->acceptApplication and $this->deadline == null));
+    }
 }
