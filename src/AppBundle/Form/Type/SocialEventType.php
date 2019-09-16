@@ -52,7 +52,7 @@ class SocialEventType extends AbstractType
 
             ////// ---------------------------------------- /////
             ->add('department', EntityType::class, array(
-                'label' => 'Hvilken region skal gjøremålet gjelde for?',
+                'label' => 'Hvilken region skal arrangementet gjelde for?',
                 'class' => 'AppBundle:Department',
                 'placeholder' => 'Alle regioner',
                 'empty_data' => null,
@@ -63,7 +63,7 @@ class SocialEventType extends AbstractType
                 'required' => false,
             ))
             ->add('semester', EntityType::class, array(
-                'label' => 'Hvilket semester skal gjøremålet gjelde for?',
+                'label' => 'Hvilket semester skal arrangementet gjelde for?',
                 'class' => 'AppBundle:Semester',
                 'placeholder' => 'Alle semestre fra og med nåværende',
                 'query_builder' => function (SemesterRepository $sr) {

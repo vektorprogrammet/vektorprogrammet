@@ -58,13 +58,47 @@
                 <tbody>
 
                 {% for event in SocialEventList %}
-                    <tr>
-                    <td></td>
-                    <td>{{ event.title }}</td>
-                    <td>{{ event.description }}</td>
-                    <td>En tid</td>
-                    <td>{{ event.department ? event.department : 'Alle regioner' }}</td>
-                    <td>{{ event.semester ? event.semester : 'Alle semestre' }}</td>
+                    <tr id="{{ event.id }}">
+                        <td class="table-menu">
+                            {% if has_access_to('social_event_edit') %}
+                                <div class="dropdown">
+                                    <div class="clickable px-2" id="options-{{ event.id }}" data-toggle="dropdown"
+                                         aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v text-secondary"></i>
+                                    </div>
+                                    <div class="dropdown-menu pt-0" aria-labelledby="options-{{ event.id }}">
+                                        <div class="dropdown-header mb-2"><strong>{{ event.title }}</strong></div>
+                                        <a href="{{ path('social_event_edit', {'id': event.id, 'department': department.id, 'semester': semester.id}) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item text-secondary">
+                                                <i class="fa fa-edit text-secondary"></i>
+                                                Endre
+                                            </button>
+                                        </a>
+                                        {% if has_access_to('social_event_delete') %}
+                                            <form method="POST"
+                                                  onsubmit="return confirm('Er du sikker på at du vil slette arrangementet?')"
+                                                  action="{{ path('social_event_delete', {'id': event.id, 'department': department.id, 'semester': semester.id}) }}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button type="submit"
+                                                                class="dropdown-item text-danger">
+                                                            <i class="fa fa-trash text-danger"></i>
+                                                            Slett
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ event.title }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>En tid</td>
+                        <td>{{ event.department ? event.department : 'Alle regioner' }}</td>
+                        <td>{{ event.semester ? event.semester : 'Alle semestre' }}</td>
                     </tr>
                 {% endfor %}
 

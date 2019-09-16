@@ -89,13 +89,47 @@ class SocialEventController extends BaseController
         ));
     }
 
+    public function editSocialEventAction(SocialEvent $event, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
 
+        $form = $this->createForm(SocialEventType::class, $event);
+        $form->handleRequest($request);
 
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
+        if ($form->isValid()) {
+            $event->setSemester($currentSemester);
+            $em->persist($event);
+            $em->flush();
+            return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
+        }
+
+        return $this->render('social_event/social_event_create.html.twig', array(
+            'form' => $form->createView(),
+            'department' => $department,
+            'semester' => $semester,
+            'event' => $event,
+        ));
+    }
+
+    public function deleteSocialEventAction(SocialEvent $event)
+    {
+        # NB: this function will permanently remove th event.
+        # For history purposes, perhaps it should deactivate the event in stead?
+        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404();
+
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($event);
+        $em->flush();
+
+        return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
+    }
 
 
     #TODO: functions yet to be implemented:
-    //public function editSocialEventAction
-    //public function deleteSocialEventAction
     //public function copySocialEventAction
 
 }

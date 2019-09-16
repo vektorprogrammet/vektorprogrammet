@@ -209,6 +209,17 @@
 
             <li class="nav-title">Annet</li>
             {% include 'base/admin/nav_link.html.twig' with {
+                route: 'social_event_show',
+                icon: 'calendar-plus',
+                name: 'Arrangementer',
+                activeRoutes: [
+                    'social_event_create',
+                    'social_event_edit',
+                    'social_event_delete',
+                    'social_event_copy',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
                 route: 'surveys',
                 icon: 'comment-o',
                 name: 'Undersøkelser',
