@@ -47,7 +47,7 @@
                 {% for item in correctList %}
 
                     <tr id="{{ item.id }}">
-                        <td>
+                        <td class="table-menu">
                             {% if has_access_to('edit_todo') %}
                                 <div class="dropdown">
                                     <div class="clickable px-2" id="options-{{ item.id }}" data-toggle="dropdown"

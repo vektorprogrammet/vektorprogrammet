@@ -17,7 +17,7 @@
             {% for survey in surveys
                 if ((not survey.confidential) or has_access_to('survey_admin'))  %}
                 <tr>
-                    <td>
+                    <td class="table-menu">
                             {% if has_access_to('survey_admin') %}
                             <div class="dropdown">
                                 <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"

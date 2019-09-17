@@ -56,7 +56,7 @@
                         {% for a in admissionPeriods %}
                             <tr class="text-nowrap">
                                 {% if is_granted_team_leader() %}
-                                    <td>
+                                    <td class="table-menu">
                                         <div class="dropdown">
                                             <div class="clickable" id="options-{{ a.id }}" data-toggle="dropdown"
                                                  aria-haspopup="true" aria-expanded="false">
