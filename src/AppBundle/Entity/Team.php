@@ -121,15 +121,15 @@ class Team implements TeamInterface
         return $this->acceptApplication;
     }
 
-    public function setAcceptApplication($acceptApplication)
+    /**
+     * @param bool $acceptApplication
+     * @return Team
+     */
+
+    public function setAcceptApplication(bool $acceptApplication)
     {
-        $hasDeadline = isset($this->deadline);
-        $now = new \DateTime();
-        if(($hasDeadline && $now <= $this->deadline) || !$hasDeadline){
-            $this->acceptApplication = $acceptApplication;
-        } else {
-            $this->acceptApplication = false;
-        }
+        $this->acceptApplication = $acceptApplication;
+        return $this;
     }
 
 
@@ -247,7 +247,7 @@ class Team implements TeamInterface
     /**
      * @param \DateTime $deadline
      *
-     * @return $this|\AppBundle\Entity\Team
+     * @return Team
      */
     public function setDeadline($deadline)
     {
@@ -408,6 +408,6 @@ class Team implements TeamInterface
     public function getAcceptApplicationAndDeadline()
     {
         $now = new \DateTime();
-        return (($this->acceptApplication and $now < $this->deadline) or ($this->acceptApplication and $this->deadline == null));
+        return (($this->acceptApplication && $now < $this->deadline) || ($this->acceptApplication && $this->deadline === null));
     }
 }
