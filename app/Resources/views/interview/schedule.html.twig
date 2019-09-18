@@ -68,8 +68,8 @@
                                 <p class="text-center">{{ interview.coInterviewer.firstName }} {{ interview.coInterviewer.lastName }}
                                 <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">(endre)</a>
                                 <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
-                                    <div class="no-co-interviewer img-blur-container rounded-circle bordered">
-                                        <img class="scheduler-photo profile-photo bordered rounded-circle"
+                                    <div class="no-co-interviewer img-blur-container">
+                                        <img class="scheduler-photo profile-photo bordered rounded-circle "
                                              src="{{ asset(interview.coInterviewer.picturePath | imagine_filter('profile_img')) }}">
                                         <div class="profile-photo-overlay">Velg intervjuer</div>
                                     </div>
@@ -91,7 +91,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     {{ form_start(form) }}
     {{ form_errors(form) }}
