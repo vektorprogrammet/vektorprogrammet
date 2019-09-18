@@ -32,7 +32,7 @@
   },
   "scripts": {
     "test": "./bin/phpunit --configuration app/phpunit.xml.dist",
-    "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist -d max",
+    "test:win": ".\\bin\\phpunit --configuration app/phpunit.xml.dist",
     "setup": "php ./composer.phar install -n && npm install && npm run setup:scheduling && npm run build:dev && php bin/console doctrine:schema:drop --force --env=dev && php bin/console doctrine:schema:create --env=dev && php bin/console doctrine:schema:update --force --env=dev && php bin/console doctrine:fixtures:load --env=dev -n",
     "setup:win": "php .\\composer.phar install -n && npm install && npm run setup:scheduling:win && npm run build:dev && php bin/console doctrine:schema:drop --force --env=dev && php bin/console doctrine:schema:create --env=dev && php bin/console doctrine:schema:update --force --env=dev && php bin/console doctrine:fixtures:load --env=dev -n",
     "setup:scheduling": "cd src/AppBundle/AssistantScheduling/Webapp && npm install",
