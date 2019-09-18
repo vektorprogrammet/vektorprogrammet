@@ -68,7 +68,7 @@ class SupportTicketType extends AbstractType
                 function ($id) use ($departmentRepository) {
                     return $departmentRepository->find($id);
                 }
-        ));
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

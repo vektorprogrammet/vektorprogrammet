@@ -14,5 +14,4 @@ class FeedbackRepository extends \Doctrine\ORM\EntityRepository
     {
         return $this->findBy(array(), array('created_at' => 'DESC'));
     }
-
 }

@@ -18,8 +18,7 @@ class FeedbackController extends BaseController
 
         $form->handleRequest($request);
 
-        if($form->isSubmitted() && $form->isValid())
-        {
+        if ($form->isSubmitted() && $form->isValid()) {
             //Stores the submitted feedback
             $em = $this->getDoctrine()->getManager();
             $feedback = $form->getData();
@@ -27,7 +26,7 @@ class FeedbackController extends BaseController
             $em->persist($feedback);
             $em->flush();
 
-            //Notifies on slack (NotificationCHannel) 
+            //Notifies on slack (NotificationCHannel)
             $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
             $messenger->notify($feedback->getSlackMessageBody());
 
@@ -61,13 +60,13 @@ class FeedbackController extends BaseController
         $pagination = $paginator->paginate(
             $feedbacks,
             $request->query->get('page', 1),
-            15);
+            15
+        );
 
         return $this->render('feedback_admin/feedback_admin_list.html.twig', array(
             'feedbacks' => $feedbacks,
             'pagination' => $pagination,
             'title' => 'Alle tilbakemeldinger'
         ));
-
     }
 }
