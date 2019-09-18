@@ -8,10 +8,6 @@ use AppBundle\Service\SlackMessenger;
 
 class FeedbackController extends BaseController
 {
-    private function getMessenger(SlackMessenger $messenger)
-    {
-        return $messenger;
-    }
     public function indexAction(Request $request)
     {
         $feedback = new Feedback;
@@ -35,18 +31,40 @@ class FeedbackController extends BaseController
 
 
             /* TODO
-                - Send Epost
-                - Send Melding via bot i #IT-General med @channel
+                - Send Epost?
             */
+            $messenger->notify($feedback->getSlackMessageBody());
         }
 
         return $this->render('feedback_admin/feedback_admin_index.html.twig', array(
             'title' => 'Feedback',
-            'form_1' => $form,
-            'feedback' => $feedback,
-            'user' => $user,
-            'messenger' => $messenger,
             'form' => $form->createView()
         ));
+    }
+    public function showAction(Request $request, Feedback $feedback)
+    {
+        return $this->render('feedback_admin/feedback_admin_show.html.twig', array(
+            'feedback' => $feedback,
+            'title' => $feedback->getTitle(),
+        ));
+    }
+
+    public function showAllAction(Request $request)
+    {
+        $paginator  = $this->get('knp_paginator');
+
+        $repository = $this->getDoctrine()->getRepository(Feedback::class);
+        $feedbacks = $repository->findAllSort();
+
+        $pagination = $paginator->paginate(
+            $feedbacks,
+            $request->query->get('page', 1),
+            15);
+        return $this->render('feedback_admin/feedback_admin_list.html.twig', array(
+            'feedbacks' => $feedbacks,
+            'pagination' => $pagination,
+            'title' => 'Alle tilbakemeldinger'
+        ));
+
     }
 }
