@@ -119,6 +119,7 @@ class Feedback
     {
         return $this->type;
     }
+    //Returns string value in norwegian locale of Type
     public function getTypeString()
     {
         $type = "";
@@ -197,7 +198,7 @@ class Feedback
 
 
     /**
-     * Get Slack message.
+     * Get Slack message body.
      *
      * @return string
      */
