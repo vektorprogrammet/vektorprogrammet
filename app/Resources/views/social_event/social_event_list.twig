@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active">Sjekkliste</li>
+    <li class="breadcrumb-item active">Arrangementer</li>
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -50,6 +50,7 @@
                     <th>Tittel</th>
                     <th>Beskrivelse</th>
                     <th>Start</th>
+                    <th>Status</th>
                     <th>Sted</th>
                     <th>Semester</th>
                 </tr>
@@ -96,7 +97,14 @@
                         </td>
                         <td>{{ event.title }}</td>
                         <td>{{ event.description }}</td>
-                        <td>En tid</td>
+                        <td>{{ event.startTime |date("D H:i - d/M/Y") }} </td>
+                        <td>
+                            {% if event.hasHappened %}
+                                <span class="badge badge-pill badge-secondary">Har vært</span>
+                            {% elseif event.happensSoon %}
+                                <span class="badge badge-pill badge-info">Skjer innen en uke</span>
+                            {% endif %}
+                        </td>
                         <td>{{ event.department ? event.department : 'Alle regioner' }}</td>
                         <td>{{ event.semester ? event.semester : 'Alle semestre' }}</td>
                     </tr>

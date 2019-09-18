@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\SocialEvent;
 use Appbundle\Entity\Repository\SocialEventItemRepository;
 
-
 class SocialEventManager
 {
     /**
@@ -37,11 +36,6 @@ class SocialEventManager
     {
         $repository = $this->em->getRepository('AppBundle:SocialEvent');
         $allSocialEvents = $repository->findSocialEventsBySemesterAndDepartment($semester, $department);
-        //$orderedList = array($allSocialEvents);
-        //return $orderedList;
-
         return $allSocialEvents;
-
     }
-
 }

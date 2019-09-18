@@ -3,10 +3,8 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
-use AppBundle\Entity\SocialEvent;
 use \Doctrine\ORM\EntityRepository;
 use \AppBundle\Entity\Semester;
-
 
 /**
  * Class SocialEventItemRepository
@@ -25,27 +23,27 @@ class SocialEventItemRepository extends EntityRepository
             ->select('SocialEventItem')
             ->where('SocialEventItem.semester = :semester or SocialEventItem.semester is null')
             ->andWhere('SocialEventItem.department = :department or SocialEventItem.department is null')
-            #->andWhere('SocialEventItem.deletedAt > :semesterEndDate or SocialEventItem.deletedAt is null')
-
-
+            ->orderBy('SocialEventItem.startTime')
             ->setParameter('semester', $semester)
             ->setParameter('department', $department)
-            #->setParameter('semesterEndDate', $semester->getSemesterEndDate())
             ->getQuery()
             ->getResult();
-
-        # $filteredItems = array_filter($socialEvents, function (SocialEvent $socialEvent) use ($semester) {
-        #     if (empty($socialEvent->getSemester())) {
-        #         return (
-        #             $socialEvent->getCreatedAt() < $semester->getSemesterEndDate() &&
-        #             (empty($socialEvent->getDeletedAt())? true : $socialEvent->getDeletedAt() > $semester->getSemesterStartDate()));
-        #     } else {
-        #         return true;
-        #     }
-        # });//
-        #return $filteredItems;
         return $socialEvents;
     }
 
-
+    public function findFutureSocialEventsBySemesterAndDepartment(Semester $semester, Department $department)
+    {
+        $socialEvents = $this->createQueryBuilder('SocialEventItem')
+            ->select('SocialEventItem')
+            ->where('SocialEventItem.semester = :semester or SocialEventItem.semester is null')
+            ->andWhere('SocialEventItem.department = :department or SocialEventItem.department is null')
+            ->andWhere('SocialEventItem.startTime >= :now')
+            ->orderBy('SocialEventItem.startTime')
+            ->setParameter('semester', $semester)
+            ->setParameter('department', $department)
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->getResult();
+        return $socialEvents;
+    }
 }

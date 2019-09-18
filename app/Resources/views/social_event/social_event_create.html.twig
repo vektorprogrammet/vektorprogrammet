@@ -38,8 +38,8 @@
                     {{ form_row(form.title) }}
                     {{ form_row(form.description ) }}
 
-                    {{ form_row(form.start_time) }}
-                    {{ form_row(form.end_time) }}
+                    {{ form_row(form.startTime) }}
+                    {{ form_row(form.endTime) }}
 
 
 
@@ -81,7 +81,7 @@
             step: 5,
         };
 
-        jQuery('#{{ form.start_time.vars.id }}').datetimepicker(options);
-        jQuery('#{{ form.end_time.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.startTime.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.endTime.vars.id }}').datetimepicker(options);
     </script>
 {% endblock %}

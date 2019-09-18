@@ -30,20 +30,26 @@ class SocialEventType extends AbstractType
                     'placeholder' => "Beskrivelse av arragement"
                 ),
             ))
-            ->add('start_time', DateTimeType::class, array(
+            ->add('startTime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Starttid for arrangement',
-                'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
+                'attr' => array(
+                    'placeholder' => 'Klikk for å velge tidspunkt',
+                    'autocomplete' => 'off'
+                    ),
             ))
             ## TODO: MULIHET FOR IKKE Å HA TID
 
 
-            ->add('end_time', DateTimeType::class, array(
+            ->add('endTime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Sluttid for arrangement',
-                'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
+                'attr' => array(
+                    'placeholder' => 'Klikk for å velge tidspunkt',
+                    'autocomplete' => 'off'
+                    ),
             ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Lagre',
@@ -73,8 +79,5 @@ class SocialEventType extends AbstractType
             ))
             ////// ---------------------------------------- /////
         ;
-
     }
-
-
 }

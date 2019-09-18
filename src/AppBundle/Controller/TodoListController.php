@@ -8,8 +8,11 @@ use AppBundle\Form\Type\CreateTodoItemInfoType;
 use AppBundle\Model\TodoItemInfo;
 use AppBundle\Entity\TodoItem;
 use AppBundle\Service\TodoListService;
+use Exception;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Response;
 
 class TodoListController extends BaseController
 {
@@ -31,7 +34,7 @@ class TodoListController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function createTodoAction(Request $request)
     {
@@ -66,7 +69,7 @@ class TodoListController extends BaseController
     /**
      * @param TodoItem $item
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editTodoAction(TodoItem $item, Request $request)
     {
@@ -117,7 +120,7 @@ class TodoListController extends BaseController
                 $response['todoCompleted'] = true;
             }
             $response['success'] = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = [
                 'success' => false,
                 'code' => $e->getCode(),
@@ -129,7 +132,7 @@ class TodoListController extends BaseController
 
     /**
      * @param TodoItem $item
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function toggleAction(TodoItem $item)
     {
@@ -142,7 +145,8 @@ class TodoListController extends BaseController
 
     /**
      * @param TodoItem $item
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
+     * @throws Exception
      */
     public function deleteTodoItemAction(TodoItem $item)
     {

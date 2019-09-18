@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class EventApiController extends BaseController
-
 {
 
     /**
@@ -30,7 +29,5 @@ class EventApiController extends BaseController
         }
         # TODO : ADD TO THIS.
         return new JsonResponse(null);
-
     }
-
 }

@@ -51,20 +51,19 @@ class SocialEvent
     /**
      * @ORM\Column(type="datetime")
      */
-    private $start_time;
+    private $startTime;
 
 
     /**
      * @ORM\Column(type="datetime")
      */
-    private $end_time;
+    private $endTime;
 
     /**
      * Constructor.
      */
     public function __construct()
     {
-
     }
 
     ## TODO: Burde det være en location?
@@ -130,15 +129,15 @@ class SocialEvent
      */
     public function getStartTime()
     {
-        return $this->start_time;
+        return $this->startTime;
     }
 
     /**
-     * @param \DateTime $start_time
+     * @param \DateTime $startTime
      */
-    public function setStartTime($start_time): void
+    public function setStartTime($startTime): void
     {
-        $this->start_time = $start_time;
+        $this->startTime = $startTime;
     }
 
     /**
@@ -146,15 +145,15 @@ class SocialEvent
      */
     public function getEndTime()
     {
-        return $this->end_time;
+        return $this->startTime;
     }
 
     /**
-     * @param \DateTime $end_time
+     * @param \DateTime $endTime
      */
-    public function setEndTime($end_time): void
+    public function setEndTime($endTime): void
     {
-        $this->end_time = $end_time;
+        $this->endTime = $endTime;
     }
 
 
@@ -194,9 +193,23 @@ class SocialEvent
     }
 
 
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function hasHappened(): bool
+    {
+        return $this->getStartTime() < new \DateTime();
+    }
 
 
 
-
-
+    /**
+     * @return bool
+     * @throws \Exception
+     */
+    public function happensSoon(): bool
+    {
+        return (!($this->hasHappened()) && $this->getStartTime() < new \DateTime('+1 week'));
+    }
 }
