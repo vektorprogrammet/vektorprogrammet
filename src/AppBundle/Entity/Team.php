@@ -252,7 +252,7 @@ class Team implements TeamInterface
     public function setDeadline($deadline)
     {
         $now = new \DateTime();
-        if($this->acceptApplication && $now <= $deadline){
+        if ($this->acceptApplication && $now <= $deadline) {
             $this->deadline = $deadline;
         } else {
             $this->deadline = null;
