@@ -1,0 +1,64 @@
+{% extends 'adminBase.html.twig' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('feedback_admin_index')}}">Feedback</a>
+    </li>
+    <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    Alle tilbakemeldinger
+                </div>
+                <div class="card-body">
+                    <table class="table" >
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Tittel</th>
+                                <th>Bruker</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for feedback in pagination %}
+                                <tr>
+                                    <td>
+                                        {{feedback.id}}
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('feedback_admin_show', {'id': feedback.id}) }}">{{feedback.title}}</a>
+                                    </td>
+                                    <td>
+                                        {{feedback.user.fullName}}
+                                    </td>
+                                    <td>
+                                        {% if feedback.type == 'question' %}
+                                        <span class="badge badge-primary">
+                                            Spørsmål
+                                        </span>
+                                        {% elseif feedback.type == 'error' %}
+                                        <span class="badge badge-error">
+                                            Feilmelding
+                                        </span>
+                                        {% elseif feedback.type == 'feature_request' %}
+                                        <span class="badge badge-success">
+                                            Ny funksjonalitet
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                        {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
