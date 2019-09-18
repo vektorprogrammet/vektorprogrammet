@@ -14,40 +14,50 @@ class FeedbackControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/feedback');
 
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
-    //    dump($crawler->filter('div:contains("Send en melding til IT-teamet!"'));
         $this->assertEquals(1, $crawler->filter('button:contains("Send inn")')->count());
         $this->assertEquals(1, $crawler->filter('form')->count());
     }
-    public function testShow()
+    //Feature tests the controller and its functionality
+    public function testFeature()
     {
+        //Sets test-variables
+        $testTitle = 'Test-tittel';
+        $testDescription = 'Test-beskrivelse';
+        $testType = 'question';
+
         $client = $this->createTeamMemberClient();
 
-        //count feedbacks
-        $crawler1 = $client->request('GET', '/kontrollpanel/feedback/list');
+        //count current feedbacks
+        $client->request('GET', '/kontrollpanel/feedback/list');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
         $noOfFeedbacksBefore = $this->countTableRows('/kontrollpanel/feedback/list', $client);
 
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
-
         //Submit new feedback
-        $crawler2 = $client->request('GET', '/kontrollpanel/feedback');
-
+        $crawler = $client->request('GET', '/kontrollpanel/feedback');
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
-        $form = $crawler2->selectButton('Send inn')->form([
-            'feedback[title]' => 'Test-tittel',
-            'feedback[description]' => 'Test-beskrivelse',
-            'feedback[type]' => 'question'
+        //Submits form
+        $form = $crawler->selectButton('Send inn')->form([
+            'feedback[title]' => $testTitle,
+            'feedback[description]' => $testDescription,
+            'feedback[type]' => $testType
         ]);
         $client->submit($form);
-        //check if feedbacks++
 
-        $crawler3 = $client->request('GET', '/kontrollpanel/feedback/list');
-
-        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+        //check if new feedback was added
         $noOfFeedbacksAfter = $this->countTableRows('/kontrollpanel/feedback/list', $client);
         $this->assertEquals(1, $noOfFeedbacksAfter - $noOfFeedbacksBefore);
 
         //check specific feedback
+        $crawler = $client->request('GET', '/kontrollpanel/feedback/list');
+        $link = $crawler->filter('tbody a')->last()->link();
+        $crawler = $client->request('GET', $link->getUri());
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        //Checks if Title and Description are in the new Feedback
+        $this->assertContains($testTitle, $crawler->filter('.card-header')->text());
+        $this->assertContains($testDescription, $crawler->filter('#description')->text());
+
+
     }
 }
-
