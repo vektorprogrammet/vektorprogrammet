@@ -19,13 +19,13 @@ class FeedbackType extends AbstractType
             ->add('title', TextType::class, array(
                 'label' => 'Tittel',
                 'attr' => array(
-                    'placeholder' => 'Eks: Ønsker eastereggs',
+                    'placeholder' => 'Eks: Hvordan gjør jeg...',
                 ),
             ))
             ->add('description', TextareaType::class, array(
                 'label' => 'Beskrivelse',
                 'attr' => array(
-                    'placeholder' => 'Eks: Det hadde vært kult med...',
+                    'placeholder' => 'Eks: Jeg prøver å...',
                 ),
             ))
             ->add('type', ChoiceType::class, array(
