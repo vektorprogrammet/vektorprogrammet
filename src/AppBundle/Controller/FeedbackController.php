@@ -14,8 +14,6 @@ class FeedbackController extends BaseController
         $feedback = new Feedback;
         $user = $this->getUser();
         $form = $this->createForm(FeedBackType::class, $feedback);
-        $repository = $this->getDoctrine()->getRepository(Feedback::class)->findAll();
-
         $form->handleRequest($request);
 
         if($form->isSubmitted() && $form->isValid())
