@@ -1268,6 +1268,16 @@ about_new:
 ##########################################
 #               Feedback                 #
 ##########################################
-feedback_admin:
+feedback_admin_index:
     path: /kontrollpanel/feedback
     defaults: {_controller: AppBundle:Feedback:index }
+    methods: [GET, POST]
+feedback_admin_list:
+    path: /kontrollpanel/feedback/list
+    defaults: {_controller: AppBundle:Feedback:showAll }
+    methods: [GET]
+feedback_admin_show:
+    path: /kontrollpanel/feedback/show/{id}
+    defaults: {_controller: AppBundle:Feedback:show }
+    methods: [GET]
+
