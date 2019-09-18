@@ -299,9 +299,13 @@
             {% endif %}
 
             {% include 'base/admin/nav_link.html.twig' with {
-                route: 'feedback_admin',
+                route: 'feedback_admin_index',
                 icon: 'thumbs-up',
                 name: 'Feedback',
+                activeRoutes: [
+                    'feedback_admin_list',
+                    'feedback_admin_show'
+                ]
             } %}
 
             {% if is_granted_admin() %}
