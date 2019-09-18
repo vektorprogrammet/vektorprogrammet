@@ -55,8 +55,12 @@ class Feedback
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
     private $user;
-
-
+    
+    /**
+     * @var DateTime
+     * @ORM\Column(name="created_at", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
+     */
+     private $created_at;
 
     /**
      * Get id.
@@ -115,6 +119,23 @@ class Feedback
     {
         return $this->type;
     }
+    public function getTypeString()
+    {
+        $type = "";
+        switch($this->type)
+            {
+                case(Feedback::TYPE_ERROR):
+                    $type = "Feil";
+                    break;
+                case(Feedback::TYPE_QUESTION):
+                    $type = "Spørsmål";
+                    break;
+                case(Feedback::TYPE_FEATURE_REQUEST):
+                    $type = "Ny funksjonalitet";
+                    break;
+            }
+        return $type;
+    }
 
     /**
      * Set description.
@@ -162,5 +183,32 @@ class Feedback
     public function getUser()
     {
         return $this->user;
+    }
+    
+    /**
+     * Get created_at.
+     *
+     * @return DateTime 
+     */
+    public function getCreatedAt()
+    {
+        return $this->created_at;
+    }
+
+
+    /**
+     * Get Slack message.
+     *
+     * @return string
+     */
+    public function getSlackMessageBody()
+    {
+        $returnString = 
+        "@channel   FEEDBACK\n{$this->getTypeString()}: {$this->title}\n{$this->description}\n";
+        if($this->user)
+        {
+            $returnString .= "- {$this->user->getFullName()}";
+        }
+        return $returnString;
     }
 }
