@@ -5,7 +5,6 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-
 /**
  * Feedback
  *
@@ -60,7 +59,7 @@ class Feedback
      * @var DateTime
      * @ORM\Column(name="created_at", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
      */
-     private $created_at;
+    private $created_at;
 
     /**
      * Get id.
@@ -123,8 +122,7 @@ class Feedback
     public function getTypeString()
     {
         $type = "";
-        switch($this->type)
-            {
+        switch ($this->type) {
                 case(Feedback::TYPE_ERROR):
                     $type = "Feil";
                     break;
@@ -166,7 +164,7 @@ class Feedback
      * Set user.
      *
      * @param \AppBundle\Entity\User $user
-     * 
+     *
      * @return Feedback
      */
     public function setUser($user)
@@ -189,7 +187,7 @@ class Feedback
     /**
      * Get created_at.
      *
-     * @return DateTime 
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -204,10 +202,9 @@ class Feedback
      */
     public function getSlackMessageBody()
     {
-        $returnString = 
+        $returnString =
         "@channel   FEEDBACK\n{$this->getTypeString()}: {$this->title}\n{$this->description}\n";
-        if($this->user)
-        {
+        if ($this->user) {
             $returnString .= "- {$this->user->getFullName()}";
         }
         return $returnString;
