@@ -10,5 +10,9 @@ namespace AppBundle\Entity\Repository;
  */
 class FeedbackRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findAllSort()
+    {
+        return $this->findBy(array(), array('created_at' => 'DESC'));
+    }
 
 }
