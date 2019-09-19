@@ -16,10 +16,12 @@
     <header class="row">
         <div class="col-12">
             <h3>Resultater for {{ survey.name }} {{ survey.semester }} </h3>
-            <a id="show-filter-btn" class="text-primary">Vis/skjul filter&nbsp;&nbsp;<i
-                        class="fa fa-chevron-right"></i></a>
+            <a id="download-json-btn" class="text-primary" download="survey{{survey.id}}.json"
+               href="{{ path('survey_get_all_results', {'id': survey.id } ) }}">Last ned json</a>
         </div>
     </header>
+    <a id="show-filter-btn" class="text-primary">Vis/skjul filter&nbsp;&nbsp;<i
+                class="fa fa-chevron-right"></i></a>
     <div id="filter"></div>
     <div class="row equalheight charts" id="charts">
         <h1 class="text-center">Laster data... <i class="fa fa-spinner"></i></h1>
