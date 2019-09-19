@@ -28,6 +28,7 @@ class FeedbackController extends BaseController
             $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
             $messenger->notify($feedback->getSlackMessageBody());
 
+            $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
             return $this->redirect($request->getUri()); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)
         }
 
