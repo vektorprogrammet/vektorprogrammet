@@ -94,6 +94,5 @@ class WidgetController extends BaseController
             'title' => 'Feedback',
             'form' => $form->createView()
         ));
-
     }
 }
