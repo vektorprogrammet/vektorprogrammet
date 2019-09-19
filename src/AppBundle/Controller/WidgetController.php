@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Receipt;
+use AppBundle\Entity\Feedback;
+use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
 use AppBundle\Utils\ReceiptStatistics;
@@ -81,5 +83,17 @@ class WidgetController extends BaseController
         return $this->render('widgets/available_surveys_widget.html.twig', [
             'availableSurveys' => $surveys,
         ]);
+    }
+    public function FeedbackAction()
+    {
+        $feedback = new Feedback;
+        $user = $this->getUser();
+        $form = $this->createForm(FeedBackType::class, $feedback);
+
+        return $this->render('widgets/feedback_widget.html.twig', array(
+            'title' => 'Feedback',
+            'form' => $form->createView()
+        ));
+
     }
 }
