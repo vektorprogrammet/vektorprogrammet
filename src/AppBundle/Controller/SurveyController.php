@@ -42,7 +42,7 @@ class SurveyController extends BaseController
                 'validation_groups' => array('schoolSpecific'),
             ));
         } elseif ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->showUserAction($request, $survey);
         } else {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         }
@@ -92,13 +92,13 @@ class SurveyController extends BaseController
 
 
         if ($notification === null) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
 
         $sameSurvey = $notification->getSurveyNotificationCollection()->getSurvey() == $survey;
 
         if (!$sameSurvey) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
 
 
@@ -117,7 +117,7 @@ class SurveyController extends BaseController
     {
         $user = $this->getUser();
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         } elseif ($user === null) {
             throw new AccessDeniedException("Logg inn for å ta undersøkelsen!");
         }
@@ -136,7 +136,7 @@ class SurveyController extends BaseController
             $assistantHistory = $em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
 
             if (empty($assistantHistory)) {
-                return $this->redirectToCorrectSurvey($survey);
+                return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
             }
             $assistantHistory = $assistantHistory[0];
             $school = $assistantHistory->getSchool();
@@ -172,7 +172,7 @@ class SurveyController extends BaseController
                 if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY || ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY  && $identifier !== null)) {
                     $route = 'survey_show_user';
                 } else {
-                    return $this->redirectToCorrectSurvey($survey);
+                    return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
                 }
 
                 $parameters = array('id' => $survey->getId());
@@ -442,18 +442,6 @@ class SurveyController extends BaseController
         $em->persist($user);
         $em->flush();
         return new JsonResponse();
-    }
-
-
-    private function redirectToCorrectSurvey(Survey $survey)
-    {
-        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
-            return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        } elseif ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
-            return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        }
-
-        return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
     }
 
 
