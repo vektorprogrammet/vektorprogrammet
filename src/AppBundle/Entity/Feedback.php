@@ -58,7 +58,8 @@ class Feedback
     
     /**
      * @var DateTime
-     * @ORM\Column(name="created_at", type="datetime", nullable=true, options={"default": "CURRENT_TIMESTAMP"})
+     * @ORM\Column(name="created_at", type="datetime",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL")
+     * @ORM\Version //Somehow fixes default to CURRENT_TIMESTAMP
      */
     private $created_at;
 
