@@ -31,8 +31,7 @@ class FeedbackController extends BaseController
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
             $returnUri = $request->getUri();
 
-            if($request->headers->get('referer'))
-            {
+            if ($request->headers->get('referer')) {
                 $returnUri = $request->headers->get('referer');
             }
 
