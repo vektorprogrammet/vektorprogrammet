@@ -39,8 +39,6 @@ class FeedbackController extends BaseController
             return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
         }
 
-        dump($request->headers->get('referer'));
-
         return $this->render('feedback_admin/feedback_admin_index.html.twig', array(
             'title' => 'Feedback',
             'form' => $form->createView()
@@ -64,7 +62,6 @@ class FeedbackController extends BaseController
 
         //Gets all feedbacks sorted by created_at
         $feedbacks = $repository->findAllSort();
-        dump($feedbacks);
 
         $pagination = $paginator->paginate(
             $feedbacks,
