@@ -84,10 +84,9 @@ class WidgetController extends BaseController
             'availableSurveys' => $surveys,
         ]);
     }
-    public function FeedbackAction()
+    public function feedbackAction()
     {
         $feedback = new Feedback;
-        $user = $this->getUser();
         $form = $this->createForm(FeedBackType::class, $feedback);
 
         return $this->render('widgets/feedback_widget.html.twig', array(
