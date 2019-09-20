@@ -50,7 +50,7 @@ class FeedbackControllerTest extends BaseWebTestCase
 
         //check specific feedback
         $crawler = $client->request('GET', '/kontrollpanel/feedback/list');
-        $link = $crawler->filter('tbody a')->last()->link();
+        $link = $crawler->filter('tbody a')->first()->link();
         $crawler = $client->request('GET', $link->getUri());
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
