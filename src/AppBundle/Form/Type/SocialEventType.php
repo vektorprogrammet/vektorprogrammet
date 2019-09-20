@@ -11,13 +11,18 @@ use Symfony\Component\Form\FormBuilderInterface;
 use AppBundle\Entity\Repository\SemesterRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 // --- / /
 
 class SocialEventType extends AbstractType
 {
+    private $department;
+
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        $this->department = $options['department'];
+
         $builder
             ->add('title', TextType::class, array(
                 'label' => 'Tittel',
@@ -60,24 +65,30 @@ class SocialEventType extends AbstractType
             ->add('department', EntityType::class, array(
                 'label' => 'Hvilken region skal arrangementet gjelde for?',
                 'class' => 'AppBundle:Department',
-                'placeholder' => 'Alle regioner',
-                'empty_data' => null,
+                'placeholder' => $this->department,
+                # 'empty_data' => null,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
                         ->orderBy('d.city', 'ASC');
                 },
-                'required' => false,
+                'required' => true,
             ))
             ->add('semester', EntityType::class, array(
                 'label' => 'Hvilket semester skal arrangementet gjelde for?',
                 'class' => 'AppBundle:Semester',
-                'placeholder' => 'Alle semestre fra og med nåværende',
+                # 'placeholder' => 'Alle semestre fra og med nåværende',
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
-                'required' => false,
+                'required' => true,
             ))
             ////// ---------------------------------------- /////
         ;
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'department' => 'AppBundle\Entity\Department',
+        ));
     }
 }

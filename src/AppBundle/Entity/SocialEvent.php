@@ -16,7 +16,7 @@ class SocialEvent
      * @var Department
      *
      * @ORM\ManyToOne(targetEntity="Department")
-     * @@ORM\JoinColumn(referencedColumnName="id", nullable=true)
+     * @@ORM\JoinColumn(referencedColumnName="id")
      */
     private $department;
 
@@ -25,7 +25,7 @@ class SocialEvent
      * @var Semester
      *
      * @ORM\ManyToOne(targetEntity="Semester")
-     * @ORM\JoinColumn(referencedColumnName="id", nullable=true)
+     * @ORM\JoinColumn(referencedColumnName="id")
      */
     private $semester;
 
@@ -192,7 +192,6 @@ class SocialEvent
         return $this->semester;
     }
 
-
     /**
      * @return bool
      * @throws \Exception
@@ -201,8 +200,6 @@ class SocialEvent
     {
         return $this->getStartTime() < new \DateTime();
     }
-
-
 
     /**
      * @return bool

@@ -51,14 +51,13 @@ class SocialEventController extends BaseController
         }
         */
 
+        $em              = $this->getDoctrine()->getManager();
+        $social_event    = new SocialEvent();
+        $user            = $this->getUser();
 
-        $em = $this->getDoctrine()->getManager();
-
-        $social_event = new SocialEvent();
-
-
-        $form = $this->createForm(SocialEventType::class, $social_event);
-
+        $form = $this->createForm(SocialEventType::class, $social_event, array(
+            'department'        => $user->getDepartment(),
+        ));
 
         $form->handleRequest($request);
 
