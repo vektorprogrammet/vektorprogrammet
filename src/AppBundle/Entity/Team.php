@@ -63,6 +63,11 @@ class Team implements TeamInterface
     private $acceptApplication;
 
     /**
+     * @ORM\Column(type="datetime", nullable=true)
+     */
+    private $deadline;
+
+    /**
      * Applications with team interest
      * @var Application[]
      *
@@ -88,10 +93,7 @@ class Team implements TeamInterface
      */
     private $applications;
 
-    /**
-     * @return bool
-     */
-    public function isActive()
+    public function isActive(): bool
     {
         return $this->active;
     }
@@ -121,10 +123,13 @@ class Team implements TeamInterface
 
     /**
      * @param bool $acceptApplication
+     * @return Team
      */
-    public function setAcceptApplication($acceptApplication)
+
+    public function setAcceptApplication(bool $acceptApplication)
     {
         $this->acceptApplication = $acceptApplication;
+        return $this;
     }
 
 
@@ -228,6 +233,30 @@ class Team implements TeamInterface
     {
         $this->email = $email;
 
+        return $this;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDeadline()
+    {
+        return $this->deadline;
+    }
+
+    /**
+     * @param \DateTime $deadline
+     *
+     * @return Team
+     */
+    public function setDeadline($deadline)
+    {
+        $now = new \DateTime();
+        if ($this->acceptApplication && $now <= $deadline) {
+            $this->deadline = $deadline;
+        } else {
+            $this->deadline = null;
+        }
         return $this;
     }
 
@@ -371,5 +400,14 @@ class Team implements TeamInterface
     public function setApplications(TeamApplication $applications): void
     {
         $this->applications = $applications;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getAcceptApplicationAndDeadline()
+    {
+        $now = new \DateTime();
+        return (($this->acceptApplication && $now < $this->deadline) || ($this->acceptApplication && $this->deadline === null));
     }
 }
