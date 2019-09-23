@@ -5,7 +5,7 @@ namespace AppBundle\Form\Type;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\DateType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -34,7 +34,7 @@ class CreateTeamType extends AbstractType
                 'label' => 'Ta i mot søknader?',
                 'required' => false,
             ))
-            ->add('deadline', DateType::class, array(
+            ->add('deadline', DateTimeType::class, array(
                 'label' => 'Søknadsfrist',
                 'required' => false,
             ))

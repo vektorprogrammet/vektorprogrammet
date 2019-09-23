@@ -62,7 +62,7 @@
             {% if team.acceptApplicationAndDeadline %}
                 <section class="row content">
                     {% if team.deadline is not null %}
-                        <p>Søknadsfrist: <strong>{{ team.deadline|date("d.m") }}</strong></p>
+                        <p class="text-center">Søknadsfrist: <strong>{{ team.deadline|date("d.m") }} kl. {{ team.deadline|date("H:i") }}</strong></p>
                     {% endif %}
                     <div class="col-12 col-sm-8 offset-sm-2">
                         <a class="btn btn-success btn-block apply-button p-4 text-uppercase medium-bold"
