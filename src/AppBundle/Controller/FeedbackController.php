@@ -60,7 +60,7 @@ class FeedbackController extends BaseController
         $repository = $this->getDoctrine()->getRepository(Feedback::class);
 
         //Gets all feedbacks sorted by created_at
-        $feedbacks = $repository->findAllSort();
+        $feedbacks = $repository->findAllSortByNewest();
 
         $pagination = $paginator->paginate(
             $feedbacks,
