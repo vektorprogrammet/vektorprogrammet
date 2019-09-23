@@ -209,9 +209,9 @@ class Feedback
             $usr .= "{$this->user->getFullName()}";
         }
         $returnString =
-        "FEEDBACK\n" .
-        "Fra '{$usr}'\n" .
-        "`{$this->getTypeString()}`: `{$this->title}`\n".
+        "Feedback\n" .
+        "Fra *{$usr}*\n" .
+        "*{$this->getTypeString()}*: `{$this->title}`\n".
         "```{$this->description}```\n";
 
         return $returnString;
