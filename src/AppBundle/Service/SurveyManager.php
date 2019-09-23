@@ -135,7 +135,6 @@ class SurveyManager
         return $textQAarray;
     }
 
-
     public function getTextAnswerWithTeamResults(Survey $survey): array
     {
         $textQuestionArray = array();

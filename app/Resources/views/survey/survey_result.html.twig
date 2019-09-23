@@ -16,8 +16,8 @@
     <header class="row">
         <div class="col-12">
             <h3>Resultater for {{ survey.name }} {{ survey.semester }} </h3>
-            <a id="download-json-btn" class="text-primary" download="survey{{survey.id}}.json"
-               href="{{ path('survey_get_all_results', {'id': survey.id } ) }}">Last ned json</a>
+            <a id="download-csv-btn" class="text-primary" download="survey{{survey.id}}.csv"
+               href="{{ path('survey_get_results_csv', {'id': survey.id } ) }}">Last ned csv</a>
         </div>
     </header>
     <a id="show-filter-btn" class="text-primary">Vis/skjul filter&nbsp;&nbsp;<i

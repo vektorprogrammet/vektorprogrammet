@@ -13,11 +13,14 @@ use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
+use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
+use function Clue\StreamFilter\append;
 
 /**
  * SurveyController is the controller responsible for survey actions,
@@ -397,9 +400,7 @@ class SurveyController extends BaseController
 
     public function resultSurveyAction(Survey $survey)
     {
-        if ($survey->isConfidential() && !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
-            throw new AccessDeniedException();
-        }
+        $this->ensureAccess($survey);
 
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             $textAnswers = $this->get(SurveyManager::class)
@@ -418,9 +419,76 @@ class SurveyController extends BaseController
 
     public function getSurveyResultAction(Survey $survey)
     {
+        $this->ensureAccess($survey);
         return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
     }
 
+    private function quote_and_escape(string $str):string {
+        $str=str_replace('"', '\\"', $str);
+        return "\"$str\",";
+    }
+
+    private function csv_newline(string $csv):string {
+        return substr($csv, 0, -1)."\r\n";
+    }
+
+    public function getSurveyResultCSVAction(Survey $survey)
+    {
+        $this->ensureAccess($survey);
+
+        $schoolSurvey = $survey->getTargetAudience() != Survey::$TEAM_SURVEY;
+
+        $surveysTaken = $this->getDoctrine()->getManager()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+
+        //Meta is the school or team the responder belongs to.
+        $META = "meta";
+        $meta_name = $schoolSurvey ? "Skole" : "Team";
+
+        $questions = array($META=>$meta_name);
+        foreach($survey->getSurveyQuestions() as $question) {
+            $questions[$question->getId()] = $question->getQuestion();
+        }
+
+        //Every participants answers, each element being a map from question_id=>answer
+        $csv_rows = array();
+        foreach($surveysTaken as $taken) {
+            $csv_row = array();
+            $answers = $taken->getSurveyAnswers();
+
+            $csv_row[$META] = "META"; //TODO
+
+            foreach($answers as $answer) {
+                $question = $answer->getSurveyQuestion();
+                $text = $question->getType() == "text";
+                if($text) {
+                    $csv_row[$question->getId()] = $answer->getAnswer();
+                } else {
+                    $csv_row[$question->getId()] = join($answer->getAnswerArray());
+                }
+            }
+
+            $csv_rows[]=$csv_row;
+        }
+
+        $content = "";
+        foreach($questions as $question) {
+            $content .= $this->quote_and_escape($question);
+        }
+        $content = $this->csv_newline($content);
+        foreach($csv_rows as $csv_row) {
+            foreach($questions as $id=>$qname) {
+                if(isset($csv_row[$id]))
+                    $content .= $this->quote_and_escape($csv_row[$id]);
+                else
+                    $content .= $this->quote_and_escape("");
+            }
+            $content = $this->csv_newline($content);
+        }
+
+        $response = new Response($content);
+        $response->headers->set('Content-Type', 'text/csv');
+        return $response;
+    }
 
     public function toggleReservedFromPopUpAction()
     {
