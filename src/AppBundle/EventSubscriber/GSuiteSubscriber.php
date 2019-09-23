@@ -48,6 +48,10 @@ class GSuiteSubscriber implements EventSubscriberInterface
                 array('createGSuiteUser', 1),
                 array('addGSuiteUserToTeam', -1),
             ),
+            TeamMembershipEvent::DELETED => array(
+                array('createGSuiteUser', 1),
+                array('removeGSuiteUserFromTeam', -1),
+            ),
             UserEvent::EDITED => array(
                 array('updateGSuiteUser', 0),
             ),
@@ -95,6 +99,20 @@ class GSuiteSubscriber implements EventSubscriberInterface
         if (!$alreadyInGroup && $user->getCompanyEmail()) {
             $this->groupService->addUserToGroup($user, $team);
             $this->logger->info("$user added to G Suite group *$department - $team*");
+        }
+    }
+
+    public function removeGSuiteUserFromTeam(TeamMembershipEvent $event)
+    {
+        $user = $event->getTeamMembership()->getUser();
+        $team = $event->getTeamMembership()->getTeam();
+        $department = $user->getDepartment();
+
+        $alreadyInGroup = $this->groupService->userIsInGroup($user, $team);
+
+        if ($alreadyInGroup && $user->getCompanyEmail()) {
+            $this->groupService->removeUserFromGroup($user, $team);
+            $this->logger->info("$user removed from G Suite group *$department - $team*");
         }
     }
 
