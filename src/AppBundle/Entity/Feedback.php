@@ -204,11 +204,16 @@ class Feedback
      */
     public function getSlackMessageBody()
     {
-        $returnString =
-        "@channel   FEEDBACK\n{$this->getTypeString()}: {$this->title}\n{$this->description}\n";
+        $usr = "";
         if ($this->user) {
-            $returnString .= "- {$this->user->getFullName()}";
+            $usr .= "{$this->user->getFullName()}";
         }
+        $returnString =
+        "FEEDBACK\n" .
+        "Fra '{$usr}'\n" .
+        "`{$this->getTypeString()}`: `{$this->title}`\n".
+        "```{$this->description}```\n";
+
         return $returnString;
     }
 }
