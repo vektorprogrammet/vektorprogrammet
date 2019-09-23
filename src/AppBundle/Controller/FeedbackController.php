@@ -13,8 +13,14 @@ class FeedbackController extends BaseController
     {
         $feedback = new Feedback;
         $user = $this->getUser();
+
         $form = $this->createForm(FeedBackType::class, $feedback);
         $form->handleRequest($request);
+
+        $returnUri = $request->getUri();
+        if ($request->headers->get('referer')) {
+            $returnUri = $request->headers->get('referer');
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             //Stores the submitted feedback
@@ -29,18 +35,12 @@ class FeedbackController extends BaseController
             $messenger->notify($feedback->getSlackMessageBody());
 
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
-            $returnUri = $request->getUri();
-
-            if ($request->headers->get('referer')) {
-                $returnUri = $request->headers->get('referer');
-            }
-
+            
             return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
         }
 
         return $this->render('feedback_admin/feedback_admin_index.html.twig', array(
-            'title' => 'Feedback',
-            'form' => $form->createView()
+            'title' => 'Feedback'
         ));
     }
     //Shows a specific feedback

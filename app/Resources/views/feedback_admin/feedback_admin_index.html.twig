@@ -15,7 +15,7 @@
 {% block body %}
     <div class="row">
         <div class="col-12 col-lg-6">
-            {{ render(controller("AppBundle:Widget:feedback")) }}
+            {{ render(controller("AppBundle:Widget:feedback",{'request': app.request})) }}
         </div>
     </div>
 {% endblock %}
