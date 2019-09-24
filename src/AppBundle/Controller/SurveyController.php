@@ -13,14 +13,11 @@ use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
-use Doctrine\ORM\EntityManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use function Clue\StreamFilter\append;
 
 /**
  * SurveyController is the controller responsible for survey actions,
