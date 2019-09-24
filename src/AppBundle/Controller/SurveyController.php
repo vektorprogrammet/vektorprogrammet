@@ -470,17 +470,17 @@ class SurveyController extends BaseController
         //Export the two-dimensional csv array to a csv string
         $content = "";
         foreach($questions as $question) {
-            $content .= $this->csv_escape_and_separate($question);
+            $content .= $this->csvEscapeAndSeparate($question);
         }
-        $content = $this->csv_newline($content);
+        $content = $this->csvNewline($content);
         foreach($csv_rows as $csv_row) {
             foreach($questions as $id=>$qname) {
                 if(isset($csv_row[$id]))
-                    $content .= $this->csv_escape_and_separate($csv_row[$id]);
+                    $content .= $this->csvEscapeAndSeparate($csv_row[$id]);
                 else
-                    $content .= $this->csv_escape_and_separate("");
+                    $content .= $this->csvEscapeAndSeparate("");
             }
-            $content = $this->csv_newline($content);
+            $content = $this->csvNewline($content);
         }
 
         $response = new Response($content);
@@ -489,13 +489,13 @@ class SurveyController extends BaseController
     }
 
     //Escapes the string, quotes it and adds a separator (default: comma)
-    private function csv_escape_and_separate(string $str, string $sep=','):string {
+    private function csvEscapeAndSeparate(string $str, string $sep=','):string {
         $str=str_replace('"', '""', $str); //" is escaped with "" in csv
         return "\"$str\"$sep";
     }
 
     //Removes the last separator and replaces it with a csv newline
-    private function csv_newline(string $csv):string {
+    private function csvNewline(string $csv):string {
         return substr($csv, 0, -1)."\r\n";
     }
 
