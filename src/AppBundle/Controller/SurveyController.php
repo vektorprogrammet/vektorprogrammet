@@ -442,7 +442,7 @@ class SurveyController extends BaseController
 
         $sm = $this->get(SurveyManager::class);
 
-        //All completed surveys, each element being a map from question_id=>answer
+        //A 2d array of all completed surveys, each element being a map from question_id=>answer
         $csv_rows = array();
         foreach($surveysTaken as $taken) {
             $csv_row = array();
@@ -467,6 +467,7 @@ class SurveyController extends BaseController
             $csv_rows[]=$csv_row;
         }
 
+        //Export the two-dimensional csv array to a csv string
         $content = "";
         foreach($questions as $question) {
             $content .= $this->csv_escape_and_separate($question);
