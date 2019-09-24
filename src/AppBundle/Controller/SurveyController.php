@@ -423,20 +423,14 @@ class SurveyController extends BaseController
         return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
     }
 
-    private function quote_and_escape(string $str):string {
-        $str=str_replace('"', '\\"', $str);
-        return "\"$str\",";
-    }
-
-    private function csv_newline(string $csv):string {
-        return substr($csv, 0, -1)."\r\n";
-    }
-
     public function getSurveyResultCSVAction(Survey $survey)
     {
         $this->ensureAccess($survey);
 
-        $schoolSurvey = $survey->getTargetAudience() != Survey::$TEAM_SURVEY;
+        //If the survey is for schools, it has an extra question about what school you are from
+        //Else the survey is a team survey, in which case the team can be determined by the survey answer user id
+        $schoolSurvey = $survey->getTargetAudience() == Survey::$ASSISTANT_SURVEY || $survey->getTargetAudience() == Survey::$SCHOOL_SURVEY;
+        assert($schoolSurvey || $survey->getTargetAudience() == Survey::$TEAM_SURVEY);
 
         $surveysTaken = $this->getDoctrine()->getManager()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
 
@@ -446,24 +440,30 @@ class SurveyController extends BaseController
 
         $questions = array($META=>$meta_name);
         foreach($survey->getSurveyQuestions() as $question) {
-            $questions[$question->getId()] = $question->getQuestion();
+            $questions[$question->getId()] = $question->getQuestion(); //The question text
         }
 
-        //Every participants answers, each element being a map from question_id=>answer
+        $sm = $this->get(SurveyManager::class);
+
+        //All completed surveys, each element being a map from question_id=>answer
         $csv_rows = array();
         foreach($surveysTaken as $taken) {
             $csv_row = array();
             $answers = $taken->getSurveyAnswers();
 
-            $csv_row[$META] = "META"; //TODO
+            if($schoolSurvey) {
+                $csv_row[$META] = $taken->getSchool()->getName();
+            } else {
+                $csv_row[$META] = $sm->getTeamNamesForSurveyTaker($taken);
+            }
 
             foreach($answers as $answer) {
                 $question = $answer->getSurveyQuestion();
-                $text = $question->getType() == "text";
-                if($text) {
+                $stored_as_text = $question->getType() != "check";
+                if($stored_as_text) {
                     $csv_row[$question->getId()] = $answer->getAnswer();
                 } else {
-                    $csv_row[$question->getId()] = join($answer->getAnswerArray());
+                    $csv_row[$question->getId()] = join(',', $answer->getAnswerArray());
                 }
             }
 
@@ -472,15 +472,15 @@ class SurveyController extends BaseController
 
         $content = "";
         foreach($questions as $question) {
-            $content .= $this->quote_and_escape($question);
+            $content .= $this->csv_escape_and_separate($question);
         }
         $content = $this->csv_newline($content);
         foreach($csv_rows as $csv_row) {
             foreach($questions as $id=>$qname) {
                 if(isset($csv_row[$id]))
-                    $content .= $this->quote_and_escape($csv_row[$id]);
+                    $content .= $this->csv_escape_and_separate($csv_row[$id]);
                 else
-                    $content .= $this->quote_and_escape("");
+                    $content .= $this->csv_escape_and_separate("");
             }
             $content = $this->csv_newline($content);
         }
@@ -488,6 +488,17 @@ class SurveyController extends BaseController
         $response = new Response($content);
         $response->headers->set('Content-Type', 'text/csv');
         return $response;
+    }
+
+    //Escapes the string, quotes it and adds a separator (default: comma)
+    private function csv_escape_and_separate(string $str, string $sep=','):string {
+        $str=str_replace('"', '""', $str); //" is escaped with "" in csv
+        return "\"$str\"$sep";
+    }
+
+    //Removes the last separator and replaces it with a csv newline
+    private function csv_newline(string $csv):string {
+        return substr($csv, 0, -1)."\r\n";
     }
 
     public function toggleReservedFromPopUpAction()

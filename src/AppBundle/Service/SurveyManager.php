@@ -176,6 +176,12 @@ class SurveyManager
         return $textQAarray;
     }
 
+    public function getTeamNamesForSurveyTaker(SurveyTaken $taken):string {
+        $user = $taken->getUser();
+        $ua = $this->getUserAffiliationOfUserBySemester($user, $taken->getSurvey()->getSemester());
+        $teamNames = $this->getTeamNamesAsString($ua);
+        return $teamNames;
+    }
 
     private function getTeamNamesAsString(array $teamNames): string
     {
