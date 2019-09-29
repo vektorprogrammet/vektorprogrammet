@@ -19,12 +19,22 @@
 
         <div class="parents-infosite content">
             <div class="page-header">
-                {% include 'statictext/static_content.html.twig' with {'id': 'parent-header'} %}
+                <!--{% include 'statictext/static_content.html.twig' with {'id': 'parent-header'} %}-->
+
+                <h1>Informasjon for foreldre</h1>
+                <p>Lurer du som forelder på mer om vektorprogrammet? Her finner du blant annet informasjon om våre assistenter, kvalitetssikring, og foreldrekurs.</p>
             </div>
 
             <section class="row space">
                 <div class="col-md-7">
-                    {% include 'statictext/static_content.html.twig' with {'id': 'assistant-info'} %}
+                    <!--{% include 'statictext/static_content.html.twig' with {'id': 'assistant-info'} %}-->
+                    <h2>Assistentene</h2>
+                    <p>Her skal det etter hvert komme tekst om hvordan vi kvalitetssikrer våre assistenter, slik at alle som blir sendt ut til skolene er egnede, dedikerte, og pedagogiske.
+                        Dessuten skal det nevnes at alle assistentene blir sendt på pedagogikkkurs før de blir assistenter
+                        Noe som gjør at Vektorprogrammet kan velge ut de aller beste til jobben.<br><br>
+                        Statistikk om assistentene, og mer tekst skal komme her. Noe må tross alt stå her mens siden er under construction.Bildet må endres
+                    </p>
+
                 </div>
 
                 <div class="col-lg-4">
@@ -35,13 +45,23 @@
 
             <section class="row space">
                 <div class="col-md-12">
-                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-course'} %}
+                    <!-- {% include 'statictext/static_content.html.twig' with {'id': 'parent-course'} %}-->
+
+                    <h2>Foreldrekurs</h2>
+                    <p>I tillegg til å sende studenter ut til ungdomsskoler, så arrangerer vi også foreldrekurs for dere foreldre - slik at dere får et enda bedre grunnlag for å kunne hjelpe deres barn med matematikken på hjemmebane.
+                        <br><br>
+                        Foreldrekurs er et tilbud til foreldre ved Vektorprogrammets samarbeidsskoler. Kursene pleier å holders på Realfagsbygget på NTNU Gløshaugen, 2 kvelder i semesteret, der det også vil være lett bespisning (kaffe, kaker, kjeks).
+                    </p>
                     <div class="text-center"><br>
 
                         <a href="/foreldrekurs/pamelding">
                         <button type="button" class="btn btn-primary center-block">Påmelding til foreldrekurs</button>
                         </a>
-                        <p><b>OBS! Linken er ikke gyldig, da siden ikke finnes i Master-branch enda</b></p>
+
+                        <!-- REMOVE THIS LINE WHEN LINK IS VALID -->
+                        <br><br><p><b>OBS! Linken er ikke gyldig, da siden ikke finnes i Master-branch enda</b></p>
+                        <!-- ----------------------------------- -->
+
                     </div>
                 </div>
             </section>
