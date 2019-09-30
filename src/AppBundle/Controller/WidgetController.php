@@ -3,8 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Receipt;
+use AppBundle\Entity\Feedback;
+use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Utils\ReceiptStatistics;
 
 class WidgetController extends BaseController
@@ -81,5 +84,16 @@ class WidgetController extends BaseController
         return $this->render('widgets/available_surveys_widget.html.twig', [
             'availableSurveys' => $surveys,
         ]);
+    }
+    public function feedbackAction(Request $request)
+    {
+        $feedback = new Feedback;
+        $form = $this->createForm(FeedBackType::class, $feedback);
+        $form->handleRequest($request);
+
+        return $this->render('widgets/feedback_widget.html.twig', array(
+            'title' => 'Feedback',
+            'form' => $form->createView()
+        ));
     }
 }
