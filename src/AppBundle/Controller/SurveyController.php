@@ -13,10 +13,10 @@ use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
+use AppBundle\Utils\CsvUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -423,80 +423,9 @@ class SurveyController extends BaseController
     public function getSurveyResultCSVAction(Survey $survey)
     {
         $this->ensureAccess($survey);
-
-        //If the survey is for schools, it has an extra question about what school you are from
-        //Else the survey is a team survey, in which case the team can be determined by the survey answer user id
-        $schoolSurvey = $survey->getTargetAudience() == Survey::$ASSISTANT_SURVEY || $survey->getTargetAudience() == Survey::$SCHOOL_SURVEY;
-        assert($schoolSurvey || $survey->getTargetAudience() == Survey::$TEAM_SURVEY);
-
-        $surveysTaken = $this->getDoctrine()->getManager()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
-
-        //Meta is the school or team the responder belongs to.
-        $META = "meta";
-        $meta_name = $schoolSurvey ? "Skole" : "Team";
-
-        $questions = array($META=>$meta_name);
-        foreach($survey->getSurveyQuestions() as $question) {
-            $questions[$question->getId()] = $question->getQuestion(); //The question text
-        }
-
         $sm = $this->get(SurveyManager::class);
-
-        //A 2d array of all completed surveys, each element being a map from question_id=>answer
-        $csv_rows = array();
-        foreach($surveysTaken as $taken) {
-            $csv_row = array();
-            $answers = $taken->getSurveyAnswers();
-
-            if($schoolSurvey) {
-                $csv_row[$META] = $taken->getSchool()->getName();
-            } else {
-                $csv_row[$META] = $sm->getTeamNamesForSurveyTaker($taken);
-            }
-
-            foreach($answers as $answer) {
-                $question = $answer->getSurveyQuestion();
-                $stored_as_text = $question->getType() != "check";
-                if($stored_as_text) {
-                    $csv_row[$question->getId()] = $answer->getAnswer();
-                } else {
-                    $csv_row[$question->getId()] = join(',', $answer->getAnswerArray());
-                }
-            }
-
-            $csv_rows[]=$csv_row;
-        }
-
-        //Export the two-dimensional csv array to a csv string
-        $content = "";
-        foreach($questions as $question) {
-            $content .= $this->csvEscapeAndSeparate($question);
-        }
-        $content = $this->csvNewline($content);
-        foreach($csv_rows as $csv_row) {
-            foreach($questions as $id=>$qname) {
-                if(isset($csv_row[$id]))
-                    $content .= $this->csvEscapeAndSeparate($csv_row[$id]);
-                else
-                    $content .= $this->csvEscapeAndSeparate("");
-            }
-            $content = $this->csvNewline($content);
-        }
-
-        $response = new Response($content);
-        $response->headers->set('Content-Type', 'text/csv');
-        return $response;
-    }
-
-    //Escapes the string, quotes it and adds a separator (default: comma)
-    private function csvEscapeAndSeparate(string $str, string $sep=','):string {
-        $str=str_replace('"', '""', $str); //" is escaped with "" in csv
-        return "\"$str\"$sep";
-    }
-
-    //Removes the last separator and replaces it with a csv newline
-    private function csvNewline(string $csv):string {
-        return substr($csv, 0, -1)."\r\n";
+        $csv_string = $sm->surveyResultsToCsv($survey);
+        return CsvUtil::makeCsvResponse($csv_string);
     }
 
     public function toggleReservedFromPopUpAction()
@@ -524,6 +453,8 @@ class SurveyController extends BaseController
 
     /**
      * @param Survey $survey
+     *
+     * Throws unless you are in the same department as the survey, or you are a survey_admin
      *
      * @throws AccessDeniedException
      */
