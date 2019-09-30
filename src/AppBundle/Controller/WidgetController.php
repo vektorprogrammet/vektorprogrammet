@@ -94,6 +94,7 @@ class WidgetController extends BaseController
         return $this->render('widgets/changelog_widget.html.twig', [
             'changeLogItems' => array_slice($changeLogItems, 0, 5)
         ]);
+    }
 
     public function feedbackAction(Request $request)
     {
