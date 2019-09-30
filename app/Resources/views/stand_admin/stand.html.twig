@@ -25,19 +25,13 @@
             <h1>Prosedyre for stand</h1>
             <p>Husk at om du ikke har mulighet til å stå på stand, så er det ditt ansvar å finne noen å bytte med noen.
                 <br>Viktig å møte <b>tidsnok!</b></p>
-
         </div>
         <div class="col-6">
-
-            <!-- ####################### -->
-
             <div class="accordion" id="accordionExample">
                 <div class="card">
                     <div class="card-header" id="headingOne">
                         <h2 class="mb-0">
-                            <button class="btn btn-link" type="button" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                               Før stand
-                            </button>
+                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#collapseOne">Før stand</button>
                         </h2>
                     </div>
 
@@ -64,12 +58,11 @@
                         </div>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="card-header" id="headingTwo">
                         <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Mens du står på stand
-                            </button>
+                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#collapseTwo">Mens du står på stand</button>
                         </h2>
                     </div>
                     <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
@@ -80,28 +73,28 @@
                                 <li>Stå foran stand, vær utadvendt!</li>
                                 <li>Hold standen ren.</li>
                                 <li>Informer om infomøte og søknadsfrist.</li>
-                                <li>Sette frem PC med påmeldingskjema</li>
+                                <li>Sette frem PC med
+                                    <a href="{{ path('interest_list', {shortName: department.shortName}) }}">
+                                        påmeldingskjema</a> for {{ department }}</li>
                                 <br>
                                 <li>Forslag til ting å snakke om:
                                     <ul>
                                         <li>“Har du hørt om Vektorprogrammet?”</li>
                                         <li>“Er det noe du kan tenke deg å være med på?”</li>
-                                        <li>“Vi har infomøte da og da, søk oss opp på facebook”</li>
-
+                                        <li>“Vi har infomøte da og da”</li>
                                     </ul>
-                                <br>
-                                <li>Viktig å få frem at dette er et frivillig, ulønnet verv</li>
+                                    <br>
+                                    <li>Viktig å få frem at dette er et frivillig, ulønnet verv</li>
                                 </li>
                             </ul>
                         </div>
                     </div>
                 </div>
+
                 <div class="card">
                     <div class="card-header" id="headingThree">
                         <h2 class="mb-0">
-                            <button class="btn btn-link collapsed" type="button" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                Etter stand
-                            </button>
+                            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#collapseThree">Etter stand</button>
                         </h2>
                     </div>
                     <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
@@ -129,8 +122,9 @@
 
         <div class="col-6">
             <img class="hero-image img-fluid"
-                 src="{{ '/images/stand_image.jpg   ' }}"
+                 src="{{ asset_with_version('/images/stand_image.jpg') }}"
             <p><b>Eksempel på hvordan standen skal se ut</b></p>
+            <br>
         </div>
     </div>
     <hr>
