@@ -418,6 +418,10 @@ class SurveyController extends BaseController
 
     public function getSurveyResultAction(Survey $survey)
     {
+        if ($survey->isConfidential() && !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+            throw new AccessDeniedException();
+        }
+        
         return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
     }
 
