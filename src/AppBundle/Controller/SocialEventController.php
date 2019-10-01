@@ -2,7 +2,6 @@
 
 namespace AppBundle\Controller;
 
-
 use AppBundle\Entity\SocialEvent;
 use AppBundle\Form\Type\SocialEventType;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,13 +14,10 @@ use AppBundle\Service\SocialEventManager;
 use AppBundle\Form\Type\CreateTodoItemInfoType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
-
 class SocialEventController extends BaseController
 {
-
     public function showAction()
     {
-
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
 
@@ -131,5 +127,4 @@ class SocialEventController extends BaseController
 
     #TODO: functions yet to be implemented:
     //public function copySocialEventAction
-
 }

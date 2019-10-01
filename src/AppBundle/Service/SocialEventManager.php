@@ -8,7 +8,6 @@ use Doctrine\ORM\EntityManager;
 use AppBundle\Entity\SocialEvent;
 use Appbundle\Entity\Repository\SocialEventItemRepository;
 
-
 class SocialEventManager
 {
     /**
@@ -41,7 +40,5 @@ class SocialEventManager
         //return $orderedList;
 
         return $allSocialEvents;
-
     }
-
 }

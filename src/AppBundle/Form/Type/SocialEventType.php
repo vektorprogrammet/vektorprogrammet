@@ -73,8 +73,5 @@ class SocialEventType extends AbstractType
             ))
             ////// ---------------------------------------- /////
         ;
-
     }
-
-
 }

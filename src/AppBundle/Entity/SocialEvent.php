@@ -64,7 +64,6 @@ class SocialEvent
      */
     public function __construct()
     {
-
     }
 
     ## TODO: Burde det være en location?
@@ -192,11 +191,4 @@ class SocialEvent
     {
         return $this->semester;
     }
-
-
-
-
-
-
-
 }

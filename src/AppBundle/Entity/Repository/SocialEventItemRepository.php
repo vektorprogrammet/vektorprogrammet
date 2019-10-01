@@ -7,7 +7,6 @@ use AppBundle\Entity\SocialEvent;
 use \Doctrine\ORM\EntityRepository;
 use \AppBundle\Entity\Semester;
 
-
 /**
  * Class SocialEventItemRepository
  */
@@ -46,6 +45,4 @@ class SocialEventItemRepository extends EntityRepository
         #return $filteredItems;
         return $socialEvents;
     }
-
-
 }
