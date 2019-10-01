@@ -456,6 +456,10 @@ class SurveyController extends BaseController
 
         $isSurveyAdmin = $this->get(AccessControlService::class)->checkAccess("survey_admin");
         $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
+        
+        if ($survey->isConfidential() && !$isSurveyAdmin) {
+            throw new AccessDeniedException();
+        }
 
         if ($isSameDepartment || $isSurveyAdmin) {
             return;
