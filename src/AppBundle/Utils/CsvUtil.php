@@ -12,7 +12,8 @@ class CsvUtil
      * @param string $csv_string the csv data as a string
      * @return Response a response object
      */
-    public static function makeCsvResponse(string $csv_string):Response {
+    public static function makeCsvResponse(string $csv_string):Response
+    {
         $response = new Response($csv_string);
         $response->headers->set('Content-Type', 'text/csv');
         return $response;
@@ -37,10 +38,11 @@ class CsvUtil
         $content = CsvUtil::csvNewline($content);
         foreach ($rows as $csv_row) {
             foreach ($columnMap as $id => $qname) {
-                if (isset($csv_row[$id]))
+                if (isset($csv_row[$id])) {
                     $content .= CsvUtil::csvEscapeAndSeparate($csv_row[$id], $sep);
-                else
+                } else {
                     $content .= CsvUtil::csvEscapeAndSeparate("", $sep);
+                }
             }
             $content = CsvUtil::csvNewline($content);
         }

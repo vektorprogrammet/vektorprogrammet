@@ -177,7 +177,8 @@ class SurveyManager
         return $textQAarray;
     }
 
-    public function getTeamNamesForSurveyTaker(SurveyTaken $taken):string {
+    public function getTeamNamesForSurveyTaker(SurveyTaken $taken):string
+    {
         $user = $taken->getUser();
         $ua = $this->getUserAffiliationOfUserBySemester($user, $taken->getSurvey()->getSemester());
         $teamNames = $this->getTeamNamesAsString($ua);
@@ -249,7 +250,8 @@ class SurveyManager
         return "Andre";
     }
 
-    public function surveyResultsToCsv(Survey $survey) {
+    public function surveyResultsToCsv(Survey $survey):string
+    {
         //If the survey is for schools, it has an extra question about what school you are from
         //Else the survey is a team survey, in which case the team can be determined by the survey answer user id
         $schoolSurvey = $survey->getTargetAudience() == Survey::$ASSISTANT_SURVEY || $survey->getTargetAudience() == Survey::$SCHOOL_SURVEY;
