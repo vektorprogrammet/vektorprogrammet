@@ -24,14 +24,14 @@ class ParentAssignmentEntity
     /**
      * @var string
      *
-     * @ORM\Column(name="Navn", type="string", length=255)
+     * @ORM\Column(name="Navn", type="string", length=255, nullable=False)
      */
     private $navn;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Epost", type="string", length=255)
+     * @ORM\Column(name="Epost", type="string", length=255, nullable=False)
      */
     private $epost;
 

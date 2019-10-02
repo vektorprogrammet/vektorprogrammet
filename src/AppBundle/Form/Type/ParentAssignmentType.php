@@ -18,10 +18,17 @@ class ParentAssignmentType extends AbstractType
             ->add('navn', TextType::class, array(
                 'label' => 'Skriv fullt navn',
                 'required' => true,
+                'attr' => array(
+                    'autocomplete' => 'off',
+                ),
+
             ))
             ->add('epost', EmailType::class, array(
-                'label' => 'Skriv Email',
+                'label' => 'Skriv mailadresse',
                 'required' => true,
+                'attr' => array(
+                    'autocomplete' => 'off',
+                ),
             ))
             ->add('tidspunkt', DateTimeType::class, array(
                 'label' => 'Skriv dato',

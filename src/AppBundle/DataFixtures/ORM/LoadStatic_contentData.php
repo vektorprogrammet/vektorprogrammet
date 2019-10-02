@@ -40,7 +40,14 @@ class LoadStatic_contentData extends AbstractFixture
 
             'parent-assignment-header' => '<h1> Foreldrekurs </h1><p>Foreldrekurs er et kurs på kveldstid, og er hovedsaklig rettet mot foreldre. Dette blir arrangert 1-3 ganger i året av skolekoordineringsteamet i Vektorprogrammet Trondheim. </p>',
             'parent-assignment-info' => '<h2>Hvorfor foreldrekurs?</h2></h2><p>Målet er at foreldre skal kunne hjelpe barnet sitt med matematikk, og lære om hvorfor matematikk er et så viktig og spennende fag. Det har tidligere blitt holdt kurs innen innføring i motivasjon, pedagogikk og matematikk tilpasset ungdomsskolenivå. Eksamenskurs, der det har blitt gjennomgått gamle eksamensoppgaver, har også blitt holdt tidligere. I tillegg til å være et kurs for foreldre, er det også en sosial arena for Vektorprogrammet. Skolekoordinering inviterer alle team til å bli med å hjelpe til under kurskveldene, og det er god stemning på vektorkontoret under hele arrangementet med både kake og pizza.</p>',
-            'parent-assignment-interessert?' => '<h2> Høres dette interessant ut?</h2><p>Meld deg på i skjemaet under! Du vil få tilsendt en påmeldingsbekrefelse</p>',
+            'parent-assignment-interessert?' => '<h2> Høres dette interessant ut?</h2><p>Meld deg på i skjemaet under! Du vil få tilsendt en påmeldingsbekrefelse.</p>',
+
+            'parent-header' => '<h1>Informasjon for foreldre</h1><p>Lurer du som forelder på mer om vektorprogrammet? Her finner du blant annet informasjon om våre assistenter, kvalitetssikring, og foreldrekurs.</p>',
+            'parent-assistants-info' => '<h2>Assistentene</h2><p>Et verv som assistent hos Vektorprogrammet er ettertraktet blant studenter. Det gjør at vi kan håndplukke de aller beste til jobben. De er faglig sterke, som brenner for matematikk. I tillegg har alle assistentene våre vært gjennom et pedagogikkurs før de blir utplassert på skolene.Du kan derfor være sikker på at Assistentene våre gjør en god jobb.</p>',
+            'parent-course' => '<h2>Foreldrekurs</h2><p>I tillegg til å sende studenter ut til ungdomsskoler, så arrangerer vi også foreldrekurs for dere foreldre - slik at dere får et enda bedre grunnlag for å kunne hjelpe deres barn med matematikken på hjemmebane.<br><br>Foreldrekurs er et tilbud til foreldre ved Vektorprogrammets samarbeidsskoler. Kursene pleier å holders på Realfagsbygget på NTNU Gløshaugen, 2 kvelder i semesteret, der det også vil være lett bespisning (kaffe, kaker, kjeks).</p>'
+
+
+
         );
         foreach ($elements as $html_id => $content) {
             $staticElement = new StaticContent();
