@@ -46,11 +46,11 @@ class GSuiteSubscriber implements EventSubscriberInterface
             ),
             TeamMembershipEvent::EDITED => array(
                 array('createGSuiteUser', 1),
-                array('addGSuiteUserToTeam', -1),
+                array('addGSuiteUserToTeam', 0),
+                array('removeGSuiteUserFromTeam', -1)
             ),
             TeamMembershipEvent::DELETED => array(
-                array('createGSuiteUser', 1),
-                array('removeGSuiteUserFromTeam', -1),
+                array('removeGSuiteUserFromTeam', 0),
             ),
             UserEvent::EDITED => array(
                 array('updateGSuiteUser', 0),
@@ -102,18 +102,29 @@ class GSuiteSubscriber implements EventSubscriberInterface
         }
     }
 
+
     public function removeGSuiteUserFromTeam(TeamMembershipEvent $event)
     {
         $user = $event->getTeamMembership()->getUser();
         $team = $event->getTeamMembership()->getTeam();
         $department = $user->getDepartment();
 
-        $alreadyInGroup = $this->groupService->userIsInGroup($user, $team);
+        $activeTeamMemberships = $user->getActiveTeamMemberships();
+        $shouldBeInGroup = false;
 
-        if ($alreadyInGroup && $user->getCompanyEmail()) {
+        foreach ($activeTeamMemberships as $m){
+            if ($team === $m->getTeam()){
+                $shouldBeInGroup = true;
+                break;
+            }
+            $shouldBeInGroup = false;
+        }
+
+        if (!$shouldBeInGroup && $user->getCompanyEmail()) {
             $this->groupService->removeUserFromGroup($user, $team);
             $this->logger->info("$user removed from G Suite group *$department - $team*");
         }
+
     }
 
     public function updateGSuiteUser(UserEvent $event)
