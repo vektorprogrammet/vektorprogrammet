@@ -19,7 +19,7 @@
 * ext-dom
 
 Please find file /etc/php/version/cli/php.ini
-Uncomment all lines with the required PHP-dependencies
+Uncomment all lines with the required PHP-dependencies.
 
 Example for dependency php-ext-mbstring:
 
@@ -27,7 +27,7 @@ Example for dependency php-ext-mbstring:
 
 
 #### Install dependencies
-Example with Ubuntu as operating system and php-version 7.2
+(Example with Ubuntu as operating system and a php-version of 7.2)
 ```
 sudo apt-get install php7.2-mbstring
 sudo apt-get install php7.2-sqlite
