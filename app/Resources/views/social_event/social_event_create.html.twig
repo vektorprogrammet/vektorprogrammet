@@ -55,19 +55,12 @@
                         Bruker = alle brukere, dvs teammedlem og assistenter
                     </div>
 
-                </div>
-            </div>
-
-
-            <div class="card">
-                <div class="card-body">
-                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
-
-
-
-                    <a href="{{ path('social_event_show', {'department': department.id, 'semester': semester.id}) }}">
-                        <button type="button" class=" btn btn-primary">Avbryt</button>
-                    </a>
+                    <div class="m-2">
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                        <a href="{{ path('social_event_show', {'department': department.id, 'semester': semester.id}) }}">
+                            <button type="button" class=" btn btn-primary">Avbryt</button>
+                        </a>
+                    </div>
                 </div>
             </div>
             <div class="hide">

@@ -5,14 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SocialEvent;
 use AppBundle\Form\Type\SocialEventType;
 use Symfony\Component\HttpFoundation\Request;
-
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Service\SocialEventManager;
-
-
-use AppBundle\Form\Type\CreateTodoItemInfoType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class SocialEventController extends BaseController
 {
@@ -32,7 +25,6 @@ class SocialEventController extends BaseController
             'now' => new \DateTime(),
         ));
     }
-
 
     /**
      * @param Request $request

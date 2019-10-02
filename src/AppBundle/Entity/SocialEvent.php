@@ -153,7 +153,7 @@ class SocialEvent
      */
     public function getEndTime()
     {
-        return $this->startTime;
+        return $this->endTime;
     }
 
     /**
