@@ -12,11 +12,10 @@
 {% block breadcrumb %}
 
     {% if event.id %}
-        {# TODO: FIX THIS #}
         <li class="breadcrumb-item">
             <a href="{{ path('social_event_show') }}">Arrangementer</a>
         </li>
-        <li class="breadcrumb-item active">{{ event.title }}</li>
+        <li class="breadcrumb-item active">Endre {{ event.title }}</li>
     {% else %}
         <li class="breadcrumb-item">
             <a href="{{ path('social_event_show') }}">Arrangementer</a>
@@ -45,8 +44,16 @@
 
                     <!--// Continue from here           -->
                     {{ form_row(form.semester) }}
-                    {{ form_row(form.department) }}
 
+                    {% if is_granted_team_leader() %}
+                    {{ form_row(form.department) }}
+                    {% endif %}
+
+                    {{ form_row(form.role) }}
+                    <div class="help_text m-2 text-sm-left text-faded">
+                        Teammedlem = kun teammedlem <br>
+                        Bruker = alle brukere, dvs teammedlem og assistenter
+                    </div>
 
                 </div>
             </div>

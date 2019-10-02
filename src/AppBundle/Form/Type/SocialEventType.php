@@ -18,10 +18,12 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SocialEventType extends AbstractType
 {
     private $department;
+    private $semester;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->department = $options['department'];
+        $this->semester = $options['semester'];
 
         $builder
             ->add('title', TextType::class, array(
@@ -44,8 +46,6 @@ class SocialEventType extends AbstractType
                     'autocomplete' => 'off'
                     ),
             ))
-            ## TODO: MULIHET FOR IKKE Å HA TID
-
 
             ->add('endTime', DateTimeType::class, array(
                 'widget' => 'single_text',
@@ -60,13 +60,10 @@ class SocialEventType extends AbstractType
                 'label' => 'Lagre',
             ))
 
-
-            ////// ---------------------------------------- /////
             ->add('department', EntityType::class, array(
                 'label' => 'Hvilken region skal arrangementet gjelde for?',
                 'class' => 'AppBundle:Department',
-                'placeholder' => $this->department,
-                # 'empty_data' => null,
+                'data' => $this->department,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
                         ->orderBy('d.city', 'ASC');
@@ -76,19 +73,31 @@ class SocialEventType extends AbstractType
             ->add('semester', EntityType::class, array(
                 'label' => 'Hvilket semester skal arrangementet gjelde for?',
                 'class' => 'AppBundle:Semester',
-                # 'placeholder' => 'Alle semestre fra og med nåværende',
+                'data' => $this->semester,
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
                 'required' => true,
             ))
-            ////// ---------------------------------------- /////
+            ->add('role', EntityType::class, array(
+                'label' => 'Hvilke type brukere kan melde seg på arrangementet?',
+                'class' => 'AppBundle:Role',
+                'query_builder' => function (EntityRepository $er) {
+                    return $er->createQueryBuilder('r')
+                        ->select('r')
+                        ->where('r.role IN (:roles)')
+                        ->orderBy('r.role')
+                        ->setParameter('roles', ['ROLE_USER', 'ROLE_TEAM_MEMBER']);
+                },
+                'required' => true,
+            ))
         ;
     }
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
             'department' => 'AppBundle\Entity\Department',
+            'semester' => 'AppBundle\Entity\Semester',
         ));
     }
 }

@@ -54,6 +54,7 @@
                     <th>Beskrivelse</th>
                     <th>Når</th>
                     <th>Status</th>
+                    <th>Påmelding åpen for</th>
                 </tr>
                 </thead>
 
@@ -104,6 +105,13 @@
                                 <span class="badge badge-pill badge-secondary">Har vært</span>
                             {% elseif event.happensSoon %}
                                 <span class="badge badge-pill badge-info">Skjer innen en uke</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if event.role == "Teammedlem" %}
+                                Kun teammedlemmer
+                            {% else %}
+                                Teammedlemmer og assistenter
                             {% endif %}
                         </td>
                     </tr>

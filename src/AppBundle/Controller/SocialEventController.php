@@ -28,13 +28,10 @@ class SocialEventController extends BaseController
         return $this->render("social_event/social_event_list.twig", array(
             'department' => $department,
             'semester' => $semester,
-            'SocialEventList' => $SocialEventList, /// THIIS
+            'SocialEventList' => $SocialEventList,
             'now' => new \DateTime(),
         ));
     }
-
-    // --------------------- //
-
 
 
     /**
@@ -43,36 +40,22 @@ class SocialEventController extends BaseController
      */
     public function createSocialEventAction(Request $request)
     {
-        #TODO SETUP ACCESS RULES
-        /*
-        if ($this->get(AccessControlService::class)->checkAccess("create_event")) {
-        } else {
-            $form = $this->createForm(SurveyType::class, $survey);
-        }
-        */
-
+        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404();
         $em              = $this->getDoctrine()->getManager();
         $social_event    = new SocialEvent();
         $user            = $this->getUser();
 
         $form = $this->createForm(SocialEventType::class, $social_event, array(
-            'department'        => $user->getDepartment(),
+            'department'        => $department,
+            'semester'          => $semester,
         ));
 
         $form->handleRequest($request);
 
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
-
         if ($form->isValid()) {
-            ## $this->ensureAccess($event);
-
             $em->persist($social_event);
             $em->flush();
-
-            // Need some form of redirect. Will cause wrong database entries if the form is rendered again
-            // after a valid submit, without remaking the form with up to date question objects from the database.
-            //return $this->redirect($this->generateUrl('control_panel')); || Not in use
             return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
 
@@ -84,19 +67,20 @@ class SocialEventController extends BaseController
         ));
     }
 
-    public function editSocialEventAction(SocialEvent $event, Request $request)
+    public function editSocialEventAction(SocialEvent $social_event, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
 
-        $form = $this->createForm(SocialEventType::class, $event);
+        $form = $this->createForm(SocialEventType::class, $social_event, array(
+            'department'        => $social_event->getDepartment(),
+            'semester'          => $social_event->getSemester(),
+        ));
         $form->handleRequest($request);
 
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
         if ($form->isValid()) {
-            $event->setSemester($currentSemester);
-            $em->persist($event);
+            $em->persist($social_event);
             $em->flush();
             return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
@@ -105,13 +89,13 @@ class SocialEventController extends BaseController
             'form' => $form->createView(),
             'department' => $department,
             'semester' => $semester,
-            'event' => $event,
+            'event' => $social_event,
         ));
     }
 
     public function deleteSocialEventAction(SocialEvent $event)
     {
-        # NB: this function will permanently remove th event.
+        # NB: this function will permanently remove the event.
         # For history purposes, perhaps it should deactivate the event in stead?
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
@@ -122,8 +106,4 @@ class SocialEventController extends BaseController
 
         return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }
-
-
-    #TODO: functions yet to be implemented:
-    //public function copySocialEventAction
 }

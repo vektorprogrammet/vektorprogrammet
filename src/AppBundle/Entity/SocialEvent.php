@@ -60,6 +60,14 @@ class SocialEvent
     private $endTime;
 
     /**
+     * @var Role
+     * @ORM\ManyToOne(targetEntity="Role")
+     * @ORM\JoinColumn(referencedColumnName="id")
+     *
+     */
+    private $role;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -190,6 +198,22 @@ class SocialEvent
     public function getSemester(): ? Semester
     {
         return $this->semester;
+    }
+
+    /**
+     * @return Role|null
+     */
+    public function getRole(): ? Role
+    {
+        return $this->role;
+    }
+
+    /**
+     * @param Role $role
+     */
+    public function setRole(Role $role): void
+    {
+        $this->role = $role;
     }
 
     /**
