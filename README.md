@@ -3,6 +3,51 @@
 ### Requirements
 - [PHP](http://php.net/downloads.php) version >= 7.1
 - [Node](https://nodejs.org/en/) version >= 8
+- [Git](https://git-scm.com/)
+
+#### Required PHP-dependencies
+*ext-pdo_sqlite
+*ext-gd2
+*ext-mbstring
+*ext-curl
+*ext-xml
+*ext-dom
+
+Please find file /etc/php/**VERSION**/cli/php.ini
+Uncomment all lines with the required PHP-dependencies
+
+Example:
+
+`;extension=mbstring`       ---> `extension=mbstring`
+
+-----
+`;extension=ext-pdo_sqlite` ---> `extension=ext-pdo_sqlite`
+
+`;extension=ext-gd2`         ---> `extension=ext-gd` 
+
+`;extension=ext-mbstring`   ---> `extension=ext-mbstring`
+
+`;extension=ext-curl`       ---> `extension=ext-curl`   
+
+`;extension=ext-xml`        ---> `extension=ext-xml` 
+
+`;extension=ext-dom`        ---> `extension=ext-dom`  
+
+-----
+
+##### Install dependencies (with php version 7.2. (php --version to see which version you have)
+`sudo apt-get install php7.2-mbstring`
+
+`sudo apt-get install php7.2-sqlite`
+
+`sudo apt-get install php7.2-gd`
+
+`sudo apt-get install php7.2-curl`
+
+`sudo apt-get install php7.2-xml`
+
+
+
 
 #### UNIX:
 `npm run setup`
@@ -52,3 +97,5 @@ Tests should be run before opening a PR.
 ### Add new entities to the database and reload fixtures
 `npm run db:update`
 
+### Reload database
+`npm run db:update`
