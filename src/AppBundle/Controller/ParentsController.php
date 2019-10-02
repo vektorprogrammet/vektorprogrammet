@@ -1,0 +1,13 @@
+<?php
+
+namespace AppBundle\Controller;
+
+class ParentsController extends BaseController
+{
+    public function indexAction()
+    {
+        return $this->render('/parents/foreldre.html.twig');
+    }
+}
+
+

@@ -1,0 +1,42 @@
+@import "../colors";
+
+.parents-infosite {
+/*overflow:hidden;
+  width: 400px;
+
+
+  width: 800px;
+
+*/
+  .space {
+    margin-bottom:60px;
+  }
+
+
+  .image-grid {
+
+    width: 450px;
+    max-width: 100%;
+    max-height: 450px;
+
+    border-radius: 8px;
+  }
+
+  .image-left {
+    width: 450px;
+    height: auto;
+    // width: auto;
+    // height: 250px;
+  }
+
+  .image-right {
+    width: 400px;
+    height: auto;
+    // width: auto;
+    // height: 250px;
+
+  }
+
+}
+
+
