@@ -5,7 +5,7 @@
 
 
 # Set up development environment
-### Requirements:
+## Requirements:
 - [PHP](http://php.net/downloads.php) version >= 7.1
 - [Node](https://nodejs.org/en/) version >= 8
 - [Git](https://git-scm.com/)
@@ -39,7 +39,12 @@ sudo apt-get install php7.2-xml
 ```
 
 
-### Setup:
+
+
+## Setup:
+
+### Clone files:
+`git clone https://github.com/vektorprogrammet/vektorprogrammet.git`
 
 #### UNIX:
 `npm run setup`
