@@ -25,7 +25,7 @@ class ChangeLogItem
     /**
      * @var string
      *
-     * @ORM\Column(name="title", type="string",nullable=false)
+     * @ORM\Column(name="title", type="string",nullable=false, length=40)
      * @Assert\Length(
      *     max=40,
      *     maxMessage="Tittelen kan ikke være mer enn 40 tegn"

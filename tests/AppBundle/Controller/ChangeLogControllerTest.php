@@ -33,7 +33,7 @@ class ChangeLogControllerTest extends BaseWebTestCase
         $this->assertEquals(0, $before);
 
         $client = $this->createTeamMemberClient();
-        $crawler = $client->request('GET', '/kontrollpanel/changelog/edit/1'); #Blir merkelig å teste kun 1 id. En fiks?
+        $crawler = $client->request('GET', '/kontrollpanel/changelog/edit/1');
         $form = $crawler->selectButton('Lagre')->form();
 
         $date = (new \DateTime())->modify('+1day')->format('d.m.Y H:m');
