@@ -4,8 +4,8 @@
 
 
 
-## Set up development environment
-### Requirements
+# Set up development environment
+### Requirements:
 - [PHP](http://php.net/downloads.php) version >= 7.1
 - [Node](https://nodejs.org/en/) version >= 8
 - [Git](https://git-scm.com/)
@@ -16,17 +16,19 @@
 * ext-mbstring
 * ext-curl
 * ext-xml
-* ext-dom
 
-Please find file /etc/php/version/cli/php.ini
+#### How to install the php-dependencies
+
+Please find the file `php.ini`. (On Linux it is located at `/etc/php/version/cli/php.ini`).
+
 Uncomment all lines with the required PHP-dependencies.
 
-Example for dependency php-ext-mbstring:
+Example for dependency `mbstring`:
 
 `;extension=mbstring`       ---> `extension=mbstring`
 
 
-#### Install dependencies
+To install the php-dependencies on Ubuntu 
 (Example with Ubuntu as operating system and a php-version of 7.2)
 ```
 sudo apt-get install php7.2-mbstring
@@ -37,6 +39,7 @@ sudo apt-get install php7.2-xml
 ```
 
 
+### Setup:
 
 #### UNIX:
 `npm run setup`
@@ -45,6 +48,7 @@ sudo apt-get install php7.2-xml
 
 ### Start server on http://localhost:8000
 `npm start`
+
 
 ### Build static files
 When adding new images or other non-code files, you can run
@@ -79,6 +83,8 @@ Tests should be run before opening a PR.
 `npm run test`
 ##### Windows:
 `npm run test:win`
+
+
 
 
 ## Database
