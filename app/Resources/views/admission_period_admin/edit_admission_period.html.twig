@@ -27,8 +27,8 @@
                     – {{ department }}</div>
                 <div class="card-body">
                     <h3>Opptak start / slutt</h3>
-                    {{ form_row(form.admissionStartDate) }}
-                    {{ form_row(form.admissionEndDate) }}
+                    {{ form_row(form.startDate) }}
+                    {{ form_row(form.endDate) }}
                     <button type="submit" class="btn btn-primary mt-4">Lagre</button>
                 </div>
             </div>
@@ -83,8 +83,8 @@
             step: 1,
         };
 
-        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
-        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.startDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.endDate.vars.id }}').datetimepicker(options);
         jQuery('#{{ form.infoMeeting.date.vars.id }}').datetimepicker(Object.assign(options, {step: 15}));
     </script>
 {% endblock %}

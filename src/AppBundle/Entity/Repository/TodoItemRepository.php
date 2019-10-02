@@ -27,15 +27,15 @@ class TodoItemRepository extends EntityRepository
             ->andWhere('todoListItem.deletedAt > :semesterEndDate or todoListItem.deletedAt is null')
             ->setParameter('semester', $semester)
             ->setParameter('department', $department)
-            ->setParameter('semesterEndDate', $semester->getSemesterEndDate())
+            ->setParameter('semesterEndDate', $semester->getEndDate())
             ->getQuery()
             ->getResult();
 
         $filteredItems = array_filter($todoItems, function (TodoItem $item) use ($semester) {
             if (empty($item->getSemester())) {
                 return (
-                    $item->getCreatedAt() < $semester->getSemesterEndDate() &&
-                    (empty($item->getDeletedAt())? true : $item->getDeletedAt() > $semester->getSemesterStartDate()));
+                    $item->getCreatedAt() < $semester->getEndDate() &&
+                    (empty($item->getDeletedAt())? true : $item->getDeletedAt() > $semester->getStartDate()));
             } else {
                 return true;
             }
@@ -57,7 +57,7 @@ class TodoItemRepository extends EntityRepository
             ->andWhere('todoListItem.deletedAt > :semesterEndDate or todoListItem.deletedAt is null')
             ->setParameter('semester', $semester)
             ->setParameter('department', $department)
-            ->setParameter('semesterEndDate', $semester->getSemesterEndDate())
+            ->setParameter('semesterEndDate', $semester->getEndDate())
             ->getQuery()
             ->getResult();
     }

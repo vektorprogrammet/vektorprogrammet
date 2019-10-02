@@ -220,8 +220,8 @@ class TeamMembership implements TeamMembershipInterface
      */
     public function isActiveInSemester(Semester $semester)
     {
-        $semesterStartLaterThanTeamMembership = $semester->getSemesterStartDate() >= $this->getStartSemester()->getSemesterStartDate();
-        $semesterEndsBeforeTeamMembership = $this->getEndSemester() === null || $semester->getSemesterEndDate() <= $this->getEndSemester()->getSemesterEndDate();
+        $semesterStartLaterThanTeamMembership = $semester->getStartDate() >= $this->getStartSemester()->getStartDate();
+        $semesterEndsBeforeTeamMembership = $this->getEndSemester() === null || $semester->getEndDate() <= $this->getEndSemester()->getEndDate();
 
         return $semesterStartLaterThanTeamMembership && $semesterEndsBeforeTeamMembership;
     }

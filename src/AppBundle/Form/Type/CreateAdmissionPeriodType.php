@@ -30,12 +30,12 @@ class CreateAdmissionPeriodType extends AbstractType
                         ->setParameter('Semesters', $semesters);
                 },
             ))
-            ->add('admissionStartDate', DateTimeType::class, array(
+            ->add('startDate', DateTimeType::class, array(
                 'label' => 'Opptak starttidspunkt',
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
             ))
-            ->add('admissionEndDate', DateTimeType::class, array(
+            ->add('endDate', DateTimeType::class, array(
                 'label' => 'Opptak sluttidspunkt',
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',

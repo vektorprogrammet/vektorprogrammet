@@ -83,11 +83,11 @@ class AdmissionPeriodRepository extends EntityRepository
             $time = new \DateTime();
         }
 
-        return $this->createQueryBuilder('Semester')
-            ->select('Semester')
-            ->where('Semester.department = ?1')
-            ->andWhere('Semester.admissionStartDate <= :time')
-            ->andWhere('Semester.admissionEndDate >= :time')
+        return $this->createQueryBuilder('admissionPeriod')
+            ->select('admissionPeriod')
+            ->where('admissionPeriod.department = ?1')
+            ->andWhere('admissionPeriod.startDate <= :time')
+            ->andWhere('admissionPeriod.endDate >= :time')
             ->setParameter(1, $department)
             ->setParameter('time', $time)
             ->getQuery()

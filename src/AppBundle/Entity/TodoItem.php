@@ -278,7 +278,7 @@ class TodoItem
     {
         $sortedArray = $this->todoMandatories->toArray();
         usort($sortedArray, function (TodoMandatory $a, TodoMandatory $b) {
-            return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
+            return ($a->getSemester()->getStartDate() < $b->getSemester()->getStartDate());
         });
 
         return $sortedArray;
@@ -301,7 +301,7 @@ class TodoItem
     {
         $sortedArray = $this->todoDeadlines->toArray();
         usort($sortedArray, function (TodoDeadline $a, TodoDeadline $b) {
-            return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
+            return ($a->getSemester()->getStartDate() < $b->getSemester()->getStartDate());
         });
         return $sortedArray;
     }
@@ -326,7 +326,7 @@ class TodoItem
     {
         $sortedArray = $this->todoCompleted->toArray();
         usort($sortedArray, function (TodoCompleted $a, TodoCompleted $b) {
-            return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
+            return ($a->getSemester()->getStartDate() < $b->getSemester()->getStartDate());
         });
         return $sortedArray;
     }

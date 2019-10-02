@@ -12,7 +12,7 @@ class EditAdmissionPeriodType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('admissionStartDate', DateTimeType::class, array(
+            ->add('startDate', DateTimeType::class, array(
                 'label' => 'Opptak starttidspunkt',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
@@ -20,7 +20,7 @@ class EditAdmissionPeriodType extends AbstractType
                     'placeholder' => 'Klikk for å velge tidspunkt',
                 ),
             ))
-            ->add('admissionEndDate', DateTimeType::class, array(
+            ->add('endDate', DateTimeType::class, array(
                 'label' => 'Opptak sluttidspunkt',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',

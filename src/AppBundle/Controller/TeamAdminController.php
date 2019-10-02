@@ -138,7 +138,7 @@ class TeamAdminController extends BaseController
      */
     private function sortTeamMembershipsByEndDate($a, $b)
     {
-        return $a->getStartSemester()->getSemesterStartDate() < $b->getStartSemester()->getSemesterStartDate();
+        return $a->getStartSemester()->getStartDate() < $b->getStartSemester()->getStartDate();
     }
 
     public function updateTeamAction(Request $request, Team $team)

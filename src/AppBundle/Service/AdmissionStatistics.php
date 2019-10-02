@@ -3,12 +3,15 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Application;
+use AppBundle\Entity\PeriodInterface;
 use AppBundle\Entity\Semester;
 
 class AdmissionStatistics
 {
+
     /**
      * @param AdmissionSubscriber[] $subscribers
      * @param Semester $semester
@@ -23,38 +26,38 @@ class AdmissionStatistics
 
     /**
      * @param Application[] $applications
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return array
      */
-    public function generateGraphDataFromApplicationsInSemester($applications, Semester $semester)
+    public function generateGraphDataFromApplicationsInSemester($applications, AdmissionPeriod $admissionPeriod)
     {
-        $appData = $this->initializeDataArray($semester);
+        $appData = $this->initializeDataArray($admissionPeriod);
         return $this->populateApplicationDataWithApplications($appData, $applications);
     }
 
     /**
      * @param Application[] $applications
-     * @param Semester $semester
+     * @param AdmissionPeriod $admissionPeriod
      *
      * @return array
      */
-    public function generateCumulativeGraphDataFromApplicationsInSemester($applications, Semester $semester)
+    public function generateCumulativeGraphDataFromApplicationsInSemester($applications, AdmissionPeriod $admissionPeriod)
     {
-        $appData = $this->initializeDataArray($semester);
+        $appData = $this->initializeDataArray($admissionPeriod);
         return $this->populateCumulativeApplicationDataWithApplications($appData, $applications);
     }
 
-    private function initializeDataArray(Semester $semester)
+    private function initializeDataArray(PeriodInterface $admissionPeriod)
     {
         $subData = [];
 
         $now = new \DateTime();
-        $days = $semester->getSemesterStartDate()->diff($now)->days;
-        if ($now > $semester->getSemesterEndDate()) {
-            $days = $semester->getSemesterStartDate()->diff($semester->getSemesterEndDate())->days;
+        $days = $admissionPeriod->getStartDate()->diff($now)->days;
+        if ($now > $admissionPeriod->getEndDate()) {
+            $days = $admissionPeriod->getStartDate()->diff($admissionPeriod->getEndDate())->days;
         }
-        $start = $semester->getSemesterStartDate()->format('Y-m-d');
+        $start = $admissionPeriod->getStartDate()->format('Y-m-d');
         for ($i = 0; $i < $days; $i++) {
             $date = (new \DateTime($start))->modify("+$i days")->format('Y-m-d');
             $subData[$date] = 0;

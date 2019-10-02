@@ -93,7 +93,7 @@ class PartyController extends AbstractFOSRestController
     public function ApplicationDeadlineAction(Department $department)
     {
         $admissionPeriod = $this->getAdmissionPeriod($department);
-        $deadline = $admissionPeriod->getAdmissionEndDate();
+        $deadline = $admissionPeriod->getEndDate();
         $view = $this->view($deadline->format('Y-m-d H:i:s'));
         return $this->handleView($view);
     }

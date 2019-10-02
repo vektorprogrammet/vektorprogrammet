@@ -86,7 +86,7 @@ class Department
     /**
      * @ORM\OneToMany(targetEntity="AdmissionPeriod", mappedBy="department",
      *     cascade={"remove"})
-     * @ORM\OrderBy({"admissionStartDate" = "DESC"})
+     * @ORM\OrderBy({"startDate" = "DESC"})
      **/
     private $admissionPeriods;
 
@@ -130,7 +130,7 @@ class Department
 
         /** @var AdmissionPeriod $admissionPeriod */
         foreach ($this->admissionPeriods as $admissionPeriod) {
-            if ($now > $admissionPeriod->getSemester()->getSemesterStartDate() && $now < $admissionPeriod->getSemester()->getSemesterEndDate()) {
+            if ($now > $admissionPeriod->getSemester()->getStartDate() && $now < $admissionPeriod->getSemester()->getEndDate()) {
                 return $admissionPeriod;
             }
         }
@@ -151,8 +151,8 @@ class Department
         $now = new \DateTime();
 
         foreach ($admissionPeriods as $admissionPeriod) {
-            if ($admissionPeriod->getSemester()->getSemesterStartDate() < $now &&
-                $admissionPeriod->getSemester()->getSemesterEndDate() > $latestAdmissionPeriod->getSemester()->getSemesterEndDate()) {
+            if ($admissionPeriod->getSemester()->getStartDate() < $now &&
+                $admissionPeriod->getSemester()->getEndDate() > $latestAdmissionPeriod->getSemester()->getEndDate()) {
                 $latestAdmissionPeriod = $admissionPeriod;
             }
         }
@@ -181,8 +181,8 @@ class Department
         if (!$admissionPeriod) {
             return false;
         }
-        $start = $admissionPeriod->getAdmissionStartDate();
-        $end = $admissionPeriod->getAdmissionEndDate();
+        $start = $admissionPeriod->getStartDate();
+        $end = $admissionPeriod->getEndDate();
         $now = new \DateTime();
         return $start < $now && $now < $end;
     }

@@ -63,7 +63,7 @@ class WidgetController extends BaseController
                 ->getRepository('AppBundle:Application')
                 ->findByAdmissionPeriod($admissionPeriod);
         }
-        $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInSemester($applicationsInSemester, $semester);
+        $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInSemester($applicationsInSemester, $admissionPeriod);
 
         return $this->render('widgets/application_graph_widget.html.twig', [
             'appData' => $appData,
