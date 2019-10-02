@@ -9,7 +9,7 @@
                 <div id= "changelog-item-{{ changeLogItem.id }}" class="card m-2 p-3 changelog_card">
                     <div class="card-body">
                             <h5 class="d-inline-block">{{ changeLogItem.title }}</h5>
-                            {% if  date(changeLogItem.date) < date("7days") %}
+                            {% if  date(changeLogItem.date) > date("-7days") %}
                                 <span class="badge badge-pill badge-success d-inline-block">Ny</span>
                             {% endif %}
 
