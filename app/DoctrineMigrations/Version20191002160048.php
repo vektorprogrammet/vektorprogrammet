@@ -15,7 +15,8 @@ final class Version20191002160048 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE AdmissionPeriod ADD start_date DATETIME NOT NULL, ADD end_date DATETIME NOT NULL, DROP admission_start_date, DROP admission_end_date');
+        $this->addSql('ALTER TABLE AdmissionPeriod CHANGE admission_start_date start_date DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE AdmissionPeriod CHANGE admission_end_date end_date DATETIME NOT NULL');
     }
 
     public function down(Schema $schema) : void
@@ -23,6 +24,7 @@ final class Version20191002160048 extends AbstractMigration
         // this down() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE AdmissionPeriod ADD admission_start_date DATETIME NOT NULL, ADD admission_end_date DATETIME NOT NULL, DROP start_date, DROP end_date');
+        $this->addSql('ALTER TABLE AdmissionPeriod CHANGE start_date admission_start_date DATETIME NOT NULL');
+        $this->addSql('ALTER TABLE AdmissionPeriod CHANGE end_date admission_end_date DATETIME NOT NULL');
     }
 }
