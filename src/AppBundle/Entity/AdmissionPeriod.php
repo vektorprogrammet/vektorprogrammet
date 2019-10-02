@@ -30,13 +30,13 @@ class AdmissionPeriod implements PeriodInterface
     private $department;
 
     /**
-     * @ORM\Column(name="admission_start_date", type="datetime", length=150)
+     * @ORM\Column(name="start_date", type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $startDate;
 
     /**
-     * @ORM\Column(name="admission_end_date", type="datetime", length=150)
+     * @ORM\Column(name="end_date", type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
     private $endDate;
