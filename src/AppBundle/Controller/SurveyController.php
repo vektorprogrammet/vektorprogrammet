@@ -397,9 +397,7 @@ class SurveyController extends BaseController
 
     public function resultSurveyAction(Survey $survey)
     {
-        if ($survey->isConfidential() && !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
-            throw new AccessDeniedException();
-        }
+        $this->ensureAccess($survey);
 
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             $textAnswers = $this->get(SurveyManager::class)
@@ -418,6 +416,8 @@ class SurveyController extends BaseController
 
     public function getSurveyResultAction(Survey $survey)
     {
+        $this->ensureAccess($survey);
+        
         return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
     }
 
@@ -456,6 +456,10 @@ class SurveyController extends BaseController
 
         $isSurveyAdmin = $this->get(AccessControlService::class)->checkAccess("survey_admin");
         $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
+        
+        if ($survey->isConfidential() && !$isSurveyAdmin) {
+            throw new AccessDeniedException();
+        }
 
         if ($isSameDepartment || $isSurveyAdmin) {
             return;
