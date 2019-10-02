@@ -39,4 +39,28 @@ class TeamEntityUnitTest extends TestCase
         // Assert the result
         $this->assertEquals($department, $team->getDepartment());
     }
+
+    // Check whether the setDeadline function is working correctly
+    public function testSetDeadlineAndAcceptApplication()
+    {
+        // Deadline requires accept application to be true
+        // new entity
+        $team = new Team();
+
+        // dummy entity
+        $deadline = new \DateTime("now +3 days");
+
+        // Use the setDeadline method
+        $team->setDeadline($deadline);
+
+        // Assert the result
+        $this->assertNotEquals($deadline, $team->getDeadline());
+
+        // Try again with accept application true
+        $team->setAcceptApplication(true);
+        $team->setDeadline($deadline);
+
+        // Assert the result
+        $this->assertEquals($deadline, $team->getDeadline());
+    }
 }
