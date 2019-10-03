@@ -32,7 +32,7 @@ class AdmissionStatistics
      */
     public function generateGraphDataFromApplicationsInSemester($applications, AdmissionPeriod $admissionPeriod)
     {
-        $appData = $this->initializeDataArray($admissionPeriod);
+        $appData = $this->initializeDataArray($admissionPeriod, 5);
         return $this->populateApplicationDataWithApplications($appData, $applications);
     }
 
@@ -44,11 +44,11 @@ class AdmissionStatistics
      */
     public function generateCumulativeGraphDataFromApplicationsInSemester($applications, AdmissionPeriod $admissionPeriod)
     {
-        $appData = $this->initializeDataArray($admissionPeriod);
+        $appData = $this->initializeDataArray($admissionPeriod, 5);
         return $this->populateCumulativeApplicationDataWithApplications($appData, $applications);
     }
 
-    private function initializeDataArray(PeriodInterface $admissionPeriod)
+    private function initializeDataArray(PeriodInterface $admissionPeriod, int $extraDays = 0)
     {
         $subData = [];
 
@@ -57,6 +57,9 @@ class AdmissionStatistics
         if ($now > $admissionPeriod->getEndDate()) {
             $days = $admissionPeriod->getStartDate()->diff($admissionPeriod->getEndDate())->days;
         }
+
+        $days += $extraDays;
+
         $start = $admissionPeriod->getStartDate()->format('Y-m-d');
         for ($i = 0; $i < $days; $i++) {
             $date = (new \DateTime($start))->modify("+$i days")->format('Y-m-d');
