@@ -30,7 +30,7 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateGraphDataFromApplicationsInSemester($applications, AdmissionPeriod $admissionPeriod)
+    public function generateGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
     {
         $appData = $this->initializeDataArray($admissionPeriod, 5);
         return $this->populateApplicationDataWithApplications($appData, $applications);
@@ -42,7 +42,7 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateCumulativeGraphDataFromApplicationsInSemester($applications, AdmissionPeriod $admissionPeriod)
+    public function generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
     {
         $appData = $this->initializeDataArray($admissionPeriod, 5);
         return $this->populateCumulativeApplicationDataWithApplications($appData, $applications);
