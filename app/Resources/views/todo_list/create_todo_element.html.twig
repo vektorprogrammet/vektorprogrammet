@@ -86,6 +86,6 @@
             step: 5,
         };
 
-        jQuery('#{{ form.deadlineDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.deadlineDate.vars.id }}').datetimepicker({dayOfWeekStart:1});
     </script>
 {% endblock %}
