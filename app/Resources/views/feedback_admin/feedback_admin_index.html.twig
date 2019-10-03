@@ -14,7 +14,7 @@
 {% endblock %}
 {% block body %}
     <div class="row">
-        <div class="col-12 col-lg-6">
+        <div class="col-12 col-lg-6" style="margin-left: auto; margin-right: auto;">
             {{ render(controller("AppBundle:Widget:feedback",{'request': app.request})) }}
         </div>
     </div>
