@@ -32,7 +32,16 @@
                     {% endif %}</div>
                 <div class="card-body">
                     {{ form_start(form) }}
-                    {{ form_widget(form) }}
+                    {{ form_row(form.user) }}
+                    {{ form_row(form.isTeamLeader) }}
+                    {{ form_row(form.position) }}
+                    {{ form_row(form.startSemester) }}
+                    {{ form_row(form.endSemester) }}
+                    {% if teamMembership is defined %}
+                        {{ form_row(form.save, {'label': 'Oppdater'}) }}
+                    {% else %}
+                        {{ form_row(form.save) }}
+                    {% endif %}
                     {{ form_end(form) }}
                 </div>
             </div>
