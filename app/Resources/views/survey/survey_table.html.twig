@@ -30,8 +30,24 @@
                                        class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
                                     </a>
                                     <a href="{{ path('survey_copy', {'id': survey.id }) }}" class="dropdown-item">
-                                        <i class="fa fa-copy text-primary"></i> Kopier
+                                        <i class="fa fa-copy text-primary"> </i> Kopier
                                     </a>
+
+
+                                    <form method="POST"
+                                          onsubmit="return confirm('Er du sikker på at du vil slette gjøremålet?')"
+                                          action="{{ path('survey_delete', {'id': survey.id, 'department': department.id, 'semester': semester.id}) }}">
+                                        <div class="row">
+                                            <div class="col-12">
+                                                <button type="submit"
+                                                        class="dropdown-item text-danger">
+                                                    <i class="fa fa-trash text-danger"></i>
+                                                    Slett
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </form>
+
 
                                     {% if not survey.targetAudience == 1 %}
                                         <a href="{{ path('survey_show_admin', {'id': survey.id }) }}" class="dropdown-item">
