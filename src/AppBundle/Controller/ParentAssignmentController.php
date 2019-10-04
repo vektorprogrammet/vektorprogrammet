@@ -4,14 +4,13 @@ namespace AppBundle\Controller;
 
 use AppBundle\Form\Type\ParentAssignmentType;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\ParentAssignmentEntity;
+use AppBundle\Entity\ParentAssignmentItem;
 
 class ParentAssignmentController extends BaseController
 {
     public function showAction(Request $request)
     {
-
-        $parentAssigned = new ParentAssignmentEntity();
+        $parentAssigned = new ParentAssignmentItem();
         $form = $this->createForm(ParentAssignmentType::class, $parentAssigned);
         $form->handleRequest($request);
 

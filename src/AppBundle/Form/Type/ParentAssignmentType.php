@@ -15,7 +15,7 @@ class ParentAssignmentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('navn', TextType::class, array(
+            ->add('name', TextType::class, array(
                 'label' => 'Skriv fullt navn',
                 'required' => true,
                 'attr' => array(
@@ -23,14 +23,14 @@ class ParentAssignmentType extends AbstractType
                 ),
 
             ))
-            ->add('epost', EmailType::class, array(
+            ->add('email', EmailType::class, array(
                 'label' => 'Skriv mailadresse',
                 'required' => true,
                 'attr' => array(
                     'autocomplete' => 'off',
                 ),
             ))
-            ->add('tidspunkt', DateTimeType::class, array(
+            ->add('time', DateTimeType::class, array(
                 'label' => 'Skriv dato',
                 'required' => true,
             ))

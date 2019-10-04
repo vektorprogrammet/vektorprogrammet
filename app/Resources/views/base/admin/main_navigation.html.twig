@@ -308,6 +308,14 @@
                 ]
             } %}
 
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'parent_registration_admin_show',
+                icon: 'align-justify',
+                name: 'Foreldrekurs',
+            } %}
+
+
+
             {% if is_granted_admin() %}
                 <li class="nav-title">Admin</li>
                 {% include 'base/admin/nav_link.html.twig' with {

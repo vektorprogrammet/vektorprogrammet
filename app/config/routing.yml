@@ -66,6 +66,12 @@ parent_registration:
   defaults: {_controller: AppBundle:ParentAssignment:show }
   methods: [GET, POST]
 
+parent_registration_admin_show:
+  path: /kontrollpanel/foreldrekursadmin
+  defaults: {_controller: AppBundle:ParentAssignmentAdmin:show }
+  methods: [GET]
+
+
 ##########################################
 #                Control Panel           #
 ##########################################

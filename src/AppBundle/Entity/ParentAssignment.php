@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ParentAssignmentEntity
+ * ParentAssignment
  *
- * @ORM\Table(name="parent_assignment_entity")
+ * @ORM\Table(name="parent_assignment")
  * @ORM\Entity(repositoryClass="ParentAssignmentRepository")
  */
-class ParentAssignmentEntity
+class ParentAssignment
 {
     /**
      * @var int
@@ -58,7 +58,7 @@ class ParentAssignmentEntity
      *
      * @param string $navn
      *
-     * @return ParentAssignmentEntity
+     * @return ParentAssignment
      */
     public function setNavn($navn)
     {
@@ -82,7 +82,7 @@ class ParentAssignmentEntity
      *
      * @param string $epost
      *
-     * @return ParentAssignmentEntity
+     * @return ParentAssignment
      */
     public function setEpost($epost)
     {
@@ -106,7 +106,7 @@ class ParentAssignmentEntity
      *
      * @param \DateTime $tidspunkt
      *
-     * @return ParentAssignmentEntity
+     * @return ParentAssignment
      */
     public function setTidspunkt($tidspunkt)
     {

@@ -8,6 +8,7 @@ class ParentsController extends BaseController
     {
         return $this->render('/parents/foreldre.html.twig');
     }
+
 }
 
 
