@@ -40,9 +40,10 @@
             format: 'd.m.Y H:i',
             lang: 'no',
             step: 1,
+            dayOfWeekStart: 1,
         };
 
-        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker({dayOfWeekStart:1});
-        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker({dayOfWeekStart:1});
+        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
     </script>
 {% endblock %}
