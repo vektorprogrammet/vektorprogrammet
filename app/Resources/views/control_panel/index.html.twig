@@ -29,6 +29,7 @@
             {{ render(controller("AppBundle:Widget:availableSurveys")) }}
             {{ render(controller("AppBundle:Widget:interviews")) }}
             {{ render(controller("AppBundle:Widget:receipts")) }}
+            {{ render(controller("AppBundle:Widget:feedback",{'request': app.request})) }}
 
             {% if not admissionPeriod or not admissionPeriod.hasActiveAdmission %}
                 {{ render(controller("AppBundle:Widget:applicationGraph")) }}
