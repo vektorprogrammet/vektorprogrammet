@@ -1,23 +1,33 @@
-<div class="col-12" xmlns:text-decoration="http://www.w3.org/1999/xhtml">
-    <div class="card">
-        <div class="card-header"> QuickLink
-        </div>
-        <div class="card-body"> <!--Sånn her kommenterer vi! :D -->
+(quickLink.html.twig)
 
-            <div class="container">
-                <div class="row align-items-start">
-                {% for quicklink in quickLinks%}
-                    <div class="col-sm-3 text-center">
-                        <a href="{{quicklink.url}}">
-                            <div class="quicklink-box">
-                                <img src="{{ quicklink.iconUrl }}" alt="Quicklink image" height="42" width="42">
-                                <h5 class="card-title unstyled-link"> {{quicklink.title}}  </h5>
-                            </div>
-                        </a>
-                    </div>
-                {% endfor %}
-                </div>
+
+<div class="col-4">
+    {% for quicklink in quickLinks %}
+        {{quicklink.getUrl()}}
+    {% endfor %}
+</div>
+<!--=======-->
+<div class="col-12">
+
+
+    <div class="card" >
+        <div class="card-header">
+            <div class="card-title">
+                QuickLinks
             </div>
         </div>
+        <div class="card-body">
+            <div class="row">
+
+                {% for quicklink in quickLinks %}
+                    <div class="col-4">f
+                        {{ quicklink.getTitle() }} <br>
+                        <a href="{{quicklink.getUrl()}}"><img src="{{quicklink.getIconUrl()}}" alt="Icon" width="42" height="42"></a>
+                    </div>
+
+                {%  endfor %}
+            </div>
+        </div>
+
     </div>
 </div>
