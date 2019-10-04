@@ -30,6 +30,7 @@
 
             {{ form_row(form.shortDescription) }}
             {{ form_row(form.acceptApplication) }}
+            {{ form_row(form.deadline) }}
             {{ form_row(form.active) }}
             {{ form_row(form.description) }}
             <br>
@@ -39,4 +40,25 @@
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script type="text/javascript">
+        let acceptApplication = document.getElementById('createTeam_acceptApplication');
+        let deadline = document.getElementById('createTeam_deadline');
+        !acceptApplication.checked ? deadline.parentNode.classList.add('hide') : '';
+        acceptApplication.addEventListener('click', e => {
+            let children = deadline.childNodes;
+            if(!e.target.checked){
+                deadline.parentNode.classList.add('hide');
+                children[0].selectedIndex = 0;
+                children[1].selectedIndex = 0;
+                children[2].selectedIndex = 0;
+                children[3].selectedIndex = 0;
+                children[5].selectedIndex = 0;
+            } else {
+                deadline.parentNode.classList.remove('hide');
+            }
+        })
+    </script>
 {% endblock %}

@@ -32,15 +32,13 @@ class SurveyManager
             $answer = new SurveyAnswer();
             $answer->setSurveyQuestion($surveyQuestion);
             $answer->setSurveyTaken($surveyTaken);
-
             $surveyTaken->addSurveyAnswer($answer);
         }
-        $surveyTaken->setTime(new \DateTime());
 
         return $surveyTaken;
     }
 
-    public function initializeTeamSurveyTaken(Survey $survey, User $user)
+    public function initializeUserSurveyTaken(Survey $survey, User $user)
     {
         $surveyTaken = $this->initializeSurveyTaken($survey);
         $surveyTaken->setUser($user);
@@ -88,7 +86,7 @@ class SurveyManager
         $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
         $userAffiliation = array();
         $semester = $survey->getSemester();
-        if ($survey->isTeamSurvey()) {
+        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             foreach ($surveysTaken as $surveyTaken) {
                 $user = $surveyTaken->getUser();
                 $userAffiliation = $this->getUserAffiliationOfUserBySemester($user, $semester, $userAffiliation);
@@ -157,7 +155,10 @@ class SurveyManager
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
             foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships())) {
+                $noTeamMemberships = $answer->getSurveyTaken()->getUser() === null
+                    || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships());
+
+                if ($answer->getSurveyTaken() === null || $noTeamMemberships) {
                     continue;
                 }
 
@@ -210,7 +211,7 @@ class SurveyManager
         $userAffiliation = $this->getUserAffiliationOfSurveyAnswers($survey);
         $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
 
-        $title = $survey->isTeamSurvey() ? 'Team' : 'Skole';
+        $title = $this->getSurveyTargetAudienceString($survey);
 
         //Inject the school/team question into question array
         $userAffiliationQuestion = array('question_id' => 0, 'question_label' => $title, 'alternatives' => $userAffiliation);
@@ -227,5 +228,18 @@ class SurveyManager
         $user->setLastPopUpTime(new \DateTime("2000-01-01"));
         $this->em->persist($user);
         $this->em->flush();
+    }
+
+    public function getSurveyTargetAudienceString(Survey $survey) : string
+    {
+        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
+            return "Team";
+        } elseif ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
+            return "Assistent";
+        } elseif ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
+            return "Skole";
+        }
+
+        return "Andre";
     }
 }

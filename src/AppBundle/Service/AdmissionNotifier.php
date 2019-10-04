@@ -26,6 +26,7 @@ class AdmissionNotifier
         $this->logger = $logger;
         $this->validator = $validator;
         $this->sendLimit = $sendLimit;
+        $this->validator = $validator;
     }
 
     /**
@@ -122,14 +123,8 @@ class AdmissionNotifier
         try {
             foreach ($departments as $department) {
                 $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
-                if ($admissionPeriod === null || $admissionPeriod->getInfoMeeting() === null || !$admissionPeriod->getInfoMeeting()->isShowOnPage()) {
-                    continue;
-                }
 
-                $now = new \DateTime();
-                $infoMeetingLessThanOneDay = $admissionPeriod->getInfoMeeting()->getDate()->diff($now)->d <= 1;
-                $lessThanOneDayLeft = $infoMeetingLessThanOneDay && $admissionPeriod->getInfoMeeting()->getDate() > $now;
-                if (!$lessThanOneDayLeft) {
+                if ($admissionPeriod === null || !$admissionPeriod->shouldSendInfoMeetingNotifications()) {
                     continue;
                 }
 

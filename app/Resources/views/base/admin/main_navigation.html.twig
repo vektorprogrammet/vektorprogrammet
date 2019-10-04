@@ -186,6 +186,18 @@
             } %}
 
 
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'usergroup_collections',
+                icon: 'user-tag',
+                name: 'Brukergruppesamling',
+                activeRoutes: [
+                    'usergroup_collection_create',
+                    'usergroup_collection_edit',
+                    'usergroup_collection_delete',
+                ]
+            } %}
+
+
             <li class="nav-title">Økonomi</li>
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'sponsors_show',
@@ -230,6 +242,18 @@
                     'survey_results',
                 ]
             } %}
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'survey_notifiers',
+                icon: 'bell',
+                name: 'Undersøkelsevarsler',
+                activeRoutes: [
+                    'survey_notifier_create',
+                    'survey_notifier_edit',
+                    'survey_notifier_delete',
+                ]
+            } %}
+
             {% include 'base/admin/nav_link.html.twig' with {
                 route: 'todo_list',
                 icon: 'clipboard-list',
@@ -284,6 +308,16 @@
                     ]
                 } %}
             {% endif %}
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'feedback_admin_index',
+                icon: 'thumbs-up',
+                name: 'Feedback',
+                activeRoutes: [
+                    'feedback_admin_list',
+                    'feedback_admin_show'
+                ]
+            } %}
 
             {% if is_granted_admin() %}
                 <li class="nav-title">Admin</li>

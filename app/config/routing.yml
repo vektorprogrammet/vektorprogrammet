@@ -116,9 +116,16 @@ survey_show:
   requirements:
     id: \d+
 
-survey_show_team:
- path: /teamundersokelse/{id}
- defaults: { _controller: AppBundle:Survey:showTeam }
+survey_show_user:
+ path: /undersokelse/u/{id}
+ defaults: { _controller: AppBundle:Survey:showUser}
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+survey_show_user_id:
+ path: /undersokelse/u/{id}/{userid}
+ defaults: { _controller: AppBundle:Survey:showId }
  methods: [GET, POST]
  requirements:
   id: \d+
@@ -130,6 +137,7 @@ survey_show_admin:
  methods: [GET, POST]
  requirements:
   id: \d+
+
 
 survey_team_show_admin:
   path: /kontrollpanel/undersokelse/{id}
@@ -193,6 +201,67 @@ survey_popup_close:
  requirements:
   id: \d+
 
+survey_notifiers:
+ path: /kontrollpanel/undersokelsevarsel
+ defaults: { _controller: AppBundle:SurveyNotifier:surveyNotificationCollections }
+ methods: [GET]
+
+survey_notifier_create:
+ path: /kontrollpanel/undersokelsevarsel/opprett
+ defaults: { _controller: AppBundle:SurveyNotifier:createSurveyNotifier }
+ methods: [GET, POST]
+
+survey_notifier_edit:
+  path: /kontrollpanel/undersokelsevarsel/rediger/{id}
+  defaults: { _controller: AppBundle:SurveyNotifier:createSurveyNotifier }
+  methods: [GET, POST]
+  requirements:
+    id: \d+
+
+survey_notifier_delete:
+  path: /kontrollpanel/undersokelsevarsel/slett/{id}
+  defaults: { _controller: AppBundle:SurveyNotifier:deleteSurveyNotifier }
+  methods: [POST]
+  requirements:
+    id: \d+
+
+survey_notifier_send:
+ path: /kontrollpanel/undersokelsevarsel/send/{id}
+ defaults: { _controller: AppBundle:SurveyNotifier:sendSurveyNotifications }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+
+##########################################
+#                Usergroupings           #
+##########################################
+usergroup_collections:
+ path: /kontrollpanel/brukergruppesamling
+ defaults: { _controller: AppBundle:UserGroupCollection:userGroupCollections }
+ methods: [GET]
+
+
+usergroup_collection_create:
+ path: /kontrollpanel/brukergruppesamling/opprett
+ defaults: { _controller: AppBundle:UserGroupCollection:createUserGroupCollection }
+ methods: [GET, POST]
+
+
+usergroup_collection_edit:
+ path: /kontrollpanel/brukergruppesamling/opprett/{id}
+ defaults: { _controller: AppBundle:UserGroupCollection:createUserGroupCollection }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+
+usergroup_collection_delete:
+ path: /kontrollpanel/brukergruppesamling/slett/{id}
+ defaults: { _controller: AppBundle:UserGroupCollection:deleteUserGroupCollection }
+ methods: [POST]
+ requirements:
+  id: \d+
 
 ##########################################
 #             Arrangement                #
@@ -1232,3 +1301,19 @@ teachers:
 about_new:
     path: /om
     defaults: { _controller: AppBundle:AboutVektor:show }
+##########################################
+#               Feedback                 #
+##########################################
+feedback_admin_index:
+    path: /kontrollpanel/feedback
+    defaults: {_controller: AppBundle:Feedback:index }
+    methods: [GET, POST]
+feedback_admin_list:
+    path: /kontrollpanel/feedback/list
+    defaults: {_controller: AppBundle:Feedback:showAll }
+    methods: [GET]
+feedback_admin_show:
+    path: /kontrollpanel/feedback/show/{id}
+    defaults: {_controller: AppBundle:Feedback:show }
+    methods: [GET]
+

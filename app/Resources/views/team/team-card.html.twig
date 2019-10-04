@@ -19,7 +19,7 @@
            href="{{ path('team_page', {id: team.id}) }}">
             Les mer
         </a>
-        {% if team.acceptApplication %}
+        {% if team.acceptApplicationAndDeadline %}
             <span class="application-chip mdc-chip mdc-chip--contact">
                 <span class="application-chip__symbol mdc-chip__contact mdc-color--teal-400 mdc-color-text--white">!</span>
                 <span class="application-chip__text mdc-chip__text">Har opptak</span>

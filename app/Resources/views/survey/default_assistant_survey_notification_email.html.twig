@@ -1,0 +1,66 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional //EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+    <meta http-equiv="Content-Type"
+          content="text/html; charset=utf-8">
+    <title>{{ title }}</title>
+    <style type="text/css">
+    </style>
+</head>
+<body>
+
+<table align="center" cellpadding="10" cellspacing="0" width="600" style="width:600px; font-family:Montserrat, Helvetica, Arial, sans-serif;">
+    <tr>
+        <td>
+            <table>
+                <tr>
+                    <td>
+                        <table>
+                            <tr>
+                                <td>
+                                    <a href="https://vektorprogrammet.no{{ path('home') }}" >
+                                        <img width="120px" src="https://vektorprogrammet.no/images/vektor.png" alt="https://vektorprogrammet.no{{ path('home') }}">
+                                    </a>
+                                </td>
+                            </tr>
+                        </table>
+
+                    </td>
+                </tr>
+            </table>
+            <table RULES=NONE FRAME=BOX align="center" border="1px" cellspacing="0" width="600" style="border-collapse: collapse; border: 1px solid #dfdfdf;
+            ; width:600px; background-color: #f9fdff; font-family:Montserrat, Helvetica, Arial, sans-serif;">
+                <tr>
+                    <td style="padding: 50px 50px 10px 50px">
+                        <h1 style="color: #003763; margin-bottom:3px; margin-top: 10px; mso-line-height-rule:exactly;">{{ title }}</h1>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 15px 50px 5px 50px">
+                        Hei {{ firstname | capitalize}}! <br>
+                        Tusen takk for at du har vært vektorassistent dette semesteret!
+                        Vi i Vektorprogrammets evalueringsteam håper du har trivdes som assistent. For å kunne gjøre forbedringer trenger vi å få tilbakemelding fra deg, ved at du bruker et par minutter på å svare på vår undersøkelse.
+                        <br>
+                        <br>
+                        Alle assistentene som svarer på undersøkelsen vil være med i trekningen av Vektorprogrammets termokopp eller vannflaske. Følg anvisningene i skjemaet.
+                        <br>
+                        <br>
+                    </td>
+                </tr>
+                <tr>
+                    <td style="padding: 15px 50px 5px 50px">
+                        <a style="border:none;     text-decoration: none;
+border-radius:5000px;background-color:#003763; color: #ffffff; display:inline-block; font-size:16px;font-weight:bold;line-height:1.3;margin:0;padding:8px 16px 8px 16px;text-align:left;" href="{{ route }}"> Ta undersøkelse </a>
+                    </td>
+                </tr>
+                <tr align="center">
+                    <td style="padding: 15px 50px 25px 50px">
+                        <small>Gjør knappen opprør? Følge denne her istedet <br> <a href="{{ route }}">  {{ route }}</a> </small>
+                    </td>
+                </tr>
+            </table>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

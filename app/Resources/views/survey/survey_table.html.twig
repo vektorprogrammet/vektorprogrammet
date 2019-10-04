@@ -33,7 +33,7 @@
                                         <i class="fa fa-copy text-primary"></i> Kopier
                                     </a>
 
-                                    {% if not survey.teamSurvey %}
+                                    {% if not survey.targetAudience == 1 %}
                                         <a href="{{ path('survey_show_admin', {'id': survey.id }) }}" class="dropdown-item">
                                             <i class="fa fa-file-signature text-primary"></i> Admin-utfylling
                                         </a>
@@ -45,15 +45,9 @@
                     <td>{{ survey.name }}</td>
                     <td>{{ survey.getTotalAnswered }}</td>
                     <td>
-                        {% if survey.teamSurvey %}
-                            <a href="{{ path('survey_show_team', {'id': survey.id }) }}">
-                                <i class="fa fa-comment-o"></i> Vis undersøkelse
-                            </a>
-                        {% else %}
-                            <a href="{{ path('survey_show', {'id': survey.id }) }}">
-                                <i class="fa fa-comment-o"></i> Vis undersøkelse
-                            </a>
-                        {% endif %}
+                        <a href="{{ path('survey_show', {'id': survey.id }) }}">
+                            <i class="fa fa-comment-o"></i> Vis undersøkelse
+                        </a>
 
                     </td>
                     <td>

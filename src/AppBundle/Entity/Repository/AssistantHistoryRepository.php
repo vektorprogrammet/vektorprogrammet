@@ -12,6 +12,13 @@ use Doctrine\ORM\EntityRepository;
 
 class AssistantHistoryRepository extends EntityRepository
 {
+    private function findByUserInit(User $user)
+    {
+        return $this->createQueryBuilder('assistantHistory')
+            ->select('assistantHistory')
+            ->where('assistantHistory.user = :user')
+            ->setParameter('user', $user);
+    }
 
     /**
      * @param User $user
@@ -20,10 +27,24 @@ class AssistantHistoryRepository extends EntityRepository
      */
     public function findByUser(User $user): array
     {
-        return $this->createQueryBuilder('assistantHistory')
-            ->select('assistantHistory')
-            ->where('assistantHistory.user = :user')
-            ->setParameter('user', $user)
+        return $this->findByUserInit($user)
+            ->getQuery()
+            ->getResult();
+    }
+
+
+    /**
+     * @param User $user
+     *
+     * @return AssistantHistory[]
+     */
+    public function findMostRecentByUser(User $user): array
+    {
+        return $this
+            ->findByUserInit($user)
+            ->join('assistantHistory.semester', 'sm')
+            ->addOrderBy('sm.year', 'DESC')
+            ->addOrderBy('sm.semesterTime', 'ASC') // Vår < Høst
             ->getQuery()
             ->getResult();
     }
@@ -224,5 +245,26 @@ class AssistantHistoryRepository extends EntityRepository
             ->where('user.gender = 0')
             ->getQuery()
             ->getSingleScalarResult();
+    }
+
+    /**
+     * @return string[]
+     *
+     */
+    public function findAllBolkNames() : array
+    {
+        $bolkNames = $this->createQueryBuilder('ah')
+            ->select('ah.bolk')
+            ->distinct()
+            ->getQuery()
+            ->getResult();
+
+        $names = array();
+        foreach ($bolkNames as $name) {
+            $names[] = array_pop($name);
+        }
+        $bolkNames = array_combine($names, $names);
+
+        return $bolkNames;
     }
 }

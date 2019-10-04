@@ -1,0 +1,132 @@
+{% extends "adminBase.html.twig" %}
+
+{% block title %}
+    Varselutsendelser for spørreundersøkelser
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Varselutsendelser</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a class="btn btn-outline-success text-success" href="{{ path('survey_notifier_create') }}"><i
+                class="fa fa-plus text-success"></i> Ny varselutsendelse</a>
+{% endblock %}
+
+
+{% block body %}
+        <div class="card">
+            <div class="card-header"><i class="fa fa-align-justify"></i>
+                Undersøkelsevarsler</div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th></th>
+                        <th>Tittel</th>
+                        <th>Redigeringsstatus</th>
+                        <th>Varselstatus</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for surveyNotificationCollection in surveyNotificationCollections %}
+                        <tr>
+                            <td class="table-menu">
+                                    <div class="dropdown">
+                                        <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </div>
+                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                            <div class="dropdown-header mb-2"><strong>{{ surveyNotificationCollection.name }} </strong></div>
+                                            <a href="{{ path('survey_notifier_edit', {'id': surveyNotificationCollection.id }) }}"
+                                               class="dropdown-item">
+                                                {% if surveyNotificationCollection.isActive %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
+                                            </a>
+                                            {% if not surveyNotificationCollection.isActive %}
+                                                <a class="post-a dropdown-item" href="{{ path('survey_notifier_delete', {'id': surveyNotificationCollection.id }) }}">
+                                                    <i class="fas fa-trash-alt text-primary"></i> Slett
+                                                </a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                            </td>
+                            <td>{{ surveyNotificationCollection.name }}</td>
+                            <td>
+                                {% if surveyNotificationCollection.isActive %}
+                                    <i class="fas fa-lock"></i>
+                                {% else %}
+                                    <i class="fas fa-lock-open"></i>
+                                {% endif %}
+                            </td>
+                            <td>
+                                {% if not surveyNotificationCollection.isAllSent %}
+                                    {% if date(surveyNotificationCollection.timeOfNotification) < date()  %}
+                                        <form method="POST"
+                                              action="{{ path('survey_notifier_send', {'id': surveyNotificationCollection.id }) }}"
+                                              onsubmit="return confirm('Er du sikker på at du vil sende?')">
+                                            <button id="send-notifier" class="btn btn-link p-0" type="submit">
+                                                <i class="fas fa-bullhorn"></i> Send varsel
+                                            </button>
+                                        </form>
+                                    {% else %}
+                                        Varsel skal ikke sendes ennå
+                                    {% endif %}
+                                {% else %}
+                                    Sendt
+                                {% endif %}
+
+                            </td>
+
+                        </tr>
+                    {% else %}
+                        <tr>
+                            <td>Ingen varsler</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        window.onload = function() {
+
+            $('#send-notifier').on('click', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: $("form").attr("action"),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.reload();
+                        } else {
+                            alert(response.cause);
+                        }
+                    }
+                });
+            });
+
+
+            $('.post-a').on('click', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr('href'),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.reload();
+                        } else {
+                            alert(response.cause);
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+{% endblock %}

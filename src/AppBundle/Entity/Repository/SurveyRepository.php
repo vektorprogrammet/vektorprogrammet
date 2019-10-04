@@ -26,13 +26,14 @@ class SurveyRepository extends EntityRepository
 
         return $this->createQueryBuilder('survey')
                 ->select("survey")
-                ->where('survey.teamSurvey = true')
+                ->where('survey.targetAudience = :teamSurvey')
                 ->andWhere('survey.semester =:semester')
                 ->andWhere('survey.department =:department OR survey.department is NULL')
                 ->andWhere($qb->expr()->notIn('survey.id', $exclude->getDQL()))
                 ->setParameter('user', $user)
                 ->setParameter('semester', $semester)
                 ->setParameter('department', $department)
+                ->setParameter('teamSurvey', Survey::$TEAM_SURVEY)
                 ->getQuery()
                 ->getResult();
     }

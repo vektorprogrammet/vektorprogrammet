@@ -83,8 +83,8 @@
             step: 1,
         };
 
-        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
-        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
-        jQuery('#{{ form.infoMeeting.date.vars.id }}').datetimepicker(Object.assign(options, {step: 15}));
+        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker({dayOfWeekStart:1});
+        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker({dayOfWeekStart:1});
+        jQuery('#{{ form.infoMeeting.date.vars.id }}').datetimepicker(Object.assign({dayOfWeekStart:1}, {step: 15}));
     </script>
 {% endblock %}
