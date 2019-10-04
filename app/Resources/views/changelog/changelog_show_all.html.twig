@@ -8,12 +8,18 @@ Changelog-objekter
     <li class="breadcrumb-item active">Changelog-objekter</li>
 {% endblock %}
 
+{% block breadcrumb_menu %}
+    <a href="{{ path('changelog_create') }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Lag nytt objekt
+    </a>
+{% endblock %}
+
 {% block body %}
 
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header"><i class="fa fa-list-ul"></i> Changelog-objekter ({{ changeLogItems|length }}) <a href="{{ path('changelog_create') }}" class="d-inline-block float-right">Lag nytt objekt</a></div>
+                <div class="card-header"><i class="fa fa-list-ul"></i> Changelog-objekter ({{ changeLogItems|length }}) </div>
                 <div class="table-responsive">
                     <table class="table" id="article-table">
                         <thead>
@@ -39,7 +45,7 @@ Changelog-objekter
                                                class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
                                             </a>
                                             <form method="POST"
-                                                  onsubmit="return confirm('Vil du virkelig slette artikkel {{ item.title }}?')"
+                                                  onsubmit="return confirm('Vil du virkelig slette objektet {{ item.title }}?')"
                                                   action="{{ path('changelogitem_delete', { id: item.id }) }}">
                                                 <button type="submit"
                                                         class="dropdown-item">
