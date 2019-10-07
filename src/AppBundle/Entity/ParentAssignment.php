@@ -8,7 +8,7 @@ use Doctrine\ORM\Mapping as ORM;
  * ParentAssignment
  *
  * @ORM\Table(name="parent_assignment")
- * @ORM\Entity(repositoryClass="ParentAssignmentRepository")
+ * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\ParentAssignmentRepository")
  */
 class ParentAssignment
 {

@@ -12,7 +12,7 @@ class ParentAssignmentRepository extends EntityRepository
     {
         return $this->createQueryBuilder('parent_assignment')
             ->select('parent_assignment')
-            ->orderBy("date")
+            ->orderBy("parent_assignment.tidspunkt", "ASC")
             ->getQuery()
             ->getResult();
     }

@@ -15,7 +15,7 @@ class ParentAssignmentAdminController extends BaseController
         $parents_assigned = $em->getRepository('AppBundle:ParentAssignment')->findAllParents();
 
         return $this->render('parents/parent-assignment-admin.html.twig', array(
-            'parentsAssigned' => $parents_assigned->getQuery()->getResult()
+            'parentsAssigned' => $parents_assigned
         ));
     }
 

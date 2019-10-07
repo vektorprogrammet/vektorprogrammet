@@ -13,7 +13,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header"><i class="fa fa-list-ul"></i> Changelog-objekter ({{ parentsAssigned|length }} </div>
+                <div class="card-header"><i class="fa fa-list-ul"></i> Changelog-objekter ({{ parentsAssigned|length }}) </div>
                 <div class="table-responsive">
                     <table class="table" id="article-table">
                         <thead>
@@ -33,12 +33,9 @@
                                         </div>
                                         <div class="dropdown-menu pt-0" aria-labelledby="options-{{ parent.id }}">
                                             <div class="dropdown-header mb-2"><strong>Forelder {{ parent.id }}</strong></div>
-                                            <a href="{{ path('changelogitem_edit', { 'id': item.id }) }}"
-                                               class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
-                                            </a>
                                             <form method="POST"
-                                                  onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.title }}?')"
-                                                  <!-- action="Her skal pathen etc til sletteAction stå (hvis dette er en aktuell feature å ha med!"> -->
+                                                  onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.id }}?')"
+                                                  <!-- Vil vi ha sletting her nå? Eller skal det implementeres på en annen måte? Et annet sted? -->
                                                 <button type="submit"
                                                         class="dropdown-item">
                                                     <i class="fa fa-trash text-danger"></i> Slett
@@ -48,13 +45,13 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{ parent.name | safe_html }}
+                                    {{ parent.navn | safe_html }}
                                 </td>
                                 <td>
-                                    {{ parent.email | safe_html }}
+                                    {{ parent.epost | safe_html }}
                                 </td>
                                 <td>
-                                    {{ parent.time | date("d.m.y") }}
+                                    {{ parent.tidspunkt | date("d.m.y") }}
                                 </td>
                             </tr>
                         {% endfor %}
