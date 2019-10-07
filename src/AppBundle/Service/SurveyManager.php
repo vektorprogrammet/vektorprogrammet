@@ -123,7 +123,9 @@ class SurveyManager
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
             foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
+                if ($answer->getSurveyTaken() === null
+                    || $answer->getSurveyTaken()->getSchool() === null
+                    || $answer->getSurveyTaken()->getSurvey() !== $survey) {
                     continue;
                 }
                 $textQAarray[$questionText][] = array(
@@ -158,7 +160,8 @@ class SurveyManager
                 $noTeamMemberships = $answer->getSurveyTaken()->getUser() === null
                     || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships());
 
-                if ($answer->getSurveyTaken() === null || $noTeamMemberships) {
+                if ($answer->getSurveyTaken() === null || $noTeamMemberships
+                    || $answer->getSurveyTaken()->getSurvey() !== $survey) {
                     continue;
                 }
 
