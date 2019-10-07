@@ -10,7 +10,7 @@ use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
 use AppBundle\Utils\CsvUtil;
 use Doctrine\ORM\EntityManager;
-use Exception;
+use RuntimeException;
 
 class SurveyManager
 {
@@ -124,7 +124,9 @@ class SurveyManager
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = array();
             foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null || $answer->getSurveyTaken()->getSchool() === null) {
+                if ($answer->getSurveyTaken() === null
+                    || $answer->getSurveyTaken()->getSurvey() !== $survey
+                    || $answer->getSurveyTaken()->getSchool() === null) {
                     continue;
                 }
                 $textQAarray[$questionText][] = array(
@@ -159,7 +161,9 @@ class SurveyManager
                 $noTeamMemberships = $answer->getSurveyTaken()->getUser() === null
                     || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships());
 
-                if ($answer->getSurveyTaken() === null || $noTeamMemberships) {
+                if ($answer->getSurveyTaken() === null
+                    || $answer->getSurveyTaken()->getSurvey() !== $survey
+                    || $noTeamMemberships) {
                     continue;
                 }
 
@@ -257,7 +261,7 @@ class SurveyManager
         //Else the survey is a team survey, in which case the team can be determined by the survey answer user id
         $schoolSurvey = $survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY || $survey->getTargetAudience() === Survey::$SCHOOL_SURVEY;
         if (!$schoolSurvey && $survey->getTargetAudience() !== Survey::$TEAM_SURVEY) {
-            throw new Exception("Unrecognized survey target audience");
+            throw new RuntimeException("Unrecognized survey target audience");
         }
 
         $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);

@@ -442,7 +442,7 @@ class SurveyController extends BaseController
      * @param Survey $survey
      * @return Response
      */
-    public function getSurveyResultCSVAction(Survey $survey)
+    public function getSurveyResultCSVAction(Survey $survey):Response
     {
         $this->ensureAccess($survey);
         $sm = $this->get(SurveyManager::class);
