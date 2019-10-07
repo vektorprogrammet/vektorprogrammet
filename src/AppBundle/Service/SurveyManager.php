@@ -10,6 +10,7 @@ use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
 use AppBundle\Utils\CsvUtil;
 use Doctrine\ORM\EntityManager;
+use mysql_xdevapi\Exception;
 
 class SurveyManager
 {
@@ -254,8 +255,9 @@ class SurveyManager
     {
         //If the survey is for schools, it has an extra question about what school you are from
         //Else the survey is a team survey, in which case the team can be determined by the survey answer user id
-        $schoolSurvey = $survey->getTargetAudience() == Survey::$ASSISTANT_SURVEY || $survey->getTargetAudience() == Survey::$SCHOOL_SURVEY;
-        assert($schoolSurvey || $survey->getTargetAudience() == Survey::$TEAM_SURVEY);
+        $schoolSurvey = $survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY || $survey->getTargetAudience() === Survey::$SCHOOL_SURVEY;
+        if(!$schoolSurvey && $survey->getTargetAudience() !== Survey::$TEAM_SURVEY)
+            throw new Exception("Unrecognized survey target audience");
 
         $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
 
