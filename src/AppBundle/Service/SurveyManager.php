@@ -8,7 +8,9 @@ use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
+use AppBundle\Utils\CsvUtil;
 use Doctrine\ORM\EntityManager;
+use Exception;
 
 class SurveyManager
 {
@@ -135,7 +137,6 @@ class SurveyManager
         return $textQAarray;
     }
 
-
     public function getTextAnswerWithTeamResults(Survey $survey): array
     {
         $textQuestionArray = array();
@@ -177,6 +178,13 @@ class SurveyManager
         return $textQAarray;
     }
 
+    public function getTeamNamesForSurveyTaker(SurveyTaken $taken):string
+    {
+        $user = $taken->getUser();
+        $ua = $this->getUserAffiliationOfUserBySemester($user, $taken->getSurvey()->getSemester());
+        $teamNames = $this->getTeamNamesAsString($ua);
+        return $teamNames;
+    }
 
     private function getTeamNamesAsString(array $teamNames): string
     {
@@ -241,5 +249,52 @@ class SurveyManager
         }
 
         return "Andre";
+    }
+
+    public function surveyResultsToCsv(Survey $survey):string
+    {
+        //If the survey is for schools, it has an extra question about what school you are from
+        //Else the survey is a team survey, in which case the team can be determined by the survey answer user id
+        $schoolSurvey = $survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY || $survey->getTargetAudience() === Survey::$SCHOOL_SURVEY;
+        if (!$schoolSurvey && $survey->getTargetAudience() !== Survey::$TEAM_SURVEY) {
+            throw new Exception("Unrecognized survey target audience");
+        }
+
+        $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+
+        //Meta is the school or team the responder belongs to.
+        $TARGET_AUDIENCE_COLUMN = "targetaudiencecolumn";
+        $target_audience_name = $schoolSurvey ? "Skole" : "Team";
+
+        $questions = array($TARGET_AUDIENCE_COLUMN => $target_audience_name);
+        foreach ($survey->getSurveyQuestions() as $question) {
+            $questions[$question->getId()] = $question->getQuestion(); //The question text
+        }
+        //A 2d array of all completed surveys, each element being a map from question_id=>answer
+        $csv_rows = array();
+        foreach ($surveysTaken as $taken) {
+            $csv_row = array();
+            $answers = $taken->getSurveyAnswers();
+
+            if ($schoolSurvey) {
+                $csv_row[$TARGET_AUDIENCE_COLUMN] = $taken->getSchool()->getName();
+            } else {
+                $csv_row[$TARGET_AUDIENCE_COLUMN] = $this->getTeamNamesForSurveyTaker($taken);
+            }
+
+            foreach ($answers as $answer) {
+                $question = $answer->getSurveyQuestion();
+                $stored_as_text = $question->getType() != "check";
+                if ($stored_as_text) {
+                    $csv_row[$question->getId()] = $answer->getAnswer();
+                } else {
+                    $csv_row[$question->getId()] = join(',', $answer->getAnswerArray());
+                }
+            }
+
+            $csv_rows[] = $csv_row;
+        }
+
+        return CsvUtil::csvFromTable($questions, $csv_rows);
     }
 }
