@@ -10,7 +10,7 @@ use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
 use AppBundle\Utils\CsvUtil;
 use Doctrine\ORM\EntityManager;
-use mysql_xdevapi\Exception;
+use Exception;
 
 class SurveyManager
 {
