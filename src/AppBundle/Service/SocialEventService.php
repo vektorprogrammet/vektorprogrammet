@@ -20,5 +20,4 @@ class SocialEventService
         $this->socialEventRepository = $em->getRepository('AppBundle:SocialEvent');
         $this->currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
     }
-
 }
