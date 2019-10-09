@@ -18,11 +18,9 @@
                             {{ changeLogItem.description | safe_html }}
                         </p>
                         <div class="d-flex justify-content-lg-start">
-                            <span>Les mer på github:
-                                <a href="{{ changeLogItem.githubLink }}">
-                                    {{ changeLogItem.githubLink | trim('https://') | split("/")[0] }}
-                                </a>
-                            </span>
+                            <a href="{{ changeLogItem.githubLink }}">
+                                Les mer på GitHub
+                            </a>
                         </div>
                     </div>
                 </div>
