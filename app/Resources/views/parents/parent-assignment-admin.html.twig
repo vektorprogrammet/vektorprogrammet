@@ -36,7 +36,7 @@
                                             <div class="dropdown-header mb-2"><strong>Forelder {{ parent.id }}</strong></div>
                                             <form method="POST"
                                                   onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.id }}?')"
-                                                  <!-- Vil vi ha sletting her nå? Eller skal det implementeres på en annen måte? Et annet sted? -->
+                                                  action="{{ path('parent_registration_admin_delete', { id: parent.id }) }}">
                                                 <button type="submit"
                                                         class="dropdown-item">
                                                     <i class="fa fa-trash text-danger"></i> Slett

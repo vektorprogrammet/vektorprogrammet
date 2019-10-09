@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ParentAssignment;
 use AppBundle\Form\Type\ParentAssignmentType;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\ParentAssignmentItem;
 
 class ParentAssignmentAdminController extends BaseController
 {
@@ -12,11 +12,22 @@ class ParentAssignmentAdminController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $parents_assigned = $em->getRepository('AppBundle:ParentAssignment')->findAllParents();
+        $parents_assigned = $em->getRepository('AppBundle:ParentAssignment')->findAllParentAssignments();
 
         return $this->render('parents/parent-assignment-admin.html.twig', array(
             'parentsAssigned' => $parents_assigned
         ));
     }
 
-    };
+    public function deleteAction(ParentAssignment $parentAssignment)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($parentAssignment);
+        $em->flush();
+
+        $this->addFlash("success", "Forelderen ble slettet");
+
+        return $this->redirectToRoute('parent_registration_admin_show');
+    }
+
+};

@@ -8,14 +8,25 @@ use AppBundle\Entity\ParentAssignment;
 
 class ParentAssignmentController extends BaseController
 {
-    public function showAction(Request $request)
+    public function createAction(Request $request)
     {
         $parentAssigned = new ParentAssignment();
         $form = $this->createForm(ParentAssignmentType::class, $parentAssigned);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+
+        if ($form->isValid())
+        {
             $em = $this->getDoctrine()->getManager();
+            $randomString = uniqid();
+            $parentAssignedWithGeneratedKey = $em->getRepository('AppBundle:ParentAssignment')->getParentAssignmentByUniqueKey($randomString);
+            while ($parentAssignedWithGeneratedKey != null)
+            {
+                $randomString = uniqid();
+                $parentAssignedWithGeneratedKey = $em->getRepository('AppBundle:ParentAssignment')->getParentAssignmentByUniqueKey($randomString);
+            }
+
+            $parentAssigned->setUniqueKey($randomString);
             $em->persist($parentAssigned);
             $em->flush();
             return $this->redirect($this->generateUrl('foreldre'));
@@ -25,6 +36,16 @@ class ParentAssignmentController extends BaseController
             'form' => $form->createView(),
 ));
 
+    }
+
+    public function deleteAction(ParentAssignment $parentAssignment, string $uniqueKey)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($parentAssignment);
+        $em->flush();
+        #denne skal brukes til å slette fra mailen som sendes ut til foreldrene!
+
+        return $this->redirectToRoute('parent_registration_external_delete');
     }
 
 };

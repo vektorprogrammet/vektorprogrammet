@@ -63,13 +63,27 @@ update_static_content:
 
 parent_registration:
   path: /foreldrekurs/pamelding
-  defaults: {_controller: AppBundle:ParentAssignment:show }
+  defaults: {_controller: AppBundle:ParentAssignment:create }
   methods: [GET, POST]
 
 parent_registration_admin_show:
   path: /kontrollpanel/foreldrekursadmin
   defaults: {_controller: AppBundle:ParentAssignmentAdmin:show }
   methods: [GET]
+
+parent_registration_admin_delete:
+ path: /kontrollpanel/foreldrekursadmin/slett/{id}
+ defaults: {_controller: AppBundle:ParentAssignmentAdmin:delete }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+parent_registration_external_delete:
+ path: /foreldrekurs/avmelding/{uniqueKey}
+ defaults: {_controller: AppBundle:ParentAssignment:delete }
+ methods: [POST]
+ requirements:
+  uniqueKey: .+
 
 
 ##########################################

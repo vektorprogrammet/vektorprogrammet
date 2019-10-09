@@ -42,6 +42,13 @@ class ParentAssignment
      */
     private $tidspunkt;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="UniqueKey", type="string", nullable=True)
+     */
+    private $uniqueKey;
+
 
     /**
      * Get id.
@@ -123,5 +130,21 @@ class ParentAssignment
     public function getTidspunkt()
     {
         return $this->tidspunkt;
+    }
+
+    /**
+     * @param string $uniqueKey
+     */
+    public function setUniqueKey(string $uniqueKey): void
+    {
+        $this->uniqueKey = $uniqueKey;
+    }
+
+    /**
+     * @return string
+     */
+    public function getUniqueKey(): string
+    {
+        return $this->uniqueKey;
     }
 }
