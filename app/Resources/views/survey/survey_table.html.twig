@@ -29,9 +29,8 @@
                                        class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
                                     </a>
                                     <a href="{{ path('survey_copy', {'id': survey.id }) }}" class="dropdown-item">
-                                        <i class="fa fa-copy text-primary"> </i> Kopier
+                                        <i class="fa fa-copy text-primary"></i> Kopier
                                     </a>
-
 
                                     <form method="POST"
                                           onsubmit="return confirm('Er du sikker på at du vil slette gjøremålet?')"
@@ -46,7 +45,6 @@
                                             </div>
                                         </div>
                                     </form>
-
 
                                     {% if not survey.targetAudience == 1 %}
                                         <a href="{{ path('survey_show_admin', {'id': survey.id }) }}" class="dropdown-item">

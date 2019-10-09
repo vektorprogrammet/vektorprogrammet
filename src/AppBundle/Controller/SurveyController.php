@@ -396,9 +396,6 @@ class SurveyController extends BaseController
         $em->flush();
         $response['success'] = true;
         return $this->redirectToRoute('surveys', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
-
-
-
     }
 
     public function resultSurveyAction(Survey $survey)
