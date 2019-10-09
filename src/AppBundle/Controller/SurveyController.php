@@ -388,11 +388,17 @@ class SurveyController extends BaseController
     {
         $this->ensureAccess($survey);
 
+        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404();
+
         $em = $this->getDoctrine()->getManager();
         $em->remove($survey);
         $em->flush();
         $response['success'] = true;
-        return new JsonResponse($response);
+        return $this->redirectToRoute('surveys', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
+
+
+
     }
 
     public function resultSurveyAction(Survey $survey)
