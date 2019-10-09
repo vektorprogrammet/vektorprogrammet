@@ -22,13 +22,12 @@ class TeamMembershipService
         $teamMemberships = $this->em->getRepository('AppBundle:TeamMembership')->findActiveTeamMemberships();
         foreach ($teamMemberships as $teamMembership) {
             $endSemester = $teamMembership->getEndSemester();
-            if ($endSemester){
-                if ($endSemester->getSemesterEndDate() <= $this->em->getRepository('AppBundle:Semester')->findCurrentSemester()->getSemesterStartDate()){
+            if ($endSemester) {
+                if ($endSemester->getSemesterEndDate() <= $this->em->getRepository('AppBundle:Semester')->findCurrentSemester()->getSemesterStartDate()) {
                     $this->dispatcher->dispatch(TeamMembershipEvent::DELETED, new TeamMembershipEvent($teamMembership));
                 }
             }
         }
         return $teamMemberships;
     }
-
 }

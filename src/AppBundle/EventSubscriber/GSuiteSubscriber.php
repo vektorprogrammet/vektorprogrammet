@@ -112,8 +112,8 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $activeTeamMemberships = $user->getActiveTeamMemberships();
         $shouldBeInGroup = false;
 
-        foreach ($activeTeamMemberships as $m){
-            if ($team === $m->getTeam()){
+        foreach ($activeTeamMemberships as $m) {
+            if ($team === $m->getTeam()) {
                 $shouldBeInGroup = true;
                 break;
             }
@@ -124,7 +124,6 @@ class GSuiteSubscriber implements EventSubscriberInterface
             $this->groupService->removeUserFromGroup($user, $team);
             $this->logger->info("$user removed from G Suite group *$department - $team*");
         }
-
     }
 
     public function updateGSuiteUser(UserEvent $event)
