@@ -3,6 +3,7 @@
 ### Requirements
 - [PHP](http://php.net/downloads.php) version >= 7.1
 - [Node](https://nodejs.org/en/) version >= 8
+- [Node-sass](https://github.com/sass/node-sass) version >= 4.8.3
 
 #### UNIX:
 `npm run setup`
