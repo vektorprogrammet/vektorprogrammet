@@ -292,13 +292,6 @@ social_event_delete:
  requirements:
   id: \d+
 
-social_event_copy:
- path: /kontrollpanel/arrangement/kopier/{id}
- defaults: { _controller: AppBundle:SocialEvent:copySocialEvent }
- methods: [GET, POST]
- requirements:
-  id: \d+
-
 ##########################################
 #             Statistics                 #
 ##########################################
