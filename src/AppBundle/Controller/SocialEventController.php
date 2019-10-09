@@ -14,8 +14,9 @@ class SocialEventController extends BaseController
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
 
-        $socialEventManager = $this->get(SocialEventManager::class);
-        $SocialEventList = $socialEventManager->getOrderedList($department, $semester);
+        $em = $this->getDoctrine()->getManager();
+        $repository = $em->getRepository('AppBundle:SocialEvent');
+        $SocialEventList = $repository->findSocialEventsBySemesterAndDepartment($semester, $department);
 
 
         return $this->render("social_event/social_event_list.twig", array(
