@@ -9,17 +9,6 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    <!--<div class="btn-group">
-        {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'todo_list' } %} combine with todo
-        <a class="btn text-success"
-           href="{{ path('social_event_create')}}">
-             TODO: combine line below so that department and semester is included (also above needed)
-           , {'department': department.id, 'semester': semester.id}) }}">
-            <i class="fa fa-plus text-success"></i>
-            Nytt Arrangement
-        </a>
-    </div>
-    -->
 
     <div class="btn-group">
         {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'social_event_show' } %}
