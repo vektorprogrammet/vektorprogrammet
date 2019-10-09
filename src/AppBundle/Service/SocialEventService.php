@@ -21,17 +21,4 @@ class SocialEventService
         $this->currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
     }
 
-    # This method was created with generating working days for assistants as events to show on the new assistant dash.
-    #
-    public function getNextEventsByUser(User $user)
-    {
-        $department = $user->getDepartment();
-        $eventsThisSemester = $this->socialEventRepository->findSocialEventsBySemesterAndDepartment($this->currentSemester, $department);
-
-        $activeAssistantHistories = $this->em->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
-        $test = array();
-        foreach ($activeAssistantHistories as $history) {
-            $test[$history->getDay()] = ['number_of_days' => $history->getWorkdays(), 'bolk' => $history->getBolk()];
-        }
-    }
 }
