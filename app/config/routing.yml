@@ -180,6 +180,13 @@ survey_results:
  requirements:
   id: \d+
 
+survey_get_results_csv:
+ path: /kontrollpanel/undersokelse/resultater/{id}.csv
+ defaults: { _controller: AppBundle:Survey:getSurveyResultCSV }
+ methods: [GET]
+ requirements:
+  id: \d+
+
 survey_get_all_results:
  path: /kontrollpanel/api/undersokelse/resultat/{id}
  defaults: { _controller: AppBundle:Survey:getSurveyResult }

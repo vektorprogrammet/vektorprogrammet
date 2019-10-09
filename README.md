@@ -43,6 +43,11 @@ adheres to these rules before opening a PR.
 Tests should be run before opening a PR.
 ##### UNIX/LINUX:
 `npm run test`
+
+File specific test: 
+
+`npm run test "tests/PATH_TO_TEST" `
+
 ##### Windows:
 `npm run test:win`
 
