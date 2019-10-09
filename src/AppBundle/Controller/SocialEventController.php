@@ -61,8 +61,6 @@ class SocialEventController extends BaseController
 
     public function editSocialEventAction(SocialEvent $social_event, Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $form = $this->createForm(SocialEventType::class, $social_event, array(
             'department'        => $social_event->getDepartment(),
             'semester'          => $social_event->getSemester(),
@@ -71,6 +69,7 @@ class SocialEventController extends BaseController
 
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
+        $em = $this->getDoctrine()->getManager();
         if ($form->isValid()) {
             $em->persist($social_event);
             $em->flush();
