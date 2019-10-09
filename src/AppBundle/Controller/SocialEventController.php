@@ -35,10 +35,10 @@ class SocialEventController extends BaseController
         $department = $this->getDepartmentOrThrow404();
         $semester = $this->getSemesterOrThrow404();
         $em              = $this->getDoctrine()->getManager();
-        $social_event    = new SocialEvent();
+        $socialEvent    = new SocialEvent();
         $user            = $this->getUser();
 
-        $form = $this->createForm(SocialEventType::class, $social_event, array(
+        $form = $this->createForm(SocialEventType::class, $socialEvent, array(
             'department'        => $department,
             'semester'          => $semester,
         ));
@@ -46,7 +46,7 @@ class SocialEventController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em->persist($social_event);
+            $em->persist($socialEvent);
             $em->flush();
             return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
@@ -55,7 +55,7 @@ class SocialEventController extends BaseController
             'form' => $form->createView(),
             'department' => $department,
             'semester' => $semester,
-            'event' => $social_event
+            'event' => $socialEvent
         ));
     }
 
