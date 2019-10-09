@@ -86,7 +86,6 @@ class SponsorsController extends BaseController
         if ($sponsor->getLogoImagePath()) {
             $this->get(FileUploader::class)->deleteSponsor($sponsor->getLogoImagePath());
         }
-
         $em = $this->getDoctrine()->getManager();
         $em->remove($sponsor);
         $em->flush();

@@ -1,9 +1,13 @@
 <div class="col-12" xmlns:text-decoration="http://www.w3.org/1999/xhtml">
     <div class="card">
         <div class="card-header"> QuickLink
+            {% block breadcrumb_menu %}
+                 <a href="{{ path('sponsor_create') }}" class="btn btn-outline-success text-success">
+                     <i class="fa fa-plus"></i> Endre quickLink</a>
+            {% endblock %}
+            </div>
         </div>
         <div class="card-body"> <!--Sånn her kommenterer vi! :D -->
-
             <div>
                 <div class="row align-items-start">
                 {% for quicklink in quickLinks%}

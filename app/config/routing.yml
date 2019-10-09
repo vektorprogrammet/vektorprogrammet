@@ -1002,12 +1002,34 @@ interview_edit_status:
        id: \d+
 
 ##########################################
-#              Interview                 #
+#              Quicklinks                #
 ##########################################
 quicklink_show:
     path: kontrollpanel/quicklinks
     defaults: { _controller: AppBundle:QuickLink:show}
     methods: [GET, POST]
+
+quicklink_create:
+ path: kontrollpanel/quicklinks/ny
+ defaults: { _controller: AppBundle:QuickLink:create}
+ methods: [GET, POST]
+
+
+
+quicklink_edit:
+ path: kontrollpanel/quicklinks/rediger/{id}
+ defaults: { _controller: AppBundle:QuickLink:edit}
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+quicklink_delete:
+ path: kontrollpanel/quicklinks/slett/{id}
+ defaults: { _controller: AppBundle:QuickLink:delete}
+ methods: [POST]
+ requirements:
+  id: \d+
+
 
 ##########################################
 #                File browser            #
