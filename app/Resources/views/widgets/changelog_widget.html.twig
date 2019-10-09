@@ -17,10 +17,12 @@
                         <p>
                             {{ changeLogItem.description | safe_html }}
                         </p>
-                        <div class="d-flex justify-content-between">
-                            <a href="{{ changeLogItem.githubLink }}">
-                                {{ changeLogItem.githubLink | trim('https://') | split("m")[0] }}
-                            </a>
+                        <div class="d-flex justify-content-lg-start">
+                            <span>Les mer på github:
+                                <a href="{{ changeLogItem.githubLink }}">
+                                    {{ changeLogItem.githubLink | trim('https://') | split("/")[0] }}
+                                </a>
+                            </span>
                         </div>
                     </div>
                 </div>
