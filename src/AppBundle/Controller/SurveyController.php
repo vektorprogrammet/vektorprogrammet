@@ -394,7 +394,8 @@ class SurveyController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $em->remove($survey);
         $em->flush();
-        $response['success'] = true;
+
+        $this->addFlash("success", "Undersøkelsen (" . $survey->getName() . ") ble slettet");
         return $this->redirectToRoute('surveys', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }
 
