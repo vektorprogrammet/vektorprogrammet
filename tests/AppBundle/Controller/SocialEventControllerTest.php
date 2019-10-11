@@ -44,27 +44,37 @@ class SocialEventControllerTest extends BaseWebTestCase
     public function testCreate()
     {
 
+        // ensure that event doesn't exist already
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/arrangementer');
+        $before = $crawler->filter('td:contains("Nytt TestArrangement")')->count();
+        $this->assertEquals(0,$before);
 
-        // UNCOMPLETE FUNCTION //
-        $client = $this->createAdminClient();
-        $crawler = $client->request('GET', '/kontrollpanel/changelog/create');
+        // create new event
+        $client = $this->createTeamLeaderClient();
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/arrangement/opprett');
         $form = $crawler->selectButton('Lagre')->form();
-        $date = (new \DateTime())->modify('+1day')->format('d.m.Y H:m');
-        $form['change_log[title]'] = 'En ny endring';
-        $form['change_log[description]'] = 'Beskrivelse av endringen, slik at du forstår hva som er gjort';
-        $form['change_log[gitHubLink]'] = 'https://github.com/vektorprogrammet/vektorprogrammet';
-        $form['change_log[date]'] = $date;
+
+        // add data to event
+        $startDate = (new \DateTime())->modify('+1day')->format('d.m.Y H:m');
+        $endDate = (new \DateTime())->modify('+1day + 1hour')->format('d.m.Y H:m');
+
+        $form['social_event[title]'] = 'Nytt TestArrangement';
+        $form['social_event[description]'] = 'Beskrivelse av eventet. Skal si noe om hva som skjer.';
+        $form['social_event[startTime]'] = $startDate;
+        $form['social_event[endTime]'] = $endDate;
+        /* NOTE:
+               -department,
+               -semester
+               -role
+           are all prefilled
+        */
+
+        // save event
         $client->submit($form);
-        $crawler = $client->followRedirect();
-        $changeLogItemAfter = $crawler->filter('td:contains("En ny endring")')->count();
-        $this->assertEquals(1, $changeLogItemAfter);
 
-        // --------------- //
-        $client = $this->createAdminClient();
-        $crawler = $client->request('GET', '/kontrollpanel/arrangementer/opprett');
-
-
+        // Check that event exists
+        $crawler = $this->teamLeaderGoTo('/kontrollpanel/arrangementer');
+        $after = $crawler->filter('table.application-table td:contains("Beskrivelse av eventet. Skal si noe om hva som skjer.")')->count();
+        $this->assertEquals(1,$after);
     }
-
-
 }
