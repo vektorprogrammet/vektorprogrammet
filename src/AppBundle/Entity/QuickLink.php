@@ -140,7 +140,7 @@ class QuickLink
      *
      * @return string
      */
-    public function getIconUrl(): string
+    public function getIconUrl(): ? string
     {
         return $this->iconUrl;
     }

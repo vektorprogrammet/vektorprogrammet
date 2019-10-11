@@ -28,7 +28,6 @@ class QuickLinkController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $em =$this->getDoctrine()->getManager();
         $quickLink=new QuickLink();
 
         $form=$this->createForm(QuicklinkType::class, $quickLink);
@@ -36,22 +35,77 @@ class QuickLinkController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()){
+
+            $imgPath= $this->get(FileUploader::class)->uploadQuicklink($request);
+            $quickLink->setIconUrl($imgPath);
+            //For testing purposes:
+            $quickLink->setOrderNum(4);
+            $quickLink->setVisible(true);
+
+            //Test ended
+
+            $em =$this->getDoctrine()->getManager();
             $em->persist($quickLink);
             $em->flush();
+
+            $this->addFlash(
+                "success",
+                "Quicklink {$quickLink->getTitle()} ble opprettet"
+            );
+
+
             return $this->redirectToRoute("quicklink_show");
         }
 
 
         return $this->render('quick_link/quick_link_edit.html.twig', array(
             'form' => $form->createView(),
+            "create"=> true
         ));
      }
 
 
-    public function editAction(Request $request)
+
+
+    public function editAction(QuickLink $quickLink, Request $request)
     {
 
+        $oldImgPath = $quickLink->getIconUrl();
 
+
+        $form=$this->createForm(QuicklinkType::class, $quickLink);
+
+        $form->handleRequest($request);
+
+
+        if ($form->isValid() && $form->isSubmitted()){
+            if (!is_null($request->files->get('quicklink')['iconUrl'])){
+                $imgPath= $this->get(FileUploader::class)->uploadQuicklink($request);
+                $this->get(FileUploader::class)->deleteQuickLink($oldImgPath);
+
+                $quickLink->setIconUrl($imgPath);
+
+            }else{
+                $quickLink->setIconUrl($oldImgPath);
+            }
+            $em =$this->getDoctrine()->getManager();
+            $em->persist($quickLink);
+            $em->flush();
+
+            $this->addFlash(
+                "success",
+                "Quicklink {$quickLink->getTitle()} ble endret"
+            );
+
+            return $this->redirectToRoute("quicklink_show");
+        }
+
+
+
+        return $this->render('quick_link/quick_link_edit.html.twig', array(
+            'form' => $form->createView(),
+            "create"=> false
+        ));
 
     }
 

@@ -16,6 +16,7 @@ class FileUploader
     private $profilePhotoFolder;
     private $articleFolder;
     private $sponsorFolder;
+    private $quicklinkLogoFolder;
 
     /**
      * FileUploader constructor.
@@ -26,8 +27,9 @@ class FileUploader
      * @param string $profilePhotoFolder
      * @param string $articleFolder
      * @param string $sponsorFolder
+     * @param string $quicklinkLogoFolder
      */
-    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $profilePhotoFolder, string $articleFolder, string $sponsorFolder)
+    public function __construct(string $signatureFolder, string $logoFolder, string $receiptFolder, string $profilePhotoFolder, string $articleFolder, string $sponsorFolder, string $quicklinkLogoFolder)
     {
         $this->signatureFolder = $signatureFolder;
         $this->logoFolder = $logoFolder;
@@ -35,6 +37,7 @@ class FileUploader
         $this->profilePhotoFolder = $profilePhotoFolder;
         $this->articleFolder = $articleFolder;
         $this->sponsorFolder = $sponsorFolder;
+        $this->quicklinkLogoFolder = $quicklinkLogoFolder;
     }
 
     /**
@@ -42,6 +45,25 @@ class FileUploader
      *
      * @return string absolute file path
      */
+
+
+    public function uploadQuicklink(Request $request){
+        $file = $this->getFileFromRequest($request);
+        return $this->uploadFile($file, $this->quicklinkLogoFolder);
+    }
+
+
+    public function deleteQuickLink(string $path){
+        if (empty($path)){
+            return;
+        }
+
+        $fileName = $this->getFileNameFromPath($path);
+
+        $this->deleteFile("$this->quicklinkLogoFolder/$fileName");
+    }
+
+
     public function uploadSponsor(Request $request)
     {
         $file = $this->getFileFromRequest($request);
@@ -248,6 +270,7 @@ class FileUploader
 
     private function getFileNameFromPath(string $path)
     {
+        dump($path);
         return substr($path, strrpos($path, '/') + 1);
     }
 }

@@ -6,8 +6,12 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active">QuickLinks</li>
-    <li class="breadcrumb-item active">Opprett</li>
+    <li class="breadcrumb-item">
+        <a href="{{ path("quicklink_show") }}">QuickLinks</a>
+    </li>
+    <li class="breadcrumb-item active">
+       {{create? "Opprett":"Rediger"}}
+    </li>
 {% endblock %}
 
 
