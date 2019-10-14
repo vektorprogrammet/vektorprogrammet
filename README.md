@@ -89,6 +89,9 @@ Tests should be run before opening a PR.
 ##### Windows:
 `npm run test:win`
 
+#### File specific test: 
+
+`npm run test "tests/PATH_TO_TEST" `
 
 
 
