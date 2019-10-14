@@ -877,7 +877,6 @@ button.secretly-not-a-button {
 .scrollable{
   overflow-y: auto;
   max-height: 377px;
-  margin-botton: 10px;
 }
 
 .main-card{
@@ -887,7 +886,7 @@ button.secretly-not-a-button {
 .changelog_card{
   border-radius: 6px;
   .dato {
-    color: grey;
+    color: #6c757d;
   }
   a {
     color: #007bff;
