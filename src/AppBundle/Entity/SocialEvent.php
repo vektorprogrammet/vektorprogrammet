@@ -74,23 +74,6 @@ class SocialEvent
     {
     }
 
-    ## TODO: Burde det være en location?
-
-    ## TODO: Legg til i kalender?
-
-    ## TODO: Stand event?
-
-    ## TODO: E-mail event.
-
-    ## TODO : ICAL SUPPORT.
-
-    ## TODO : LEGG TIL HVEM SOM SKAL INVITERES
-
-    ## TODO : LISTE FOR PÅMELDE
-
-    ## TODO: BILDE
-
-    ## TODO: OVERSIKT OVER PÅMELDTE OG IKKE PÅMELDTE
     /**
      * @return int
      */
