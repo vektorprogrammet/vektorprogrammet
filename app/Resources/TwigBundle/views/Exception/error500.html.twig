@@ -10,5 +10,20 @@
         <img class="img-fluid my-5 error-image" src="{{ asset_with_version('images/vektor_v_broken.png') }}" alt="vektor v broken">
         <h4>Det har oppstått en feil på serveren med feilkode 500. </h4>
         <h6 class="text-devil">Et automatisk varsel om feilen har blitt sendt til IT-teamet. Send e-post til <a href="mailto:it@vektorprogrammet">it@vektorprogrammet.no</a> hvis problemet vedvarer.</h6>
+        <br><br>
+        <div class="content card">
+            <div class="card-body">
+                <h4>Vedvarer problemet?</h4>
+                <h6 class="text-devil">Ønsker du å sende en melding til IT-teamet?<br><br>
+                I såfall vil vi gjerne høre hva du prøvde på og hvordan du gjorde det.</h6>
+                <div class="collapse" id="collapseForm">
+                    {{ render(controller("AppBundle:Widget:errorFeedback",{'request': app.request})) }}
+                </div>
+                <h2><a style="display:block" class="card-link fa fa-chevron-down" data-toggle="collapse" href="#collapseForm"></a></h2>
+                {% include 'common/flash.html.twig' %}
+            </div>
+        </div>
+
     </div>
+
 {% endblock %}

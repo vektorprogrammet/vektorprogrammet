@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
+use AppBundle\Form\Type\ErrorFeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
 use Symfony\Component\HttpFoundation\Request;
@@ -87,12 +88,28 @@ class WidgetController extends BaseController
     }
     public function feedbackAction(Request $request)
     {
-        $feedback = new Feedback;
-        $form = $this->createForm(FeedBackType::class, $feedback);
+        $form = $request->get('form');
+        if(!$form){
+            $feedback = new Feedback;
+            $form = $this->createForm(FeedBackType::class, $feedback);
+        }
         $form->handleRequest($request);
 
         return $this->render('widgets/feedback_widget.html.twig', array(
             'title' => 'Feedback',
+            'form' => $form->createView()
+        ));
+    }
+    public function errorFeedbackAction(Request $request)
+    {
+        $form = $request->get('form');
+        if(!$form){
+            $feedback = new Feedback;
+            $form = $this->createForm(ErrorFeedBackType::class, $feedback);
+        }
+        $form->handleRequest($request);
+
+        return $this->render('widgets/error_feedback_widget.html.twig', array(
             'form' => $form->createView()
         ));
     }

@@ -1,0 +1,7 @@
+<div class="col-12 col-md-6 text-left mx-auto">
+    <br><br>
+    {{ form_start(form, {'action': path('feedback_error_submit')}) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+    {% include 'common/flash.html.twig' %}
+</div>
