@@ -1,4 +1,4 @@
-<img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/readme/logo_readme.png" alt="alt text" width="400" height="auto">
+<img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/master/app/Resources/assets/images/vektor_stor.png" alt="alt text" width="400" height="auto">
 
 ![Build Status](https://travis-ci.org/vektorprogrammet/vektorprogrammet.svg?branch=master)
 
