@@ -24,8 +24,7 @@ class SocialEventItemRepository extends EntityRepository
             ->where('SocialEventItem.semester = :semester or SocialEventItem.semester is null')
             ->andWhere('SocialEventItem.department = :department or SocialEventItem.department is null')
             ->orderBy('SocialEventItem.startTime')
-            ->setParameter('semester', $semester)
-            ->setParameter('department', $department)
+            ->setParameters(['semester' => $semester, 'department' => $department])
             ->getQuery()
             ->getResult();
         return $socialEvents;
@@ -39,9 +38,7 @@ class SocialEventItemRepository extends EntityRepository
             ->andWhere('SocialEventItem.department = :department or SocialEventItem.department is null')
             ->andWhere('SocialEventItem.startTime >= :now')
             ->orderBy('SocialEventItem.startTime')
-            ->setParameter('semester', $semester)
-            ->setParameter('department', $department)
-            ->setParameter('now', new \DateTime())
+            ->setParameters(['semester' => $semester, 'department' => $department, 'now' => new \DateTime()])
             ->getQuery()
             ->getResult();
         return $socialEvents;

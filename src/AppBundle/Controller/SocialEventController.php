@@ -87,8 +87,7 @@ class SocialEventController extends BaseController
 
     public function deleteSocialEventAction(SocialEvent $event)
     {
-        # NB: this function will permanently remove the event.
-        # For history purposes, perhaps it should deactivate the event in stead?
+        # NOTE: this function will permanently remove the event.
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
 
