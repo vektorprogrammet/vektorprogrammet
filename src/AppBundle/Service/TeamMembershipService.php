@@ -19,12 +19,16 @@ class TeamMembershipService
 
     public function updateTeamMemberships()
     {
-        $teamMemberships = $this->em->getRepository('AppBundle:TeamMembership')->findActiveTeamMemberships();
+        $teamMemberships = $this->em->getRepository('AppBundle:TeamMembership')->findBy(array('isSuspended' => false));
         foreach ($teamMemberships as $teamMembership) {
             $endSemester = $teamMembership->getEndSemester();
             if ($endSemester) {
                 if ($endSemester->getSemesterEndDate() <= $this->em->getRepository('AppBundle:Semester')->findCurrentSemester()->getSemesterStartDate()) {
-                    $this->dispatcher->dispatch(TeamMembershipEvent::DELETED, new TeamMembershipEvent($teamMembership));
+                    $teamMembership->setIsSuspended(true);
+                    $this->em->persist($teamMembership);
+                    $this->em->flush();
+
+                    $this->dispatcher->dispatch(TeamMembershipEvent::EXPIRED, new TeamMembershipEvent($teamMembership));
                 }
             }
         }

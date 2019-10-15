@@ -10,6 +10,7 @@ use AppBundle\Google\GoogleDrive;
 use AppBundle\Google\GoogleGroups;
 use AppBundle\Google\GoogleUsers;
 use AppBundle\Service\CompanyEmailMaker;
+use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -21,8 +22,9 @@ class GSuiteSubscriber implements EventSubscriberInterface
     private $userService;
     private $groupService;
     private $driveService;
+    private $em;
 
-    public function __construct(LoggerInterface $logger, GoogleAPI $googleAPI, CompanyEmailMaker $emailMaker, GoogleUsers $userService, GoogleGroups $groupService, GoogleDrive $driveService)
+    public function __construct(LoggerInterface $logger, GoogleAPI $googleAPI, CompanyEmailMaker $emailMaker, GoogleUsers $userService, GoogleGroups $groupService, GoogleDrive $driveService, EntityManager $em)
     {
         $this->logger = $logger;
         $this->googleAPI = $googleAPI;
@@ -30,6 +32,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $this->userService = $userService;
         $this->groupService = $groupService;
         $this->driveService = $driveService;
+        $this->em = $em;
     }
 
     /**
@@ -51,6 +54,9 @@ class GSuiteSubscriber implements EventSubscriberInterface
             ),
             TeamMembershipEvent::DELETED => array(
                 array('removeGSuiteUserFromTeam', 0),
+            ),
+            TeamMembershipEvent::EXPIRED  => array(
+                array('removeGSuiteUserFromTeam', 0)
             ),
             UserEvent::EDITED => array(
                 array('updateGSuiteUser', 0),
@@ -97,11 +103,15 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $alreadyInGroup = $this->groupService->userIsInGroup($user, $team);
 
         if (!$alreadyInGroup && $user->getCompanyEmail()) {
+            $teamMembership = $event->getTeamMembership();
+            $teamMembership->setIsSuspended(false);
+            $this->em->persist($teamMembership);
+            $this->em->flush();
+
             $this->groupService->addUserToGroup($user, $team);
             $this->logger->info("$user added to G Suite group *$department - $team*");
         }
     }
-
 
     public function removeGSuiteUserFromTeam(TeamMembershipEvent $event)
     {
@@ -112,8 +122,8 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $activeTeamMemberships = $user->getActiveTeamMemberships();
         $shouldBeInGroup = false;
 
-        foreach ($activeTeamMemberships as $m) {
-            if ($team === $m->getTeam()) {
+        foreach ($activeTeamMemberships as $activeTeamMembership) {
+            if ($team === $activeTeamMembership->getTeam()) {
                 $shouldBeInGroup = true;
                 break;
             }
