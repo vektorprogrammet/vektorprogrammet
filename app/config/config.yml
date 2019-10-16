@@ -54,6 +54,9 @@ parameters:
   # Team images
   team_images: 'images/team_images'
 
+  # Quicklink logos
+  quicklink_logos: 'images/quicklink_logos'
+
 framework:
     #esi:             ~
     translator:      { fallbacks: ["%locale%"] }

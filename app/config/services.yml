@@ -67,6 +67,7 @@ services:
             $profilePhotoFolder: '%profile_photos%'
             $articleFolder: '%article_images%'
             $sponsorFolder: '%logo_images%'
+            $quicklinkLogoFolder: '%quicklink_logos%'
 
     get_set_method_normalizer:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
