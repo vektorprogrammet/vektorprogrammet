@@ -9,8 +9,9 @@
 {% endblock %}
 
 {% block breadcrumb_menu %}
-   <!-- <a href="{{ path('quicklink_show') }}" class="btn btn-outline-success text-success">
-        <i class="fa fa-plus"></i> Endre quickLink</a> !-->
+    <a href="{{ path('sponsor_create') }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Endre quickLink
+    </a>
 {% endblock %}
 
 
@@ -19,6 +20,8 @@
         <div class="card-header"><i class="fa fa-align-justify"></i> Dine Quicklinks</div>
         <div class="table-responsive">
             <table class="table">
+
+
                 {% for quicklink in quickLinks %}
                     <tr>
                         <td>
@@ -27,29 +30,16 @@
                                      aria-haspopup="true" aria-expanded="false">
                                     <i class="fa fa-ellipsis-v text-secondary"></i>
                                 </div>
-                                    <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
-                                        <div class="dropdown-header mb-2"><strong>{{ quicklink.title }}</strong></div>
-                                        <a href="{{path('quicklink_edit', { 'id': quicklink.id }) }}"
-                                           class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
-                                        </a>
-                                        <form method="POST"
-                                              onsubmit="return confirm('Vil du virkelig slette QuickLink {{ quicklink.title}}?')"
-                                              action="{{ path('quicklink_delete', {'id': quicklink.id}) }}">
-                                            <button type="submit"
-                                                    class="dropdown-item">
-                                                <i class="fa fa-trash text-danger"></i> Slett
-                                            </button>
-                                        </form>
-                                    </div>
-                                </div>
                             </div>
                         </td>
 
                         <td>{{quicklink.title}}</td>
+
                         <td>
                             <img class="img-fluid" src="{{ asset_with_version(quicklink.iconUrl) }}"
                                  style="max-width: 100px; max-height: 50px;">
                         </td>
+
                     </tr>
                 {% endfor %}
 

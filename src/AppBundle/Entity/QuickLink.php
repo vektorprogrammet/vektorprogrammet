@@ -33,6 +33,7 @@ class QuickLink
      *
      * @ORM\Column(name="title", type="string", length=255)
      */
+
     private $title;
 
     /**
@@ -40,6 +41,9 @@ class QuickLink
      *
      * @ORM\Column(name="icon_url", type="string", length=255, nullable=true)
      */
+
+
+
     private $iconUrl;
 
     /**
@@ -140,7 +144,7 @@ class QuickLink
      *
      * @return string
      */
-    public function getIconUrl(): string
+    public function getIconUrl()
     {
         return $this->iconUrl;
     }
@@ -200,6 +204,7 @@ class QuickLink
     {
         return $this->owner;
     }
+
     /**
      * @param User|null $owner
      * @return QuickLink
