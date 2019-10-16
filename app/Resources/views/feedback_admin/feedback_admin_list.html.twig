@@ -35,7 +35,12 @@
                                         <a href="{{ path('feedback_admin_show', {'id': feedback.id}) }}">{{feedback.title}}</a>
                                     </td>
                                     <td>
+                                        {% if feedback.user %}
                                         {{feedback.user.fullName}}
+                                        {% else %}
+                                        Anonym
+                                        {% endif %}
+
                                     </td>
                                     <td>
                                         {% if feedback.type == 'question' %}

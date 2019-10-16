@@ -27,7 +27,12 @@
                         {{feedback.description}}
                     </div>
                     <br></br>
-                    Sendt inn av: <a href="{{ path('specific_profile', {id: feedback.user.id})}}">{{ feedback.user.getFullName() }}</a>
+                    Sendt inn av: 
+                    {% if feedback.user %}
+                    <a href="{{ path('specific_profile', {id: feedback.user.id})}}">{{ feedback.user.getFullName() }}</a>
+                    {% else %}
+                    Anonym
+                    {% endif %}
                 </div>
             </div>
         </div>
