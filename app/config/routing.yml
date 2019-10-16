@@ -1002,9 +1002,8 @@ interview_edit_status:
        id: \d+
 
 ##########################################
-#              Quicklinks                #
+#              Interview                 #
 ##########################################
-
 quicklink_show:
     path: kontrollpanel/quicklinks
     defaults: { _controller: AppBundle:QuickLink:show}
