@@ -3,13 +3,13 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\FeedbackType;
+use AppBundle\Form\Type\ErrorFeedbackType;
 use AppBundle\Entity\Feedback;
 use AppBundle\Service\SlackMessenger;
 
 class FeedbackController extends BaseController
 {
-    //shows form for submitting a new feedback
-    public function indexAction(Request $request)
+    public function adminSubmitAction(Request $request)
     {
         $feedback = new Feedback;
         $user = $this->getUser();
@@ -36,9 +36,41 @@ class FeedbackController extends BaseController
 
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
             
-            return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
+        }
+        return $this->redirect($returnUri,307); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
+    }
+    public function ErrorSubmitAction(Request $request)
+    {
+        $feedback = new Feedback;
+        $user = $this->getUser();
+        $form = $this->createForm(ErrorFeedBackType::class, $feedback);
+        $form->handleRequest($request);
+
+        $returnUri = $request->getUri();
+        if ($request->headers->get('referer')) {
+            $returnUri = $request->headers->get('referer');
         }
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            //Stores the submitted feedback
+            $em = $this->getDoctrine()->getManager();
+            $feedback = $form->getData();
+            $feedback->setUser($user);
+            $em->persist($feedback);
+            $em->flush();
+
+            //Notifies on slack (NotificationCHannel)
+            $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
+            $messenger->notify($feedback->getSlackMessageBody());
+
+            $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
+        }
+        return $this->redirect($returnUri,307); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
+    }
+
+    //shows form for submitting a new feedback
+    public function indexAction(Request $request)
+    {
         return $this->render('feedback_admin/feedback_admin_index.html.twig', array(
             'title' => 'Feedback'
         ));
