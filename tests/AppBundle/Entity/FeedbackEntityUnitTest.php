@@ -25,7 +25,7 @@ class FeedbackEntityUnitTest extends TestCase
         // new entity
         $feedback = new Feedback();
 
-        // Use the setName method
+        // Use the setDescription method
         $feedback->setDescription("Test description 123");
 
         // Assert the result
