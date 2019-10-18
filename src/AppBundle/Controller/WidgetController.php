@@ -88,25 +88,18 @@ class WidgetController extends BaseController
     }
     public function feedbackAction(Request $request)
     {
-        $form = $request->get('form');
-        if(!$form){
-            $feedback = new Feedback;
-            $form = $this->createForm(FeedBackType::class, $feedback);
-        }
+        $feedback = new Feedback;
+        $form = $this->createForm(FeedBackType::class, $feedback);
         $form->handleRequest($request);
 
         return $this->render('widgets/feedback_widget.html.twig', array(
-            'title' => 'Feedback',
             'form' => $form->createView()
         ));
     }
     public function errorFeedbackAction(Request $request)
     {
-        $form = $request->get('form');
-        if(!$form){
-            $feedback = new Feedback;
-            $form = $this->createForm(ErrorFeedBackType::class, $feedback);
-        }
+        $feedback = new Feedback;
+        $form = $this->createForm(ErrorFeedBackType::class, $feedback);
         $form->handleRequest($request);
 
         return $this->render('widgets/error_feedback_widget.html.twig', array(
