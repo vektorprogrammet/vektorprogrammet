@@ -16,7 +16,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
     private $roleManager;
     private $em;
 
-    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager,  EntityManager $em)
+    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager, EntityManager $em)
     {
         $this->session = $session;
         $this->logger = $logger;
@@ -91,8 +91,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
     {
         $teamMembership = $event->getTeamMembership();
         $now = new \DateTime();
-        if ($teamMembership->getEndSemester() === null || $teamMembership->getEndSemester()->getSemesterEndDate() > $now)
-        {
+        if ($teamMembership->getEndSemester() === null || $teamMembership->getEndSemester()->getSemesterEndDate() > $now) {
             $teamMembership->setIsSuspended(false);
         }
         $this->em->persist($teamMembership);

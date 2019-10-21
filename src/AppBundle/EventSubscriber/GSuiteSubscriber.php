@@ -101,7 +101,6 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $alreadyInGroup = $this->groupService->userIsInGroup($user, $team);
 
         if (!$alreadyInGroup && $user->getCompanyEmail()) {
-
             $this->groupService->addUserToGroup($user, $team);
             $this->logger->info("$user added to G Suite group *$department - $team*");
         }
