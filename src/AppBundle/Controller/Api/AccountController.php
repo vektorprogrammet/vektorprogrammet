@@ -88,7 +88,8 @@ class AccountController extends BaseController
     /**
      * @Route("api/account/mypartner", name="my_partner")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return JsonResponse
+     * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
      */
     public function getMyPartnerAction()
     {
@@ -133,7 +134,12 @@ class AccountController extends BaseController
                 $partnerHistoryDtos[] = $assistantHistoryDto;
             }
         } else {
-
+            // TESTING:
+            $a = new AssistantHistoryDto();
+            $a->bolk = "Bolk 1";
+            $a->day = "Mandager";
+            $a->school = "Ugla";
+            $partnerHistoryDtos[] = $a;
         }
 
         return new JsonResponse($partnerHistoryDtos);

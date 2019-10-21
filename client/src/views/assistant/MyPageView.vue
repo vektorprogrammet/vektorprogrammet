@@ -11,14 +11,14 @@
     <div class="requires-partner" v-if="this.scheduleInfo !== ''">
       <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
       <PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
-      <SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo>
-      <MyPartner :user_partner="scheduleInfo.user"></MyPartner>
+      <!--SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo -->
+      <!--MyPartner :user_partner="scheduleInfo.user"></MyPartner -->
     </div>
 
     <div v-else class="no-partner m-5">
       <h2> Du har ingen partner :( </h2>
     </div>
-    <Map class="mb-5" school_name="Gimse" :home_name="this.home_name"></Map>
+    <Map class="mb-5" :school_name="scheduleInfo.school.name" :home_name="this.home_name"></Map>
   </div>
 </template>
 
@@ -44,16 +44,17 @@ import Map from "../../components/Map";
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: any = '';
     @Prop() private user: any;
-    @Prop() private home_name: string;
+    @Prop() private home_name: string = "Trondheim Sentrum";
     public async mounted() {
         this.user = await accountService.getUser();
-        /*if (this.user.address) {
+        if (this.user.address.address) {
+            console.log(this.user.address);
             this.home_name = this.user.address.address + ', ' + this.user.address.city;
-        }*/
+        }
         console.log(this.user);
 
         let scheduleInfoResult = await accountService.getScheduleInfo();
-        if (scheduleInfoResult.length > 1){
+        if (scheduleInfoResult.length > 0){
             this.scheduleInfo = scheduleInfoResult[0]
         }
     }
