@@ -15,9 +15,7 @@ final class Version20191015091033 extends AbstractMigration
         // this up() migration is auto-generated, please modify it to your needs
         $this->abortIf($this->connection->getDatabasePlatform()->getName() !== 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
-        $this->addSql('ALTER TABLE team_membership ADD isSuspended TINYINT(1) NOT NULL');
-        $this->addSql('UPDATE team_membership SET isSuspended=0');
-        $this->addSql('ALTER TABLE team_membership MODIFY isSuspended TINYINT(1) NOT NULL');
+        $this->addSql('ALTER TABLE team_membership MODIFY isSuspended TINYINT(1) NOT NULL DEFAULT 0');
     }
 
     public function down(Schema $schema) : void

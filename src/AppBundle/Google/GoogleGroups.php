@@ -143,19 +143,16 @@ class GoogleGroups extends GoogleService
         $service = new Google_Service_Directory($client);
 
         $usersInGroup = $this->getUsersInGroup($team);
-        $member = '';
 
-        foreach ($usersInGroup as $u) {
-            if ($u->getEmail() === $user->getCompanyEmail()) {
-                $member = $u;
+        foreach ($usersInGroup as $member) {
+            if ($member->getEmail() === $user->getCompanyEmail()) {
+                try {
+                    $service->members->delete($team->getEmail(), $member);
+                } catch (\Google_Service_Exception $e) {
+                    $this->logServiceException($e, "removeUserFromGroup(), user *$user* to group *{$team->getDepartment()} - $team*");
+                }
                 break;
             }
-        }
-
-        try {
-            $service->members->delete($team->getEmail(), $member);
-        } catch (\Google_Service_Exception $e) {
-            $this->logServiceException($e, "removeUserFromGroup(), user *$user* to group *{$team->getDepartment()} - $team*");
         }
     }
 

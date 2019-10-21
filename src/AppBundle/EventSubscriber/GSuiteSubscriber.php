@@ -10,7 +10,6 @@ use AppBundle\Google\GoogleDrive;
 use AppBundle\Google\GoogleGroups;
 use AppBundle\Google\GoogleUsers;
 use AppBundle\Service\CompanyEmailMaker;
-use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
@@ -22,9 +21,9 @@ class GSuiteSubscriber implements EventSubscriberInterface
     private $userService;
     private $groupService;
     private $driveService;
-    private $em;
 
-    public function __construct(LoggerInterface $logger, GoogleAPI $googleAPI, CompanyEmailMaker $emailMaker, GoogleUsers $userService, GoogleGroups $groupService, GoogleDrive $driveService, EntityManager $em)
+
+    public function __construct(LoggerInterface $logger, GoogleAPI $googleAPI, CompanyEmailMaker $emailMaker, GoogleUsers $userService, GoogleGroups $groupService, GoogleDrive $driveService)
     {
         $this->logger = $logger;
         $this->googleAPI = $googleAPI;
@@ -32,7 +31,6 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $this->userService = $userService;
         $this->groupService = $groupService;
         $this->driveService = $driveService;
-        $this->em = $em;
     }
 
     /**
@@ -103,10 +101,6 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $alreadyInGroup = $this->groupService->userIsInGroup($user, $team);
 
         if (!$alreadyInGroup && $user->getCompanyEmail()) {
-            $teamMembership = $event->getTeamMembership();
-            $teamMembership->setIsSuspended(false);
-            $this->em->persist($teamMembership);
-            $this->em->flush();
 
             $this->groupService->addUserToGroup($user, $team);
             $this->logger->info("$user added to G Suite group *$department - $team*");
