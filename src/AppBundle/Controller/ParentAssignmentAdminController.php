@@ -25,7 +25,7 @@ class ParentAssignmentAdminController extends BaseController
         $em->remove($parentAssignment);
         $em->flush();
 
-        $this->addFlash("success", "Forelderen ble slettet");
+        $this->addFlash("success", "\"".$parentAssignment->getNavn()."\" ble slettet");
 
         return $this->redirectToRoute('parent_registration_admin_show');
     }

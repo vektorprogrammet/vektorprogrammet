@@ -29,6 +29,9 @@ class ParentAssignmentController extends BaseController
             $parentAssigned->setUniqueKey($randomString);
             $em->persist($parentAssigned);
             $em->flush();
+
+            $this->addFlash("success", "Din påmelding er registert.");
+
             return $this->redirect($this->generateUrl('foreldre'));
         }
 

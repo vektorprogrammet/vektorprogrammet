@@ -33,9 +33,9 @@
                                             <i class="fa fa-ellipsis-v text-secondary"></i>
                                         </div>
                                         <div class="dropdown-menu pt-0" aria-labelledby="options-{{ parent.id }}">
-                                            <div class="dropdown-header mb-2"><strong>Forelder {{ parent.id }}</strong></div>
+                                            <div class="dropdown-header mb-2"><strong>Forelder: {{ parent.navn }}</strong></div>
                                             <form method="POST"
-                                                  onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.id }}?')"
+                                                  onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.navn }}?')"
                                                   action="{{ path('parent_registration_admin_delete', { id: parent.id }) }}">
                                                 <button type="submit"
                                                         class="dropdown-item">
