@@ -286,6 +286,18 @@
                 ]
             } %}
 
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'changelog_show_all',
+                icon: 'list-ul',
+                name: 'Changelog',
+                activeRoutes: [
+                    'changelog_create',
+                    'changelogitem_edit',
+                    'changelogitem_delete',
+                    'changelog_show_all',
+                ]
+            } %}
+
             {% if is_granted_team_leader() %}
                 {% include 'base/admin/nav_link.html.twig' with {
                     route: 'show_field_of_studies',

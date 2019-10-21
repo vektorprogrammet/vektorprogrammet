@@ -5,6 +5,7 @@
 .DS_Store
 .vagrant
 
+
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
 .idea/
