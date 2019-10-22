@@ -29,7 +29,7 @@ class FeedbackController extends BaseController
 
             return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
         }
-        return $this->redirect($returnUri,307); //307 forwards the POST request, shows previous form submit if not valid
+        return $this->redirect($returnUri, 307); //307 forwards the POST request, shows previous form submit if not valid
     }
     public function ErrorSubmitAction(Request $request)
     {
@@ -49,7 +49,7 @@ class FeedbackController extends BaseController
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
             return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
         }
-        return $this->redirect($returnUri,307); //307 forwards the POST request, shows previous form submit if not valid
+        return $this->redirect($returnUri, 307); //307 forwards the POST request, shows previous form submit if not valid
     }
     //Stores feedback
     private function sumbitFeedback(Feedback $feedback)
@@ -64,12 +64,12 @@ class FeedbackController extends BaseController
             $em->persist($feedback);
             $em->flush();
 
-            //Notifies on slack (NotificationCHannel)
-            $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
-            $messenger->notify($feedback->getSlackMessageBody());
+        //Notifies on slack (NotificationCHannel)
+        $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
+        $messenger->notify($feedback->getSlackMessageBody());
 
-            $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
-            $feedback = new Feedback;
+        $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
+        $feedback = new Feedback;
     }
 
     //shows form for submitting a new feedback
