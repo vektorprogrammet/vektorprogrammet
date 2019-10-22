@@ -98,6 +98,10 @@ class WidgetController extends BaseController
     }
     public function errorFeedbackAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->isOpen()) {
+            $this->getDoctrine()->resetManager();
+        }
         $feedback = new Feedback;
         $form = $this->createForm(ErrorFeedBackType::class, $feedback);
         $form->handleRequest($request);
