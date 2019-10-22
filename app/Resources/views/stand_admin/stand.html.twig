@@ -4,6 +4,10 @@
     Stand
 {% endblock %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/stand.css') }}">
+{% endblock %}
+
 {% block breadcrumb %}
     <li class="breadcrumb-item active">Stand</li>
 {% endblock %}
@@ -19,13 +23,121 @@
 
 
 {% block body %}
+    <div class="contianer-fluid">
     <div class="row">
         <div class="col-12">
-            <h1>Stand</h1>
-            <p>Her vil du finne informasjon som kan være nyttig når man står på stand (mer info kommer).</p>
-            <hr>
+            <h1>Prosedyre for stand</h1>
+            <p><b>Husk:</b> Det er ditt ansvar å finne noen å bytte med dersom du ikke har mulighet til å stå på stand. <br>
+            Viktig å møte <b>tidsnok!</b></p>
+        </div>
+        <div class="col-lg-6">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <div class = "dropdown">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="collapse" data-target="#collapseOne">Før stand
+                                    <span class="caret"></span></button></button>
+                            </div>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Før stand:
+                            <ul>
+                                <li>Sjekk at det er nok kaffe, kaffefilter, kopper og drops i standboksen. Hvis ikke; fyll på.</li>
+                                <li>Ha på vektor t-skjorte (og eventuelt vektorhettegenser).</li>
+                                <li>Ta med:
+                                    <ul>
+                                        <li>PC <b>som er ladet</b></li>
+                                        <li>Boksen med stand i (skal inneholde plakater, kaffetrakter, flyers, drops osv.)</li>
+                                        <li>Tørkepapir</li>
+                                    </ul>
+                                </li>
+                                <li>Begynn å lage kaffe med en gang, og kjøp inn kaffe om nødvendig.
+                                    <ul>
+                                        <li>Dosering: 6 skjeer kaffepulver.</li>
+                                    </ul>
+                                </li>
+                                <li><b>NB!</b> Hvis det skal stekes vafler på stand må man starte tidlig. Det trengs vaffeljern, vaffelmiks, smør, visp, øse og bolle til dette.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <div class = "dropdown">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="collapse" data-target="#collapseTwo">På stand
+                                <span class="caret"></span></button></button>
+                        </div>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>Mens du står på stand:</p>
+                            <ul>
+                                <li>Kok kaffe underveis. Viktig å ha mye kaffe klart til pauser i forelesninger.</li>
+                                <li>Stå foran stand, vær utadvendt!</li>
+                                <li>Hold standen ren.</li>
+                                <li>Informer om infomøte og søknadsfrist.</li>
+                                <li>Sett frem PC med
+                                    <a href="{{ path('interest_list', {shortName: department.shortName}) }}">
+                                        påmeldingskjema</a> for {{ department }}.</li>
+                                <br>
+                                <li>Forslag til ting å snakke om:
+                                    <ul>
+                                        <li>“Har du hørt om Vektorprogrammet?”</li>
+                                        <li>“Er det noe du kan tenke deg å være med på?”</li>
+                                        <li>“Vi har infomøte da og da”</li>
+                                    </ul>
+                                    <br>
+                                    <li>Viktig å få frem at dette er et frivillig, ulønnet verv.</li>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <div class = "dropdown">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="collapse" data-target="#collapseThree">Etter stand
+                                    <span class="caret"></span></button></button>
+                            </div>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>Etter stand: </p>
+                            <ul>
+                                <li>Nedrigging av stand: </li>
+                                    <ul>
+                                        <li>Høyttaleren og bamsen skal ikke ligge i boksen.</li>
+                                        <li>Vær forsiktig med utstyr, ikke krøll plakater.</li>
+                                        <li>Skyll kaffekanner og sett dem i vann til dagen etter. Skyll også kaffetrakteren.</li>
+                                        <li>(ev. vaske vaffeljern)</li>
+                                    </ul>
+                                </li>
+                                <li>Etterfyll med kaffe og drops hvis nødvendig.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="col-lg-6">
+            <img class="hero-image img-fluid"
+                 src="{{ asset_with_version('/images/stand_image.jpg') }}">
+            <p><b>Eksempel på hvordan standen skal se ut.</b></p>
+            <br>
         </div>
     </div>
+    <hr>
 
     <div class="row">
         <div class="col-12">
@@ -82,6 +194,7 @@
             </p>
         </div>
         <hr>
+    </div>
     </div>
 {% endblock %}
 
