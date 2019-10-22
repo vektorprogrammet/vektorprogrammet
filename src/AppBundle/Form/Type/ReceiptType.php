@@ -38,7 +38,7 @@ class ReceiptType extends AbstractType
                 'label' => false,
             ))
             ->add('picturePath', FileType::class, array(
-                'label' => 'Velg/endre bilde av kvitteringen: ',
+                'label' => 'Last opp bilde av kvittering',
                 'required' => $options['picture_required'],
                 'data_class' => null,
                 'attr' => array('class' => 'receipt-upload-hack', 'accept' => 'image/*'),

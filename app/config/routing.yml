@@ -104,33 +104,6 @@ delete_todo_item:
   requirements:
    id: \d+
 
-##########################################
-#                Changelog               #
-##########################################
-
-changelog_create:
- path: /kontrollpanel/changelog/create
- defaults: { _controller: AppBundle:ChangeLog:createChangeLog }
- methods: [GET, POST]
-
-changelogitem_edit:
- path: /kontrollpanel/changelog/edit/{id}
- defaults: { _controller: AppBundle:ChangeLog:editChangeLog }
- methods: [GET, POST]
- requirements:
-  id: \d+
-
-changelogitem_delete:
- path: /kontrollpanel/changelog/delete/{id}
- defaults: { _controller: AppBundle:ChangeLog:deleteChangeLog }
- methods: [POST]
- requirements:
-  id: \d+
-
-changelog_show_all:
- path: /kontrollpanel/changelog/show/all
- defaults: { _controller: AppBundle:ChangeLog:show }
- methods: [GET]
 
 ##########################################
 #                Survey                  #
@@ -203,13 +176,6 @@ survey_copy:
 survey_results:
  path: /kontrollpanel/undersokelse/resultater/{id}
  defaults: { _controller: AppBundle:Survey:resultSurvey }
- methods: [GET]
- requirements:
-  id: \d+
-
-survey_get_results_csv:
- path: /kontrollpanel/undersokelse/resultater/{id}.csv
- defaults: { _controller: AppBundle:Survey:getSurveyResultCSV }
  methods: [GET]
  requirements:
   id: \d+
