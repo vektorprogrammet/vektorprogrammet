@@ -57,6 +57,9 @@ class FeedbackController extends BaseController
             $user = $this->getUser();
             //Stores the submitted feedback
             $em = $this->getDoctrine()->getManager();
+            if (!$em->isOpen()) {
+                $this->getDoctrine()->resetManager();
+            }
             $feedback->setUser($user);
             $em->persist($feedback);
             $em->flush();
