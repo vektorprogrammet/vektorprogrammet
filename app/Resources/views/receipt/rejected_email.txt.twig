@@ -7,6 +7,11 @@ Det kan være flere grunner til dette:
 - Utlegget er ikke godt nok beskrevet
 - Oppgitt sum stemmer ikke med kvitteringen
 
+{% if receipt.rejectionComment %}
+Kommentar fra økonomiansvarlig:
+{{ receipt.rejectionComment }}
+{% endif %}
+
 Hvis du tror dette er en feil kan du registrere et nytt utlegg eller svare på denne eposten for å kontakte økonomiteamet.
 
 Dato registrert: {{ receipt.submitDate | date("d.m.Y H:i") }}

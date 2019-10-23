@@ -72,6 +72,12 @@ class Receipt
      */
     private $visualId;
 
+    /**
+     * @ORM\Column(type="string", length=5000, nullable=true)
+     * @Assert\Length(max="5000", maxMessage="Maks 5000 tegn")
+     */
+    private $rejectionComment;
+
     public function __construct()
     {
         $this->status = self::STATUS_PENDING;
@@ -237,5 +243,21 @@ class Receipt
     public function setRefundDate($refundDate)
     {
         $this->refundDate = $refundDate;
+    }
+
+    /**
+     * @return string
+     */
+    public function getRejectionComment()
+    {
+        return $this->rejectionComment;
+    }
+
+    /**
+     * @param string $rejectionComment
+     */
+    public function setRejectionComment($rejectionComment)
+    {
+        $this->rejectionComment = $rejectionComment;
     }
 }
