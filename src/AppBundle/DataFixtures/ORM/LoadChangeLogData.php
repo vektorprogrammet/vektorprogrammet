@@ -37,7 +37,7 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
         $manager->persist($changeLogItem);
 
         $changeLogItem = new ChangeLogItem();
-        $changeLogItem->setTitle('Changelog-widget lagt til i kontrollpanelet');
+        $changeLogItem->setTitle('Changelog-widget lagt til kontrollpanel');
         $changeLogItem->setDescription('Changelog-widgeten er ferdig, og kan tas i bruk. Den kan brukes til å holde styr på endringer IT-teamet gjør. Klikk deg videre i kontrollpanel-menyen på venstre side for å opprette en ny endring. Denne vil deretter bli synlig i widgeten.  ');
         $changeLogItem->setGithubLink('https://github.com/vektorprogrammet/vektorprogrammet/tree/master/app');
         $changeLogItem->setDate(new \DateTime());
