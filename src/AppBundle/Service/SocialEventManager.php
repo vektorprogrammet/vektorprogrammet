@@ -1,12 +1,6 @@
 <?php
 namespace AppBundle\Service;
-
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManager;
-
-use AppBundle\Entity\SocialEvent;
-use Appbundle\Entity\Repository\SocialEventItemRepository;
 
 class SocialEventManager
 {

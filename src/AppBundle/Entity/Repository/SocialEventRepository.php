@@ -7,9 +7,9 @@ use \Doctrine\ORM\EntityRepository;
 use \AppBundle\Entity\Semester;
 
 /**
- * Class SocialEventItemRepository
+ * Class SocialEventRepository
  */
-class SocialEventItemRepository extends EntityRepository
+class SocialEventRepository extends EntityRepository
 {
 
     /**
@@ -19,7 +19,7 @@ class SocialEventItemRepository extends EntityRepository
      */
     public function findSocialEventsBySemesterAndDepartment(Semester $semester, Department $department)
     {
-        $socialEvents = $this->createQueryBuilder('SocialEventItem')
+        return $this->createQueryBuilder('SocialEventItem')
             ->select('SocialEventItem')
             ->where('SocialEventItem.semester = :semester or SocialEventItem.semester is null')
             ->andWhere('SocialEventItem.department = :department or SocialEventItem.department is null')
@@ -27,7 +27,6 @@ class SocialEventItemRepository extends EntityRepository
             ->setParameters(['semester' => $semester, 'department' => $department])
             ->getQuery()
             ->getResult();
-        return $socialEvents;
     }
 
     public function findFutureSocialEventsBySemesterAndDepartment(Semester $semester, Department $department)
