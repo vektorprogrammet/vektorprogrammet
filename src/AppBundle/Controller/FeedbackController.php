@@ -57,6 +57,7 @@ class FeedbackController extends BaseController
         $user = $this->getUser();
         //Stores the submitted feedback
         $em = $this->getDoctrine()->getManager();
+        //Resets EntityManager if closed by exception
         if (!$em->isOpen()) {
             $this->getDoctrine()->resetManager();
         }
