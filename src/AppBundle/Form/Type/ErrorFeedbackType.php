@@ -34,12 +34,12 @@ class ErrorFeedbackType extends AbstractType
             ->add('type', HiddenType::class, array(
                     'data' => Feedback::TYPE_ERROR
             ))
-            /*->add('recaptcha', EWZRecaptchaType::class, [
+            ->add('recaptcha', EWZRecaptchaType::class, [
                     'label' => false,
                     'mapped' => false,
                     'constraints' => array(
                         new RecaptchaTrue()
-                )])*/
+                )])
             ->add('Send inn', SubmitType::class);
     }
     public function configureOptions(OptionsResolver $resolver)
