@@ -37,7 +37,7 @@ class SsoController extends BaseController
         }
 
         $activeInTeam = count($user->getActiveTeamMemberships()) > 0;
-        if (!$activeInTeam){
+        if (!$activeInTeam) {
             $response->setStatusCode(401);
             $response->setContent('User does not have any active team memberships');
             return $response;
