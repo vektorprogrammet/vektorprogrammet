@@ -6,7 +6,7 @@ class ParentsController extends BaseController
 {
     public function indexAction()
     {
-        return $this->render('/parents/foreldre.html.twig');
+        return $this->render('/parents/parents.html.twig');
     }
 }
 
