@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
+use AppBundle\Form\Type\ErrorFeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
 use Symfony\Component\HttpFoundation\Request;
@@ -146,9 +147,14 @@ class WidgetController extends BaseController
     }
     public function errorFeedbackAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->isOpen()) {
+            $this->getDoctrine()->resetManager();
+        }
         $feedback = new Feedback;
         $form = $this->createForm(ErrorFeedBackType::class, $feedback);
         $form->handleRequest($request);
+
         return $this->render('widgets/error_feedback_widget.html.twig', array(
             'form' => $form->createView()
         ));
