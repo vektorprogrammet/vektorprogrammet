@@ -32,19 +32,6 @@
                 </div>
             </section>
 
-
-            <section class="row space">
-                <div class="col-md-12">
-                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-course'} %}
-                    <div class="text-center"><br>
-                        <a href="/foreldrekurs/pamelding">
-                        <button type="button" class="btn btn-primary center-block">Påmelding til foreldrekurs</button>
-                        </a>
-                    </div>
-                </div>
-            </section>
-
-
             <section class="row space">
                 <div class="col-lg-6">
                     <img class="img-fluid image-left image-grid" src="{{ asset_with_version('images/assistenter.jpg') }}">
@@ -53,6 +40,17 @@
                     <img class="img-fluid image-right image-grid" src="{{ asset_with_version('images/vektorassistent.jpg') }}">
                 </div>
             </section>
+
+            <section class="row space">
+                <div class="col-md-12">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-course'} %}
+                </div>
+            </section>
+
+            <p><i>Det finnes dessverre ingen foreldremøter tilgjengelig for påmelding akkurat nå!</i></p>
+
+
+
 
         </div>
     </div>

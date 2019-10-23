@@ -61,11 +61,6 @@ update_static_content:
  defaults: {_controller: AppBundle:StaticContent:update }
  methods: [POST]
 
-parent_registration:
-  path: /foreldrekurs/pamelding
-  defaults: {_controller: AppBundle:ParentAssignment:show }
-  methods: [GET, POST]
-
 ##########################################
 #                Control Panel           #
 ##########################################
