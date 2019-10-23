@@ -76,7 +76,8 @@
             format: 'd.m.Y H:i',
             lang: 'no',
             step: 15,
-            dayOfWeekStart: 1
+            dayOfWeekStart: 1,
+            minDateTime: new Date()
         };
 
         jQuery('#{{ form.startTime.vars.id }}').datetimepicker(options);

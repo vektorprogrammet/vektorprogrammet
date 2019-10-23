@@ -1,7 +1,10 @@
 <?php
+
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
+use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -86,87 +89,96 @@ class SocialEvent
     /**
      * @return string
      */
-    public function getTitle()
+    public function getTitle(): ?string
     {
         return $this->title;
     }
 
     /**
      * @param string $title
+     * @return SocialEvent
      */
-    public function setTitle($title): void
+    public function setTitle($title): SocialEvent
     {
         $this->title = $title;
+        return $this;
     }
 
     /**
      * @return string
      */
-    public function getDescription()
+    public function getDescription(): ?string
     {
         return $this->description;
     }
 
     /**
      * @param string $description
+     * @return SocialEvent
      */
-    public function setDescription($description): void
+    public function setDescription($description): SocialEvent
     {
         $this->description = $description;
+        return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getStartTime()
+    public function getStartTime(): ?DateTime
     {
         return $this->startTime;
     }
 
     /**
-     * @param \DateTime $startTime
+     * @param DateTime $startTime
+     * @return SocialEvent
      */
-    public function setStartTime($startTime): void
+    public function setStartTime($startTime): SocialEvent
     {
         $this->startTime = $startTime;
+        return $this;
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getEndTime()
+    public function getEndTime(): ?DateTime
     {
         return $this->endTime;
     }
 
     /**
-     * @param \DateTime $endTime
+     * @param DateTime $endTime
+     * @return SocialEvent
      */
-    public function setEndTime($endTime): void
+    public function setEndTime($endTime): SocialEvent
     {
         $this->endTime = $endTime;
+        return $this;
     }
 
 
     /**
      * @return Department
      */
-    public function getDepartment(): ? Department
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
 
     /**
-     * @param Department $department
-     *
+     * @param Department|null $department
+     * @return SocialEvent
      */
-    public function setDepartment(? Department $department)
+    public function setDepartment(? Department $department): SocialEvent
     {
         $this->department = $department;
+        return $this;
     }
 
     /**
-     * @param \AppBundle\Entity\Semester|null $semester
+     * @param Semester|null $semester
      * @return $this
      */
     public function setSemester(? Semester $semester)
@@ -178,7 +190,7 @@ class SocialEvent
     /**
      * @return Semester
      */
-    public function getSemester(): ? Semester
+    public function getSemester(): ?Semester
     {
         return $this->semester;
     }
@@ -186,34 +198,36 @@ class SocialEvent
     /**
      * @return Role|null
      */
-    public function getRole(): ? Role
+    public function getRole(): ?Role
     {
         return $this->role;
     }
 
     /**
      * @param Role $role
+     * @return SocialEvent
      */
-    public function setRole(Role $role): void
+    public function setRole(Role $role): SocialEvent
     {
         $this->role = $role;
+        return $this;
     }
 
     /**
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function hasHappened(): bool
     {
-        return $this->getStartTime() < new \DateTime();
+        return $this->getStartTime() < new DateTime();
     }
 
     /**
      * @return bool
-     * @throws \Exception
+     * @throws Exception
      */
     public function happensSoon(): bool
     {
-        return (!($this->hasHappened()) && $this->getStartTime() < new \DateTime('+1 week'));
+        return (!($this->hasHappened()) && $this->getStartTime() < new DateTime('+1 week'));
     }
 }
