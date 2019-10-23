@@ -39,6 +39,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
             ),
             TeamMembershipEvent::EDITED  => array(
                 array('updateUserRole', 5),
+                array('activateTeamMembership', 2),
                 array('addUpdatedFlashMessage', -1),
             ),
             TeamMembershipEvent::DELETED => array(
