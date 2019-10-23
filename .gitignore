@@ -2,8 +2,6 @@
 .env.*.php
 .env.php
 .env
-.DS_Store
-.vagrant
 
 
 ### PhpStorm ###
