@@ -147,6 +147,7 @@ class WidgetController extends BaseController
     }
     public function errorFeedbackAction(Request $request)
     {
+        //Fixes error when ENtityManager is closed after exception
         $em = $this->getDoctrine()->getManager();
         if (!$em->isOpen()) {
             $this->getDoctrine()->resetManager();
