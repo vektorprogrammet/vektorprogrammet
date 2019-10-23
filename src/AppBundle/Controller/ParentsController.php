@@ -9,5 +9,3 @@ class ParentsController extends BaseController
         return $this->render('/parents/parents.html.twig');
     }
 }
-
-
