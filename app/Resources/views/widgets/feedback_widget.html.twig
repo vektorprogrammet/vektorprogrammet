@@ -11,7 +11,7 @@
             </ul>
             <strong>IT-teamet vil gjerne høre fra deg.</strong>
             <br><br>
-            {{ form_start(form, {'action': path('feedback_admin_index')}) }}
+            {{ form_start(form, {'action': path('feedback_admin_submit')}) }}
             {{ form_widget(form) }}
             {{ form_end(form) }}
             {% include 'common/flash.html.twig' %}
