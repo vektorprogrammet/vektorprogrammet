@@ -96,6 +96,7 @@ class Survey implements \JsonSerializable
      *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
      *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
      *      )
+     * @ORM\JoinColumn(onDelete="cascade")
      * @Assert\Valid
      **/
     private $surveyQuestions;
