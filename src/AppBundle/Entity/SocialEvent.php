@@ -71,6 +71,13 @@ class SocialEvent
     private $role;
 
     /**
+     * @var link
+     * @ORM\Column(type="string")
+     */
+    private $link;
+
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -83,6 +90,24 @@ class SocialEvent
     public function getId()
     {
         return $this->id;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLink(): ?string
+    {
+        return $this->link;
+    }
+
+    /**
+     * @param string $link
+     * @return SocialEvent
+     */
+    public function setLink($link): SocialEvent
+    {
+        $this->link = $link;
+        return $this;
     }
 
 
