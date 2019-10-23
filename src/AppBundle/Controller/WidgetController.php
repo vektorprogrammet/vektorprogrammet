@@ -144,4 +144,13 @@ class WidgetController extends BaseController
             'form' => $form->createView()
         ));
     }
+    public function errorFeedbackAction(Request $request)
+    {
+        $feedback = new Feedback;
+        $form = $this->createForm(ErrorFeedBackType::class, $feedback);
+        $form->handleRequest($request);
+        return $this->render('widgets/error_feedback_widget.html.twig', array(
+            'form' => $form->createView()
+        ));
+    }
 }
