@@ -57,7 +57,7 @@ foreldre:
 # Updates static content
 # Not meant for rendering a page. Receives a post request and updates the database.
 update_static_content:
- path: /updatestaticcontentassi
+ path: /updatestaticcontent
  defaults: {_controller: AppBundle:StaticContent:update }
  methods: [POST]
 
@@ -1299,7 +1299,7 @@ team:
 
 teachers:
     path: /laerere
-    defaults: { _controller: AppBundle:Teacher:idex }
+    defaults: { _controller: AppBundle:Teacher:index }
 
 about_new:
     path: /om
