@@ -1,5 +1,6 @@
 <?php
 namespace AppBundle\Service;
+
 use Doctrine\ORM\EntityManager;
 
 class SocialEventManager
