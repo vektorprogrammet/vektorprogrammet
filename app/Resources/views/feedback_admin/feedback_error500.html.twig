@@ -19,7 +19,7 @@
                 <div class="collapse show" id="collapseForm">
                     {{ render(controller("AppBundle:Widget:errorFeedback",{'request': app.request})) }}
                 </div>
-                <h2><a id="collapseFormChevron" style="display:block" class="card-link fa fa-chevron-down" data-toggle="collapse" href="#collapseForm" onclick="flipChevron(this)"></a></h2>
+                <h2><a id="collapseFormChevron" style="display:block" class="card-link fa fa-chevron-up" data-toggle="collapse" href="#collapseForm" onclick="flipChevron(this)"></a></h2>
                 {% include 'common/flash.html.twig' %}
                 <script>
                     function flipChevron(el){
