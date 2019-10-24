@@ -48,6 +48,8 @@ class FeedbackController extends BaseController
             $feedback = $form->getData();
             $this->sumbitFeedback($feedback);
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
+            //Clears the form if submit valid
+            $request->request->remove('error_feedback');
         }
         //Redirects to a copy of 500-errorpage, since we can't redirect back, as it will cause exception.
         return $this->render('feedback_admin/feedback_error500.html.twig');
