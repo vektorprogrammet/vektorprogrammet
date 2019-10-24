@@ -6,6 +6,7 @@ use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Form\Type\ErrorFeedbackType;
 use AppBundle\Entity\Feedback;
 use AppBundle\Service\SlackMessenger;
+use Twig\Environment;
 
 class FeedbackController extends BaseController
 {
@@ -47,9 +48,9 @@ class FeedbackController extends BaseController
             $feedback = $form->getData();
             $this->sumbitFeedback($feedback);
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
-            return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
         }
-        return $this->redirect($returnUri, 307); //307 forwards the POST request, shows previous form submit if not valid
+        //Redirects to a copy of 500-errorpage, since we can't redirect back, as it will cause exception.
+        return $this->render('feedback_admin/feedback_error500.html.twig');
     }
     //Stores feedback
     private function sumbitFeedback(Feedback $feedback)
@@ -69,7 +70,6 @@ class FeedbackController extends BaseController
         $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
         $messenger->notify($feedback->getSlackMessageBody());
 
-        $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
         $feedback = new Feedback;
     }
 
