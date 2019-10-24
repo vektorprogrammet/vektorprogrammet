@@ -35,6 +35,13 @@ class SocialEventType extends AbstractType
                     'placeholder' => "Beskrivelse av arragement"
                 ),
             ))
+            ->add('link', TextType::class, array(
+                'label' => 'Link til event (f.eks. Facebook)',
+                'required' => false,
+                'attr' => array(
+                    'placeholder' => "https://www.link-til-event.no"
+                ),
+            ))
             ->add('startTime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
