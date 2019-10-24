@@ -71,8 +71,8 @@ class SocialEvent
     private $role;
 
     /**
-     * @var link
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=250, nullable=true)
+     * @Assert\Length(max=250)
      */
     private $link;
 
