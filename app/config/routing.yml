@@ -1314,4 +1314,8 @@ feedback_admin_show:
     path: /kontrollpanel/feedback/show/{id}
     defaults: {_controller: AppBundle:Feedback:show }
     methods: [GET]
+feedback_admin_delete:
+    path: /kontrollpanel/feedback/delete/{id}
+    defaults: {_controller: AppBundle:Feedback:delete}
+    methods: [POST]
 

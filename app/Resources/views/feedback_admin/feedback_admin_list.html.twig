@@ -19,7 +19,7 @@
                     <table class="table" >
                         <thead>
                             <tr>
-                                <th>#</th>
+                                <th></th>
                                 <th>Tittel</th>
                                 <th>Bruker</th>
                                 <th></th>
@@ -28,8 +28,24 @@
                         <tbody>
                             {% for feedback in pagination %}
                                 <tr>
-                                    <td>
-                                        {{feedback.id}}
+                                    <td class="table-menu">
+                                        <div class="dropdown">
+                                            <div class="clickable px-2" id="options-{{ feedback.id }}" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                                            </div>
+                                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ feedback.id }}">
+                                                <div class="dropdown-header mb-2"><strong>Feedback {{feedback.id }}</strong></div>
+                                                <form method="POST"
+                                                    onsubmit="return confirm('Vil du virkelig slette {{ feedback.title }}?')"
+                                                    action="{{ path('feedback_admin_delete', { id: feedback.id }) }}">
+                                                    <button type="submit"
+                                                            class="dropdown-item">
+                                                        <i class="fa fa-trash text-danger"></i> Slett
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td>
                                         <a href="{{ path('feedback_admin_show', {'id': feedback.id}) }}">{{feedback.title}}</a>

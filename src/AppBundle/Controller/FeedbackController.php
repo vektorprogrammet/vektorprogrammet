@@ -74,4 +74,14 @@ class FeedbackController extends BaseController
             'title' => 'Alle tilbakemeldinger'
         ));
     }
+    public function deleteAction(Feedback $feedback)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $em->remove($feedback);
+        $em->flush();
+
+        $this->addFlash("success", "\"". $feedback->getTitle()."\" ble slettet");
+
+        return $this->redirect($this->generateUrl('feedback_admin_list'));
+    }
 }
