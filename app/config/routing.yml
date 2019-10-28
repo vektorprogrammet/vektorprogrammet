@@ -65,18 +65,35 @@ update_static_content:
  #     Parent-course and registration     #
  ##########################################
 
+parent_course_create:
+ path: /kontrollpanel/foreldrekurs/create
+ defaults: {_controller: AppBundle:ParentCourse:create}
+ methods: [GET]
+
+parent_course_admin_show:
+ path: /kontrollpanel/foreldrekurs
+ defaults: {_controller: AppBundle:ParentCourse:show}
+ methods: [GET]
+
+parent_course_admin_delete:
+ path: /kontrollpanel/foreldrekurs/slett/{id}
+ defaults: {_controller: AppBundle:ParentAssignment:delete }
+ methods: [POST]
+ requirements:
+  id: \d+
+
 parent_registration:
-  path: /foreldrekurs/pamelding
-  defaults: {_controller: AppBundle:ParentAssignment:create }
-  methods: [POST]
+ path: /foreldrekurs/pamelding
+ defaults: {_controller: AppBundle:ParentAssignment:create }
+ methods: [POST]
 
 parent_registration_admin_show:
-  path: /kontrollpanel/foreldrekursadmin
-  defaults: {_controller: AppBundle:ParentAssignmentAdmin:show }
-  methods: [GET]
+ path: /kontrollpanel/foreldrekurs/foreldre
+ defaults: {_controller: AppBundle:ParentAssignmentAdmin:show }
+ methods: [GET]
 
 parent_registration_admin_delete:
- path: /kontrollpanel/foreldrekursadmin/slett/{id}
+ path: /kontrollpanel/foreldrekurs/foreldre/slett/{id}
  defaults: {_controller: AppBundle:ParentAssignmentAdmin:delete }
  methods: [POST]
  requirements:
