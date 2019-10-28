@@ -1,0 +1,33 @@
+{% if not showForm is defined %}
+{% set showForm = false %}
+{% endif %}
+
+{% block body %}
+    <div class="page-header page-header-thin text-center container">
+        <h1>Oh oh...</h1>
+        <img class="img-fluid my-5 error-image" src="{{ asset_with_version('images/vektor_v_broken.png') }}" alt="vektor v broken">
+        <h4>Det har oppstått en feil på serveren med feilkode 500. </h4>
+        <h6 class="text-devil">Et automatisk varsel om feilen har blitt sendt til IT-teamet. Send e-post til <a href="mailto:it@vektorprogrammet">it@vektorprogrammet.no</a> eller fyll ut skjemaet under hvis problemet vedvarer.</h6>
+        <br><br>
+        <div class="content card">
+            <div class="card-body">
+                <h4>Vedvarer problemet?</h4>
+                <h6 class="text-devil">Ønsker du å sende en melding til IT-teamet?<br><br>
+                I såfall vil vi gjerne høre hva du prøvde på og hvordan du gjorde det.</h6>
+                <div class="collapse {% if showForm %}show {% endif %}" id="collapseForm">
+                    {{ render(controller("AppBundle:Widget:errorFeedback",{'request': app.request})) }}
+                </div>
+                <h2><a id="collapseFormChevron" style="display:block" class="card-link fa fa-chevron-{% if showForm %}up{% else %}down{% endif %}" data-toggle="collapse" href="#collapseForm" onclick="flipChevron(this)"></a></h2>
+                {% include 'common/flash.html.twig' %}
+                <script>
+                    function flipChevron(el){
+                        el.classList.toggle('fa-chevron-down');
+                        el.classList.toggle('fa-chevron-up');
+                    }
+                </script>
+            </div>
+        </div>
+
+    </div>
+
+{% endblock %}
