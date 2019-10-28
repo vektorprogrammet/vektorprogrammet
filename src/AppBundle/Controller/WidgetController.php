@@ -144,11 +144,13 @@ class WidgetController extends BaseController
         if($session->has('feedbackFormData'))
         {
             $feedbackData = $session->get('feedbackFormData');
+            $formView = $form->createView();
+            $csrf_token = $formView["_token"]->vars["value"];
             $submitData = [
                 'title' => $feedbackData->getTitle(),
                 'description' => $feedbackData->getDescription(),
                 'type' => $feedbackData->getType(),
-                '_token' => $session->get('_csrf/feedback')
+                '_token' => $csrf_token
             ];
             //Submits to show validation errors
             $form->submit($submitData);
