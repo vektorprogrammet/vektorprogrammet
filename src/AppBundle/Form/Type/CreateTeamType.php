@@ -36,6 +36,8 @@ class CreateTeamType extends AbstractType
             ))
             ->add('deadline', DateTimeType::class, array(
                 'label' => 'Søknadsfrist',
+                'format' => 'dd.MM.yyyy HH:mm',
+                'widget' => 'single_text',
                 'required' => false,
             ))
             ->add('active', CheckboxType::class, array(
