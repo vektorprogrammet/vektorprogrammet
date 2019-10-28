@@ -141,8 +141,7 @@ class WidgetController extends BaseController
         $form = $this->createForm(FeedBackType::class, $feedback);
 
         //Gets temporary form data stored in session if submitted, but invalid
-        if($session->has('feedbackFormData'))
-        {
+        if ($session->has('feedbackFormData')) {
             $feedbackData = $session->get('feedbackFormData');
             $formView = $form->createView();
             $csrf_token = $formView["_token"]->vars["value"];
