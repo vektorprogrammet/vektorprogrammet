@@ -28,9 +28,12 @@ class FeedbackController extends BaseController
             $this->sumbitFeedback($feedback);
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
 
-            return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
+            return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)
         }
-        return $this->redirect($returnUri, 307); //307 forwards the POST request, shows previous form submit if not valid
+        //Stores the form data temporary in the session
+        $request->getSession()->set('feedbackFormData', $form->getData());
+
+        return $this->redirect($returnUri);
     }
     public function ErrorSubmitAction(Request $request)
     {

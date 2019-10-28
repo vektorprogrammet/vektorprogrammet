@@ -136,9 +136,25 @@ class WidgetController extends BaseController
 
     public function feedbackAction(Request $request)
     {
+        $session = $request->getSession();
         $feedback = new Feedback;
         $form = $this->createForm(FeedBackType::class, $feedback);
-        $form->handleRequest($request);
+
+        //Gets temporary form data stored in session if submitted, but invalid
+        if($session->has('feedbackFormData'))
+        {
+            $feedbackData = $session->get('feedbackFormData');
+            $submitData = [
+                'title' => $feedbackData->getTitle(),
+                'description' => $feedbackData->getDescription(),
+                'type' => $feedbackData->getType(),
+                '_token' => $session->get('_csrf/feedback')
+            ];
+            //Submits to show validation errors
+            $form->submit($submitData);
+        }
+        //removes the temporary form data
+        $session->remove('feedbackFormData');
 
         return $this->render('widgets/feedback_widget.html.twig', array(
             'title' => 'Feedback',
@@ -147,7 +163,7 @@ class WidgetController extends BaseController
     }
     public function errorFeedbackAction(Request $request)
     {
-        //Fixes error when ENtityManager is closed after exception
+        //Fixes error when EntityManager is closed after exception
         $em = $this->getDoctrine()->getManager();
         if (!$em->isOpen()) {
             $this->getDoctrine()->resetManager();
