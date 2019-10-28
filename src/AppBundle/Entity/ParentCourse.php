@@ -155,5 +155,5 @@ class ParentCourse
     {
         return $this->information;
     }
-
+}
 

@@ -5,11 +5,72 @@
 {% endblock %}
 
 {% block breadcrumb %}
-
     <li class="breadcrumb-item active">Foreldrekurs</li>
 {% endblock %}
 
-<!--{% block breadcrumb_menu %}
+{% block breadcrumb_menu %}
     <a href="{{ path('parent_course_create') }}" class="btn btn-outline-success text-success">
         <i class="fa fa-plus"></i> Planlegg nytt foreldrekurs </a>
-{% endblock %}-->
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-list-ul"></i> Antall planlagte foreldrekurs ({{ parentCourses|length }}) </div>
+                <div class="table-responsive">
+                    <table class="table" id="article-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Foredragsholder</th>
+                            <th>Sted</th>
+                            <th>Tidspunkt</th>
+                            <th>Beskrivelse</th>
+                        </tr>
+                        </thead>
+                        {% for parentCourse in parentCourses %}
+                            <tr id="{{ parentCourse.id }}">
+                                <td class="table-menu">
+                                    <div class="dropdown">
+                                        <div class="clickable px-2" id="options-{{ parentCourse.id }}" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </div>
+                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ parentCourse.id }}">
+                                            <div class="dropdown-header mb-2"><strong>Foreldrekurs holdt av: {{ parentCourse.speaker }}</strong></div>
+                                            <a href="{{ path('parent_registration_admin_show') }}"
+                                               class="dropdown-item"><i class="fa fa-user text-primary"></i> Påmeldte foreldre
+                                            </a>
+                                            <form method="POST"
+                                                  onsubmit="return confirm('Vil du virkelig dette foreldrekurset?')"
+                                                  action="{{ path('parent_course_admin_delete', { id: parentCourse.id }) }}">
+                                                <button type="submit"
+                                                        class="dropdown-item">
+                                                    <i class="fa fa-trash text-danger"></i> Slett
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ parentCourse.speaker | safe_html }}
+                                </td>
+                                <td>
+                                    {{ parentCourse.place | safe_html }}
+                                </td>
+                                <td>
+                                    {{ parentCourse.date | date("d.m.y") }} <!-- Trenger tidspunkt her også! -->
+                                </td>
+                                <td>
+                                    {{ parentCourse.information | safe_html }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

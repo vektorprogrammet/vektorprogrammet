@@ -26,7 +26,7 @@ class ParentCourseController extends BaseController
             return $this->redirect($this->generateUrl('parent_course_admin_show'));
         }
 
-        return $this->render('parents/parent-course-admin-show.html.twig', array(
+        return $this->render('parent_course/parent_course_create.html.twig', array(
             'form' => $form->createView(),
         ));
 
@@ -37,7 +37,7 @@ class ParentCourseController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $parentCourses = $em->getRepository('AppBundle:ParentCourse')->findAllOrderedByDate(); //Midlertidig funksjon, må lages i repository
 
-        return $this->render('InsertTemplateHere', array('parent_courses' => $parentCourses));
+        return $this->render('parents_course/parent_course_show.html.twig', array('parentCourses' => $parentCourses));
     }
 
     public function deleteAction(ParentCourse $parentCourse)
