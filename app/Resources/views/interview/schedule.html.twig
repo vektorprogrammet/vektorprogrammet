@@ -12,11 +12,6 @@
 {% endblock %}
 
 
-{% block stylesheets %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
-{% endblock %}
-
 {% block body %}
     {% set u = interview.user %}
     <div class="row my-5">
@@ -189,16 +184,7 @@
 {% endblock %}
 
 {% block javascripts %}
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
-    <script>
-      const options = {
-        format: 'd.m.Y H:i',
-        lang: 'no',
-        step: 5,
-        dayOfWeekStart: 1,
-      };
-
-      jQuery('#{{ form.datetime.vars.id }}').datetimepicker(options);
-    </script>
+    {% include 'common/datetime_picker.html.twig' with {
+        inputIds: [form.datetime.vars.id]
+    } %}
 {% endblock %}

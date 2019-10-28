@@ -9,11 +9,6 @@
     <li class="breadcrumb-item active">Changelog-objekt</li>
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
-{% endblock %}
-
 {% block body %}
     {{ form_start(form) }}
     <div class="row">
@@ -41,22 +36,14 @@
     </div>
     {{ form_end(form) }}
 {% endblock %}
+
 {% block javascripts %}
+
+    {% include 'common/datetime_picker.html.twig' with { inputIds: [form.date.vars.id] } %}
+
     <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', QuestionManager.onReady);
-    </script>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
-    <script>
-        const options = {
-            format: 'd.m.Y H:i',
-            lang: 'no',
-            step: 5,
-        };
-
-        jQuery('#{{ form.date.vars.id }}').datetimepicker(options);
-        console.log("{{ form.date.vars.id }}")
     </script>
     <script>
         var btn = document.getElementById("change_log_save");
