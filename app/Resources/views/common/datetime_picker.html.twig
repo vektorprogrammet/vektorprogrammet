@@ -1,0 +1,20 @@
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
+
+    <script>
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 1,
+            dayOfWeekStart: 1,
+        };
+
+    {% for input in inputIds %}
+    jQuery('#{{input}}').datetimepicker(options);
+    {% endfor %}
+    </script>
+{% endblock %}
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% endblock %}
