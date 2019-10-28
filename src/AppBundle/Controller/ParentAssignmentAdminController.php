@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\ParentAssignment;
-use AppBundle\Form\Type\ParentAssignmentType;
 use Symfony\Component\HttpFoundation\Request;
 
 class ParentAssignmentAdminController extends BaseController

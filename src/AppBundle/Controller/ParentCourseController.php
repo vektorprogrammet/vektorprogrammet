@@ -35,9 +35,9 @@ class ParentCourseController extends BaseController
     public function showAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $parentCourses = $em->getRepository('AppBundle:ParentCourse')->findAllOrderedByDate(); //Midlertidig funksjon, må lages i repository
+        $parentCourses = $em->getRepository('AppBundle:ParentCourse')->findAllParentCoursesOrderedByDate();
 
-        return $this->render('parents_course/parent_course_show.html.twig', array('parentCourses' => $parentCourses));
+        return $this->render('parent_course/parent_course_show.html.twig', array('parentCourses' => $parentCourses));
     }
 
     public function deleteAction(ParentCourse $parentCourse)
