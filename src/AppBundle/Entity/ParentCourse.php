@@ -141,7 +141,7 @@ class ParentCourse
      */
     public function setInformation($information)
     {
-        $this->information = $dinformation;
+        $this->information = $information;
 
         return $this;
     }
