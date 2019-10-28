@@ -77,7 +77,7 @@ parent_course_admin_show:
 
 parent_course_admin_delete:
  path: /kontrollpanel/foreldrekurs/slett/{id}
- defaults: {_controller: AppBundle:ParentAssignment:delete }
+ defaults: {_controller: AppBundle:ParentCourse:delete }
  methods: [POST]
  requirements:
   id: \d+
