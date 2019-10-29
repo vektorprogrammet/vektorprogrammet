@@ -10,6 +10,7 @@ class UserDto
     public $fullName;
     public $username;
     public $email;
+    public $phone;
     public $companyEmail;
     public $isAdmin;
     public $picture_path;

@@ -2,20 +2,46 @@
   <div class="content">
     <br><br><br>
     <h2>Mitt Vektorteam:</h2>
-    <b-row>
-      <b-col>
-        <ProfilePicture :picture_path="full_path_me" :picture_width="picture_width"/>
+
+      <!--b-col>
+        <ProfilePicture :picture_path="user_me.picture_path" :picture_width="picture_width"/>
           <br><br>
         <h5>{{user_me.fullName}}</h5>
         <p>{{user_me.email}}</p>
-      </b-col>
-      <b-col>
-        <ProfilePicture :picture_path="full_path_partner" :picture_width="picture_width"/>
-        <br><br>
-        <h5>{{user_partner.fullName}}</h5>
-        <p>{{user_partner.email}}</p>
-      </b-col>
-    </b-row>
+      </b-col-->
+
+    <h3>Bolk 1</h3>
+      <b-row>
+        <b-col v-for="partner in this.user_partners" style="max-width: 200px">
+          <ProfilePicture :picture_path="partner.picture_path" :picture_width="picture_width"/>
+          <br><br>
+          <h5>{{partner.fullName}}</h5>
+          <p class="link"><a :href="'mailto:' + partner.email">{{partner.email}}</a></p>
+          <p>
+            <a class="text-default" :href="'tel: ' + partner.phone">
+              <i class="fa fa-phone"></i> {{ partner.phone }}
+            </a>
+          </p>
+        </b-col>
+
+      </b-row>
+
+    <h3>Bolk 2</h3>
+      <b-row>
+        <b-col v-for="partner in this.users1">
+          <ProfilePicture :picture_path="partner.picture_path" :picture_width="picture_width"/>
+          <br><br>
+          <h5>{{partner.fullName}}</h5>
+          <p class="link"><a :href="'mailto:' + partner.email">{{partner.email}}</a></p>
+          <p>
+            <a class="text-default" :href="'tel: ' + partner.phone">
+              <i class="fa fa-phone">tlf: </i> {{ partner.phone }}
+            </a>
+          </p>
+        </b-col>
+      </b-row>
+
+
   </div>
 </template>
 
@@ -29,10 +55,12 @@ import ProfilePicture from "./ProfilePicture";
 })
 export default class PartnerInfo extends Vue {
   @Prop() private user_me: any;
-  @Prop() private user_partner: any;
+  @Prop() private user_partners: Array<any>;
   @Prop() private picture_width: string = '50%';
-  private full_path_partner: string = 'http://localhost:8000/' +this.user_partner.picture_path;
-  private full_path_me: string = 'http://localhost:8000/' +this.user_me.picture_path;
+  private users1: any = [this.user_partners[0]];
+  private users2: any = this.user_partners[1];
+
+
 }
 </script>
 

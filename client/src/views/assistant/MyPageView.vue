@@ -10,7 +10,7 @@
 
     <div class="requires-partner" v-if="this.scheduleInfo !== ''">
       <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
-      <PartnerInfo :user_me="user" :user_partner="scheduleInfo.user" class="partner-component"></PartnerInfo>
+      <PartnerInfo :user_me="user" :user_partners="partners" class="partner-component"></PartnerInfo>
       <!--SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo -->
       <!--MyPartner :user_partner="scheduleInfo.user"></MyPartner -->
     </div>
@@ -45,17 +45,21 @@ export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: any = '';
     @Prop() private user: any;
     @Prop() private home_name: string = "Trondheim Sentrum";
+    @Prop() private partners: Array<any> = [];
     public async mounted() {
         this.user = await accountService.getUser();
-        if (this.user.address.address) {
+        if (this.user.address) {
             console.log(this.user.address);
             this.home_name = this.user.address.address + ', ' + this.user.address.city;
         }
-        console.log(this.user);
 
         let scheduleInfoResult = await accountService.getScheduleInfo();
+        console.log(scheduleInfoResult);
         if (scheduleInfoResult.length > 0){
-            this.scheduleInfo = scheduleInfoResult[0]
+            this.scheduleInfo = scheduleInfoResult[0];
+            for (let i = 0; i < scheduleInfoResult.length; i++){
+              this.partners.push(scheduleInfoResult[i].user);
+            }
         }
     }
 

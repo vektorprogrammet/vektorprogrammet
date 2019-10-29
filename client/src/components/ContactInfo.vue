@@ -21,12 +21,17 @@
                             <h3 class="card-title text-dark-blue">Din vektorpartner</h3>
                             <b-row>
                                 <b-col cols="5">
-                                    <ProfilePicture :picture_path="full_path" :picture_width="'100%'"/>
+                                    <ProfilePicture :picture_path="partner.picture_path" :picture_width="'100%'"/>
                                 </b-col>
                                 <b-col>
                                     <div class="content text-md-left">
                                         <p class="text-dark-blue text-bold">{{partner.fullName}}</p>
                                         <p class="link"><a :href="'mailto:' + partner.email">{{partner.email}}</a></p>
+                                        <p>
+                                            <a class="text-default" :href="'tel: ' + partner.phone">
+                                                <i class="fa fa-phone"></i> {{ partner.phone }}
+                                            </a>
+                                        </p>
                                     </div>
                                 </b-col>
                             </b-row>
@@ -64,7 +69,6 @@
         @Prop() private coordinator: any;
         @Prop() private partner: any;
         @Prop() private school: object;
-        private full_path: string = 'http://localhost:8000/' +this.partner.picture_path;
         //contact_info_picture_width: string = '20%';
     }
 </script>

@@ -1,7 +1,7 @@
 <template>
 <div>
   <b-img-lazy
-          :src="picture_path"
+          :src="full_picture_path"
           rounded="circle"
           alt="Profilbilde"
           width="picture_width"
@@ -21,6 +21,7 @@ import { Prop } from 'vue-property-decorator';
 export default class ProfilePicture extends Vue {
   @Prop() private picture_path: string;
   @Prop() private picture_width: string;
+  private full_picture_path: string = 'http://localhost:8000/' + this.picture_path;
 }
 </script>
 

@@ -6,7 +6,7 @@
                         <div class="container">
                               <b-row>
                                     <b-col>
-                                          <ProfilePicture :picture_path="picture_path" picture_width="30%"/>
+                                          <ProfilePicture :picture_path="user_partner.picture_path" picture_width="30%"/>
                                     </b-col>
                                     <b-col>
                                           <h5>{{user_partner.fullName}}</h5>
@@ -30,7 +30,6 @@ import ProfilePicture from "./ProfilePicture";
 })
 export default class MyPartner extends Vue {
   @Prop() private user_partner: any;
-  @Prop() private picture_path: string = 'http://localhost:8000/' + this.user_partner.picture_path;
 }
 </script>
 
