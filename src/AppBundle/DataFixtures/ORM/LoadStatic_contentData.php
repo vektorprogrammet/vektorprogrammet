@@ -37,6 +37,13 @@ class LoadStatic_contentData extends AbstractFixture
 
             'vektor_i_media' => '<p>Vektorprogrammet i media:</p><p>VG: Studenter hjelper elever med matte</p><p>NRK: Studenter hjelper elever med matte</p><p>DAGBLADET: Studenter hjelper elever med matte</p><p>AFTENPOSTEN: Studenter hjelper elever med matte</p>',
             'contact-header' => '<h1>Organisasjonen</h1><p>Vektorprogrammet er en stor organisasjon med assistenter i 4 norske byer. Under kan du kontakte vektorprogrammet i n&aelig;rmeste by eller hovedstyret for generelle henvendelser.&nbsp;</p>',
+
+            'parent-header' => '<h1>Informasjon for foreldre</h1><p>Lurer du, som forelder, på mer om Vektorprogrammet? Her finner du informasjon om våre assistenter, kvalitetssikring, og foreldrekurs.</p>',
+            'parent-assistants-info' => '<h2>Assistentene</h2><p>Et verv som assistent hos Vektorprogrammet er ettertraktet blant studenter. Det gjør at vi kan håndplukke de aller beste til jobben. De er faglig sterke, som brenner for matematikk. I tillegg har alle assistentene våre vært gjennom et pedagogikkurs før de blir utplassert på skolene. Du kan derfor være sikker på at assistentene våre gjør en god jobb.</p>',
+            'parent-course' => '<h2>Foreldrekurs</h2><p>Foreldrekurs foregår på kveldstid, og er rettet mot foreldre. Dette blir arrangert 1-3 ganger i året av skolekoordineringsteamet i Vektorprogrammet Trondheim. Dette er et tiltak for foreldre ved Vektorprogrammets samarbeidsskoler - slik at dere får et enda bedre grunnlag for å kunne hjelpe deres ungdommer med matematikken på hjemmebane.<br><br> Kursene blir vanligvis holdt i Realfagsbygget på NTNU Gløshaugen, med lett bespisning (kaffe, kaker, kjeks).</p><br><br><h3>Hvorfor foreldrekurs?</h3><p>Målet er at foreldre skal kunne hjelpe barnet sitt med matematikk, og lære om hvorfor matematikk er et så viktig og spennende fag. Det har tidligere blitt holdt kurs innen innføring i motivasjon, pedagogikk og matematikk tilpasset ungdomsskolenivå. Eksamenskurs, der det har blitt gjennomgått gamle eksamensoppgaver, har også blitt holdt tidligere. </p> <br><br> <p>Høres foreldrekurset interessant ut?</p>'
+
+
+
         );
         foreach ($elements as $html_id => $content) {
             $staticElement = new StaticContent();
