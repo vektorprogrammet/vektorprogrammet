@@ -13,14 +13,25 @@
         <div class="col-12 col-lg-6">
             <div class="card">
                 <div class="card-header">
-                    {% if feedback.type == 'question' %}
-                    <span class="badge badge-primary">Spørsmål</span>
-                    {% elseif feedback.type == 'error' %}
-                    <span class="badge badge-danger">Feilmelding</span>
-                    {% elseif feedback.type == 'feature_request' %}
-                    <span class="badge badge-success">Ny funksjonalitet</span>
-                    {% endif %}
-                    {{ feedback.title }}
+                    <div class="row align-items-center">
+                        <div class="col">
+                            {% if feedback.type == 'question' %}
+                            <span class="badge badge-primary">Spørsmål</span>
+                            {% elseif feedback.type == 'error' %}
+                            <span class="badge badge-danger">Feilmelding</span>
+                            {% elseif feedback.type == 'feature_request' %}
+                            <span class="badge badge-success">Ny funksjonalitet</span>
+                            {% endif %}
+                            {{ feedback.title }}
+                        </div>
+                        <form method="POST" class="col-auto text-right"
+                            onsubmit="return confirm('Vil du virkelig slette {{ feedback.title }}?')"
+                            action="{{ path('feedback_admin_delete', { id: feedback.id }) }}">
+                            <button type="submit" class="btn btn-outline-danger">
+                                <i class="fa fa-trash"></i> Slett
+                            </button>
+                        </form>
+                    </div>
                 </div>
                 <div class="card-body">
                     <div id="description">
