@@ -49,7 +49,7 @@ faq:
  defaults: {_controller: AppBundle:AboutVektor:show}
  methods: [GET]
 
-foreldre:
+parents:
  path: /foreldre
  defaults: {_controller: AppBundle:Parents:index}
  methods: [GET]
