@@ -4,11 +4,6 @@
     Opprett opptaksperiode
 {% endblock %}
 
-{% block stylesheets %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
-{% endblock %}
-
 {% block breadcrumb %}
     <li class="breadcrumb-item">
         <a href="{{ path('admission_period_admin_show', {'id': department.id}) }}">Opptaksperioder</a>
@@ -34,16 +29,9 @@
 {% endblock %}
 
 {% block javascripts %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
-    <script>
-        const options = {
-            format: 'd.m.Y H:i',
-            lang: 'no',
-            step: 1,
-            dayOfWeekStart: 1,
-        };
-
-        jQuery('#{{ form.admissionStartDate.vars.id }}').datetimepicker(options);
-        jQuery('#{{ form.admissionEndDate.vars.id }}').datetimepicker(options);
-    </script>
+    {% include 'common/datetime_picker.html.twig' with {
+        inputIds: [
+                form.admissionStartDate.vars.id,
+                form.admissionEndDate.vars.id
+        ]}%}
 {% endblock %}

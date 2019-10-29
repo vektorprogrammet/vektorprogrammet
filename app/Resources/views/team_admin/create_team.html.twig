@@ -43,6 +43,10 @@
 {% endblock %}
 
 {% block javascripts %}
+    {% include 'common/datetime_picker.html.twig' with{
+        inputIds: [form.deadline.vars.id]
+    } %}
+
     <script type="text/javascript">
         let acceptApplication = document.getElementById('createTeam_acceptApplication');
         let deadline = document.getElementById('createTeam_deadline');
