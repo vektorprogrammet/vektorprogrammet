@@ -1,0 +1,65 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Vektorprogrammet
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Foreldrekurs</li>
+    <li class="breadcrumb-item active">Påmeldte foreldre til foreldrekurs</li>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-list-ul"></i> Påmeldte foreldre til foreldrekurs ({{ parentsAssigned|length }}) </div>
+                <div class="table-responsive">
+                    <table class="table" id="article-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Navn</th>
+                            <th>Mailadresse</th>
+                            <th>Dato</th>
+                        </tr>
+                        </thead>
+                        {% for parent in parentsAssigned %}
+                            <tr id="{{ parent.id }}">
+                                <td class="table-menu">
+                                    <div class="dropdown">
+                                        <div class="clickable px-2" id="options-{{ parent.id }}" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </div>
+                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ parent.id }}">
+                                            <div class="dropdown-header mb-2"><strong>Forelder: {{ parent.navn }}</strong></div>
+                                            <form method="POST"
+                                                  onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.navn }}?')"
+                                                  action="{{ path('parent_registration_admin_delete', { id: parent.id }) }}">
+                                                <button type="submit"
+                                                        class="dropdown-item">
+                                                    <i class="fa fa-trash text-danger"></i> Slett
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    {{ parent.navn | safe_html }}
+                                </td>
+                                <td>
+                                    {{ parent.epost | safe_html }}
+                                </td>
+                                <td>
+                                    {{ parent.tidspunkt | date("d.m.y") }}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

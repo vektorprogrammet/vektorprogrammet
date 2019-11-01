@@ -61,6 +61,52 @@ update_static_content:
  defaults: {_controller: AppBundle:StaticContent:update }
  methods: [POST]
 
+ ##########################################
+ #     Parent-course and registration     #
+ ##########################################
+
+parent_course_create:
+ path: /kontrollpanel/foreldrekurs/create
+ defaults: {_controller: AppBundle:ParentCourse:create}
+ methods: [GET]
+
+parent_course_admin_show:
+ path: /kontrollpanel/foreldrekurs
+ defaults: {_controller: AppBundle:ParentCourse:show}
+ methods: [GET]
+
+parent_course_admin_delete:
+ path: /kontrollpanel/foreldrekurs/slett/{id}
+ defaults: {_controller: AppBundle:ParentCourse:delete }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+parent_registration:
+ path: /foreldrekurs/pamelding
+ defaults: {_controller: AppBundle:ParentAssignment:create }
+ methods: [POST]
+
+parent_registration_admin_show:
+ path: /kontrollpanel/foreldrekurs/foreldre
+ defaults: {_controller: AppBundle:ParentAssignmentAdmin:show }
+ methods: [GET]
+
+parent_registration_admin_delete:
+ path: /kontrollpanel/foreldrekurs/foreldre/slett/{id}
+ defaults: {_controller: AppBundle:ParentAssignmentAdmin:delete }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+parent_registration_external_delete:
+ path: /foreldrekurs/avmelding/{uniqueKey}
+ defaults: {_controller: AppBundle:ParentAssignment:delete }
+ methods: [POST]
+ requirements:
+  uniqueKey: .+
+
+
 ##########################################
 #                Control Panel           #
 ##########################################
@@ -79,7 +125,6 @@ todo_list:
  path: /kontrollpanel/sjekkliste
  defaults: { _controller: AppBundle:TodoList:show }
  methods: [GET]
-
 
 create_todoItem:
   path: /kontrollpanel/sjekkliste/opprett
@@ -1323,4 +1368,3 @@ feedback_admin_delete:
     path: /kontrollpanel/feedback/delete/{id}
     defaults: {_controller: AppBundle:Feedback:delete}
     methods: [POST]
-
