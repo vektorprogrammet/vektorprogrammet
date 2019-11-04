@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
-use AppBundle\Service\TeamMembershipService;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Semester;
@@ -59,8 +58,6 @@ class SemesterController extends Controller
             $em = $this->getDoctrine()->getManager();
             $em->persist($semester);
             $em->flush();
-
-            $this->get(TeamMembershipService::class)->updateTeamMemberships();
 
             return $this->redirectToRoute('semester_show');
         }
