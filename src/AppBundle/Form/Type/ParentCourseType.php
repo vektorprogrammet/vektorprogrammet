@@ -31,6 +31,15 @@ class ParentCourseType extends AbstractType
             ->add('date', DateTimeType::class, array(
                 'label' => 'Skriv tidspunkt og dato',
                 'required' => true,
+                'format' => 'dd.MM.yyyy HH:mm',
+                'widget' => 'single_text',
+                'attr' => [
+                    'placeholder' => 'Klikk for å velge tidspunkt',
+                    'autocomplete' => 'off',
+                ],
+                'required' => true,
+                'auto_initialize' => false,
+
             ))
             ->add('information', TextType::class, array(
                 'label' => 'Skriv mer informasjon om kurset',

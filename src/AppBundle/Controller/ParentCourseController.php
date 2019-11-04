@@ -2,7 +2,7 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Form\Type\ParentCourseType; //This form needs to be made later
+use AppBundle\Form\Type\ParentCourseType;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\ParentCourse;
 
