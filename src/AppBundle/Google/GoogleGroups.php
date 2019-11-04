@@ -147,7 +147,7 @@ class GoogleGroups extends GoogleService
         foreach ($usersInGroup as $member) {
             if ($member->getEmail() === $user->getCompanyEmail()) {
                 try {
-                    $service->members->delete($team->getEmail(), $member);
+                    $service->members->delete($team->getEmail(), $member->getEmail());
                 } catch (\Google_Service_Exception $e) {
                     $this->logServiceException($e, "removeUserFromGroup(), user *$user* to group *{$team->getDepartment()} - $team*");
                 }
