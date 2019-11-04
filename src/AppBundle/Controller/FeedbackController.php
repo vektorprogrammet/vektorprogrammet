@@ -13,7 +13,6 @@ class FeedbackController extends BaseController
     public function adminSubmitAction(Request $request)
     {
         $feedback = new Feedback;
-        $user = $this->getUser();
 
         $form = $this->createForm(FeedBackType::class, $feedback);
         $form->handleRequest($request);
@@ -35,17 +34,11 @@ class FeedbackController extends BaseController
 
         return $this->redirect($returnUri);
     }
-    public function ErrorSubmitAction(Request $request)
+    public function errorSubmitAction(Request $request)
     {
         $feedback = new Feedback;
-        $user = $this->getUser();
         $form = $this->createForm(ErrorFeedBackType::class, $feedback);
         $form->handleRequest($request);
-
-        $returnUri = $request->getUri();
-        if ($request->headers->get('referer')) {
-            $returnUri = $request->headers->get('referer');
-        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $feedback = $form->getData();
