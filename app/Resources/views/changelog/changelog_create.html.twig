@@ -5,7 +5,7 @@
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active">Changelog-objekter</li>
+    <li class="breadcrumb-item"><a href="{{ path('changelog_show_all') }}">Changelog-objekter</a></li>
     <li class="breadcrumb-item active">Changelog-objekt</li>
 {% endblock %}
 
@@ -20,12 +20,6 @@
                     {{ form_row(form.description) }}
                     {{ form_row(form.gitHubLink) }}
                     {{ form_row(form.date) }}
-
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card-body">
                     {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
                 </div>
             </div>
