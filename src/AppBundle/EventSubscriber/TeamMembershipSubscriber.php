@@ -4,6 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Service\RoleManager;
+use Doctrine\ORM\EntityManager;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -13,12 +14,14 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
     private $session;
     private $logger;
     private $roleManager;
+    private $em;
 
-    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager)
+    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager, EntityManager $em)
     {
         $this->session = $session;
         $this->logger = $logger;
         $this->roleManager = $roleManager;
+        $this->em = $em;
     }
 
     /**
@@ -31,10 +34,12 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
         return array(
             TeamMembershipEvent::CREATED => array(
                 array('updateUserRole', 5),
+                array('activateTeamMembership', 2),
                 array('addCreatedFlashMessage', -1),
             ),
             TeamMembershipEvent::EDITED  => array(
                 array('updateUserRole', 5),
+                array('activateTeamMembership', 2),
                 array('addUpdatedFlashMessage', -1),
             ),
             TeamMembershipEvent::DELETED => array(
@@ -81,6 +86,17 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
         $endStr = $endSemester !== null ? 'to '.$endSemester->getName() : '';
 
         $this->logger->info("TeamMembership deleted: $user (position: $position), active from $startSemester $endStr, was deleted from $team ($department)");
+    }
+
+    public function activateTeamMembership(TeamMembershipEvent $event)
+    {
+        $teamMembership = $event->getTeamMembership();
+        $now = new \DateTime();
+        if ($teamMembership->getEndSemester() === null || $teamMembership->getEndSemester()->getSemesterEndDate() > $now) {
+            $teamMembership->setIsSuspended(false);
+        }
+        $this->em->persist($teamMembership);
+        $this->em->flush();
     }
 
     public function updateUserRole(TeamMembershipEvent $event)
