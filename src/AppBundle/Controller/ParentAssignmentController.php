@@ -2,13 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ParentCourse;
 use AppBundle\Form\Type\ParentAssignmentType;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\ParentAssignment;
 
 class ParentAssignmentController extends BaseController
 {
-    public function createAction(Request $request)
+    public function createAction(Request $request, ParentCourse $course)
     {
         $parentAssigned = new ParentAssignment();
         $form = $this->createForm(ParentAssignmentType::class, $parentAssigned);
@@ -27,6 +28,7 @@ class ParentAssignmentController extends BaseController
             }
 
             $parentAssigned->setUniqueKey($randomString);
+            $parentAssigned->setCourse($course);
             $em->persist($parentAssigned);
             $em->flush();
 
