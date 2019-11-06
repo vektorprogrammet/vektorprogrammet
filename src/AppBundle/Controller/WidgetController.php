@@ -153,9 +153,9 @@ class WidgetController extends BaseController
             ];
             //Submits to show validation errors
             $form->submit($submitData);
+            //removes the temporary form data
+            $session->remove('feedbackFormData');
         }
-        //removes the temporary form data
-        $session->remove('feedbackFormData');
 
         return $this->render('widgets/feedback_widget.html.twig', array(
             'title' => 'Feedback',
@@ -169,9 +169,27 @@ class WidgetController extends BaseController
         if (!$em->isOpen()) {
             $this->getDoctrine()->resetManager();
         }
+
+        $session = $request->getSession();
         $feedback = new Feedback;
-        $form = $this->createForm(ErrorFeedBackType::class, $feedback);
-        $form->handleRequest($request);
+        $form = $this->createForm(ErrorFeedbackType::class, $feedback);
+
+        //Gets temporary form data stored in session if submitted, but invalid
+        if ($session->has('errorFeedbackFormData')) {
+            $feedbackData = $session->get('errorFeedbackFormData');
+            $formView = $form->createView();
+            $csrf_token = $formView["_token"]->vars["value"];
+            $submitData = [
+                'title' => $feedbackData->getTitle(),
+                'description' => $feedbackData->getDescription(),
+                'type' => $feedbackData->getType(),
+                '_token' => $csrf_token
+            ];
+            //Submits to show validation errors
+            $form->submit($submitData);
+            //removes the temporary form data
+            $session->remove('errorFeedbackFormData');
+        }
 
         return $this->render('widgets/error_feedback_widget.html.twig', array(
             'form' => $form->createView()

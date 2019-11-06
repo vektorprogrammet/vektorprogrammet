@@ -44,11 +44,13 @@ class FeedbackController extends BaseController
             $feedback = $form->getData();
             $this->sumbitFeedback($feedback);
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
-            //Clears the form if submit valid
-            $request->request->remove('error_feedback');
+        } else {
+            //Stores the form data temporary in the session
+            $request->getSession()->set('errorFeedbackFormData', $form->getData());
         }
+
         //Redirects to a copy of 500-errorpage, since we can't redirect back, as it will cause exception.
-        return $this->render('feedback_admin/feedback_error500.html.twig');
+        return $this->redirect($this->generateUrl('feedback_admin_error'));
     }
     //Stores feedback
     private function sumbitFeedback(Feedback $feedback)
@@ -67,8 +69,10 @@ class FeedbackController extends BaseController
         //Notifies on slack (NotificationCHannel)
         $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
         $messenger->notify($feedback->getSlackMessageBody());
-
-        $feedback = new Feedback;
+    }
+    public function showFeedbackErrorAction(Request $request)
+    {
+        return $this->render('feedback_admin/feedback_error500.html.twig');
     }
 
     //shows form for submitting a new feedback
