@@ -46,7 +46,9 @@ class ParentCourseController extends BaseController
         $em->remove($parentCourse);
         $em->flush();
 
-        return $this->redirectToRoute('parent_course_admin_delete');
+        $this->addFlash("success", "Kurset holdt av \"".$parentCourse->getSpeaker()."\" ble slettet");
+
+        return $this->redirectToRoute('parent_course_admin_show');
     }
 
 };

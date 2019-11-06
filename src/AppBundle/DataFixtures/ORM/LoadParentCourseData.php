@@ -45,7 +45,7 @@ class LoadParentCourseData extends AbstractFixture implements OrderedFixtureInte
         $manager->persist($parentCourse);
 
         $parentCourse = new ParentCourse();
-        $parentCourse->setSpeaker('Eiving Kopperud');
+        $parentCourse->setSpeaker('Eivind Kopperud');
         $parentCourse->setPlace('F1, Gløshaugen');
         $parentCourse->setDate(new \DateTime());
         $parentCourse->setInformation('20/21 sitt første foreldremøte! Det blir servert marie-kjeks og First-Price-brus, til alle deltakeres store glede! Lær om pedagogikk knyttet til undervisning av matematikk til andre. Velkommen! Velbekomme!');
