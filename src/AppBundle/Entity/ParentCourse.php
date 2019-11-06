@@ -49,6 +49,13 @@ class ParentCourse
      */
     private $information;
 
+    /**
+     * @var
+     *
+     * @ORM\OneToMany(targetEntity="ParentAssignment", mappedBy="course")
+     */
+    private $assignedParents;
+
 
     /**
      * Get id.
@@ -154,6 +161,22 @@ class ParentCourse
     public function getInformation()
     {
         return $this->information;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getAssignedParents()
+    {
+        return $this->assignedParents;
+    }
+
+    /**
+     * @param mixed $assignedParents
+     */
+    public function setAssignedParents($assignedParents): void
+    {
+        $this->assignedParents = $assignedParents;
     }
 }
 

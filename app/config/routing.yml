@@ -90,9 +90,11 @@ parent_registration:
   id: \d+
 
 parent_registration_admin_show:
- path: /kontrollpanel/foreldrekurs/foreldre
+ path: /kontrollpanel/foreldrekurs/foreldre/{id}
  defaults: {_controller: AppBundle:ParentAssignmentAdmin:show }
  methods: [GET]
+ requirements:
+  id: \d+
 
 parent_registration_admin_delete:
  path: /kontrollpanel/foreldrekurs/foreldre/slett/{id}

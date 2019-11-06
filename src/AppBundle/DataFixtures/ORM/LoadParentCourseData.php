@@ -28,30 +28,34 @@ class LoadParentCourseData extends AbstractFixture implements OrderedFixtureInte
      */
     public function load(ObjectManager $manager)
     {
-        $parentCourse = new ParentCourse();
-        $parentCourse->setSpeaker('Alexander J Ohrt');
-        $parentCourse->setPlace('R5, Gløshaugen');
-        $parentCourse->setDate(new \DateTime());
-        $parentCourse->setInformation('Dette blir et kurs i hvordan overleve de 2 første semestrene på MTFYMA! Åpent for alle kjære Nablakomponenter!');
+        $parentCourse1 = new ParentCourse();
+        $parentCourse1->setSpeaker('Alexander J Ohrt');
+        $parentCourse1->setPlace('R5, Gløshaugen');
+        $parentCourse1->setDate(new \DateTime());
+        $parentCourse1->setInformation('Dette blir et kurs i hvordan overleve de 2 første semestrene på MTFYMA! Åpent for alle kjære Nablakomponenter!');
 
-        $manager->persist($parentCourse);
+        $manager->persist($parentCourse1);
 
-        $parentCourse = new ParentCourse();
-        $parentCourse->setSpeaker('Sivert Lundli');
-        $parentCourse->setPlace('S6, Gløshaugen');
-        $parentCourse->setDate(new \DateTime());
-        $parentCourse->setInformation('Dette blir et kurs i hvordan overleve de 2 første semestrene på Komtek! Åpent for alle kjære Kom-tekere!');
+        $parentCourse2 = new ParentCourse();
+        $parentCourse2->setSpeaker('Sivert Lundli');
+        $parentCourse2->setPlace('S6, Gløshaugen');
+        $parentCourse2->setDate(new \DateTime());
+        $parentCourse2->setInformation('Dette blir et kurs i hvordan overleve de 2 første semestrene på Komtek! Åpent for alle kjære Kom-tekere!');
 
-        $manager->persist($parentCourse);
+        $manager->persist($parentCourse2);
 
-        $parentCourse = new ParentCourse();
-        $parentCourse->setSpeaker('Eivind Kopperud');
-        $parentCourse->setPlace('F1, Gløshaugen');
-        $parentCourse->setDate(new \DateTime());
-        $parentCourse->setInformation('20/21 sitt første foreldremøte! Det blir servert marie-kjeks og First-Price-brus, til alle deltakeres store glede! Lær om pedagogikk knyttet til undervisning av matematikk til andre. Velkommen! Velbekomme!');
+        $parentCourse3 = new ParentCourse();
+        $parentCourse3->setSpeaker('Eivind Kopperud');
+        $parentCourse3->setPlace('F1, Gløshaugen');
+        $parentCourse3->setDate(new \DateTime());
+        $parentCourse3->setInformation('20/21 sitt første foreldremøte! Det blir servert marie-kjeks og First-Price-brus, til alle deltakeres store glede! Lær om pedagogikk knyttet til undervisning av matematikk til andre. Velkommen! Velbekomme!');
 
-        $manager->persist($parentCourse);
+        $manager->persist($parentCourse3);
 
         $manager->flush();
+
+        $this->setReference('parent-course-1', $parentCourse1);
+        $this->setReference('parent-course-2', $parentCourse2);
+        $this->setReference('parent-course-3', $parentCourse3);
     }
 }

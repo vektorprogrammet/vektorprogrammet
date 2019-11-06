@@ -43,9 +43,9 @@ class ParentAssignment
     private $tidspunkt;
 
     /**
-     * @var \int
+     * @var int
      *
-     * @ORM\Column(name="Course", type="int")
+     * @ORM\ManyToOne(targetEntity="ParentCourse", inversedBy="assignedParents")
      */
     private $course;
 
@@ -142,11 +142,11 @@ class ParentAssignment
     /**
      * Set course.
      *
-     * @param int $course
+     * @param ParentCourse $course
      *
-     * @return ParentAssignment
+     * @return void
      */
-    public function setCourse(string $course): void
+    public function setCourse(ParentCourse $course): void
     {
         $this->course = $course;
     }
@@ -162,9 +162,9 @@ class ParentAssignment
     }
 
     /**
-     * Set course.
+     * Set uniqueId.
      *
-     * @param int $uniqueKey
+     * @param string $uniqueKey
      *
      * @return ParentAssignment
      */
@@ -176,9 +176,9 @@ class ParentAssignment
     /**
      * Get uniqueKey.
      *
-     * @return int
+     * @return string
      */
-    public function getUniqueKey(): int
+    public function getUniqueKey(): string
     {
         return $this->uniqueKey;
     }

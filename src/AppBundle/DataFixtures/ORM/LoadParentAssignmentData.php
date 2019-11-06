@@ -17,7 +17,7 @@ class LoadParentAssignmentData extends AbstractFixture implements OrderedFixture
      */
     public function getOrder()
     {
-        return 1;
+        return 2;
     }
 
     /**
@@ -32,6 +32,7 @@ class LoadParentAssignmentData extends AbstractFixture implements OrderedFixture
         $parentAssignment->setNavn('Alexander J Ohrt');
         $parentAssignment->setEpost('alexa99@hotmail.com');
         $parentAssignment->setTidspunkt(new \DateTime());
+        $parentAssignment->setCourse($this->getReference('parent-course-1'));
 
         $manager->persist($parentAssignment);
 
@@ -39,6 +40,7 @@ class LoadParentAssignmentData extends AbstractFixture implements OrderedFixture
         $parentAssignment->setNavn('Jonas Sverre Ludvigsen');
         $parentAssignment->setEpost('JonasSverre@gmail.com');
         $parentAssignment->setTidspunkt(new \DateTime());
+        $parentAssignment->setCourse($this->getReference('parent-course-1'));
 
         $manager->persist($parentAssignment);
 
@@ -46,6 +48,7 @@ class LoadParentAssignmentData extends AbstractFixture implements OrderedFixture
         $parentAssignment->setNavn('Mathias Johnsen');
         $parentAssignment->setEpost('Johnsen@vålerenga.osloby.no');
         $parentAssignment->setTidspunkt(new \DateTime());
+        $parentAssignment->setCourse($this->getReference('parent-course-1'));
 
         $manager->persist($parentAssignment);
 

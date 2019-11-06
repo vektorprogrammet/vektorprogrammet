@@ -3,18 +3,15 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\ParentAssignment;
+use AppBundle\Entity\ParentCourse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ParentAssignmentAdminController extends BaseController
 {
-    public function showAction(Request $request)
+    public function showAction(ParentCourse $course)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $parents_assigned = $em->getRepository('AppBundle:ParentAssignment')->findAllParentAssignments();
-
         return $this->render('parents/parent-assignment-admin.html.twig', array(
-            'parentsAssigned' => $parents_assigned
+            'parentsAssigned' => $course->getAssignedParents()
         ));
     }
 
