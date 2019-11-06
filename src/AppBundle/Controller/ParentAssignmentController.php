@@ -41,7 +41,7 @@ class ParentAssignmentController extends BaseController
 
     }
 
-    public function deleteAction(ParentAssignment $parentAssignment, string $uniqueKey)
+    public function deleteAction(ParentAssignment $parentAssignment, int $uniqueKey)
     {
         $em = $this->getDoctrine()->getManager();
         $em->remove($parentAssignment);

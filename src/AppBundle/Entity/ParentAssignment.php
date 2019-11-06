@@ -43,6 +43,13 @@ class ParentAssignment
     private $tidspunkt;
 
     /**
+     * @var \int
+     *
+     * @ORM\Column(name="Course", type="int")
+     */
+    private $course;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="UniqueKey", type="string", nullable=True)
@@ -133,7 +140,33 @@ class ParentAssignment
     }
 
     /**
-     * @param string $uniqueKey
+     * Set course.
+     *
+     * @param int $course
+     *
+     * @return ParentAssignment
+     */
+    public function setCourse(string $course): void
+    {
+        $this->course = $course;
+    }
+
+    /**
+     * Get course.
+     *
+     * @return int
+     */
+    public function getCourse(): int
+    {
+        return $this->course;
+    }
+
+    /**
+     * Set course.
+     *
+     * @param int $uniqueKey
+     *
+     * @return ParentAssignment
      */
     public function setUniqueKey(string $uniqueKey): void
     {
@@ -141,9 +174,11 @@ class ParentAssignment
     }
 
     /**
-     * @return string
+     * Get uniqueKey.
+     *
+     * @return int
      */
-    public function getUniqueKey(): string
+    public function getUniqueKey(): int
     {
         return $this->uniqueKey;
     }
