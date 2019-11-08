@@ -8,8 +8,16 @@
     </ScheduleInfo>
     <UpcomingEvents class="m-2" ></UpcomingEvents>
 
+
+    <h3>Kontaktinfo</h3>
+    <div class="contact-info-container">
+      <div v-for="scheduleInfo in this.scheduleInfo" class="contact-info">
+        <h4>{{scheduleInfo.school.name}}:</h4>
+        <SchoolInfo :school="scheduleInfo.school"/>
+      </div>
+    </div>
+
     <div class="requires-partner" v-if="this.partners">
-      <!--ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo-->
       <PartnerInfo :me="user" :partners="this.partners" class="partner-component"></PartnerInfo>
       <!--SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo -->
       <!--MyPartner :user_partner="scheduleInfo.user"></MyPartner -->
@@ -53,7 +61,6 @@ export default class MyPageView extends Vue {
             this.homeName = this.user.address.address + ', ' + this.user.address.city;
         }
         this.scheduleInfo = await accountService.getScheduleInfo();
-        // this.scheduleInfo = scheduleInfoResult[0];
         let partnerInfoResult = await accountService.getPartnerInfo();
         if (partnerInfoResult.length > 0) {
           this.partners = Object;
@@ -90,7 +97,12 @@ export default class MyPageView extends Vue {
   background-color: #00a6c7;
 }
 
-.no-partner {
+.contact-info-container{
+  .contact-info{
+    margin: 40px 0 40px 0;
+  }
+
+  margin-bottom: 50px;
 
 }
 

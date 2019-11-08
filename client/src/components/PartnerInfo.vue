@@ -78,9 +78,6 @@ export default class PartnerInfo extends Vue {
   @Prop() private partners: any;
   @Prop() private pictureWidth: string = '250px';
 
-  public async mounted() {
-  }
-
 }
 </script>
 

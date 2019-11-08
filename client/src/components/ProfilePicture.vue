@@ -19,10 +19,18 @@ import { Prop } from 'vue-property-decorator';
 
 @Component
 export default class ProfilePicture extends Vue {
-  @Prop() private picturePath: string | undefined;
+  @Prop() private picturePath: string | undefined ;
   @Prop() private pictureWidth: string | undefined;
-  private fullPicturePath: string = 'http://localhost:8000/' + this.picturePath;
+  private fullPicturePath: string = 'http://localhost:8000/images/defaultProfile.png';
+
+  public async mounted() {
+    if (this.picturePath) {
+      this.fullPicturePath = 'http://localhost:8000/' + this.picturePath;
+    }
+  }
+
 }
+
 </script>
 
 <style scoped lang="scss">
