@@ -86,7 +86,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route("api/account/mypartner", name="my_partner")
+     * @Route("api/account/my-partner", name="my_partner")
      *
      * @return JsonResponse
      * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
@@ -133,16 +133,35 @@ class AccountController extends BaseController
                 $mapper->map($ph, $assistantHistoryDto);
                 $partnerHistoryDtos[] = $assistantHistoryDto;
             }
-        } else {
-            // TESTING:
-            $a = new AssistantHistoryDto();
-            $a->bolk = "Bolk 1";
-            $a->day = "Mandager";
-            $a->school = "Ugla";
-            $partnerHistoryDtos[] = $a;
         }
 
         return new JsonResponse($partnerHistoryDtos);
+    }
+
+    /**
+     * @Route("api/account/my-schedule", name="my_schedule")
+     *
+     * @return JsonResponse
+     * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
+     */
+    public function getMyScheduleAction()
+    {
+        if (!$this->getUser()->isActive()) {
+            throw $this->createAccessDeniedException();
+        }
+        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($this->getUser());
+
+        $mapper = $this->get('bcc_auto_mapper.mapper');
+
+        $activeHistoryDtos = [];
+        if (count($activeAssistantHistories) > 0) {
+            foreach ($activeAssistantHistories as $ah) {
+                $activeHistoryDto = new AssistantHistoryDto();
+                $mapper->map($ah, $activeHistoryDto);
+                $activeHistoryDtos[] = $activeHistoryDto;
+            }
+        }
+        return new JsonResponse($activeHistoryDtos);
     }
 
 }

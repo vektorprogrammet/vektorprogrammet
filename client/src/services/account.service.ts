@@ -17,8 +17,13 @@ async function getUser() {
   return await response.json();
 }
 
+async function getPartnerInfo() {
+  const response = await http.get('/api/account/my-partner');
+  return await response.json();
+}
+
 async function getScheduleInfo() {
-  const response = await http.get('/api/account/mypartner');
+  const response = await http.get('/api/account/my-schedule');
   return await response.json();
 }
 
@@ -27,4 +32,5 @@ export const accountService = {
   logout,
   getUser,
   getScheduleInfo,
+  getPartnerInfo,
 };

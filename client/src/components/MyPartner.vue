@@ -6,7 +6,7 @@
                         <div class="container">
                               <b-row>
                                     <b-col>
-                                          <ProfilePicture :picture_path="user_partner.picture_path" picture_width="30%"/>
+                                          <ProfilePicture :picturePath="user_partner.picture_path" pictureWidth="30%"/>
                                     </b-col>
                                     <b-col>
                                           <h5>{{user_partner.fullName}}</h5>

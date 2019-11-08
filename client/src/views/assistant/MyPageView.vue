@@ -3,22 +3,22 @@
     <!--MyPageNav></MyPageNav-->
     <!-- PageHeader class="header-component"><h1>Min side</h1></PageHeader -->
     <ScheduleInfo
-            :scheduleInfo="scheduleInfo"
+            :scheduleInfo="this.scheduleInfo"
             class="schedule-component">
     </ScheduleInfo>
     <UpcomingEvents ></UpcomingEvents>
 
-    <div class="requires-partner" v-if="this.scheduleInfo !== ''">
-      <ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo>
-      <PartnerInfo :user_me="user" :user_partners="partners" class="partner-component"></PartnerInfo>
+    <div class="requires-partner" v-if="this.partners">
+      <!--ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo-->
+      <PartnerInfo :me="user" :partners="this.partners" class="partner-component"></PartnerInfo>
       <!--SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo -->
       <!--MyPartner :user_partner="scheduleInfo.user"></MyPartner -->
     </div>
 
     <div v-else class="no-partner m-5">
-      <h2> Du har ingen partner :( </h2>
+      <h2> Du har ingen partner dette semesteret </h2>
     </div>
-    <Map class="mb-5" :school_name="scheduleInfo.school.name" :home_name="this.home_name"></Map>
+    <Map class="mb-5" :schoolName="scheduleInfo.school.name" :homeName="this.homeName"></Map>
   </div>
 </template>
 
@@ -44,22 +44,25 @@ import Map from "../../components/Map";
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: any = '';
     @Prop() private user: any;
-    @Prop() private home_name: string = "Trondheim Sentrum";
-    @Prop() private partners: Array<any> = [];
+    @Prop() private homeName: string = "Trondheim Sentrum";
+    @Prop() private partners: any;
+
     public async mounted() {
         this.user = await accountService.getUser();
         if (this.user.address) {
-            console.log(this.user.address);
-            this.home_name = this.user.address.address + ', ' + this.user.address.city;
+            this.homeName = this.user.address.address + ', ' + this.user.address.city;
         }
-
         let scheduleInfoResult = await accountService.getScheduleInfo();
-        console.log(scheduleInfoResult);
-        if (scheduleInfoResult.length > 0){
-            this.scheduleInfo = scheduleInfoResult[0];
-            for (let i = 0; i < scheduleInfoResult.length; i++){
-              this.partners.push(scheduleInfoResult[i].user);
+        this.scheduleInfo = scheduleInfoResult[0];
+        let partnerInfoResult = await accountService.getPartnerInfo();
+        if (partnerInfoResult.length > 0) {
+          this.partners = Object;
+          for (let i = 0; i < partnerInfoResult.length; i++) {
+            if (!this.partners[partnerInfoResult[i].bolk]) {
+              this.partners[partnerInfoResult[i].bolk] = [];
             }
+            this.partners[partnerInfoResult[i].bolk].push(partnerInfoResult[i].user);
+          }
         }
     }
 

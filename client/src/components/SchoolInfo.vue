@@ -5,7 +5,7 @@
                 <h4>Min skolekoordinator</h4>
                 <b-row>
                     <b-col>
-                        <ProfilePicture picture_path="https://via.placeholder.com/150" picture_width="50%"></ProfilePicture>
+                        <ProfilePicture picturePath="https://via.placeholder.com/150" pictureWidth="50%"></ProfilePicture>
                     </b-col>
                     <b-col>
                         We have no skolekoordinator

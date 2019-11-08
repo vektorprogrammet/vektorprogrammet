@@ -1,7 +1,7 @@
 <template>
     <div class="content">
         <div id="map" style="width: 100%; height: 500px;"></div>
-        <p>Reisen fra {{this.home_name}} til {{this.school_name}} Ungdomsskole tar ca {{this.duration}} </p>
+        <p>Reisen fra {{this.homeName}} til {{this.schoolName}} Ungdomsskole tar ca {{this.duration}} </p>
     </div>
 </template>
 
@@ -14,9 +14,9 @@
     @Component()
 
     export default class Map extends Vue {
-        @Prop() private school_name: string;
-        @Prop() private home_name: string = 'Trondheim Sentrum';
-        @Prop() private school_location: JSON;
+        @Prop() private schoolName: string;
+        @Prop() private homeName: string = 'Trondheim Sentrum';
+        @Prop() private schoolLocation: JSON = JSON;
         private duration: string = ' X min';
 
         public async mounted() {
@@ -65,10 +65,9 @@
 
                 /*let markers = this.locations
                     .map(x => new google.maps.Marker({ ...x, map }));*/
-
                 const request = {
-                    origin: this.home_name,
-                    destination: this.school_name + ' ungdomsskole',
+                    origin: this.homeName,
+                    destination: this.schoolName + ' ungdomsskole',
                     travelMode: 'TRANSIT'
                 };
                 directionsService.route(request, (result, status) => {

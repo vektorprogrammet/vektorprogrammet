@@ -21,7 +21,7 @@
                             <h3 class="card-title text-dark-blue">Din vektorpartner</h3>
                             <b-row>
                                 <b-col cols="5">
-                                    <ProfilePicture :picture_path="partner.picture_path" :picture_width="'100%'"/>
+                                    <ProfilePicture :picturePath="partner.picture_path" :pictureWidth="'100%'"/>
                                 </b-col>
                                 <b-col>
                                     <div class="content text-md-left">
@@ -69,7 +69,7 @@
         @Prop() private coordinator: any;
         @Prop() private partner: any;
         @Prop() private school: object;
-        //contact_info_picture_width: string = '20%';
+        //contact_info_pictureWidth: string = '20%';
     }
 </script>
 
