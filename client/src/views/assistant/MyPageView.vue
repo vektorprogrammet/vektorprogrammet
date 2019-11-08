@@ -6,7 +6,7 @@
             :scheduleInfo="this.scheduleInfo"
             class="schedule-component">
     </ScheduleInfo>
-    <UpcomingEvents ></UpcomingEvents>
+    <UpcomingEvents class="m-2" ></UpcomingEvents>
 
     <div class="requires-partner" v-if="this.partners">
       <!--ContactInfo :partner="scheduleInfo.user" :school="this.scheduleInfo.school"></ContactInfo-->
@@ -18,7 +18,7 @@
     <div v-else class="no-partner m-5">
       <h2> Du har ingen partner dette semesteret </h2>
     </div>
-    <Map class="mb-5" :schoolName="scheduleInfo.school.name" :homeName="this.homeName"></Map>
+    <Map class="mb-5" :schoolName="scheduleInfo[0].school.name" :homeName="this.homeName"></Map>
   </div>
 </template>
 
@@ -42,7 +42,7 @@ import Map from "../../components/Map";
   components: {ContactInfo, UpcomingEvents, PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, MyPartner, Map},
 })
 export default class MyPageView extends Vue {
-    @Prop() private scheduleInfo: any = '';
+    @Prop() private scheduleInfo: Array<object> = [];
     @Prop() private user: any;
     @Prop() private homeName: string = "Trondheim Sentrum";
     @Prop() private partners: any;
@@ -52,8 +52,8 @@ export default class MyPageView extends Vue {
         if (this.user.address) {
             this.homeName = this.user.address.address + ', ' + this.user.address.city;
         }
-        let scheduleInfoResult = await accountService.getScheduleInfo();
-        this.scheduleInfo = scheduleInfoResult[0];
+        this.scheduleInfo = await accountService.getScheduleInfo();
+        // this.scheduleInfo = scheduleInfoResult[0];
         let partnerInfoResult = await accountService.getPartnerInfo();
         if (partnerInfoResult.length > 0) {
           this.partners = Object;

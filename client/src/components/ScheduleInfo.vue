@@ -3,7 +3,7 @@
     <!--div class="background"></div-->
     <div class="content">
       <h2 class="title pt-5 pb-5">Min Assistentstilling:</h2>
-      <b-row>
+      <b-row >
         <b-col>
           <font-awesome-icon
             icon="map-marker-alt"
@@ -11,7 +11,7 @@
             style="font-size: 5em; color: white;"
             class="mb-4"
           />
-          <h4 v-if="this.scheduleInfo" class="label">{{this.scheduleInfo.school.name}}</h4>
+          <h4 class="label" v-for="scheduleInfo in this.scheduleInfo">{{scheduleInfo.school.name}}</h4>
           <!--h4>Ungdomsskole</h4-->
         </b-col>
         <b-col>
@@ -21,7 +21,7 @@
                   style="font-size: 5em; color: white;"
                   class="mb-4"
           />
-          <h4 v-if="this.scheduleInfo" class="label">{{this.scheduleInfo.day}}</h4>
+          <h4 class="label" v-for="scheduleInfo in this.scheduleInfo">{{scheduleInfo.day}}</h4>
         </b-col>
         <b-col>
           <font-awesome-icon
@@ -30,7 +30,7 @@
             style="font-size: 5em; color: white;"
             class="mb-4"
           />
-          <h4 v-if="this.scheduleInfo" class="label">{{this.scheduleInfo.bolk}}</h4>
+          <h4 class="label" v-for="scheduleInfo in this.scheduleInfo">{{scheduleInfo.bolk}}</h4>
         </b-col>
       </b-row>
     </div>
@@ -54,7 +54,7 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 @Component
 export default class ScheduleInfo extends Vue {
-  @Prop() scheduleInfo: any;
+  @Prop() scheduleInfo: Array<object> = [];
 }
 </script>
 
@@ -101,7 +101,7 @@ export default class ScheduleInfo extends Vue {
     background: url("../../public/img/schools/gimse_blurred.jpg") center center no-repeat;
     background-size: cover;
     //background-color: lightgrey;
-    padding: 0 0 100px 0;
+    padding: 0 0 50px 0;
     align-items: center;
     color: white;
     text-shadow: 0 0 10px grey;
@@ -116,6 +116,7 @@ export default class ScheduleInfo extends Vue {
 
   .label {
     color: white;
+    padding: 20px 5px 20px 5px;
   }
 
 
