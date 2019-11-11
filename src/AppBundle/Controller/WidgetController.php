@@ -106,8 +106,8 @@ class WidgetController extends BaseController
 
         // Get sorted
         $todoItems        = $todoService->getOrderedList($department, $currentSemester);
-        // Don't show completed 
-        $incompletedItems = $todoService->getIncompletedTodoItems($todoItems,$currentSemester,$department);
+        // Don't show completed
+        $incompletedItems = $todoService->getIncompletedTodoItems($todoItems, $currentSemester, $department);
 
         return $this->render('widgets/todo_widget.html.twig', array(
             'todo_items' => $incompletedItems,
