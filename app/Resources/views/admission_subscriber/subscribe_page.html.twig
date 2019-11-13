@@ -17,10 +17,7 @@
         </div>
         <div class="row">
             <div class="col-12 col-sm-8 offset-sm-2 col-md-6 offset-md-3 col-lg-4 offset-lg-4 text-center">
-                {{ form_start(form, { 'attr': {'autocomplete': 'nope'} }) }}
-                {{ form_row(form.email) }}
-                {{ form_row(form.infoMeeting) }}
-                <button class="btn btn-success">Meld deg på interesseliste</button>
+                {{ form_start(form) }}
                 {{ form_end(form) }}
             </div>
         </div>
