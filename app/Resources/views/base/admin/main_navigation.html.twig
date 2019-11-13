@@ -228,7 +228,6 @@
                     'social_event_create',
                     'social_event_edit',
                     'social_event_delete',
-                    'social_event_copy',
                 ]
             } %}
             {% include 'base/admin/nav_link.html.twig' with {
@@ -341,7 +340,7 @@
             <li class="nav-item mt-auto">
                 <div class="p-4">
                     <a href="{{ path('home') }}">
-                        <img class="img-fluid mx-4" src="{{ asset_with_version('images/vektor-logo-grey-notext.svg') }}">
+                        <img class="img-fluid mx-4" src="{{ asset_with_version('images/vektor-logo-grey-notext.svg') }}" alt="Vektor logo">
                         <p class="text-center my-2 text-secondary"><i class="fa fa-chevron-left"></i> Tilbake til
                             forsiden</p>
                     </a>
