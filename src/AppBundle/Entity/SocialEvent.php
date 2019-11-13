@@ -46,7 +46,7 @@ class SocialEvent
     private $title;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=5000)
      */
     private $description;
 
