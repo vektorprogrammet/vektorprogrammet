@@ -14,7 +14,7 @@
                     </div>
                 </div>
             </b-col>
-            <b-col>
+            <!--b-col>
                 <div class="card accent-info text-left  ml-3 mr-3">
                     <div class="card-body">
                         <div class="card-text">
@@ -38,7 +38,7 @@
                         </div>
                     </div>
                 </div>
-            </b-col>
+            </b-col-->
             <b-col>
                 <div class="card accent-info text-left ml-3 mr-5">
                     <div class="card-body">
@@ -59,16 +59,16 @@
 
 <script lang="ts">
     import Vue from 'vue';
-    import Component from 'vue-class-component';
+    //import Component from 'vue-class-component';
     import { Prop } from 'vue-property-decorator';
-    import ProfilePicture from "./ProfilePicture";
+    /* import ProfilePicture from "./ProfilePicture";
     @Component({
         components: {ProfilePicture}
-    })
+    })*/
     export default class ContactInfo extends Vue {
-        @Prop() private coordinator: any;
-        @Prop() private partner: any;
-        @Prop() private school: object;
+        // @Prop() private coordinator: any;
+        //@Prop() private partner: any;
+        @Prop() private school: object = Object;
         //contact_info_pictureWidth: string = '20%';
     }
 </script>
