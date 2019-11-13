@@ -1,0 +1,30 @@
+<div class="col-12 col-md-6 col-xxxl-4">
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-list-ul"></i> Changelog
+            <a href="{{ path('changelog_show_all') }}" class="float-right text-muted">Vis alle<i class="fa fa-chevron-right vertical-middle"></i></a>
+        </div>
+        <div class="scrollable">
+            {% for changeLogItem in changeLogItems %}
+                <div id= "changelog-item-{{ changeLogItem.id }}" class="card m-2 p-3 changelog_card">
+                    <div class="card-body">
+                        <h5 class="d-inline-block">{{ changeLogItem.title }}</h5>
+                        {% if  date(changeLogItem.date) > date("-7days") %}
+                            <span class="badge badge-pill badge-success d-inline-block">Ny</span>
+                        {% endif %}
+                        <p class="dato float-right d-inline-block">{{ changeLogItem.date | date('d.m.Y') }}</p>
+                        <p>
+                            {{ changeLogItem.description | safe_html }}
+                        </p>
+                        <div class="d-flex justify-content-lg-start">
+                            <a href="{{ changeLogItem.githubLink }}">
+                                Les mer på GitHub
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+

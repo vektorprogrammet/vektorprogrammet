@@ -133,6 +133,29 @@ class GoogleGroups extends GoogleService
         }
     }
 
+    public function removeUserFromGroup(User $user, Team $team)
+    {
+        if ($this->disabled) {
+            return null;
+        }
+
+        $client  = $this->getClient();
+        $service = new Google_Service_Directory($client);
+
+        $usersInGroup = $this->getUsersInGroup($team);
+
+        foreach ($usersInGroup as $member) {
+            if ($member->getEmail() === $user->getCompanyEmail()) {
+                try {
+                    $service->members->delete($team->getEmail(), $member->getEmail());
+                } catch (\Google_Service_Exception $e) {
+                    $this->logServiceException($e, "removeUserFromGroup(), user *$user* to group *{$team->getDepartment()} - $team*");
+                }
+                break;
+            }
+        }
+    }
+
     /**
      * @param Team $team
      *

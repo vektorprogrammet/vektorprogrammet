@@ -874,6 +874,21 @@ button.secretly-not-a-button {
   }
 }
 
+.scrollable{
+  overflow-y: auto;
+  max-height: 377px;
+}
+
+.changelog_card{
+  border-radius: 6px;
+  .dato {
+    color: $secondary;
+  }
+  a {
+    color: #007bff;
+  }
+}
+
 .vertical-middle {
   vertical-align: middle;
 }

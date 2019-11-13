@@ -22,6 +22,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
     private $groupService;
     private $driveService;
 
+
     public function __construct(LoggerInterface $logger, GoogleAPI $googleAPI, CompanyEmailMaker $emailMaker, GoogleUsers $userService, GoogleGroups $groupService, GoogleDrive $driveService)
     {
         $this->logger = $logger;
@@ -46,7 +47,14 @@ class GSuiteSubscriber implements EventSubscriberInterface
             ),
             TeamMembershipEvent::EDITED => array(
                 array('createGSuiteUser', 1),
-                array('addGSuiteUserToTeam', -1),
+                array('addGSuiteUserToTeam', 0),
+                array('removeGSuiteUserFromTeam', -1)
+            ),
+            TeamMembershipEvent::DELETED => array(
+                array('removeGSuiteUserFromTeam', 0),
+            ),
+            TeamMembershipEvent::EXPIRED  => array(
+                array('removeGSuiteUserFromTeam', 0)
             ),
             UserEvent::EDITED => array(
                 array('updateGSuiteUser', 0),
@@ -95,6 +103,29 @@ class GSuiteSubscriber implements EventSubscriberInterface
         if (!$alreadyInGroup && $user->getCompanyEmail()) {
             $this->groupService->addUserToGroup($user, $team);
             $this->logger->info("$user added to G Suite group *$department - $team*");
+        }
+    }
+
+    public function removeGSuiteUserFromTeam(TeamMembershipEvent $event)
+    {
+        $user = $event->getTeamMembership()->getUser();
+        $team = $event->getTeamMembership()->getTeam();
+        $department = $user->getDepartment();
+
+        $activeTeamMemberships = $user->getActiveTeamMemberships();
+        $shouldBeInGroup = false;
+
+        foreach ($activeTeamMemberships as $activeTeamMembership) {
+            if ($team === $activeTeamMembership->getTeam()) {
+                $shouldBeInGroup = true;
+                break;
+            }
+            $shouldBeInGroup = false;
+        }
+
+        if (!$shouldBeInGroup && $user->getCompanyEmail()) {
+            $this->groupService->removeUserFromGroup($user, $team);
+            $this->logger->info("$user removed from G Suite group *$department - $team*");
         }
     }
 
