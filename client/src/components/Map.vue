@@ -1,7 +1,7 @@
 <template>
     <div class="content">
-        <div id="map" style="width: 100%; height: 500px;"></div>
-        <p>Reisen fra {{this.homeName}} til {{this.schoolName}} Ungdomsskole tar ca {{this.duration}} </p>
+        <div :id="'map_' + schoolName" style="width: 100%; height: 500px;"></div>
+        <p>{{ this.helpText}}</p>
     </div>
 </template>
 
@@ -17,16 +17,20 @@
         @Prop() private schoolName: string;
         @Prop() private homeName: string = 'Trondheim Sentrum';
         @Prop() private schoolLocation: JSON = JSON;
-        private duration: string = ' X min';
+        private status: string = "";
+        private helpText: string = "Venter på ruteforslag";
 
         public async mounted() {
             try {
                 const google = await mapService.init();
                 const geocoder = new google.maps.Geocoder();
                 const directionsService = new google.maps.DirectionsService();
-                const directionsDisplay = new google.maps.DirectionsRenderer();
-                const map = new google.maps.Map(document.getElementById('map'));
-                directionsDisplay.setMap(map);
+                let display: any;
+                let map = new google.maps.Map(document.getElementById('map_' + this.schoolName), {
+                    zoom: 12,
+                    center: new google.maps.LatLng(63.42, 10.39)
+                });
+
 
 
                 /*geocoder.geocode({ address: this.school_name + ' ungdomsskole'}, (results, status) => {
@@ -71,11 +75,15 @@
                     travelMode: 'TRANSIT'
                 };
                 directionsService.route(request, (result, status) => {
-                    if (status !== 'OK') {
-                        throw new Error(status);
+                    this.status = status;
+                    if (status === 'OK') {
+                        display = new google.maps.DirectionsRenderer();
+                        display.setMap(map);
+                        display.setDirections(result);
+                        let duration = result.routes[0].legs[0].duration.text;
+                        this.helpText = "Reisen fra " + this.homeName + " til " + this.schoolName + " ungdomsskole tar ca " + duration;
                     } else {
-                        directionsDisplay.setDirections(result);
-                        this.duration = result.routes[0].legs[0].duration.text
+                        this.helpText = "Ingen rute funnet mellom " + this.homeName + " og " + this.schoolName + " Ungdomsskole";
                     }
                 });
 

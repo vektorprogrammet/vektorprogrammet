@@ -17,10 +17,22 @@
           <ProfilePicture :picturePath="partner.picture_path" :pictureWidth="pictureWidth"/>
           <br><br>
           <h5>{{partner.fullName}}</h5>
-          <p class="link"><a :href="'mailto:' + partner.email">{{partner.email}}</a></p>
+          <p class="link">
+            <a :href="'mailto:' + partner.email">
+              <font-awesome-icon
+                      icon="envelope"
+                      id="mail"
+              />
+              {{partner.email}}
+            </a>
+          </p>
           <p>
             <a class="text-default" :href="'tel: ' + partner.phone">
-              <i class="fa fa-phone">tlf: </i> {{ partner.phone }}
+              <font-awesome-icon
+                      icon="phone"
+                      id="phone"
+              />
+              {{ partner.phone }}
             </a>
           </p>
         </b-col>
@@ -34,10 +46,22 @@
           <ProfilePicture :picturePath="partner.picture_path" :pictureWidth="pictureWidth"/>
           <br><br>
           <h5>{{partner.fullName}}</h5>
-          <p class="link"><a :href="'mailto:' + partner.email">{{partner.email}}</a></p>
+          <p class="link">
+            <a :href="'mailto:' + partner.email">
+              <font-awesome-icon
+                      icon="envelope"
+                      id="mail"
+              />
+              {{partner.email}}
+            </a>
+          </p>
           <p>
             <a class="text-default" :href="'tel: ' + partner.phone">
-              <i class="fa fa-phone">tlf: </i> {{ partner.phone }}
+              <font-awesome-icon
+                      icon="phone"
+                      id="phone"
+              />
+              {{ partner.phone }}
             </a>
           </p>
         </b-col>
@@ -68,8 +92,18 @@
 <script lang="ts">
 import Vue from 'vue';
 import Component from 'vue-class-component';
+import { library } from '@fortawesome/fontawesome-svg-core';
+import {
+  faPhone,
+  faEnvelope
+} from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { Prop, Watch } from 'vue-property-decorator';
 import ProfilePicture from "./ProfilePicture";
+
+library.add(faPhone, faEnvelope);
+Vue.component('font-awesome-icon', FontAwesomeIcon);
+
 @Component({
     components: {ProfilePicture}
 })

@@ -1,9 +1,18 @@
 <template>
   <!--div class="container">
-    <!--div class="background"></div-->
+    <div class="background"></div-->
     <div class="content">
       <h2 class="title pt-5 pb-5">Min Assistentstilling:</h2>
       <b-row >
+        <b-col>
+          <font-awesome-icon
+                  icon="calendar-alt"
+                  id="calendar"
+                  style="font-size: 5em; color: white;"
+                  class="mb-4"
+          />
+          <h4 class="label" v-for="scheduleInfo in this.scheduleInfo">{{scheduleInfo.bolk}}</h4>
+        </b-col>
         <b-col>
           <font-awesome-icon
             icon="map-marker-alt"
@@ -22,15 +31,6 @@
                   class="mb-4"
           />
           <h4 class="label" v-for="scheduleInfo in this.scheduleInfo">{{scheduleInfo.day}}</h4>
-        </b-col>
-        <b-col>
-          <font-awesome-icon
-            icon="calendar-alt"
-            id="calendar"
-            style="font-size: 5em; color: white;"
-            class="mb-4"
-          />
-          <h4 class="label" v-for="scheduleInfo in this.scheduleInfo">{{scheduleInfo.bolk}}</h4>
         </b-col>
       </b-row>
     </div>
