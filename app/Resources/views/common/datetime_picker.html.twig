@@ -1,11 +1,12 @@
 {% block javascripts %}
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
 
+    <!-- Default increment size is 15min. To change, set step to custom amount -->
     <script>
         const options = {
             format: 'd.m.Y H:i',
             lang: 'no',
-            step: 1,
+            step: {{ step|default(15) }},
             dayOfWeekStart: 1,
         };
 
