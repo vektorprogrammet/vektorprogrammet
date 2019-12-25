@@ -55,7 +55,7 @@ import SchoolInfo from '../../components/SchoolInfo.vue';
 import UserInfo from '../../components/UserInfo.vue';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import {accountService} from "../../services";
+import {accountService} from "@/services";
 import {Prop} from "vue-property-decorator";
 import UpcomingEvents from "../../components/UpcomingEvents";
 import ContactInfo from "../../components/ContactInfo";
@@ -69,7 +69,7 @@ import Map from "../../components/Map";
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: Array<object> = [];
     @Prop() private user: any;
-    @Prop() private homeName: string = "Trondheim Sentrum";
+    @Prop() private homeName!: string;
     @Prop() private partners: any;
 
     public async beforeCreate() {
@@ -77,7 +77,7 @@ export default class MyPageView extends Vue {
         if (this.user.address) {
             this.homeName = this.user.address.address + ', ' + this.user.address.city;
         } else {
-          /*this.homeName = this.user.department + " Sentrum"; */
+          this.homeName = this.user.department.city + " Sentrum";
         }
         this.scheduleInfo = await accountService.getScheduleInfo();
         let partnerInfoResult = await accountService.getPartnerInfo();
