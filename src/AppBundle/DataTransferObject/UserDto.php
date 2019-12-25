@@ -15,4 +15,5 @@ class UserDto
     public $isAdmin;
     public $picture_path;
     public $address;
+    public $department;
 }

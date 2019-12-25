@@ -1,6 +1,7 @@
 <template>
 <div>
   <b-img-lazy
+          :v-if="picturePath"
           :src="fullPicturePath"
           rounded="circle"
           alt="Profilbilde"

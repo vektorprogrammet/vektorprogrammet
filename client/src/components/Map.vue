@@ -6,19 +6,17 @@
 </template>
 
 <script lang="ts">
-    import Vue from 'vue';
-    import Component from 'vue-class-component';
     import {mapService} from "../services";
-    import {Prop} from 'vue-property-decorator';
+    import {Vue, Component, Prop} from 'vue-property-decorator';
 
-    @Component()
-
+    @Component
     export default class Map extends Vue {
-        @Prop() private schoolName: string;
-        @Prop() private homeName: string = 'Trondheim Sentrum';
-        @Prop() private schoolLocation: JSON = JSON;
-        private status: string = "";
+        @Prop() schoolName!: string;
+        @Prop() homeName!: string;
+        @Prop() schoolLocation!: JSON;
+        private status!: string;
         private helpText: string = "Venter på ruteforslag";
+        private startLocation = this.homeName;
 
         public async mounted() {
             try {
@@ -70,7 +68,7 @@
                 /*let markers = this.locations
                     .map(x => new google.maps.Marker({ ...x, map }));*/
                 const request = {
-                    origin: this.homeName,
+                    origin: this.startLocation,
                     destination: this.schoolName + ' ungdomsskole',
                     travelMode: 'TRANSIT'
                 };
@@ -81,9 +79,9 @@
                         display.setMap(map);
                         display.setDirections(result);
                         let duration = result.routes[0].legs[0].duration.text;
-                        this.helpText = "Reisen fra " + this.homeName + " til " + this.schoolName + " ungdomsskole tar ca " + duration;
+                        this.helpText = "Reisen fra " + this.startLocation + " til " + this.schoolName + " ungdomsskole tar ca " + duration;
                     } else {
-                        this.helpText = "Ingen rute funnet mellom " + this.homeName + " og " + this.schoolName + " Ungdomsskole";
+                        this.helpText = "Ingen rute funnet mellom " + this.startLocation + " og " + this.schoolName + " Ungdomsskole";
                     }
                 });
 

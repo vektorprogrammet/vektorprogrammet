@@ -3,14 +3,17 @@
     <!--MyPageNav></MyPageNav-->
     <!-- PageHeader class="header-component"><h1>Min side</h1></PageHeader -->
     <ScheduleInfo
-            :scheduleInfo="this.scheduleInfo"
-            class="schedule-component"
-            v-if="scheduleInfo.length > 0">
+            :v-if="scheduleInfo.length > 0"
+            :scheduleInfo="scheduleInfo"
+            class="schedule-component">
 
     </ScheduleInfo>
 
+    {{ this.scheduleInfo.length }}
+    {{ this.scheduleInfo }}
 
-    <UserInfo :user="user"></UserInfo>
+
+    <UserInfo :user="user" :v-if="user"></UserInfo>
 
     <UpcomingEvents class="m-2" ></UpcomingEvents>
 
@@ -25,7 +28,7 @@
 
     <div class="partner-info" v-if="scheduleInfo.length > 0">
       <div class="requires-partner" v-if="this.partners">
-        <PartnerInfo :me="user" :partners="this.partners" class="partner-component"></PartnerInfo>
+        <PartnerInfo :me="user" :partners="partners" class="partner-component"></PartnerInfo>
         <!--SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo -->
       </div>
 
@@ -34,9 +37,10 @@
       </div>
     </div>
 
-    <div class="map" v-for="scheduleInfo in this.scheduleInfo">
+    <div class="map" v-for="scheduleInfo in this.scheduleInfo" >
       <h3>Ruteforslag til {{scheduleInfo.school.name}} ungdomsskole</h3>
       <Map class="mb-5" :schoolName="scheduleInfo.school.name" :homeName="homeName"/>
+      {{ homeName }}
     </div>
 
   </div>
@@ -61,18 +65,19 @@ import Map from "../../components/Map";
 @Component({
   components: {ContactInfo, UpcomingEvents, PageHeader, MyPageNav, PartnerInfo, ScheduleInfo, SchoolInfo, UserInfo, Map},
 })
+
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: Array<object> = [];
     @Prop() private user: any;
     @Prop() private homeName: string = "Trondheim Sentrum";
     @Prop() private partners: any;
 
-    public async mounted() {
+    public async beforeCreate() {
         this.user = await accountService.getUser();
         if (this.user.address) {
             this.homeName = this.user.address.address + ', ' + this.user.address.city;
         } else {
-          /*this.homeName = this.user.department + " senter"; */
+          /*this.homeName = this.user.department + " Sentrum"; */
         }
         this.scheduleInfo = await accountService.getScheduleInfo();
         let partnerInfoResult = await accountService.getPartnerInfo();

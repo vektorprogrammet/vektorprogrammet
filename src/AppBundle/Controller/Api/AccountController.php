@@ -3,8 +3,10 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\DataTransferObject\AssistantHistoryDto;
+use AppBundle\DataTransferObject\DepartmentDto;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use BCC\AutoMapperBundle\Mapper\FieldFilter\ObjectMappingFilter;
 use Doctrine\ORM\NoResultException;
@@ -76,12 +78,18 @@ class AccountController extends BaseController
         if (!$this->getUser()) {
             return new JsonResponse(null);
         }
-
+        $user = $this->getUser();
         $mapper = $this->get('bcc_auto_mapper.mapper');
         $mapper->createMap(User::class, UserDto::class);
         $userDto = new UserDto();
-        $mapper->map($this->getUser(), $userDto);
+        $mapper->map($user, $userDto);
 
+
+        $department = $user->getDepartment();
+        $mapper->createMap(Department::class, DepartmentDto::class);
+        $departmentDto = new DepartmentDto();
+        $mapper->map($department, $departmentDto);
+        $userDto->department = $departmentDto;
         return new JsonResponse($userDto);
     }
 
