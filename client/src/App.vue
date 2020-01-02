@@ -5,6 +5,10 @@
 </template>
 
 <style lang="scss">
+
+html{
+  background: #fafdff;
+}
 #app {
   font-family: 'Montserrat', sans-serif;
   color: #333;
@@ -44,5 +48,9 @@
   .text-dark-blue {
     color: #023874;
   }
+}
+.map_section {
+  width: 100%;
+  height: 500px;
 }
 </style>

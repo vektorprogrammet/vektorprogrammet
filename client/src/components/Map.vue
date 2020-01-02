@@ -1,6 +1,6 @@
 <template>
     <div class="content">
-        <div :id="'map_' + schoolName" style="width: 100%; height: 500px;"></div>
+        <div class="map_section" :id="'map_' + schoolName"></div>
         <p>{{ this.helpText}}</p>
     </div>
 </template>

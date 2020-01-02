@@ -3,17 +3,17 @@
     <!--MyPageNav></MyPageNav-->
     <!-- PageHeader class="header-component"><h1>Min side</h1></PageHeader -->
     <ScheduleInfo
-            :v-if="scheduleInfo.length > 0"
+            v-if="scheduleInfo.length > 0"
             :scheduleInfo="scheduleInfo"
             class="schedule-component">
 
     </ScheduleInfo>
+    <h1 v-else class="m-5 text-dark-blue fs-16">
+      Min side
+    </h1>
 
-    {{ this.scheduleInfo.length }}
-    {{ this.scheduleInfo }}
 
-
-    <UserInfo :user="user" :v-if="user"></UserInfo>
+    <UserInfo :user="user" v-if="user"></UserInfo>
 
     <UpcomingEvents class="m-2" ></UpcomingEvents>
 
@@ -37,10 +37,9 @@
       </div>
     </div>
 
-    <div class="map" v-for="scheduleInfo in this.scheduleInfo" >
+    <div class="map mt-5" v-for="scheduleInfo in this.scheduleInfo" >
       <h3>Ruteforslag til {{scheduleInfo.school.name}} ungdomsskole</h3>
       <Map class="mb-5" :schoolName="scheduleInfo.school.name" :homeName="homeName"/>
-      {{ homeName }}
     </div>
 
   </div>

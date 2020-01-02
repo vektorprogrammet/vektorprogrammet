@@ -1,5 +1,5 @@
 <template>
-    <div class="events">
+    <div class="events" v-if="events.length > 0">
         <h3 class="mt-5">Kommende hendelser</h3>
         <div class="card accent-info text-left mt-3 m-lg-5"
              v-for="event in this.events">
@@ -37,7 +37,7 @@
     @Component({
     })
     export default class UpcomingEvents extends Vue {
-    private events: object = [];
+    private events: Array<any> = [];
 
     public mounted() {
         this.events = [
