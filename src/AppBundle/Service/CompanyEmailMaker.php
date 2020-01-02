@@ -24,6 +24,7 @@ class CompanyEmailMaker
         $firstName = strtolower($this->replaceNorwegianCharacters($user->getFirstName()));
         $fullName = strtolower($this->replaceNorwegianCharacters($user->getFullName()));
 
+
         $email = preg_replace('/\s+/', '.', $firstName) . '@vektorprogrammet.no';
         if (array_search($email, $allEmails) !== false) {
             $email = preg_replace('/\s+/', '.', $fullName) . '@vektorprogrammet.no';
@@ -49,13 +50,9 @@ class CompanyEmailMaker
 
     private function replaceNorwegianCharacters($string)
     {
-        $string = str_replace('æ', 'ae', $string);
-        $string = str_replace('Æ', 'AE', $string);
-        $string = str_replace('ø', 'o', $string);
-        $string = str_replace('Ø', 'O', $string);
-        $string = str_replace('å', 'a', $string);
-        $string = str_replace('Å', 'A', $string);
-
+        setlocale(LC_ALL, 'nb_NO');
+        $string = iconv('UTF-8', 'ASCII//TRANSLIT', $string); //Converts accents and norwegian characters
+        $string = preg_replace("/[^A-Za-z0-9 ]/", '', $string); //Removes ' and `after iconv(), and other invalid characters
         return $string;
     }
 }

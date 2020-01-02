@@ -18,7 +18,7 @@
 {% block body %}
     <div class="card">
         <div class="card-header"><i class="fa fa-align-justify"></i> Sponsorer ({{ sponsors|length }})</div>
-        <div class="card-body table-responsive">
+        <div class="table-responsive">
             <table class="table">
                 <tr>
                     <th></th>
@@ -30,7 +30,7 @@
 
                 {% for sponsor in sponsors %}
                     <tr>
-                        <td>
+                        <td class="table-menu">
                             {% if is_granted_team_leader() %}
                                 <div class="dropdown">
                                     <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"

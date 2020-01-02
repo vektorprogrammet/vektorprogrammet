@@ -16,7 +16,7 @@ class ControlPanelController extends BaseController
 
         // Return the view to be rendered
         return $this->render('control_panel/index.html.twig', array(
-            'admissionPeriod' => $admissionPeriod
+            'admissionPeriod' => $admissionPeriod,
         ));
     }
 

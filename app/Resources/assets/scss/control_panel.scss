@@ -28,6 +28,10 @@ body {
   }
 }
 
+.main .container-fluid {
+  padding: 0 15px;
+}
+
 .dropdown-item, .btn {
   font-size: 14px;
 }
@@ -856,7 +860,11 @@ button.secretly-not-a-button {
 
 .table-menu {
   width: 20px;
-  min-width: 100%;
+}
+
+.table {
+  min-height: 140px;
+
 }
 
 .not-clickable {
@@ -864,4 +872,49 @@ button.secretly-not-a-button {
   &:focus{
     box-shadow: none;
   }
+}
+
+.scrollable{
+  overflow-y: auto;
+  max-height: 377px;
+}
+
+.changelog_card{
+  border-radius: 6px;
+  .dato {
+    color: $secondary;
+  }
+  a {
+    color: #007bff;
+  }
+}
+
+.vertical-middle {
+  vertical-align: middle;
+}
+
+table.table {
+  margin-bottom: 0;
+}
+
+.smiley-box {
+  padding: 1.25rem;
+  display:flex;
+  align-items: center;
+}
+
+.big-green-smiley {
+  vertical-align: middle;
+  font-size: 70px;
+  width: 70px;
+  color: $green;
+  display: inline-block;
+  margin-right: 1.25rem;
+}
+
+.big-green-text {
+  vertical-align: middle;
+  font-size: 1.25rem;
+  font-weight: bold;
+  color: #555;
 }

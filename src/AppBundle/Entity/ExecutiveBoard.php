@@ -176,6 +176,14 @@ class ExecutiveBoard implements TeamInterface
     }
 
     /**
+     * @return bool
+     */
+    public function getAcceptApplicationAndDeadline()
+    {
+        return false;
+    }
+
+    /**
      * @return ExecutiveBoardMembership[]
      */
     public function getActiveTeamMemberships()

@@ -52,8 +52,16 @@
 
 
 {% block body %}
-
-    <h2>Assistenter {{ department }} - {{ semester }}</h2>
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <h2>Assistenter {{ department }} - {{ semester }}</h2>
+        </div>
+        <div class="col-12 col-lg-6 text-right">
+            <button class="btn btn-outline-secondary csv_download_button" data-table-id="assistantTable"><i
+                        class="fa fa-download"></i> Last ned CSV
+            </button>
+        </div>
+    </div>
     <hr>
 
     <div class="row">
@@ -71,8 +79,8 @@
                         </div>
                     </div>
                 </div>
-                <div class="card-body table-responsive">
-                    <table width="100%" id="assistantTable" class="table">
+                <div class="table-responsive">
+                    <table width="100%" id="assistantTable" class="table table-striped">
 
                         <thead>
 
@@ -85,10 +93,6 @@
                             <th> Avdeling</th>
                             <th> Bolk</th>
                             <th> Dag</th>
-                            {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == department) %}
-                                <th></th>
-                                <th></th>
-                            {% endif %}
                         </tr>
 
                         </thead>
@@ -96,7 +100,7 @@
                         <tbody>
                         {% for ah in assistantHistories %}
                             <tr>
-                                <td>
+                                <td class="table-menu">
                                     <div class="dropdown">
                                         <div class="clickable px-2" id="options-{{ ah.id }}" data-toggle="dropdown"
                                              aria-haspopup="true" aria-expanded="false">
@@ -146,9 +150,6 @@
                         </tbody>
 
                     </table>
-                    <button class="btn btn-outline-secondary csv_download_button" data-table-id="assistantTable"><i
-                                class="fa fa-download"></i> Last ned CSV
-                    </button>
                 </div>
             </div>
         </div>

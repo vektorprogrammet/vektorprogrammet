@@ -73,9 +73,7 @@ class GoogleGroups extends GoogleService
         $service = new Google_Service_Directory($client);
 
         $googleGroup = new \Google_Service_Directory_Group();
-        $googleGroup->setName($team->getName());
-        $googleGroup->setEmail($team->getEmail());
-        $googleGroup->setDescription($team->getShortDescription());
+        $this->setGroupNameEmailDescription($googleGroup, $team);
 
         try {
             $createdGroup = $service->groups->insert($googleGroup);
@@ -102,9 +100,7 @@ class GoogleGroups extends GoogleService
         $service = new Google_Service_Directory($client);
 
         $googleGroup = new \Google_Service_Directory_Group();
-        $googleGroup->setName($team->getName());
-        $googleGroup->setEmail($team->getEmail());
-        $googleGroup->setDescription($team->getShortDescription());
+        $this->setGroupNameEmailDescription($googleGroup, $team);
 
         try {
             $updatedTeam =  $service->groups->update($groupEmail, $googleGroup);
@@ -134,6 +130,29 @@ class GoogleGroups extends GoogleService
             $service->members->insert($team->getEmail(), $member);
         } catch (\Google_Service_Exception $e) {
             $this->logServiceException($e, "addUserToGroup(), user *$user* to group *{$team->getDepartment()} - $team*");
+        }
+    }
+
+    public function removeUserFromGroup(User $user, Team $team)
+    {
+        if ($this->disabled) {
+            return null;
+        }
+
+        $client  = $this->getClient();
+        $service = new Google_Service_Directory($client);
+
+        $usersInGroup = $this->getUsersInGroup($team);
+
+        foreach ($usersInGroup as $member) {
+            if ($member->getEmail() === $user->getCompanyEmail()) {
+                try {
+                    $service->members->delete($team->getEmail(), $member->getEmail());
+                } catch (\Google_Service_Exception $e) {
+                    $this->logServiceException($e, "removeUserFromGroup(), user *$user* to group *{$team->getDepartment()} - $team*");
+                }
+                break;
+            }
         }
     }
 
@@ -175,5 +194,12 @@ class GoogleGroups extends GoogleService
         }
 
         return false;
+    }
+
+    private function setGroupNameEmailDescription(\Google_Service_Directory_Group $googleGroup, Team $team)
+    {
+        $googleGroup->setName($team->getName() . " - " . $team->getDepartment());
+        $googleGroup->setEmail($team->getEmail());
+        $googleGroup->setDescription($team->getShortDescription());
     }
 }

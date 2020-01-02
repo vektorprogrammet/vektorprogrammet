@@ -2,7 +2,7 @@
     <div class="card-header">
         <i class="fa fa-align-justify"></i> {{ title }}
     </div>
-    <div class="card-body table-responsive">
+    <div class="table-responsive">
         <table width="100%" class="application-table table table-striped">
 
             <thead>
@@ -23,7 +23,7 @@
             {% for a in applicants %}
                 {% set has_access_to_interview = is_granted_team_leader() or a.interview.isInterviewer(app.user) or a.interview.isCoInterviewer(app.user) %}
             <tr>
-                <td>
+                <td class="table-menu">
                     {% if has_access_to_interview %}
                     <div class="dropdown">
                         <div class="clickable px-2" id="options-{{ a.id }}" data-toggle="dropdown"

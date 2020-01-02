@@ -1,4 +1,4 @@
-<div class="card-body table-responsive">
+<div class="table-responsive">
     <table class="table" width="100%" id="table">
         <thead>
         <tr>
@@ -16,7 +16,7 @@
         {% for ah in assistantHistories %}
             <tr>
                 {% if is_granted_team_leader() %}
-                    <td>
+                    <td class="table-menu">
                         <div class="dropdown">
                             <div class="clickable" id="options-{{ ah.id }}" data-toggle="dropdown"
                                  aria-haspopup="true" aria-expanded="false">

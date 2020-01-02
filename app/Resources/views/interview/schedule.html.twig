@@ -12,11 +12,6 @@
 {% endblock %}
 
 
-{% block stylesheets %}
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
-{% endblock %}
-
 {% block body %}
     {% set u = interview.user %}
     <div class="row my-5">
@@ -54,16 +49,26 @@
                         <div class="interviewer">
                             <h5 class="text-center">Intervjuer</h5>
                             <p class="text-center">{{ interview.interviewer.firstName }} {{ interview.interviewer.lastName }}</p>
+
+                            <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
                             <img class="scheduler-photo profile-photo bordered rounded-circle "
                                  src="{{ asset(interview.interviewer.picturePath | imagine_filter('profile_img')) }}">
+                            </a>
                         </div>
                         <div class="mx-3"></div>
                         <div class="interviewer">
                             <h5 class="text-center">Medintervjuer</h5>
                             {% if interview.cointerviewer %}
-                                <p class="text-center">{{ interview.coInterviewer.firstName }} {{ interview.interviewer.lastName }}</p>
-                                <img class="scheduler-photo profile-photo bordered rounded-circle "
-                                     src="{{ asset(interview.coInterviewer.picturePath | imagine_filter('profile_img')) }}">
+                                <p class="text-center">{{ interview.coInterviewer.firstName }} {{ interview.coInterviewer.lastName }}
+                                <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">(endre)</a>
+                                <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
+                                    <div class="no-co-interviewer img-blur-container">
+                                        <img class="scheduler-photo profile-photo bordered rounded-circle "
+                                             src="{{ asset(interview.coInterviewer.picturePath | imagine_filter('profile_img')) }}">
+                                        <div class="profile-photo-overlay">Velg intervjuer</div>
+                                    </div>
+                                </a>
+
                             {% else %}
                                 <p class="text-center text-faded font-italic">Ingen</p>
                                     <a href="{{ path('interview_admin_assign_co_interviewer', {'id': interview.id, 'from': 'schedule'}) }}">
@@ -80,7 +85,6 @@
                 </div>
             </div>
         </div>
-
     </div>
     {{ form_start(form) }}
     {{ form_errors(form) }}
@@ -100,7 +104,7 @@
                             {{ form_row(form.campus) }}
                         </div>
                         <div class="col-12 col-lg-6">
-                            <label>Link til kart (<a href="https://use.mazemap.com/" target="_blank" rel="noopener">MazeMap</a>)</label>
+                            <label>Link til kart <a href="https://use.mazemap.com/" target="_blank" rel="noopener">(MazeMap)</a></label>
                             {{ form_row(form.mapLink) }}
                         </div>
                     </div>
@@ -180,15 +184,7 @@
 {% endblock %}
 
 {% block javascripts %}
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
-    <script>
-      const options = {
-        format: 'd.m.Y H:i',
-        lang: 'no',
-        step: 5,
-      };
-
-      jQuery('#{{ form.datetime.vars.id }}').datetimepicker(options);
-    </script>
+    {% include 'common/datetime_picker.html.twig' with {
+        inputIds: [form.datetime.vars.id]
+    } %}
 {% endblock %}

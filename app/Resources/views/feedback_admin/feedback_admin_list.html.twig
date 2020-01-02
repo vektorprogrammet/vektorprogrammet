@@ -1,0 +1,80 @@
+{% extends 'adminBase.html.twig' %}
+{% block title %}
+{{ title }}
+{% endblock %}
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('feedback_admin_index')}}">Feedback</a>
+    </li>
+    <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header">
+                    Alle tilbakemeldinger
+                </div>
+                <div class="card-body">
+                    <table class="table" >
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>Tittel</th>
+                                <th>Bruker</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for feedback in pagination %}
+                                <tr>
+                                    <td class="table-menu">
+                                        <div class="dropdown">
+                                            <div class="clickable px-2" id="options-{{ feedback.id }}" data-toggle="dropdown"
+                                                aria-haspopup="true" aria-expanded="false">
+                                                <i class="fa fa-ellipsis-v text-secondary"></i>
+                                            </div>
+                                            <div class="dropdown-menu pt-0" aria-labelledby="options-{{ feedback.id }}">
+                                                <div class="dropdown-header mb-2"><strong>Feedback {{feedback.id }}</strong></div>
+                                                <form method="POST"
+                                                    onsubmit="return confirm('Vil du virkelig slette {{ feedback.title }}?')"
+                                                    action="{{ path('feedback_admin_delete', { id: feedback.id }) }}">
+                                                    <button type="submit"
+                                                            class="dropdown-item">
+                                                        <i class="fa fa-trash text-danger"></i> Slett
+                                                    </button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <a href="{{ path('feedback_admin_show', {'id': feedback.id}) }}">{{feedback.title}}</a>
+                                    </td>
+                                    <td>
+                                        {{feedback.user.fullName}}
+                                    </td>
+                                    <td>
+                                        {% if feedback.type == 'question' %}
+                                        <span class="badge badge-primary">
+                                            Spørsmål
+                                        </span>
+                                        {% elseif feedback.type == 'error' %}
+                                        <span class="badge badge-danger">
+                                            Feilmelding
+                                        </span>
+                                        {% elseif feedback.type == 'feature_request' %}
+                                        <span class="badge badge-success">
+                                            Ny funksjonalitet
+                                        </span>
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                        {{ knp_pagination_render(pagination) }}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

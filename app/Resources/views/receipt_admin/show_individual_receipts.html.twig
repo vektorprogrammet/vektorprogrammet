@@ -59,7 +59,7 @@
     {% if receipts is not empty %}
         <div class="card mt-3">
             <div class="card-header"><i class="fa fa-align-justify"></i> Utlegg ({{ receipts|length }})</div>
-            <div class="card-body table-responsive">
+            <div class="table-responsive">
                 {% include 'receipt_admin/receipts_table_individual.html.twig' with { 'receipts': receipts } %}
             </div>
         </div>

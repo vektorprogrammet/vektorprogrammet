@@ -62,13 +62,13 @@ class SupportTicketType extends AbstractType
 
         $builder->get('department')
             ->addModelTransformer(new CallbackTransformer(
-              function (Department $department) {
-                  return $department->getId();
-              },
-              function ($id) use ($departmentRepository) {
-                  return $departmentRepository->find($id);
-              }
-        ));
+                function (Department $department) {
+                    return $department->getId();
+                },
+                function ($id) use ($departmentRepository) {
+                    return $departmentRepository->find($id);
+                }
+            ));
     }
 
     public function configureOptions(OptionsResolver $resolver)

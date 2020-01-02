@@ -13,7 +13,7 @@
     {% for tm in teamMemberships %}
 
         <tr>
-            <td>
+            <td class="table-menu">
                 {% if is_granted_team_leader() %}
                     <div class="dropdown">
                         <div class="clickable px-2" id="options-{{ tm.id }}" data-toggle="dropdown"

@@ -8,20 +8,22 @@
                 Summen må stemme nøyaktig med den på kvitteringen.
             </p>
             {{ form_row(form.receiptDate) }}
-
             {% include 'receipt/account_number.html.twig' %}
-
             <br>
             {{ form_row(form.picturePath) }}
-
+            <p class="mt-0 mb-3">
+                <span class="font-weight-bold">Merk:</span>
+                Det skal opprettes unikt utlegg for hver kvittering.
+            </p>
+            <br>
             <button class="btn btn-success">Be om refusjon</button>
         </div>
+
         <div class="col-12 col-sm-6 d-flex flex-column">
-            <div class="flex-grow"></div>
             <div class="{{ receipt.picturePath is not null ? '' : 'd-none' }}">
                 <img class="img-fluid" src="{{ asset(receipt.picturePath) }}" id="receipt_picture">
             </div>
-            <div class="flex-grow"></div>
         </div>
+
     </div>
 {{ form_end(form) }}

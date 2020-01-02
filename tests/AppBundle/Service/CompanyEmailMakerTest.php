@@ -65,4 +65,16 @@ class CompanyEmailMakerTest extends KernelTestCase
         $this->emailMaker->setCompanyEmailFor($user, $blackList);
         self::assertEquals('firstaeoa.lastaeoa@vektorprogrammet.no', $user->getCompanyEmail());
     }
+    public function testAccentCharacters()
+    {
+        $user = new User();
+        $user->setFirstName('Firstèéàá');
+        $user->setLastName('LastÀÁÈÉ');
+
+        $blackList = ['firsteeaa@vektorprogrammet.no'];
+
+        $this->emailMaker->setCompanyEmailFor($user, $blackList);
+        self::assertEquals('firsteeaa.lastaaee@vektorprogrammet.no', $user->getCompanyEmail());
+
+    }
 }

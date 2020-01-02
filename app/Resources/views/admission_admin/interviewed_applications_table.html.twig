@@ -10,7 +10,7 @@
 {% block applications %}
     <div class="card">
         <div class="card-header"><i class="fa fa-align-justify"></i> Intervjuer ({{ applications|length }})</div>
-        <div class="card-body table-responsive">
+        <div class="table-responsive">
             <table width="100%" class="application-table table table-striped">
                 <thead>
                 <tr>
@@ -36,7 +36,7 @@
                     {% set userCanSeeInterview = a.user != app.user and ( is_granted_team_leader() or a.interview.interviewer == app.user or a.interview.coInterviewer == app.user ) %}
                     <tr>
                         {% if is_granted_team_leader() %}
-                            <td>
+                            <td class="table-menu">
                                 <div class="dropdown">
                                     <div class="clickable px-2" id="options-{{ a.id }}" data-toggle="dropdown"
                                          aria-haspopup="true" aria-expanded="false">

@@ -19,7 +19,7 @@
         <tbody>
         {% for u in users %}
             <tr>
-                <td>
+                <td class="table-menu">
                     {% if is_granted_admin() or (app.user.department == u.department and is_granted_team_leader()) %}
                         <div class="dropdown">
                             <div class="clickable px-2" id="options-{{ u.id }}" data-toggle="dropdown"

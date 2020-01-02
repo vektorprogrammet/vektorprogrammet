@@ -32,8 +32,8 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         foreach ($users as $user) {
             foreach ($user->getTeamMemberships() as $teamMembership) {
                 if ($semester->isBetween(
-                        $teamMembership->getStartSemester(),
-                        $teamMembership->getEndSemester()
+                    $teamMembership->getStartSemester(),
+                    $teamMembership->getEndSemester()
                 )
                 ) {
                     $teamMembers[] = $user;

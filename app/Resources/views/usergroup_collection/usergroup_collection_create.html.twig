@@ -1,0 +1,86 @@
+{% extends "adminBase.html.twig" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('usergroup_collections') }}">Brukergruppersamlinger</a>
+    </li>
+    <li class="breadcrumb-item active">{{ isCreate ? 'Lag brukergruppesamling' : userGroupCollection.name }}</li>
+{% endblock %}
+
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/usergroupcollection.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-8">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> {{ isCreate ? 'Generelt' : userGroupCollection.name }}</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.numberUserGroups) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-info-circle"></i></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p>MERK: For å komme med i gruppe som lages må bruker HA VÆRT aktiv i MINST en av de valge brukergruppene
+                            i MINST ett av de valgte semesterene. For assistener må bolk også være valgt. Dette gjelder ikke for valgte enkeltbrukere</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-calendar-alt"></i> Semester</div>
+                <div class="card-body">
+                    {{ form_row(form.semesters) }}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fas fa-users"></i> Brukertilhørighet</div>
+                <div class="card-body">
+                    {{ form_row(form.teams) }}
+                        <label class="mb-0">
+                            <strong>
+                                Assistenter fra:
+                            </strong>
+                        </label>
+                    {{ form_row(form.assistantsDepartments) }}
+                    {{ form_row(form.assistantBolks) }}
+                </div>
+            </div>
+        </div>
+        <div class="col-4">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-user"></i> Enkeltbrukere</div>
+                <div class="card-body">
+                    {{ form_row(form.users) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    <button class="btn btn-primary">Lagre</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}

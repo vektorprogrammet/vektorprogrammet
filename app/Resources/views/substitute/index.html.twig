@@ -54,8 +54,8 @@
         <div class="col-12">
             <div class="card">
                 <div class="card-header"><i class="fa fa-align-justify"></i> Vikarer ({{ substitutes|length }})</div>
-                <div class="card-body table-responsive">
-                    <table width="100%" id="substitute-table" class="table">
+                <div class="table-responsive">
+                    <table width="100%" id="substitute-table" class="table table-striped">
                         <thead>
 
                         <tr>
@@ -122,7 +122,7 @@
                                 <td>{{ sub.thursday ? "Bra" : "Ikke" }}</td>
                                 <td>{{ sub.friday ? "Bra" : "Ikke" }}</td>
                                 <td>{{ sub.preferredGroup }}</td>
-                                {% if sub.interview is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
+                                {% if sub.interview is not null and sub.interview.interviewScore is not null and sub.user != app.user and (is_granted_team_leader() or sub.interview.interviewer == app.user) %}
                                     <td>{{ sub.interview.interviewScore.getSum() }}</td>
                                     <td>{{ sub.interview.interviewScore.suitableAssistant }}</td>
                                 {% else %}

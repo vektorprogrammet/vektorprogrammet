@@ -12,7 +12,7 @@
     <tbody>
     {% for team in teams %}
         <tr>
-            <td>
+            <td class="table-menu">
                 {% if is_granted_team_leader() %}
                     <div class="dropdown">
                         <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
@@ -44,7 +44,7 @@
             <td>
                 {{ team.email }}
             </td>
-            {% if team.acceptApplication %}
+            {% if team.acceptApplicationAndDeadline %}
                 <td><span class="text-success">Åpent</span></td>
             {% else %}
                 <td><span class="text-alert">Stengt</span></td>

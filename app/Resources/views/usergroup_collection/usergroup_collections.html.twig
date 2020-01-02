@@ -1,0 +1,101 @@
+{% extends "adminBase.html.twig" %}
+
+{% block title %}
+    Brukergruppesamlinger
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Brukergruppesamlinger</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a class="btn btn-outline-success text-success" href="{{ path('usergroup_collection_create') }}"><i
+                class="fa fa-plus text-success"></i> Ny brukergruppesamling</a>
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i>
+            Brukergruppesamlinger</div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Navn</th>
+                    <th>Antall personer</th>
+                    <th>Andel delgrupper</th>
+                    <th>Redigeringsstatus</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for userGroupCollection in userGroupCollections %}
+                    <tr>
+                        <td class="table-menu">
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ userGroupCollection.name }} </strong></div>
+                                    <a href="{{ path('usergroup_collection_edit', {'id': userGroupCollection.id }) }}"
+                                       class="dropdown-item">
+                                        {% if not userGroupCollection.isDeletable %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
+                                    </a>
+                                    {% if userGroupCollection.isDeletable %}
+                                        <a class="post-a dropdown-item" href="{{ path('usergroup_collection_delete', {'id': userGroupCollection.id }) }}">
+                                            <i class="fas fa-trash-alt text-primary"></i> Slett
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ userGroupCollection.name }}</td>
+                        <td>{{ userGroupCollection.numberTotalUsers }}</td>
+                        <td>{{ userGroupCollection.numberUserGroups }}</td>
+                        <td>
+                            {% if not userGroupCollection.isDeletable %}
+                                <i class="fas fa-lock"></i>
+                            {% else %}
+                                <i class="fas fa-lock-open"></i>
+                            {% endif %}
+
+                        </td>
+
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td>Ingen brukergruppesamlinger</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}
+
+
+{% block javascripts %}
+    <script>
+        window.onload = function() {
+            $('.post-a').on('click', function(event) {
+                event.preventDefault();
+                $.ajax({
+                    type: "POST",
+                    url: $(this).attr('href'),
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.reload();
+                        } else {
+                            alert(response.cause);
+                        }
+                    }
+                });
+            });
+        }
+
+    </script>
+{% endblock %}

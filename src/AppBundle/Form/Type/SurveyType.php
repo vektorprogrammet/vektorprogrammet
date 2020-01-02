@@ -3,6 +3,7 @@
 namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Repository\SemesterRepository;
+use AppBundle\Entity\Survey;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -11,7 +12,6 @@ use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
-use AppBundle\Utils\SemesterUtil;
 
 class SurveyType extends AbstractType
 {
@@ -21,9 +21,7 @@ class SurveyType extends AbstractType
             'label' => 'Semester',
             'class' => 'AppBundle:Semester',
             'query_builder' => function (SemesterRepository $sr) {
-                return $sr->queryForAllSemestersOrderedByAge()
-                    ->andWhere('Semester.year > :limit')
-                    ->setParameter('limit', SemesterUtil::timeToYear(new \DateTime('now')) - 1);
+                return $sr->queryForAllSemestersOrderedByAge();
             },
         ))
 
@@ -32,15 +30,6 @@ class SurveyType extends AbstractType
             'attr' => array('placeholder' => 'Fyll inn tittel til undersøkelse'),
         ))
 
-        ->add('showCustomFinishPage', ChoiceType::class, [
-            'label' => 'Sluttside som vises etter undersøkelsen er besvart.',
-            'multiple' => false,
-            'expanded' => true,
-            'choices' => [
-                'Standard' => false,
-                'Tilpasset' => true,
-            ]
-        ])
 
 
         ->add('confidential', ChoiceType::class, array(
@@ -54,19 +43,22 @@ class SurveyType extends AbstractType
             ))
 
 
-        ->add('team_survey', ChoiceType::class, [
-            'label' => 'Dette er en undersøkelse rettet mot teammedlem (popup)',
+        ->add('targetAudience', ChoiceType::class, [
+            'label' => 'Denne undersøkelsen er rettet mot:',
             'multiple' => false,
             'expanded' => true,
             'choices' => [
-                'Ja' => true,
-                'Nei' => false,
+                'Skoler/Elever' => Survey::$SCHOOL_SURVEY,
+                'Teammedlemmer' => Survey::$TEAM_SURVEY,
+                'Assistenter' => Survey::$ASSISTANT_SURVEY,
+
+
             ]
 
         ])
 
             ->add('showCustomPopUpMessage', ChoiceType::class, [
-                'label' => 'Egen pop-up melding?',
+                'label' => 'Egendefinert pop-up melding?',
                 'multiple' => false,
                 'expanded' => true,
                 'choices' => [
@@ -76,14 +68,17 @@ class SurveyType extends AbstractType
 
             ])
 
-            ->add('surveyPopUpMessage', CKEditorType::class, [
-                'label' => 'Pop-up melding, vises kun hvis ja er valgt.',
+            ->add('surveyPopUpMessage', TextType::class, [
+                'label' => 'Egendefinert pop-up melding (vises kun hvis ja er valgt)',
+                'attr' => array('placeholder' => 'Svar på undersøkelse!'),
+                'required' => false,
             ])
 
 
 
         ->add('finishPageContent', CKEditorType::class, [
-            'label' => 'Tilpasset sluttside. Vises kun hvis "Tilpasset" er valgt over.',
+            'label' => 'Melding på sluttside (viser "Takk for svaret!" om tom)',
+
         ])
 
         ->add('surveyQuestions', CollectionType::class, array(

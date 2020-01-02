@@ -16,10 +16,12 @@
     <header class="row">
         <div class="col-12">
             <h3>Resultater for {{ survey.name }} {{ survey.semester }} </h3>
-            <a id="show-filter-btn" class="text-primary">Vis/skjul filter&nbsp;&nbsp;<i
-                        class="fa fa-chevron-right"></i></a>
+            <a id="download-csv-btn" class="text-primary" download="survey{{survey.id}}.csv"
+               href="{{ path('survey_get_results_csv', {'id': survey.id } ) }}">Last ned csv</a>
         </div>
     </header>
+    <a id="show-filter-btn" class="text-primary">Vis/skjul filter&nbsp;&nbsp;<i
+                class="fa fa-chevron-right"></i></a>
     <div id="filter"></div>
     <div class="row equalheight charts" id="charts">
         <h1 class="text-center">Laster data... <i class="fa fa-spinner"></i></h1>
@@ -33,9 +35,9 @@
                 {% if textAnswers[key] %}
                     <h4>{{ key }}</h4>
                     {% for answer in textAnswers[key] %}
-                        {% if survey.teamsurvey %}
+                        {% if surveyTargetAudience == 1%}
                             <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.teamName }}</b></p>
-                        {% else %}
+                        {% elseif surveyTargetAudience == 0 or surveyTargetAudience == 2 %}
                             <p>{{ loop.index }}: {{ answer.answerText }} <b>{{  answer.schoolName }}</b></p>
                         {% endif %}
                     {% endfor %}
