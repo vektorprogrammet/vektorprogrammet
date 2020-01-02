@@ -39,7 +39,7 @@
 
     <div class="map mt-5" v-for="scheduleInfo in this.scheduleInfo" >
       <h3>Ruteforslag til {{scheduleInfo.school.name}} ungdomsskole</h3>
-      <Map class="mb-5" :schoolName="scheduleInfo.school.name" :homeName="homeName"/>
+      <Map class="mb-5" :schoolName="scheduleInfo.school.name" :user="user"/>
     </div>
 
   </div>
@@ -68,16 +68,10 @@ import Map from "../../components/Map";
 export default class MyPageView extends Vue {
     @Prop() private scheduleInfo: Array<object> = [];
     @Prop() private user: any;
-    @Prop() private homeName!: string;
     @Prop() private partners: any;
 
     public async beforeCreate() {
         this.user = await accountService.getUser();
-        if (this.user.address) {
-            this.homeName = this.user.address.address + ', ' + this.user.address.city;
-        } else {
-          this.homeName = this.user.department.city + " Sentrum";
-        }
         this.scheduleInfo = await accountService.getScheduleInfo();
         let partnerInfoResult = await accountService.getPartnerInfo();
         if (partnerInfoResult.length > 0) {

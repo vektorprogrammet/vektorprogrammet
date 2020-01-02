@@ -11,13 +11,22 @@
 
     @Component
     export default class Map extends Vue {
-        @Prop() schoolName!: string;
-        @Prop() homeName!: string;
-        @Prop() schoolLocation!: JSON;
-        private status!: string;
+        @Prop() user!: any;
+        private startLocation!: string;
         private helpText: string = "Venter på ruteforslag";
-        private startLocation = this.homeName;
+        @Prop() private schoolName!: string;
 
+        public beforeMount() {
+            if (this.user.address) {
+                this.startLocation = this.user.address.address + ', ' + this.user.address.city;
+            } else {
+                this.startLocation = this.user.department.city + " Sentrum";
+            }
+
+            console.log('1')
+            console.log(this.schoolName)
+            console.log(this.startLocation)
+        }
         public async mounted() {
             try {
                 const google = await mapService.init();
@@ -29,51 +38,12 @@
                     center: new google.maps.LatLng(63.42, 10.39)
                 });
 
-
-
-                /*geocoder.geocode({ address: this.school_name + ' ungdomsskole'}, (results, status) => {
-                    if (status !== 'OK' || !results[0]) {
-                        throw new Error(status);
-                    }
-                    map.setCenter(results[0].geometry.location);
-                    map.setZoom(10);
-
-                    this.locations.push({
-                        position:
-                            {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()}
-                    });
-                    let marker = new google.maps.Marker({
-                        position: {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()},
-                        map: map,
-                        title: this.school_name + ' ungdomsskole',
-                    });
-                });
-
-                geocoder.geocode({ address: this.home_name}, (results, status) => {
-                    if (status !== 'OK' || !results[0]) {
-                        throw new Error(status);
-                    }
-
-                    this.locations.push({
-                        position:
-                            {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()}
-                    });
-                    let marker = new google.maps.Marker({
-                        position: {lat: results[0].geometry.location.lat(), lng: results[0].geometry.location.lng()},
-                        map: map,
-                        title: this.home_name,
-                    });
-                });
-
-                /*let markers = this.locations
-                    .map(x => new google.maps.Marker({ ...x, map }));*/
                 const request = {
                     origin: this.startLocation,
                     destination: this.schoolName + ' ungdomsskole',
                     travelMode: 'TRANSIT'
                 };
-                directionsService.route(request, (result, status) => {
-                    this.status = status;
+                directionsService.route(request, (result: JSON, status: string) => {
                     if (status === 'OK') {
                         display = new google.maps.DirectionsRenderer();
                         display.setMap(map);
