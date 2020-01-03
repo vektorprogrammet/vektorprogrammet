@@ -7,14 +7,14 @@
 
 <script lang="ts">
     import {mapService} from "../services";
-    import {Vue, Component, Prop} from 'vue-property-decorator';
+    import {Vue, Component, Prop, InjectReactive} from 'vue-property-decorator';
 
     @Component
     export default class Map extends Vue {
-        @Prop() user!: any;
+        @InjectReactive() user!: any;
+        @Prop() private schoolName!: string;
         private startLocation!: string;
         private helpText: string = "Venter på ruteforslag";
-        @Prop() private schoolName!: string;
 
         public beforeMount() {
             if (this.user.address) {
@@ -22,15 +22,11 @@
             } else {
                 this.startLocation = this.user.department.city + " Sentrum";
             }
-
-            console.log('1')
-            console.log(this.schoolName)
-            console.log(this.startLocation)
         }
+
         public async mounted() {
             try {
-                const google = await mapService.init();
-                const geocoder = new google.maps.Geocoder();
+                const google:any = await mapService.init();
                 const directionsService = new google.maps.DirectionsService();
                 let display: any;
                 let map = new google.maps.Map(document.getElementById('map_' + this.schoolName), {
@@ -43,7 +39,7 @@
                     destination: this.schoolName + ' ungdomsskole',
                     travelMode: 'TRANSIT'
                 };
-                directionsService.route(request, (result: JSON, status: string) => {
+                directionsService.route(request, (result: JSON | any, status: string) => {
                     if (status === 'OK') {
                         display = new google.maps.DirectionsRenderer();
                         display.setMap(map);

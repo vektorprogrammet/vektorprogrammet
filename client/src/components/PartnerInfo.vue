@@ -3,13 +3,6 @@
     <br><br><br>
     <h2>Mitt Vektorteam:</h2>
 
-      <!--b-col>
-        <ProfilePicture :picturePath="me.picture_path" :pictureWidth="pictureWidth"/>
-          <br><br>
-        <h5>{{me.fullName}}</h5>
-        <p>{{me.email}}</p>
-      </b-col-->
-
     <div v-if="this.partners['Bolk 1']">
       <h3>Bolk 1</h3>
       <b-row>
@@ -98,7 +91,7 @@ import {
   faEnvelope
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
-import { Prop, Watch } from 'vue-property-decorator';
+import {InjectReactive} from 'vue-property-decorator';
 import ProfilePicture from "./ProfilePicture";
 
 library.add(faPhone, faEnvelope);
@@ -108,9 +101,8 @@ Vue.component('font-awesome-icon', FontAwesomeIcon);
     components: {ProfilePicture}
 })
 export default class PartnerInfo extends Vue {
-  @Prop() private me: any;
-  @Prop() private partners: any;
-  @Prop() private pictureWidth: string = '250px';
+  @InjectReactive() private partners!: any;
+  private pictureWidth: string = '250px';
 
 }
 </script>

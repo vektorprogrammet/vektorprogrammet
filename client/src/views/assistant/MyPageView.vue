@@ -13,7 +13,7 @@
     </h1>
 
 
-    <UserInfo :user="user" v-if="user"></UserInfo>
+    <UserInfo v-if="user" :user="user"></UserInfo>
 
     <UpcomingEvents class="m-2" ></UpcomingEvents>
 
@@ -28,7 +28,7 @@
 
     <div class="partner-info" v-if="scheduleInfo.length > 0">
       <div class="requires-partner" v-if="this.partners">
-        <PartnerInfo :me="user" :partners="partners" class="partner-component"></PartnerInfo>
+        <PartnerInfo :partners="partners" class="partner-component"></PartnerInfo>
         <!--SchoolInfo :scheduleInfo="scheduleInfo" class="school-component"></SchoolInfo -->
       </div>
 
@@ -55,7 +55,7 @@ import UserInfo from '../../components/UserInfo.vue';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {accountService} from "@/services";
-import {Prop} from "vue-property-decorator";
+import {ProvideReactive} from "vue-property-decorator";
 import UpcomingEvents from "../../components/UpcomingEvents";
 import ContactInfo from "../../components/ContactInfo";
 import Map from "../../components/Map";
@@ -66,9 +66,9 @@ import Map from "../../components/Map";
 })
 
 export default class MyPageView extends Vue {
-    @Prop() private scheduleInfo: Array<object> = [];
-    @Prop() private user: any;
-    @Prop() private partners: any;
+    @ProvideReactive() private scheduleInfo: Array<object> = [];
+    @ProvideReactive() private user: any = null;
+    @ProvideReactive() private partners: any = null;
 
     public async beforeCreate() {
         this.user = await accountService.getUser();

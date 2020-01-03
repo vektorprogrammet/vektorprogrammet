@@ -47,14 +47,14 @@ import {
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import Vue from 'vue';
 import Component from 'vue-class-component';
-import { Prop, Watch } from 'vue-property-decorator';
+import {InjectReactive} from 'vue-property-decorator';
 
 library.add(faMapMarkerAlt, faClock, faCalendarAlt);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
 @Component
 export default class ScheduleInfo extends Vue {
-  @Prop() scheduleInfo: Array<object> = [];
+  @InjectReactive() scheduleInfo!: Array<object>;
 }
 </script>
 
