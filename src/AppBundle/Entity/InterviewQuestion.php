@@ -25,7 +25,7 @@ class InterviewQuestion
     protected $question;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, length=5000)
      */
     protected $help;
 
