@@ -1,0 +1,119 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Arrangementer for {{ department }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Arrangementer</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+
+    <div class="btn-group">
+        {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'social_event_show' } %}
+        <a class="btn text-success"
+           href="{{ path('social_event_create', {'department': department.id, 'semester': semester.id}) }}">
+            <i class="fa fa-plus text-success"></i>
+            Nytt Arrangement
+        </a>
+    </div>
+
+
+{% endblock %}
+
+
+{% block body %}
+
+    <h2 class="text-center my-5">
+        Arrangementer for {{ department }} <br>
+        {{ semester }}
+    </h2>
+
+    <div class="card">
+
+        <div class="card-header"><i class="fa fa-clipboard-list"></i> Arrangementer ({{ SocialEventList|length }})</div>
+        <div class="table-responsive">
+
+            <table width="100%" class="application-table table table-striped">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Tittel</th>
+                    <th>Beskrivelse</th>
+                    <th>Når</th>
+                    <th>Status</th>
+                    <th>Påmelding åpen for</th>
+                </tr>
+                </thead>
+
+                <tbody>
+
+                {% for event in SocialEventList %}
+                    <tr id="{{ event.id }}">
+                        <td class="table-menu">
+                            {% if has_access_to('social_event_edit') %}
+                                <div class="dropdown">
+                                    <div class="clickable px-2" id="options-{{ event.id }}" data-toggle="dropdown"
+                                         aria-haspopup="true" aria-expanded="false">
+                                        <i class="fa fa-ellipsis-v text-secondary"></i>
+                                    </div>
+                                    <div class="dropdown-menu pt-0" aria-labelledby="options-{{ event.id }}">
+                                        <div class="dropdown-header mb-2"><strong>{{ event.title }}</strong></div>
+                                        <a href="{{ path('social_event_edit', {'id': event.id, 'department': department.id, 'semester': semester.id}) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item text-secondary">
+                                                <i class="fa fa-edit text-secondary"></i>
+                                                Endre
+                                            </button>
+                                        </a>
+                                        {% if has_access_to('social_event_delete') %}
+                                            <form method="POST"
+                                                  onsubmit="return confirm('Er du sikker på at du vil slette arrangementet?')"
+                                                  action="{{ path('social_event_delete', {'id': event.id, 'department': department.id, 'semester': semester.id}) }}">
+                                                <div class="row">
+                                                    <div class="col-12">
+                                                        <button type="submit"
+                                                                class="dropdown-item text-danger">
+                                                            <i class="fa fa-trash text-danger"></i>
+                                                            Slett
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </form>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            {% endif %}
+                        </td>
+                        <td>{{ event.title }}</td>
+                        <td>{{ event.description }}</td>
+                        <td>{{ event.startTime |date("D H:i - d/M/Y") }} </td>
+                        <td>
+                            {% if event.hasHappened %}
+                                <span class="badge badge-pill badge-secondary">Har vært</span>
+                            {% elseif event.happensSoon %}
+                                <span class="badge badge-pill badge-info">Skjer innen en uke</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if event.role == "Teammedlem" %}
+                                Kun teammedlemmer
+                            {% else %}
+                                Teammedlemmer og assistenter
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+
+{% endblock %}
+
+
