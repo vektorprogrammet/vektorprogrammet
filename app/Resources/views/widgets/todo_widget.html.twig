@@ -1,0 +1,38 @@
+{% if not todo_items is empty %}
+<div class="col-12 col-md-6 col-xxxl-4">
+    <div class="card mb-4">
+        <div class="card-header">
+            <i class="fas fa-clipboard-list"></i> Sjekkliste
+            <a href="{{ path('todo_list') }}" class="float-right text-muted">Vis alle<i class="fa fa-chevron-right vertical-middle"></i></a>
+        </div>
+        <div class="responsive-table scrollable">
+            <table class="table table-striped" >
+                <thead>
+                    <tr>
+                        <th>Tittel</th>
+                        <th class="text-right" >Deadline</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in todo_items %}
+                    <tr class="{{item.isPastDeadlineBySemester(semester) ? "table-danger" : ""}}">
+                        <td>{{item.title}}</td>
+                        <td class="text-right" >
+                            {% if item.hasShortDeadlineBySemester(semester) and not item.isCompletedInSemesterByDepartment(semester, department) %}
+                                <span class={{ item.isPastDeadlineBySemester(semester) ? "text-danger" : "text-warning" }}>
+                                    {{ item.getTodoDeadlines()[0].getDeadDate.format('d/m-Y') }}
+                                </span>
+                            {% elseif item.getDeadlineBySemester(semester) != null %}
+                                {{ item.getDeadlineBySemester(semester).getDeadDate.format('d/m-Y') }}
+                            {% else %}
+                                Ingen
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endif %}

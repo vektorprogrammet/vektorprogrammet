@@ -88,7 +88,6 @@ class UserGroupCollectionType extends AbstractType
                 'disabled' => $this->isEdit
 
             ]
-
             );
     }
 

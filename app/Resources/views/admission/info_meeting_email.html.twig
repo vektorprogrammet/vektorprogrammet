@@ -5,16 +5,18 @@
 {% if infoMeeting.room %}
 i rom {{ infoMeeting.room }}
 {% endif %}!</p>
-{% if infoMeeting.link %}
-    <p>Link til arrangement: <a href="{{ infoMeeting.link }}">{{ infoMeeting.link }}</a></p>
-{% endif %}
-
 
 {% if infoMeeting.description %}
     <p>{{ infoMeeting.description }}</p>
 {% endif %}
 
-<br>
+{% if infoMeeting.link %}
+    <p>Link til arrangement: <a href="{{ infoMeeting.link }}">{{ infoMeeting.link }}</a></p>
+{% endif %}
+
+<p>Dersom du ønsker å søke allerede nå kan du gjøre det her: <a
+                href="https://vektorprogrammet.no{{ path('admission_show_by_city_case_insensitive', {'city': department}) }}">https://vektorprogrammet.no{{ path('admission_show_by_city_case_insensitive', {'city': department}) }}</a>.
+</p>
 <a href="https://vektorprogrammet.no{{ path('home') }}">
     <img src="https://vektorprogrammet.no/images/vektor.png" alt="https://vektorprogrammet.no{{ path('home') }}">
 </a>

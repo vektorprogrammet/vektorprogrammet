@@ -1,0 +1,57 @@
+{%  extends 'base.html.twig' %}
+
+
+{%  block title %}
+    Vektorprogrammet
+{%  endblock %}
+
+{% block javascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/parents.css') }}">
+{% endblock %}
+
+{% block body %}
+
+    <div class="container-fluid">
+
+
+        <div class="parents-infosite content">
+            <div class="page-header">
+                {% include 'statictext/static_content.html.twig' with {'id': 'parent-header'} %}
+            </div>
+            <section class="row space">
+                <div class="col-md-6">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-assistants-info'} %}
+                </div>
+
+                <div class="col-lg-6">
+                    <br><br>
+                    <img class="image-fluid image-grid flex-column" src="{{ asset_with_version('images/assistants_foreldre.jpg') }}">
+                </div>
+            </section>
+
+            <section class="row space">
+                <div class="col-lg-6">
+                    <img class="img-fluid image-left image-grid" src="{{ asset_with_version('images/assistenter.jpg') }}">
+                </div>
+                <div class="col-lg-6">
+                    <img class="img-fluid image-right image-grid" src="{{ asset_with_version('images/vektorassistent.jpg') }}">
+                </div>
+            </section>
+
+            <section class="row space">
+                <div class="col-md-12">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-course'} %}
+                </div>
+            </section>
+
+            <p><i>Det finnes dessverre ingen foreldremøter tilgjengelig for påmelding akkurat nå!</i></p>
+
+
+
+
+        </div>
+    </div>
+{% endblock %}

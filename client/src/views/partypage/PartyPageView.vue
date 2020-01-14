@@ -152,8 +152,6 @@
 
 
             btn_intro_click: function(){
-                //let overlay = document.getElementById('overlay');
-                //overlay.style.display = "none";
                 this.show = false;
                 axios
                     .get('/api/party/application_count/1/')
@@ -176,9 +174,9 @@
             main_background_animate: function(){
                 let self = this;
                 if(!this.show_newest_applicant && this.fetching_api){
-                    self.colorMainBg.backgroundColor = "#bdd5d6";
+                    self.colorMainBg.backgroundColor = "#00d6ca";
                     window.setTimeout(()=>{
-                        self.colorMainBg.backgroundColor = "#7492a9";
+                        self.colorMainBg.backgroundColor = "#4849a9";
                     }, 10000);
                     window.setTimeout(()=>{
                         this.main_background_animate();
@@ -196,9 +194,8 @@
             play_10s_notification: function(user, applicant_number) {
 
                 let firstName = user.firstName;
-                let lastName = user.lastName;
                 let sound = new Audio(require('../../assets/johncenaintro.mp3'));
-                let sound2 = new Audio('http://159.65.58.116/'+ firstName + ' ' +lastName);
+                let sound2 = new Audio('http://159.65.58.116/'+ firstName);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
 
                 sound.volume = 0.6;
@@ -232,7 +229,7 @@
             },
 
             display_user_info: function(user, applicant_number){
-                this.newest_applicant = ('' + user.firstName + ' ' + user.lastName);
+                this.newest_applicant = ('' + user.firstName);
                 //this.sliding_number_of_applicants = applicant_number;
             },
 

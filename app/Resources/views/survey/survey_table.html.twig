@@ -45,15 +45,9 @@
                     <td>{{ survey.name }}</td>
                     <td>{{ survey.getTotalAnswered }}</td>
                     <td>
-                        {% if survey.targetAudience == 1 %}
-                            <a href="{{ path('survey_show_user', {'id': survey.id }) }}">
-                                <i class="fa fa-comment-o"></i> Vis undersøkelse
-                            </a>
-                        {% else %}
-                            <a href="{{ path('survey_show', {'id': survey.id }) }}">
-                                <i class="fa fa-comment-o"></i> Vis undersøkelse
-                            </a>
-                        {% endif %}
+                        <a href="{{ path('survey_show', {'id': survey.id }) }}">
+                            <i class="fa fa-comment-o"></i> Vis undersøkelse
+                        </a>
 
                     </td>
                     <td>

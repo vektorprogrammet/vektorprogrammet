@@ -49,6 +49,11 @@ faq:
  defaults: {_controller: AppBundle:AboutVektor:show}
  methods: [GET]
 
+parents:
+ path: /foreldre
+ defaults: {_controller: AppBundle:Parents:index}
+ methods: [GET]
+
 # Updates static content
 # Not meant for rendering a page. Receives a post request and updates the database.
 update_static_content:
@@ -104,6 +109,33 @@ delete_todo_item:
   requirements:
    id: \d+
 
+##########################################
+#                Changelog               #
+##########################################
+
+changelog_create:
+ path: /kontrollpanel/changelog/create
+ defaults: { _controller: AppBundle:ChangeLog:createChangeLog }
+ methods: [GET, POST]
+
+changelogitem_edit:
+ path: /kontrollpanel/changelog/edit/{id}
+ defaults: { _controller: AppBundle:ChangeLog:editChangeLog }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+changelogitem_delete:
+ path: /kontrollpanel/changelog/delete/{id}
+ defaults: { _controller: AppBundle:ChangeLog:deleteChangeLog }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+changelog_show_all:
+ path: /kontrollpanel/changelog/show/all
+ defaults: { _controller: AppBundle:ChangeLog:show }
+ methods: [GET]
 
 ##########################################
 #                Survey                  #
@@ -176,6 +208,13 @@ survey_copy:
 survey_results:
  path: /kontrollpanel/undersokelse/resultater/{id}
  defaults: { _controller: AppBundle:Survey:resultSurvey }
+ methods: [GET]
+ requirements:
+  id: \d+
+
+survey_get_results_csv:
+ path: /kontrollpanel/undersokelse/resultater/{id}.csv
+ defaults: { _controller: AppBundle:Survey:getSurveyResultCSV }
  methods: [GET]
  requirements:
   id: \d+
@@ -259,6 +298,35 @@ usergroup_collection_edit:
 usergroup_collection_delete:
  path: /kontrollpanel/brukergruppesamling/slett/{id}
  defaults: { _controller: AppBundle:UserGroupCollection:deleteUserGroupCollection }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+##########################################
+#             Arrangement                #
+##########################################
+
+social_event_show:
+ path: /kontrollpanel/arrangementer
+ defaults: { _controller: AppBundle:SocialEvent:show }
+ methods: [GET]
+
+
+social_event_create:
+ path: /kontrollpanel/arrangement/opprett
+ defaults: { _controller: AppBundle:SocialEvent:createSocialEvent }
+ methods: [GET, POST]
+
+social_event_edit:
+ path: /kontrollpanel/arrangement/endre/{id}
+ defaults: { _controller: AppBundle:SocialEvent:editSocialEvent }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+social_event_delete:
+ path: /kontrollpanel/arrangement/slett/{id}
+ defaults: { _controller: AppBundle:SocialEvent:deleteSocialEvent }
  methods: [POST]
  requirements:
   id: \d+
@@ -1265,3 +1333,23 @@ teachers:
 about_new:
     path: /om
     defaults: { _controller: AppBundle:AboutVektor:show }
+##########################################
+#               Feedback                 #
+##########################################
+feedback_admin_index:
+    path: /kontrollpanel/feedback
+    defaults: {_controller: AppBundle:Feedback:index }
+    methods: [GET, POST]
+feedback_admin_list:
+    path: /kontrollpanel/feedback/list
+    defaults: {_controller: AppBundle:Feedback:showAll }
+    methods: [GET]
+feedback_admin_show:
+    path: /kontrollpanel/feedback/show/{id}
+    defaults: {_controller: AppBundle:Feedback:show }
+    methods: [GET]
+feedback_admin_delete:
+    path: /kontrollpanel/feedback/delete/{id}
+    defaults: {_controller: AppBundle:Feedback:delete}
+    methods: [POST]
+

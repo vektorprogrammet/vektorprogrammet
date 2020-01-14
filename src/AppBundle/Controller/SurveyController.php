@@ -13,10 +13,11 @@ use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveyType;
 use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
+use AppBundle\Utils\CsvUtil;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
@@ -42,7 +43,7 @@ class SurveyController extends BaseController
                 'validation_groups' => array('schoolSpecific'),
             ));
         } elseif ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->showUserAction($request, $survey);
         } else {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         }
@@ -92,13 +93,13 @@ class SurveyController extends BaseController
 
 
         if ($notification === null) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
 
         $sameSurvey = $notification->getSurveyNotificationCollection()->getSurvey() == $survey;
 
         if (!$sameSurvey) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
 
 
@@ -117,7 +118,7 @@ class SurveyController extends BaseController
     {
         $user = $this->getUser();
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
-            return $this->redirectToCorrectSurvey($survey);
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         } elseif ($user === null) {
             throw new AccessDeniedException("Logg inn for å ta undersøkelsen!");
         }
@@ -136,7 +137,7 @@ class SurveyController extends BaseController
             $assistantHistory = $em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
 
             if (empty($assistantHistory)) {
-                return $this->redirectToCorrectSurvey($survey);
+                return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
             }
             $assistantHistory = $assistantHistory[0];
             $school = $assistantHistory->getSchool();
@@ -172,7 +173,7 @@ class SurveyController extends BaseController
                 if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY || ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY  && $identifier !== null)) {
                     $route = 'survey_show_user';
                 } else {
-                    return $this->redirectToCorrectSurvey($survey);
+                    return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
                 }
 
                 $parameters = array('id' => $survey->getId());
@@ -395,11 +396,16 @@ class SurveyController extends BaseController
         return new JsonResponse($response);
     }
 
+    /**
+     * The html page showing results from a survey.
+     *
+     * @param Survey $survey
+     * @return Response
+     * @see SurveyController::getSurveyResultAction
+     */
     public function resultSurveyAction(Survey $survey)
     {
-        if ($survey->isConfidential() && !$this->get(AccessControlService::class)->checkAccess("survey_admin")) {
-            throw new AccessDeniedException();
-        }
+        $this->ensureAccess($survey);
 
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             $textAnswers = $this->get(SurveyManager::class)
@@ -416,11 +422,33 @@ class SurveyController extends BaseController
         ));
     }
 
+    /**
+     * Answer data from the given survey, formated as a json response.
+     * Part of the api used by the front-end.
+     *
+     * @param Survey $survey
+     * @return JsonResponse
+     */
     public function getSurveyResultAction(Survey $survey)
     {
+        $this->ensureAccess($survey);
         return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
     }
 
+    /**
+     * Responds with a csv-file containing a table of all responses to the given survey.
+     * Not a part of the api, but rather a front-facing feature.
+     *
+     * @param Survey $survey
+     * @return Response
+     */
+    public function getSurveyResultCSVAction(Survey $survey):Response
+    {
+        $this->ensureAccess($survey);
+        $sm = $this->get(SurveyManager::class);
+        $csv_string = $sm->surveyResultsToCsv($survey);
+        return CsvUtil::makeCsvResponse($csv_string);
+    }
 
     public function toggleReservedFromPopUpAction()
     {
@@ -445,20 +473,11 @@ class SurveyController extends BaseController
     }
 
 
-    private function redirectToCorrectSurvey(Survey $survey)
-    {
-        if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
-            return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        } elseif ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
-            return $this->redirectToRoute('survey_show_user', array('id' => $survey->getId()));
-        }
-
-        return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-    }
-
-
     /**
      * @param Survey $survey
+     *
+     * Throws unless you are in the same department as the survey, or you are a survey_admin.
+     * If the survey is confidential, only survey_admin has access.
      *
      * @throws AccessDeniedException
      */
@@ -468,6 +487,10 @@ class SurveyController extends BaseController
 
         $isSurveyAdmin = $this->get(AccessControlService::class)->checkAccess("survey_admin");
         $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
+
+        if ($survey->isConfidential() && !$isSurveyAdmin) {
+            throw new AccessDeniedException();
+        }
 
         if ($isSameDepartment || $isSurveyAdmin) {
             return;
