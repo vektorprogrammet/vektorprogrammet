@@ -47,10 +47,6 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $this->client->submit($form);
         $this->client->followRedirect();
         $this->survey = $this->em->getRepository('AppBundle:Survey')->findByName($surveyName)[0];
-
-
-
-
     }
 
 
@@ -126,13 +122,6 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $form["survey_notifier[name]"]="TestEdit3";
         $this->client->submit($form);
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
-
-
-
-
-
-
-
     }
 
     public function testDeleteSurveyNotifier(){
@@ -178,6 +167,8 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
 
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/slett/'.$surveyNotifier->getId());
+
+        # Not to delete notifications after sent
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
 
     }
@@ -232,6 +223,8 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         ]);
 
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
+
+        # Notification is not to be sent before some time into the future
         $this->assertEquals(403, $this->client->getResponse()->getStatusCode());
     }
 
