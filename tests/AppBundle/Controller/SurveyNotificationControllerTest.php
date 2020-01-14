@@ -161,6 +161,7 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
 
     public function testSendSurveyNotifier(){
         # Successful sent
+        $mailBody = "Hei! Svar på denne unde!!!rsø!!ke4234ls!en.";
         $userGroupIds = array_map(function($userGroup){ return $userGroup->getId();}, $this->userGroups);
         $userGroupIds = array_map('strval', $userGroupIds);
         $surveyId = (string)$this->survey->getId();
@@ -168,12 +169,15 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
         $form["survey_notifier[timeOfNotification]"] = "01.01.2016 00:00";
         $form["survey_notifier[usergroups]"] = array($userGroupIds[0]);
-        $form["survey_notifier[name]"]="TestSurveyNotifier123456";
+        $form["survey_notifier[name]"]="TestSendSurveyNotifier123456";
         $form["survey_notifier[survey]"] = $surveyId;
+        $form["survey_notifier[emailMessage]"] = $mailBody;
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
-        $this->assertTrue($crawler->filter('td:contains("TestSurveyNotifier123456")')->count()>0);
-        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findAll()[0];
+        $this->assertTrue($crawler->filter('td:contains("TestSendSurveyNotifier123456")')->count()>0);
+        $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
+            'name' => "TestSendSurveyNotifier123456",
+        ]);
         $this->client->enableProfiler();
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode()); // Successful if redirected
@@ -183,20 +187,16 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         ]);
         $this->assertEquals(sizeof($surveyNotifications),$mailCollector->getMessageCount()); # Assert correct amount of emails sent
 
-        # Assert content of emails
+        # Assert content of email
         $collectedMessages = $mailCollector->getMessages();
-        $message = $collectedMessages[0];
-
-        $this->assertInstanceOf('Swift_Message', $message);
-        $this->assertSame($surveyNotifier->getEmailSubject(), $message->getSubject());
-        $this->assertSame('recipient@example.com', key($message->getTo()));
-        $this->assertSame(
-            'You should see me from the profiler!',
-            $message->getBody()
-        );
+        foreach($collectedMessages as $message){
+            $this->assertInstanceOf('Swift_Message', $message);
+            $this->assertSame($surveyNotifier->getEmailSubject(), $message->getSubject());
+            $this->assertNotFalse(strpos($message->getBody(), $mailBody));
+        }
 
 
-        # Notification is not to be sent before some time into the future
+        # Notification should not to be sent before some time into the future
         $date = new \DateTime();
         $date->add(new \DateInterval("P1Y"));
         $date = $date->format('d.m.Y H:i');
@@ -231,13 +231,17 @@ class SurveyNotificationControllerTest extends BaseWebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
         $this->assertTrue($crawler->filter('td:contains("TestClick")')->count()>0);
-
         $surveyNotifier = $this->em->getRepository('AppBundle:SurveyNotificationCollection')->findOneBy([
             'name' => "TestClick1"
         ]);
-
+        $this->client->enableProfiler();
         $this->client->request('POST','/kontrollpanel/undersokelsevarsel/send/'.$surveyNotifier->getId());
         $this->assertEquals(302, $this->client->getResponse()->getStatusCode());
+        $mailCollector = $this->client->getProfile()->getCollector('swiftmailer');
+        $collectedMessages = $mailCollector->getMessages();
+        foreach($collectedMessages as $message){
+            $this->assertNotFalse(strpos($message->getBody(), "/undersokelse/u/".$surveyId."/"));
+        }
 
         $surveyNotification = $this->em->getRepository('AppBundle:SurveyNotification')->findOneBy([
             'surveyNotificationCollection' => $surveyNotifier->getId(),
