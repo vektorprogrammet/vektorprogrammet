@@ -77,8 +77,8 @@ class LoadParentAssignmentData extends AbstractFixture implements OrderedFixture
         $manager->persist($parentAssignment6);
 
         $parentAssignment7 = new ParentAssignment();
-        $parentAssignment7->setNavn('Johann Sheitsen');
-        $parentAssignment7->setEpost('yes@gull.com');
+        $parentAssignment7->setNavn('Johanna Jensrud');
+        $parentAssignment7->setEpost('yes@yahoo.com');
         $parentAssignment7->setTidspunkt(new \DateTime());
         $parentAssignment7->setCourse($this->getReference('parent-course-3'));
 
