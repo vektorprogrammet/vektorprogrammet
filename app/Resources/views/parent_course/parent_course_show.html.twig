@@ -44,7 +44,7 @@
                                                class="dropdown-item"><i class="fa fa-user text-primary"></i> Påmeldte foreldre
                                             </a>
                                             <form method="POST"
-                                                  onsubmit="return confirm('Vil du virkelig dette foreldrekurset?')"
+                                                  onsubmit="return confirm('Vil du virkelig slette foreldrekurset til {{ parentCourse.speaker }} ?')"
                                                   action="{{ path('parent_course_admin_delete', { id: parentCourse.id }) }}">
                                                 <button type="submit"
                                                         class="dropdown-item">
