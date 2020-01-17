@@ -352,6 +352,35 @@ usergroup_collection_delete:
   id: \d+
 
 ##########################################
+#             Arrangement                #
+##########################################
+
+social_event_show:
+ path: /kontrollpanel/arrangementer
+ defaults: { _controller: AppBundle:SocialEvent:show }
+ methods: [GET]
+
+
+social_event_create:
+ path: /kontrollpanel/arrangement/opprett
+ defaults: { _controller: AppBundle:SocialEvent:createSocialEvent }
+ methods: [GET, POST]
+
+social_event_edit:
+ path: /kontrollpanel/arrangement/endre/{id}
+ defaults: { _controller: AppBundle:SocialEvent:editSocialEvent }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+social_event_delete:
+ path: /kontrollpanel/arrangement/slett/{id}
+ defaults: { _controller: AppBundle:SocialEvent:deleteSocialEvent }
+ methods: [POST]
+ requirements:
+  id: \d+
+
+##########################################
 #             Statistics                 #
 ##########################################
 
