@@ -23,7 +23,7 @@ class ParentAssignmentAdminController extends BaseController
 
         $this->addFlash("success", "\"".$parentAssignment->getNavn()."\" ble slettet");
 
-        return $this->redirectToRoute('parent_registration_admin_show');
+        return $this->redirectToRoute('parent_course_admin_show');
     }
 
 };
