@@ -37,7 +37,7 @@
                                             <div class="dropdown-header mb-2"><strong>Forelder: {{ parent.navn }}</strong></div>
                                             <form method="POST"
                                                   onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.navn }}?')"
-                                                  action="{{ path('parent_registration_admin_delete', { id: parent.id }) }}">
+                                                  action="{{ path('parent_assignment_admin_delete', { id: parent.id }) }}">
                                                 <button type="submit"
                                                         class="dropdown-item">
                                                     <i class="fa fa-trash text-danger"></i> Slett

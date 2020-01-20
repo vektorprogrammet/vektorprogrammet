@@ -40,7 +40,7 @@
                                         </div>
                                         <div class="dropdown-menu pt-0" aria-labelledby="options-{{ parentCourse.id }}">
                                             <div class="dropdown-header mb-2"><strong>Foreldrekurs holdt av: {{ parentCourse.speaker }}</strong></div>
-                                            <a href="{{ path('parent_registration_admin_show', { id: parentCourse.id }) }}"
+                                            <a href="{{ path('parent_assignment_admin_show', { id: parentCourse.id }) }}"
                                                class="dropdown-item"><i class="fa fa-user text-primary"></i> Påmeldte foreldre
                                             </a>
                                             <form method="POST"

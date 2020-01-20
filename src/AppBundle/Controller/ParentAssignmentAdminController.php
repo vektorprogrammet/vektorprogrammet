@@ -26,7 +26,7 @@ class ParentAssignmentAdminController extends BaseController
 
 
 
-        return $this->redirectToRoute('parent_registration_admin_show', array(
+        return $this->redirectToRoute('parent_assignment_admin_show', array(
             'id' => $parentCourseID
         ));
     }

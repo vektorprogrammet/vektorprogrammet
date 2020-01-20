@@ -50,7 +50,7 @@ class ParentAssignmentController extends BaseController
         $em->flush();
         #denne skal brukes til å slette fra mailen som sendes ut til foreldrene!
 
-        return $this->redirectToRoute('parent_registration_external_delete');
+        return $this->redirectToRoute('parent_assignment_external_delete');
     }
 
 };

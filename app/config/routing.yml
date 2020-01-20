@@ -82,28 +82,28 @@ parent_course_admin_delete:
  requirements:
   id: \d+
 
-parent_registration:
+parent_assignment:
  path: /foreldrekurs/pamelding/{id)
  defaults: {_controller: AppBundle:ParentAssignment:create }
  methods: [GET, POST]
  requirements:
   id: \d+
 
-parent_registration_admin_show:
+parent_assignment_admin_show:
  path: /kontrollpanel/foreldrekurs/foreldre/{id}
  defaults: {_controller: AppBundle:ParentAssignmentAdmin:show }
  methods: [GET]
  requirements:
   id: \d+
 
-parent_registration_admin_delete:
+parent_assignment_admin_delete:
  path: /kontrollpanel/foreldrekurs/foreldre/slett/{id}
  defaults: {_controller: AppBundle:ParentAssignmentAdmin:delete }
  methods: [POST]
  requirements:
   id: \d+
 
-parent_registration_external_delete:
+parent_assignment_external_delete:
  path: /foreldrekurs/avmelding/{uniqueKey}
  defaults: {_controller: AppBundle:ParentAssignment:delete }
  methods: [POST]
