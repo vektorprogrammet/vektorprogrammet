@@ -62,7 +62,7 @@ update_static_content:
  methods: [POST]
 
  ##########################################
- #     Parent-course and registration     #
+ #    ParentCourse and ParentAssignment   #
  ##########################################
 
 parent_course_create:
