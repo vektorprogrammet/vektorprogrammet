@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\ParentCourse;
 
 /**
  * ParentAssignment
@@ -43,7 +44,7 @@ class ParentAssignment
     private $tidspunkt;
 
     /**
-     * @var int
+     * @var ParentCourse
      *
      * @ORM\ManyToOne(targetEntity="ParentCourse", inversedBy="assignedParents")
      */
@@ -154,9 +155,9 @@ class ParentAssignment
     /**
      * Get course.
      *
-     * @return int
+     * @return ParentCourse
      */
-    public function getCourse(): int
+    public function getCourse(): ParentCourse
     {
         return $this->course;
     }

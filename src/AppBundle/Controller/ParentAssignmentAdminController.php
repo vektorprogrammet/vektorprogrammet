@@ -17,13 +17,18 @@ class ParentAssignmentAdminController extends BaseController
 
     public function deleteAction(ParentAssignment $parentAssignment)
     {
+        $parentCourseID = $parentAssignment->getCourse()->getId();
         $em = $this->getDoctrine()->getManager();
         $em->remove($parentAssignment);
         $em->flush();
 
         $this->addFlash("success", "\"".$parentAssignment->getNavn()."\" ble slettet");
 
-        return $this->redirectToRoute('parent_course_admin_show');
+
+
+        return $this->redirectToRoute('parent_registration_admin_show', array(
+            'id' => $parentCourseID
+        ));
     }
 
 };
