@@ -2,12 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Application;
+use AppBundle\Entity\Interview;
 use AppBundle\Role\Roles;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\InterviewSchema;
 use AppBundle\Form\Type\InterviewSchemaType;
+use AppBundle\Form\Type\ApplicationInterviewType;
+
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -99,5 +103,27 @@ class InterviewSchemaController extends BaseController
         }
 
         return new JsonResponse($response);
+    }
+
+    public function previewSchemaAction(InterviewSchema $interviewSchema) {
+
+        $department = $this->getUser()->getDepartment();
+        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
+
+        $interview = new Interview();
+        $interview -> setInterviewSchema($interviewSchema);
+        $application = new Application();
+        $application->setInterview($interview);
+        $form = $this->createForm(ApplicationInterviewType::class, $application, array(
+            'validation_groups' => array('interview'),
+            'teams' => $teams,
+        ));
+        return $this->render('interview/preview_schema.html.twig', array(
+            'interview_schema' => $interviewSchema,
+            'department'  => $department,
+            'teams'       => $teams,
+            'form'        => $form->createView(),
+        ));
+
     }
 }

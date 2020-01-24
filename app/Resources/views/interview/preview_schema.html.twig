@@ -1,0 +1,174 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Intervju
+{% endblock %}
+
+{% block breadcrumb_menu %}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        Intervjufordeling
+    </li>
+    <li class="breadcrumb-item active">Intervju - Eksempel Johansen</li>
+{% endblock %}
+
+{# Form themes user to modify the templates of the various form components #}
+{% form_theme form 'form/interview_layout.html.twig' %}
+{% form_theme form.applicationPractical.days 'form/components/days_checkbox.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-xl-8">
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Praktisk informasjon
+                </div>
+                <div class="card-body">
+                    <h4>Introduksjon</h4>
+                    <ul>
+                        <li>En ungdomsskoledag er innenfor tidsrommet kl. 08.00 og 14.45. I tillegg kommer reisetid</li>
+                        <li>Det kan hende at du ikke har noe å gjøre deler av dagen pga timeplanen. Derfor er det
+                            lurt å ta med bøker hvis det blir pauser
+                        </li>
+                    </ul>
+                    <div class="form-group">
+                        {{ form_row(form.applicationPractical.days) }}
+                    </div>
+                    <div class="row">
+                        <div class="col-12 col-lg-4">
+                            {{ form_row(form.applicationPractical.yearOfStudy) }}
+                        </div>
+                    </div>
+
+                    {{ form_row(form.applicationPractical.doublePosition) }}
+
+                    <div class="form-group">
+                        {{ form_label(form.applicationPractical.preferredGroup, null, {'label_attr': {'class': 'question-label'}}) }}
+                        <br>
+                        <span class="question-help">Dette kan være f.eks reise, studietur, lab, annet obligatorisk opplegg eller liknende.</span>
+                        {{ form_errors(form.applicationPractical.preferredGroup) }}
+                        {{ form_widget(form.applicationPractical.preferredGroup) }}
+                    </div>
+
+                    {{ form_row(form.applicationPractical.language) }}
+                    {{ form_row(form.heardAboutFrom) }}
+                    {{ form_label(form.applicationPractical.teamInterest, null, {'label_attr': {'class': 'question-label'}}) }}
+                    <br>
+                    <span class="question-help">Du kan gjerne spørre om de har mye å gjøre gjennom semesteret, og lede det inn i om de er interessert i team</span>
+                    {{ form_errors(form.applicationPractical.teamInterest) }}
+                    {{ form_widget(form.applicationPractical.teamInterest) }}
+                    {{ form_row(form.applicationPractical.potentialTeams) }}
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Spesielle behov</div>
+                <div class="card-body">
+                    <input type="checkbox" id="specialNeedsToggle">
+                    <label for="specialNeedsToggle">Assistenten har spesielle behov</label>
+                    <div id="specialNeeds">
+                        {{ form_row(form.specialNeeds) }}
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Intervjuspørsmål
+                    <small>{{ interview_schema.name }}</small>
+                </div>
+                <div class="card-body">
+                    {% for interviewAnswer in form.interview.interviewAnswers %}
+                        {{ form_row(interviewAnswer.answer) }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Evaluering</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.explanatoryPower) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.roleModel) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.suitability) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.suitableAssistant) }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      const specialNeedsToggle = document.querySelector('#specialNeedsToggle');
+      const specialNeedsRow = $('#specialNeeds');
+      const specialNeedsInput = document.querySelector('#specialNeeds input');
+
+      const singlePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_0');
+      const doublePositionToggle = document.querySelector('#application_applicationPractical_doublePosition_1');
+      const bothGroups = document.querySelector('#application_applicationPractical_preferredGroup_0');
+      const group1 = document.querySelector('#application_applicationPractical_preferredGroup_1');
+      const group2 = document.querySelector('#application_applicationPractical_preferredGroup_2');
+
+      const doublePositionRow = document.querySelector('.doublePositionRow');
+
+      specialNeedsToggle.addEventListener('change', toggleSpecialNeeds);
+      singlePositionToggle.addEventListener('change', toggleDoublePosition);
+      doublePositionToggle.addEventListener('change', toggleDoublePosition);
+
+      document.addEventListener('DOMContentLoaded', function () {
+        if (specialNeedsInput.value) {
+          specialNeedsToggle.checked = true;
+          toggleSpecialNeeds();
+        }
+      });
+
+      function toggleSpecialNeeds() {
+        if (specialNeedsToggle.checked) {
+          specialNeedsRow.slideDown();
+        } else {
+          specialNeedsRow.slideUp();
+          specialNeedsInput.value = '';
+        }
+      }
+
+      function toggleDoublePosition() {
+        if (doublePositionToggle.checked) {
+          bothGroups.checked = true;
+          bothGroups.setAttribute('disabled', 'disabled');
+          group1.setAttribute('disabled', 'disabled');
+          group2.setAttribute('disabled', 'disabled');
+          doublePositionRow.classList.add('textDisabled');
+        } else {
+          bothGroups.removeAttribute('disabled');
+          group1.removeAttribute('disabled');
+          group2.removeAttribute('disabled');
+          doublePositionRow.classList.remove('textDisabled');
+        }
+      }
+
+    </script>
+{% endblock %}

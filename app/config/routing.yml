@@ -1038,6 +1038,13 @@ interview_schema_delete:
  requirements:
   id: \d+
 
+interview_schema_preview:
+ path: /kontrollpanel/intervju/skjema/preview/{id}
+ defaults: { _controller: AppBundle:InterviewSchema:previewSchema }
+ methods: [GET]
+ requirements:
+  id: \d+
+
 interview_assign:
  path: /kontrollpanel/intervju/fordel/{id}
  defaults: { _controller: AppBundle:Interview:assign, id: null }
