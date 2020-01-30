@@ -59,7 +59,7 @@
 
 <script lang="ts">
     import Vue from 'vue';
-    //import Component from 'vue-class-component';
+    // import Component from 'vue-class-component';
     import { Prop } from 'vue-property-decorator';
     /* import ProfilePicture from "./ProfilePicture";
     @Component({
@@ -67,9 +67,9 @@
     })*/
     export default class ContactInfo extends Vue {
         // @Prop() private coordinator: any;
-        //@Prop() private partner: any;
+        // @Prop() private partner: any;
         @Prop() private school: object = Object;
-        //contact_info_pictureWidth: string = '20%';
+        // contact_info_pictureWidth: string = '20%';
     }
 </script>
 

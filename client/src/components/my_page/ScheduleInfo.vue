@@ -98,7 +98,7 @@ export default class ScheduleInfo extends Vue {
   }*/
 
   .content {
-    background: url("../../public/img/schools/gimse_blurred.jpg") center center no-repeat;
+    background: url("../../../public/img/schools/gimse_blurred.jpg") center center no-repeat;
     background-size: cover;
     //background-color: lightgrey;
     padding: 0 0 50px 0;

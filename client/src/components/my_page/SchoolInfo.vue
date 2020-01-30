@@ -34,7 +34,7 @@
     import Vue from 'vue';
     import Component from 'vue-class-component';
     import { Prop } from 'vue-property-decorator';
-    import ProfilePicture from "./ProfilePicture";
+    import ProfilePicture from "./ProfilePicture.vue";
     @Component({
         components: {ProfilePicture}
     })

@@ -47,18 +47,18 @@
 
 <script lang="ts">
 import PageHeader from '../../components/PageHeader.vue';
-import MyPageNav from '../../components/MyPageNav.vue';
-import PartnerInfo from '../../components/PartnerInfo.vue';
-import ScheduleInfo from '../../components/ScheduleInfo.vue';
-import SchoolInfo from '../../components/SchoolInfo.vue';
-import UserInfo from '../../components/UserInfo.vue';
+import MyPageNav from '../../components/my_page/MyPageNav.vue';
+import PartnerInfo from '../../components/my_page/PartnerInfo.vue';
+import ScheduleInfo from '../../components/my_page/ScheduleInfo.vue';
+import SchoolInfo from '../../components/my_page/SchoolInfo.vue';
+import UserInfo from '../../components/my_page/UserInfo.vue';
 import Vue from 'vue';
 import Component from 'vue-class-component';
 import {accountService} from "@/services";
 import {ProvideReactive} from "vue-property-decorator";
-import UpcomingEvents from "../../components/UpcomingEvents";
-import ContactInfo from "../../components/ContactInfo";
-import Map from "../../components/Map";
+import UpcomingEvents from "../../components/my_page/UpcomingEvents.vue";
+import ContactInfo from "../../components/my_page/ContactInfo.vue";
+import Map from "../../components/my_page/Map.vue";
 
 
 @Component({

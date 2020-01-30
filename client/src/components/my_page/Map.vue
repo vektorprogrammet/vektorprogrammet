@@ -1,12 +1,12 @@
 <template>
-    <div class="content">
-        <div class="map_section" :id="'map_' + schoolName"></div>
+    <div class='content'>
+        <div class='map_section' :id="'map_' + schoolName "></div>
         <p>{{ this.helpText}}</p>
     </div>
 </template>
 
-<script lang="ts">
-    import {mapService} from "../services";
+<script lang='ts'>
+    import {mapService} from '@/services';
     import {Vue, Component, Prop, InjectReactive} from 'vue-property-decorator';
 
     @Component
@@ -14,13 +14,13 @@
         @InjectReactive() user!: any;
         @Prop() private schoolName!: string;
         private startLocation!: string;
-        private helpText: string = "Venter på ruteforslag";
+        private helpText: string = 'Venter på ruteforslag';
 
         public beforeMount() {
             if (this.user.address) {
                 this.startLocation = this.user.address.address + ', ' + this.user.address.city;
             } else {
-                this.startLocation = this.user.department.city + " Sentrum";
+                this.startLocation = this.user.department.city + ' Sentrum';
             }
         }
 
@@ -45,9 +45,9 @@
                         display.setMap(map);
                         display.setDirections(result);
                         let duration = result.routes[0].legs[0].duration.text;
-                        this.helpText = "Reisen fra " + this.startLocation + " til " + this.schoolName + " ungdomsskole tar ca " + duration;
+                        this.helpText = 'Reisen fra ' + this.startLocation + ' til ' + this.schoolName + ' ungdomsskole tar ca ' + duration;
                     } else {
-                        this.helpText = "Ingen rute funnet mellom " + this.startLocation + " og " + this.schoolName + " Ungdomsskole";
+                        this.helpText = 'Ingen rute funnet mellom ' + this.startLocation + ' og ' + this.schoolName + ' Ungdomsskole';
                     }
                 });
 
@@ -58,6 +58,6 @@
     }
 </script>
 
-<style scoped lang="scss">
+<style scoped lang='scss'>
 
 </style>

@@ -92,7 +92,7 @@ import {
 } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import {InjectReactive} from 'vue-property-decorator';
-import ProfilePicture from "./ProfilePicture";
+import ProfilePicture from "./ProfilePicture.vue";
 
 library.add(faPhone, faEnvelope);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
