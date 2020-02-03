@@ -22,7 +22,8 @@
                                 <th></th>
                                 <th>Tittel</th>
                                 <th>Bruker</th>
-                                <th></th>
+                                <th>Type</th>
+                                <th>Dato</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -67,6 +68,9 @@
                                             Ny funksjonalitet
                                         </span>
                                         {% endif %}
+                                    </td>
+                                    <td>
+                                        {{ feedback.createdAt.format('d.m.Y') }}
                                     </td>
                                 </tr>
                             {% endfor %}
