@@ -27,7 +27,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah2->setSemester($this->getReference('semester-current'));
         $ah2->setDepartment($this->getReference('dep-1'));
         $ah2->setWorkdays(8);
-        $ah2->setBolk('Bolk 1, Bolk 2');
+        $ah2->setBolk('Bolk 2');
         $ah2->setDay('Mandag');
         $manager->persist($ah2);
 
@@ -75,7 +75,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
             $ah->setSemester($semesters[3]);
             $ah->setDepartment($departments[0]);
             $ah->setWorkdays(4*rand(1, 2));
-            $ah->setBolk($bolks[1]);
+            $ah->setBolk($bolks[rand(0, 1)]);
             $ah->setDay('Onsdag');
             $manager->persist($ah);
         }
@@ -88,7 +88,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
             $ah->setSemester($semesters[rand(0, 3)]);
             $ah->setDepartment($departments[rand(0, 1)]);
             $ah->setWorkdays(4*rand(1, 2));
-            $ah->setBolk($bolks[0]);
+            $ah->setBolk($bolks[rand(0, 1)]);
             $ah->setDay('Onsdag');
             $manager->persist($ah);
         }
