@@ -82,9 +82,16 @@ parent_course_admin_delete:
  requirements:
   id: \d+
 
-parent_assignment:
- path: /foreldrekurs/pamelding/{id)
+parent_assignment_create:
+ path: /foreldrekurs/pamelding/{id}
  defaults: {_controller: AppBundle:ParentAssignment:create }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
+
+parent_assignment_admin_create:
+ path: /kontrollpanel/foreldrekurs/pamelding/{id}
+ defaults: {_controller: AppBundle:ParentAssignmentAdmin:create }
  methods: [GET, POST]
  requirements:
   id: \d+

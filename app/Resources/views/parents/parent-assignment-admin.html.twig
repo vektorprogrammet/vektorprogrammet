@@ -9,6 +9,12 @@
     <li class="breadcrumb-item active">Påmeldte foreldre til foreldrekurs</li>
 {% endblock %}
 
+{% block breadcrumb_menu %}
+    <a href="{{ path('parent_assignment_admin_create', { 'id': courseID }) }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Meld på ny forelder </a>
+{% endblock %}
+
+
 {% block body %}
 
     <div class="row">
@@ -36,7 +42,7 @@
                                         <div class="dropdown-menu pt-0" aria-labelledby="options-{{ parent.id }}">
                                             <div class="dropdown-header mb-2"><strong>Forelder: {{ parent.navn }}</strong></div>
                                             <form method="POST"
-                                                  onsubmit="return confirm('Vil du virkelig melde av forelder {{ parent.navn }}?')"
+                                                  onsubmit="return confirm('Vil du virkelig melde av forselder {{ parent.navn }}?')"
                                                   action="{{ path('parent_assignment_admin_delete', { id: parent.id }) }}">
                                                 <button type="submit"
                                                         class="dropdown-item">
