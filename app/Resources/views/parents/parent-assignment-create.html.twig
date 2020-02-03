@@ -1,0 +1,42 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+Ny forelder
+{% endblock %}
+
+{% block breadcrumb %}
+
+<li class="breadcrumb-item"><a href="{{ path('parent_course_admin_show') }}">Foreldrekurs</a></li> <!-- Fikse breadcrumb også!-->
+<li class="breadcrumb-item active">Ny forelder</li>
+{% endblock %}
+
+{% block body %}
+{{ form_start(form) }}
+<div class="row">
+    <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+        <div class="card">
+            <div class="card-header"><i class="fa fa-comment-o"></i> Ny forelder </div>
+            <div class="card-body">
+                {{ form_row(form.navn) }}
+                {{ form_row(form.epost) }}
+                {{ form_row(form.tidspunkt) }}
+                {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+            </div>
+        </div>
+        <div class="hide">
+            {{ form_rest(form) }}
+        </div>
+    </div>
+</div>
+{{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+
+    {% include 'common/datetime_picker.html.twig' with { inputIds: [form.date.vars.id] } %}
+
+<script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', QuestionManager.onReady);
+</script>
+{% endblock %}

@@ -37,7 +37,7 @@ class ParentAssignmentAdminController extends BaseController
             return $this->redirectToRoute('parent_assignment_admin_show', ['id' => $course->getId()]);
         }
 
-        return $this->render('parents/parent-assignment.html.twig', array(
+        return $this->render('parents/parent-assignment-create.html.twig', array(
             'form' => $form->createView(),
         ));
     }
