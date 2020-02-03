@@ -88,7 +88,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
             $ah->setSemester($semesters[rand(0, 3)]);
             $ah->setDepartment($departments[rand(0, 1)]);
             $ah->setWorkdays(4*rand(1, 2));
-            $ah->setBolk($bolks[rand(0, 1)]);
+            $ah->setBolk($bolks[0]);
             $ah->setDay('Onsdag');
             $manager->persist($ah);
         }
