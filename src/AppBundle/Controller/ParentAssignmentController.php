@@ -34,10 +34,10 @@ class ParentAssignmentController extends BaseController
 
             $this->addFlash("success", "Din påmelding er registert.");
 
-            return $this->redirect($this->generateUrl('foreldre'));
+            return $this->redirect($this->generateUrl('parents'));
         }
 
-        return $this->render('parents/parent-assignment.html.twig', array(
+        return $this->render('parents/parent-assignment-create.html.twig', array(
             'form' => $form->createView(),
 ));
 

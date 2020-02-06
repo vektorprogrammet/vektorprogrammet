@@ -5,16 +5,16 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\ParentAssignment;
 use AppBundle\Entity\ParentCourse;
 use AppBundle\Form\Type\ParentAssignmentType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class ParentAssignmentAdminController extends BaseController
 {
     public function showAction(ParentCourse $course)
     {
-        return $this->render('parents/parent-assignment-admin.html.twig', array(
+        return $this->render('parents/parent-assignment-admin-show.html.twig', array(
             'parentsAssigned' => $course->getAssignedParents(),
             'courseID' => $course->getId(),
+            'courseSpeaker' => $course->getSpeaker(),
         ));
     }
 
@@ -37,8 +37,11 @@ class ParentAssignmentAdminController extends BaseController
             return $this->redirectToRoute('parent_assignment_admin_show', ['id' => $course->getId()]);
         }
 
-        return $this->render('parents/parent-assignment-create.html.twig', array(
+        return $this->render('parents/parent-assignment-admin-create.html.twig', array(
             'form' => $form->createView(),
+            'courseID' => $course->getId(),
+            'courseSpeaker' => $course->getSpeaker(),
+
         ));
     }
     public function deleteAction(ParentAssignment $parentAssignment)
@@ -48,7 +51,7 @@ class ParentAssignmentAdminController extends BaseController
         $em->remove($parentAssignment);
         $em->flush();
 
-        $this->addFlash("success", "\"".$parentAssignment->getNavn()."\" ble slettet");
+        $this->addFlash("success", "\"".$parentAssignment->getNavn()."\" ble meldt av foreldrekurset");
 
 
         return $this->redirectToRoute('parent_assignment_admin_show', ['id' => $parentCourseID]);

@@ -6,7 +6,7 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{{ path('parent_course_admin_show') }}">Alle foreldrekurs</a></li>
-    <li class="breadcrumb-item active">Påmeldte foreldre til foreldrekurs</li>
+    <li class="breadcrumb-item active">Påmeldte foreldre hos {{ courseSpeaker }}</li>
 {% endblock %}
 
 {% block breadcrumb_menu %}
@@ -20,7 +20,7 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header"><i class="fa fa-list-ul"></i> Påmeldte foreldre til foreldrekurs ({{ parentsAssigned|length }}) </div>
+                <div class="card-header"><i class="fa fa-list-ul"></i> Påmeldte foreldre hos {{ courseSpeaker }} ({{ parentsAssigned|length }}) </div>
                 <div class="table-responsive">
                     <table class="table" id="article-table">
                         <thead>

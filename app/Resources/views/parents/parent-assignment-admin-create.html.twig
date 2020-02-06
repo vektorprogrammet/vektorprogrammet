@@ -1,13 +1,13 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block title %}
-    Nytt foreldrekurs
+    Ny forelder
 {% endblock %}
 
 {% block breadcrumb %}
-
     <li class="breadcrumb-item"><a href="{{ path('parent_course_admin_show') }}">Alle foreldrekurs</a></li>
-    <li class="breadcrumb-item active">Nytt foreldrekurs</li>
+    <li class="breadcrumb-item active"><a href="{{ path('parent_assignment_admin_show', { id: courseID }) }}">Påmeldte foreldre hos {{ courseSpeaker }}</a></li>
+    <li class="breadcrumb-item active">Ny forelder</li>
 {% endblock %}
 
 {% block body %}
@@ -15,12 +15,11 @@
     <div class="row">
         <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
             <div class="card">
-                <div class="card-header"><i class="fa fa-comment-o"></i> Foreldrekurs </div>
+                <div class="card-header"><i class="fa fa-comment-o"></i> Ny forelder </div>
                 <div class="card-body">
-                    {{ form_row(form.speaker) }}
-                    {{ form_row(form.place) }}
-                    {{ form_row(form.date) }}
-                    {{ form_row(form.information) }}
+                    {{ form_row(form.navn) }}
+                    {{ form_row(form.epost) }}
+                    {{ form_row(form.tidspunkt) }}
                     {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
                 </div>
             </div>
@@ -33,8 +32,6 @@
 {% endblock %}
 
 {% block javascripts %}
-
-    {% include 'common/datetime_picker.html.twig' with { inputIds: [form.date.vars.id] } %}
 
     <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
     <script>
