@@ -4,8 +4,12 @@ namespace AppBundle\Controller;
 
 class ParentsController extends BaseController
 {
-    public function indexAction()
+    public function showAction()
     {
-        return $this->render('/parents/parents.html.twig');
+        $parentCourses = $this->getDoctrine()->getRepository('AppBundle:ParentCourse')->findAllParentCoursesOrderedByDate();
+
+        return $this->render('/parents/parents.html.twig', array(
+            'parentCourses' => $parentCourses,
+        ));
     }
 }

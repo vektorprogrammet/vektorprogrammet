@@ -51,7 +51,7 @@ faq:
 
 parents:
  path: /foreldre
- defaults: {_controller: AppBundle:Parents:index}
+ defaults: {_controller: AppBundle:Parents:show}
  methods: [GET]
 
 # Updates static content
@@ -107,6 +107,13 @@ parent_assignment_admin_delete:
  path: /kontrollpanel/foreldrekurs/foreldre/slett/{id}
  defaults: {_controller: AppBundle:ParentAssignmentAdmin:delete }
  methods: [POST]
+ requirements:
+  id: \d+
+
+parent_assignment_external_show:
+ path: /foreldre/foreldrekurs
+ defaults: {_controller: AppBundle:ParentAssignment:show }
+ methods: [GET]
  requirements:
   id: \d+
 

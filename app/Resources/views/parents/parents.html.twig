@@ -47,7 +47,15 @@
                 </div>
             </section>
 
-            <p><i>Det finnes dessverre ingen foreldremøter tilgjengelig for påmelding akkurat nå!</i></p>
+            <!-- if parent_course show table of them, else show -->
+
+            {% if parentCourses is not null %}
+                <p> The courses should be rendered here!</p>
+                <p> Chech board_and_team for inspiration (BoardAndTeamController, as well as the twig file) /team in route</p>
+            {% else %}
+                <p><i>Det finnes dessverre ingen foreldremøter tilgjengelig for påmelding akkurat nå!</i></p>
+            {% endif %}
+
 
         </div>
     </div>
