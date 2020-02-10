@@ -1,0 +1,23 @@
+<div class="card parent-course-card mx-sm-4 my-lg-5 mx-0 my-4">
+    <div class="card-block px-3 py-3">
+        <h5 class="card-title mb-0 text-uppercase text-center">
+            {{ parentCourse.date | date('d.m.y') }} klokken {{ parentCourse.date | date('H:i') }}
+            <!-- Link to each parent-course -->
+        </h5>
+    </div>
+    <hr class="my-0">
+    <div class="card-block px-3 py-3">
+        <p class="card-text"><strong>Foredragsholder:</strong> {{ parentCourse.speaker }} </p>
+        <p class="card-text"><strong>Sted:</strong> {{ parentCourse.place }}, Trondheim</p>
+        <!-- Hadde vært kult med lenke til MazeMap her -->
+    </div>
+    <div class="card-block px-3 pb-2">
+
+        <p class="card-text"><strong>Informasjon:</strong> {{ parentCourse.information }} </p>
+    </div>
+        <div class="card-block px-2 py-2 card-footer text-center">
+            <span>Meld meg på!</span>
+            <!-- Fiks påmelding her! Lag route etc til det (email-utsending etc)-->
+        </div>
+    </a>
+</div>

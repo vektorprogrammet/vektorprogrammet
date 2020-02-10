@@ -47,11 +47,14 @@
                 </div>
             </section>
 
-            <!-- if parent_course show table of them, else show -->
-
             {% if parentCourses is not empty %}
-                <p> The courses should be rendered here!</p>
-                <p> Check board_and_team for inspiration (BoardAndTeamController, as well as the twig file) /team in route</p>
+                <div class="card-block tab-content px-3 px-sm-0">
+                    <div class="parent-course-cards-container">
+                        {% for parentCourse in parentCourses %}
+                            {% include 'parent_course/parent_course_card.html.twig' %}
+                        {% endfor %}
+                    </div>
+                </div>
             {% else %}
                 <p><i>Det finnes dessverre ingen foreldremøter tilgjengelig for påmelding akkurat nå!</i></p>
             {% endif %}

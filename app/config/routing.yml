@@ -1388,6 +1388,7 @@ assistants:
 team:
     path: /team
     defaults: { _controller: AppBundle:BoardAndTeam:show }
+    defaults: { _controller: AppBundle:BoardAndeam:show }
 
 teachers:
     path: /laerere
