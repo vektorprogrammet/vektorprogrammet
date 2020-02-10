@@ -9,6 +9,14 @@ use AppBundle\Entity\ParentAssignment;
 
 class ParentAssignmentController extends BaseController
 {
+    public function showAction()
+    {
+        $parentCourses = $this->getDoctrine()->getRepository('AppBundle:ParentCourse')->findAllParentCoursesOrderedByDate();
+        return $this->render('/parents/parents.html.twig', array(
+            'parentCourses' => $parentCourses,
+        ));
+    }
+
     public function createAction(Request $request, ParentCourse $course)
     {
         $parentAssigned = new ParentAssignment();
@@ -39,7 +47,7 @@ class ParentAssignmentController extends BaseController
 
         return $this->render('parents/parent-assignment-create.html.twig', array(
             'form' => $form->createView(),
-));
+            ));
 
     }
 

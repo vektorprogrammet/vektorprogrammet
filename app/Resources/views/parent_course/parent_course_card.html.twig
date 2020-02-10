@@ -2,7 +2,6 @@
     <div class="card-block px-3 py-3">
         <h5 class="card-title mb-0 text-uppercase text-center">
             {{ parentCourse.date | date('d.m.y') }} klokken {{ parentCourse.date | date('H:i') }}
-            <!-- Link to each parent-course -->
         </h5>
     </div>
     <hr class="my-0">
@@ -16,8 +15,9 @@
         Ønsker samme front end som for /teams, med cards ved siden av hverandre etc!) -->
         <p class="card-text"><strong>Informasjon:</strong> {{ parentCourse.information }} </p>
     </div>
+    <a href="{{ path('parent_course_external_show') }}" class="application-link m-0">
         <div class="card-block px-2 py-2 card-footer text-center">
-            <span>Meld meg på!</span>
+        <i class="fas fa-info-circle"></i><span> Les mer!</span>
             <!-- Fiks påmelding her! Lag route etc til det (email-utsending etc)-->
         </div>
     </a>

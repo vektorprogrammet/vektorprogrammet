@@ -110,7 +110,7 @@ parent_assignment_admin_delete:
  requirements:
   id: \d+
 
-parent_assignment_external_show:
+parent_course_external_show:
  path: /foreldre/foreldrekurs
  defaults: {_controller: AppBundle:ParentAssignment:show }
  methods: [GET]
