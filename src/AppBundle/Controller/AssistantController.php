@@ -131,7 +131,7 @@ class AssistantController extends BaseController
                 $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
 
                 //If no active admission period is found
-                if(!$admissionPeriod){
+                if (!$admissionPeriod) {
                     $this->addFlash('danger', $department . ' sitt opptak er dessverre stengt.');
                     return $this->redirectToRoute('assistants');
                 }

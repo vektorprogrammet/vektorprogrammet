@@ -64,7 +64,7 @@ class ApplicationAdmission
         $department = $fos->getDepartment();
         $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')
             ->findOneWithActiveAdmissionByDepartment($department);
-        if ($admissionPeriod === null){
+        if ($admissionPeriod === null) {
             return false;
         }
         return $this->userHasAlreadyAppliedInAdmissionPeriod($user, $admissionPeriod);
