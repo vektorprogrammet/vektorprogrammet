@@ -32,9 +32,12 @@
   text-decoration: none;
   color: #023874;
   transition: 0.2s;
+
   &:hover {
     background: #d7ffd5;
+
     span {
       color: #0a3a06;
     }
+  }
 }

@@ -15,10 +15,9 @@
         Ønsker samme front end som for /teams, med cards ved siden av hverandre etc!) -->
         <p class="card-text"><strong>Informasjon:</strong> {{ parentCourse.information }} </p>
     </div>
-    <a href="{{ path('parent_course_external_show') }}" class="application-link m-0">
+    <a href="{{ path('parent_course_external_show', { id: parentCourse.id }) }}" class="application-link m-0">
         <div class="card-block px-2 py-2 card-footer text-center">
-        <i class="fas fa-info-circle"></i><span> Les mer!</span>
-            <!-- Fiks påmelding her! Lag route etc til det (email-utsending etc)-->
+        <i class="fas fa-check"></i><span> Les mer</span>
         </div>
     </a>
 </div>

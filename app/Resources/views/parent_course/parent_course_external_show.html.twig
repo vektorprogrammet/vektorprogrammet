@@ -1,0 +1,27 @@
+{%  extends 'base.html.twig' %}
+
+{%  block title %}
+    Vektorprogrammet
+{%  endblock %}
+
+{% block body %}
+
+    <div class="container individual-team-page">
+        <header class="page-header">
+            <div class="col-md-12">
+                <h1>Foreldrekurs {{ parentCourse.id }}</h1>
+                <p class="text-center">{{ parentCourse.date | date('d.m.y') }} klokken {{ parentCourse.date | date('H:i') }}</p>
+            </div>
+        </header>
+        <section class="custom_html row content">
+            Foredragsholder: {{ parentCourse.speaker }}
+        </section>
+        <section class="row content">
+            <div class="col-12 col-sm-8 offset-sm-2">
+                <a class="btn btn-success btn-block apply-button p-4 text-uppercase medium-bold"
+                   href="{{ path('parent_assignment_create', {'id': parentCourse.id}) }}">Meld meg på nå</a>
+            </div>
+        </section>
+    </div>
+
+{% endblock %}

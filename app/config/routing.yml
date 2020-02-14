@@ -111,7 +111,7 @@ parent_assignment_admin_delete:
   id: \d+
 
 parent_course_external_show:
- path: /foreldre/foreldrekurs
+ path: /foreldre/foreldrekurs/{id}
  defaults: {_controller: AppBundle:ParentAssignment:show }
  methods: [GET]
  requirements:
@@ -1388,7 +1388,6 @@ assistants:
 team:
     path: /team
     defaults: { _controller: AppBundle:BoardAndTeam:show }
-    defaults: { _controller: AppBundle:BoardAndeam:show }
 
 teachers:
     path: /laerere

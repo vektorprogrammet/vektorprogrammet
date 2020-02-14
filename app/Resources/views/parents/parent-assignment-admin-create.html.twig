@@ -33,8 +33,10 @@
 
 {% block javascripts %}
 
+    {% include 'common/datetime_picker.html.twig' with { inputIds: [form.date.vars.id] } %}
     <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
     <script>
         document.addEventListener('DOMContentLoaded', QuestionManager.onReady);
     </script>
+
 {% endblock %}

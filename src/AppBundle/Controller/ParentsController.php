@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ParentCourse;
+
 class ParentsController extends BaseController
 {
     public function showAction()

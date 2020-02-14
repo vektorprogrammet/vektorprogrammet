@@ -8,38 +8,31 @@
 {% block body %}
     <div class="container-fluid">
         <div class="parent-assignment-page content">
-            <div class="page-header">
-                {% include 'statictext/static_content.html.twig' with {'id': 'parent-assignment-header'} %}
-            </div>
-            <section class="row space">
-                <div class="col-sm-12">
-                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-assignment-info'} %}
+            <header class="my-5 row content">
+                <div class="col-md-12">
+                    <h1 class="text-center header-title text-dark-blue">Påmelding på kurs med {{ parentCourse.speaker }}</h1>
+                    <p class="text-center tiny-title">{{ parentCourse.date | date('d.m.y') }} klokken {{ parentCourse.date | date('H:i') }}</p>
                 </div>
-            </section>
-            <br>
+            </header>
             <section class="row space">
-                <div class="col-lg-12">
-                    {% include 'statictext/static_content.html.twig' with {'id': 'parent-assignment-interessert?'} %}
-                </div>
-            </section>
             <br>
             {{ form_start(form) }}
             <div class="card">
-                    <div class="card-header">
-                        <h3>Meld deg på!</h3>
-                    </div>
-                    <div class="card-body">
-                        {{ form_row(form.navn) }}
-                        {{ form_row(form.epost ) }}
-                        {{ form_row(form.tidspunkt ) }}
-                    </div>
-                    <div class="card-body">
-                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-                    </div>
-                    <div class="hide">
-                        {{ form_rest(form) }}
-                    </div>
+                <div class="card-header">
+                    <h3>Meld deg på!</h3>
+                </div>
+                <div class="card-body">
+                    {{ form_row(form.navn) }}
+                    {{ form_row(form.epost ) }}
+                </div>
+                <div class="card-body">
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+                <div class="hide">
+                    {{ form_rest(form) }}
+                </div>
             </div>
+            </section>
         </div>
     </div>
 
