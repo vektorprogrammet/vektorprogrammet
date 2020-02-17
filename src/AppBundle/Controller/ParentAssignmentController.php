@@ -37,6 +37,7 @@ class ParentAssignmentController extends BaseController
 
             $parentAssigned->setUniqueKey($randomString);
             $parentAssigned->setCourse($course);
+            $parentAssigned->setTidspunkt($course->getDate());
             $em->persist($parentAssigned);
             $em->flush();
 

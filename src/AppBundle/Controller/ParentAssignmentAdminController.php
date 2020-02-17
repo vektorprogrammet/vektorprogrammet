@@ -13,8 +13,7 @@ class ParentAssignmentAdminController extends BaseController
     {
         return $this->render('parents/parent-assignment-admin-show.html.twig', array(
             'parentsAssigned' => $course->getAssignedParents(),
-            'courseID' => $course->getId(),
-            'courseSpeaker' => $course->getSpeaker(),
+            'course' => $course,
         ));
     }
 

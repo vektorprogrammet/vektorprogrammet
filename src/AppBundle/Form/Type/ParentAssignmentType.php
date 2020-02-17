@@ -29,10 +29,6 @@ class ParentAssignmentType extends AbstractType
                     'autocomplete' => 'off',
                 ),
             ))
-            ->add('tidspunkt', DateTimeType::class, array(
-                'label' => 'Skriv dato',
-                'required' => true,
-            ))
             ->add('save', SubmitType::class, array(
                 'label' => 'Meld på!',
             ));

@@ -6,11 +6,11 @@
 
 {% block breadcrumb %}
     <li class="breadcrumb-item"><a href="{{ path('parent_course_admin_show') }}">Alle foreldrekurs</a></li>
-    <li class="breadcrumb-item active">Påmeldte foreldre hos {{ courseSpeaker }}</li>
+    <li class="breadcrumb-item active">Påmeldte foreldre hos {{ course.speaker }}</li>
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    <a href="{{ path('parent_assignment_admin_create', { 'id': courseID }) }}" class="btn btn-outline-success text-success">
+    <a href="{{ path('parent_assignment_admin_create', { 'id': course.id }) }}" class="btn btn-outline-success text-success">
         <i class="fa fa-plus"></i> Meld på ny forelder </a>
 {% endblock %}
 
@@ -20,7 +20,10 @@
     <div class="row">
         <div class="col-12">
             <div class="card">
-                <div class="card-header"><i class="fa fa-list-ul"></i> Påmeldte foreldre hos {{ courseSpeaker }} ({{ parentsAssigned|length }}) </div>
+                <div class="card-header"><i class="fa fa-list-ul"></i>
+                    <span>Påmeldte foreldre hos {{ course.speaker }} ({{ parentsAssigned|length }}) </span>
+                    <span class="float-right text-muted"> Tid og sted: {{ course.date | date('d.m.y') }} klokken {{ course.date | date('H:i') }}; {{ course.place }} </span>
+                </div>
                 <div class="table-responsive">
                     <table class="table" id="article-table">
                         <thead>
@@ -28,7 +31,6 @@
                             <th></th>
                             <th>Navn</th>
                             <th>Mailadresse</th>
-                            <th>Dato</th>
                         </tr>
                         </thead>
                         {% for parent in parentsAssigned %}
@@ -57,9 +59,6 @@
                                 </td>
                                 <td>
                                     {{ parent.epost | safe_html }}
-                                </td>
-                                <td>
-                                    {{ parent.tidspunkt | date("d.m.y") }}
                                 </td>
                             </tr>
                         {% endfor %}
