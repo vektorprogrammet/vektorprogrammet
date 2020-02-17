@@ -119,10 +119,17 @@ parent_course_external_show:
 
 parent_assignment_external_delete:
  path: /foreldrekurs/avmelding/{uniqueKey}
- defaults: {_controller: AppBundle:ParentAssignment:delete }
+ defaults: {_controller: AppBundle:ParentAssignment:externalDelete }
  methods: [POST]
  requirements:
   uniqueKey: .+
+
+parent_assignment_external_send:
+ path: /foreldrekurs/pamelding/mail/{id}
+ defaults: { _controller: AppBundle:ParentAssignment:sendEmail}
+ methods: [GET, POST]
+ requirements:
+  id: \d+
 
 
 ##########################################

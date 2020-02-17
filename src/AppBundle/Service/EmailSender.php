@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\ParentAssignment;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
 use AppBundle\Mailer\Mailer;
@@ -122,5 +123,20 @@ class EmailSender
             )))
             ->setContentType('text/html');
         $this->mailer->send($message, true);
+    }
+
+    public function sendParentCourseAssignmentConfirmation(ParentAssignment $parentAssignment)
+    {
+        $message = (new \Swift_Message())
+            ->setSubject('Du er påmeldt!')
+            ->setFrom($this->defaultEmail)
+            ->setTo($parentAssignment->getEpost())
+            ->setBody($this->twig->render('parents/parent-assigment-confirmation-email.html.twig', array(
+                'parentAssignment' => $parentAssignment,
+                'parentCourse' => $parentAssignment->getCourse(),
+            )))
+            ->setContentType('text/html');
+        $this->mailer->send($message, true);
+
     }
 }
