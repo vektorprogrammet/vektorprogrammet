@@ -41,3 +41,102 @@
     }
   }
 }
+
+.parent-course-cards-container{
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  -webkit-box-pack: center;
+  align-content: stretch;
+  flex-direction: column;
+}
+
+.parent-course-card {
+  display: flex;
+  max-width: 100%;
+  width: 290px;
+  box-shadow: 0 1px 2px 0 rgba(34,36,38,.15);
+  flex-direction: column;
+}
+
+.parent-card {
+  .card-block {
+
+    &:nth-of-type(2) {
+      flex-grow: 1;
+    }
+
+    &:nth-of-type(4) {
+      i {
+        transition: 0.3s;
+        opacity:0.9;
+      }
+
+      a {
+        &:hover {
+          i {
+            opacity: 1;
+          }
+          text-decoration: none;
+          color: #111;
+        }
+      }
+
+      transition: 0.1s;
+      flex-grow: 0;
+      text-align: center;
+      font-size:16px;
+    }
+
+    h5 {
+      font-size:17px;
+    }
+  }
+
+  .big-icon {
+    font-size: 13px;
+  }
+
+  @media (max-width: 767px) {
+    width:100% !important;
+  }
+
+  p {
+    font-size: 15px;
+  }
+
+  display:flex;
+  width:290px;
+  max-width:100%;
+  box-shadow:0 1px 2px 0 rgba(34,36,38,.15);
+}
+
+.parent-cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.application-link {
+  font-weight: 600;
+  text-decoration: none;
+  color: $dark-blue;
+  transition:0.2s;
+  .admission-star {
+    transition:0.35s;
+    color: #3b97fa;
+  }
+  &:hover {
+    background: #d7ffd5;
+    span {
+      color: #0a3a06;
+    }
+    .admission-star {
+      color: #39ce43;
+      @media (min-width: 768px) {
+        // Rules out most touch devices
+        transform: rotate(144deg);
+      }
+    }
+  }
+}

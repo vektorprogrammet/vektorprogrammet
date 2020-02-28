@@ -49,7 +49,7 @@
 
             {% if parentCourses is not empty %}
                 <div class="card-block tab-content px-3 px-sm-0">
-                    <div class="parent-course-cards-container">
+                    <div class="parent-cards-container card">
                         {% for parentCourse in parentCourses %}
                             {% include 'parent_course/parent_course_card.html.twig' %}
                         {% endfor %}
