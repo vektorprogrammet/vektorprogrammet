@@ -55,7 +55,12 @@
     "code-style": "./bin/php-cs-fixer fix src/ --dry-run --diff -vv",
     "code-style:win": ".\\bin\\php-cs-fixer fix src/ --dry-run --diff -vv",
     "cs": "./bin/php-cs-fixer fix src/ -vv || .\\bin\\php-cs-fixer fix src/ -vv",
-    "cs:win": ".\\bin\\php-cs-fixer fix src/ -vv"
+    "cs:win": ".\\bin\\php-cs-fixer fix src/ -vv",
+    "docker:dev:build": "docker image build -t vektordev:1.0 .",
+    "docker:dev:getvar": "docker create -ti --name vektordummy vektordev:1.0 true && rm -rf var && docker cp vektordummy:/app/var . && docker rm -f vektordummy",
+    "docker:dev:run": "docker run -ti --name vektorrom -p 8000:8000 --mount type=bind,src=\"$(pwd)/src\",dst=/app/src --mount type=bind,src=\"$(pwd)/var\",dst=/app/var vektordev:1.0 ; true",
+    "docker:dev:stop": "docker stop vektorrom && docker rm -f vektorrom",
+    "docker:dev:start": "npm run docker:dev:run ; echo 'Stopping vektor docker' && npm run docker:dev:stop"
   },
   "repository": {
     "type": "git",
