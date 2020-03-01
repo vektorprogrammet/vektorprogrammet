@@ -26,8 +26,8 @@ RUN php -i
 RUN sed -i 's/display_errors = Off/display_errors = On/' /etc/php/7.2/cli/php.ini
 RUN sed -i 's/display_startup_errors = Off/display_startup_errors = On/' /etc/php/7.2/cli/php.ini
 
-# Kopierer inn alt for å kjøre
-COPY . .
-RUN npm run setup
+# Vi kopierer ikke inn noe. Vi lar heller hele mappen mountes
+# COPY . .
+# RUN npm run setup
 
 CMD npm start

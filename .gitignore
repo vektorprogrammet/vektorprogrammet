@@ -2,7 +2,7 @@
 .env.*.php
 .env.php
 .env
-
+.v8flags*
 
 ### PhpStorm ###
 # Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
