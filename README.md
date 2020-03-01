@@ -5,6 +5,7 @@
 
 
 # Set up development environment
+There is also an option to use a docker image as your environment, see [docker.md].
 ## Requirements:
 - [PHP](http://php.net/downloads.php) version >= 7.1
 - [Node](https://nodejs.org/en/) version >= 8
@@ -18,17 +19,7 @@
 * ext-xml
 
 #### How to install the php-dependencies
-
-Please find the file `php.ini`. (On Linux it is located at `/etc/php/version/cli/php.ini`).
-
-Uncomment all lines with the required PHP-dependencies.
-
-Example for dependency `mbstring`:
-
-`;extension=mbstring`       ---> `extension=mbstring`
-
-
-To install the PHP-dependencies on Ubuntu 
+To install the php-dependencies on Ubuntu 
 (Example with Ubuntu as operating system and a php-version of 7.2)
 ```
 sudo apt-get install php7.2-mbstring
@@ -38,8 +29,14 @@ sudo apt-get install php7.2-curl
 sudo apt-get install php7.2-xml
 ```
 
+To see which modules are enabled, run `php -m`. If one of the required modules
+is missing, add it to `php.ini`. Run `php -i` to see where the ini file is located.
 
-
+Uncomment all lines with the missing PHP-dependencies. Example for dependency
+`mbstring`:
+```
+;extension=mbstring       ---> extension=mbstring
+```
 
 ## Setup:
 
