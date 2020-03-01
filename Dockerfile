@@ -1,23 +1,22 @@
-# Dockerfile for å kjøre vektorprogrammets binaries i ubuntu 18.04, men likevel hente all php-kildekode fra host-systemet
-# Bruk:
-#
+# Dockerfile for making ubuntu:18.04 into a php/node environment for running and developing vektorprogrammet
+# Usage: See docker.md
 
 FROM ubuntu:18.04
 RUN mkdir /app
 WORKDIR /app
 EXPOSE 8000
 
-# Sånn at kommandoer ikke ber om bruker-input
+# Tell packages to not ask for user input
 ENV DEBIAN_FRONTEND=noninteractive
 RUN apt-get update
 RUN apt-get install -y php7.2 php7.2-mbstring php7.2-sqlite php7.2-gd php7.2-curl php7.2-xml nodejs npm git zip unzip
 
-RUN echo "PHP-moduler (extensions): "
+RUN echo "PHP extensions: "
 RUN php -m
-RUN echo "PHP-inier: "
+RUN echo "PHP .ini files: "
 RUN php -i
 
-# Endre php.ini-fil
+# Make some changes to php.ini file. Many extensions are already enabled in other files
 #RUN sed -i 's/;extension=mbstring/extension=mbstring/' /etc/php/7.2/cli/php.ini
 #RUN sed -i 's/;extension=pdo_sqlite/extension=pdo_sqlite/' /etc/php/7.2/cli/php.ini
 #RUN sed -i 's/;extension=gd2/extension=gd2/' /etc/php/7.2/cli/php.ini
@@ -26,8 +25,9 @@ RUN php -i
 RUN sed -i 's/display_errors = Off/display_errors = On/' /etc/php/7.2/cli/php.ini
 RUN sed -i 's/display_startup_errors = Off/display_startup_errors = On/' /etc/php/7.2/cli/php.ini
 
-# Vi kopierer ikke inn noe. Vi lar heller hele mappen mountes
+# This is what we /would/ do if we didn't mount the entire folder into the container
 # COPY . .
 # RUN npm run setup
 
+# Default command for running, will complain about no package.json if app/ isn't mounted
 CMD npm start
