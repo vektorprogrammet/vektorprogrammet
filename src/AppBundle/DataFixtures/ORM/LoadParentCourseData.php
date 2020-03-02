@@ -52,10 +52,21 @@ class LoadParentCourseData extends AbstractFixture implements OrderedFixtureInte
 
         $manager->persist($parentCourse3);
 
+
+        $parentCourse4 = new ParentCourse();
+        $parentCourse4->setSpeaker('CourseToBeAssignedTo');
+        $parentCourse4->setPlace('Testing Place');
+        $parentCourse4->setDate(new \DateTime());
+        $parentCourse4->setInformation('Used for a test');
+
+        $manager->persist($parentCourse4);
+
         $manager->flush();
 
         $this->setReference('parent-course-1', $parentCourse1);
         $this->setReference('parent-course-2', $parentCourse2);
         $this->setReference('parent-course-3', $parentCourse3);
+        $this->setReference('parent-course-3', $parentCourse3);
+        $this->setReference('parent-course-4', $parentCourse4);
     }
 }
