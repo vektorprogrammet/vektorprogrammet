@@ -16,15 +16,16 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
             ->get('doctrine')
             ->getManager();
     }
+    /*
     public function testCreate()
     {
-        $client = $this->createAdminClient();
+        $client = $this->createAnonymousClient();
 
         $speaker = 'CourseToBeAssignedTo';
         $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $speaker));
         $id = $course->getId();
 
-        $crawler = $client->request('GET', '/kontrollpanel/foreldrekurs/pamelding/'.$id);
+        $crawler = $client->request('GET', '/foreldrekurs/pamelding/'.$id);
 
         $form = $crawler->selectButton('Lagre')->form();
 
@@ -33,24 +34,28 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
 
         $client->submit($form);
 
-        $crawler = $client->followRedirect();
-        $parentAssignmentAdminAfter = $crawler->filterXPath("//td[contains(text(), 'Ola Nordmann')]")->count();
-        #dump($parentAssignmentAdminAfter);
-        $this->assertEquals(1,$parentAssignmentAdminAfter);
+        $adminClient = $this->createAdminClient();
 
+        $adminCrawler = $this->teamLeaderGoTo('/kontrollpanel/foreldrekurs/foreldre/'.$id);
+        $table_check = $adminCrawler->filter('.card-header:contains("Påmeldte foreldre hos ")')->count();
+        $this->assertEquals(1, $table_check);
     }
 
+    */
     public function testShow()
     {
         $speaker = 'CourseToBeAssignedTo';
         $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $speaker));
         $id = $course->getId();
-        $crawler = $this->teamLeaderGoTo('/kontrollpanel/foreldrekurs/foreldre/'.$id);
-        $table_check = $crawler->filter('.card-header:contains("Påmeldte foreldre hos ")')->count();
-        $this->assertEquals(1, $table_check);
+        $crawler = $this->anonymousGoTo('/foreldre/foreldrekurs/'.$id);
+        $course_check = $crawler->filterXPath("//*[contains(@custom_html, 'CourseToBeAssignedTo')]")->count();
+        #dump($course_check);
+        $this->assertEquals(1, $course_check);
     }
 
-    public function testDelete()
+    /*
+
+    public function testExternalDelete()
     {
         $client = $this->createTeamMemberClient();
         $speaker = 'CourseToBeAssignedTo';
@@ -61,5 +66,6 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
         $client->request('POST', '/kontrollpanel/foreldrekurs/foreldre/slett/'.$id);
         $this->assertEquals(404, $client->getResponse()->getStatusCode());
     }
+    */
 
 }
