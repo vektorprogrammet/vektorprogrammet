@@ -37,13 +37,6 @@ class ParentAssignment
     private $epost;
 
     /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="Tidspunkt", type="datetime")
-     */
-    private $tidspunkt;
-
-    /**
      * @var ParentCourse
      *
      * @ORM\ManyToOne(targetEntity="ParentCourse", inversedBy="assignedParents")
@@ -116,29 +109,6 @@ class ParentAssignment
         return $this->epost;
     }
 
-    /**
-     * Set tidspunkt.
-     *
-     * @param \DateTime $tidspunkt
-     *
-     * @return ParentAssignment
-     */
-    public function setTidspunkt($tidspunkt)
-    {
-        $this->tidspunkt = $tidspunkt;
-
-        return $this;
-    }
-
-    /**
-     * Get tidspunkt.
-     *
-     * @return \DateTime
-     */
-    public function getTidspunkt()
-    {
-        return $this->tidspunkt;
-    }
 
     /**
      * Set course.

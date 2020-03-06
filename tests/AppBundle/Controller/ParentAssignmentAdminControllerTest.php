@@ -24,23 +24,20 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
         $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $speaker));
         $id = $course->getId(); #Gir meg ikke iden, men gir meg entryen i databasen!
 
-        $crawler = $client->request('GET', '/kontrollpanel/foreldrekurs/pamelding/68');
+        $crawler = $client->request('GET', '/kontrollpanel/foreldrekurs/pamelding/'.$id);
 
-        $form = $crawler->selectButton('Meld på!')->form();
+        $form = $crawler->selectButton('Lagre')->form();
 
         $form['parent_assignment[navn]'] = 'Ola Nordmann';
         $form['parent_assignment[epost]'] = 'ola@nordmann.no';
         #Må jeg teste at setCourse fungerer i selve controlleren også? (altså uten formen)
 
         $client->submit($form);
-        /*
-        $crawler = $client->followRedirect();
-        $parentAssignmentAdminAfter = $crawler->filter('td:contains("Ola Nordmann")')->count();
-        dump($parentAssignmentAdminAfter);
-        dump($crawler);
-        $this->assertEquals(1, $parentAssignmentAdminAfter);
-        */
 
+        $crawler = $client->followRedirect();
+        $parentAssignmentAdminAfter = $crawler->filterXPath("//td[contains(text(), 'Ola Nordmann')]")->count();
+        #dump($parentAssignmentAdminAfter);
+        $this->assertEquals(1,$parentAssignmentAdminAfter);
 
     }
 
