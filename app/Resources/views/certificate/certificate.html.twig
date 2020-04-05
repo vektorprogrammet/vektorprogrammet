@@ -167,7 +167,11 @@
         </div>
         <br>
         <br>
-
+        {% if additional_comment %}
+            <p>
+                {{ additional_comment }}
+            </p>
+        {% endif %}
         <p class="bold courtesy-of">På vegne av Vektorprogrammet.</p>
         <img src="{{ base_dir ~ "/../" ~ signature.signaturePath }}"
              class="signature-image"
