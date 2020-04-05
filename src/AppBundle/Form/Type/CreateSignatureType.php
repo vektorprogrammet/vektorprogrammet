@@ -25,7 +25,7 @@ class CreateSignatureType extends AbstractType
             ))
             ->add('additional_comment', TextareaType::class, array(
                 'label' => 'Ekstra kommentar (Valgfritt, dukker opp mellom oversikt og underskrift)',
-                'required' => False,
+                'required' => false,
                 'attr' => array(
                     'maxlength' => 500,
                     'rows' => 5,
