@@ -37,7 +37,7 @@ class Signature
     private $description;
 
     /**
-     * @ORM\Column(type="string", length=250, nullable=true)
+     * @ORM\Column(type="string", length=500, nullable=true)
      * @Assert\Length(min = 1, max = 500, maxMessage="Kommentaren kan maks være 500 tegn."))
      */
     private $additional_comment;
