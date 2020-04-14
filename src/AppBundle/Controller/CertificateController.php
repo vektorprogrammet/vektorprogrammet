@@ -59,7 +59,7 @@ class CertificateController extends BaseController
             $manager->persist($signature);
             $manager->flush();
 
-            $this->addFlash('success', 'Signaturen ble lagret');
+            $this->addFlash('success', 'Signatur og evt. kommentar ble lagret');
             return $this->redirect($request->headers->get('referer'));
         }
 
