@@ -3,8 +3,10 @@
 namespace AppBundle\Twig\Extension;
 
 use Doctrine\ORM\EntityManagerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SponsorsExtension extends \Twig_Extension
+class SponsorsExtension extends AbstractExtension
 {
     protected $doctrine;
 
@@ -21,8 +23,8 @@ class SponsorsExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('get_sponsors', [$this, 'getSponsors']),
-            new \Twig_SimpleFunction('get_sponsors_by_size', [$this, 'getSponsorsBySize']),
+            new TwigFunction('get_sponsors', [$this, 'getSponsors']),
+            new TwigFunction('get_sponsors_by_size', [$this, 'getSponsorsBySize']),
         );
     }
 
