@@ -5,7 +5,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\User;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class UserRegistration
 {
@@ -17,10 +17,10 @@ class UserRegistration
      * UserRegistration constructor.
      *
      * @param \Twig_Environment $twig
-     * @param EntityManager     $em
+     * @param EntityManagerInterface     $em
      * @param MailerInterface   $mailer
      */
-    public function __construct(\Twig_Environment $twig, EntityManager $em, MailerInterface $mailer)
+    public function __construct(\Twig_Environment $twig, EntityManagerInterface $em, MailerInterface $mailer)
     {
         $this->twig = $twig;
         $this->em = $em;

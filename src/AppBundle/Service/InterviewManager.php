@@ -11,7 +11,7 @@ use AppBundle\Role\Roles;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
 use AppBundle\Type\InterviewStatusType;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
@@ -38,11 +38,11 @@ class InterviewManager
      * @param Mailer $mailer
      * @param \Twig_Environment $twig
      * @param LoggerInterface $logger
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;

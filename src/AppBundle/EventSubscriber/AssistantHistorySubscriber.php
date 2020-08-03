@@ -4,7 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Service\UserRegistration;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
 
@@ -18,10 +18,10 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
      * ApplicationAdmissionSubscriber constructor.
      *
      * @param Session          $session
-     * @param EntityManager    $em
+     * @param EntityManagerInterface    $em
      * @param UserRegistration $userRegistrationService
      */
-    public function __construct(Session $session, EntityManager $em, UserRegistration $userRegistrationService)
+    public function __construct(Session $session, EntityManagerInterface $em, UserRegistration $userRegistrationService)
     {
         $this->session = $session;
         $this->em = $em;

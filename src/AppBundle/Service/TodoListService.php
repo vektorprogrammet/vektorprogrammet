@@ -4,7 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 use AppBundle\Entity\TodoItem;
 use AppBundle\Entity\TodoMandatory;
@@ -15,7 +15,7 @@ use AppBundle\Model\TodoItemInfo;
 class TodoListService
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      *
      */
     private $em;
@@ -23,9 +23,9 @@ class TodoListService
 
     /**
      * TodoListService constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -160,7 +160,7 @@ class TodoListService
 
     /**
      * @param TodoItemInfo $itemInfo
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

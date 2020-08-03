@@ -7,7 +7,7 @@ use AppBundle\Entity\AdmissionNotification;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -19,7 +19,7 @@ class AdmissionNotifier
     private $validator;
     private $sendLimit;
 
-    public function __construct(EntityManager $em, EmailSender $emailSender, LoggerInterface $logger, ValidatorInterface $validator, int $sendLimit)
+    public function __construct(EntityManagerInterface $em, EmailSender $emailSender, LoggerInterface $logger, ValidatorInterface $validator, int $sendLimit)
     {
         $this->em = $em;
         $this->emailSender = $emailSender;

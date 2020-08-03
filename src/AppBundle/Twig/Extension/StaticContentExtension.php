@@ -3,7 +3,6 @@
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Entity\StaticContent;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
 
 class StaticContentExtension extends \Twig_Extension

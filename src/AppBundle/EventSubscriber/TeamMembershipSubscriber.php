@@ -4,7 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Service\RoleManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\Session;
@@ -16,7 +16,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
     private $roleManager;
     private $em;
 
-    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager, EntityManager $em)
+    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager, EntityManagerInterface $em)
     {
         $this->session = $session;
         $this->logger = $logger;

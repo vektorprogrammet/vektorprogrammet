@@ -9,7 +9,7 @@ use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
 use AppBundle\Utils\CsvUtil;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 
 class SurveyManager
@@ -19,9 +19,9 @@ class SurveyManager
     /**
      * SurveyManager constructor.
      *
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
