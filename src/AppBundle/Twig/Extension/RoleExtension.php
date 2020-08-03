@@ -6,7 +6,7 @@ use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
@@ -19,7 +19,7 @@ class RoleExtension extends AbstractExtension
      */
     private $roleManager;
 
-    public function __construct(AuthorizationChecker $authorizationChecker, TokenStorageInterface $tokenStorage, RoleManager $roleManager)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $tokenStorage, RoleManager $roleManager)
     {
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
