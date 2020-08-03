@@ -1,6 +1,6 @@
 <div class="vektor-box department-filter">
     <p>Filter:</p>
-    {% for department in departments if (department.isActive) %}
+    {% for department in departments | filter(department => department.isActive) %}
         {# Find out which department is currently filtered #}
         {% if department.shortName|lower in app.request.attributes.get('_route_params') %}
             {% set active = 'class=department-filter-active' %}
