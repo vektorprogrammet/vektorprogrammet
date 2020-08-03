@@ -153,7 +153,7 @@ ivory_ck_editor:
 fm_elfinder:
     instances:
         default:
-            locale: %locale% # defaults to current request locale
+            locale: '%locale%' # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
             fullscreen: false # defaults true, applies to simple and ckeditor editors
             include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -163,12 +163,12 @@ fm_elfinder:
                     uploads:
                         #show_hidden: false # defaults to false
                         driver: LocalFileSystem
-                        path: %public_uploads%
+                        path: '%public_uploads%'
                         upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                         upload_deny: ['all']
                         upload_max_size: 5M
         admin_access:
-                    locale: %locale% # defaults to current request locale
+                    locale: '%locale%' # defaults to current request locale
                     editor: simple # other options are tinymce, tinymce4, form, custom and ckeditor
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -178,19 +178,19 @@ fm_elfinder:
                             private:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
-                                path: %private_uploads%
+                                path: '%private_uploads%'
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
                                 upload_max_size: 5M
                             public:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
-                                path: %public_uploads%
+                                path: '%public_uploads%'
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
                                 upload_max_size: 5M
         ck_editor:
-                    locale: %locale% # defaults to current request locale
+                    locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -200,20 +200,20 @@ fm_elfinder:
                           public:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
-                                path: %public_uploads%
+                                path: '%public_uploads%'
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                                 upload_deny: ['all']
                                 upload_max_size: 5M
                           private:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
-                                path: %private_uploads%
+                                path: '%private_uploads%'
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
                                 upload_max_size: 5M
 
         article_editor:
-                    locale: %locale% # defaults to current request locale
+                    locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -223,13 +223,13 @@ fm_elfinder:
                           public:
                                 #show_hidden: false # defaults to false
                                 driver: LocalFileSystem
-                                path: %article_images%
+                                path: '%article_images%'
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                                 upload_deny: ['all']
                                 upload_max_size: 5M
 
         article_form:
-                    locale: %locale% # defaults to current request locale
+                    locale: '%locale%' # defaults to current request locale
                     editor: form # other choices are tinymce or simple, and form
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -238,12 +238,12 @@ fm_elfinder:
                         roots:       # at least one root must be defined
                             uploads:
                                 driver: LocalFileSystem
-                                path: %article_images%
+                                path: '%article_images%'
                                 upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
                                 upload_deny: ['all']
                                 upload_max_size: 5M
         newsletter_editor:
-                    locale: %locale% # defaults to current request locale
+                    locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -253,13 +253,13 @@ fm_elfinder:
                         public:
                           #show_hidden: false # defaults to false
                           driver: LocalFileSystem
-                          path: %newsletter_images%
+                          path: '%newsletter_images%'
                           upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                           upload_deny: ['all']
                           upload_max_size: 5M
 
         team_editor:
-                    locale: %locale% # defaults to current request locale
+                    locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
@@ -269,7 +269,7 @@ fm_elfinder:
                         public:
                           #show_hidden: false # defaults to false
                           driver: LocalFileSystem
-                          path: %team_images%
+                          path: '%team_images%'
                           upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
                           upload_deny: ['all']
                           upload_max_size: 5M
