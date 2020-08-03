@@ -7,7 +7,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\ApplicationRepository;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ApplicationData
 {
@@ -32,9 +32,9 @@ class ApplicationData
      * ApplicationData constructor.
      *
      * @param EntityManagerInterface $em
-     * @param TokenStorage  $ts
+     * @param TokenStorageInterface  $ts
      */
-    public function __construct(EntityManagerInterface $em, TokenStorage $ts)
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts)
     {
         $this->em = $em;
         $this->applicationRepository = $this->em->getRepository('AppBundle:Application');
