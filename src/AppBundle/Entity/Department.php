@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -126,7 +127,7 @@ class Department
      */
     public function getCurrentAdmissionPeriod()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         /** @var AdmissionPeriod $admissionPeriod */
         foreach ($this->admissionPeriods as $admissionPeriod) {
@@ -148,7 +149,7 @@ class Department
 
         $latestAdmissionPeriod = current($admissionPeriods);
 
-        $now = new \DateTime();
+        $now = new DateTime();
 
         foreach ($admissionPeriods as $admissionPeriod) {
             if ($admissionPeriod->getSemester()->getSemesterStartDate() < $now &&
@@ -183,7 +184,7 @@ class Department
         }
         $start = $admissionPeriod->getAdmissionStartDate();
         $end = $admissionPeriod->getAdmissionEndDate();
-        $now = new \DateTime();
+        $now = new DateTime();
         return $start < $now && $now < $end;
     }
 

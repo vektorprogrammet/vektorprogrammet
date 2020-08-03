@@ -9,6 +9,7 @@ use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
 use AppBundle\Utils\CsvUtil;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
 
@@ -237,7 +238,7 @@ class SurveyManager
     public function toggleReservedFromPopUp(User $user)
     {
         $user->setReservedFromPopUp(!$user->getReservedFromPopUp());
-        $user->setLastPopUpTime(new \DateTime("2000-01-01"));
+        $user->setLastPopUpTime(new DateTime("2000-01-01"));
         $this->em->persist($user);
         $this->em->flush();
     }

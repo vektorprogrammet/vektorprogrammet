@@ -6,6 +6,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Semester;
+use DateTime;
 
 class AdmissionStatistics
 {
@@ -49,14 +50,14 @@ class AdmissionStatistics
     {
         $subData = [];
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $days = $semester->getSemesterStartDate()->diff($now)->days;
         if ($now > $semester->getSemesterEndDate()) {
             $days = $semester->getSemesterStartDate()->diff($semester->getSemesterEndDate())->days;
         }
         $start = $semester->getSemesterStartDate()->format('Y-m-d');
         for ($i = 0; $i < $days; $i++) {
-            $date = (new \DateTime($start))->modify("+$i days")->format('Y-m-d');
+            $date = (new DateTime($start))->modify("+$i days")->format('Y-m-d');
             $subData[$date] = 0;
         }
 

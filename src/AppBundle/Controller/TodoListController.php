@@ -8,6 +8,7 @@ use AppBundle\Form\Type\CreateTodoItemInfoType;
 use AppBundle\Model\TodoItemInfo;
 use AppBundle\Entity\TodoItem;
 use AppBundle\Service\TodoListService;
+use DateTime;
 use Exception;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -28,7 +29,7 @@ class TodoListController extends BaseController
             'department' => $department,
             'semester' => $semester,
             'correctList' => $todosInOrder,
-            'now' => new \DateTime(),
+            'now' => new DateTime(),
         ));
     }
 
@@ -153,7 +154,7 @@ class TodoListController extends BaseController
         $semester = $this->getSemesterOrThrow404();
         $department = $this->getDepartmentOrThrow404();
         if ($semester === $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findCurrentSemester()) {
-            $item->setDeletedAt(new \DateTime());
+            $item->setDeletedAt(new DateTime());
         } else {
             $item->setDeletedAt($semester->getSemesterStartDate());
         }

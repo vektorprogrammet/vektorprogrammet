@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 
 use AppBundle\Entity\TodoItem;
@@ -169,7 +170,7 @@ class TodoListService
         $todoItem = new TodoItem();
         $department = $itemInfo->getDepartment();
         $todoItem
-            ->setCreatedAt(new \DateTime())
+            ->setCreatedAt(new DateTime())
             ->setPriority($itemInfo->getPriority())
             ->setTitle($itemInfo->getTitle())
             ->setDescription($itemInfo->getDescription())
@@ -329,7 +330,7 @@ class TodoListService
         $completedItem
             ->setTodoItem($item)
             ->setSemester($semester)
-            ->setCompletedAt(new \DateTime())
+            ->setCompletedAt(new DateTime())
             ->setDepartment($department);
 
         $this->em->persist($completedItem);
@@ -362,7 +363,7 @@ class TodoListService
         } else {
             $completedItem = new TodoCompleted();
             $completedItem
-                ->setCompletedAt(new \DateTime())
+                ->setCompletedAt(new DateTime())
                 ->setSemester($semester)
                 ->setDepartment($department)
                 ->setTodoItem($item);

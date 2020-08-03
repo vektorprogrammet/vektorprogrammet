@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Utils\TimeUtil;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -97,7 +98,7 @@ class AdmissionPeriod
     /**
      * Set admissionStartDate.
      *
-     * @param \DateTime $admissionStartDate
+     * @param DateTime $admissionStartDate
      *
      * @return AdmissionPeriod
      */
@@ -111,7 +112,7 @@ class AdmissionPeriod
     /**
      * Get admissionStartDate.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getAdmissionStartDate()
     {
@@ -121,7 +122,7 @@ class AdmissionPeriod
     /**
      * Set admissionEndDate.
      *
-     * @param \DateTime $admissionEndDate
+     * @param DateTime $admissionEndDate
      *
      * @return AdmissionPeriod
      */
@@ -135,7 +136,7 @@ class AdmissionPeriod
     /**
      * Get admissionEndDate.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getAdmissionEndDate()
     {
@@ -161,14 +162,14 @@ class AdmissionPeriod
 
     public function isActive(): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         return $this->semester->getSemesterStartDate() < $now && $now <= $this->semester->getSemesterEndDate();
     }
 
     public function hasActiveAdmission(): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         return $this->getAdmissionStartDate() <= $now && $now <= $this->getAdmissionEndDate();
     }

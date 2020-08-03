@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use DateTime;
 use Tests\BaseWebTestCase;
 
 class SocialEventControllerTest extends BaseWebTestCase
@@ -55,8 +56,8 @@ class SocialEventControllerTest extends BaseWebTestCase
         $form = $crawler->selectButton('Lagre')->form();
 
         // add data to event
-        $startDate = (new \DateTime())->modify('+1day')->format('d.m.Y H:m');
-        $endDate = (new \DateTime())->modify('+1day + 1hour')->format('d.m.Y H:m');
+        $startDate = (new DateTime())->modify('+1day')->format('d.m.Y H:m');
+        $endDate = (new DateTime())->modify('+1day + 1hour')->format('d.m.Y H:m');
 
         $form['social_event[title]'] = 'Nytt TestArrangement';
         $form['social_event[description]'] = 'Beskrivelse av eventet. Skal si noe om hva som skjer.';

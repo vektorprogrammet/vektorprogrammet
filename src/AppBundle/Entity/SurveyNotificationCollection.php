@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -55,7 +56,7 @@ class SurveyNotificationCollection
     private $survey;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(name="time_of_notification", type="datetime", nullable=false)
      */
     private $timeOfNotification;
@@ -124,7 +125,7 @@ class SurveyNotificationCollection
     {
         $this->name ="";
         $this->surveyNotifications = array();
-        $this->timeOfNotification = new \DateTime('tomorrow');
+        $this->timeOfNotification = new DateTime('tomorrow');
         $this->allSent = false;
         $this->active = false;
         $this->notificationType = SurveyNotificationCollection::$EMAIL_NOTIFICATION;
@@ -181,17 +182,17 @@ class SurveyNotificationCollection
     }
 
     /**
-     * @return \DateTime?
+     * @return DateTime?
      */
-    public function getTimeOfNotification(): ?\DateTime
+    public function getTimeOfNotification(): ?DateTime
     {
         return $this->timeOfNotification;
     }
 
     /**
-     * @param \DateTime $timeOfNotification
+     * @param DateTime $timeOfNotification
      */
-    public function setTimeOfNotification(\DateTime $timeOfNotification): void
+    public function setTimeOfNotification(DateTime $timeOfNotification): void
     {
         $this->timeOfNotification = $timeOfNotification;
     }

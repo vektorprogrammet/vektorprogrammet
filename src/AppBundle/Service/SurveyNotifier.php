@@ -10,6 +10,7 @@ use AppBundle\Entity\SurveyTaken;
 use AppBundle\Mailer\Mailer;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
@@ -114,7 +115,7 @@ class SurveyNotifier
                 return;
             }
             $notification->setSent(true);
-            $notification->setTimeNotificationSent(new \DateTime());
+            $notification->setTimeNotificationSent(new DateTime());
             $this->em->persist($notification);
 
             $user = $notification->getUser();
@@ -157,7 +158,7 @@ class SurveyNotifier
                 return;
             }
             $notification->setSent(true);
-            $notification->setTimeNotificationSent(new \DateTime());
+            $notification->setTimeNotificationSent(new DateTime());
             $this->em->persist($notification);
 
 

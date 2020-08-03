@@ -4,6 +4,7 @@
 namespace AppBundle\Utils;
 
 use AppBundle\Entity\Receipt;
+use DateTime;
 
 class ReceiptStatistics
 {
@@ -16,7 +17,7 @@ class ReceiptStatistics
     public function __construct($receipts)
     {
         $this->receipts = $receipts;
-        $this->refundDateImplementationDate = new \DateTime('2018-02-16');
+        $this->refundDateImplementationDate = new DateTime('2018-02-16');
     }
 
     /**

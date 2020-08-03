@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Validator\Constraints as CustomAssert;
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -237,7 +238,7 @@ class Team implements TeamInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDeadline()
     {
@@ -245,13 +246,13 @@ class Team implements TeamInterface
     }
 
     /**
-     * @param \DateTime $deadline
+     * @param DateTime $deadline
      *
      * @return Team
      */
     public function setDeadline($deadline)
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($this->acceptApplication && $now <= $deadline) {
             $this->deadline = $deadline;
         } else {
@@ -407,7 +408,7 @@ class Team implements TeamInterface
      */
     public function getAcceptApplicationAndDeadline()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         return (($this->acceptApplication && $now < $this->deadline) || ($this->acceptApplication && $this->deadline === null));
     }
 }

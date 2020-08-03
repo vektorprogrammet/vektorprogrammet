@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -42,7 +43,7 @@ class TeamInterest implements DepartmentSemesterInterface
     private $email;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="timestamp", type="datetime")
      */
@@ -76,7 +77,7 @@ class TeamInterest implements DepartmentSemesterInterface
      */
     public function __construct()
     {
-        $this->timestamp = new \DateTime();
+        $this->timestamp = new DateTime();
     }
 
 
@@ -140,7 +141,7 @@ class TeamInterest implements DepartmentSemesterInterface
     /**
      * Get timestamp
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {

@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionPeriod;
+use DateTime;
 
 class SbsData extends ApplicationData
 {
@@ -22,17 +23,17 @@ class SbsData extends ApplicationData
 
     public function getAdmissionTimeLeft(): int
     {
-        return intval(ceil(($this->getAdmissionPeriod()->getAdmissionEndDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
+        return intval(ceil(($this->getAdmissionPeriod()->getAdmissionEndDate()->getTimestamp() - (new DateTime())->getTimestamp()) / 3600));
     }
 
     public function getTimeToAdmissionStart(): int
     {
-        return intval(ceil(($this->getAdmissionPeriod()->getAdmissionStartDate()->getTimestamp() - (new \DateTime())->getTimestamp()) / 3600));
+        return intval(ceil(($this->getAdmissionPeriod()->getAdmissionStartDate()->getTimestamp() - (new DateTime())->getTimestamp()) / 3600));
     }
 
     private function determineCurrentStep(AdmissionPeriod $admissionPeriod, $interviewedAssistantsCount, $assignedInterviewsCount, $totalAssistantsCount): float
     {
-        $today = new \DateTime();
+        $today = new DateTime();
         if ($today > $admissionPeriod->getSemester()->getSemesterEndDate()) {
             return 0;
         }
@@ -73,14 +74,14 @@ class SbsData extends ApplicationData
 
     private function admissionHasNotStartedYet(AdmissionPeriod $admissionPeriod): bool
     {
-        $today = new \DateTime();
+        $today = new DateTime();
 
         return $today > $admissionPeriod->getSemester()->getSemesterStartDate() && $today < $admissionPeriod->getAdmissionStartDate();
     }
 
     private function admissionHasEnded(AdmissionPeriod $admissionPeriod): bool
     {
-        $today = new \DateTime();
+        $today = new DateTime();
 
         return $today < $admissionPeriod->getSemester()->getSemesterEndDate() && $today > $admissionPeriod->getAdmissionEndDate();
     }
