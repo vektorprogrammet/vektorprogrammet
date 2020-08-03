@@ -8,7 +8,7 @@ use AppBundle\Event\ReceiptEvent;
 use AppBundle\Service\EmailSender;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ReceiptSubscriber implements EventSubscriberInterface
@@ -18,7 +18,7 @@ class ReceiptSubscriber implements EventSubscriberInterface
     private $session;
     private $tokenStorage;
 
-    public function __construct(LoggerInterface $logger, EmailSender $emailSender, Session $session, TokenStorageInterface $tokenStorage)
+    public function __construct(LoggerInterface $logger, EmailSender $emailSender, SessionInterface $session, TokenStorageInterface $tokenStorage)
     {
         $this->logger = $logger;
         $this->emailSender = $emailSender;
