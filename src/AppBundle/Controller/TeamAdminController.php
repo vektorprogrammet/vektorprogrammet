@@ -49,6 +49,7 @@ class TeamAdminController extends BaseController
 
         $form->handleRequest($request);
         if ($form->isValid()) {
+            $teamMembership->setIsSuspended(false);
             $em = $this->getDoctrine()->getManager();
             $em->persist($teamMembership);
             $em->flush();

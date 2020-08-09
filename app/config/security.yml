@@ -71,7 +71,6 @@ security:
 
           #ROLE_ADMIN = admin user
         - { path: ^/kontrollpanel/admin, roles: ROLE_ADMIN }
-        - { path: ^/kontrollpanel/staging, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/semesteradmin, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_ADMIN }
         - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_ADMIN }

@@ -103,3 +103,8 @@
     {{ form_end(form) }}
 
 {% endblock %}
+{% block javascripts %}
+    {% include 'common/datetime_picker.html.twig' with {
+        inputIds: [form.timeOfNotification.vars.id]
+    } %}
+{% endblock %}

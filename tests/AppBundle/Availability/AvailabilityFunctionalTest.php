@@ -229,6 +229,8 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/skoleadmin'),
             array('/kontrollpanel/skoleadmin/brukere'),
             array('/kontrollpanel/skoleadmin/tildel/skole/1'),
+
+            array('/kontrollpanel/staging'),
         );
     }
 
@@ -276,7 +278,6 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
     public function adminUrlProvider()
     {
         return array(
-            array('/kontrollpanel/staging'),
             array('/kontrollpanel/avdelingadmin/opprett'),
             array('/kontrollpanel/bruker/vekorepost/endre/1'),
             array('/kontrollpanel/semesteradmin'),

@@ -19,13 +19,14 @@ class InterviewQuestion
     protected $id;
 
     /**
-     * @ORM\Column(type="string")
+     * @ORM\Column(type="string", length=5000)
      * @Assert\NotBlank(message="Spørsmål: Dette feltet kan ikke være tomt.")
+     * @Assert\Length(max="5000", maxMessage="Spørsmål: Maks 5000 tegn")
      */
     protected $question;
 
     /**
-     * @ORM\Column(type="string", nullable=true)
+     * @ORM\Column(type="string", nullable=true, length=5000)
      */
     protected $help;
 

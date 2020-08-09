@@ -60,4 +60,13 @@ class FeedbackControllerTest extends BaseWebTestCase
 
 
     }
+    public function testDelete()
+    {
+
+        $client = $this->createTeamMemberClient();
+        $client->request('POST', '/kontrollpanel/feedback/delete/1');
+        $this->assertEquals(302, $client->getResponse()->getStatusCode());
+        $client->request('POST', '/kontrollpanel/feedback/delete/1');
+        $this->assertEquals(404, $client->getResponse()->getStatusCode());
+    }
 }

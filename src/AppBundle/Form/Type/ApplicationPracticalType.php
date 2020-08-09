@@ -57,7 +57,7 @@ class ApplicationPracticalType extends AbstractType
                 'Engelsk' => 'Engelsk',
                 'Norsk og engelsk' => 'Norsk og engelsk',
             ),
-            'data' => 'Norsk',
+            'empty_data' => 'Norsk',
             'expanded' => true,
             'multiple' => false,
         ));

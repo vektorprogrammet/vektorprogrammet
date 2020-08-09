@@ -31,8 +31,9 @@ class SurveyNotifierType extends AbstractType
 
             ->add("timeOfNotification", DateTimeType::class, [
                 'label' => "Varsel skal sendes fra (merk: vil bare tillate å sende fra gitt dato, vil ikke skje automatisk)",
+                'format' => 'dd.MM.yyyy HH:mm',
+                'widget' => 'single_text',
                 'disabled' => !$this->canEdit
-
             ])
 
             ->add("usergroups", EntityType::class, [

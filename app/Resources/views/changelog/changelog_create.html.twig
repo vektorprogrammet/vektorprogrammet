@@ -1,0 +1,58 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Ny Changelog
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path('changelog_show_all') }}">Changelog-objekter</a></li>
+    <li class="breadcrumb-item active">Changelog-objekt</li>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-comment-o"></i> Changelog</div>
+                <div class="card-body">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.description) }}
+                    {{ form_row(form.gitHubLink) }}
+                    {{ form_row(form.date) }}
+                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                </div>
+            </div>
+            <div class="hide">
+                {{ form_rest(form) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+
+    {% include 'common/datetime_picker.html.twig' with { inputIds: [form.date.vars.id] } %}
+
+    <script src="{{ asset_with_version('js/question_repeater.js') }}"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', QuestionManager.onReady);
+    </script>
+    <script>
+        var btn = document.getElementById("change_log_save");
+        var sending = document.getElementById("sending");
+        btn.addEventListener("click", function (e) {
+            if (form.checkValidity()) {
+                btn.style.display = "none";
+                sending.style.display = "block";
+            } else {
+                e.preventDefault();
+                $('#error').show();
+                setTimeout(function () {
+                    $('#error').fadeOut(300);
+                }, 3000)
+            }
+        })
+    </script>
+{% endblock %}
