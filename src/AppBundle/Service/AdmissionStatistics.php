@@ -8,6 +8,7 @@ use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\PeriodInterface;
 use AppBundle\Entity\Semester;
+use DateTime;
 
 class AdmissionStatistics
 {
@@ -32,7 +33,10 @@ class AdmissionStatistics
      */
     public function generateGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
     {
-        $appData = $this->initializeDataArray($admissionPeriod, 5);
+        $endDate = $admissionPeriod->getEndDate();
+        $extraDays = $this->calculatePaddingDays($endDate);
+
+        $appData = $this->initializeDataArray($admissionPeriod, $extraDays);
         return $this->populateApplicationDataWithApplications($appData, $applications);
     }
 
@@ -44,7 +48,10 @@ class AdmissionStatistics
      */
     public function generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
     {
-        $appData = $this->initializeDataArray($admissionPeriod, 5);
+        $endDate =  $admissionPeriod->getEndDate();
+        $extraDays = $this->calculatePaddingDays($endDate);
+
+        $appData = $this->initializeDataArray($admissionPeriod, $extraDays);
         return $this->populateCumulativeApplicationDataWithApplications($appData, $applications);
     }
 
@@ -52,7 +59,7 @@ class AdmissionStatistics
     {
         $subData = [];
 
-        $now = new \DateTime();
+        $now = new DateTime();
         $days = $admissionPeriod->getStartDate()->diff($now)->days;
         if ($now > $admissionPeriod->getEndDate()) {
             $days = $admissionPeriod->getStartDate()->diff($admissionPeriod->getEndDate())->days;
@@ -62,7 +69,7 @@ class AdmissionStatistics
 
         $start = $admissionPeriod->getStartDate()->format('Y-m-d');
         for ($i = 0; $i < $days; $i++) {
-            $date = (new \DateTime($start))->modify("+$i days")->format('Y-m-d');
+            $date = (new DateTime($start))->modify("+$i days")->format('Y-m-d');
             $subData[$date] = 0;
         }
 
@@ -129,5 +136,26 @@ class AdmissionStatistics
         ksort($subData);
 
         return $subData;
+    }
+
+    /**
+     * @param DateTime $endDate
+     * @return int
+     */
+    private function calculatePaddingDays($endDate)
+    {
+        $today = new DateTime();
+
+        if ($today > $endDate) {
+            // Add extra padding to chart, maximum 5 days
+            $extraDays = $endDate->diff($today)->format("%d");
+            if ($extraDays > 5) {
+                $extraDays = 5;
+            }
+        } else {
+            $extraDays = 0;
+        }
+
+        return $extraDays;
     }
 }
