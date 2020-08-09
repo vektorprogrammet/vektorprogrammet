@@ -147,10 +147,11 @@ class AdmissionStatistics
         $today = new DateTime();
 
         if ($today > $endDate) {
-            // Add extra padding to chart, maximum 5 days
+            // Add extra padding to chart, maximum 6 days
             $extraDays = $endDate->diff($today)->format("%d");
-            if ($extraDays > 5) {
-                $extraDays = 5;
+            $extraDays += 2;
+            if ($extraDays > 6) {
+                $extraDays = 6;
             }
         } else {
             $extraDays = 0;
