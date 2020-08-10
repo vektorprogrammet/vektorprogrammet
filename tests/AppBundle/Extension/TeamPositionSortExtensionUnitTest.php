@@ -35,8 +35,8 @@ class TeamPositionSortExtensionUnitTest extends TestCase
         $this->latestAdmissionPeriod = new AdmissionPeriod();
         $this->latestAdmissionPeriod
             ->setSemester($this->activeSemester)
-            ->setAdmissionStartDate(new \DateTime('2013-01-01'))
-            ->setAdmissionEndDate((new \DateTime())->modify('+1day'));
+            ->setStartDate(new \DateTime('2013-01-01'))
+            ->setEndDate((new \DateTime())->modify('+1day'));
     }
 
     public function testExecutiveMembers()

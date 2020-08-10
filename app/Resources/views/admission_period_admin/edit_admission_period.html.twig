@@ -23,8 +23,8 @@
                     – {{ department }}</div>
                 <div class="card-body">
                     <h3>Opptak start / slutt</h3>
-                    {{ form_row(form.admissionStartDate) }}
-                    {{ form_row(form.admissionEndDate) }}
+                    {{ form_row(form.startDate) }}
+                    {{ form_row(form.endDate) }}
                     <button type="submit" class="btn btn-primary mt-4">Lagre</button>
                 </div>
             </div>
@@ -72,8 +72,8 @@
 {% block javascripts %}
     {% include 'common/datetime_picker.html.twig' with {
         inputIds:[
-            form.admissionStartDate.vars.id,
-            form.admissionEndDate.vars.id,
+            form.startDate.vars.id,
+            form.endDate.vars.id,
             form.infoMeeting.date.vars.id
         ],
         step: 1
