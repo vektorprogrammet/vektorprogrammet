@@ -3,8 +3,10 @@
 namespace AppBundle\Twig\Extension;
 
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class RouteDisplayExtension extends \Twig_Extension
+class RouteDisplayExtension extends AbstractExtension
 {
     private $router;
 
@@ -22,7 +24,7 @@ class RouteDisplayExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('get_path', array( $this, 'getPath' )),
+            new TwigFunction('get_path', array( $this, 'getPath' )),
         );
     }
 

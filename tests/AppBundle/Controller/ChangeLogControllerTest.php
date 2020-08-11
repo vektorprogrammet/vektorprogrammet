@@ -11,7 +11,7 @@ class ChangeLogControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/changelog/create');
         $form = $crawler->selectButton('Lagre')->form();
 
-        $date = (new \DateTime())->modify('+1day')->format('d.m.Y H:m');
+        $date = (new DateTime())->modify('+1day')->format('d.m.Y H:m');
 
         $form['change_log[title]'] = 'En ny endring';
         $form['change_log[description]'] = 'Beskrivelse av endringen, slik at du forstår hva som er gjort';
@@ -36,7 +36,7 @@ class ChangeLogControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/changelog/edit/1');
         $form = $crawler->selectButton('Lagre')->form();
 
-        $date = (new \DateTime())->modify('+1day')->format('d.m.Y H:m');
+        $date = (new DateTime())->modify('+1day')->format('d.m.Y H:m');
 
         $form['change_log[title]'] = 'Endrer changelog-objektet';
         $form['change_log[description]'] = 'Beskrivelse av den rette endringen, slik at du nå forstå hva som er gjort';

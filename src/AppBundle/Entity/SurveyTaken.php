@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -30,7 +31,7 @@ class SurveyTaken implements \JsonSerializable
     /**
      * @ORM\Column(type="datetime", nullable=false)
      *
-     * @var \DateTime
+     * @var DateTime
      */
     protected $time;
 
@@ -62,7 +63,7 @@ class SurveyTaken implements \JsonSerializable
     public function __construct()
     {
         $this->surveyAnswers = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->time = new \DateTime();
+        $this->time = new DateTime();
     }
 
     /**

@@ -5,7 +5,7 @@ namespace AppBundle\EventSubscriber;
 use AppBundle\Event\TeamInterestCreatedEvent;
 use AppBundle\Mailer\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class TeamInterestSubscriber implements EventSubscriberInterface
 {
@@ -18,9 +18,9 @@ class TeamInterestSubscriber implements EventSubscriberInterface
      *
      * @param MailerInterface $mailer
      * @param \Twig_Environment $twig
-     * @param Session $session
+     * @param SessionInterface $session
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Session $session)
+    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, SessionInterface $session)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

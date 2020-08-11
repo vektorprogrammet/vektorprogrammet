@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Type\InterviewStatusType;
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
@@ -150,7 +151,7 @@ class Interview
     public function __construct()
     {
         $this->interviewAnswers = new ArrayCollection();
-        $this->conducted = new \DateTime();
+        $this->conducted = new DateTime();
         $this->interviewed = false;
         $this->interviewStatus = InterviewStatusType::NO_CONTACT;
         $this->newTimeMessage = "";
@@ -429,14 +430,14 @@ class Interview
     /**
      * Set scheduled.
      *
-     * @param \DateTime $scheduled
+     * @param DateTime $scheduled
      *
      * @return Interview
      */
     public function setScheduled($scheduled)
     {
         $this->scheduled = $scheduled;
-        $this->lastScheduleChanged = new \DateTime();
+        $this->lastScheduleChanged = new DateTime();
 
         return $this;
     }
@@ -444,7 +445,7 @@ class Interview
     /**
      * Get scheduled.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getScheduled()
     {
@@ -454,7 +455,7 @@ class Interview
     /**
      * Set conducted.
      *
-     * @param \DateTime $conducted
+     * @param DateTime $conducted
      *
      * @return Interview
      */
@@ -468,7 +469,7 @@ class Interview
     /**
      * Get conducted.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getConducted()
     {
@@ -671,7 +672,7 @@ class Interview
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getLastScheduleChanged()
     {

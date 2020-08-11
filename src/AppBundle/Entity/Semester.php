@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -70,7 +71,7 @@ class Semester implements PeriodInterface
     /**
      * Get semester start date.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getStartDate(): \DateTime
     {
@@ -82,7 +83,7 @@ class Semester implements PeriodInterface
     /**
      * Get semester end date.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getEndDate(): \DateTime
     {
@@ -139,7 +140,7 @@ class Semester implements PeriodInterface
 
     public function isActive(): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         return $this->getStartDate() < $now && $now <= $this->getEndDate();
     }

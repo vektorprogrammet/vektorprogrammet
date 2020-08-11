@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
+use DateTime;
 use \Doctrine\ORM\EntityRepository;
 use \AppBundle\Entity\Semester;
 
@@ -37,7 +38,7 @@ class SocialEventRepository extends EntityRepository
             ->andWhere('SocialEventItem.department = :department or SocialEventItem.department is null')
             ->andWhere('SocialEventItem.startTime >= :now')
             ->orderBy('SocialEventItem.startTime')
-            ->setParameters(['semester' => $semester, 'department' => $department, 'now' => new \DateTime()])
+            ->setParameters(['semester' => $semester, 'department' => $department, 'now' => new DateTime()])
             ->getQuery()
             ->getResult();
         return $socialEvents;

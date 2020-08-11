@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -60,7 +61,7 @@ class AdmissionSubscriber
     {
         $this->fromApplication = false;
         $this->infoMeeting = false;
-        $this->timestamp = new \DateTime();
+        $this->timestamp = new DateTime();
         $this->unsubscribeCode = bin2hex(openssl_random_pseudo_bytes(12));
     }
 
@@ -91,7 +92,7 @@ class AdmissionSubscriber
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -99,7 +100,7 @@ class AdmissionSubscriber
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param DateTime $timestamp
      */
     public function setTimestamp($timestamp)
     {

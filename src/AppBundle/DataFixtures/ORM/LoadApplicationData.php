@@ -6,6 +6,7 @@ use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewScore;
 use AppBundle\Entity\User;
+use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -166,7 +167,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $interview5->setInterviewSchema($this->getReference('ischema-1'));
         $interview5->setUser($this->getReference('user-assistant'));
         $interview5->setResponseCode('code');
-        $interview5->setScheduled(new \DateTime('+2 days'));
+        $interview5->setScheduled(new DateTime('+2 days'));
         $application5->setInterview($interview5);
 
         $manager->persist($application5);
@@ -299,7 +300,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application->setPreviousParticipation(mt_rand(0, 100) < 10 ? true : false);
         $application->setYearOfStudy(1);
         $application->setAdmissionPeriod($this->getReference('admission-period-current'));
-        $application->setCreated((new \DateTime('-'.mt_rand(0, 10).'days')));
+        $application->setCreated((new DateTime('-'.mt_rand(0, 10).'days')));
         $randomArr = array( true, false, false, false, false );
         shuffle($randomArr);
         $application->setMonday($randomArr[0] || mt_rand(0, 100) < 20);

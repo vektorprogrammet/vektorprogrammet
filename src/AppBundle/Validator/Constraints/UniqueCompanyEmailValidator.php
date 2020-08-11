@@ -6,7 +6,7 @@ namespace AppBundle\Validator\Constraints;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Google\GoogleAPI;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -15,7 +15,7 @@ class UniqueCompanyEmailValidator extends ConstraintValidator
     private $em;
     private $googleAPI;
 
-    public function __construct(EntityManager $em, GoogleAPI $googleAPI)
+    public function __construct(EntityManagerInterface $em, GoogleAPI $googleAPI)
     {
         $this->em = $em;
         $this->googleAPI = $googleAPI;

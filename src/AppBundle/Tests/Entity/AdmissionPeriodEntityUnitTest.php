@@ -4,6 +4,7 @@ namespace AppBundle\Tests\Entity;
 
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
+use DateTime;
 
 class AdmissionPeriodEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
@@ -12,7 +13,7 @@ class AdmissionPeriodEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // New datetime variable
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
 
         // new entity
         $admissionPeriod = new AdmissionPeriod();
@@ -29,7 +30,7 @@ class AdmissionPeriodEntityUnitTest extends \PHPUnit_Framework_TestCase
     {
 
         // New datetime variable
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
 
         // new entity
         $admissionPeriod = new AdmissionPeriod();

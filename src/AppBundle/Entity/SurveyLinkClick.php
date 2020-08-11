@@ -4,6 +4,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -21,7 +22,7 @@ class SurveyLinkClick
     private $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(name="time_of_visit", type="datetime")
      */
     private $timeOfVisit;
@@ -36,7 +37,7 @@ class SurveyLinkClick
 
     public function __construct()
     {
-        $this->timeOfVisit = new \DateTime();
+        $this->timeOfVisit = new DateTime();
     }
 
     /**
@@ -56,17 +57,17 @@ class SurveyLinkClick
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getTimeOfVisit(): \DateTime
+    public function getTimeOfVisit(): DateTime
     {
         return $this->timeOfVisit;
     }
 
     /**
-     * @param \DateTime $timeOfVisit
+     * @param DateTime $timeOfVisit
      */
-    public function setTimeOfVisit(\DateTime $timeOfVisit): void
+    public function setTimeOfVisit(DateTime $timeOfVisit): void
     {
         $this->timeOfVisit = $timeOfVisit;
     }

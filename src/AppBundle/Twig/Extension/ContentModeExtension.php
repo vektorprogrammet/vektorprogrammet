@@ -4,8 +4,10 @@
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Service\ContentModeManager;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class ContentModeExtension extends \Twig_Extension
+class ContentModeExtension extends AbstractExtension
 {
     private $contentModeManager;
 
@@ -17,7 +19,7 @@ class ContentModeExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('is_edit_mode', [$this, 'isEditMode']),
+            new TwigFunction('is_edit_mode', [$this, 'isEditMode']),
         );
     }
 

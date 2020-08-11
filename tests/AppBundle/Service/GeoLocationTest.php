@@ -10,7 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GeoLocationTest extends TestCase
 {
@@ -48,7 +48,7 @@ class GeoLocationTest extends TestCase
                       ->method('getRepository')
                       ->willReturn($departmentRepo);
 
-        $sessionStorage = $this->getMockBuilder(Session::class)->getMock();
+        $sessionStorage = $this->getMockBuilder(SessionInterface::class)->getMock();
         $sessionStorage->expects($this->any())
                        ->method('get')
                        ->willReturn(null);

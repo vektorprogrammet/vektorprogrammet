@@ -3,14 +3,16 @@
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Service\GeoLocation;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class DepartmentExtension extends \Twig_Extension
+class DepartmentExtension extends AbstractExtension
 {
     private $em;
     private $geoLocationService;
 
-    public function __construct(GeoLocation $geoLocationService, EntityManager $em)
+    public function __construct(GeoLocation $geoLocationService, EntityManagerInterface $em)
     {
         $this->geoLocationService = $geoLocationService;
         $this->em = $em;
@@ -24,8 +26,8 @@ class DepartmentExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('get_departments', array($this, 'getDepartments')),
-            new \Twig_SimpleFunction('get_active_departments', array($this, 'getActiveDepartments')),
+            new TwigFunction('get_departments', array($this, 'getDepartments')),
+            new TwigFunction('get_active_departments', array($this, 'getActiveDepartments')),
         );
     }
 

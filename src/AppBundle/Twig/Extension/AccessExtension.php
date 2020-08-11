@@ -3,8 +3,10 @@
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Service\AccessControlService;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class AccessExtension extends \Twig_Extension
+class AccessExtension extends AbstractExtension
 {
     private $accessControlService;
 
@@ -22,7 +24,7 @@ class AccessExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('has_access_to', array($this, 'hasAccessTo')),
+            new TwigFunction('has_access_to', array($this, 'hasAccessTo')),
         );
     }
 

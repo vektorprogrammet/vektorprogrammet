@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -184,7 +185,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
 
     public function isActive()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
         $termEndsInFuture = $this->endSemester === null || $this->endSemester->getEndDate() > $now;
         $termStartedInPast = $this->startSemester !== null && $this->startSemester->getStartDate() < $now;
         return $termEndsInFuture && $termStartedInPast;
