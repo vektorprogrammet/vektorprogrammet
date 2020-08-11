@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\AdmissionPeriodRepository")
  */
-class AdmissionPeriod
+class AdmissionPeriod implements PeriodInterface
 {
     /**
      * @var integer
@@ -31,16 +31,16 @@ class AdmissionPeriod
     private $department;
 
     /**
-     * @ORM\Column(name="admission_start_date", type="datetime", length=150)
+     * @ORM\Column(name="start_date", type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    private $admissionStartDate;
+    private $startDate;
 
     /**
-     * @ORM\Column(name="admission_end_date", type="datetime", length=150)
+     * @ORM\Column(name="end_date", type="datetime", length=150)
      * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
-    private $admissionEndDate;
+    private $endDate;
 
     /**
      * @var InfoMeeting
@@ -96,51 +96,52 @@ class AdmissionPeriod
     }
 
     /**
-     * Set admissionStartDate.
+     * Set startDate.
      *
-     * @param DateTime $admissionStartDate
+     * @param DateTime $startDate
      *
      * @return AdmissionPeriod
      */
-    public function setAdmissionStartDate($admissionStartDate)
+    public function setStartDate($startDate)
     {
-        $this->admissionStartDate = $admissionStartDate;
+        $this->startDate = $startDate;
 
         return $this;
     }
 
     /**
-     * Get admissionStartDate.
+     * Get startDate.
      *
      * @return DateTime
      */
-    public function getAdmissionStartDate()
+    public function getStartDate(): \DateTime
     {
-        return $this->admissionStartDate;
+        return $this->startDate;
     }
 
     /**
-     * Set admissionEndDate.
+     * Set endDate.
      *
      * @param DateTime $admissionEndDate
+     * @param DateTime $endDate
      *
      * @return AdmissionPeriod
      */
-    public function setAdmissionEndDate($admissionEndDate)
+    public function setEndDate($endDate)
     {
-        $this->admissionEndDate = $admissionEndDate;
+        $this->endDate = $endDate;
 
         return $this;
     }
 
     /**
-     * Get admissionEndDate.
+     * Get endDate.
      *
      * @return DateTime
      */
-    public function getAdmissionEndDate()
+    public function getEndDate(): \DateTime
     {
-        return $this->admissionEndDate;
+        return $this->endDate;
     }
 
     /**
@@ -164,14 +165,14 @@ class AdmissionPeriod
     {
         $now = new DateTime();
 
-        return $this->semester->getSemesterStartDate() < $now && $now <= $this->semester->getSemesterEndDate();
+        return $this->semester->getStartDate() < $now && $now <= $this->semester->getEndDate();
     }
 
     public function hasActiveAdmission(): bool
     {
         $now = new DateTime();
 
-        return $this->getAdmissionStartDate() <= $now && $now <= $this->getAdmissionEndDate();
+        return $this->getStartDate() <= $now && $now <= $this->getEndDate();
     }
 
     /**
