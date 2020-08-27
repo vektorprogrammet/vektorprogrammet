@@ -187,9 +187,6 @@
           if (e.keyCode === 13) {
             e.target.parentNode.querySelector('button').click();
           }
-            {% if pixelId %}
-                fbq('track', 'InitiateCheckout', {value:  0.10, currency:'NOK'})
-            {% endif %}
         }
 
         function subscribe(department, target) {
