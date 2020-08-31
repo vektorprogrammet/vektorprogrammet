@@ -34,8 +34,8 @@
                 <img  v-show="show_tor" src="../../assets/tor.png" alt="Tor" id="tor"/>
             </transition>
 
-            <div id="CountDown">
-                <CountDown></CountDown>
+            <div id="CountDown" v-if="deadline !== null">
+                <CountDown :deadline="deadline"></CountDown>
             </div>
 
             <div id="Dev-tools" v-if="isDev">
@@ -72,6 +72,7 @@
         components: {Vektorlogo, CountDown},
         data() {
             return {
+                deadline: null,
                 number: 0,
                 sliding_number_of_applicants: 0,
                 show: true,
@@ -116,6 +117,7 @@
 
         watch: {
             fetching_api: function () {
+                this.fetch_deadline();
                 this.fetch_applicants();
                 this.pop_applicants();
                 this.main_background_animate();
@@ -124,6 +126,16 @@
         },
 
         methods:{
+
+            fetch_deadline: async function() {
+                const payload = await axios.get("api/party/deadline/1/");
+                const deadline = payload.data;
+                console.log(deadline);
+                this.deadline = deadline.toString();
+                console.log(this.deadline)
+
+            },
+            
             fetch_applicants: function(){
                 window.setInterval(()=>{
                     axios
