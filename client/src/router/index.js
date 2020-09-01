@@ -75,7 +75,7 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   
-  if (to.name === '404') {
+  if (to.name === '404'|| to.name === "logout") {
     next();
     return;
   }
@@ -89,8 +89,11 @@ router.beforeEach(async (to, from, next) => {
   if (!loggedInUser.loaded) {
     await store.dispatch('account/getUser');
   }
-
   loggedInUser = store.getters['account/user'];
+
+  if (loggedInUser.loaded) {
+    await store.dispatch('account/getDepartment');
+  }
 
   if (to.name === 'login') {
     if (!loggedInUser.loaded){

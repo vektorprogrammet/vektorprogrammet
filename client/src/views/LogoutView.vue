@@ -30,8 +30,6 @@
     },
     beforeMount() {
       this.logout()
-      console.log(this.state)
-      
     }
   };
 </script>

@@ -3,6 +3,7 @@
 namespace AppBundle\Controller\Api;
 
 use AppBundle\DataTransferObject\UserDto;
+use AppBundle\DataTransferObject\DepartmentDto;
 use AppBundle\Entity\User;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -100,4 +101,41 @@ class AccountController extends BaseController
 
         return new JsonResponse($userDto);
     }
+
+
+    /**
+     * @param Request $request
+     *
+     * @Route(
+     *     "api/account/get_department",
+     *     methods={"GET"}
+     * )
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function getDepartmentApi(Request $request)
+    {
+
+        if (!$this->getUser()) {
+            return new JsonResponse(null);
+        }
+
+        $department = $this->getUser()->getDepartment();
+
+        if (!$department) {
+            return new JsonResponse(null);
+        }
+        
+        // This is not a proper DTO, and should be changed, but as we really only need the id for now... :
+        $myDto = array(
+            "id" => $department->getId(),
+            "name" => $department->getName(),
+        );
+
+        return new JsonResponse($myDto);
+    }
+
+
+
+
 }

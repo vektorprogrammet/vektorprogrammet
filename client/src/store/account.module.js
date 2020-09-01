@@ -5,6 +5,9 @@ const defaultState = {
     loaded: false,
     loading: false,
   },
+  department: {
+    loaded: false
+  }
 };
 
 const state = {...defaultState};
@@ -36,12 +39,24 @@ const actions = {
       commit('loginFailure');
     }
   },
+  async getDepartment({commit}) {
+    try {
+      const department = await accountService.getDepartment();
+      commit('departmentFetchSuccessful', department)
+    }catch (e) {
+      console.log(e)
+      commit('departmentFetchFailure', e);
+    }
+  }
 };
 
 const getters = {
   user(state) {
     return state.user;
   },
+  department(state) {
+    return state.department;
+  }
 };
 
 const mutations = {
@@ -65,8 +80,17 @@ const mutations = {
   },
   logoutSuccessful(state) {
     state.user = {...defaultState.user};
+    state.department = {...defaultState.department};
   },
   logoutFailure() {
+    //TODO: Handle error
+    // console.log('ERROR: ', e);
+  },
+  departmentFetchSuccessful(state, department) {
+    state.department = {...defaultState.department, ...department};
+    state.department.loaded = true;
+  },
+  departmentFetchFailure() {
     //TODO: Handle error
     // console.log('ERROR: ', e);
   },

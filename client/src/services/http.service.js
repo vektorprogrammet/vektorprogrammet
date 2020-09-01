@@ -1,7 +1,5 @@
 function get(path) {
-  return fetch(path, {
-    redirect: 'error'
-  });
+  return fetch(path);
 }
 
 function post(path, data) {

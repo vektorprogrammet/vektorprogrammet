@@ -15,8 +15,14 @@ async function getUser() {
   return await response.json();
 }
 
+async function getDepartment() {
+  const response = await http.get("/api/account/get_department");
+  return await response.json();
+}
+
 export const accountService = {
   login,
   logout,
-  getUser
+  getUser,
+  getDepartment
 };
