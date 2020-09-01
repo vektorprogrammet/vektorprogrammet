@@ -115,7 +115,6 @@ class AccountController extends BaseController
      */
     public function getDepartmentApi(Request $request)
     {
-
         if (!$this->getUser()) {
             return new JsonResponse(null);
         }
@@ -134,8 +133,4 @@ class AccountController extends BaseController
 
         return new JsonResponse($myDto);
     }
-
-
-
-
 }
