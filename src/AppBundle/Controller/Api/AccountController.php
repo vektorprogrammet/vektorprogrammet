@@ -64,6 +64,25 @@ class AccountController extends BaseController
     }
 
     /**
+     * @Route("api/account/logout")
+     * 
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function logoutAction(Request $request)
+    {
+        
+        try {
+            $this->get('security.token_storage')->setToken(NULL);
+            return new JsonResponse("Logout successful");
+        } catch (Exception $e) {
+            $response = new JsonResponse();
+            $response->setStatusCode(401);
+            $response->setContent($e);
+            return $response;
+        }
+    }
+
+    /**
      * @Route("api/account/user")
      *
      * @return \Symfony\Component\HttpFoundation\Response

@@ -25,7 +25,7 @@ const actions = {
       await accountService.logout();
       commit('logoutSuccessful');
     } catch (e) {
-      commit('logoutFailure');
+      commit('logoutFailure', e);
     }
   },
   async getUser({commit}) {

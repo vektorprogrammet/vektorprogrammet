@@ -66,12 +66,14 @@
     import Velocity from 'velocity-animate';
     import { confetti } from 'dom-confetti';
     import Vektorlogo from "../../components/Vektorlogo";
+    import store from "../../store"
 
     export default {
         name: "PartyPageView",
         components: {Vektorlogo, CountDown},
         data() {
             return {
+                loggedInUser: store.getters['account/user'],
                 deadline: null,
                 number: 0,
                 sliding_number_of_applicants: 0,
@@ -130,10 +132,7 @@
             fetch_deadline: async function() {
                 const payload = await axios.get("api/party/deadline/1/");
                 const deadline = payload.data;
-                console.log(deadline);
                 this.deadline = deadline.toString();
-                console.log(this.deadline)
-
             },
             
             fetch_applicants: function(){

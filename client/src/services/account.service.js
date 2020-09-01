@@ -5,8 +5,9 @@ async function login(username, password) {
   return await response.json();
 }
 
-function logout() {
-  return http.get("/logout")
+async function logout() {
+  const response = await http.get("/api/account/logout");
+  return await response.json();
 }
 
 async function getUser() {
