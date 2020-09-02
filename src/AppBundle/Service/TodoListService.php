@@ -4,7 +4,8 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use Doctrine\ORM\EntityManager;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 use AppBundle\Entity\TodoItem;
 use AppBundle\Entity\TodoMandatory;
@@ -15,7 +16,7 @@ use AppBundle\Model\TodoItemInfo;
 class TodoListService
 {
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      *
      */
     private $em;
@@ -23,9 +24,9 @@ class TodoListService
 
     /**
      * TodoListService constructor.
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      */
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -160,7 +161,7 @@ class TodoListService
 
     /**
      * @param TodoItemInfo $itemInfo
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -169,7 +170,7 @@ class TodoListService
         $todoItem = new TodoItem();
         $department = $itemInfo->getDepartment();
         $todoItem
-            ->setCreatedAt(new \DateTime())
+            ->setCreatedAt(new DateTime())
             ->setPriority($itemInfo->getPriority())
             ->setTitle($itemInfo->getTitle())
             ->setDescription($itemInfo->getDescription())
@@ -329,7 +330,7 @@ class TodoListService
         $completedItem
             ->setTodoItem($item)
             ->setSemester($semester)
-            ->setCompletedAt(new \DateTime())
+            ->setCompletedAt(new DateTime())
             ->setDepartment($department);
 
         $this->em->persist($completedItem);
@@ -362,7 +363,7 @@ class TodoListService
         } else {
             $completedItem = new TodoCompleted();
             $completedItem
-                ->setCompletedAt(new \DateTime())
+                ->setCompletedAt(new DateTime())
                 ->setSemester($semester)
                 ->setDepartment($department)
                 ->setTodoItem($item);

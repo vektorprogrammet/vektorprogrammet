@@ -4,7 +4,7 @@ php:
   - 7.1
 
 node_js:
-  - 8
+  - 10
 
 before_script:
   - composer install

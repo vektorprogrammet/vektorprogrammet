@@ -3,13 +3,15 @@
 namespace AppBundle\Twig\Extension;
 
 use AppBundle\Entity\Department;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class SemesterExtension extends \Twig_Extension
+class SemesterExtension extends AbstractExtension
 {
     private $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }
@@ -22,7 +24,7 @@ class SemesterExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('get_semesters', array($this, 'getSemesters')),
+            new TwigFunction('get_semesters', array($this, 'getSemesters')),
         );
     }
 

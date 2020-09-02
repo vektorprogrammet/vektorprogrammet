@@ -16,6 +16,7 @@ use AppBundle\Role\ReversedRoleHierarchy;
 use AppBundle\Role\Roles;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\InterviewManager;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -76,7 +77,7 @@ class InterviewController extends BaseController
             $em->flush();
             if ($isNewInterview && $form->get('saveAndSend')->isClicked()) {
                 $interview->setInterviewed(true);
-                $interview->setConducted(new \DateTime());
+                $interview->setConducted(new DateTime());
                 $em->persist($interview);
                 $em->flush();
 

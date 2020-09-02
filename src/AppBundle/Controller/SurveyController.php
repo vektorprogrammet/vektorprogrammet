@@ -14,6 +14,7 @@ use AppBundle\Form\Type\SurveyType;
 use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
 use AppBundle\Utils\CsvUtil;
+use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -158,7 +159,7 @@ class SurveyController extends BaseController
                     }
                 }
 
-                $user->setLastPopUpTime(new \DateTime());
+                $user->setLastPopUpTime(new DateTime());
                 $em->persist($user);
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -465,7 +466,7 @@ class SurveyController extends BaseController
     public function closePopUpAction()
     {
         $user = $this->getUser();
-        $user->setLastPopUpTime(new \DateTime());
+        $user->setLastPopUpTime(new DateTime());
         $em = $this->getDoctrine()->getManager();
         $em->persist($user);
         $em->flush();

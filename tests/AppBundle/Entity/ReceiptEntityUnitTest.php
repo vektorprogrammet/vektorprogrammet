@@ -4,6 +4,7 @@ namespace Tests\AppBundle\Entity;
 
 use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class ReceiptEntityUnitTest extends TestCase
@@ -24,7 +25,7 @@ class ReceiptEntityUnitTest extends TestCase
 
     public function testSetSubmitDate()
     {
-        $dateTime = new \DateTime();
+        $dateTime = new DateTime();
         $receipt = new Receipt();
 
         $receipt->setSubmitDate($dateTime);

@@ -3,6 +3,7 @@
 namespace Tests\AppBundle\Service;
 
 use AppBundle\Service\Sorter;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
@@ -39,10 +40,10 @@ class SorterTest extends KernelTestCase
             new User(), // has no receipts
         ];
 
-        $this->mockReceipts[0]->setSubmitDate(new \DateTime('2015-09-05'));
-        $this->mockReceipts[1]->setSubmitDate(new \DateTime('2016-09-05'));
-        $this->mockReceipts[2]->setSubmitDate(new \DateTime('2017-09-05'));
-        $this->mockReceipts[3]->setSubmitDate(new \DateTime('2017-09-05'));
+        $this->mockReceipts[0]->setSubmitDate(new DateTime('2015-09-05'));
+        $this->mockReceipts[1]->setSubmitDate(new DateTime('2016-09-05'));
+        $this->mockReceipts[2]->setSubmitDate(new DateTime('2017-09-05'));
+        $this->mockReceipts[3]->setSubmitDate(new DateTime('2017-09-05'));
 
         $this->mockReceipts[0]->setStatus(Receipt::STATUS_REFUNDED);
         $this->mockReceipts[1]->setStatus(Receipt::STATUS_PENDING);
@@ -59,7 +60,7 @@ class SorterTest extends KernelTestCase
         $user2Receipt->setStatus(Receipt::STATUS_REFUNDED);
         $user3Receipt->setStatus(Receipt::STATUS_PENDING);
 
-        $user3Receipt->setSubmitDate(new \DateTime('2013-09-05'));
+        $user3Receipt->setSubmitDate(new DateTime('2013-09-05'));
 
         $this->mockUsers[1]->addReceipt($user2Receipt);
         $this->mockUsers[2]->addReceipt($user3Receipt);
@@ -68,10 +69,10 @@ class SorterTest extends KernelTestCase
     public function testSortReceiptsBySubmitTime()
     {
         $this->sorter->sortReceiptsBySubmitTime($this->mockReceipts);
-        $this->assertEquals(new \DateTime('2017-09-05'), $this->mockReceipts[0]->getSubmitDate());
-        $this->assertEquals(new \DateTime('2017-09-05'), $this->mockReceipts[1]->getSubmitDate());
-        $this->assertEquals(new \DateTime('2016-09-05'), $this->mockReceipts[2]->getSubmitDate());
-        $this->assertEquals(new \DateTime('2015-09-05'), $this->mockReceipts[3]->getSubmitDate());
+        $this->assertEquals(new DateTime('2017-09-05'), $this->mockReceipts[0]->getSubmitDate());
+        $this->assertEquals(new DateTime('2017-09-05'), $this->mockReceipts[1]->getSubmitDate());
+        $this->assertEquals(new DateTime('2016-09-05'), $this->mockReceipts[2]->getSubmitDate());
+        $this->assertEquals(new DateTime('2015-09-05'), $this->mockReceipts[3]->getSubmitDate());
     }
 
     public function testSortReceiptsByStatus()
@@ -89,11 +90,11 @@ class SorterTest extends KernelTestCase
         $this->sorter->sortUsersByReceiptSubmitTime($this->mockUsers);
         
         $firstDate = $this->mockUsers[0]->getReceipts()[0]->getSubmitDate();
-        $secondsSinceFirstDate = abs((new \DateTime())->getTimestamp() - $firstDate->getTimestamp());
+        $secondsSinceFirstDate = abs((new DateTime())->getTimestamp() - $firstDate->getTimestamp());
 
         $this->assertLessThan(1, $secondsSinceFirstDate); // Newest = now
         $this->assertEquals($this->mockReceipts, $this->mockUsers[1]->getReceipts()->toArray()); // Newest = 2017
-        $this->assertEquals(new \DateTime('2013-09-05'), $this->mockUsers[2]->getReceipts()[0]->getSubmitDate()); // Newest = 2013
+        $this->assertEquals(new DateTime('2013-09-05'), $this->mockUsers[2]->getReceipts()[0]->getSubmitDate()); // Newest = 2013
         $this->assertEmpty($this->mockUsers[3]->getReceipts()->toArray()); // Fourth user has no receipts
     }
 

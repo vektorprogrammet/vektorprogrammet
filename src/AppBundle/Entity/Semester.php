@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -10,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="semester")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SemesterRepository")
  */
-class Semester
+class Semester implements PeriodInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -70,9 +71,9 @@ class Semester
     /**
      * Get semester start date.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getSemesterStartDate()
+    public function getStartDate(): \DateTime
     {
         $startMonth = $this->semesterTime == 'Vår' ? '01' : '08';
         return date_create($this->year.'-'.$startMonth.'-01 00:00:00');
@@ -82,9 +83,9 @@ class Semester
     /**
      * Get semester end date.
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getSemesterEndDate()
+    public function getEndDate(): \DateTime
     {
         $endMonth = $this->semesterTime == 'Vår' ? '07' : '12';
         return date_create($this->year.'-'.$endMonth.'-31 23:59:59');
@@ -139,9 +140,9 @@ class Semester
 
     public function isActive(): bool
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
-        return $this->getSemesterStartDate() < $now && $now <= $this->getSemesterEndDate();
+        return $this->getStartDate() < $now && $now <= $this->getEndDate();
     }
 
     /**

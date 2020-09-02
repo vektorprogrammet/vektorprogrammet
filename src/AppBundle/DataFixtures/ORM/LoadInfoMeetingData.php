@@ -3,6 +3,7 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\InfoMeeting;
+use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
@@ -21,7 +22,7 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
     public function load(ObjectManager $manager)
     {
         $infoMeetingUiO = new InfoMeeting();
-        $date = new \DateTime('now');
+        $date = new DateTime('now');
         $date->modify('+1day');
         $infoMeetingUiO->setShowOnPage(true);
         $infoMeetingUiO->setDate($date);

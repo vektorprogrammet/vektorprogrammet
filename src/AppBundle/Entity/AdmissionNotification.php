@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -49,7 +50,7 @@ class AdmissionNotification
 
     public function __construct()
     {
-        $this->timestamp = new \DateTime();
+        $this->timestamp = new DateTime();
         $this->infoMeeting = false;
     }
 
@@ -64,7 +65,7 @@ class AdmissionNotification
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getTimestamp()
     {
@@ -72,7 +73,7 @@ class AdmissionNotification
     }
 
     /**
-     * @param \DateTime $timestamp
+     * @param DateTime $timestamp
      */
     public function setTimestamp($timestamp)
     {

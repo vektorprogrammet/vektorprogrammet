@@ -11,10 +11,11 @@ use AppBundle\Role\Roles;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
 use AppBundle\Type\InterviewStatusType;
-use Doctrine\ORM\EntityManager;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class InterviewManager
@@ -33,16 +34,16 @@ class InterviewManager
     /**
      * InterviewManager constructor.
      *
-     * @param TokenStorage $tokenStorage
+     * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
      * @param Mailer $mailer
      * @param \Twig_Environment $twig
      * @param LoggerInterface $logger
-     * @param EntityManager $em
+     * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(TokenStorage $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManager $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -250,11 +251,11 @@ class InterviewManager
 
     public function sendAcceptInterviewReminders()
     {
-        $interviews = $this->em->getRepository('AppBundle:Interview')->findAcceptInterviewNotificationRecipients(new \DateTime());
+        $interviews = $this->em->getRepository('AppBundle:Interview')->findAcceptInterviewNotificationRecipients(new DateTime());
         /** @var Interview $interview */
         foreach ($interviews as $interview) {
             $oneDay = new \DateInterval('P1D');
-            $now = new \DateTime();
+            $now = new DateTime();
             $moreThan24HoursSinceScheduled = $now->sub($oneDay) > $interview->getLastScheduleChanged();
             if ($interview->getNumAcceptInterviewRemindersSent() < self::MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT && $moreThan24HoursSinceScheduled) {
                 $this->sendAcceptInterviewReminderToInterviewee($interview);
@@ -290,7 +291,7 @@ class InterviewManager
 
 
         $oneDay = new \DateInterval('P1D');
-        $now = new \DateTime();
+        $now = new DateTime();
         $lessThan24HoursUntilInterview = $now->add($oneDay) > $interview->getScheduled();
         if ($lessThan24HoursUntilInterview) {
             $smsMessage =

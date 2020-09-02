@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity\Repository;
 
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -77,7 +78,7 @@ class ArticleRepository extends EntityRepository
     public function findStickyAndLatestArticles($limit = null)
     {
         // Get news that are newer than 30 days
-        $d = new \DateTime();
+        $d = new DateTime();
         $d->modify('-30days');
 
         $qb = $this->createQueryBuilder('a')

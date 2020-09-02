@@ -9,6 +9,7 @@ use AppBundle\Service\FileUploader;
 use AppBundle\Service\RoleManager;
 use AppBundle\Service\Sorter;
 use AppBundle\Utils\ReceiptStatistics;
+use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
@@ -25,7 +26,7 @@ class ReceiptController extends BaseController
         $rejectedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REJECTED);
 
         $refundedReceiptStatistics = new ReceiptStatistics($refundedReceipts);
-        $totalPayoutThisYear = $refundedReceiptStatistics->totalPayoutIn((new \DateTime())->format('Y'));
+        $totalPayoutThisYear = $refundedReceiptStatistics->totalPayoutIn((new DateTime())->format('Y'));
         $avgRefundTimeInHours = $refundedReceiptStatistics->averageRefundTimeInHours();
 
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
@@ -166,7 +167,7 @@ class ReceiptController extends BaseController
 
         $receipt->setStatus($status);
         if ($status === Receipt::STATUS_REFUNDED && !$receipt->getRefundDate()) {
-            $receipt->setRefundDate(new \DateTime());
+            $receipt->setRefundDate(new DateTime());
         }
 
         $em = $this->getDoctrine()->getManager();

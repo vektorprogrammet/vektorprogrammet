@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Semester;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -71,23 +72,23 @@ class AdmissionPeriodRepository extends EntityRepository
 
     /**
      * @param Department $department
-     * @param \DateTime   $time
+     * @param DateTime   $time
      *
      * @return AdmissionPeriod|null
      *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function findOneWithActiveAdmissionByDepartment(Department $department, \DateTime $time = null): ?AdmissionPeriod
+    public function findOneWithActiveAdmissionByDepartment(Department $department, DateTime $time = null): ?AdmissionPeriod
     {
         if ($time === null) {
-            $time = new \DateTime();
+            $time = new DateTime();
         }
 
-        return $this->createQueryBuilder('Semester')
-            ->select('Semester')
-            ->where('Semester.department = ?1')
-            ->andWhere('Semester.admissionStartDate <= :time')
-            ->andWhere('Semester.admissionEndDate >= :time')
+        return $this->createQueryBuilder('admissionPeriod')
+            ->select('admissionPeriod')
+            ->where('admissionPeriod.department = ?1')
+            ->andWhere('admissionPeriod.startDate <= :time')
+            ->andWhere('admissionPeriod.endDate >= :time')
             ->setParameter(1, $department)
             ->setParameter('time', $time)
             ->getQuery()

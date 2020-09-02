@@ -6,8 +6,8 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\ApplicationRepository;
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ApplicationData
 {
@@ -24,17 +24,17 @@ class ApplicationData
      */
     private $applicationRepository;
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 
     /**
      * ApplicationData constructor.
      *
-     * @param EntityManager $em
-     * @param TokenStorage  $ts
+     * @param EntityManagerInterface $em
+     * @param TokenStorageInterface  $ts
      */
-    public function __construct(EntityManager $em, TokenStorage $ts)
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts)
     {
         $this->em = $em;
         $this->applicationRepository = $this->em->getRepository('AppBundle:Application');

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as CustomAssert;
@@ -148,8 +149,8 @@ class Application implements DepartmentSemesterInterface
      */
     public function __construct()
     {
-        $this->last_edited = new \DateTime();
-        $this->created = new \DateTime();
+        $this->last_edited = new DateTime();
+        $this->created = new DateTime();
         $this->substitute = false;
         $this->doublePosition = false;
         $this->previousParticipation = false;
@@ -353,7 +354,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getLastEdited()
     {
@@ -361,7 +362,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @param \DateTime $last_edited
+     * @param DateTime $last_edited
      */
     public function setLastEdited($last_edited)
     {
@@ -369,7 +370,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -377,7 +378,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @param \DateTime $created
+     * @param DateTime $created
      */
     public function setCreated($created)
     {

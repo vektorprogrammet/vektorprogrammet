@@ -81,10 +81,10 @@
                                     </td>
                                 {% endif %}
                                 <td>{{ a }}</td>
-                                <td> {{ a.admissionStartDate|date('d. M Y') }}
-                                    kl. {{ a.admissionStartDate|date('H:i:s') }}</td>
-                                <td> {{ a.admissionEndDate|date('d. M Y') }}
-                                    kl. {{ a.admissionEndDate|date('H:i:s') }}</td>
+                                <td> {{ a.startDate|date('d. M Y') }}
+                                    kl. {{ a.startDate|date('H:i:s') }}</td>
+                                <td> {{ a.endDate|date('d. M Y') }}
+                                    kl. {{ a.endDate|date('H:i:s') }}</td>
                             </tr>
                         {% endfor %}
                         </tbody>

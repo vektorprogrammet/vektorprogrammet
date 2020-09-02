@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
+use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -17,7 +18,7 @@ class SurveyPopupController extends Controller
         $userShouldSeePopUp = $user !== null &&
             $this->get(RoleManager::class)->userIsGranted($user, Roles::TEAM_MEMBER) &&
             !$user->getReservedFromPopUp() &&
-            $user->getLastPopUpTime()->diff(new \DateTime())->days >= 1;
+            $user->getLastPopUpTime()->diff(new DateTime())->days >= 1;
 
         if ($userShouldSeePopUp) {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();

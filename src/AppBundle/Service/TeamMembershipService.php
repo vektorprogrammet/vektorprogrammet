@@ -3,7 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Event\TeamMembershipEvent;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TeamMembershipService
@@ -11,7 +11,7 @@ class TeamMembershipService
     private $em;
     private $dispatcher;
 
-    public function __construct(EntityManager $em, EventDispatcherInterface $dispatcher)
+    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $dispatcher)
     {
         $this->em = $em;
         $this->dispatcher = $dispatcher;

@@ -181,17 +181,21 @@ class ProfileController extends BaseController
         // Find department
         $department = $this->getUser()->getDepartment();
 
+        // Find any additional comment
+        $additional_comment = $signature->getAdditionalComment();
+
         if ($signature === null) {
             return $this->redirectToRoute('certificate_show');
         }
 
-        $html        = $this->renderView('certificate/certificate.html.twig', array(
-            'user'             => $user,
-            'assistantHistory' => $assistantHistory,
-            'teamMembership'      => $teamMembership,
-            'signature'        => $signature,
-            'department'       => $department,
-            'base_dir'         => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
+        $html = $this->renderView('certificate/certificate.html.twig', array(
+            'user'                  => $user,
+            'assistantHistory'      => $assistantHistory,
+            'teamMembership'        => $teamMembership,
+            'signature'             => $signature,
+            'additional_comment'    => $additional_comment,
+            'department'            => $department,
+            'base_dir'              => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
         ));
         $mpdfService = $this->get('t_fox_mpdf_port.pdf');
 

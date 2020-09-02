@@ -4,14 +4,14 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CompanyEmailMaker
 {
     private $em;
     private $logger;
 
-    public function __construct(EntityManager $em, LogService $logger)
+    public function __construct(EntityManagerInterface $em, LogService $logger)
     {
         $this->em = $em;
         $this->logger = $logger;

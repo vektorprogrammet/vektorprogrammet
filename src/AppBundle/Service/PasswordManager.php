@@ -5,7 +5,8 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\PasswordReset;
 use AppBundle\Mailer\MailerInterface;
-use Doctrine\ORM\EntityManager;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 
 class PasswordManager
 {
@@ -16,11 +17,11 @@ class PasswordManager
     /**
      * PasswordManager constructor.
      *
-     * @param EntityManager     $em
+     * @param EntityManagerInterface     $em
      * @param MailerInterface   $mailer
      * @param \Twig_Environment $twig
      */
-    public function __construct(EntityManager $em, MailerInterface $mailer, \Twig_Environment $twig)
+    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, \Twig_Environment $twig)
     {
         $this->em = $em;
         $this->mailer = $mailer;
@@ -50,7 +51,7 @@ class PasswordManager
         $hashedResetCode = $this->hashCode($resetCode);
         $passwordReset = $this->em->getRepository('AppBundle:PasswordReset')->findPasswordResetByHashedResetCode($hashedResetCode);
 
-        $currentTime = new \DateTime();
+        $currentTime = new DateTime();
         $timeDifference = date_diff($passwordReset->getResetTime(), $currentTime);
 
         $hasExpired = $timeDifference->d > 1;

@@ -14,7 +14,7 @@
                             <th>Navn</th>
                             <th class="text-right">Beløp</th>
                         </tr>
-                        {% for user in users_with_receipts if user.hasPendingReceipts %}
+                        {% for user in users_with_receipts | filter(user => user.hasPendingReceipts) %}
                             <tr>
                                 <td class="d-flex">
                                     <div class="number-of-pending-receipts-indicator has-tip" data-tooltip
