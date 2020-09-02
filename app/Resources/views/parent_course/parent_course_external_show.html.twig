@@ -1,27 +1,67 @@
 {%  extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="https://api.mazemap.com/js/v2.0.12/mazemap.min.css">
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/parents.css') }}">
+
+    <script type='text/javascript' src='https://api.mazemap.com/js/v2.0.12/mazemap.min.js'></script>
+{% endblock %}
+
+
 {%  block title %}
     Vektorprogrammet
 {%  endblock %}
 
 {% block body %}
 
-    <div class="container individual-team-page">
+    <div class="container">
         <header class="page-header">
             <div class="col-md-12">
-                <h1>Foreldrekurs {{ parentCourse.id }}</h1>
-                <p class="text-center">{{ parentCourse.date | date('d.m.y') }} klokken {{ parentCourse.date | date('H:i') }}</p>
+                <h1>Foreldrekurs avholdt {{ parentCourse.date | date("F j, Y")}} kl. {{ parentCourse.date | date('H:i') }}</h>
             </div>
         </header>
-        <section class="custom_html row content">
-            Foredragsholder: {{ parentCourse.speaker }}
-        </section>
+
+        <div class="content">
+            <p class="card-text"><strong>Foredragsholder:</strong> {{ parentCourse.speaker }} </p>
+            <p class="card-text"><strong>Informasjon:</strong> {{ parentCourse.information }} </p>
+            <p class="card-text"><strong>Sted:</strong> {{ parentCourse.place }}, Trondheim</p>
+        </div>
+        <br>
+        <div id="map" class="mazemap mzmp"></div>
+        <br>
         <section class="row content">
             <div class="col-12 col-sm-8 offset-sm-2">
                 <a class="btn btn-success btn-block apply-button p-4 text-uppercase medium-bold"
                    href="{{ path('parent_assignment_create', {'id': parentCourse.id}) }}">Meld meg på nå</a>
             </div>
         </section>
+
     </div>
+
+    <script>
+        let p = 1;
+        Mazemap.Data.getPoi(1949).then( poi => {
+            p = poi;
+        });
+
+
+        // Set timer when poi has been fetched -> load correct place and add marker. Check API docs!
+        // Set ling lang via poi (or some other, better way!)
+        let map = new Mazemap.Map({
+            // container id specified in the HTML
+            container: 'map',
+
+            campuses: 121,
+
+            // initial position in lngLat format
+            center: {lng: 13.270286316716465, lat: 52.502217640505705},
+
+            // initial zoom
+            zoom: 18,
+
+            zLevel: 3
+        });
+        map.addControl(new Mazemap.mapboxgl.NavigationControl());
+    </script>
 
 {% endblock %}

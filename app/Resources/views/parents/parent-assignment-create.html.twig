@@ -1,5 +1,9 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/parents.css') }}">
+{% endblock %}
+
 {% block title %}
     Påmelding
 {% endblock %}
@@ -15,23 +19,25 @@
                 </div>
             </header>
             <section class="row space">
-            <br>
-            {{ form_start(form) }}
-            <div class="card">
-                <div class="card-header">
-                    <h3>Meld deg på!</h3>
+                <br>
+                <div class="reg-card">
+                {{ form_start(form) }}
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Meld deg på!</h3>
+                    </div>
+                    <div class="card-body">
+                        {{ form_row(form.navn) }}
+                        {{ form_row(form.epost ) }}
+                    </div>
+                    <div class="card-body">
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                    </div>
+                    <div class="hide">
+                        {{ form_end(form) }}
+                    </div>
                 </div>
-                <div class="card-body">
-                    {{ form_row(form.navn) }}
-                    {{ form_row(form.epost ) }}
                 </div>
-                <div class="card-body">
-                    {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-                </div>
-                <div class="hide">
-                    {{ form_end(form) }}
-                </div>
-            </div>
             </section>
         </div>
     </div>

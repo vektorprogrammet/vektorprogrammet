@@ -47,17 +47,24 @@
                 </div>
             </section>
 
-            {% if parentCourses is not empty %}
-                <div class="card-block tab-content px-3 px-sm-0">
-                    <div class="parent-cards-container card">
-                        {% for parentCourse in parentCourses %}
-                            {% include 'parent_course/parent_course_card.html.twig' %}
-                        {% endfor %}
+            <h2 class="text-center pmld">Påmelding</h2>
+            <div class="card">
+                <section class="row my-5">
+                    <div class="col-12">
+                        {% if parentCourses is not empty %}
+                            <div class="card-block tab-content px-3 px-sm-0">
+                                <div class="parent-cards-container">
+                                    {% for parentCourse in parentCourses %}
+                                        {% include 'parent_course/parent_course_card.html.twig' %}
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        {% else %}
+                            <p><i>Påmeldingsskjemaet er under konstruksjon! Ta kontakt med skolekoordineringsteamet for påmelding til eventuelle foreldrekurs. </i></p>
+                        {% endif %}
                     </div>
-                </div>
-            {% else %}
-                <p><i>Påmeldingsskjemaet er under konstruksjon! Ta kontakt med skolekoordineringsteamet for påmelding til eventuelle foreldrekurs. </i></p>
-            {% endif %}
+                </section>
+            </div>
         </div>
     </div>
 {% endblock %}
