@@ -126,11 +126,11 @@ class AccountController extends BaseController
         }
         
         // This is not a proper DTO, and should be changed, but as we really only need the id for now... :
-        $myDto = array(
+        $departmentDto = array(
             "id" => $department->getId(),
             "name" => $department->getName(),
         );
 
-        return new JsonResponse($myDto);
+        return new JsonResponse($departmentDto);
     }
 }
