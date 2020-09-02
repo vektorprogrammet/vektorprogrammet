@@ -56,7 +56,7 @@ sudo apt-get install php7.2-xml
 
 
 ### Build static files
-When adding new images or other non-code files, you can run
+When adding new images or other non-code files, you can run:
 
 `npm run build`
 
