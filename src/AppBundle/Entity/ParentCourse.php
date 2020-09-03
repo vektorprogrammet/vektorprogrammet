@@ -36,6 +36,13 @@ class ParentCourse
     private $place;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="Link", type="string", length=255, nullable=False)
+     */
+    private $link;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="Date", type="datetime", nullable=False)
@@ -113,6 +120,30 @@ class ParentCourse
     public function getPlace()
     {
         return $this->place;
+    }
+
+    /**
+     * Set link.
+     *
+     * @param string $link
+     *
+     * @return ParentCourse
+     */
+    public function setLink($link)
+    {
+        $this->link = $link;
+
+        return $this;
+    }
+
+    /**
+     * Get link.
+     *
+     * @return string
+     */
+    public function getLink()
+    {
+        return $this->link;
     }
 
     /**

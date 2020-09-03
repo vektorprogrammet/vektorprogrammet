@@ -3,8 +3,6 @@
 {% block stylesheets %}
     <link rel="stylesheet" href="https://api.mazemap.com/js/v2.0.12/mazemap.min.css">
     <link rel="stylesheet" href="{{ asset_with_version('css/pages/parents.css') }}">
-
-    <script type='text/javascript' src='https://api.mazemap.com/js/v2.0.12/mazemap.min.js'></script>
 {% endblock %}
 
 
@@ -35,15 +33,52 @@
                    href="{{ path('parent_assignment_create', {'id': parentCourse.id}) }}">Meld meg på nå</a>
             </div>
         </section>
-
     </div>
+    <div class="link-data" data-mazemap-link="{{ parentCourse.link }}"></div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script type='text/javascript' src='https://api.mazemap.com/js/v2.0.12/mazemap.min.js'></script>
 
     <script>
-        let p = 1;
-        Mazemap.Data.getPoi(1949).then( poi => {
-            p = poi;
-        });
 
+        // this at least does close to what I want! Just complete it and make the code better!
+        // should probably make the map even clearer, perhaps with the auditorium name also, if possible. If not, it is already in the information!
+        // get the parameters from the url and plot map + marker accordingly: https://www.sitepoint.com/get-url-parameters-with-javascript/
+
+        // Should add a possibility for the admins to also change the url-link to the place at a later date also. This is missing now!
+
+        // Mazemap-link
+        const mazeMapLink = document.querySelector(".link-data").dataset.mazemapLink;
+
+        // Now time to get parameters from the mazemap-link, before displaying the correct room with a marker in the MazeMap-div.
+        console.log(mazeMapLink);
+
+        // Brute-force, but works ok for now I think. Should figure out a better way of doing this eventually!
+        let paramString = mazeMapLink.split('#')[1];
+        let params_arr = paramString.split('&');
+
+        let center = '';
+        for (let i = 0; i < params_arr.length; i++) {
+            let pair = params_arr[i].split('=');
+            console.log(typeof pair[0]);
+            // maybe check that the types are coercive also?
+            if (pair[0] == 'center'){
+                center = pair[1];
+            }
+            // find other parameters of interest also!
+        }
+
+        // this seems to be working! Yes!
+        const longitude = center.split(',')[0];
+        const latitude = center.split(',')[1];
+        console.log(longitude);
+        console.log(latitude);
+
+
+        // får null på alle! Kanskje jeg bare må splitte strengen selv, selv om det kan være vanskeligere, da det er ulike argumenter i hver lenke.
+        // må også få inn noen exception el her, i tilfelle jeg mottar en merkelig lenke!
 
         // Set timer when poi has been fetched -> load correct place and add marker. Check API docs!
         // Set ling lang via poi (or some other, better way!)
@@ -51,17 +86,33 @@
             // container id specified in the HTML
             container: 'map',
 
-            campuses: 121,
+            campuses: 1,
 
-            // initial position in lngLat format
-            center: {lng: 13.270286316716465, lat: 52.502217640505705},
+            // initial position in lngLat format.
+            center: {lng: longitude, lat: latitude},
 
             // initial zoom
             zoom: 18,
 
             zLevel: 3
         });
-        map.addControl(new Mazemap.mapboxgl.NavigationControl());
-    </script>
+        //map.addControl(new Mazemap.mapboxgl.NavigationControl());
 
+        let poi = 1949;
+
+        let lngLat = map.getCenter();
+        console.log(lngLat);
+
+        // Now just a normal marker as explained in other examples
+        let mazeMarker = new Mazemap.MazeMarker({
+            color: '#ff00cc',
+            innerCircle: true,
+            innerCircleColor: '#FFF',
+            size: 34,
+            innerCircleScale: 0.5,
+            // zLevel: // get this from the url-parameters perhaps!
+        })
+            .setLngLat(lngLat)
+            .addTo(map);
+    </script>
 {% endblock %}

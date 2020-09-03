@@ -18,25 +18,25 @@
                     <p class="text-center tiny-title">{{ parentCourse.date | date('d.m.y') }} klokken {{ parentCourse.date | date('H:i') }}</p>
                 </div>
             </header>
-            <section class="row space">
+            <section class="col space">
                 <br>
-                <div class="reg-card">
-                {{ form_start(form) }}
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Meld deg på!</h3>
+                <div class="mx-auto">
+                    {{ form_start(form) }}
+                    <div class="card ">
+                        <div class="card-header">
+                            <h3>Meld deg på!</h3>
+                        </div>
+                        <div class="card-body">
+                            {{ form_row(form.navn) }}
+                            {{ form_row(form.epost ) }}
+                        </div>
+                        <div class="card-body">
+                            {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
+                        </div>
+                        <div class="hide">
+                            {{ form_end(form) }}
+                        </div>
                     </div>
-                    <div class="card-body">
-                        {{ form_row(form.navn) }}
-                        {{ form_row(form.epost ) }}
-                    </div>
-                    <div class="card-body">
-                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-primary'}}) }}
-                    </div>
-                    <div class="hide">
-                        {{ form_end(form) }}
-                    </div>
-                </div>
                 </div>
             </section>
         </div>

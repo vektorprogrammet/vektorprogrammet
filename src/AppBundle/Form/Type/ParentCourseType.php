@@ -28,6 +28,13 @@ class ParentCourseType extends AbstractType
                     'autocomplete' => 'off',
                 ),
             ))
+            ->add('link', TextType::class, array(
+                'label' => 'Lim inn full MazeMap-lenke for sted',
+                'required' => true,
+                'attr' => array(
+                    'autocomplete' => 'off',
+                ),
+            ))
             ->add('date', DateTimeType::class, array(
                 'label' => 'Skriv tidspunkt og dato',
                 'required' => true,
