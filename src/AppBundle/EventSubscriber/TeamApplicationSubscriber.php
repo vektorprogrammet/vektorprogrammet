@@ -6,6 +6,7 @@ use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Mailer\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Twig\Environment;
 
 class TeamApplicationSubscriber implements EventSubscriberInterface
 {
@@ -16,11 +17,11 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
-     * @param MailerInterface   $mailer
-     * @param \Twig_Environment $twig
-     * @param SessionInterface           $session
+     * @param MailerInterface $mailer
+     * @param Environment $twig
+     * @param SessionInterface $session
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, SessionInterface $session)
+    public function __construct(MailerInterface $mailer, Environment $twig, SessionInterface $session)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

@@ -7,6 +7,7 @@ use AppBundle\Service\AdmissionNotifier;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\UserRegistration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Twig\Environment;
 
 class ApplicationSubscriber implements EventSubscriberInterface
 {
@@ -22,11 +23,11 @@ class ApplicationSubscriber implements EventSubscriberInterface
      * ApplicationAdmissionSubscriber constructor.
      *
      * @param MailerInterface $mailer
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param AdmissionNotifier $admissionNotifier
      * @param UserRegistration $userRegistrationService
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
+    public function __construct(MailerInterface $mailer, Environment $twig, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

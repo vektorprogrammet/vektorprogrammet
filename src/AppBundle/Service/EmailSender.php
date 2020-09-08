@@ -8,6 +8,7 @@ use AppBundle\Entity\Receipt;
 use AppBundle\Mailer\Mailer;
 use AppBundle\Mailer\MailerInterface;
 use Symfony\Component\Routing\Router;
+use Twig\Environment;
 
 class EmailSender
 {
@@ -17,7 +18,7 @@ class EmailSender
     private $economyEmail;
     private $router;
 
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, Router $router, string $defaultEmail, string $economyEmail)
+    public function __construct(MailerInterface $mailer, Environment $twig, Router $router, string $defaultEmail, string $economyEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;

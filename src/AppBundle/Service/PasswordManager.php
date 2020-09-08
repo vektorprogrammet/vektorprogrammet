@@ -7,6 +7,7 @@ use AppBundle\Entity\PasswordReset;
 use AppBundle\Mailer\MailerInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Twig\Environment;
 
 class PasswordManager
 {
@@ -17,11 +18,11 @@ class PasswordManager
     /**
      * PasswordManager constructor.
      *
-     * @param EntityManagerInterface     $em
-     * @param MailerInterface   $mailer
-     * @param \Twig_Environment $twig
+     * @param EntityManagerInterface $em
+     * @param MailerInterface $mailer
+     * @param Environment $twig
      */
-    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, \Twig_Environment $twig)
+    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, Environment $twig)
     {
         $this->em = $em;
         $this->mailer = $mailer;
