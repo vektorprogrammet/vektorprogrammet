@@ -14,6 +14,7 @@ use AppBundle\Type\InterviewStatusType;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Swift_Message;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -126,7 +127,7 @@ class InterviewManager
      */
     public function sendScheduleEmail(Interview $interview, array $data)
     {
-        $message = (new \Swift_Message())
+        $message = (new Swift_Message())
             ->setSubject('Intervju for vektorprogrammet')
             ->setTo($data['to'])
             ->setReplyTo($data['from'])
@@ -163,7 +164,7 @@ class InterviewManager
         }
 
         foreach ($interviewers as $interviewer) {
-            $message = (new \Swift_Message())
+            $message = (new Swift_Message())
                 ->setSubject("[$user] Intervju: Ønske om ny tid")
                 ->setTo($interviewer->getEmail())
                 ->setBody(
@@ -195,7 +196,7 @@ class InterviewManager
 
         // Send mail to interviewer and co-interviewer
         foreach ($interviewers as $interviewer) {
-            $message = (new \Swift_Message())
+            $message = (new Swift_Message())
                 ->setSubject("[$user] Intervju: Kansellert")
                 ->setTo($interviewer->getEmail())
                 ->setBody(
@@ -233,7 +234,7 @@ class InterviewManager
             return;
         }
 
-        $message = (new \Swift_Message())
+        $message = (new Swift_Message())
              ->setSubject('Dine intervjuer dette semesteret')
              ->setTo($interviewer->getEmail())
              ->setBody(
@@ -266,7 +267,7 @@ class InterviewManager
 
     private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
     {
-        $message = (new \Swift_Message())
+        $message = (new Swift_Message())
             ->setSubject('Påminnelse om intervju med Vektorprogrammet')
             ->setTo($interview->getUser()->getEmail())
             ->setBody(

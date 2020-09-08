@@ -13,6 +13,7 @@ use AppBundle\Sms\SmsSenderInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Swift_Message;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
@@ -229,7 +230,7 @@ class SurveyNotifier
             }
 
 
-            $message = (new \Swift_Message())
+            $message = (new Swift_Message())
                 ->setFrom(array($this->fromEmail => $emailFromName))
                 ->setSubject($subject)
                 ->setTo($email)

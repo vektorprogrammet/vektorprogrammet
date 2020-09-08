@@ -4,6 +4,7 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Mailer\MailerInterface;
+use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Twig\Environment;
@@ -53,7 +54,7 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
             $email = $team->getDepartment()->getEmail();
         }
 
-        $receipt = (new \Swift_Message())
+        $receipt = (new Swift_Message())
             ->setSubject('Søknad til '.$team->getName().' mottatt')
             ->setFrom(array($email => $team->getName()))
             ->setReplyTo($email)
@@ -73,7 +74,7 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
             $email = $team->getDepartment()->getEmail();
         }
 
-        $receipt = (new \Swift_Message())
+        $receipt = (new Swift_Message())
             ->setSubject('Ny søker til '.$team->getName())
             ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setReplyTo($application->getEmail())

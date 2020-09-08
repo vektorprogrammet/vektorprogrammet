@@ -7,6 +7,7 @@ use AppBundle\Entity\PasswordReset;
 use AppBundle\Mailer\MailerInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Swift_Message;
 use Twig\Environment;
 
 class PasswordManager
@@ -99,7 +100,7 @@ class PasswordManager
     public function sendResetCode(PasswordReset $passwordReset)
     {
         //Sends a email with the url for resetting the password
-        $emailMessage = (new \Swift_Message())
+        $emailMessage = (new Swift_Message())
             ->setSubject('Tilbakestill passord for vektorprogrammet.no')
             ->setFrom(array('ikkesvar@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setTo($passwordReset->getUser()->getEmail())
