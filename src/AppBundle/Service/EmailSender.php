@@ -5,10 +5,9 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Entity\Receipt;
-use AppBundle\Mailer\Mailer;
 use AppBundle\Mailer\MailerInterface;
 use Swift_Message;
-use Symfony\Component\Routing\Router;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
 class EmailSender
@@ -19,7 +18,7 @@ class EmailSender
     private $economyEmail;
     private $router;
 
-    public function __construct(MailerInterface $mailer, Environment $twig, Router $router, string $defaultEmail, string $economyEmail)
+    public function __construct(MailerInterface $mailer, Environment $twig, RouterInterface $router, string $defaultEmail, string $economyEmail)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
