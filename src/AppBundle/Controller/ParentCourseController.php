@@ -8,10 +8,30 @@ use AppBundle\Entity\ParentCourse;
 
 class ParentCourseController extends BaseController
 {
-    public function createAction(Request $request)
+    public function createAction(Request $request, ParentCourse $parentCourse = null)
     {
-        $parentCourse = new ParentCourse();
-        $form = $this->createForm(ParentCourseType::class, $parentCourse);
+        //Change the name of this action to createAndEditAction if this works!
+        $isCreate = $parentCourse === null;
+
+        // Kan nok fjerne noe av dette!
+        if ($isCreate) {
+            $parentCourse = new ParentCourse();
+            $data = array(
+                'speaker' => "hei",
+                'place' => "",
+                'link' => "",
+                'date' => "",
+                'info' => "");
+        } else {
+            $data = array(
+                'speaker' => $parentCourse->getSpeaker(),
+                'place' => $parentCourse->getPlace(),
+                'link' => $parentCourse->getLink(),
+                'date' => $parentCourse->getDate(),
+                'info' => $parentCourse->getInformation());
+        }
+
+        $form = $this->createForm(ParentCourseType::class, $parentCourse, $data);
         $form->handleRequest($request);
 
 
@@ -21,13 +41,16 @@ class ParentCourseController extends BaseController
             $em->persist($parentCourse);
             $em->flush();
 
-            $this->addFlash("success", "Foreldrekurset er opprettet");
+            $flash = "Foreldrekurset ble ";
+            $flash .= $isCreate ? "opprettet." : "endret.";
+            $this->addFlash("success", $flash);
 
             return $this->redirect($this->generateUrl('parent_course_admin_show'));
         }
 
         return $this->render('parent_course/parent_course_create.html.twig', array(
             'form' => $form->createView(),
+            'isCreate' => $isCreate
         ));
 
     }

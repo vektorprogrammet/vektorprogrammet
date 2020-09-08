@@ -43,6 +43,8 @@
                                             <a href="{{ path('parent_assignment_admin_show', { id: parentCourse.id }) }}"
                                                class="dropdown-item"><i class="fa fa-user text-primary"></i> Påmeldte foreldre
                                             </a>
+                                            <a href="{{ path('parent_course_create') }}" class="dropdown-item">
+                                                <i class="fa fa-edit text-primary"></i> Rediger </a>
                                             <form method="POST"
                                                   onsubmit="return confirm('Vil du virkelig slette foreldrekurset til {{ parentCourse.speaker }} ?')"
                                                   action="{{ path('parent_course_admin_delete', { id: parentCourse.id }) }}">

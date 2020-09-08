@@ -7,10 +7,12 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 
 class ParentCourseType extends AbstractType
 {
+    private $speaker;
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
@@ -20,6 +22,7 @@ class ParentCourseType extends AbstractType
                 'attr' => array(
                     'autocomplete' => 'off',
                 ),
+                'data' => $options['speaker']
             ))
             ->add('place', TextType::class, array(
                 'label' => 'Skriv sted for kurset',
@@ -27,6 +30,7 @@ class ParentCourseType extends AbstractType
                 'attr' => array(
                     'autocomplete' => 'off',
                 ),
+                'data' => $options['place']
             ))
             ->add('link', TextType::class, array(
                 'label' => 'Lim inn full MazeMap-lenke for sted',
@@ -34,6 +38,7 @@ class ParentCourseType extends AbstractType
                 'attr' => array(
                     'autocomplete' => 'off',
                 ),
+                'data' => $options['link']
             ))
             ->add('date', DateTimeType::class, array(
                 'label' => 'Skriv tidspunkt og dato',
@@ -46,6 +51,7 @@ class ParentCourseType extends AbstractType
                 ],
                 'required' => true,
                 'auto_initialize' => false,
+                'data' => $options['date']
 
             ))
             ->add('information', TextType::class, array(
@@ -54,9 +60,21 @@ class ParentCourseType extends AbstractType
                 'attr' => array(
                     'autocomplete' => 'off',
                 ),
+                'data' => $options['info']
             ))
             ->add('save', SubmitType::class, array(
-                'label' => 'Meld på!',
+                'label' => 'Opprett',
             ));
+    }
+    public function configureOptions(OptionsResolver $resolver)
+    {
+        $resolver->setDefaults(array(
+            'data_class' => 'AppBundle\Entity\ParentCourse',
+            'speaker' => '',
+            'place' => "",
+            'link' => "",
+            'date' => "",
+            'info' => ""
+        ));
     }
 }

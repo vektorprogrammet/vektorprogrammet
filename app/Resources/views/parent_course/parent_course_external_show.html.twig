@@ -60,12 +60,16 @@
         let params_arr = paramString.split('&');
 
         let center = '';
+        let zlevel = '';
         for (let i = 0; i < params_arr.length; i++) {
             let pair = params_arr[i].split('=');
             console.log(typeof pair[0]);
             // maybe check that the types are coercive also?
-            if (pair[0] == 'center'){
+            if (pair[0] == 'center') {
                 center = pair[1];
+            }
+            if (pair[0] == 'zlevel'){
+                zlevel = pair[1];
             }
             // find other parameters of interest also!
         }
@@ -73,8 +77,6 @@
         // this seems to be working! Yes!
         const longitude = center.split(',')[0];
         const latitude = center.split(',')[1];
-        console.log(longitude);
-        console.log(latitude);
 
 
         // får null på alle! Kanskje jeg bare må splitte strengen selv, selv om det kan være vanskeligere, da det er ulike argumenter i hver lenke.
@@ -94,7 +96,7 @@
             // initial zoom
             zoom: 18,
 
-            zLevel: 3
+            zLevel: zlevel
         });
         //map.addControl(new Mazemap.mapboxgl.NavigationControl());
 
@@ -110,7 +112,7 @@
             innerCircleColor: '#FFF',
             size: 34,
             innerCircleScale: 0.5,
-            // zLevel: // get this from the url-parameters perhaps!
+            zLevel: zlevel
         })
             .setLngLat(lngLat)
             .addTo(map);
