@@ -34,7 +34,7 @@ class SemesterEntityUnitTest extends TestCase
         $semester->setSemesterTime($semesterTime);
         $semester->setYear($year);
 
-        $this->assertEquals($expectedDate, $semester->getSemesterStartDate());
+        $this->assertEquals($expectedDate, $semester->getStartDate());
     }
 
     public function testGetSemesterEndDate()
@@ -48,7 +48,7 @@ class SemesterEntityUnitTest extends TestCase
         $semester->setSemesterTime($semesterTime);
         $semester->setYear($year);
 
-        $this->assertEquals($expectedDate, $semester->getSemesterEndDate());
+        $this->assertEquals($expectedDate, $semester->getEndDate());
     }
 
     public function testIsBefore()

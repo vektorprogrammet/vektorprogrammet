@@ -65,8 +65,8 @@ class AdmissionSubscriberRepository extends EntityRepository
             ->andWhere('subscriber.timestamp > :semesterStart')
             ->andWhere('subscriber.timestamp < :semesterEnd')
             ->setParameter('department', $department)
-            ->setParameter('semesterStart', $semester->getSemesterStartDate())
-            ->setParameter('semesterEnd', $semester->getSemesterEndDate());
+            ->setParameter('semesterStart', $semester->getStartDate())
+            ->setParameter('semesterEnd', $semester->getEndDate());
     }
 
     /**

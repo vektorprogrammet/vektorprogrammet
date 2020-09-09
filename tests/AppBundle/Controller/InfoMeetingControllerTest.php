@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use DateTime;
 use Tests\BaseWebTestCase;
 
 class InfoMeetingControllerTest extends BaseWebTestCase
@@ -21,7 +22,7 @@ class InfoMeetingControllerTest extends BaseWebTestCase
         $this->assertNotNull($form);
 
         $form['editAdmissionPeriod[infoMeeting][showOnPage]'] = true;
-        $form['editAdmissionPeriod[infoMeeting][date]'] = (new \DateTime())->modify('+1day')->format('d.m.Y H:i');
+        $form['editAdmissionPeriod[infoMeeting][date]'] = (new DateTime())->modify('+1day')->format('d.m.Y H:i');
         $form['editAdmissionPeriod[infoMeeting][room]'] = 'Parken';
         $form['editAdmissionPeriod[infoMeeting][description]'] = 'Forvent mat og drikke!';
         $this->createTeamLeaderClient()->submit($form);

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -86,7 +87,7 @@ class Department
     /**
      * @ORM\OneToMany(targetEntity="AdmissionPeriod", mappedBy="department",
      *     cascade={"remove"})
-     * @ORM\OrderBy({"admissionStartDate" = "DESC"})
+     * @ORM\OrderBy({"startDate" = "DESC"})
      **/
     private $admissionPeriods;
 
@@ -126,11 +127,11 @@ class Department
      */
     public function getCurrentAdmissionPeriod()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         /** @var AdmissionPeriod $admissionPeriod */
         foreach ($this->admissionPeriods as $admissionPeriod) {
-            if ($now > $admissionPeriod->getSemester()->getSemesterStartDate() && $now < $admissionPeriod->getSemester()->getSemesterEndDate()) {
+            if ($now > $admissionPeriod->getSemester()->getStartDate() && $now < $admissionPeriod->getSemester()->getEndDate()) {
                 return $admissionPeriod;
             }
         }
@@ -148,11 +149,11 @@ class Department
 
         $latestAdmissionPeriod = current($admissionPeriods);
 
-        $now = new \DateTime();
+        $now = new DateTime();
 
         foreach ($admissionPeriods as $admissionPeriod) {
-            if ($admissionPeriod->getSemester()->getSemesterStartDate() < $now &&
-                $admissionPeriod->getSemester()->getSemesterEndDate() > $latestAdmissionPeriod->getSemester()->getSemesterEndDate()) {
+            if ($admissionPeriod->getSemester()->getStartDate() < $now &&
+                $admissionPeriod->getSemester()->getEndDate() > $latestAdmissionPeriod->getSemester()->getEndDate()) {
                 $latestAdmissionPeriod = $admissionPeriod;
             }
         }
@@ -181,9 +182,10 @@ class Department
         if (!$admissionPeriod) {
             return false;
         }
-        $start = $admissionPeriod->getAdmissionStartDate();
-        $end = $admissionPeriod->getAdmissionEndDate();
-        $now = new \DateTime();
+
+        $start = $admissionPeriod->getStartDate();
+        $end = $admissionPeriod->getEndDate();
+        $now = new DateTime();
         return $start < $now && $now < $end;
     }
 

@@ -7,6 +7,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\User;
 use AppBundle\Entity\TeamMembership;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Utils\SemesterUtil;
 
@@ -51,7 +52,7 @@ class TeamMembershipRepository extends EntityRepository
      */
     public function findActiveTeamMemberships(): array
     {
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
 
         $teamMemberships = $this->createQueryBuilder('tm')
             ->select('tm')
@@ -92,7 +93,7 @@ class TeamMembershipRepository extends EntityRepository
      */
     private function filterOutInactive(array $teamMemberships): array
     {
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
         $currentSemester = (new Semester())
             ->setYear(SemesterUtil::timeToYear($today))
             ->setSemesterTime(SemesterUtil::timeToSemesterTime($today));

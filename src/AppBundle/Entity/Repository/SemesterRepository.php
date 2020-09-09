@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Semester;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Utils\SemesterUtil;
 
@@ -31,7 +32,7 @@ class SemesterRepository extends EntityRepository
      */
     public function findCurrentSemester()
     {
-        $now = new \DateTime();
+        $now = new DateTime();
 
         return $this->createQueryBuilder('Semester')
             ->select('Semester')

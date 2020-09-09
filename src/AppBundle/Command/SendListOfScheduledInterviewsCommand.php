@@ -3,7 +3,7 @@
 namespace AppBundle\Command;
 
 use AppBundle\Service\InterviewManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -16,7 +16,7 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
     private $interviewManager;
 
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
 

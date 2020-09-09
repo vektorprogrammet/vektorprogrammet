@@ -5,12 +5,12 @@
 {% endblock %}
 
 {% block form_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <div class="form-group">
             {{ form_label(form, label|default(null), {'label_attr': {'class': valid ? 'question-label': 'question-label error'}}) }}
             {{ block('field_help') }}
             {{ form_errors(form) }}
             {{ form_widget(form) }}
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_row %}

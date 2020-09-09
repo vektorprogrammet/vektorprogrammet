@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Role\Roles;
 use AppBundle\Validator\Constraints as CustomAssert;
+use DateTime;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
@@ -180,7 +181,7 @@ class User implements AdvancedUserInterface, \Serializable
         $this->picture_path = 'images/defaultProfile.png';
         $this->receipts = new ArrayCollection();
         $this->reservedFromPopUp = false;
-        $this->lastPopUpTime = new \DateTime("2000-01-01");
+        $this->lastPopUpTime = new DateTime("2000-01-01");
     }
 
     public function getId()
@@ -808,15 +809,15 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getLastPopUpTime() : \DateTime
+    public function getLastPopUpTime() : DateTime
     {
         return $this->lastPopUpTime;
     }
 
     /**
-     * @param \DateTime $lastPopUpTime
+     * @param DateTime $lastPopUpTime
      */
     public function setLastPopUpTime($lastPopUpTime): void
     {

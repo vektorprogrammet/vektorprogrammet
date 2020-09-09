@@ -4,13 +4,13 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Article;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 
 class SlugMaker
 {
     private $em;
 
-    public function __construct(EntityManager $em)
+    public function __construct(EntityManagerInterface $em)
     {
         $this->em = $em;
     }

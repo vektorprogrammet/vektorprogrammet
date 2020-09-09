@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -25,14 +26,14 @@ class TodoItem
     private $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="createdAt", type="date")
      */
     private $createdAt;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="deletedAt", type="date", nullable=true)
      */
@@ -124,7 +125,7 @@ class TodoItem
     /**
      * Set createdAt
      *
-     * @param \DateTime $createdAt
+     * @param DateTime $createdAt
      * @return TodoItem
      */
     public function setCreatedAt($createdAt)
@@ -137,7 +138,7 @@ class TodoItem
     /**
      * Get createdAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreatedAt()
     {
@@ -147,7 +148,7 @@ class TodoItem
     /**
      * Set deletedAt
      *
-     * @param \DateTime $deletedAt
+     * @param DateTime $deletedAt
      * @return TodoItem
      */
     public function setDeletedAt($deletedAt)
@@ -160,9 +161,9 @@ class TodoItem
     /**
      * Get deletedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDeletedAt(): ? \DateTime
+    public function getDeletedAt(): ? DateTime
     {
         return $this->deletedAt;
     }
@@ -278,7 +279,7 @@ class TodoItem
     {
         $sortedArray = $this->todoMandatories->toArray();
         usort($sortedArray, function (TodoMandatory $a, TodoMandatory $b) {
-            return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
+            return ($a->getSemester()->getStartDate() < $b->getSemester()->getStartDate());
         });
 
         return $sortedArray;
@@ -301,7 +302,7 @@ class TodoItem
     {
         $sortedArray = $this->todoDeadlines->toArray();
         usort($sortedArray, function (TodoDeadline $a, TodoDeadline $b) {
-            return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
+            return ($a->getSemester()->getStartDate() < $b->getSemester()->getStartDate());
         });
         return $sortedArray;
     }
@@ -326,7 +327,7 @@ class TodoItem
     {
         $sortedArray = $this->todoCompleted->toArray();
         usort($sortedArray, function (TodoCompleted $a, TodoCompleted $b) {
-            return ($a->getSemester()->getSemesterStartDate() < $b->getSemester()->getSemesterStartDate());
+            return ($a->getSemester()->getStartDate() < $b->getSemester()->getStartDate());
         });
         return $sortedArray;
     }
@@ -418,7 +419,7 @@ class TodoItem
     {
         $deadline = $this->getDeadlineBySemester($semester);
 
-        return $deadline === null ? false: $deadline->getDeadDate() < new \DateTime();
+        return $deadline === null ? false: $deadline->getDeadDate() < new DateTime();
     }
 
 
@@ -432,7 +433,7 @@ class TodoItem
         if ($deadline === null) {
             return false;
         }
-        return ($deadline->getDeadDate() <= new \DateTime('+2 weeks'));
+        return ($deadline->getDeadDate() <= new DateTime('+2 weeks'));
     }
 
 

@@ -1,7 +1,7 @@
 #!/bin/sh
 # Need to change directory before running backup script for Google Drive sync to work
-cd /var/backups/vektorprogrammet
-./backup
+cd /home/vektorprogrammet/cron
+./vektorprogrammet-backup
 cd -
 log=var/logs/deploy.log
 cd $(dirname "$0")

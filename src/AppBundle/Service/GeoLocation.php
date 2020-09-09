@@ -7,7 +7,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GeoLocation
 {
@@ -27,11 +27,11 @@ class GeoLocation
      * @param string $ipinfoToken
      * @param array $ignoredAsns
      * @param EntityManagerInterface $em
-     * @param Session $session
+     * @param SessionInterface $session
      * @param RequestStack $requestStack
      * @param LogService $logger
      */
-    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, Session $session, RequestStack $requestStack, LogService $logger)
+    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, SessionInterface $session, RequestStack $requestStack, LogService $logger)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository('AppBundle:Department');

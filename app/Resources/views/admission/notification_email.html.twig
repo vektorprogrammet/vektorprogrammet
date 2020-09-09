@@ -8,7 +8,7 @@
     Dersom du har vært assistent tidligere kan du søke <a href=3D"https://vektorprogrammet.no{{ path('admission_existing_user') }}">her</a> (krever
     innlogging). Da vil du ikke bli kalt inn til intervju og blir tatt opp som assistent umiddelbart.</p>
 
-<p>Påmeldingsfristen er <strong>{{ department.currentAdmissionPeriod.admissionEndDate|date('d.m.Y') }} kl. {{ department.currentAdmissionPeriod.admissionEndDate|date('H:i') }}.</strong></p>
+<p>Påmeldingsfristen er <strong>{{ department.currentAdmissionPeriod.endDate|date('d.m.Y') }} kl. {{ department.currentAdmissionPeriod.endDate|date('H:i') }}.</strong></p>
 
 {% if infoMeeting and infoMeeting.showOnPage %}
     <br>
