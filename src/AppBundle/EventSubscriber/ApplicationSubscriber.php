@@ -6,7 +6,9 @@ use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Service\AdmissionNotifier;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Service\UserRegistration;
+use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Twig\Environment;
 
 class ApplicationSubscriber implements EventSubscriberInterface
 {
@@ -22,11 +24,11 @@ class ApplicationSubscriber implements EventSubscriberInterface
      * ApplicationAdmissionSubscriber constructor.
      *
      * @param MailerInterface $mailer
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param AdmissionNotifier $admissionNotifier
      * @param UserRegistration $userRegistrationService
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
+    public function __construct(MailerInterface $mailer, Environment $twig, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -76,7 +78,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         }
 
         // Send a confirmation email with a copy of the application
-        $emailMessage = (new \Swift_Message())
+        $emailMessage = (new Swift_Message())
                                       ->setSubject('Søknad - Vektorassistent')
                                       ->setReplyTo($application->getDepartment()->getEmail())
                                       ->setTo($application->getUser()->getEmail())
