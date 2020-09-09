@@ -63,7 +63,7 @@ class ParentCourseType extends AbstractType
                 'data' => $options['info']
             ))
             ->add('save', SubmitType::class, array(
-                'label' => 'Opprett',
+                'label' => $options['label'],
             ));
     }
     public function configureOptions(OptionsResolver $resolver)
@@ -71,10 +71,11 @@ class ParentCourseType extends AbstractType
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\ParentCourse',
             'speaker' => '',
-            'place' => "",
-            'link' => "",
-            'date' => "",
-            'info' => ""
+            'place' => '',
+            'link' => '',
+            'date' => null,
+            'info' => '',
+            'label' => ''
         ));
     }
 }

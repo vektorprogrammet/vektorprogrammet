@@ -10,25 +10,24 @@ class ParentCourseController extends BaseController
 {
     public function createAction(Request $request, ParentCourse $parentCourse = null)
     {
-        //Change the name of this action to createAndEditAction if this works!
         $isCreate = $parentCourse === null;
-
-        // Kan nok fjerne noe av dette!
         if ($isCreate) {
             $parentCourse = new ParentCourse();
             $data = array(
-                'speaker' => "hei",
-                'place' => "",
-                'link' => "",
-                'date' => "",
-                'info' => "");
+                'speaker' => '',
+                'place' => '',
+                'link' => '',
+                'date' => null,
+                'info' => '',
+                'label' => 'Opprett');
         } else {
             $data = array(
                 'speaker' => $parentCourse->getSpeaker(),
                 'place' => $parentCourse->getPlace(),
                 'link' => $parentCourse->getLink(),
                 'date' => $parentCourse->getDate(),
-                'info' => $parentCourse->getInformation());
+                'info' => $parentCourse->getInformation(),
+                'label' => 'Lagre');
         }
 
         $form = $this->createForm(ParentCourseType::class, $parentCourse, $data);

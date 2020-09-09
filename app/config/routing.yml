@@ -67,12 +67,19 @@ update_static_content:
 
 parent_course_create:
  path: /kontrollpanel/foreldrekurs/create
- defaults: {_controller: AppBundle:ParentCourse:create}
+ defaults: {_controller: AppBundle:ParentCourse:create }
  methods: [GET, POST]
+
+parent_course_edit:
+ path: /kontrollpanel/foreldrekurs/rediger/{id}
+ defaults: { _controller: AppBundle:ParentCourse:create }
+ methods: [GET, POST]
+ requirements:
+  id: \d+
 
 parent_course_admin_show:
  path: /kontrollpanel/foreldrekurs
- defaults: {_controller: AppBundle:ParentCourse:show}
+ defaults: {_controller: AppBundle:ParentCourse:show }
  methods: [GET]
 
 parent_course_admin_delete:
