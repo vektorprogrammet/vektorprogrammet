@@ -13,7 +13,9 @@ use AppBundle\Sms\SmsSenderInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Swift_Message;
 use Symfony\Component\Routing\RouterInterface;
+use Twig\Environment;
 
 class SurveyNotifier
 {
@@ -26,18 +28,17 @@ class SurveyNotifier
     private $fromEmail;
 
 
-
     /**
      * SurveyNotifier constructor.
      * @param string $fromEmail
      * @param Mailer $mailer
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param LoggerInterface $logger
      * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(string $fromEmail, Mailer $mailer, \Twig_Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(string $fromEmail, Mailer $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->fromEmail = $fromEmail;
         $this->mailer = $mailer;
@@ -229,7 +230,7 @@ class SurveyNotifier
             }
 
 
-            $message = (new \Swift_Message())
+            $message = (new Swift_Message())
                 ->setFrom(array($this->fromEmail => $emailFromName))
                 ->setSubject($subject)
                 ->setTo($email)

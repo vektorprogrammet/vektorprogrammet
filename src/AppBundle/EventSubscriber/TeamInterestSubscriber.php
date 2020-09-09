@@ -4,8 +4,10 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamInterestCreatedEvent;
 use AppBundle\Mailer\MailerInterface;
+use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Twig\Environment;
 
 class TeamInterestSubscriber implements EventSubscriberInterface
 {
@@ -17,10 +19,10 @@ class TeamInterestSubscriber implements EventSubscriberInterface
      * TeamInterestSubscriber constructor.
      *
      * @param MailerInterface $mailer
-     * @param \Twig_Environment $twig
+     * @param Environment $twig
      * @param SessionInterface $session
      */
-    public function __construct(MailerInterface $mailer, \Twig_Environment $twig, SessionInterface $session)
+    public function __construct(MailerInterface $mailer, Environment $twig, SessionInterface $session)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
@@ -41,7 +43,7 @@ class TeamInterestSubscriber implements EventSubscriberInterface
         $department = $teamInterest->getDepartment();
         $fromEmail = $department->getEmail();
 
-        $receipt = (new \Swift_Message())
+        $receipt = (new Swift_Message())
             ->setSubject("Teaminteresse i Vektorprogrammet")
             ->setFrom(array($fromEmail => "Vektorprogrammet $department"))
             ->setReplyTo($fromEmail)
