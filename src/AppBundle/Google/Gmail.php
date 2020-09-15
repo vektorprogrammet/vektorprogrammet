@@ -23,7 +23,7 @@ class Gmail extends GoogleService implements MailerInterface
 
         $client = $this->getClient();
         $service = new \Google_Service_Gmail($client);
-        $gmailMessage = $this->SwiftMessageToGmailMessage($message);
+        $gmailMessage = $this->swiftMessageToGmailMessage($message);
 
         try {
             $res = $service->users_messages->send($this->defaultEmail, $gmailMessage);
@@ -44,7 +44,7 @@ class Gmail extends GoogleService implements MailerInterface
         }
     }
 
-    private function SwiftMessageToGmailMessage(Swift_Message $message)
+    private function swiftMessageToGmailMessage(Swift_Message $message)
     {
         $subject = $message->getSubject();
         $body = $this->encodeBody($message->getBody());
