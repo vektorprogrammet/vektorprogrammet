@@ -4,12 +4,13 @@ namespace AppBundle\Google;
 
 use AppBundle\Mailer\MailerInterface;
 use Google_Service_Gmail_Message;
+use Swift_Message;
 
 class Gmail extends GoogleService implements MailerInterface
 {
     private $defaultEmail;
 
-    public function send(\Swift_Message $message, bool $disableLogging = false)
+    public function send(Swift_Message $message, bool $disableLogging = false)
     {
         if ($this->disabled) {
             if (!$disableLogging) {
@@ -43,7 +44,7 @@ class Gmail extends GoogleService implements MailerInterface
         }
     }
 
-    private function SwiftMessageToGmailMessage(\Swift_Message $message)
+    private function SwiftMessageToGmailMessage(Swift_Message $message)
     {
         $subject = $message->getSubject();
         $body = $this->encodeBody($message->getBody());
