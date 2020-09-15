@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Service\ApplicationData;
 use AppBundle\Service\AssistantHistoryData;
+use Symfony\Component\HttpFoundation\Request;
 
 class ApplicationStatisticsController extends BaseController
 {
