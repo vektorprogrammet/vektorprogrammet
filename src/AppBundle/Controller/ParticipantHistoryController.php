@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class ParticipantHistoryController extends BaseController
 {
     /**
