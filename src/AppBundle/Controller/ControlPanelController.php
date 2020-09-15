@@ -5,7 +5,6 @@ namespace AppBundle\Controller;
 use AppBundle\Service\SbsData;
 use Symfony\Component\HttpFoundation\Request;
 
-
 class ControlPanelController extends BaseController
 {
 

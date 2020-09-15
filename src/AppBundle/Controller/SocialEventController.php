@@ -96,7 +96,7 @@ class SocialEventController extends BaseController
      * @param SocialEvent $event
      * @return \Symfony\Component\HttpFoundation\RedirectResponse
      */
-    public function deleteSocialEventAction(Request $request ,SocialEvent $event)
+    public function deleteSocialEventAction(Request $request, SocialEvent $event)
     {
         # NOTE: this function will permanently remove the event.
         $semester = $this->getSemesterOrThrow404($request);
