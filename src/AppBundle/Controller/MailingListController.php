@@ -53,12 +53,13 @@ class MailingListController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAssistantsAction()
+    public function showAssistantsAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $users = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
 
@@ -68,12 +69,13 @@ class MailingListController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showTeamAction()
+    public function showTeamAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $users = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
 
@@ -83,12 +85,13 @@ class MailingListController extends BaseController
     }
 
     /**
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showAllAction()
+    public function showAllAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $assistantUsers = $this->getDoctrine()->getRepository('AppBundle:User')
             ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
         $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')

@@ -304,13 +304,13 @@ class SurveyController extends BaseController
      * )
      *
      * @param Semester|null $semester
-     *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showSurveysAction()
+    public function showSurveysAction(Request $request)
     {
-        $semester = $this->getSemesterOrThrow404();
-        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404($request);
+        $department = $this->getDepartmentOrThrow404($request);
 
 
         $surveysWithDepartment = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(

@@ -10,10 +10,15 @@ use AppBundle\Service\SocialEventManager;
 
 class SocialEventController extends BaseController
 {
-    public function showAction()
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
 
         $em = $this->getDoctrine()->getManager();
         $repository = $em->getRepository('AppBundle:SocialEvent');
@@ -34,8 +39,8 @@ class SocialEventController extends BaseController
      */
     public function createSocialEventAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $em              = $this->getDoctrine()->getManager();
         $socialEvent    = new SocialEvent();
         $user            = $this->getUser();
@@ -69,8 +74,8 @@ class SocialEventController extends BaseController
         ));
         $form->handleRequest($request);
 
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $em = $this->getDoctrine()->getManager();
         if ($form->isValid()) {
             $em->persist($social_event);
@@ -86,11 +91,16 @@ class SocialEventController extends BaseController
         ));
     }
 
-    public function deleteSocialEventAction(SocialEvent $event)
+    /**
+     * @param Request $request
+     * @param SocialEvent $event
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function deleteSocialEventAction(Request $request ,SocialEvent $event)
     {
         # NOTE: this function will permanently remove the event.
-        $semester = $this->getSemesterOrThrow404();
-        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404($request);
+        $department = $this->getDepartmentOrThrow404($request);
 
         $em = $this->getDoctrine()->getManager();
         $em->remove($event);

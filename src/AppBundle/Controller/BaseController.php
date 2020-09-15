@@ -9,6 +9,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
+
 class BaseController extends Controller
 {
     /**
@@ -58,12 +59,12 @@ class BaseController extends Controller
 
     /**
      * 404's if department is null in the request and for the user, or if a wrong department ID is given.
-     *
+     * @param Request $request
      * @return Department
      */
-    public function getDepartmentOrThrow404(): Department
+    public function getDepartmentOrThrow404(Request $request): Department
     {
-        $department = $this->getDepartment();
+        $department = $this->getDepartment($request);
         if ($department === null) {
             throw new NotFoundHttpException();
         }
@@ -71,11 +72,12 @@ class BaseController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return Semester
      */
-    public function getSemesterOrThrow404(): Semester
+    public function getSemesterOrThrow404(Request $request): Semester
     {
-        $semester = $this->getSemester();
+        $semester = $this->getSemester($request);
         if ($semester === null) {
             throw new NotFoundHttpException();
         }

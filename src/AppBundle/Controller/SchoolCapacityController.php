@@ -19,8 +19,8 @@ class SchoolCapacityController extends BaseController
      */
     public function createAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $currentSemester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $currentSemester = $this->getSemesterOrThrow404($request);
 
         $schoolCapacity = new SchoolCapacity();
         $schoolCapacity->setSemester($currentSemester);

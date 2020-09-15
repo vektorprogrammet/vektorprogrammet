@@ -10,14 +10,14 @@ class StandController extends BaseController
 
     /**
      * @Route("/kontrollpanel/stand", name="stand")
-     *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
 

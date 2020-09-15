@@ -30,10 +30,15 @@ class AdmissionAdminController extends BaseController
         return $this->showNewApplicationsAction();
     }
 
-    public function showNewApplicationsAction()
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showNewApplicationsAction(Request $request)
     {
-        $semester = $this->getSemesterOrThrow404();
-        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404($request);
+        $department = $this->getDepartmentOrThrow404($request);
 
         $admissionPeriod = $this->getDoctrine()
                 ->getRepository('AppBundle:AdmissionPeriod')
@@ -58,10 +63,14 @@ class AdmissionAdminController extends BaseController
         ));
     }
 
-    public function showAssignedApplicationsAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showAssignedApplicationsAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
@@ -94,10 +103,14 @@ class AdmissionAdminController extends BaseController
         ));
     }
 
-    public function showInterviewedApplicationsAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showInterviewedApplicationsAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
@@ -124,10 +137,14 @@ class AdmissionAdminController extends BaseController
         ));
     }
 
-    public function showExistingApplicationsAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showExistingApplicationsAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);
 
@@ -275,11 +292,15 @@ class AdmissionAdminController extends BaseController
         ));
     }
 
-    public function showTeamInterestAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showTeamInterestAction(Request $request)
     {
         $user = $this->getUser();
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);
 
