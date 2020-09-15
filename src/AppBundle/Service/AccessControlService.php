@@ -153,7 +153,7 @@ class AccessControlService
 
     private function userHasAccessToRule(User $user, AccessRule $rule): bool
     {
-        if (count($rule->getUsers()) > 0 && ! ($user->isActive() && $this->userIsInRuleUserList($user, $rule))) {
+        if (count(is_countable($rule->getUsers()) ? $rule->getUsers() : array()) > 0 && ! ($user->isActive() && $this->userIsInRuleUserList($user, $rule))) {
             return false;
         }
 
@@ -161,7 +161,7 @@ class AccessControlService
             return false;
         }
 
-        if (count($rule->getRoles()) > 0 && ! $this->userRoleHasAccessToRule($user, $rule)) {
+        if (count(is_countable($rule->getRoles()) ? $rule->getRoles() : array()) > 0 && ! $this->userRoleHasAccessToRule($user, $rule)) {
             return false;
         }
 
@@ -170,10 +170,10 @@ class AccessControlService
 
     private function userHasTeamOrExecutiveBoardAccessToRule(User $user, AccessRule $rule): bool
     {
-        $teamRule = count($rule->getTeams()) > 0;
+        $teamRule = count(is_countable($rule->getTeams()) ? $rule->getTeams() : array()) > 0;
         $executiveRule = $rule->isForExecutiveBoard();
         $hasTeamAccess = $this->userHasTeamAccessToRule($user, $rule);
-        $hasExecutiveBoardAccess = count($user->getActiveExecutiveBoardMemberships()) > 0;
+        $hasExecutiveBoardAccess = count(is_countable($user->getActiveExecutiveBoardMemberships()) ? $user->getActiveExecutiveBoardMemberships() : array()) > 0;
         if ($teamRule && $executiveRule && !($hasTeamAccess || $hasExecutiveBoardAccess)) {
             return false;
         } elseif ($teamRule && !$executiveRule && !$hasTeamAccess) {

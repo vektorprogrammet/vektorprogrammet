@@ -108,7 +108,7 @@ class SurveyAnswerType extends AbstractType
 
                     // Add the new value to the choice array
                     // The data from the form is an array (because it's checkboxes) in this case
-                    if ($data['answerArray'] === null) {
+                    if ($data === null || $data['answerArray'] === null) {
                         $answers = [];
                     } else {
                         $answers = array_combine($data['answerArray'], $data['answerArray']);

@@ -235,10 +235,14 @@ class AccessRule
 
     public function isEmpty()
     {
+        $users = $this->getUsers();
+        $teams = $this->getTeams();
+        $roles = $this->getRoles();
+
         return
-            count($this->getUsers()) == 0 &&
-            count($this->getTeams()) == 0 &&
-            count($this->getRoles()) == 0 &&
+            count(is_countable($users) ? $users : array()) == 0 &&
+            count(is_countable($teams) ? $teams : array()) == 0 &&
+            count(is_countable($roles) ? $roles : array()) == 0 &&
             !$this->isForExecutiveBoard();
     }
 
