@@ -29,6 +29,7 @@ class LoadParentCourseData extends AbstractFixture implements OrderedFixtureInte
     public function load(ObjectManager $manager)
     {
         $parentCourse1 = new ParentCourse();
+
         $parentCourse1->setSpeaker('Alexander J Ohrt');
         $parentCourse1->setPlace('R5, Gløshaugen');
         $parentCourse1->setLink('https://use.mazemap.com/#v=1&zlevel=-1&center=10.405274,63.415645&zoom=18&campusid=1&typepois=7&sharepoitype=poi&sharepoi=1949');

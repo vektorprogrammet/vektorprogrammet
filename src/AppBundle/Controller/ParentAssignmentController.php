@@ -57,8 +57,16 @@ class ParentAssignmentController extends BaseController
 
     public function externalDeleteAction(ParentAssignment $parentAssignment, int $uniqueKey)
     {
+        # Do I need to take parentAssigned as an arguument? This is a bit strange no?
+        # How can I test this myself?
+        # Check for keys in db! (all are null now, this needs to be fixed when assigning a parnet to a course first (in the other function))!
+
         $em = $this->getDoctrine()->getManager();
-        $em->remove($parentAssignment);
+
+        # Get the parent based on the UniqueKey from db.
+        $parent = $em->getRepository('AppBundle:ParentAssignment')->getParentAssignmentByUniqueKey($uniqueKey);
+        dump($parent);
+        $em->remove($parent);
         $em->flush();
         #denne skal brukes til å slette fra mailen som sendes ut til foreldrene!
 
@@ -88,15 +96,6 @@ class ParentAssignmentController extends BaseController
         $this->get(EmailSender::class)->sendParentCourseAssignmentConfirmation($parentAssignment);
         $this->addFlash("success", "Sendt");
         $response['success'] = true;
-        /*
-        if ($surveyNotificationCollection->isAllSent()) {
-            $this->addFlash("success", "Sendt");
-            $response['success'] = true;
-        } else {
-            $this->addFlash("warning", "Alle ble ikke sendt");
-            $response['success'] = false;
-        }
-        */
 
         return new JsonResponse($response);
 
