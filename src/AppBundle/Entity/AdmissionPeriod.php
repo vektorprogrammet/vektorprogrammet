@@ -114,7 +114,7 @@ class AdmissionPeriod implements PeriodInterface
      *
      * @return DateTime
      */
-    public function getStartDate(): \DateTime
+    public function getStartDate(): ? \DateTime
     {
         return $this->startDate;
     }
@@ -139,7 +139,7 @@ class AdmissionPeriod implements PeriodInterface
      *
      * @return DateTime
      */
-    public function getEndDate(): \DateTime
+    public function getEndDate(): ? \DateTime
     {
         return $this->endDate;
     }
