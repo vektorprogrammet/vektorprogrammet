@@ -23,7 +23,7 @@ class AdmissionAdminController extends BaseController
      * Shows the admission admin page. Shows only applications for the department of the logged in user.
      * This works as the restricted admission management method, only allowing users to manage applications within their department.
      * @param Request $request
-     * 
+     *
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function showAction(Request $request)
