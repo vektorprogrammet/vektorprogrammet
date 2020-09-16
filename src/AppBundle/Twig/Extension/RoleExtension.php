@@ -5,10 +5,12 @@ namespace AppBundle\Twig\Extension;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
-use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage;
-use Symfony\Component\Security\Core\Authorization\AuthorizationChecker;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class RoleExtension extends \Twig_Extension
+class RoleExtension extends AbstractExtension
 {
     private $authorizationChecker;
     private $tokenStorage;
@@ -17,7 +19,7 @@ class RoleExtension extends \Twig_Extension
      */
     private $roleManager;
 
-    public function __construct(AuthorizationChecker $authorizationChecker, TokenStorage $tokenStorage, RoleManager $roleManager)
+    public function __construct(AuthorizationCheckerInterface $authorizationChecker, TokenStorageInterface $tokenStorage, RoleManager $roleManager)
     {
         $this->authorizationChecker = $authorizationChecker;
         $this->tokenStorage = $tokenStorage;
@@ -32,16 +34,16 @@ class RoleExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('is_granted_assistant', [$this, 'isGrantedAssistant']),
-            new \Twig_SimpleFunction('is_granted_team_member', [$this, 'isGrantedTeamMember']),
-            new \Twig_SimpleFunction('is_granted_team_leader', [$this, 'isGrantedTeamLeader']),
-            new \Twig_SimpleFunction('is_granted_admin', [$this, 'isGrantedAdmin']),
-            new \Twig_SimpleFunction('can_edit_page', [$this, 'userCanEditPage']),
-            new \Twig_SimpleFunction('user_is_granted_assistant', [$this, 'userIsGrantedAssistant']),
-            new \Twig_SimpleFunction('user_is_granted_team_member', [$this, 'userIsGrantedTeamMember']),
-            new \Twig_SimpleFunction('user_is_granted_team_leader', [$this, 'userIsGrantedTeamLeader']),
-            new \Twig_SimpleFunction('user_is_granted_admin', [$this, 'userIsGrantedAdmin']),
-            new \Twig_SimpleFunction('user_is_in_executive_board', [$this, 'userIsInExecutiveBoard']),
+            new TwigFunction('is_granted_assistant', [$this, 'isGrantedAssistant']),
+            new TwigFunction('is_granted_team_member', [$this, 'isGrantedTeamMember']),
+            new TwigFunction('is_granted_team_leader', [$this, 'isGrantedTeamLeader']),
+            new TwigFunction('is_granted_admin', [$this, 'isGrantedAdmin']),
+            new TwigFunction('can_edit_page', [$this, 'userCanEditPage']),
+            new TwigFunction('user_is_granted_assistant', [$this, 'userIsGrantedAssistant']),
+            new TwigFunction('user_is_granted_team_member', [$this, 'userIsGrantedTeamMember']),
+            new TwigFunction('user_is_granted_team_leader', [$this, 'userIsGrantedTeamLeader']),
+            new TwigFunction('user_is_granted_admin', [$this, 'userIsGrantedAdmin']),
+            new TwigFunction('user_is_in_executive_board', [$this, 'userIsInExecutiveBoard']),
         );
     }
 

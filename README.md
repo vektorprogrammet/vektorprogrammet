@@ -28,7 +28,7 @@ Example for dependency `mbstring`:
 `;extension=mbstring`       ---> `extension=mbstring`
 
 
-To install the php-dependencies on Ubuntu 
+To install the PHP-dependencies on Ubuntu 
 (Example with Ubuntu as operating system and a php-version of 7.2)
 ```
 sudo apt-get install php7.2-mbstring
@@ -56,7 +56,7 @@ sudo apt-get install php7.2-xml
 
 
 ### Build static files
-When adding new images or other non-code files, you can run
+When adding new images or other non-code files, you can run:
 
 `npm run build`
 

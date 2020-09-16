@@ -31,8 +31,8 @@
 {% block javascripts %}
     {% include 'common/datetime_picker.html.twig' with {
         inputIds: [
-                form.admissionStartDate.vars.id,
-                form.admissionEndDate.vars.id
+                form.startDate.vars.id,
+                form.endDate.vars.id
         ],
         step: 1,
     }%}

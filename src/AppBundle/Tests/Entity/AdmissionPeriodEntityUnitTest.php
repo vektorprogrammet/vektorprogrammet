@@ -4,41 +4,42 @@ namespace AppBundle\Tests\Entity;
 
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
+use DateTime;
 
 class AdmissionPeriodEntityUnitTest extends \PHPUnit_Framework_TestCase
 {
-    // Check whether the setAdmissionStartDate function is working correctly
-    public function testSetAdmissionStartDate()
+    // Check whether the setstartDate function is working correctly
+    public function testSetstartDate()
     {
 
         // New datetime variable
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
 
         // new entity
         $admissionPeriod = new AdmissionPeriod();
 
-        // Use the setAdmissionStartDate method
-        $admissionPeriod->setAdmissionStartDate($today);
+        // Use the setstartDate method
+        $admissionPeriod->setStartDate($today);
 
         // Assert the result
-        $this->assertEquals($today, $admissionPeriod->getAdmissionStartDate());
+        $this->assertEquals($today, $admissionPeriod->getStartDate());
     }
 
-    // Check whether the setAdmissionEndDate function is working correctly
-    public function testSetAdmissionEndDate()
+    // Check whether the setendDate function is working correctly
+    public function testSetendDate()
     {
 
         // New datetime variable
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
 
         // new entity
         $admissionPeriod = new AdmissionPeriod();
 
-        // Use the setAdmissionEndDate method
-        $admissionPeriod->setAdmissionEndDate($today);
+        // Use the setendDate method
+        $admissionPeriod->setEndDate($today);
 
         // Assert the result
-        $this->assertEquals($today, $admissionPeriod->getAdmissionEndDate());
+        $this->assertEquals($today, $admissionPeriod->getEndDate());
     }
 
     // Check whether the setDepartment function is working correctly

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -75,8 +76,8 @@ class Receipt
     public function __construct()
     {
         $this->status = self::STATUS_PENDING;
-        $this->submitDate = new \DateTime();
-        $this->receiptDate = new \DateTime();
+        $this->submitDate = new DateTime();
+        $this->receiptDate = new DateTime();
         $currentTimeInMilliseconds = round(microtime(true) * 1000);
         $this->visualId = dechex($currentTimeInMilliseconds);
     }
@@ -98,7 +99,7 @@ class Receipt
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getSubmitDate()
     {
@@ -106,7 +107,7 @@ class Receipt
     }
 
     /**
-     * @param \DateTime $submitDate
+     * @param DateTime $submitDate
      */
     public function setSubmitDate($submitDate)
     {
@@ -115,7 +116,7 @@ class Receipt
 
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getReceiptDate()
     {
@@ -123,7 +124,7 @@ class Receipt
     }
 
     /**
-     * @param \DateTime $receiptDate
+     * @param DateTime $receiptDate
      */
     public function setReceiptDate($receiptDate)
     {
@@ -224,7 +225,7 @@ class Receipt
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getRefundDate()
     {
@@ -232,7 +233,7 @@ class Receipt
     }
 
     /**
-     * @param \DateTime $refundDate
+     * @param DateTime $refundDate
      */
     public function setRefundDate($refundDate)
     {

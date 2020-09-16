@@ -5,6 +5,7 @@ use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\SurveyNotifierType;
 use AppBundle\Service\SurveyNotifier;
+use DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
@@ -90,7 +91,7 @@ class SurveyNotifierController extends BaseController
 
     public function sendSurveyNotificationsAction(SurveyNotificationCollection $surveyNotificationCollection)
     {
-        if ($surveyNotificationCollection->getTimeOfNotification() > new \DateTime() || $surveyNotificationCollection->isAllSent()) {
+        if ($surveyNotificationCollection->getTimeOfNotification() > new DateTime() || $surveyNotificationCollection->isAllSent()) {
             throw new AccessDeniedException();
         }
         $this->get(SurveyNotifier::class)->sendNotifications($surveyNotificationCollection);

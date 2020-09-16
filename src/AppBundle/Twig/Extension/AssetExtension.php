@@ -3,8 +3,10 @@
 namespace AppBundle\Twig\Extension;
 
 use Symfony\Component\Asset\Packages;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class AssetExtension extends \Twig_Extension
+class AssetExtension extends AbstractExtension
 {
     private $packages;
     private $rootDir;
@@ -27,7 +29,7 @@ class AssetExtension extends \Twig_Extension
     public function getFunctions()
     {
         return array(
-            new \Twig_SimpleFunction('asset_with_version', array($this, 'getAssetUrl')),
+            new TwigFunction('asset_with_version', array($this, 'getAssetUrl')),
         );
     }
 

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -88,8 +89,8 @@ class Article
     public function __construct()
     {
         $this->departments = new ArrayCollection();
-        $this->setCreated(new \DateTime());
-        $this->setUpdated(new \DateTime());
+        $this->setCreated(new DateTime());
+        $this->setUpdated(new DateTime());
         $this->published = false;
     }
 
@@ -98,7 +99,7 @@ class Article
      */
     public function setUpdatedValue()
     {
-        $this->setUpdated(new \DateTime());
+        $this->setUpdated(new DateTime());
     }
 
     /**
@@ -232,7 +233,7 @@ class Article
     /**
      * Set created.
      *
-     * @param \DateTime $created
+     * @param DateTime $created
      *
      * @return Article
      */
@@ -246,7 +247,7 @@ class Article
     /**
      * Get created.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCreated()
     {
@@ -256,7 +257,7 @@ class Article
     /**
      * Set updated.
      *
-     * @param \DateTime $updated
+     * @param DateTime $updated
      *
      * @return Article
      */
@@ -270,7 +271,7 @@ class Article
     /**
      * Get updated.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getUpdated()
     {

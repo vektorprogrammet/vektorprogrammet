@@ -29,7 +29,7 @@ class PartyController extends AbstractFOSRestController
      * @throws NotFoundHttpException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function ApplicationCountAction(Department $department)
+    public function applicationCountAction(Department $department)
     {
         $applications = $this->getApplications($department);
         $view = $this->view(count($applications));
@@ -47,7 +47,7 @@ class PartyController extends AbstractFOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function NewestApplicationsAction(Department $department)
+    public function newestApplicationsAction(Department $department)
     {
         $applications = $this->getApplications($department);
         $newestApplications = array_slice($applications, 0, self::NUM_APPLICATIONS, true);
@@ -90,10 +90,10 @@ class PartyController extends AbstractFOSRestController
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
-    public function ApplicationDeadlineAction(Department $department)
+    public function applicationDeadlineAction(Department $department)
     {
         $admissionPeriod = $this->getAdmissionPeriod($department);
-        $deadline = $admissionPeriod->getAdmissionEndDate();
+        $deadline = $admissionPeriod->getEndDate();
         $view = $this->view($deadline->format('Y-m-d H:i:s'));
         return $this->handleView($view);
     }

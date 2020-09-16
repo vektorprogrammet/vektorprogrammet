@@ -8,10 +8,11 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Twig\Environment;
 
 class ApplicationAdmission
 {
@@ -22,11 +23,11 @@ class ApplicationAdmission
     /**
      * AdmissionManager constructor.
      *
-     * @param EntityManager     $em
-     * @param \Twig_Environment $twig
+     * @param EntityManagerInterface     $em
+     * @param Environment $twig
      * @param LoginManager      $loginManager
      */
-    public function __construct(EntityManager $em, \Twig_Environment $twig, LoginManager $loginManager)
+    public function __construct(EntityManagerInterface $em, Environment $twig, LoginManager $loginManager)
     {
         $this->em = $em;
         $this->twig = $twig;
@@ -64,6 +65,9 @@ class ApplicationAdmission
         $department = $fos->getDepartment();
         $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')
             ->findOneWithActiveAdmissionByDepartment($department);
+        if ($admissionPeriod === null) {
+            return false;
+        }
         return $this->userHasAlreadyAppliedInAdmissionPeriod($user, $admissionPeriod);
     }
 

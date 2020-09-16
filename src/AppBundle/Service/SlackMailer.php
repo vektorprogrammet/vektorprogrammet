@@ -4,6 +4,7 @@ namespace AppBundle\Service;
 
 use AppBundle\Mailer\MailerInterface;
 use Nexy\Slack\Attachment;
+use Swift_Message;
 
 class SlackMailer implements MailerInterface
 {
@@ -14,7 +15,7 @@ class SlackMailer implements MailerInterface
         $this->messenger = $messenger;
     }
 
-    public function send(\Swift_Message $message, bool $disableLogging = false)
+    public function send(Swift_Message $message, bool $disableLogging = false)
     {
         $slackMessage = $this->messenger->createMessage();
         $attachment = new Attachment();

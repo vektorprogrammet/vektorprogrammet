@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Command;
 
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class RoleManagerTest extends KernelTestCase
@@ -14,7 +14,7 @@ class RoleManagerTest extends KernelTestCase
      */
     private $roleManager;
     /**
-     * @var EntityManager
+     * @var EntityManagerInterface
      */
     private $em;
     /**

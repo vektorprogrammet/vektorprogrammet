@@ -2,14 +2,17 @@
 
 namespace AppBundle\Twig\Extension;
 
-class SafeHtmlExtension extends \Twig_Extension
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
+
+class SafeHtmlExtension extends AbstractExtension
 {
     private $blacklistedTags = ['script', 'iframe'];
 
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('safe_html', array($this, 'htmlFilter'), array(
+            new TwigFilter('safe_html', array($this, 'htmlFilter'), array(
                 'is_safe' => array('html'),
             )),
         );

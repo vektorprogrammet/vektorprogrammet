@@ -39,7 +39,6 @@
         "knplabs/knp-paginator-bundle": "~2.4",
         "helios-ag/fm-elfinder-bundle": "^9.1",
         "liip/imagine-bundle": "^2.1",
-        "tfox/mpdf-port-bundle": "^2.0",
         "doctrine/doctrine-migrations-bundle": "^1.2",
         "nexylan/slack-bundle": "^2.0",
         "google/apiclient": "^2.2",

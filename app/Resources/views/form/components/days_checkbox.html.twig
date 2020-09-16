@@ -1,5 +1,5 @@
 {% block form_row %}
-    {% spaceless %}
+    {% apply spaceless %}
         <span class="question-label">
             {{ form_label(form) }}
         </span>
@@ -13,16 +13,16 @@
                 {% endif %}
             </label>
         </div>
-    {% endspaceless %}
+    {% endapply %}
 {% endblock form_row %}
 
 {% block checkbox_widget -%}
-    {% spaceless %}
+    {% apply spaceless %}
         <input type="checkbox"
                class="form-check-input"
                 {{ block('widget_attributes') }}
                 {% if value is defined %} value="{{ value }}"{% endif %}
                 {% if checked %} checked="checked"{% endif %}
         />
-    {% endspaceless %}
+    {% endapply %}
 {%- endblock checkbox_widget %}

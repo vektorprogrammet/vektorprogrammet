@@ -6,8 +6,10 @@ use AppBundle\Entity\TeamInterface;
 use AppBundle\Entity\User;
 use AppBundle\Service\FilterService;
 use AppBundle\Service\Sorter;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFilter;
 
-class TeamPositionSortExtension extends \Twig_Extension
+class TeamPositionSortExtension extends AbstractExtension
 {
     private $sorter;
     private $filterService;
@@ -20,7 +22,7 @@ class TeamPositionSortExtension extends \Twig_Extension
     public function getFilters()
     {
         return array(
-            new \Twig_SimpleFilter('team_position_sort', array($this, 'teamPositionSortFilter')),
+            new TwigFilter('team_position_sort', array($this, 'teamPositionSortFilter')),
         );
     }
 

@@ -17,7 +17,7 @@ use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
-use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 
 class DbSubscriber implements EventSubscriber
@@ -26,7 +26,7 @@ class DbSubscriber implements EventSubscriber
     private $ignoredClasses;
     private $manager;
 
-    public function __construct(LoggerInterface $logger, EntityManager $manager, string $env)
+    public function __construct(LoggerInterface $logger, EntityManagerInterface $manager, string $env)
     {
         $this->logger = $logger;
         $this->ignoredClasses = [

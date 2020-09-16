@@ -7,10 +7,12 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
 class StandController extends BaseController
 {
+
     /**
      * @Route("/kontrollpanel/stand", name="stand")
      *
      * @return \Symfony\Component\HttpFoundation\Response
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function indexAction()
     {
@@ -33,7 +35,7 @@ class StandController extends BaseController
                 ->getRepository('AppBundle:Application')
                 ->findByAdmissionPeriod($admissionPeriod);
         }
-        $appData = $admissionStatistics->generateGraphDataFromApplicationsInSemester($applicationsInSemester, $semester);
+        $appData = $admissionStatistics->generateGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
 
 
         return $this->render('stand_admin/stand.html.twig', [

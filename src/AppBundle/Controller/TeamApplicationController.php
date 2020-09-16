@@ -56,14 +56,14 @@ class TeamApplicationController extends BaseController
 
     public function showAction(Team $team, Request $request)
     {
-        if (!$team->getAcceptApplication()) {
+        if (!$team->getAcceptApplicationAndDeadline()) {
             throw new NotFoundHttpException();
         }
         $teamApplication = new TeamApplication();
         $form = $this->createForm(TeamApplicationType::class, $teamApplication);
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplication()) {
+        if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplicationAndDeadline()) {
             $teamApplication->setTeam($team);
 
             $manager = $this->getDoctrine()->getManager();

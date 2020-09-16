@@ -68,3 +68,4 @@ parameters:
 twig:
     globals:
         googleAnalyticsId: ~
+        pixelId: ~

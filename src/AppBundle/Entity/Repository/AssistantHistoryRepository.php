@@ -8,6 +8,7 @@ use AppBundle\Entity\School;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Utils\SemesterUtil;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 class AssistantHistoryRepository extends EntityRepository
@@ -76,7 +77,7 @@ class AssistantHistoryRepository extends EntityRepository
      */
     public function findActiveAssistantHistoriesByUser($user): array
     {
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
 		
 		SELECT ahistory
@@ -105,7 +106,7 @@ class AssistantHistoryRepository extends EntityRepository
      */
     public function findActiveAssistantHistoriesBySchool(School $school): array
     {
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
 
 		SELECT ahistory
@@ -132,7 +133,7 @@ class AssistantHistoryRepository extends EntityRepository
      */
     public function findAllActiveAssistantHistories(): array
     {
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
 		
 		SELECT ahistory
@@ -159,7 +160,7 @@ class AssistantHistoryRepository extends EntityRepository
      */
     public function findInactiveAssistantHistoriesBySchool(School $school): array
     {
-        $today = new \DateTime('now');
+        $today = new DateTime('now');
         $assistantHistories = $this->getEntityManager()->createQuery('
 		
 		SELECT ahistory

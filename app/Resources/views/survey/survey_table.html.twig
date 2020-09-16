@@ -14,8 +14,7 @@
             </tr>
             </thead>
             <tbody>
-            {% for survey in surveys
-                if ((not survey.confidential) or has_access_to('survey_admin'))  %}
+            {% for survey in surveys | filter(survey => not survey.confidential or has_access_to('survey_admin')) %}
                 <tr>
                     <td class="table-menu">
                             {% if has_access_to('survey_admin') %}

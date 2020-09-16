@@ -7,7 +7,7 @@ use AppBundle\Service\EmailSender;
 use AppBundle\Service\SlackMessenger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class SupportTicketSubscriber implements EventSubscriberInterface
 {
@@ -16,7 +16,7 @@ class SupportTicketSubscriber implements EventSubscriberInterface
     private $logger;
     private $slackMessenger;
 
-    public function __construct(EmailSender $emailSender, SlackMessenger $slackMessenger, Session $session, LoggerInterface $logger)
+    public function __construct(EmailSender $emailSender, SlackMessenger $slackMessenger, SessionInterface $session, LoggerInterface $logger)
     {
         $this->emailSender    = $emailSender;
         $this->session        = $session;

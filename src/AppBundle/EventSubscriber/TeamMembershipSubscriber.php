@@ -4,10 +4,11 @@ namespace AppBundle\EventSubscriber;
 
 use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Service\RoleManager;
-use Doctrine\ORM\EntityManager;
+use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\Session;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class TeamMembershipSubscriber implements EventSubscriberInterface
 {
@@ -16,7 +17,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
     private $roleManager;
     private $em;
 
-    public function __construct(Session $session, LoggerInterface $logger, RoleManager $roleManager, EntityManager $em)
+    public function __construct(SessionInterface $session, LoggerInterface $logger, RoleManager $roleManager, EntityManagerInterface $em)
     {
         $this->session = $session;
         $this->logger = $logger;
@@ -91,7 +92,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
     public function activateTeamMembership(TeamMembershipEvent $event)
     {
         $teamMembership = $event->getTeamMembership();
-        $now = new \DateTime();
+        $now = new DateTime();
         if ($teamMembership->getEndSemester() === null || $teamMembership->getEndSemester()->getSemesterEndDate() > $now) {
             $teamMembership->setIsSuspended(false);
         }

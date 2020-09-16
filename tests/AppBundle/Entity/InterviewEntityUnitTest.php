@@ -7,6 +7,7 @@ use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewSchema;
 use AppBundle\Entity\InterviewScore;
 use AppBundle\Entity\User;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class InterviewEntityUnitTest extends TestCase
@@ -77,7 +78,7 @@ class InterviewEntityUnitTest extends TestCase
     public function testSetScheduled()
     {
         $interview = new Interview();
-        $date = new \DateTime();
+        $date = new DateTime();
 
         $interview->setScheduled($date);
 
@@ -87,7 +88,7 @@ class InterviewEntityUnitTest extends TestCase
     public function testSetConducted()
     {
         $interview = new Interview();
-        $date = new \DateTime();
+        $date = new DateTime();
 
         $interview->setConducted($date);
 

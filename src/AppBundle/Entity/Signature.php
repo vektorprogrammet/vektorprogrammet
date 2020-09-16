@@ -37,6 +37,12 @@ class Signature
     private $description;
 
     /**
+     * @ORM\Column(type="string", length=500, nullable=true)
+     * @Assert\Length(min = 1, max = 500, maxMessage="Kommentaren kan maks være 500 tegn."))
+     */
+    private $additional_comment;
+
+    /**
      * @ORM\OneToOne(targetEntity="User", cascade={"persist"})
      * @ORM\JoinColumn(onDelete="CASCADE")
      */
@@ -73,6 +79,24 @@ class Signature
     {
         $this->description = $description;
     }
+
+
+    /**
+     * @return string|null
+     */
+    public function getAdditionalComment(): ?string
+    {
+        return $this->additional_comment;
+    }
+
+    /**
+     * @param string $additional_comment
+     */
+    public function setAdditionalComment($additional_comment): void
+    {
+        $this->additional_comment = $additional_comment;
+    }
+
 
     /**
      * @return User

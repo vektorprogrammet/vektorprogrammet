@@ -1,6 +1,6 @@
 <template>
     <div id="countdown">
-        <flip-countdown deadline = "2019-08-28 23:59:59"></flip-countdown>
+        <flip-countdown deadline = "2020-09-01 23:59:59"></flip-countdown>
     </div>
     
 </template>

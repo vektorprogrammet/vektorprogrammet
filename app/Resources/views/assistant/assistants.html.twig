@@ -87,6 +87,7 @@
             <section id="application">
                 <h2>Søk nå!</h2>
                 {% include 'admission/application_form.html.twig' %}
+                {% include 'common/flash.html.twig' %}
             </section>
 
             <p class="medium-bold text-center">Har du noen spørsmål? Sjekk ut
@@ -125,6 +126,19 @@
             $('#department-box-selector').val(id);
         }
     </script>
+    {% if pixelId %}
+        <script>
+            (function addEventListeners() {
+                var submitsApplicationBtns = document.querySelectorAll('.submit-application');
+                for (var i = 0; i < submitsApplicationBtns.length; i++) {
+                    var submitsApplicationBtn = submitsApplicationBtns[i];
+                    submitsApplicationBtn.addEventListener('click', function() {
+                        fbq('track', 'CompleteRegistration', {value:  40.00, currency:'NOK'})
+                    });
+                }
+            })();
+        </script>
+    {% endif  %}
 
     <script>
       (function addEventListeners() {
@@ -144,6 +158,7 @@
           }
           input.classList.remove('is-invalid');
         }
+
 
         function validate(target) {
           if (target.target) {
@@ -178,7 +193,6 @@
           if (!validate(target)) {
             return;
           }
-
           var email = target.parentNode.querySelector('input[type=\'email\']').value;
           var infoMeeting = target.parentNode.querySelector('input[type=\'checkbox\']').checked;
           $.ajax({
@@ -190,7 +204,7 @@
                 infoMeeting: infoMeeting
             },
             success: function () {
-              setComplete(target)
+                setComplete(target)
             },
             error: function(err) {
               if (err.responseText.indexOf("Dette er ikke en gyldig e-postadresse") !== -1) {
@@ -207,6 +221,10 @@
             "<i class='fa fa-3x fa-check text-success'></i>" +
             "<p>Vi sender deg en melding når opptaket starter!</p>" +
             "</div>")
+            {% if pixelId %}
+                fbq('track', 'Lead', {value: 30.00, currency: 'NOK'});
+            {% endif %}
+
         }
         function setError(element, message) {
           var input = element.parentNode.querySelector('input');
