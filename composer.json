@@ -55,7 +55,7 @@
         "ext-pdo_sqlite": "*",
         "sensio/generator-bundle": "~3.1",
         "friendsofphp/php-cs-fixer": "^2.0",
-        "nelmio/cors-bundle": "^1.5"
+        "nelmio/cors-bundle": "1.5.6"
     },
     "scripts": {
         "symfony-scripts": [
