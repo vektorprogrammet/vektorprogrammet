@@ -258,7 +258,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/hovedstyret/oppdater'),
 
             array('/kontrollpanel/opptakadmin/teaminteresse'),
-            array('/kontrollpanel/opptakadmin/teaminteresse?department=2&semester=1'),
+            array('/kontrollpanel/opptakadmin/teaminteresse?department=1&semester=1'),
 
             array('/kontrollpanel/brukeradmin/avdeling/2'),
             array('/kontrollpanel/brukeradmin/opprett/2'),
