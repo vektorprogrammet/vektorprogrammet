@@ -1,0 +1,19 @@
+{% extends "base.html.twig" %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_errors(form) }}
+    <div class="hide">
+        {{ form_widget(form.HSPhoto) }}
+    </div>
+    {{ form_rest(form) }}
+    <img src="{{ executiveBoard.hSPhoto }}"  class="img-fluid" id="preview"
+         style="max-width: 200px; max-height: 150px;" alt="bilde">
+    <br>
+    <button id="submit" type="submit"{% if not executiveBoard.HSPhoto %} disabled{% endif %}
+            class="btn btn-primary">Lagre
+    </button>
+    {{ form_end(form) }}
+
+{% endblock body %}

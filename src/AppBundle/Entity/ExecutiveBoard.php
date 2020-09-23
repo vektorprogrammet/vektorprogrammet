@@ -42,6 +42,12 @@ class ExecutiveBoard implements TeamInterface
     private $shortDescription;
 
     /**
+     * @ORM\Column(type="string", nullable=true, name="hs_photo")
+     * @Assert\Length(maxMessage="Maks 125 Tegn", max="125")
+     */
+    private $HSPhoto;
+
+    /**
      * @var ExecutiveBoardMembership[]
      * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="board")
      */
@@ -150,6 +156,27 @@ class ExecutiveBoard implements TeamInterface
 
         return $this;
     }
+
+    /**
+     * @return string
+     */
+    public function getHSPhoto()
+    {
+        return $this->HSPhoto;
+    }
+
+    /**
+     * @param string $HSPhoto
+     *
+     * @return \AppBundle\Entity\ExecutiveBoard
+     */
+    public function setHSPhoto($HSPhoto)
+    {
+        $this->HSPhoto = $HSPhoto;
+
+        return $this;
+    }
+
 
     /**
      * @return ExecutiveBoardMembership[]
