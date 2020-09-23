@@ -36,7 +36,6 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
 
         $crawler = $client->followRedirect();
         $parentAssignmentAdminAfter = $crawler->filterXPath("//td[contains(text(), 'Ola Nordmann')]")->count();
-        #dump($parentAssignmentAdminAfter);
         $this->assertEquals(1,$parentAssignmentAdminAfter);
 
     }
