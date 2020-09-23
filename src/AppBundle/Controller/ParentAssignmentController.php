@@ -55,17 +55,12 @@ class ParentAssignmentController extends BaseController
 
     }
 
-    public function externalDeleteAction(ParentAssignment $parentAssignment, int $uniqueKey)
+    public function externalDeleteAction(int $uniqueKey)
     {
-        # Do I need to take parentAssigned as an arguument? This is a bit strange no?
-        # How can I test this myself?
-        # Check for keys in db! (all are null now, this needs to be fixed when assigning a parnet to a course first (in the other function))!
-
         $em = $this->getDoctrine()->getManager();
 
-        # Get the parent based on the UniqueKey from db.
         $parent = $em->getRepository('AppBundle:ParentAssignment')->getParentAssignmentByUniqueKey($uniqueKey);
-        dump($parent);
+        #dump($parent);
         $em->remove($parent);
         $em->flush();
         #denne skal brukes til å slette fra mailen som sendes ut til foreldrene!
@@ -87,8 +82,9 @@ class ParentAssignmentController extends BaseController
         return $this->redirectToRoute('confirmation');
 
         */
+        $this->addFlash('message', "Du er ikke lenger påmeldt :( Meld deg gjerne på igjen dersom du kjenner at du angrer!");
 
-        return $this->redirectToRoute('parent_assignment_external_delete');
+        return $this->redirectToRoute('parents');
     }
 
     public function sendEmailAction(ParentAssignment $parentAssignment)

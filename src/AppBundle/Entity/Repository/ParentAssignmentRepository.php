@@ -24,7 +24,5 @@ class ParentAssignmentRepository extends EntityRepository
             ->setParameter('key',$key)
             ->getQuery()
             ->getOneOrNullResult();
-
-
     }
 }
