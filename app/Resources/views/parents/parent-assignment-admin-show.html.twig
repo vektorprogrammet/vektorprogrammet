@@ -42,9 +42,9 @@
                                             <i class="fa fa-ellipsis-v text-secondary"></i>
                                         </div>
                                         <div class="dropdown-menu pt-0" aria-labelledby="options-{{ parent.id }}">
-                                            <div class="dropdown-header mb-2"><strong>Forelder: {{ parent.navn }}</strong></div>
+                                            <div class="dropdown-header mb-2"><strong>Forelder: {{ parent.name }}</strong></div>
                                             <form method="POST"
-                                                  onsubmit="return confirm('Vil du virkelig melde av forselder {{ parent.navn }}?')"
+                                                  onsubmit="return confirm('Vil du virkelig melde av forselder {{ parent.name }}?')"
                                                   action="{{ path('parent_assignment_admin_delete', { id: parent.id }) }}">
                                                 <button type="submit"
                                                         class="dropdown-item">
@@ -55,10 +55,10 @@
                                     </div>
                                 </td>
                                 <td>
-                                    {{ parent.navn | safe_html }}
+                                    {{ parent.name | safe_html }}
                                 </td>
                                 <td>
-                                    {{ parent.epost | safe_html }}
+                                    {{ parent.email | safe_html }}
                                 </td>
                             </tr>
                         {% endfor %}

@@ -25,16 +25,16 @@ class ParentAssignment
     /**
      * @var string
      *
-     * @ORM\Column(name="Navn", type="string", length=255, nullable=False)
+     * @ORM\Column(name="Name", type="string", length=255, nullable=False)
      */
-    private $navn;
+    private $name;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="Epost", type="string", length=255, nullable=False)
+     * @ORM\Column(name="Email", type="string", length=255, nullable=False)
      */
-    private $epost;
+    private $email;
 
     /**
      * @var ParentCourse
@@ -62,51 +62,51 @@ class ParentAssignment
     }
 
     /**
-     * Set navn.
+     * Set name.
      *
-     * @param string $navn
+     * @param string $name
      *
      * @return ParentAssignment
      */
-    public function setNavn($navn)
+    public function setName($name)
     {
-        $this->navn = $navn;
+        $this->name = $name;
 
         return $this;
     }
 
     /**
-     * Get navn.
+     * Get name.
      *
      * @return string
      */
-    public function getNavn()
+    public function getName()
     {
-        return $this->navn;
+        return $this->name;
     }
 
     /**
-     * Set epost.
+     * Set email.
      *
-     * @param string $epost
+     * @param string $email
      *
      * @return ParentAssignment
      */
-    public function setEpost($epost)
+    public function setEmail($email)
     {
-        $this->epost = $epost;
+        $this->email = $email;
 
         return $this;
     }
 
     /**
-     * Get epost.
+     * Get email.
      *
      * @return string
      */
-    public function getEpost()
+    public function getEmail()
     {
-        return $this->epost;
+        return $this->email;
     }
 
 

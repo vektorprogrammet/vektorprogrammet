@@ -30,8 +30,8 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
 
         $form = $crawler->selectButton('Lagre')->form();
 
-        $form['parent_assignment[navn]'] = 'Ola Nordmann';
-        $form['parent_assignment[epost]'] = 'ola@nordmann.no';
+        $form['parent_assignment[name]'] = 'Ola Nordmann';
+        $form['parent_assignment[email]'] = 'ola@nordmann.no';
 
         $client->submit($form);
 
@@ -77,8 +77,8 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
 
         $crawler = $this->anonymousGoTo('/foreldrekurs/pamelding/'.$id);
         $form = $crawler->selectButton('parent_assignment[save]')->form();
-        $form['parent_assignment[navn]'] = "Alex";
-        $form['parent_assignment[epost]'] = 'alexaoh@stud.ntnu.no';
+        $form['parent_assignment[name]'] = "Alex";
+        $form['parent_assignment[email]'] = 'alexaoh@stud.ntnu.no';
 
         $client->enableProfiler();
         $client->submit($form);

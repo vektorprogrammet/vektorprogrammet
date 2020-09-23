@@ -9,6 +9,8 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
      */
     private $em;
 
+    private $speaker = "Eivind Kopperud";
+
     public function setUp()
     {
         self::bootKernel();
@@ -20,16 +22,15 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
     {
         $client = $this->createAdminClient();
 
-        $speaker = 'CourseToBeAssignedTo';
-        $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $speaker));
+        $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $this->speaker));
         $id = $course->getId();
 
         $crawler = $client->request('GET', '/kontrollpanel/foreldrekurs/pamelding/'.$id);
 
         $form = $crawler->selectButton('Lagre')->form();
 
-        $form['parent_assignment[navn]'] = 'Ola Nordmann';
-        $form['parent_assignment[epost]'] = 'ola@nordmann.no';
+        $form['parent_assignment[name]'] = 'Ola Nordmann';
+        $form['parent_assignment[email]'] = 'ola@nordmann.no';
 
         $client->submit($form);
 
@@ -42,8 +43,7 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
 
     public function testShow()
     {
-        $speaker = 'CourseToBeAssignedTo';
-        $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $speaker));
+        $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $this->speaker));
         $id = $course->getId();
         $crawler = $this->teamLeaderGoTo('/kontrollpanel/foreldrekurs/foreldre/'.$id);
         $table_check = $crawler->filter('.card-header:contains("Påmeldte foreldre hos ")')->count();
@@ -53,8 +53,7 @@ class ParentAssignmentAdminControllerTest extends BaseWebTestCase
     public function testDelete()
     {
         $client = $this->createTeamMemberClient();
-        $speaker = 'CourseToBeAssignedTo';
-        $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $speaker));
+        $course = $this->em->getRepository('AppBundle:ParentCourse')->findOneBy(array('speaker'=> $this->speaker));
         $id = $course->getId();
         $client->request('POST', '/kontrollpanel/foreldrekurs/foreldre/slett/'.$id);
         $this->assertEquals(302, $client->getResponse()->getStatusCode());

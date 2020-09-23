@@ -131,7 +131,7 @@ class EmailSender
         $message = (new \Swift_Message())
             ->setSubject('Du er påmeldt!')
             ->setFrom($this->defaultEmail)
-            ->setTo($parentAssignment->getEpost())
+            ->setTo($parentAssignment->getEmail())
             ->setBody($this->twig->render('parents/parent-assigment-confirmation-email.html.twig', array(
                 'parentAssignment' => $parentAssignment,
                 'parentCourse' => $parentAssignment->getCourse(),

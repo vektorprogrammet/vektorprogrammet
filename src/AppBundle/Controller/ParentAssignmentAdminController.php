@@ -50,7 +50,7 @@ class ParentAssignmentAdminController extends BaseController
         $em->remove($parentAssignment);
         $em->flush();
 
-        $this->addFlash("success", "\"".$parentAssignment->getNavn()."\" ble meldt av foreldrekurset");
+        $this->addFlash("success", "\"".$parentAssignment->getName()."\" ble meldt av foreldrekurset");
 
 
         return $this->redirectToRoute('parent_assignment_admin_show', ['id' => $parentCourseID]);
