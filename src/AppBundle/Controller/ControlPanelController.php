@@ -3,13 +3,19 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\SbsData;
+use Symfony\Component\HttpFoundation\Request;
 
 class ControlPanelController extends BaseController
 {
-    public function showAction()
+
+    /**
+     *
+     * @param Request $request
+     */
+    public function showAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
 
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);

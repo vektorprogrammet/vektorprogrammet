@@ -25,8 +25,8 @@ class CertificateController extends BaseController
      */
     public function showAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $em = $this->getDoctrine()->getManager();
 
         $assistants = $em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($department, $semester);

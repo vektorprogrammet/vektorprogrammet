@@ -22,13 +22,12 @@ class BaseController extends Controller
     /**
      * Tries to get department from the Request and opts to the user's department if none is found.
      * Returns null if none can be found this way.
-     *
+     * @param Request $request
      * @return Department|null
      */
-    public function getDepartment(): ?Department
+    public function getDepartment(Request $request): ?Department
     {
         $department = null;
-        $request = Request::createFromGlobals();
         $departmentId = $request->query->get('department');
         if ($departmentId === null) {
             if ($this->getUser() !== null) {
@@ -43,12 +42,11 @@ class BaseController extends Controller
     /**
      * Tries to get semester from the Request and opts to the current if none is found.
      * Returns null if the given ID has no corresponding semester.
-     *
+     * @param Request $request
      * @return Semester|null
      */
-    public function getSemester(): ?Semester
+    public function getSemester(Request $request): ?Semester
     {
-        $request = Request::createFromGlobals();
         $semesterId = $request->query->get('semester');
         if ($semesterId === null) {
             $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
@@ -60,12 +58,12 @@ class BaseController extends Controller
 
     /**
      * 404's if department is null in the request and for the user, or if a wrong department ID is given.
-     *
+     * @param Request $request
      * @return Department
      */
-    public function getDepartmentOrThrow404(): Department
+    public function getDepartmentOrThrow404(Request $request): Department
     {
-        $department = $this->getDepartment();
+        $department = $this->getDepartment($request);
         if ($department === null) {
             throw new NotFoundHttpException();
         }
@@ -73,11 +71,12 @@ class BaseController extends Controller
     }
 
     /**
+     * @param Request $request
      * @return Semester
      */
-    public function getSemesterOrThrow404(): Semester
+    public function getSemesterOrThrow404(Request $request): Semester
     {
-        $semester = $this->getSemester();
+        $semester = $this->getSemester($request);
         if ($semester === null) {
             throw new NotFoundHttpException();
         }
