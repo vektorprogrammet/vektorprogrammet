@@ -13,12 +13,16 @@ use AppBundle\Form\Type\ModifySubstituteType;
  */
 class SubstituteController extends BaseController
 {
-    public function showAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showAction(Request $request)
     {
         // No department specified, get the user's department and call showBySemester with
         // either current or latest semester for that department
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
 
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);

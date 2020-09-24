@@ -3,13 +3,18 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
+use Symfony\Component\HttpFoundation\Request;
 
 class ParticipantHistoryController extends BaseController
 {
-    public function showAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function showAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $this->getUser()->getDepartment()) {
             throw $this->createAccessDeniedException();

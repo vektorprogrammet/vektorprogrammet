@@ -13,10 +13,14 @@ use AppBundle\Service\TodoListService;
 
 class WidgetController extends BaseController
 {
-    public function interviewsAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function interviewsAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
             ->findOneByDepartmentAndSemester($department, $semester);
         $applicationsAssignedToUser = [];
@@ -49,10 +53,14 @@ class WidgetController extends BaseController
         ]);
     }
 
-    public function applicationGraphAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function applicationGraphAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
 
@@ -73,9 +81,13 @@ class WidgetController extends BaseController
     }
 
 
-    public function availableSurveysAction()
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function availableSurveysAction(Request $request)
     {
-        $semester = $this->getSemesterOrThrow404();
+        $semester = $this->getSemesterOrThrow404($request);
 
         $surveys = $this->getDoctrine()
             ->getRepository('AppBundle:Survey')
@@ -96,11 +108,16 @@ class WidgetController extends BaseController
             'changeLogItems' => array_slice($changeLogItems, 0, 5)
         ]);
     }
-    public function todoAction()
+
+    /**
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response|null
+     */
+    public function todoAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $currentSemester = $this->getSemesterOrThrow404();
-        $department = $this->getDepartmentOrThrow404();
+        $currentSemester = $this->getSemesterOrThrow404($request);
+        $department = $this->getDepartmentOrThrow404($request);
 
         $todoService = new TodoListService($em);
 
