@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Service\FileUploader;
 use AppBundle\Service\RoleManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -104,6 +105,8 @@ class ExecutiveBoardController extends BaseController
             //Don't persist if the preview button was clicked
             if (!$form->get('preview')->isClicked()) {
                 // Persist the board to the database
+                $imgPath = $this->get(FileUploader::class)->uploadSponsor($request);
+                $board->setHSPhoto($imgPath);
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($board);
                 $em->flush();
@@ -120,6 +123,7 @@ class ExecutiveBoardController extends BaseController
 
         return $this->render('executive_board/update_executive_board.html.twig', array(
             'form' => $form->createView(),
+            "HSPath" => $board->getHSPhoto()
         ));
     }
 

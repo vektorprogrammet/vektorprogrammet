@@ -5,6 +5,7 @@ namespace AppBundle\Form\Type;
 use Ivory\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -28,6 +29,12 @@ class CreateExecutiveBoardType extends AbstractType
             ))
             ->add('preview', SubmitType::class, array(
                 'label' => 'Forhåndsvis',
+            ))
+            ->add('HSPhoto', FileType::class, array(
+                'required' => false,
+                'error_bubbling' => true,
+                'data_class' => null,
+                'label' => 'Last opp nytt hs_photo',
             ))
             ->add('description', CKEditorType::class, array(
                 'required' => false,

@@ -22,7 +22,6 @@ class TestController extends BaseController
 {
     public function showAction(ExecutiveBoard $executiveBoard=null)
     {
-        $execBoard = new ExecutiveBoard();
         $imgPathStart = "img/";
         $imgPathEnd = ".jpg";
         $form = $this->createForm(TestType::class, $execBoard);
