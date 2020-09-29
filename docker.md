@@ -38,6 +38,17 @@ behave as if there were no container. The port `8000` is passed through the
 container to the host machine, so open [0.0.0.0:8000] to access the server 
 normally.
 
+## Running tests
+To run all tests, run
+```
+npm run docker:dev:test
+```
+
+To run only a specific test, find the path and run like so
+```
+npm run docker:dev:test -- -- tests/PATH/TO/TEST
+```
+
 ## Running other commands
 Sometimes you may want to run other commands, like
 * `npm run dp:update` to update the database and reload fixtures
