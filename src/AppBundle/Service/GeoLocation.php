@@ -5,7 +5,6 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
-use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -136,7 +135,7 @@ class GeoLocation
         try {
             $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
             $response = json_decode($rawResponse, true);
-        } catch (ContextErrorException $exception) {
+        } catch (ErrorException $exception) {
             $this->logger->warning("Could not get location from 
             ipinfo.io. The page returned an error.\nError:\n
             {$exception->getMessage()}");
