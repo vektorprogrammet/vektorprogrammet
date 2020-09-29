@@ -6,10 +6,12 @@ RUN mkdir /app
 WORKDIR /app
 EXPOSE 8000
 
-# Tell packages to not ask for user input
-ENV DEBIAN_FRONTEND=noninteractive
+# Set correct environment
+ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8
+
 RUN apt-get update \
     && apt-get install -y php7.2 php7.2-mbstring php7.2-sqlite php7.2-gd php7.2-curl php7.2-xml nodejs npm git zip unzip \
+    && rm -rf /var/lib/apt/lists/* \
     && echo "PHP extensions: " \
     && php -m \
     && echo "PHP .ini files: " \
