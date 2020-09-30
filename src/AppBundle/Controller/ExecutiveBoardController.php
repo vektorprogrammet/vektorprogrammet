@@ -105,8 +105,12 @@ class ExecutiveBoardController extends BaseController
             //Don't persist if the preview button was clicked
             if (!$form->get('preview')->isClicked()) {
                 // Persist the board to the database
-                $imgPath = $this->get(FileUploader::class)->uploadSponsor($request);
-                $board->setHSPhoto($imgPath);
+                $oldHSPhoto = $board->getHSPhoto();
+                $imgPath = $this->get(FileUploader::class)->uploadHSPhoto($request);
+
+                !is_null($request->files->get('board')['HSPhoto'])
+                    ? $board->setHSPhoto($imgPath) : $board->setHSPhoto($oldHSPhoto);
+
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($board);
                 $em->flush();

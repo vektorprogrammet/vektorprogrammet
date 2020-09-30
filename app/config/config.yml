@@ -39,6 +39,9 @@ parameters:
   # Logo images
   logo_images: 'images/Logo images'
 
+  # HS-photos
+  hs_photos: 'images/hs_photos'
+
   # Signature images
   signature_images: '../signatures'
 
