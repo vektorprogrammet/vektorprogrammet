@@ -93,7 +93,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
     {
         $teamMembership = $event->getTeamMembership();
         $now = new DateTime();
-        if ($teamMembership->getEndSemester() === null || $teamMembership->getEndSemester()->getSemesterEndDate() > $now) {
+        if ($teamMembership->getEndSemester() === null || $teamMembership->getEndSemester()->getEndDate() > $now) {
             $teamMembership->setIsSuspended(false);
         }
         $this->em->persist($teamMembership);
