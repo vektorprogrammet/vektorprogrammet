@@ -135,10 +135,10 @@ class GeoLocation
         try {
             $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
             $response = json_decode($rawResponse, true);
-        } catch (ErrorException $exception) {
+        } catch (\Exception $e) {
             $this->logger->warning("Could not get location from 
             ipinfo.io. The page returned an error.\nError:\n
-            {$exception->getMessage()}");
+            {$e->getMessage()}");
             return null;
         }
 
