@@ -70,6 +70,13 @@ class InterviewSchemaController extends BaseController
         return $this->render('interview/schemas.html.twig', array('schemas' => $schemas));
     }
 
+    public function showSchemaPreviewAction(InterviewSchema $schema)
+    {
+        # Find the correct schema here, according to the schema given via argument and render the html, which should display the form!
+        # Nedd get the correct form from schema and render it in the html!
+        return $this->render('interview/schema_preview.html.twig', array('schema' => $schema->getId()));
+    }
+
     /**
      * Deletes the given interview schema.
      * This method is intended to be called by an Ajax request.

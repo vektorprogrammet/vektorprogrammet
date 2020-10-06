@@ -1053,6 +1053,11 @@ interview_schema:
  defaults: { _controller: AppBundle:InterviewSchema:showSchemas }
  methods: [GET]
 
+interview_schema_preview:
+ path: /kontrollpanel/intervju/skjema/forhåndsvis
+ defaults: { _controller: AppBundle:InterviewSchema:showSchemaPreview }
+ methods: [GET]
+
 interview_schema_create:
  path: /kontrollpanel/intervju/skjema/opprett
  defaults: { _controller: AppBundle:InterviewSchema:createSchema }
