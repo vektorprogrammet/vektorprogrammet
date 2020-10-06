@@ -9,6 +9,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
@@ -94,7 +95,7 @@ class AdmissionNotifier
                     $this->logger->info("*$notificationsSent* admission notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->critical("Failed to send admission notification:\n".$e->getMessage());
         }
     }
@@ -153,7 +154,7 @@ class AdmissionNotifier
                     $this->logger->info("*$notificationsSent* info meeting notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->critical("Failed to send info meeting notification:\n".$e->getMessage());
         }
     }

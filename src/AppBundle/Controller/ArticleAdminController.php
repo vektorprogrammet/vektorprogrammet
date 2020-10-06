@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Service\FileUploader;
 use AppBundle\Service\LogService;
 use AppBundle\Service\SlugMaker;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -185,7 +186,7 @@ class ArticleAdminController extends BaseController
             $em->flush();
 
             $response['success'] = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = [
                 'success' => false,
                 'code'    => $e->getCode(),
