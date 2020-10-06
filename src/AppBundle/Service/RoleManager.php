@@ -6,6 +6,7 @@ use AppBundle\Entity\User;
 use AppBundle\Google\GoogleUsers;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -69,7 +70,7 @@ class RoleManager
         if (in_array($alias, $this->aliases)) {
             return $this->roles[array_search($alias, $this->aliases)];
         } else {
-            throw new \InvalidArgumentException('Invalid alias: '.$alias);
+            throw new InvalidArgumentException('Invalid alias: '.$alias);
         }
     }
 
@@ -184,7 +185,7 @@ class RoleManager
     {
         $isValidRole = $this->isValidRole($role);
         if (!$isValidRole) {
-            throw new \InvalidArgumentException("Invalid role $role");
+            throw new InvalidArgumentException("Invalid role $role");
         }
         if ($this->userIsGranted($user, Roles::ADMIN)) {
             return false;
