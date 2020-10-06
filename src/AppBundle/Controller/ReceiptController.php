@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Receipt;
+use AppBundle\Entity\User;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
@@ -11,8 +13,6 @@ use AppBundle\Service\Sorter;
 use AppBundle\Utils\ReceiptStatistics;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Receipt;
-use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 

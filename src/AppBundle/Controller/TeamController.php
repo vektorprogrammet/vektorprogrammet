@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Role\Roles;
 use AppBundle\Entity\Team;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TeamController extends BaseController

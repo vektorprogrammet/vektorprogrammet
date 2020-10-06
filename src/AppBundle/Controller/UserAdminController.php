@@ -3,13 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\User;
+use AppBundle\Form\Type\CreateUserType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\UserRegistration;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\User;
-use AppBundle\Form\Type\CreateUserType;
-use AppBundle\Form\Type\NewUserType;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserAdminController extends BaseController
 {

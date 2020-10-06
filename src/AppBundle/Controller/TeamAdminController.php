@@ -3,15 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Team;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Event\TeamEvent;
 use AppBundle\Event\TeamMembershipEvent;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Team;
-use AppBundle\Form\Type\CreateTeamType;
-use AppBundle\Entity\TeamMembership;
 use AppBundle\Form\Type\CreateTeamMembershipType;
+use AppBundle\Form\Type\CreateTeamType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class TeamAdminController extends BaseController
 {
