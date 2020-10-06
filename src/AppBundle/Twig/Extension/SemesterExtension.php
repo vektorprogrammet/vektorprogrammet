@@ -2,7 +2,6 @@
 
 namespace AppBundle\Twig\Extension;
 
-use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
