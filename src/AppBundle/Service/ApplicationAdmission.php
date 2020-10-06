@@ -5,7 +5,6 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
