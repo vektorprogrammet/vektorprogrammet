@@ -15,6 +15,7 @@ use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use TFox\MpdfPortBundle\Response\PDFResponse;
 use AppBundle\Role\Roles;
 
@@ -219,7 +220,7 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+            $this->get(EventDispatcher::class)->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirect($this->generateUrl('profile'));
         }
@@ -267,7 +268,7 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+            $this->get(EventDispatcher::class)->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirect($this->generateUrl('specific_profile', array( 'id' => $user->getId() )));
         }
@@ -288,7 +289,7 @@ class ProfileController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
+            $this->get(EventDispatcher::class)->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirectToRoute('specific_profile', [ 'id' => $user->getId() ]);
         }

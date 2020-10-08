@@ -10,6 +10,7 @@ use AppBundle\Service\ApplicationAdmission;
 use AppBundle\Service\FilterService;
 use AppBundle\Service\GeoLocation;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -139,7 +140,7 @@ class AssistantController extends BaseController
                 $em->persist($application);
                 $em->flush();
 
-                $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+                $this->get()->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
                 return $this->redirectToRoute('application_confirmation');
             }
@@ -207,7 +208,7 @@ class AssistantController extends BaseController
             $em->persist($application);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->get(EventDispatcher::class)->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
             $this->addFlash('success', $application->getUser()->getEmail().' har blitt registrert. Du vil få en e-post med kvittering på søknaden.');
             return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);

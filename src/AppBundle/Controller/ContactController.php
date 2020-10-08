@@ -10,6 +10,7 @@ use AppBundle\Service\GeoLocation;
 use AppBundle\Service\LogService;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\Request;
 
 class ContactController extends BaseController
@@ -43,7 +44,7 @@ class ContactController extends BaseController
             $this->get(LogService::class)->error("Could not send support ticket. Department was null.\n$supportTicket");
         }
         if ($form->isValid()) {
-            $this->get('event_dispatcher')
+            $this->get(EventDispatcher::class)
             ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
 
             return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));

@@ -13,6 +13,7 @@ use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -87,7 +88,7 @@ class ReceiptController extends BaseController
             $em->persist($receipt);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::CREATED, new ReceiptEvent($receipt));
+            $this->get(EventDispatcher::class)->dispatch(ReceiptEvent::CREATED, new ReceiptEvent($receipt));
 
             return $this->redirectToRoute('receipt_create');
         }
@@ -136,7 +137,7 @@ class ReceiptController extends BaseController
             $em->persist($receipt);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
+            $this->get(EventDispatcher::class)->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
 
             return $this->redirectToRoute('receipt_create');
         }
@@ -174,11 +175,11 @@ class ReceiptController extends BaseController
         $em->flush();
 
         if ($status === Receipt::STATUS_REFUNDED) {
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
+            $this->get(EventDispatcher::class)->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
         } elseif ($status === Receipt::STATUS_REJECTED) {
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::REJECTED, new ReceiptEvent($receipt));
+            $this->get(EventDispatcher::class)->dispatch(ReceiptEvent::REJECTED, new ReceiptEvent($receipt));
         } elseif ($status === Receipt::STATUS_PENDING) {
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::PENDING, new ReceiptEvent($receipt));
+            $this->get(EventDispatcher::class)->dispatch(ReceiptEvent::PENDING, new ReceiptEvent($receipt));
         }
 
         return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
@@ -209,7 +210,7 @@ class ReceiptController extends BaseController
             $em->persist($receipt);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
+            $this->get(EventDispatcher::class)->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
 
             return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
         }
@@ -243,7 +244,7 @@ class ReceiptController extends BaseController
         $em->remove($receipt);
         $em->flush();
 
-        $this->get('event_dispatcher')->dispatch(ReceiptEvent::DELETED, new ReceiptEvent($receipt));
+        $this->get(EventDispatcher::class)->dispatch(ReceiptEvent::DELETED, new ReceiptEvent($receipt));
 
         return $this->redirect($request->headers->get('referer'));
     }

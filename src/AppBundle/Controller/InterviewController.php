@@ -19,6 +19,7 @@ use AppBundle\Service\InterviewManager;
 use DateTime;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use InvalidArgumentException;
@@ -81,7 +82,7 @@ class InterviewController extends BaseController
                 $em->persist($interview);
                 $em->flush();
 
-                $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
+                $this->get(EventDispatcher::class)->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
             }
 
             return $this->redirectToRoute('applications_show_interviewed', array(
@@ -255,7 +256,7 @@ class InterviewController extends BaseController
 
             // Send email if the send button was clicked
             if ($form->get('saveAndSend')->isClicked()) {
-                $this->get('event_dispatcher')->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
+                $this->get(EventDispatcher::class)->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
             }
 
             return $this->redirectToRoute('applications_show_assigned', array('department' => $application->getDepartment()->getId(), 'semester' => $application->getSemester()->getId()));
@@ -551,7 +552,7 @@ class InterviewController extends BaseController
         $em = $this->getDoctrine()->getManager();
         $em->persist($interview);
         $em->flush();
-        $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+        $this->get(EventDispatcher::class)->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
 
         return $this->redirectToRoute('applications_show_assigned');
     }

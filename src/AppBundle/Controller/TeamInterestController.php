@@ -9,6 +9,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterest;
 use AppBundle\Form\Type\TeamInterestType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TeamInterestController extends BaseController
@@ -46,7 +47,7 @@ class TeamInterestController extends BaseController
             $manager->persist($teamInterest);
             $manager->flush();
 
-            $this->get('event_dispatcher')->dispatch(TeamInterestCreatedEvent::NAME, new TeamInterestCreatedEvent($teamInterest));
+            $this->get(EventDispatcher::class)->dispatch(TeamInterestCreatedEvent::NAME, new TeamInterestCreatedEvent($teamInterest));
 
             return $this->redirectToRoute('team_interest_form', array(
                 'id' => $department->getId(),

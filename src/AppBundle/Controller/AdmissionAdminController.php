@@ -9,6 +9,7 @@ use AppBundle\Role\Roles;
 use AppBundle\Service\InterviewCounter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -270,7 +271,7 @@ class AdmissionAdminController extends BaseController
 
             $this->addFlash('admission-notice', 'Søknaden er registrert.');
 
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->get(EventDispatcher::class)->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
             return $this->redirectToRoute('register_applicant', array('id' => $department->getId()));
         }

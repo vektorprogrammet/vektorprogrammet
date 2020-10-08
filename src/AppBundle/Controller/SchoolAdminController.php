@@ -12,6 +12,7 @@ use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 class SchoolAdminController extends BaseController
 {
@@ -57,7 +58,7 @@ class SchoolAdminController extends BaseController
             $em->persist($assistantHistory);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
+            $this->get(EventDispatcher::class)->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
 
             return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
         }
