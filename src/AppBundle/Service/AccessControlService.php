@@ -169,10 +169,12 @@ class AccessControlService
     {
         $filterByUser = !empty($rule->getUsers());
         if ($filterByUser) {
-            if(!$user->isActive())
+            if (!$user->isActive()) {
                 return false;
-            if(!$this->userIsInRuleUserList($user, $rule))
+            }
+            if (!$this->userIsInRuleUserList($user, $rule)) {
                 return false;
+            }
         }
 
         if (!$this->userHasTeamOrExecutiveBoardAccessToRule($user, $rule)) {
@@ -209,10 +211,12 @@ class AccessControlService
         //If no filter is defined, allow by default
         $allow = !$filtered;
 
-        if($teamFilter)
+        if ($teamFilter) {
             $allow |= $hasTeamAccess;
-        if($executiveFilter)
+        }
+        if ($executiveFilter) {
             $allow |= $hasExecutiveBoardAccess;
+        }
 
         return $allow;
     }
