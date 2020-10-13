@@ -6,9 +6,7 @@ namespace AppBundle\Service;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\TeamMembership;
-use AppBundle\Entity\User;
 use AppBundle\Entity\UserGroup;
-use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 
 class UserGroupCollectionManager
