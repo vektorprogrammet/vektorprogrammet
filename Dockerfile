@@ -2,12 +2,12 @@
 # Usage: See docker.md
 
 FROM ubuntu:18.04
-RUN mkdir /app
+RUN mkdir -p /app /tmp
 WORKDIR /app
 EXPOSE 8000
 
 # Set correct environment
-ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8
+ENV DEBIAN_FRONTEND=noninteractive LANG=C.UTF-8 TMPDIR=/tmp
 
 RUN apt-get update \
     && apt-get install -y php7.2 php7.2-mbstring php7.2-sqlite php7.2-gd php7.2-curl php7.2-xml nodejs npm git zip unzip \
@@ -23,7 +23,9 @@ RUN apt-get update \
     #sed -i 's/;extension=curl/extension=curl/' /etc/php/7.2/cli/php.ini
     #sed -i 's/;extension=xml/extension=xml/' /etc/php/7.2/cli/php.ini
     && sed -i 's/display_errors = Off/display_errors = On/' /etc/php/7.2/cli/php.ini \
-    && sed -i 's/display_startup_errors = Off/display_startup_errors = On/' /etc/php/7.2/cli/php.ini
+    && sed -i 's/display_startup_errors = Off/display_startup_errors = On/' /etc/php/7.2/cli/php.ini \
+    && sed -i 's~; sys_temp_dir.*$~sys_temp_dir = "/tmp"~' /etc/php/7.2/cli/php.ini
+
 
 # This is what we /would/ do if we didn't mount the entire folder into the container
 # COPY . .
