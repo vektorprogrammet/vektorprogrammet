@@ -25,7 +25,7 @@ npm run docker:dev:setup
 ```
 This will run `npm run setup` inside a docker container based on the
 `vektordev:1.0` image, but the setup will happen in the `vektorprogrammet/`
-folder on the host machine.
+folder on the host machine. Note that this might create files owned by root
 
 ## Running the server
 To start the server, simply run

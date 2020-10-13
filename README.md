@@ -5,7 +5,7 @@
 
 
 # Set up development environment
-There is also an option to use a docker image as your environment, see [docker.md].
+There is also an option to use a docker image as your environment, see [docker.md](docker.md).
 ## Requirements:
 - [PHP](http://php.net/downloads.php) version >= 7.1
 - [Node](https://nodejs.org/en/) version >= 8
