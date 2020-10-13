@@ -12,14 +12,6 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 class BaseController extends Controller
 {
     /**
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
-        return parent::getUser();
-    }
-
-    /**
      * Tries to get department from the Request and opts to the user's department if none is found.
      * Returns null if none can be found this way.
      * @param Request $request

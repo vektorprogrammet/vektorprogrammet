@@ -40,7 +40,8 @@ security:
             security: false
         admin_area:
             pattern:    ^/admin
-            http_basic: ~ 
+            http_basic: ~
+            logout_on_user_change: true
         secured_area:
             anonymous: ~
             http_basic: ~
@@ -60,6 +61,7 @@ security:
             logout:
                 path:  /logout
                 target:  /
+            logout_on_user_change: true
 
 
     # with these settings you can restrict or allow access for different parts
