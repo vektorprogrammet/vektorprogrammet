@@ -5,10 +5,12 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Application;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
+use AppBundle\Form\Type\ApplicationExistingUserLateType;
+use AppBundle\Service\ApplicationAdmission;
 use AppBundle\Role\Roles;
 use AppBundle\Service\InterviewCounter;
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -221,7 +223,68 @@ class AdmissionAdminController extends BaseController
             'success' => true,
         ]);
     }
+    public function createExistingApplicationAction(Request $request)
+    {
+        $admissionManager = $this->get(ApplicationAdmission::class);
+        $em = $this->getDoctrine()->getManager();
+        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404();
 
+        $admissionPeriod = $this->getDoctrine()
+            ->getRepository('AppBundle:AdmissionPeriod')
+            ->findOneByDepartmentAndSemester($department, $semester);
+
+        $applications = new ArrayCollection();
+        if ($admissionPeriod !== null) {
+            $applications = $this->getDoctrine()
+                ->getRepository('AppBundle:Application')
+                ->findExistingApplicants($admissionPeriod);
+        }
+        $applications = array_map(function ($application) {
+            return $application->getUser();
+        }, $applications);
+
+        $assistants = $em->getRepository('AppBundle:User')->findUsersWithAssistantHistoryInDepartment($department);
+
+        $diff = array_diff($assistants, $applications);
+
+        $assistants = new ArrayCollection($diff);
+
+        $application = new Application();
+
+        $form = $this->createForm(ApplicationExistingUserLateType::class, $application, array(
+            'entityManager' => $em,
+            'admissionManager' => $admissionManager,
+            'assistants' => $assistants
+        ));
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $user = $form->getData()->getUser();
+            $application2 = $admissionManager->createApplicationForExistingAssistantAfterAdmission($user);
+            $application2->setUser(null);
+            $form2 = $this->createForm(ApplicationExistingUserLateType::class, $application2,[
+                'entityManager' => $em,
+                'admissionManager' => $admissionManager,
+                'assistants' => $assistants
+            ]);
+            $form2->handleRequest($request);
+            $application = $form2->getData();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($application);
+            $em->flush();
+            $this->addFlash("success", "Etterregistrering sendt inn!");
+            return $this->redirectToRoute('applications_show_existing');
+        }
+        return $this->render('admission_admin/create_application_for_existing.html.twig', array(
+            'form' => $form->createView(),
+            'department' => $department,
+            'semester' => $semester,
+            'user' => $this->getUser(),
+            'assistants' => $assistants
+        ));
+    }
     public function createApplicationAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();

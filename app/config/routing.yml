@@ -624,6 +624,15 @@ register_applicant:
  defaults: {_controller: AppBundle:AdmissionAdmin:createApplication}
  methods: [GET, POST]
 
+register_existing_assistant:
+ path: /kontrollpanel/registrergammel
+ defaults: {_controller: AppBundle:AdmissionAdmin:createExistingApplication}
+ methods: [GET, POST]
+existing_assistant_show_application:
+ path: /kontrollpanel/registrergammel/{id}
+ defaults: {_controller: AppBundle:AdmissionAdmin:createExistingApplication}
+ methods: [GET, POST]
+
 admissionadmin_team_interest:
  path: /kontrollpanel/opptakadmin/teaminteresse
  defaults: {_controller: AppBundle:AdmissionAdmin:showTeamInterest}

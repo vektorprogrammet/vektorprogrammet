@@ -15,9 +15,15 @@
         <div class="col-12 col-lg-6">
             <div class="card">
                 <div class="card-header"><i class="fa fa-user-o"></i> Søker {{ user }}</div>
-                <div class="table-responsive">
-                    {% include 'interview/interviewee_table.html.twig' %}
-                </div>
+                    {%  if application.interview %}
+                        <div class="table-responsive">
+                            {% include 'interview/interviewee_table.html.twig' %}
+                        </div>
+                    {% else %}
+                        <div class="p-3">
+                            Intervju ikke funnet.
+                        </div>
+                    {% endif %}
             </div>
             <div class="card">
                 <div class="card-header"><i class="fa fa-calendar-check-o"></i> Tilgjengelige dager</div>

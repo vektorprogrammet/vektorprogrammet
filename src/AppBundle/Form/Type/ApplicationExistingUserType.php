@@ -7,14 +7,15 @@ use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class ApplicationExistingUserType extends AbstractType
+class ApplicationExistingUserType extends ApplicationPracticalType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('applicationPractical', ApplicationPracticalType::class, array(
+        parent::buildForm($builder,$options);
+/*        $builder->add('applicationPractical', ApplicationPracticalType::class, array(
             'data_class' => 'AppBundle\Entity\Application',
             'teams' => $options['teams'],
-        ));
+        ));*/
 
         $builder->add('preferredSchool', TextType::class, [
             'label' => 'Er det en spesiell skole som du ønsker å besøke igjen?',

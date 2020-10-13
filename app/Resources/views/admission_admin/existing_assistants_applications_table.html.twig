@@ -11,6 +11,12 @@
     <div class="card">
         <div class="card-header">
             <i class="fa fa-align-justify"></i> Tidligere assistenter ({{ applications|length }})
+    {% if app.user.department == department and is_granted_team_leader() %}
+        <a class="float-right btn btn-success btn-sm" href="{{ path('register_existing_assistant') }}">
+            <i class="fa fa-plus"></i>
+            Etterregistrer tidligere assistent
+        </a>
+    {% endif %}
         </div>
         <div class="table-responsive">
 

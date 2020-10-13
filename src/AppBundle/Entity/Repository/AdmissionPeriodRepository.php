@@ -69,6 +69,17 @@ class AdmissionPeriodRepository extends EntityRepository
             ->getOneOrNullResult();
     }
 
+    public function findLatestByDepartment(Department $department): ?AdmissionPeriod
+    {
+        return $this->createQueryBuilder('admissionPeriod')
+            ->where('admissionPeriod.department = :department')
+            ->setParameter('department', $department)
+            ->setMaxResults(1)
+            ->orderBy('admissionPeriod.admissionEndDate', 'DESC')
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
     /**
      * @param Department $department
      * @param \DateTime   $time

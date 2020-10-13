@@ -32,6 +32,25 @@ class ApplicationAdmission
         $this->twig = $twig;
         $this->loginManager = $loginManager;
     }
+    public function createApplicationForExistingAssistantAfterAdmission(User $user): Application
+    {
+        $currentSemester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findLatestByDepartment($user->getDepartment());
+
+        $application = $this->em->getRepository('AppBundle:Application')->findByUserInAdmissionPeriod($user, $admissionPeriod);
+        if ($application === null) {
+            $application = new Application();
+        }
+
+        $lastInterview = $this->em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
+
+        $application->setUser($user);
+        $application->setAdmissionPeriod($admissionPeriod);
+        $application->setPreviousParticipation(true);
+        $application->setInterview($lastInterview);
+
+        return $application;
+    }
 
     public function createApplicationForExistingAssistant(User $user): Application
     {

@@ -65,6 +65,18 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getQuery()
             ->getResult();
     }
+    public function findUsersWithAssistantHistoryInDepartment(Department $department)
+    {
+        return $this->createQueryBuilder('user')
+            ->select('user')
+            ->join('user.assistantHistories', 'ah')
+            ->where('ah.department = :department')
+            ->setParameters(array(
+                'department' => $department
+            ))
+            ->getQuery()
+            ->getResult();
+    }
 
     public function findAllUsersByDepartment($department)
     {

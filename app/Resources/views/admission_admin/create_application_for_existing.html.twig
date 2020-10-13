@@ -1,0 +1,24 @@
+{% extends 'adminBase.html.twig' %}
+
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Etterregistrering
+    </li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="container content section mt-3">
+        <h3 class="heading text-center my-3 text-dark-blue">
+            Etterregistrer tidligere assistent
+        </h3>
+        <div class="card py-2 py-sm-4 pb-sm-4 px-3">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+
+{% endblock %}
