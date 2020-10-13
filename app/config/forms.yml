@@ -3,3 +3,7 @@ services:
         class: AppBundle\Form\Extension\FieldTypeHelpExtension
         tags:
             - {name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType}
+    search_assistant.form.type:
+        class: AppBundle\Form\SearchAssistantType
+        tags:
+            - { name: form.type }

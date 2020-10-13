@@ -1,0 +1,63 @@
+{% block search_assistant_widget %}
+    <?php
+    department = form.vars.department;
+    ?>
+    <div class="table-responsive">
+        <table width="100%" id="assistantSearchTable" class="table table-striped" style="">
+            <thead>
+            <tr>
+                <th colspan="6">
+                    <input id="assistantSearch" class="form-control" placeholder="Søk...">
+                </th>
+            </tr>
+            <tr>
+                <th> Navn</th>
+                <th> E-post</th>
+                <th> Velg</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% if form.vars.assistants|length > 0 %}
+            {% for ah in form.vars.assistants %}
+                <tr data-assistant-id="{{ ah.id }}">
+                    <td>
+                        <a href='{{ path('specific_profile', { 'id': ah.id }) }}'>{{ ah}}</a>
+                    </td>
+                    <td> {{ ah.email }}</td>
+                    <td> <a class="btn btn-outline-success" onclick="setChoice({{  ah.id }})">Velg</a></td>
+                </tr>
+            {% endfor %}
+            {% else %}
+            <tr >
+                <td class="text-center text-bold" colspan="4">Ingen assistenter funnet.</td>
+            </tr>
+            {% endif %}
+            </tbody>
+        </table>
+        <input id="search_assistant_id" name="{{  inputName | default('id') }}" value=""  hidden>
+        {{- form_widget(form) -}}
+        <script>
+            document.addEventListener("readystatechange", function () {
+                $("#assistantSearch").keyup(function () {
+                    _this = this;
+                    $.each($("#assistantSearchTable tbody").find("tr"), function () {
+                        if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+                            $(this).hide();
+                        } else {
+                            $(this).show();
+                        }
+                    });
+                });
+                setChoice($('#{{ form.id.vars.id }}').val());
+            });
+            function setChoice(userID){
+                $.each($("#assistantSearchTable tbody").find("tr"), function () {
+                    $(this).removeClass("table-success");
+                });
+                //$(btn).parent().parent().addClass("table-success")
+                $('tr[data-assistant-id="' + userID + '"]').addClass("table-success")
+                $('#{{ form.id.vars.id }}').val(userID);
+            }
+        </script>
+    </div>
+{% endblock %}

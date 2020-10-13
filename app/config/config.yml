@@ -87,6 +87,7 @@ twig:
        filebrowser_window_height: 800
     form_themes:
         - 'form/bootstrap_4_layout.html.twig'
+        - 'form/search_assistant.html.twig'
 
 # Doctrine Configuration
 doctrine:

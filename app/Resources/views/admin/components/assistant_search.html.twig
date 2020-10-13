@@ -1,0 +1,55 @@
+<div class="table-responsive">
+    <h4 class="text-center">Velg assistent</h4>
+    <table width="100%" id="assistantSearchTable" class="table table-striped">
+        <thead>
+            <tr>
+                <th colspan="6">
+                    <input id="assistantSearch" class="form-control" placeholder="Søk...">
+                </th>
+            </tr>
+            <tr>
+                <th> Navn</th>
+                <th> E-post</th>
+                <th> Semester</th>
+                <th> Avdeling</th>
+                <th> Velg</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for ah in assistants %}
+            <tr class="">
+                <td>
+                    <a href='{{ path('specific_profile', { 'id': ah.id }) }}'>{{ ah}}</a>
+                </td>
+                <td> {{ ah.email }}</td>
+                <td> {{ semester }}</td>
+                <td> {{ department }}</td>
+                <td> <a class="btn btn-outline-success" onclick="setChoice({{  ah.id }}, this)">Velg</a></td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    <input id="assistant-choice" name="{{  inputName | default('assistant') }}" hidden>
+    <script>
+        document.addEventListener("readystatechange", function () {
+            $("#assistantSearch").keyup(function () {
+                _this = this;
+                $.each($("#assistantSearchTable tbody").find("tr"), function () {
+                    if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+                        $(this).hide();
+                    } else {
+                        $(this).show();
+                    }
+                });
+            });
+
+        });
+        function setChoice(userID, btn){
+            $.each($("#assistantSearchTable tbody").find("tr"), function () {
+                $(this).removeClass("table-success");
+            });
+            $(btn).parent().parent().addClass("table-success")
+            $('#assistant-choice').val(userID);
+        }
+    </script>
+</div>
