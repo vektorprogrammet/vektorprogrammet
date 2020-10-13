@@ -151,38 +151,70 @@ class AccessControlService
         return $this->userService->getCurrentUser();
     }
 
+    /**
+     * An AccessRule can define up to three filters:
+     *  - Filter by User
+     *  - Filter by Team
+     *  - Filter by Role
+     *
+     * If a filter is empty, the filter is disabled.
+     * If you have multiple filters enabled, the intersection of users is allowed through.
+     * If no filters are enabled, every user has access.
+     *
+     * @param User $user the user to check
+     * @param AccessRule $rule the rule to check against
+     * @return bool if the user has access
+     */
     private function userHasAccessToRule(User $user, AccessRule $rule): bool
     {
-        if (count(is_countable($rule->getUsers()) ? $rule->getUsers() : array()) > 0 && ! ($user->isActive() && $this->userIsInRuleUserList($user, $rule))) {
-            return false;
+        $filterByUser = !empty($rule->getUsers());
+        if ($filterByUser) {
+            if(!$user->isActive())
+                return false;
+            if(!$this->userIsInRuleUserList($user, $rule))
+                return false;
         }
 
         if (!$this->userHasTeamOrExecutiveBoardAccessToRule($user, $rule)) {
+            //Will only happen if the rule actually has a team-and-or-board member filter
             return false;
         }
 
-        if (count(is_countable($rule->getRoles()) ? $rule->getRoles() : array()) > 0 && ! $this->userRoleHasAccessToRule($user, $rule)) {
+        $filterByRole = !empty($rule->getRoles());
+        if ($filterByRole && !$this->userRoleHasAccessToRule($user, $rule)) {
             return false;
         }
 
         return true;
     }
 
+    /**
+     * NB: Treats "executive board member" as a team.
+     * If the AccessRule has a non-empty set of teams, the user has to be part of at least one of the teams.
+     * If the set of teams is empty, all users are allowed.
+     *
+     * @param User $user
+     * @param AccessRule $rule
+     * @return bool true if the user
+     */
     private function userHasTeamOrExecutiveBoardAccessToRule(User $user, AccessRule $rule): bool
     {
-        $teamRule = count(is_countable($rule->getTeams()) ? $rule->getTeams() : array()) > 0;
-        $executiveRule = $rule->isForExecutiveBoard();
+        $teamFilter = !empty($rule->getTeams());
+        $executiveFilter = $rule->isForExecutiveBoard();
         $hasTeamAccess = $this->userHasTeamAccessToRule($user, $rule);
-        $hasExecutiveBoardAccess = count(is_countable($user->getActiveExecutiveBoardMemberships()) ? $user->getActiveExecutiveBoardMemberships() : array()) > 0;
-        if ($teamRule && $executiveRule && !($hasTeamAccess || $hasExecutiveBoardAccess)) {
-            return false;
-        } elseif ($teamRule && !$executiveRule && !$hasTeamAccess) {
-            return false;
-        } elseif ($executiveRule && !$teamRule && !$hasExecutiveBoardAccess) {
-            return false;
-        }
+        $hasExecutiveBoardAccess = !empty($user->getActiveExecutiveBoardMemberships());
 
-        return true;
+        $filtered = $teamFilter || $executiveFilter;
+
+        //If no filter is defined, allow by default
+        $allow = !$filtered;
+
+        if($teamFilter)
+            $allow |= $hasTeamAccess;
+        if($executiveFilter)
+            $allow |= $hasExecutiveBoardAccess;
+
+        return $allow;
     }
 
     private function userHasTeamAccessToRule(User $user, AccessRule $rule): bool
