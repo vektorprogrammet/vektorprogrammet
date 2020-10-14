@@ -871,14 +871,10 @@ class User implements EquatableInterface, AdvancedUserInterface,  \Serializable
 
     public function isEqualTo(UserInterface $user)
     {
-        if ($this->password !== $user->getPassword()) {
-            return false;
+        if ($this->password == $user->getPassword() && $this->user_name == $user->getUsername()) {
+            return true;
         }
 
-        if ($this->user_name !== $user->getUsername()) {
-            return false;
-        }
-
-        return true;
+        return false;
     }
 }
