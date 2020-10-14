@@ -30,7 +30,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
  *      groups={"create_user", "username", "edit_user"}
  * )
  */
-class User implements EquatableInterface, AdvancedUserInterface,  \Serializable
+class User implements EquatableInterface, AdvancedUserInterface, \Serializable
 {
     /**
      * @ORM\Column(type="integer")
