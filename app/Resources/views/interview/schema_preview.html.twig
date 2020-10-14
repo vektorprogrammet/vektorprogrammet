@@ -1,7 +1,119 @@
-{% extends "base.html.twig" %}
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Forhåndsvis intervjuskjema
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Intervjuskjema</li>
+    <li class="breadcrumb-item active">Forhåndsvis</li>
+{% endblock %}
+
+{% form_theme form 'form/interview_layout.html.twig' %}
 
 {% block body %}
-    {{ form_start }}
-    <!-- Render the form here! -->
+    <div class="row">
+        <div class="col-12 col-xl-8">
+            <div class="card">
+                <div class="card-header">
+                    <span><i class="fa fa-comments-o"></i> Intervju - 'Brukernavn'</span>
+                </div>
+                <div class="table-responsive">
 
-{% endblock% }
+                    <table class="table table-bordered table-light">
+                        <tbody>
+                        <tr>
+                            <th>
+                                <div class="table-icon"><i class="fa fa-user-o"></i></div>
+                                Navn
+                            </th>
+                            <td>'Intervjuobjekt Objektesen'</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="table-icon"><i class="fa fa-mobile-alt"></i></div>
+                                Tlf
+                            </th>
+                            <td>00000000</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="table-icon"><i class="fa fa-envelope-o"></i></div>
+                                E-post
+                            </th>
+                            <td>vektor@vektor.no</td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="table-icon"><i class="fa fa-bars"></i></div>
+                                Linje
+                            </th>
+                            <td> 'Ungdomsskolematte' </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="table-icon"><i class="fa fa-clock-o"></i></div>
+                                År
+                            </th>
+                            <td> 0 </td>
+                        </tr>
+                        <tr>
+                            <th>
+                                <div class="table-icon"><i class="fa fa-user-edit"></i></div>
+                                Intervjuet av
+                            </th>
+                            <td>
+                                'Intervjuer Intervjuesen'
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Intervjuspørsmål
+                    <small>Forhåndsvisning</small>
+                </div>
+                <div class="card-body">
+                    {% for interviewAnswer in form.interview.interviewAnswers %}
+                        {{ form_row(interviewAnswer.answer) }}
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Evaluering</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.explanatoryPower) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.roleModel) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.suitability) }}
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12 col-lg-6">
+                            {{ form_row(form.interview.interviewScore.suitableAssistant) }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

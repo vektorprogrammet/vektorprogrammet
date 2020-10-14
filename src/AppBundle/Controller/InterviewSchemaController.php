@@ -70,11 +70,23 @@ class InterviewSchemaController extends BaseController
         return $this->render('interview/schemas.html.twig', array('schemas' => $schemas));
     }
 
-    public function showSchemaPreviewAction(InterviewSchema $schema)
+    /**
+     * Shows the schema form.
+     *
+     * @param Request         $request
+     * @param InterviewSchema $schema
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function showSchemaPreviewAction(Request $request, InterviewSchema $schema)
     {
+        $form = $this->createForm(InterviewSchemaType::class, $schema);
+        $form->handleRequest($request);
         # Find the correct schema here, according to the schema given via argument and render the html, which should display the form!
         # Nedd get the correct form from schema and render it in the html!
-        return $this->render('interview/schema_preview.html.twig', array('schema' => $schema->getId()));
+        return $this->render('interview/schema_preview.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
