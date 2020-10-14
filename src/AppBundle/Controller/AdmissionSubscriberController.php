@@ -99,4 +99,3 @@ class AdmissionSubscriberController extends BaseController
         return $this->redirectToRoute('confirmation');
     }
 }
-
