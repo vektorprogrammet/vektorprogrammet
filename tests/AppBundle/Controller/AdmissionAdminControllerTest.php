@@ -7,6 +7,29 @@ use Symfony\Bundle\FrameworkBundle\Client;
 
 class AdmissionAdminControllerTest extends BaseWebTestCase
 {
+    public function testCreateApplicationForExistingLate()
+    {
+        $client = $this->createTeamMemberClient();
+        $client->request('get', '/kontrollpanel/registrergammel');
+        $crawler = $this->teamMemberGoTo('/kontrollpanel/registrergammel');
+        $this->assertEquals(200, $client->getResponse()->getStatusCode());
+
+        $noOfApplicationsExisting = $this->countTableRows('/kontrollpanel/opptak/gamle', $client);
+        //Submits form
+        $assistant = $crawler->selectLink('Velg')->parents()->parents()->attr('data-assistant-id');
+        $form = $crawler->selectButton('Send inn')->form([
+            'application[user][id]' => $assistant,
+            'application[yearOfStudy]' => '1. klasse',
+            'application[doublePosition]' => 0,
+            'application[preferredGroup]' => '',
+            'application[language]' => 'Engelsk'
+        ]);
+        $client->submit($form);
+
+        $noOfApplicationsExistingAfter = $this->countTableRows('/kontrollpanel/opptak/gamle', $client);
+        $this->assertEquals($noOfApplicationsExisting + 1, $noOfApplicationsExistingAfter);
+
+    }
     public function testShowAsTeamMember()
     {
         $crawler = $this->teamMemberGoTo('/kontrollpanel/opptak');
@@ -120,6 +143,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     {
         $this->helperTestStatus('Kansellert', 'Kanseller', 'Intervjuet ble kansellert.');
     }
+
 
     /**
      * Test the status functionality on /intervju/code.
