@@ -22,32 +22,32 @@
                 <div class="row mt-3">
                     <div class="col-12 col-sm-4">
                         <div>
-                            {{ form_row(form.applicationPractical.yearOfStudy) }}
+                            {{ form_row(form.yearOfStudy) }}
                         </div>
                     </div>
                 </div>
                 <div class="row mt-2">
                     <div class="col-12">
                         <label class="question-label">Hvilke dager passer IKKE for deg?</label>
-                        {{ form_widget(form.applicationPractical.days) }}
+                        {{ form_widget(form.days) }}
                     </div>
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-12">
-                        {{ form_row(form.applicationPractical.doublePosition) }}
+                        {{ form_row(form.doublePosition) }}
                     </div>
                 </div>
 
                 <div class="row mt-2 doublePositionRow">
                     <div class="col-12">
-                        {{ form_row(form.applicationPractical.preferredGroup) }}
+                        {{ form_row(form.preferredGroup) }}
                     </div>
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-12">
-                        {{ form_row(form.applicationPractical.language) }}
+                        {{ form_row(form.language) }}
                     </div>
                 </div>
 
@@ -63,14 +63,14 @@
                             Kunne du tenke deg å jobbe med organiseringen av Vektorprogrammet?<br>
                             Dette innebærer et verv i et av Vektorprogrammets team
                         </label>
-                        {{ form_widget(form.applicationPractical.teamInterest) }}
-                        {{ form_errors(form.applicationPractical.teamInterest) }}
+                        {{ form_widget(form.teamInterest) }}
+                        {{ form_errors(form.teamInterest) }}
                     </div>
                 </div>
 
                 <div class="row mt-2">
                     <div class="col-12">
-                        {{ form_row(form.applicationPractical.potentialTeams) }}
+                        {{ form_row(form.potentialTeams) }}
                     </div>
                 </div>
 

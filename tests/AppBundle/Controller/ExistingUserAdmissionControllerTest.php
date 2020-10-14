@@ -30,15 +30,15 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
-        $form['application[applicationPractical][yearOfStudy]'] = 3;
-        $form['application[applicationPractical][days][monday]']->tick();
-        $form['application[applicationPractical][days][tuesday]']->untick();
-        $form['application[applicationPractical][days][wednesday]']->tick();
-        $form['application[applicationPractical][days][thursday]']->untick();
-        $form['application[applicationPractical][days][friday]']->tick();
-        $form['application[applicationPractical][doublePosition]'] = 0;
-        $form['application[applicationPractical][preferredGroup]'] = 'Bolk 1';
-        $form['application[applicationPractical][language]'] = 'Engelsk';
+        $form['application[yearOfStudy]'] = 3;
+        $form['application[days][monday]']->tick();
+        $form['application[days][tuesday]']->untick();
+        $form['application[days][wednesday]']->tick();
+        $form['application[days][thursday]']->untick();
+        $form['application[days][friday]']->tick();
+        $form['application[doublePosition]'] = 0;
+        $form['application[preferredGroup]'] = 'Bolk 1';
+        $form['application[language]'] = 'Engelsk';
         $form['application[preferredSchool]'] = $preferredSchool;
 
         $assistantClient->submit($form);
