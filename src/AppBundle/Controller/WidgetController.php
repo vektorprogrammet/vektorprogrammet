@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
+use AppBundle\Form\Type\ErrorFeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
 use Symfony\Component\HttpFoundation\Request;
@@ -135,12 +136,62 @@ class WidgetController extends BaseController
 
     public function feedbackAction(Request $request)
     {
+        $session = $request->getSession();
         $feedback = new Feedback;
         $form = $this->createForm(FeedBackType::class, $feedback);
-        $form->handleRequest($request);
+
+        //Gets temporary form data stored in session if submitted, but invalid
+        if ($session->has('feedbackFormData')) {
+            $feedbackData = $session->get('feedbackFormData');
+            $formView = $form->createView();
+            $csrf_token = $formView["_token"]->vars["value"];
+            $submitData = [
+                'title' => $feedbackData->getTitle(),
+                'description' => $feedbackData->getDescription(),
+                'type' => $feedbackData->getType(),
+                '_token' => $csrf_token
+            ];
+            //Submits to show validation errors
+            $form->submit($submitData);
+            //removes the temporary form data
+            $session->remove('feedbackFormData');
+        }
 
         return $this->render('widgets/feedback_widget.html.twig', array(
             'title' => 'Feedback',
+            'form' => $form->createView()
+        ));
+    }
+    public function errorFeedbackAction(Request $request)
+    {
+        //Fixes error when EntityManager is closed after exception
+        $em = $this->getDoctrine()->getManager();
+        if (!$em->isOpen()) {
+            $this->getDoctrine()->resetManager();
+        }
+
+        $session = $request->getSession();
+        $feedback = new Feedback;
+        $form = $this->createForm(ErrorFeedbackType::class, $feedback);
+
+        //Gets temporary form data stored in session if submitted, but invalid
+        if ($session->has('errorFeedbackFormData')) {
+            $feedbackData = $session->get('errorFeedbackFormData');
+            $formView = $form->createView();
+            $csrf_token = $formView["_token"]->vars["value"];
+            $submitData = [
+                'title' => $feedbackData->getTitle(),
+                'description' => $feedbackData->getDescription(),
+                'type' => $feedbackData->getType(),
+                '_token' => $csrf_token
+            ];
+            //Submits to show validation errors
+            $form->submit($submitData);
+            //removes the temporary form data
+            $session->remove('errorFeedbackFormData');
+        }
+
+        return $this->render('widgets/error_feedback_widget.html.twig', array(
             'form' => $form->createView()
         ));
     }

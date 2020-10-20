@@ -3,16 +3,16 @@ namespace AppBundle\Controller;
 
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\FeedbackType;
+use AppBundle\Form\Type\ErrorFeedbackType;
 use AppBundle\Entity\Feedback;
 use AppBundle\Service\SlackMessenger;
+use Twig\Environment;
 
 class FeedbackController extends BaseController
 {
-    //shows form for submitting a new feedback
-    public function indexAction(Request $request)
+    public function adminSubmitAction(Request $request)
     {
         $feedback = new Feedback;
-        $user = $this->getUser();
 
         $form = $this->createForm(FeedBackType::class, $feedback);
         $form->handleRequest($request);
@@ -23,22 +23,61 @@ class FeedbackController extends BaseController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Stores the submitted feedback
-            $em = $this->getDoctrine()->getManager();
             $feedback = $form->getData();
-            $feedback->setUser($user);
-            $em->persist($feedback);
-            $em->flush();
-
-            //Notifies on slack (NotificationCHannel)
-            $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
-            $messenger->notify($feedback->getSlackMessageBody());
-
+            $this->sumbitFeedback($feedback);
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
-            
-            return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
+
+            return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)
+        }
+        //Stores the form data temporary in the session
+        $request->getSession()->set('feedbackFormData', $form->getData());
+
+        return $this->redirect($returnUri);
+    }
+    public function errorSubmitAction(Request $request)
+    {
+        $feedback = new Feedback;
+        $form = $this->createForm(ErrorFeedBackType::class, $feedback);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $feedback = $form->getData();
+            $this->sumbitFeedback($feedback);
+            $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
+        } else {
+            //Stores the form data temporary in the session
+            $request->getSession()->set('errorFeedbackFormData', $form->getData());
         }
 
+        //Redirects to a copy of 500-errorpage, since we can't redirect back, as it will cause exception.
+        return $this->redirect($this->generateUrl('feedback_admin_error'));
+    }
+    //Stores feedback
+    private function sumbitFeedback(Feedback $feedback)
+    {
+        $user = $this->getUser();
+        //Stores the submitted feedback
+        $em = $this->getDoctrine()->getManager();
+        //Resets EntityManager if closed by exception
+        if (!$em->isOpen()) {
+            $this->getDoctrine()->resetManager();
+        }
+        $feedback->setUser($user);
+        $em->persist($feedback);
+        $em->flush();
+
+        //Notifies on slack (NotificationCHannel)
+        $messenger = $this->container->get(SlackMessenger::class);
+        $messenger->notify($feedback->getSlackMessageBody());
+    }
+    public function showFeedbackErrorAction(Request $request)
+    {
+        return $this->render('feedback_admin/feedback_error500.html.twig');
+    }
+
+    //shows form for submitting a new feedback
+    public function indexAction(Request $request)
+    {
         return $this->render('feedback_admin/feedback_admin_index.html.twig', array(
             'title' => 'Feedback'
         ));

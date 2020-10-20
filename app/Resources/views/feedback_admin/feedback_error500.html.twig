@@ -5,5 +5,5 @@
 {% endblock %}
 
 {% block body %}
-{% include 'Exception/error500_widget.html.twig' %} 
+    {% include 'Exception/error500_widget.html.twig' with {showForm: true}%}
 {% endblock %}
