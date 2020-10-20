@@ -1,19 +1,19 @@
 {{ message }}
-<br/>
+<br>
 Tidspunkt: {{ datetime|date("d.m.y - G:i") }}.
-<br/>
+<br>
 Rom: {{ room }}{% if mapLink %} (<a href="{{ mapLink }}">kart</a>){% endif %}<br>
 {% if campus is defined %}Campus: {{ campus }}{% endif %}
-<br/><br/>
-<p>For å akseptere eller kansellere intervjuet, gå inn på følgende link: <p/>
+<br><br>
+<p>For å akseptere eller kansellere intervjuet, gå inn på følgende link: </p>
   <a href="{{ url('interview_response', { 'responseCode' : responseCode}) }}">
     {{ app.request.httpHost ~ path('interview_response', {'responseCode' : responseCode})}}
   </a>
-<br/>
+<br>
 Mvh.
-<br/>
+<br>
 {{ fromName }}
-<br/>
+<br>
 {{ fromMail }}
-<br/>
+<br>
 {{ fromPhone }}

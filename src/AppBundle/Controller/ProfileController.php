@@ -12,6 +12,10 @@ use AppBundle\Role\Roles;
 use AppBundle\Service\LogService;
 use AppBundle\Service\RoleManager;
 use AppBundle\Service\UserRegistration;
+use Exception;
+use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Form\Type\EditUserType;
+use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -155,7 +159,7 @@ class ProfileController extends BaseController
             $em->flush();
 
             $response['success'] = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response['success'] = false;
 
             $response['cause'] = 'Kunne ikke endre rettighetsnivå'; // if you want to see the exception message.
