@@ -140,7 +140,7 @@ class AssistantController extends BaseController
                 $em->persist($application);
                 $em->flush();
 
-                $this->get()->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+                $this->get(EventDispatcher::class)->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
                 return $this->redirectToRoute('application_confirmation');
             }
