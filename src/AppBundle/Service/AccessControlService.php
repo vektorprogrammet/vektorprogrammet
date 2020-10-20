@@ -8,6 +8,7 @@ use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -87,7 +88,7 @@ class AccessControlService
         }
 
         if (! is_array($resources)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
 
         foreach ($resources as $resource => $method) {
