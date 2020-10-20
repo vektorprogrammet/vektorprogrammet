@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\SlackMessenger;
 
 class FeedbackController extends BaseController
 {
