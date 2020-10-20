@@ -67,7 +67,7 @@ class FeedbackController extends BaseController
         $em->flush();
 
         //Notifies on slack (NotificationCHannel)
-        $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
+        $messenger = $this->container->get(SlackMessenger::class);
         $messenger->notify($feedback->getSlackMessageBody());
     }
     public function showFeedbackErrorAction(Request $request)
