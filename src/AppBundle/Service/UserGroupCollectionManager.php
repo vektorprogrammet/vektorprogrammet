@@ -8,6 +8,8 @@ use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\UserGroup;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
+use UnexpectedValueException;
 
 class UserGroupCollectionManager
 {
@@ -34,9 +36,9 @@ class UserGroupCollectionManager
         shuffle($users);
         $groupSize = intdiv(sizeof($users), $userGroupCollection->getNumberUserGroups());
         if ($userGroupCollection->getNumberUserGroups() < 1) {
-            throw new \InvalidArgumentException("Ugyldig antall grupper. Må være over eller lik 1.");
+            throw new InvalidArgumentException("Ugyldig antall grupper. Må være over eller lik 1.");
         } elseif ($groupSize<1) {
-            throw new \UnexpectedValueException("Ugyldig inndeling. Valgt inndeling ga ".sizeof($users)." bruker(e)");
+            throw new UnexpectedValueException("Ugyldig inndeling. Valgt inndeling ga ".sizeof($users)." bruker(e)");
         }
 
         $userGroupings = array_chunk($users, $groupSize);

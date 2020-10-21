@@ -27,9 +27,4 @@ class TeamController extends BaseController
         }
         return $this->showAction($teams[0]);
     }
-
-    public function indexAction()
-    {
-        return $this->render('team/index.html.twig');
-    }
 }

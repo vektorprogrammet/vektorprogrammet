@@ -3,6 +3,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
+use Exception;
 use Monolog\Logger;
 use Nexy\Slack\Attachment;
 use Nexy\Slack\Client;
@@ -84,7 +85,7 @@ class SlackMessenger
         if (!$this->disableDelivery) {
             try {
                 $this->slackClient->sendMessage($message);
-            } catch (\Exception $e) {
+            } catch (Exception $e) {
                 $this->logger->error("Sending message to Slack failed! {$e->getMessage()}");
             }
         }

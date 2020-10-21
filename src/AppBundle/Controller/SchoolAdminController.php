@@ -6,7 +6,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Role\Roles;
-use Composer\Script\Event;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\School;
 use AppBundle\Form\Type\CreateSchoolType;
@@ -200,7 +200,7 @@ class SchoolAdminController extends BaseController
 
             // a response back to AJAX
             $response['success'] = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette skolen. ';
@@ -221,7 +221,7 @@ class SchoolAdminController extends BaseController
 
             // a response back to AJAX
             $response['success'] = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             // Send a response back to AJAX
             $response['success'] = false;
             $response['cause'] = 'Kunne ikke slette assistent historien. ';

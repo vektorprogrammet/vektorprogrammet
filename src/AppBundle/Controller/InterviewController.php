@@ -17,6 +17,7 @@ use AppBundle\Role\Roles;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\InterviewManager;
 use DateTime;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -285,7 +286,7 @@ class InterviewController extends BaseController
         try {
             $headers = get_headers($link);
             $statusCode = intval(explode(" ", $headers[0])[1]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 
