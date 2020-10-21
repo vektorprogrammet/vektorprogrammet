@@ -9,7 +9,6 @@ use AppBundle\Service\FileUploader;
 use AppBundle\Service\RoleManager;
 use AppBundle\Service\Sorter;
 use AppBundle\Utils\ReceiptStatistics;
-use Composer\Script\Event;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Receipt;

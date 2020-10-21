@@ -86,9 +86,6 @@ class InterviewController extends BaseController
 
                 $eventDispatcher = new EventDispatcher();
                 $eventDispatcher->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
-
-                //$this->get(EventDispatcher::class)->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
-                //$this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
             }
 
             return $this->redirectToRoute('applications_show_interviewed', array(
@@ -264,7 +261,6 @@ class InterviewController extends BaseController
             if ($form->get('saveAndSend')->isClicked()) {
                 $eventDispatcher = new EventDispatcher();
                 $eventDispatcher->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
-                //$this->get(EventDispatcher::class)->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
             }
 
             return $this->redirectToRoute('applications_show_assigned', array('department' => $application->getDepartment()->getId(), 'semester' => $application->getSemester()->getId()));
