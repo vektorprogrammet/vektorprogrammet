@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Service\RoleManager;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -16,7 +17,7 @@ class ExecutiveBoardController extends BaseController
 {
     public function showAction()
     {
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $board = $this->getDoctrine()->getRepository(ExecutiveBoard::class)->findBoard();
 
         return $this->render('team/team_page.html.twig', array(
             'team'  => $board,
@@ -25,8 +26,8 @@ class ExecutiveBoardController extends BaseController
 
     public function showAdminAction()
     {
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
-        $members = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoardMembership')->findAll();
+        $board = $this->getDoctrine()->getRepository(ExecutiveBoard::class)->findBoard();
+        $members = $this->getDoctrine()->getRepository(ExecutiveBoardMembership::class)->findAll();
         $activeMembers = [];
         $inactiveMembers = [];
         foreach ($members as $member) {
@@ -46,7 +47,7 @@ class ExecutiveBoardController extends BaseController
 
     public function addUserToBoardAction(Request $request, Department $department)
     {
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $board = $this->getDoctrine()->getRepository(ExecutiveBoard::class)->findBoard();
 
         // Create a new TeamMembership entity
         $member = new ExecutiveBoardMembership();
@@ -93,7 +94,7 @@ class ExecutiveBoardController extends BaseController
 
     public function updateBoardAction(Request $request)
     {
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $board = $this->getDoctrine()->getRepository(ExecutiveBoard::class)->findBoard();
 
         // Create the form
         $form = $this->createForm(CreateExecutiveBoardType::class, $board);

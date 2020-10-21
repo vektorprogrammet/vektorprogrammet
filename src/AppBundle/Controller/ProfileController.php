@@ -2,6 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\ExecutiveBoardMembership;
+use AppBundle\Entity\Role;
+use AppBundle\Entity\Signature;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\User;
 use AppBundle\Event\UserEvent;
 use AppBundle\Form\Type\EditUserPasswordType;
@@ -29,13 +34,13 @@ class ProfileController extends BaseController
         $em = $this->getDoctrine()->getManager();
 
         // Fetch the assistant history of the user
-        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
+        $assistantHistory = $em->getRepository(AssistantHistory::class)->findByUser($user);
 
         // Find the team history of the user
-        $teamMemberships = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+        $teamMemberships = $em->getRepository(TeamMembership::class)->findByUser($user);
 
         // Find the executive board history of the user
-        $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
+        $executiveBoardMemberships = $em->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
@@ -56,19 +61,19 @@ class ProfileController extends BaseController
         $em = $this->getDoctrine()->getManager();
 
         // Find the work history of the user
-        $teamMemberships = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+        $teamMemberships = $em->getRepository(TeamMembership::class)->findByUser($user);
 
         // Find the executive board history of the user
-        $executiveBoardMemberships = $em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
+        $executiveBoardMemberships = $em->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
 
-        $isGrantedAssistant = ($this->getUser() !== null && $this->get(RoleManager::   class)->userIsGranted($this->getUser(), Roles::ASSISTANT));
+        $isGrantedAssistant = ($this->getUser() !== null && $this->get(RoleManager::class)->userIsGranted($this->getUser(), Roles::ASSISTANT));
 
         if (empty($teamMemberships) && empty($executiveBoardMemberships) && !$isGrantedAssistant) {
             throw $this->createAccessDeniedException();
         }
 
         // Fetch the assistant history of the user
-        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
+        $assistantHistory = $em->getRepository(AssistantHistory::class)->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
@@ -148,7 +153,7 @@ class ProfileController extends BaseController
         }
 
         try {
-            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName($roleName);
+            $role = $this->getDoctrine()->getRepository(Role::class)->findByRoleName($roleName);
             $user->setRoles(array( $role ));
 
             $em = $this->getDoctrine()->getManager();
@@ -171,13 +176,13 @@ class ProfileController extends BaseController
         $em = $this->getDoctrine()->getManager();
 
         // Fetch the assistant history of the user
-        $assistantHistory = $em->getRepository('AppBundle:AssistantHistory')->findByUser($user);
+        $assistantHistory = $em->getRepository(AssistantHistory::class)->findByUser($user);
 
         // Find the work history of the user
-        $teamMembership = $em->getRepository('AppBundle:TeamMembership')->findByUser($user);
+        $teamMembership = $em->getRepository(TeamMembership::class)->findByUser($user);
 
         // Find the signature of the user creating the certificate
-        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
+        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($this->getUser());
 
         // Find department
         $department = $this->getUser()->getDepartment();

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Twig\Extension;
 
+use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -29,6 +30,6 @@ class SemesterExtension extends AbstractExtension
 
     public function getSemesters()
     {
-        return $this->em->getRepository('AppBundle:Semester')->findAllOrderedByAge();
+        return $this->em->getRepository(Semester::class)->findAllOrderedByAge();
     }
 }

@@ -35,8 +35,8 @@ class UniqueCompanyEmailValidator extends ConstraintValidator
         }
 
         $googleEmails = $this->googleAPI->getAllEmailsInUse();
-        $teamEmails = $this->em->getRepository('AppBundle:Team')->findAllEmails();
-        $userCompanyEmails = $this->em->getRepository('AppBundle:User')->findAllCompanyEmails();
+        $teamEmails = $this->em->getRepository(Team::class)->findAllEmails();
+        $userCompanyEmails = $this->em->getRepository(User::class)->findAllCompanyEmails();
         $allEmails = array_merge($googleEmails, $teamEmails, $userCompanyEmails);
 
         if (array_search($value, $allEmails) !== false) {

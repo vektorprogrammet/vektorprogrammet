@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
@@ -15,15 +16,15 @@ class AssistantHistoryData
 
     public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts, GeoLocation $geoLocation)
     {
-        $this->assistantHistoryRepository = $em->getRepository('AppBundle:AssistantHistory');
+        $this->assistantHistoryRepository = $em->getRepository(AssistantHistory::class);
         $user = $ts->getToken()->getUser();
-        $departments = $em->getRepository('AppBundle:Department')->findAll();
+        $departments = $em->getRepository(Department::class)->findAll();
         if ($user == "anon.") {
             $this->department = $geoLocation->findNearestDepartment($departments);
         } else {
             $this->department = $ts->getToken()->getUser()->getDepartment();
         }
-        $this->semester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $this->semester = $em->getRepository(Semester::class)->findCurrentSemester();
     }
 
     /**

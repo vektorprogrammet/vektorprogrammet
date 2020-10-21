@@ -79,7 +79,7 @@ class TodoListController extends BaseController
     public function editTodoAction(TodoItem $item, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $currentSemester = $em->getRepository(Semester::class)->findCurrentSemester();
 
 
         $todoListService = $this->get(TodoListService::class);
@@ -159,7 +159,7 @@ class TodoListController extends BaseController
     {
         $semester = $this->getSemesterOrThrow404($request);
         $department = $this->getDepartmentOrThrow404($request);
-        if ($semester === $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')->findCurrentSemester()) {
+        if ($semester === $this->getDoctrine()->getManager()->getRepository(Semester::class)->findCurrentSemester()) {
             $item->setDeletedAt(new DateTime());
         } else {
             $item->setDeletedAt($semester->getStartDate());

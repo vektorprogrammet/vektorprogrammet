@@ -18,7 +18,7 @@ class SponsorsController extends BaseController
     public function sponsorsShowAction()
     {
         $sponsors = $this->getDoctrine()
-            ->getRepository('AppBundle:Sponsor')
+            ->getRepository(Sponsor::class)
             ->findAll();
 
         return $this->render('sponsors/sponsors_show.html.twig', array(

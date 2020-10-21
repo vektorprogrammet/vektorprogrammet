@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Event\TeamInterestCreatedEvent;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -28,7 +29,7 @@ class TeamInterestController extends BaseController
      */
     public function showTeamInterestFormAction(Department $department, Request $request)
     {
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         if ($semester === null) {
             throw new BadRequestHttpException('No current semester');
         }

@@ -29,7 +29,7 @@ class StaticContentController extends BaseController
         }
 
         $em = $this->getDoctrine()->getManager();
-        $content = $em->getRepository('AppBundle:StaticContent')->findOneByHtmlId($htmlId);
+        $content = $em->getRepository(StaticContent::class)->findOneByHtmlId($htmlId);
         if (!$content) {
             $content = new StaticContent();
             $content->setHtmlId($htmlId);

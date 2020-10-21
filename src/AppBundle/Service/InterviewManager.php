@@ -155,7 +155,7 @@ class InterviewManager
      */
     public function sendRescheduleEmail(Interview $interview)
     {
-        $application = $this->em->getRepository('AppBundle:Application')->findOneBy(array('interview' => $interview));
+        $application = $this->em->getRepository(Application::class)->findOneBy(array('interview' => $interview));
         $user = $interview->getUser();
         $interviewers = array();
         $interviewers[] = $interview->getInterviewer();
@@ -214,7 +214,7 @@ class InterviewManager
 
     public function sendInterviewScheduleToInterviewer(User $interviewer)
     {
-        $interviews = $this->em->getRepository('AppBundle:Interview')->findUncompletedInterviewsByInterviewerInCurrentSemester($interviewer);
+        $interviews = $this->em->getRepository(Interview::class)->findUncompletedInterviewsByInterviewerInCurrentSemester($interviewer);
 
         $nothingMoreToDo = true;
         foreach ($interviews as $interview) {
@@ -253,7 +253,7 @@ class InterviewManager
 
     public function sendAcceptInterviewReminders()
     {
-        $interviews = $this->em->getRepository('AppBundle:Interview')->findAcceptInterviewNotificationRecipients(new DateTime());
+        $interviews = $this->em->getRepository(Interview::class)->findAcceptInterviewNotificationRecipients(new DateTime());
         /** @var Interview $interview */
         foreach ($interviews as $interview) {
             $oneDay = new \DateInterval('P1D');
@@ -317,7 +317,7 @@ class InterviewManager
      */
     public function getDefaultScheduleFormData(Interview $interview): array
     {
-        $previousScheduledInterview = $this->em->getRepository('AppBundle:Interview')
+        $previousScheduledInterview = $this->em->getRepository(Interview::class)
             ->findLastScheduledByUserInAdmissionPeriod($interview->getInterviewer(), $interview->getApplication()->getAdmissionPeriod());
         $room = null;
         $campus = null;

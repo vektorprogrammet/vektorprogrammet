@@ -22,7 +22,7 @@ class AdmissionPeriodController extends BaseController
     public function showByDepartmentAction(Department $department)
     {
         $admissionPeriods = $this->getDoctrine()
-            ->getRepository('AppBundle:AdmissionPeriod')
+            ->getRepository(AdmissionPeriod::class)
             ->findByDepartmentOrderedByTime($department);
 
 

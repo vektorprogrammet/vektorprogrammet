@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\SupportTicketType;
@@ -29,13 +30,13 @@ class ContactController extends BaseController
     {
         if ($department === null) {
             $department = $this->get(GeoLocation::class)
-                ->findNearestDepartment($this->getDoctrine()->getRepository('AppBundle:Department')->findAll());
+                ->findNearestDepartment($this->getDoctrine()->getRepository(Department::class)->findAll());
         }
 
         $supportTicket = new SupportTicket();
         $supportTicket->setDepartment($department);
         $form = $this->createForm(SupportTicketType::class, $supportTicket, array(
-            'department_repository' => $this->getDoctrine()->getRepository('AppBundle:Department'),
+            'department_repository' => $this->getDoctrine()->getRepository(Department::class),
         ));
 
         $form->handleRequest($request);
@@ -49,7 +50,7 @@ class ContactController extends BaseController
             return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));
         }
 
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $board = $this->getDoctrine()->getRepository(ExecutiveBoard::class)->findBoard();
         $scrollToForm = $form->isSubmitted() && !$form->isValid();
 
         return $this->render('contact/index.html.twig', array(

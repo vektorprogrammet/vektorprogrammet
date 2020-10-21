@@ -2,6 +2,8 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Interview;
 use AppBundle\Service\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -38,7 +40,7 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $departments = $this->em->getRepository('AppBundle:Department')->findActive();
+        $departments = $this->em->getRepository(Department::class)->findActive();
         foreach ($departments as $department) {
             $admissionPeriod = $department->getCurrentAdmissionPeriod();
             if (!$admissionPeriod) {
@@ -46,7 +48,7 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
             }
 
             $semester = $admissionPeriod->getSemester();
-            $interviewersInDepartment = $this->em->getRepository('AppBundle:Interview')->findInterviewersInSemester($semester);
+            $interviewersInDepartment = $this->em->getRepository(Interview::class)->findInterviewersInSemester($semester);
             foreach ($interviewersInDepartment as $interviewer) {
                 $this->interviewManager->sendInterviewScheduleToInterviewer($interviewer);
             }

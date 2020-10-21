@@ -62,7 +62,7 @@ class AdmissionSubscriberController extends BaseController
         if (!$email || !$departmentId) {
             return new JsonResponse("Email or department missing", 400);
         }
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        $department = $this->getDoctrine()->getRepository(Department::class)->find($departmentId);
         if (!$department) {
             return new JsonResponse("Invalid department", 400);
         }
@@ -84,7 +84,7 @@ class AdmissionSubscriberController extends BaseController
      */
     public function unsubscribeAction($code)
     {
-        $subscriber = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findByUnsubscribeCode($code);
+        $subscriber = $this->getDoctrine()->getRepository(AdmissionSubscriber::class)->findByUnsubscribeCode($code);
         $this->addFlash('title', 'Opptaksvarsel - Avmelding');
         if (!$subscriber) {
             $this->addFlash('message', "Du vil ikke lengre motta varsler om opptak");

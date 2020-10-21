@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Team;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Service\ApplicationAdmission;
@@ -52,7 +54,7 @@ class AssistantController extends BaseController
     {
         $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
         $department = $this->getDoctrine()
-                ->getRepository('AppBundle:Department')
+                ->getRepository(Department::class)
                 ->findOneByCityCaseInsensitive($city);
         if ($department !== null) {
             return $this->indexAction($request, $department);
@@ -91,7 +93,7 @@ class AssistantController extends BaseController
         $admissionManager = $this->get(ApplicationAdmission::class);
         $em = $this->getDoctrine()->getManager();
 
-        $departments = $em->getRepository('AppBundle:Department')->findActive();
+        $departments = $em->getRepository(Department::class)->findActive();
         $departments = $this->get(GeoLocation::class)->sortDepartmentsByDistanceFromClient($departments);
         $departmentsWithActiveAdmission = $this->get(FilterService::class)->filterDepartmentsByActiveAdmission($departments, true);
 
@@ -100,7 +102,7 @@ class AssistantController extends BaseController
             $specificDepartment = $departments[0];
         }
 
-        $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($specificDepartment);
+        $teams = $em->getRepository(Team::class)->findByOpenApplicationAndDepartment($specificDepartment);
 
         $application = new Application();
 
@@ -128,7 +130,7 @@ class AssistantController extends BaseController
                     return $this->redirectToRoute('admission_existing_user');
                 }
 
-                $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+                $admissionPeriod = $em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
 
                 //If no active admission period is found
                 if (!$admissionPeriod) {
@@ -202,7 +204,7 @@ class AssistantController extends BaseController
                 return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
             }
 
-            $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+            $admissionPeriod = $em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
             $application->setAdmissionPeriod($admissionPeriod);
             $em->persist($application);
             $em->flush();

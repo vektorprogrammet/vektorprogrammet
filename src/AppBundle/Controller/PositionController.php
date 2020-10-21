@@ -11,7 +11,7 @@ class PositionController extends BaseController
     public function showPositionsAction()
     {
         // Find all the positions
-        $positions = $this->getDoctrine()->getRepository('AppBundle:Position')->findAll();
+        $positions = $this->getDoctrine()->getRepository(Position::class)->findAll();
 
         // Return the view with suitable variables
         return $this->render('team_admin/show_positions.html.twig', array(

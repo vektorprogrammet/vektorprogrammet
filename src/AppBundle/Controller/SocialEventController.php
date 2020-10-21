@@ -21,7 +21,7 @@ class SocialEventController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
 
         $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('AppBundle:SocialEvent');
+        $repository = $em->getRepository(SocialEvent::class);
         $SocialEventList = $repository->findSocialEventsBySemesterAndDepartment($semester, $department);
 
 

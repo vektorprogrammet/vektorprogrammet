@@ -32,7 +32,7 @@ class ArticleAdminController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAllArticles();
+        $articles = $em->getRepository(Article::class)->findAllArticles();
 
         // Uses the knp_paginator bundle to separate the articles into pages.
         $paginator  = $this->get('knp_paginator');

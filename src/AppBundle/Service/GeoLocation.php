@@ -34,7 +34,7 @@ class GeoLocation
     public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, SessionInterface $session, RequestStack $requestStack, LogService $logger)
     {
         $this->ipinfoToken = $ipinfoToken;
-        $this->departmentRepo = $em->getRepository('AppBundle:Department');
+        $this->departmentRepo = $em->getRepository(Department::class);
         $this->session = $session;
         $this->requestStack = $requestStack;
         $this->logger = $logger;

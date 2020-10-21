@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\CertificateRequest;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
@@ -29,9 +31,9 @@ class CertificateController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $em = $this->getDoctrine()->getManager();
 
-        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($department, $semester);
+        $assistants = $em->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($department, $semester);
 
-        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
+        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($this->getUser());
         $oldPath = '';
         if ($signature === null) {
             $signature = new Signature();
@@ -64,7 +66,7 @@ class CertificateController extends BaseController
         }
 
         // Finds all the the certificate requests
-        $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
+        $certificateRequests = $this->getDoctrine()->getRepository(CertificateRequest::class)->findAll();
 
         return $this->render('certificate/index.html.twig', array(
             'certificateRequests' => $certificateRequests,

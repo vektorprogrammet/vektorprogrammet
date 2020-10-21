@@ -69,7 +69,7 @@ class UserGroupCollectionManager
 
     private function findUsers(UserGroupCollection $userGroupCollection)
     {
-        $teamMembershipRepository = $this->em->getRepository('AppBundle:TeamMembership');
+        $teamMembershipRepository = $this->em->getRepository(TeamMembership::class);
 
         $teamMemberships = array();
         foreach ($userGroupCollection->getTeams() as $team) {
@@ -92,7 +92,7 @@ class UserGroupCollectionManager
         );
 
 
-        $assistantHistoryRepository = $this->em->getRepository('AppBundle:AssistantHistory');
+        $assistantHistoryRepository = $this->em->getRepository(AssistantHistory::class);
         $assistantHistories = array();
         foreach ($userGroupCollection->getAssistantsDepartments() as $department) {
             foreach ($userGroupCollection->getSemesters() as $semester) {

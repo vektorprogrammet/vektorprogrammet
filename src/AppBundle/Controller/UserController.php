@@ -2,6 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Entity\Application;
+use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\Semester;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\ContentModeManager;
 use AppBundle\Twig\Extension\RoleExtension;
@@ -22,15 +26,15 @@ class UserController extends BaseController
         $user = $this->getUser();
 
         $department = $user->getDepartment();
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
-            ->getRepository('AppBundle:AdmissionPeriod')
+            ->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
 
         $activeApplication = null;
         if (null !== $admissionPeriod) {
             $activeApplication = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findByUserInAdmissionPeriod($user, $admissionPeriod);
         }
 
@@ -38,7 +42,7 @@ class UserController extends BaseController
         if (null !== $activeApplication) {
             $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($activeApplication);
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
+        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($user);
 
         return $this->render('my_page/my_page.html.twig', [
             "active_application" => $activeApplication,
@@ -57,7 +61,7 @@ class UserController extends BaseController
         if (!$this->getUser()->isActive()) {
             throw $this->createAccessDeniedException();
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($this->getUser());
+        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($this->getUser());
         if (empty($activeAssistantHistories)) {
             throw $this->createNotFoundException();
         }
@@ -66,7 +70,7 @@ class UserController extends BaseController
         $partnerCount = 0;
 
         foreach ($activeAssistantHistories as $activeHistory) {
-            $schoolHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
+            $schoolHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
             $partners = [];
 
             foreach ($schoolHistories as $sh) {
@@ -89,7 +93,7 @@ class UserController extends BaseController
             ];
         }
 
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
             'partnerInformations' => $partnerInformations,
             'partnerCount' => $partnerCount,

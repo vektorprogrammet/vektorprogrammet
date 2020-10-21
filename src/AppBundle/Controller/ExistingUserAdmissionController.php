@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\Team;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
 use AppBundle\Service\ApplicationAdmission;
@@ -32,7 +34,7 @@ class ExistingUserAdmissionController extends BaseController
         }
 
         $department = $user->getDepartment();
-        $teams = $em->getRepository('AppBundle:Team')->findActiveByDepartment($department);
+        $teams = $em->getRepository(Team::class)->findActiveByDepartment($department);
 
         $application = $admissionManager->createApplicationForExistingAssistant($user);
 
@@ -52,7 +54,7 @@ class ExistingUserAdmissionController extends BaseController
             return $this->redirectToRoute('my_page');
         }
 
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
 
         return $this->render(':admission:existingUser.html.twig', array(
             'form' => $form->createView(),

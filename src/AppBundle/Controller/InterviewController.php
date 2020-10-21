@@ -4,6 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
+use AppBundle\Entity\InterviewSchema;
+use AppBundle\Entity\Team;
+use AppBundle\Entity\User;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
 use AppBundle\Form\InterviewNewTimeType;
@@ -48,7 +51,7 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException();
         }
         $department = $this->getUser()->getDepartment();
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
+        $teams = $this->getDoctrine()->getRepository(Team::class)->findActiveByDepartment($department);
 
         if ($this->getUser() === $application->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array( 'error' => 'Du kan ikke intervjue deg selv' ));
@@ -176,7 +179,7 @@ class InterviewController extends BaseController
 
         // Get the application objects
         $em = $this->getDoctrine()->getManager();
-        $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $applicationIds ));
+        $applications = $em->getRepository(Application::class)->findBy(array( 'id' => $applicationIds ));
 
         // Delete the interviews
         foreach ($applications as $application) {
@@ -302,7 +305,7 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException();
         }
         $em = $this->getDoctrine()->getManager();
-        $application = $em->getRepository('AppBundle:Application')->find($id);
+        $application = $em->getRepository(Application::class)->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
@@ -357,9 +360,9 @@ class InterviewController extends BaseController
             // Get the info from the form
             $data = $request->request->all();
             // Get objects from database
-            $interviewer = $em->getRepository('AppBundle:User')->findOneBy(array( 'id' => $data['interview']['interviewer'] ));
-            $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneBy(array( 'id' => $data['interview']['interviewSchema'] ));
-            $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $data['application']['id'] ));
+            $interviewer = $em->getRepository(User::class)->findOneBy(array( 'id' => $data['interview']['interviewer'] ));
+            $schema = $em->getRepository(InterviewSchema::class)->findOneBy(array( 'id' => $data['interview']['interviewSchema'] ));
+            $applications = $em->getRepository(Application::class)->findBy(array( 'id' => $data['application']['id'] ));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
@@ -561,7 +564,7 @@ class InterviewController extends BaseController
     {
         $semester = $interview->getApplication()->getSemester();
         $department = $interview->getApplication()->getDepartment();
-        $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
+        $teamUsers = $this->getDoctrine()->getRepository(User::class)
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(),$interview->getCoInterviewer())));
         $form = $this->createForm(AddCoInterviewerType::class, null, [
