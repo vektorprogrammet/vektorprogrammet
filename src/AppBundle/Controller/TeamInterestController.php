@@ -47,7 +47,8 @@ class TeamInterestController extends BaseController
             $manager->persist($teamInterest);
             $manager->flush();
 
-            $this->get(EventDispatcher::class)->dispatch(TeamInterestCreatedEvent::NAME, new TeamInterestCreatedEvent($teamInterest));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(TeamInterestCreatedEvent::NAME, new TeamInterestCreatedEvent($teamInterest));
 
             return $this->redirectToRoute('team_interest_form', array(
                 'id' => $department->getId(),

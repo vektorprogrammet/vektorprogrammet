@@ -271,7 +271,9 @@ class AdmissionAdminController extends BaseController
 
             $this->addFlash('admission-notice', 'Søknaden er registrert.');
 
-            $this->get(EventDispatcher::class)->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+
 
             return $this->redirectToRoute('register_applicant', array('id' => $department->getId()));
         }

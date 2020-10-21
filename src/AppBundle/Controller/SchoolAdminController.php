@@ -6,6 +6,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Role\Roles;
+use Composer\Script\Event;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\School;
 use AppBundle\Form\Type\CreateSchoolType;
@@ -58,7 +59,8 @@ class SchoolAdminController extends BaseController
             $em->persist($assistantHistory);
             $em->flush();
 
-            $this->get(EventDispatcher::class)->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
 
             return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
         }

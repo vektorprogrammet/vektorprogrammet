@@ -44,8 +44,8 @@ class ContactController extends BaseController
             $this->get(LogService::class)->error("Could not send support ticket. Department was null.\n$supportTicket");
         }
         if ($form->isValid()) {
-            $this->get(EventDispatcher::class)
-            ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
 
             return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));
         }

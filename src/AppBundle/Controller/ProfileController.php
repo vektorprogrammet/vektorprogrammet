@@ -9,6 +9,7 @@ use AppBundle\Form\Type\UserCompanyEmailType;
 use AppBundle\Service\LogService;
 use AppBundle\Service\RoleManager;
 use AppBundle\Service\UserRegistration;
+use Composer\Script\Event;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditUserPasswordType;
@@ -220,7 +221,8 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $this->get(EventDispatcher::class)->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirect($this->generateUrl('profile'));
         }
@@ -268,7 +270,8 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $this->get(EventDispatcher::class)->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirect($this->generateUrl('specific_profile', array( 'id' => $user->getId() )));
         }
@@ -289,7 +292,8 @@ class ProfileController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get(EventDispatcher::class)->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
 
             return $this->redirectToRoute('specific_profile', [ 'id' => $user->getId() ]);
         }

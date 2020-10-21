@@ -55,7 +55,8 @@ class TeamAdminController extends BaseController
             $em->persist($teamMembership);
             $em->flush();
 
-            $this->get(EventDispatcher::class)->dispatch(TeamMembershipEvent::EDITED, new TeamMembershipEvent($teamMembership));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(TeamMembershipEvent::EDITED, new TeamMembershipEvent($teamMembership));
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array( 'id' => $teamMembership->getTeam()->getId() )));
         }
@@ -95,7 +96,8 @@ class TeamAdminController extends BaseController
             $em->persist($teamMembership);
             $em->flush();
 
-            $this->get(EventDispatcher::class)->dispatch(TeamMembershipEvent::CREATED, new TeamMembershipEvent($teamMembership));
+            $eventDispatcher = new EventDispatcher();
+            $eventDispatcher->dispatch(TeamMembershipEvent::CREATED, new TeamMembershipEvent($teamMembership));
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array( 'id' => $team->getId() )));
         }
@@ -163,7 +165,8 @@ class TeamAdminController extends BaseController
                 $em->persist($team);
                 $em->flush();
 
-                $this->get(EventDispatcher::class)->dispatch(TeamEvent::EDITED, new TeamEvent($team, $oldTeamEmail));
+                $eventDispatcher = new EventDispatcher();
+                $eventDispatcher->dispatch(TeamEvent::EDITED, new TeamEvent($team, $oldTeamEmail));
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
@@ -219,7 +222,8 @@ class TeamAdminController extends BaseController
                 $em->persist($team);
                 $em->flush();
 
-                $this->get(EventDispatcher::class)->dispatch(TeamEvent::CREATED, new TeamEvent($team, $team->getEmail()));
+                $eventDispatcher = new EventDispatcher();
+                $eventDispatcher->dispatch(TeamEvent::CREATED, new TeamEvent($team, $team->getEmail()));
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
@@ -245,7 +249,8 @@ class TeamAdminController extends BaseController
         $em->remove($teamMembership);
         $em->flush();
 
-        $this->get(EventDispatcher::class)->dispatch(TeamMembershipEvent::DELETED, new TeamMembershipEvent($teamMembership));
+        $eventDispatcher = new EventDispatcher();
+        $eventDispatcher->dispatch(TeamMembershipEvent::DELETED, new TeamMembershipEvent($teamMembership));
 
         return $this->redirectToRoute('teamadmin_show_specific_team', [ 'id' => $teamMembership->getTeam()->getId() ]);
     }
