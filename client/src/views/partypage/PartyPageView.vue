@@ -211,7 +211,7 @@
 
                 let firstName = user.firstName;
                 let sound = new Audio(require('../../assets/johncenaintro.mp3'));
-                let sound2 = new Audio('https://ttsaas.sigtot.com/'+ firstName);
+                let sound2 = new Audio('localhost:1337'+ firstName);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
 
                 sound.volume = 0.6;
