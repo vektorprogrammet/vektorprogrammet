@@ -2,10 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Position;
 use AppBundle\Form\Type\CreatePositionType;
+use Symfony\Component\HttpFoundation\Request;
 
 class PositionController extends BaseController
 {
