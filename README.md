@@ -87,16 +87,16 @@ Tests should be run before opening a PR.
 ##### UNIX/LINUX:
 `npm run test`
 
-File specific test: 
-
-`npm run test "tests/PATH_TO_TEST" `
-
 ##### Windows:
 `npm run test:win`
 
 #### File specific test: 
 
 `npm run test "tests/PATH_TO_TEST" `
+
+or *(without needing the exact path)*
+
+`npm run test -- --filter "NAME_OF_FILE" `
 
 
 
