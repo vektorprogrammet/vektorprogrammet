@@ -2,14 +2,14 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Feedback;
+use AppBundle\Entity\Receipt;
 use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
-use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Utils\ReceiptStatistics;
 use AppBundle\Service\TodoListService;
+use AppBundle\Utils\ReceiptStatistics;
+use Symfony\Component\HttpFoundation\Request;
 
 class WidgetController extends BaseController
 {

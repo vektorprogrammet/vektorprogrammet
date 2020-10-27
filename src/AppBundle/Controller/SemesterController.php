@@ -2,12 +2,11 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Department;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SemesterController extends Controller

@@ -9,6 +9,8 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
@@ -36,7 +38,7 @@ class AdmissionNotifier
      * @param bool $infoMeeting
      * @param bool $fromApplication
      *
-     * @throws \InvalidArgumentException
+     * @throws InvalidArgumentException
      */
     public function createSubscription(Department $department, string $email, bool $infoMeeting = false, bool $fromApplication = false)
     {
@@ -53,7 +55,7 @@ class AdmissionNotifier
 
         $errors = $this->validator->validate($subscriber);
         if (count($errors) > 0) {
-            throw new \InvalidArgumentException((string) $errors);
+            throw new InvalidArgumentException((string) $errors);
         }
 
         $this->em->persist($subscriber);
@@ -93,7 +95,7 @@ class AdmissionNotifier
                     $this->logger->info("*$notificationsSent* admission notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->critical("Failed to send admission notification:\n".$e->getMessage());
         }
     }
@@ -152,7 +154,7 @@ class AdmissionNotifier
                     $this->logger->info("*$notificationsSent* info meeting notification emails sent to subscribers in *" . $department->getCity() . "*");
                 }
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $this->logger->critical("Failed to send info meeting notification:\n".$e->getMessage());
         }
     }

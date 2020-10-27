@@ -2,7 +2,6 @@
 
 namespace AppBundle\Service;
 
-use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\RedirectResponse;
