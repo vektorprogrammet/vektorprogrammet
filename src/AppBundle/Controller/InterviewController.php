@@ -17,12 +17,12 @@ use AppBundle\Role\Roles;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\InterviewManager;
 use DateTime;
+use InvalidArgumentException;
 use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**

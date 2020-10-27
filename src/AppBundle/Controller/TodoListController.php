@@ -4,15 +4,15 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\TodoItem;
 use AppBundle\Form\Type\CreateTodoItemInfoType;
 use AppBundle\Model\TodoItemInfo;
-use AppBundle\Entity\TodoItem;
 use AppBundle\Service\TodoListService;
 use DateTime;
 use Exception;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 
 class TodoListController extends BaseController

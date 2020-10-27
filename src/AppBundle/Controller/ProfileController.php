@@ -4,20 +4,20 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Event\UserEvent;
+use AppBundle\Form\Type\EditUserPasswordType;
+use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\NewUserType;
 use AppBundle\Form\Type\UserCompanyEmailType;
+use AppBundle\Role\Roles;
 use AppBundle\Service\LogService;
 use AppBundle\Service\RoleManager;
 use AppBundle\Service\UserRegistration;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\Type\EditUserType;
-use AppBundle\Form\Type\EditUserPasswordType;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TFox\MpdfPortBundle\Response\PDFResponse;
-use AppBundle\Role\Roles;
 
 class ProfileController extends BaseController
 {

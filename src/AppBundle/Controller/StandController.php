@@ -3,8 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\AdmissionStatistics;
-use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Request;
 
 class StandController extends BaseController
 {
