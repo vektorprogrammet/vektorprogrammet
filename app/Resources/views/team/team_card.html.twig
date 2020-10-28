@@ -15,7 +15,16 @@
         </p>
         <p class="m-0">
             <i class="big-icon m-0 mr-2 text-devil fa fa-users"></i>
-            <span class="text-devil member-count">{{ team.activeUsers | length }} medlemmer</span>
+            <span class="text-devil member-count">
+                {% if team.activeUsers | length == 0 %}
+                    Ingen medlemmer
+                {% elseif team.activeUsers | length == 1 %}
+                    1 medlem
+                {% else %}
+                    {{ team.activeUsers | length }}
+                    medlemmer
+                {% endif %}
+            </span>
         </p>
     </div>
     <a href="{{ path('team_page_department_team', {departmentCity: team.department, teamName: team.name}) }}" class="application-link m-0">
