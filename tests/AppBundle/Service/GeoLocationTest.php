@@ -99,4 +99,16 @@ class GeoLocationTest extends TestCase
         $closestDepartment = $this->geoLocation->findDepartmentClosestTo($coords);
         $this->assertEquals($this->dep2, $closestDepartment);
     }
+
+    public function testIpValidator()
+    {
+        $validIp1 = "0.0.0.0";
+        $validIp2 = "255.0.255.0";
+        $invalidIp1 = "s11.22.42";
+        $invalidIp2 = "randomchars";
+        $this->assertTrue(GeoLocation::isValidIp($validIp1));
+        $this->assertTrue(GeoLocation::isValidIp($validIp2));
+        $this->assertFalse(GeoLocation::isValidIp($invalidIp1));
+        $this->assertFalse(GeoLocation::isValidIp($invalidIp2));
+    }
 }

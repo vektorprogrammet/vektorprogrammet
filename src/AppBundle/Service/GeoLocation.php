@@ -120,6 +120,11 @@ class GeoLocation
 
         return $departments;
     }
+    public static function isValidIp(string $ip)
+    {
+        $ipPattern = '/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/';
+        return preg_match($ipPattern, $ip) === 1; //Returns 1 if match
+    }
 
     public function findCoordinates($ip)
     {
@@ -131,6 +136,10 @@ class GeoLocation
         $coords = $this->session->get('coords');
         if ($coords) {
             return $coords;
+        }
+
+        if(! self::isValidIp($ip)) {
+            return null;
         }
 
         try {
