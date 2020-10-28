@@ -223,7 +223,8 @@ class AdmissionAdminController extends BaseController
     public function bulkDeleteApplicationAction(Request $request)
     {
         // Get the ids from the form
-        $applicationIds = $request->request->get('application')['id'];
+        $applicationIds = array_map('intval', $request->request->get('application')['id']);
+
 
         $em = $this->getDoctrine()->getManager();
 
