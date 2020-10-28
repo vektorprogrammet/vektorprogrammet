@@ -138,7 +138,7 @@ class GeoLocation
             return $coords;
         }
 
-        if(! self::isValidIp($ip)) {
+        if (! self::isValidIp($ip)) {
             return null;
         }
 
