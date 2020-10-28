@@ -8,5 +8,4 @@ class DepartmentDto
     public $name;
     public $shortName;
     public $city;
-
 }

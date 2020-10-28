@@ -7,7 +7,8 @@ use AppBundle\Entity\User;
 use BCC\AutoMapperBundle\Mapper\AbstractMap;
 use BCC\AutoMapperBundle\Mapper\FieldFilter\ObjectMappingFilter;
 
-class UserToDtoProfile extends AbstractMap {
+class UserToDtoProfile extends AbstractMap
+{
 
     /**
      * @return string The source type

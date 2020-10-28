@@ -27,8 +27,5 @@ class AddressRepository extends EntityRepository
         } catch (NoResultException $e) {
             return null;
         }
-
     }
-
-
 }

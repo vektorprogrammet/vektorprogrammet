@@ -5,7 +5,8 @@ use AppBundle\DataTransferObject\AddressDto;
 use AppBundle\Entity\Address;
 use BCC\AutoMapperBundle\Mapper\AbstractMap;
 
-class AddressToDtoProfile extends AbstractMap {
+class AddressToDtoProfile extends AbstractMap
+{
 
     /**
      * @return string The source type

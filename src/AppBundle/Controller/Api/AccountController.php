@@ -171,5 +171,4 @@ class AccountController extends BaseController
         }
         return new JsonResponse($activeHistoryDtos);
     }
-
 }

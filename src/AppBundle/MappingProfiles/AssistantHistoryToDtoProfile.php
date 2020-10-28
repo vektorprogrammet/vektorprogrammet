@@ -8,7 +8,8 @@ use AppBundle\Entity\AssistantHistory;
 use BCC\AutoMapperBundle\Mapper\AbstractMap;
 use BCC\AutoMapperBundle\Mapper\FieldFilter\ObjectMappingFilter;
 
-class AssistantHistoryToDtoProfile extends AbstractMap {
+class AssistantHistoryToDtoProfile extends AbstractMap
+{
 
     /**
      * @return string The source type
@@ -32,5 +33,4 @@ class AssistantHistoryToDtoProfile extends AbstractMap {
         $this->filter('user', new ObjectMappingFilter(UserDto::class));
         $this->filter('school', new ObjectMappingFilter(SchoolDto::class));
     }
-
 }

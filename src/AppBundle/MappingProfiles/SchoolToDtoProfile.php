@@ -5,7 +5,8 @@ use AppBundle\DataTransferObject\SchoolDto;
 use AppBundle\Entity\School;
 use BCC\AutoMapperBundle\Mapper\AbstractMap;
 
-class SchoolToDtoProfile extends AbstractMap {
+class SchoolToDtoProfile extends AbstractMap
+{
 
     /**
      * @return string The source type

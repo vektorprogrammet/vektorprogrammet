@@ -106,5 +106,4 @@ class Address
     {
         $this->user = $user;
     }
-
 }
