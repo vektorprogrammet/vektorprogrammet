@@ -4,6 +4,7 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\PasswordReset;
+use AppBundle\Entity\User;
 use AppBundle\Mailer\MailerInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -43,7 +44,7 @@ class PasswordManager
     public function resetCodeIsValid(string $resetCode): bool
     {
         $hashedResetCode = $this->hashCode($resetCode);
-        $passwordReset = $this->em->getRepository('AppBundle:PasswordReset')->findPasswordResetByHashedResetCode($hashedResetCode);
+        $passwordReset = $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
 
         return $passwordReset !== null && $passwordReset->getUser() !== null;
     }
@@ -51,7 +52,7 @@ class PasswordManager
     public function resetCodeHasExpired(string $resetCode): bool
     {
         $hashedResetCode = $this->hashCode($resetCode);
-        $passwordReset = $this->em->getRepository('AppBundle:PasswordReset')->findPasswordResetByHashedResetCode($hashedResetCode);
+        $passwordReset = $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
 
         $currentTime = new DateTime();
         $timeDifference = date_diff($passwordReset->getResetTime(), $currentTime);
@@ -59,7 +60,7 @@ class PasswordManager
         $hasExpired = $timeDifference->d > 1;
 
         if ($hasExpired) {
-            $this->em->getRepository('AppBundle:PasswordReset')->deletePasswordResetByHashedResetCode($hashedResetCode);
+            $this->em->getRepository(PasswordReset::class)->deletePasswordResetByHashedResetCode($hashedResetCode);
         }
 
         return $hasExpired;
@@ -69,7 +70,7 @@ class PasswordManager
     {
         $hashedResetCode = $this->hashCode($resetCode);
 
-        return $this->em->getRepository('AppBundle:PasswordReset')->findPasswordResetByHashedResetCode($hashedResetCode);
+        return $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
     }
 
     public function createPasswordResetEntity(string $email)
@@ -77,7 +78,7 @@ class PasswordManager
         $passwordReset = new PasswordReset();
 
         //Finds the user based on the email
-        $user = $this->em->getRepository('AppBundle:User')->findUserByEmail($email);
+        $user = $this->em->getRepository(User::class)->findUserByEmail($email);
 
         if ($user === null) {
             return null;

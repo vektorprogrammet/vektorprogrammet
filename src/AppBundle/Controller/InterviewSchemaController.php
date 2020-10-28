@@ -66,7 +66,7 @@ class InterviewSchemaController extends BaseController
      */
     public function showSchemasAction()
     {
-        $schemas = $this->getDoctrine()->getRepository('AppBundle:InterviewSchema')->findAll();
+        $schemas = $this->getDoctrine()->getRepository(InterviewSchema::class)->findAll();
 
         return $this->render('interview/schemas.html.twig', array('schemas' => $schemas));
     }

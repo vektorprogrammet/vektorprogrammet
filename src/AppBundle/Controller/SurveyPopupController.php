@@ -3,6 +3,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\Survey;
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
 use DateTime;
@@ -21,10 +23,10 @@ class SurveyPopupController extends Controller
             $user->getLastPopUpTime()->diff(new DateTime())->days >= 1;
 
         if ($userShouldSeePopUp) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+            $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
 
             $surveys = $this->getDoctrine()
-                ->getRepository('AppBundle:Survey')
+                ->getRepository(Survey::class)
                 ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
 
             if (!empty($surveys)) {

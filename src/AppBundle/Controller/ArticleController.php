@@ -2,8 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Article;
+use AppBundle\Entity\Department;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Article;
 
 /**
  * ArticleController is the controller responsible for articles,
@@ -34,9 +35,9 @@ class ArticleController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAllPublishedArticles();
+        $articles = $em->getRepository(Article::class)->findAllPublishedArticles();
 
-        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+        $departments = $em->getRepository(Department::class)->findAllDepartments();
 
         // Uses the knp_paginator bundle to separate the articles into pages
         $paginator = $this->get('knp_paginator');
@@ -64,9 +65,9 @@ class ArticleController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAllArticlesByDepartments($department);
+        $articles = $em->getRepository(Article::class)->findAllArticlesByDepartments($department);
 
-        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+        $departments = $em->getRepository(Department::class)->findAllDepartments();
 
         // Uses the knp_paginator bundle to separate the articles into pages
         $paginator = $this->get('knp_paginator');
@@ -108,7 +109,7 @@ class ArticleController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')
+        $articles = $em->getRepository(Article::class)
             ->findLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
 
         return $this->render('article/sidebar_other.html.twig', array('articles' => $articles));
@@ -123,7 +124,7 @@ class ArticleController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
+        $articles = $em->getRepository(Article::class)->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
 
         return $this->render('article/carousel.html.twig', array('articles' => $articles));
     }
@@ -140,7 +141,7 @@ class ArticleController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
+        $articles = $em->getRepository(Article::class)->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
 
         return $this->render('article/department_news.html.twig', array('articles' => $articles));
     }

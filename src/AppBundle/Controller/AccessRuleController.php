@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AccessRule;
+use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Form\Type\AccessRuleType;
 use AppBundle\Form\Type\RoutingAccessRuleType;
 use AppBundle\Role\ReversedRoleHierarchy;
@@ -22,9 +23,9 @@ class AccessRuleController extends Controller
      */
     public function indexAction()
     {
-        $customRules = $this->getDoctrine()->getRepository('AppBundle:AccessRule')->findCustomRules();
-        $routingRules = $this->getDoctrine()->getRepository('AppBundle:AccessRule')->findRoutingRules();
-        $unhandledRules = $this->getDoctrine()->getRepository('AppBundle:UnhandledAccessRule')->findAll();
+        $customRules = $this->getDoctrine()->getRepository(AccessRule::class)->findCustomRules();
+        $routingRules = $this->getDoctrine()->getRepository(AccessRule::class)->findRoutingRules();
+        $unhandledRules = $this->getDoctrine()->getRepository(UnhandledAccessRule::class)->findAll();
         return $this->render('admin/access_rule/index.html.twig', array(
             'customRules' => $customRules,
             'routingRules' => $routingRules,

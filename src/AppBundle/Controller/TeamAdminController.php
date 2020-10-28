@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamMembership;
+use AppBundle\Entity\Position;
 use AppBundle\Event\TeamEvent;
 use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Form\Type\CreateTeamMembershipType;
@@ -27,8 +28,8 @@ class TeamAdminController extends BaseController
         }
 
         // Find teams that are connected to the department of the user
-        $activeTeams   = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
-        $inactiveTeams = $this->getDoctrine()->getRepository('AppBundle:Team')->findInactiveByDepartment($department);
+        $activeTeams   = $this->getDoctrine()->getRepository(Team::class)->findActiveByDepartment($department);
+        $inactiveTeams = $this->getDoctrine()->getRepository(Team::class)->findInactiveByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
@@ -73,7 +74,7 @@ class TeamAdminController extends BaseController
         // Create a new TeamMembership entity
         $teamMembership = new TeamMembership();
         $teamMembership->setUser($this->getUser());
-        $teamMembership->setPosition($this->getDoctrine()->getRepository('AppBundle:Position')->findOneBy(array( 'name' => 'Medlem' )));
+        $teamMembership->setPosition($this->getDoctrine()->getRepository(Position::class)->findOneBy(array( 'name' => 'Medlem' )));
 
         // Create a new formType with the needed variables
         $form = $this->createForm(CreateTeamMembershipType::class, $teamMembership, [
@@ -107,13 +108,13 @@ class TeamAdminController extends BaseController
     public function showSpecificTeamAction(Team $team)
     {
         // Find all TeamMembership entities based on team
-        $activeTeamMemberships   = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeam($team);
-        $inActiveTeamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findInactiveTeamMembershipsByTeam($team);
+        $activeTeamMemberships   = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeam($team);
+        $inActiveTeamMemberships = $this->getDoctrine()->getRepository(TeamMembership::class)->findInactiveTeamMembershipsByTeam($team);
         usort($activeTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
         usort($inActiveTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
 
         $user                      = $this->getUser();
-        $currentUserTeamMembership = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByUser($user);
+        $currentUserTeamMembership = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByUser($user);
         $isUserInTeam              = false;
         foreach ($currentUserTeamMembership as $wh) {
             if (in_array($wh, $activeTeamMemberships)) {
@@ -165,7 +166,7 @@ class TeamAdminController extends BaseController
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
-            $teamMemberships = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeam($team);
+            $teamMemberships = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeam($team);
 
             // Render the teampage as a preview
             return $this->render('team/team_page.html.twig', array(
@@ -185,7 +186,7 @@ class TeamAdminController extends BaseController
     public function showTeamsByDepartmentAction(Department $department)
     {
         // Find teams that are connected to the department of the department ID sent in by the request
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByDepartment($department);
+        $teams = $this->getDoctrine()->getRepository(Team::class)->findByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(

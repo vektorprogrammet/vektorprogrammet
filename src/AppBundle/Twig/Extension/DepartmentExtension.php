@@ -2,6 +2,7 @@
 
 namespace AppBundle\Twig\Extension;
 
+use AppBundle\Entity\Department;
 use AppBundle\Service\GeoLocation;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
@@ -33,13 +34,13 @@ class DepartmentExtension extends AbstractExtension
 
     public function getDepartments()
     {
-        $departments = $this->em->getRepository('AppBundle:Department')->findAll();
+        $departments = $this->em->getRepository(Department::class)->findAll();
         return $this->geoLocationService->sortDepartmentsByDistanceFromClient($departments);
     }
 
     public function getActiveDepartments()
     {
-        $departments = $this->em->getRepository('AppBundle:Department')->findActive();
+        $departments = $this->em->getRepository(Department::class)->findActive();
         return $this->geoLocationService->sortDepartmentsByDistanceFromClient($departments);
     }
 }

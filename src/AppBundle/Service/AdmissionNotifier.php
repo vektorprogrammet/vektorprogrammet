@@ -4,7 +4,9 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionNotification;
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use DateTime;
@@ -42,7 +44,7 @@ class AdmissionNotifier
      */
     public function createSubscription(Department $department, string $email, bool $infoMeeting = false, bool $fromApplication = false)
     {
-        $alreadySubscribed = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByEmailAndDepartment($email, $department);
+        $alreadySubscribed = $this->em->getRepository(AdmissionSubscriber::class)->findByEmailAndDepartment($email, $department);
         if ($alreadySubscribed) {
             return;
         }
@@ -64,17 +66,17 @@ class AdmissionNotifier
 
     public function sendAdmissionNotifications()
     {
-        $departments = $this->em->getRepository('AppBundle:Department')->findActive();
-        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $departments = $this->em->getRepository(Department::class)->findActive();
+        $semester = $this->em->getRepository(Semester::class)->findCurrentSemester();
         try {
             foreach ($departments as $department) {
-                $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
+                $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneByDepartmentAndSemester($department, $semester);
                 if ($admissionPeriod === null || !$admissionPeriod->hasActiveAdmission()) {
                     continue;
                 }
-                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsByAdmissionPeriod($admissionPeriod);
-                $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
-                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')->findEmailsBySemesterAndDepartment($semester, $department);
+                $applicationEmails = $this->em->getRepository(Application::class)->findEmailsByAdmissionPeriod($admissionPeriod);
+                $subscribers = $this->em->getRepository(AdmissionSubscriber::class)->findByDepartment($department);
+                $notificationEmails = $this->em->getRepository(AdmissionNotification::class)->findEmailsBySemesterAndDepartment($semester, $department);
 
                 $notificationsSent = 0;
                 foreach ($subscribers as $subscriber) {
@@ -121,19 +123,19 @@ class AdmissionNotifier
 
     public function sendInfoMeetingNotifications()
     {
-        $departments = $this->em->getRepository('AppBundle:Department')->findActive();
-        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $departments = $this->em->getRepository(Department::class)->findActive();
+        $semester = $this->em->getRepository(Semester::class)->findCurrentSemester();
         try {
             foreach ($departments as $department) {
-                $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneByDepartmentAndSemester($department, $semester);
+                $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneByDepartmentAndSemester($department, $semester);
 
                 if ($admissionPeriod === null || !$admissionPeriod->shouldSendInfoMeetingNotifications()) {
                     continue;
                 }
 
-                $applicationEmails = $this->em->getRepository('AppBundle:Application')->findEmailsByAdmissionPeriod($admissionPeriod);
-                $subscribers = $this->em->getRepository('AppBundle:AdmissionSubscriber')->findByDepartment($department);
-                $notificationEmails = $this->em->getRepository('AppBundle:AdmissionNotification')
+                $applicationEmails = $this->em->getRepository(Application::class)->findEmailsByAdmissionPeriod($admissionPeriod);
+                $subscribers = $this->em->getRepository(AdmissionSubscriber::class)->findByDepartment($department);
+                $notificationEmails = $this->em->getRepository(AdmissionNotification::class)
                     ->findEmailsBySemesterAndDepartmentAndInfoMeeting($semester, $department);
 
                 $notificationsSent = 0;

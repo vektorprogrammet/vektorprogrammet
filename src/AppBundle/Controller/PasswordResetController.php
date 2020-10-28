@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\PasswordReset;
 use AppBundle\Service\LogService;
 use AppBundle\Service\PasswordManager;
 use Symfony\Component\HttpFoundation\Request;
@@ -46,7 +47,7 @@ class PasswordResetController extends BaseController
                 $this->get(LogService::class)->notice("Password reset rejected: Someone tried to reset the password for an inactive account: $email");
             } else {
                 $this->get(LogService::class)->info("{$passwordReset->getUser()} requested a password reset");
-                $oldPasswordResets = $this->getDoctrine()->getRepository('AppBundle:PasswordReset')->findByUser($passwordReset->getUser());
+                $oldPasswordResets = $this->getDoctrine()->getRepository(PasswordReset::class)->findByUser($passwordReset->getUser());
                 $em = $this->getDoctrine()->getManager();
 
                 foreach ($oldPasswordResets as $oldPasswordReset) {

@@ -19,7 +19,7 @@ class CompanyEmailMaker
 
     public function setCompanyEmailFor(User $user, $blackList)
     {
-        $allCompanyEmails = $this->em->getRepository('AppBundle:User')->findAllCompanyEmails();
+        $allCompanyEmails = $this->em->getRepository(User::class)->findAllCompanyEmails();
         $allEmails = array_merge($allCompanyEmails, $blackList);
         $firstName = strtolower($this->replaceNorwegianCharacters($user->getFirstName()));
         $fullName = strtolower($this->replaceNorwegianCharacters($user->getFullName()));

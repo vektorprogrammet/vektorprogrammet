@@ -7,6 +7,7 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyTaken;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\User;
 use AppBundle\Utils\CsvUtil;
 use DateTime;
@@ -50,7 +51,7 @@ class SurveyManager
 
     public function predictSurveyTakenAnswers(SurveyTaken $surveyTaken): SurveyTaken
     {
-        $allTakenSurveys = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($surveyTaken->getSurvey());
+        $allTakenSurveys = $this->em->getRepository(SurveyTaken::class)->findAllTakenBySurvey($surveyTaken->getSurvey());
 
         if (count($allTakenSurveys) === 0) {
             return $surveyTaken;
@@ -86,7 +87,7 @@ class SurveyManager
 
     public function getUserAffiliationOfSurveyAnswers(Survey $survey)
     {
-        $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+        $surveysTaken = $this->em->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey);
         $userAffiliation = array();
         $semester = $survey->getSemester();
         if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
@@ -203,7 +204,7 @@ class SurveyManager
 
     private function getUserAffiliationOfUserBySemester(User $user, Semester $semester, $userAffiliation = array()) : array
     {
-        $teamMemberships = $this->em->getRepository('AppBundle:TeamMembership')->findTeamMembershipsByUserAndSemester($user, $semester);
+        $teamMemberships = $this->em->getRepository(TeamMembership::class)->findTeamMembershipsByUserAndSemester($user, $semester);
 
         foreach ($teamMemberships as $teamMembership) {
             $teamName = $teamMembership->getTeam()->getName();
@@ -222,7 +223,7 @@ class SurveyManager
     public function surveyResultToJson(Survey $survey)
     {
         $userAffiliation = $this->getUserAffiliationOfSurveyAnswers($survey);
-        $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+        $surveysTaken = $this->em->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey);
 
         $title = $this->getSurveyTargetAudienceString($survey);
 
@@ -265,7 +266,7 @@ class SurveyManager
             throw new RuntimeException("Unrecognized survey target audience");
         }
 
-        $surveysTaken = $this->em->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey);
+        $surveysTaken = $this->em->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey);
 
         //Meta is the school or team the responder belongs to.
         $TARGET_AUDIENCE_COLUMN = "targetaudiencecolumn";

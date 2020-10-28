@@ -34,7 +34,7 @@ class BaseController extends Controller
                 $department = $this->getUser()->getDepartment();
             }
         } else {
-            $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+            $department = $this->getDoctrine()->getRepository(Department::class)->find($departmentId);
         }
         return $department;
     }
@@ -49,9 +49,9 @@ class BaseController extends Controller
     {
         $semesterId = $request->query->get('semester');
         if ($semesterId === null) {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+            $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         } else {
-            $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->find($semesterId);
+            $semester = $this->getDoctrine()->getRepository(Semester::class)->find($semesterId);
         }
         return $semester;
     }

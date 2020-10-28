@@ -7,6 +7,7 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyLinkClick;
 use AppBundle\Entity\SurveyNotification;
+use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Form\Type\SurveyExecuteType;
@@ -151,7 +152,7 @@ class SurveyController extends BaseController
             $surveyTaken->removeNullAnswers();
             if ($form->isValid()) {
                 $allTakenSurveys = $em
-                    ->getRepository('AppBundle:SurveyTaken')
+                    ->getRepository(SurveyTaken::class)
                     ->findAllBySurveyAndUser($survey, $user);
 
                 if (!empty($allTakenSurveys)) {
@@ -269,7 +270,7 @@ class SurveyController extends BaseController
         $surveyClone = $survey->copy();
 
         $em = $this->getDoctrine()->getManager();
-        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $currentSemester = $em->getRepository(Semester::class)->findCurrentSemester();
         $surveyClone->setSemester($currentSemester);
 
         if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
@@ -314,7 +315,7 @@ class SurveyController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
 
 
-        $surveysWithDepartment = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+        $surveysWithDepartment = $this->getDoctrine()->getRepository(Survey::class)->findBy(
             [
                 'semester' => $semester,
                 'department' => $department,
@@ -322,14 +323,14 @@ class SurveyController extends BaseController
             ['id' => 'DESC']
         );
         foreach ($surveysWithDepartment as $survey) {
-            $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey));
+            $totalAnswered = count($this->getDoctrine()->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey));
             $survey->setTotalAnswered($totalAnswered);
         }
 
 
         $globalSurveys = array();
         if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
-            $globalSurveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+            $globalSurveys = $this->getDoctrine()->getRepository(Survey::class)->findBy(
                 [
                     'semester' => $semester,
                     'department' => null,
@@ -337,7 +338,7 @@ class SurveyController extends BaseController
                 ['id' => 'DESC']
             );
             foreach ($globalSurveys as $survey) {
-                $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
+                $totalAnswered = count($this->getDoctrine()->getRepository(SurveyTaken::class)->findBy(array('survey' => $survey)));
                 $survey->setTotalAnswered($totalAnswered);
             }
         }
