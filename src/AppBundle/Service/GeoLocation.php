@@ -143,7 +143,7 @@ class GeoLocation
         }
 
         try {
-            $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
+            $rawResponse = file_get_contents("https://ipinfo.io/$ip?token={$this->ipinfoToken}");
             $response = json_decode($rawResponse, true);
         } catch (ErrorException $e) {
             $this->logger->warning("Could not get location from 
