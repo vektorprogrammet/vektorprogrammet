@@ -62,6 +62,8 @@ class MailingListControllerTest extends BaseWebTestCase
         $lengthTeam = $this->generateListCountChars($client, 'Team');
         $lengthAll = $this->generateListCountChars($client, 'Alle');
 
+        $this->assertGreaterThan(0, $lengthAssistants);
+        $this->assertGreaterThan(0, $lengthTeam);
         $this->assertGreaterThan($lengthAssistants, $lengthAll);
         $this->assertGreaterThan($lengthTeam, $lengthAll);
     }
@@ -76,7 +78,7 @@ class MailingListControllerTest extends BaseWebTestCase
     {
         $crawler = $this->goTo('/kontrollpanel/epostlister', $client);
         $form = $crawler->selectButton('Generer')->form();
-        $form['generate_mailing_list[semester]'] = 2;
+        $form['generate_mailing_list[semester]'] = 1;
         $form['generate_mailing_list[type]'] = $type;
         $client->submit($form);
         $crawler = $client->followRedirect();

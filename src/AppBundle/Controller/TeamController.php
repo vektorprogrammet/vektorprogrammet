@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Role\Roles;
 use AppBundle\Entity\Team;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TeamController extends BaseController
@@ -26,10 +26,5 @@ class TeamController extends BaseController
             throw new NotFoundHttpException('Team not found');
         }
         return $this->showAction($teams[0]);
-    }
-
-    public function indexAction()
-    {
-        return $this->render('team/index.html.twig');
     }
 }

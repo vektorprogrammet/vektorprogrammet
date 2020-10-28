@@ -2,11 +2,11 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Sponsor;
+use AppBundle\Form\Type\SponsorType;
 use AppBundle\Service\FileUploader;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\Type\SponsorType;
-use AppBundle\Entity\Sponsor;
 
 class SponsorsController extends BaseController
 {

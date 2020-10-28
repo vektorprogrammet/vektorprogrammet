@@ -4,6 +4,7 @@ namespace AppBundle\Controller\Api;
 
 use AppBundle\DataTransferObject\AssistantHistoryDto;
 use AppBundle\DataTransferObject\DepartmentDto;
+use AppBundle\Controller\BaseController;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
@@ -11,7 +12,6 @@ use AppBundle\Entity\User;
 use BCC\AutoMapperBundle\Mapper\FieldFilter\ObjectMappingFilter;
 use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;

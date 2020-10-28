@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Article;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * ArticleController is the controller responsible for articles,

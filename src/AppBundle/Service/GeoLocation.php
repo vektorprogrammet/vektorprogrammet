@@ -4,8 +4,8 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
+use ErrorException;
 use InvalidArgumentException;
-use Symfony\Component\Debug\Exception\ContextErrorException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -136,10 +136,10 @@ class GeoLocation
         try {
             $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
             $response = json_decode($rawResponse, true);
-        } catch (ContextErrorException $exception) {
+        } catch (ErrorException $e) {
             $this->logger->warning("Could not get location from 
             ipinfo.io. The page returned an error.\nError:\n
-            {$exception->getMessage()}");
+            {$e->getMessage()}");
             return null;
         }
 
@@ -185,18 +185,19 @@ class GeoLocation
 
     public function clientIp()
     {
-        if (isset($_SERVER['HTTP_CLIENT_IP'])) {
-            return $_SERVER['HTTP_CLIENT_IP'];
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_X_FORWARDED_FOR'];
-        } elseif (isset($_SERVER['HTTP_X_FORWARDED'])) {
-            return $_SERVER['HTTP_X_FORWARDED'];
-        } elseif (isset($_SERVER['HTTP_FORWARDED_FOR'])) {
-            return $_SERVER['HTTP_FORWARDED_FOR'];
-        } elseif (isset($_SERVER['HTTP_FORWARDED'])) {
-            return $_SERVER['HTTP_FORWARDED'];
-        } elseif (isset($_SERVER['REMOTE_ADDR'])) {
-            return $_SERVER['REMOTE_ADDR'];
+        $request = $this->requestStack->getCurrentRequest();
+        if ($request->server->get('HTTP_CLIENT_IP') !== null) {
+            $request->server->get('HTTP_CLIENT_IP');
+        } elseif ($request->server->get('HTTP_X_FORWARDED_FOR') !== null) {
+            return $request->server->get('HTTP_X_FORWARDED_FOR');
+        } elseif ($request->server->get('HTTP_X_FORWARDED') !== null) {
+            return $request->server->get('HTTP_X_FORWARDED');
+        } elseif ($request->server->get('HTTP_FORWARDED_FOR') !== null) {
+            return $request->server->get('HTTP_FORWARDED_FOR');
+        } elseif ($request->server->get('HTTP_FORWARDED') !== null) {
+            return $request->server->get('HTTP_FORWARDED');
+        } elseif ($request->server->get('REMOTE_ADDR') !== null) {
+            return $request->server->get('REMOTE_ADDR');
         } else {
             return null;
         }

@@ -8,9 +8,11 @@ use AppBundle\Event\UserEvent;
 use AppBundle\Form\Type\CreateAddressType;
 use AppBundle\Form\Type\NewUserType;
 use AppBundle\Form\Type\UserCompanyEmailType;
+use AppBundle\Role\Roles;
 use AppBundle\Service\LogService;
 use AppBundle\Service\RoleManager;
 use AppBundle\Service\UserRegistration;
+use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\EditUserType;
 use AppBundle\Form\Type\EditAddressType;
@@ -19,7 +21,6 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use TFox\MpdfPortBundle\Response\PDFResponse;
-use AppBundle\Role\Roles;
 
 class ProfileController extends BaseController
 {
@@ -162,7 +163,7 @@ class ProfileController extends BaseController
             $em->flush();
 
             $response['success'] = true;
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response['success'] = false;
 
             $response['cause'] = 'Kunne ikke endre rettighetsnivå'; // if you want to see the exception message.

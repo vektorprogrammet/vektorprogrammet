@@ -15,6 +15,7 @@ use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
 use AppBundle\Utils\CsvUtil;
 use DateTime;
+use InvalidArgumentException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -198,7 +199,7 @@ class SurveyController extends BaseController
     public function showAdminAction(Request $request, Survey $survey)
     {
         if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
-            throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
+            throw new InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
         $surveyTaken = $this->get(SurveyManager::class)->predictSurveyTakenAnswers($surveyTaken);
@@ -304,13 +305,13 @@ class SurveyController extends BaseController
      * )
      *
      * @param Semester|null $semester
-     *
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function showSurveysAction()
+    public function showSurveysAction(Request $request)
     {
-        $semester = $this->getSemesterOrThrow404();
-        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404($request);
+        $department = $this->getDepartmentOrThrow404($request);
 
 
         $surveysWithDepartment = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(

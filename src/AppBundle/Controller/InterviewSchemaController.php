@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -91,7 +92,7 @@ class InterviewSchemaController extends BaseController
                 $response['success'] = false;
                 $response['cause'] = 'Ikke tilstrekkelig rettigheter';
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = ['success' => false,
                 'code' => $e->getCode(),
                 'cause' => 'Det oppstod en feil.',

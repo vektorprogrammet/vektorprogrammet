@@ -2,7 +2,6 @@
 
 namespace AppBundle\Command;
 
-use AppBundle\Entity\Subscriber;
 use AppBundle\Service\AdmissionNotifier;
 use AppBundle\Service\EmailSender;
 use Doctrine\Common\Persistence\ObjectManager;

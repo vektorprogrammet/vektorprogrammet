@@ -17,11 +17,12 @@ use AppBundle\Role\Roles;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\InterviewManager;
 use DateTime;
+use InvalidArgumentException;
+use Exception;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use InvalidArgumentException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -277,7 +278,7 @@ class InterviewController extends BaseController
         try {
             $headers = get_headers($link);
             $statusCode = intval(explode(" ", $headers[0])[1]);
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             return false;
         }
 
