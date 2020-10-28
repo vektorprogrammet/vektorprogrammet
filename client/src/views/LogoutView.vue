@@ -16,7 +16,6 @@
   import PageHeader from '../components/PageHeader';
   import { mapActions } from 'vuex';
 
-  import store from '../store';
 
   export default {
     name: 'LogoutView',

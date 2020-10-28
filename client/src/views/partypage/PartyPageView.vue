@@ -66,8 +66,7 @@
     import Velocity from 'velocity-animate';
     import { confetti } from 'dom-confetti';
     import Vektorlogo from "../../components/Vektorlogo";
-    import store from "../../store";
-
+    
     import { mapGetters } from 'vuex';
 
     export default {
