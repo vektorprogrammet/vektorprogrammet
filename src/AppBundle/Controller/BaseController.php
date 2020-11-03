@@ -28,7 +28,8 @@ class BaseController extends Controller
     public function getDepartment(Request $request): ?Department
     {
         $department = null;
-        $departmentId = $request->query->get('department');
+        $departmentId = array_map('intval', $request->query->get('department'));
+
         if ($departmentId === null) {
             if ($this->getUser() !== null) {
                 $department = $this->getUser()->getDepartment();
@@ -47,7 +48,8 @@ class BaseController extends Controller
      */
     public function getSemester(Request $request): ?Semester
     {
-        $semesterId = $request->query->get('semester');
+        $semesterId = array_map('intval', $request->query->get('semester'));
+
         if ($semesterId === null) {
             $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         } else {

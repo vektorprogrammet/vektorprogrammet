@@ -57,7 +57,8 @@ class AdmissionSubscriberController extends BaseController
     public function subscribeAction(Request $request)
     {
         $email = $request->request->get('email');
-        $departmentId = $request->request->get('department');
+        $departmentId = array_map('intval', $request->request->get('department'));
+
         $infoMeeting = filter_var($request->request->get('infoMeeting'), FILTER_VALIDATE_BOOLEAN);
         if (!$email || !$departmentId) {
             return new JsonResponse("Email or department missing", 400);
