@@ -146,7 +146,7 @@ class AccessRuleController extends Controller
     /**
      * @Route("/kontrollpanel/admin/accessrules/delete/{id}",
      *     name="access_rules_delete",
-     *     requirements={"id"="\d+"}
+     *     requirements={"id"="\d+"},
      *     methods={"POST"}
      * )
      * @param AccessRule $accessRule
