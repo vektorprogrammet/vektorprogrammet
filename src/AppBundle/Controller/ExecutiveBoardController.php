@@ -108,8 +108,12 @@ class ExecutiveBoardController extends BaseController
                 $oldHSPhoto = $board->getHSPhoto();
                 $imgPath = $this->get(FileUploader::class)->uploadHSPhoto($request);
 
-                !is_null($request->files->get('board')['HSPhoto'])
-                    ? $board->setHSPhoto($imgPath) : $board->setHSPhoto($oldHSPhoto);
+                if (!is_null($request->files->get('createExecutiveBoard')['HSPhoto'])){
+                    $board->setHSPhoto($imgPath);
+                }
+                else{
+                    $board->setHSPhoto($oldHSPhoto);
+                }
 
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($board);
@@ -127,7 +131,8 @@ class ExecutiveBoardController extends BaseController
 
         return $this->render('executive_board/update_executive_board.html.twig', array(
             'form' => $form->createView(),
-            "HSPath" => $board->getHSPhoto()
+            "HSPath" => $board->getHSPhoto(),
+            "previewPath" => $request->files->get('createExecutiveBoard')['HSPhoto']
         ));
     }
 

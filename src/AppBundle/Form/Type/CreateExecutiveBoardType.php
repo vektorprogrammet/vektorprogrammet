@@ -35,6 +35,7 @@ class CreateExecutiveBoardType extends AbstractType
                 'error_bubbling' => true,
                 'data_class' => null,
                 'label' => 'Last opp nytt hs_photo',
+                'attr' => array('id' => 'picture')
             ))
             ->add('description', CKEditorType::class, array(
                 'required' => false,
