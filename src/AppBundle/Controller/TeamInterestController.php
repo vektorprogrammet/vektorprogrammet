@@ -9,7 +9,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterest;
 use AppBundle\Form\Type\TeamInterestType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TeamInterestController extends BaseController
@@ -20,10 +22,10 @@ class TeamInterestController extends BaseController
      *      requirements={"id"="\d+"})
      * @Method({"GET","POST"})
      *
-     * @param \AppBundle\Entity\Department|NULL $department
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Department|NULL $department
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

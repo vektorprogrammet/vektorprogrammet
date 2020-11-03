@@ -12,6 +12,7 @@ use AppBundle\Form\Type\CreateTeamMembershipType;
 use AppBundle\Form\Type\CreateTeamType;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TeamAdminController extends BaseController
 {
@@ -19,7 +20,7 @@ class TeamAdminController extends BaseController
      * @Route("/kontrollpanel/team/avdeling/{id}", name="teamadmin_show", defaults={"id":null}, methods={"GET"})
      * @param Department|null $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Department $department = null)
     {

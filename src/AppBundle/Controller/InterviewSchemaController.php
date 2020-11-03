@@ -6,9 +6,11 @@ use AppBundle\Role\Roles;
 use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\InterviewSchema;
 use AppBundle\Form\Type\InterviewSchemaType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -22,7 +24,7 @@ class InterviewSchemaController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function createSchemaAction(Request $request)
     {
@@ -38,7 +40,7 @@ class InterviewSchemaController extends BaseController
      * @param Request         $request
      * @param InterviewSchema $schema
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editSchemaAction(Request $request, InterviewSchema $schema)
     {
@@ -62,7 +64,7 @@ class InterviewSchemaController extends BaseController
     /**
      * Shows the interview schemas page.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showSchemasAction()
     {

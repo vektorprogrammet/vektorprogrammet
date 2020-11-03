@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
 
 class ConfirmationController extends BaseController
 {
@@ -11,7 +12,7 @@ class ConfirmationController extends BaseController
      * @Route("/bekreftelse", name="confirmation")
      * @Method({"GET"})
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction()
     {

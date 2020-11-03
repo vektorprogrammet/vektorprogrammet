@@ -11,7 +11,9 @@ use AppBundle\Service\ContentModeManager;
 use AppBundle\Twig\Extension\RoleExtension;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends BaseController
@@ -19,7 +21,7 @@ class UserController extends BaseController
     /**
      * @Route("/min-side", name="my_page")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function myPageAction()
     {
@@ -54,7 +56,7 @@ class UserController extends BaseController
     /**
      * @Route("/profil/partnere", name="my_partners")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function myPartnerAction()
     {
@@ -107,7 +109,7 @@ class UserController extends BaseController
      * @param Request $request
      * @param string $mode
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function changeContentModeAction(Request $request, string $mode)
     {

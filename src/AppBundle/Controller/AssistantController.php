@@ -11,6 +11,8 @@ use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Service\ApplicationAdmission;
 use AppBundle\Service\FilterService;
 use AppBundle\Service\GeoLocation;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,8 +35,8 @@ class AssistantController extends BaseController
      * @param Department $department
      *
      * @return Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function admissionByShortNameAction(Request $request, Department $department)
     {
@@ -68,11 +70,11 @@ class AssistantController extends BaseController
      * @Method({"GET", "POST"})
      *
      * @param Request $request
-     * @param Department $department
+     * @param Department|null $department
      *
      * @return Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function admissionAction(Request $request, Department $department = null)
     {
@@ -81,12 +83,10 @@ class AssistantController extends BaseController
 
     /**
      * @param Request $request
-     * @param Department $specificDepartment
+     * @param Department|null $specificDepartment
      * @param bool $scrollToAdmissionForm
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
      */
     public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
@@ -175,9 +175,9 @@ class AssistantController extends BaseController
      * @param Request $request
      * @param Department $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function subscribePageAction(Request $request, Department $department)
     {

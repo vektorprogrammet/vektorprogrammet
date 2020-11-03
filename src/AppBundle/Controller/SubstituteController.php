@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AdmissionPeriod;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Application;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use AppBundle\Form\Type\ModifySubstituteType;
 
@@ -16,7 +17,7 @@ class SubstituteController extends BaseController
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showAction(Request $request)
     {

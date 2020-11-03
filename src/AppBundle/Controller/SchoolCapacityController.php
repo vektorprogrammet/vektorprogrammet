@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Form\Type\SchoolCapacityEditType;
 use AppBundle\Form\Type\SchoolCapacityType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 class SchoolCapacityController extends BaseController
@@ -13,7 +14,7 @@ class SchoolCapacityController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|\Symfony\Component\HttpFoundation\Response
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */

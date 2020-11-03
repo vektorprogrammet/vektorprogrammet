@@ -15,12 +15,13 @@ use AppBundle\Service\Sorter;
 use AppBundle\Service\TodoListService;
 use AppBundle\Utils\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class WidgetController extends BaseController
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function interviewsAction(Request $request)
     {
@@ -60,7 +61,7 @@ class WidgetController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function applicationGraphAction(Request $request)
     {
@@ -88,7 +89,7 @@ class WidgetController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function availableSurveysAction(Request $request)
     {
@@ -116,7 +117,7 @@ class WidgetController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function todoAction(Request $request)
     {
