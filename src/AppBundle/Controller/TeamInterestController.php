@@ -4,21 +4,22 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
 use AppBundle\Event\TeamInterestCreatedEvent;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterest;
 use AppBundle\Form\Type\TeamInterestType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TeamInterestController extends BaseController
 {
 
     /**
-     * @Route(name="team_interest_form", path="/teaminteresse/{id}",
-     *      requirements={"id"="\d+"})
-     * @Method({"GET","POST"})
+     * @Route(name="team_interest_form",
+     *     path="/teaminteresse/{id}",
+     *     requirements={"id"="\d+"},
+     *     methods={"GET", "POST"}
+     * )
      *
      * @param \AppBundle\Entity\Department|NULL $department
      * @param \Symfony\Component\HttpFoundation\Request $request

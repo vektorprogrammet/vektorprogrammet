@@ -6,7 +6,7 @@ use AppBundle\Service\FileUploader;
 use AppBundle\Service\LogService;
 use AppBundle\Service\SlugMaker;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Article;

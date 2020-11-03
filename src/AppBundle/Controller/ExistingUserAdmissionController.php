@@ -8,15 +8,16 @@ use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
 use AppBundle\Service\ApplicationAdmission;
 use Doctrine\ORM\NoResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ExistingUserAdmissionController extends BaseController
 {
     /**
-     * @Route("/eksisterendeopptak", name="admission_existing_user")
-     * @Method({"GET", "POST"})
+     * @Route("/eksisterendeopptak",
+     *     name="admission_existing_user",
+     *     methods={"GET", "POST"}
+     * )
      *
      * @param Request $request
      *
