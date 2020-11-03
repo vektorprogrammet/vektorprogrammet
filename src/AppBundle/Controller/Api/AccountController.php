@@ -6,7 +6,7 @@ use AppBundle\Controller\BaseController;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\User;
 use Doctrine\ORM\NoResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
@@ -16,7 +16,7 @@ class AccountController extends BaseController
 {
 
     /**
-     * @Route("api/account/login")
+     * @Route(path="api/account/login", methods={"GET", "POST"})
      *
      * @param Request $request
      *
@@ -65,11 +65,11 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route("api/account/logout")
+     * @Route(path="api/account/logout", methods={"POST"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function logoutAction(Request $request)
+    public function logoutAction()
     {
         try {
             $this->get('security.token_storage')->setToken(null);
@@ -83,7 +83,7 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route("api/account/user")
+     * @Route(path="api/account/user", methods={"GET"})
      *
      * @return \Symfony\Component\HttpFoundation\Response
      * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
@@ -107,7 +107,7 @@ class AccountController extends BaseController
      * @param Request $request
      *
      * @Route(
-     *     "api/account/get_department",
+     *     path="api/account/get_department",
      *     methods={"GET"}
      * )
      *

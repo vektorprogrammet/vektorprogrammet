@@ -75,7 +75,7 @@ const router = new Router({
 
 router.beforeEach(async (to, from, next) => {
   
-  if (to.name === '404'|| to.name === "logout") {
+  if (to.name === '404'|| to.name === 'logout') {
     next();
     return;
   }
