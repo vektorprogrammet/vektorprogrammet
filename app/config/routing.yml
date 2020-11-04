@@ -877,6 +877,12 @@ teamadmin_delete_team_by_id:
  defaults: {_controller: AppBundle:TeamAdmin:deleteTeamById }
  methods: [POST]
 
+upload_hs_photo:
+ path: /test
+ defaults: {_controller: AppBundle:Test:show}
+ methods: [GET, POST]
+
+
 
 ##########################################
 #            DepartmentAdmin             #

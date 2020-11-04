@@ -71,6 +71,7 @@ services:
             $profilePhotoFolder: '%profile_photos%'
             $articleFolder: '%article_images%'
             $sponsorFolder: '%logo_images%'
+            $hsFolder: '%hs_photos%'
 
     get_set_method_normalizer:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer

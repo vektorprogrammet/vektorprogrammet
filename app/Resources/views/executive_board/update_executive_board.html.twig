@@ -24,9 +24,36 @@
             {{ form_row(form.description) }}
             <br>
             {{ form_widget(form.preview, {'attr': {'class': 'btn btn-secondary', 'formtarget': '_blank'}}) }}
+            <br><br>
+            <img src="{{ previewPath }}" class="img-fluid" id="preview"
+                 style="max-width: 200px; max-height: 150px;">
+            <br><br>
+            Bytt hovedstyrets bilde:
+            {{ form_widget(form.HSPhoto, {'id': 'picture'}) }}
+            <br>
             <button class="btn btn-primary">Lagre</button>
             {{ form_end(form) }}
+
         </div>
     </div>
 
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        const imageButton = $('#picture');
+        const preview = $('#preview');
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.attr('src', e.target.result);
+                };
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+        imageButton.change(function () {
+            readURL(this);
+        });
+    </script>
 {% endblock %}
