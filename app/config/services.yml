@@ -6,6 +6,15 @@ services:
             AppBundle\Mailer\MailerInterface: '@AppBundle\Mailer\Mailer'
             AppBundle\Sms\SmsSenderInterface: '@AppBundle\Sms\SmsSender'
 
+
+    Symfony\Component\Serializer\NameConverter\NameConverterInterface:
+        alias: serializer.name_converter.camel_case_to_snake_case
+        public: false
+
+    Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface:
+        alias: doctrine.orm.default_entity_manager.property_info_extractor
+        public: false
+
     AppBundle\:
         resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"
 
@@ -76,3 +85,4 @@ services:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         public: false
         tags: [serializer.normalizer]
+
