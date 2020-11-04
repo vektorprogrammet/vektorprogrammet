@@ -34,12 +34,9 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem3 = new TodoItem();
         $todoItem3->setCreatedAt(new DateTime('2017-01-01'));
-        //$todoItem3->setDeletedAt(new DateTime('2018-12-12'));
         $todoItem3->setTitle("incompletedTodoItem");
         $todoItem3->setDescription("This is not completed");
         $todoItem3->setPriority(3);
-        //$todoItem3->setDepartment($this->getReference('dep-2')); <-- Nå er denne global (for alle departments)
-        //$todoItem3->setSemester($this->getReference('semester-current'));
         $manager->persist($todoItem3);
 
         $todoItem4 = new TodoItem();
@@ -54,7 +51,6 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem5 = new TodoItem();
         $todoItem5->setCreatedAt(new DateTime('2015-01-01'));
-        //$todoItem5->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem5->setTitle("completedTodoItem");
         $todoItem5->setDescription("Is completed by Trondheim in the current semester");
         $todoItem5->setPriority(5);
@@ -64,7 +60,6 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem6 = new TodoItem();
         $todoItem6->setCreatedAt(new DateTime('2018-01-01'));
-        //$todoItem6->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem6->setTitle("mandatoryTodoItem");
         $todoItem6->setDescription("This is mandatory");
         $todoItem6->setPriority(5);
@@ -74,7 +69,6 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem7 = new TodoItem();
         $todoItem7->setCreatedAt(new DateTime('2018-01-01'));
-        //$todoItem6->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem7->setTitle("shortDeadlineItem");
         $todoItem7->setDescription("This item has short deadline");
         $todoItem7->setPriority(5);
@@ -84,7 +78,6 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem = new TodoItem();
         $todoItem->setCreatedAt(new DateTime('2018-01-01'));
-        //$todoItem6->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem->setTitle("almostShortDeadlineItem");
         $todoItem->setDescription("This item has an almost short deadline");
         $todoItem->setPriority(5);
@@ -95,7 +88,6 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem = new TodoItem();
         $todoItem->setCreatedAt(new DateTime('2018-01-01'));
-        //$todoItem6->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem->setTitle("pastDeadlineItem");
         $todoItem->setDescription("This item is PAST its deadline");
         $todoItem->setPriority(5);
@@ -107,7 +99,6 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem = new TodoItem();
         $todoItem->setCreatedAt(new DateTime('2018-01-01'));
-        //$todoItem6->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem->setTitle("mandatoryShortDeadlineItem");
         $todoItem->setDescription("This item has short deadline and is mandatory");
         $todoItem->setPriority(5);
@@ -120,7 +111,6 @@ class LoadTodoItemData extends AbstractFixture implements OrderedFixtureInterfac
 
         $todoItem = new TodoItem();
         $todoItem->setCreatedAt(new DateTime('2018-06-06'));
-        //$todoItem6->setDeletedAt(new DateTime('2017-12-12'));
         $todoItem->setTitle("itemToBeDeleted");
         $todoItem->setDescription("This item is deleted in tests");
         $todoItem->setPriority(3);
