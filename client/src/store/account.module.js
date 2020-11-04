@@ -51,44 +51,44 @@ const actions = {
 };
 
 const getters = {
-  user(state) {
-    return state.user;
+  user(currentState) {
+    return currentState.user;
   },
-  department(state) {
-    return state.department;
+  department(currentState) {
+    return currentState.department;
   }
 };
 
 const mutations = {
-  loginRequest(state) {
-    state.user.loaded = false;
-    state.user.loading = true;
+  loginRequest(currentState) {
+    currentState.user.loaded = false;
+    currentState.user.loading = true;
   },
-  loginSuccessful(state, user) {
+  loginSuccessful(currentState, user) {
     if (!user.hasOwnProperty("username")) {
-      state.user = {...defaultState.user};
+      currentState.user = {...defaultState.user};
       return;
     }
 
-    state.user = {...state.user, ...user};
-    state.user.loading = false;
-    state.user.loaded = true;
+    currentState.user = {...currentState.user, ...user};
+    currentState.user.loading = false;
+    currentState.user.loaded = true;
   },
   loginFailure() {
     //TODO: Handle error
     // console.log('ERROR: ', e.message);
   },
-  logoutSuccessful(state) {
-    state.user = {...defaultState.user};
-    state.department = {...defaultState.department};
+  logoutSuccessful(currentState) {
+    currentState.user = {...defaultState.user};
+    currentState.department = {...defaultState.department};
   },
   logoutFailure() {
     //TODO: Handle error
     // console.log('ERROR: ', e);
   },
-  departmentFetchSuccessful(state, department) {
-    state.department = {...defaultState.department, ...department};
-    state.department.loaded = true;
+  departmentFetchSuccessful(currentState, department) {
+    currentState.department = {...defaultState.department, ...department};
+    currentState.department.loaded = true;
   },
   departmentFetchFailure() {
     //TODO: Handle error
