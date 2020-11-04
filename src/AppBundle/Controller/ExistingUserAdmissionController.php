@@ -17,8 +17,10 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExistingUserAdmissionController extends BaseController
 {
     /**
-     * @Route("/eksisterendeopptak", name="admission_existing_user")
-     * @Method({"GET", "POST"})
+     * @Route("/eksisterendeopptak",
+     *     name="admission_existing_user",
+     *     methods={"GET", "POST"}
+     * )
      *
      * @param Request $request
      *

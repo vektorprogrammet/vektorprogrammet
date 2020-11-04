@@ -5,7 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Sponsor;
 use AppBundle\Form\Type\SponsorType;
 use AppBundle\Service\FileUploader;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -9,11 +9,10 @@ use AppBundle\Entity\Semester;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\ContentModeManager;
 use AppBundle\Twig\Extension\RoleExtension;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends BaseController
@@ -104,8 +103,11 @@ class UserController extends BaseController
     }
 
     /**
-     * @Route("profil/mode/{mode}", name="content_mode")
-     * @Method("POST")
+     * @Route("profil/mode/{mode}",
+     *     name="content_mode",
+     *     methods={"POST"}
+     *     )
+     *
      * @param Request $request
      * @param string $mode
      *

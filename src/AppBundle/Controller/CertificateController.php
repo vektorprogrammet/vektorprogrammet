@@ -8,7 +8,7 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
 use AppBundle\Service\FileUploader;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
