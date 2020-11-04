@@ -255,7 +255,7 @@ class TodoItem
     }
 
     /**
-     * @param \AppBundle\Entity\Semester|null $semester
+     * @param Semester|null $semester
      * @return $this
      */
     public function setSemester(? Semester $semester)
@@ -344,7 +344,7 @@ class TodoItem
 
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      * @return bool
      */
     public function isMandatoryBySemester(Semester $semester)
@@ -366,7 +366,7 @@ class TodoItem
     }
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      * @return TodoMandatory|null
      */
     public function getMandatoryBySemester(Semester $semester)
@@ -382,7 +382,7 @@ class TodoItem
 
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      * @return TodoDeadline|null
      */
     public function getDeadlineBySemester(Semester $semester)
@@ -401,7 +401,7 @@ class TodoItem
 
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      * @return bool
      */
     public function hasDeadlineBySemester(Semester $semester)
@@ -412,7 +412,7 @@ class TodoItem
     }
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      * @return bool
      */
     public function isPastDeadlineBySemester(Semester $semester)
@@ -438,7 +438,7 @@ class TodoItem
 
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      * @param Department $department
      * @return bool
      */
