@@ -373,7 +373,7 @@ class TodoItem
     {
         $mandatories = $this->getTodoMandatories();
         foreach ($mandatories as $element) {
-            if (($element->getSemester() === $semester)) {
+            if ($element->getSemester() === $semester) {
                 return $element;
             }
         }
