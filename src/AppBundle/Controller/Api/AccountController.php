@@ -6,10 +6,13 @@ use AppBundle\Controller\BaseController;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\User;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
 use Exception;
 
 class AccountController extends BaseController
@@ -20,9 +23,9 @@ class AccountController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     * @throws InvalidClassConstructorException
+     * @throws NonUniqueResultException
      */
     public function loginAction(Request $request)
     {
@@ -67,7 +70,7 @@ class AccountController extends BaseController
     /**
      * @Route(path="api/account/logout", methods={"POST"})
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function logoutAction()
     {
@@ -85,8 +88,8 @@ class AccountController extends BaseController
     /**
      * @Route(path="api/account/user", methods={"GET"})
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
+     * @return Response
+     * @throws InvalidClassConstructorException
      */
     public function getUserAction()
     {
@@ -111,7 +114,7 @@ class AccountController extends BaseController
      *     methods={"GET"}
      * )
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function getDepartmentApi(Request $request)
     {
