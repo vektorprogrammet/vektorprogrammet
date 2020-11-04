@@ -9,8 +9,7 @@ use AppBundle\Form\Type\RoutingAccessRuleType;
 use AppBundle\Role\ReversedRoleHierarchy;
 use AppBundle\Role\Roles;
 use AppBundle\Service\AccessControlService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -147,9 +146,9 @@ class AccessRuleController extends Controller
     /**
      * @Route("/kontrollpanel/admin/accessrules/delete/{id}",
      *     name="access_rules_delete",
-     *     requirements={"id"="\d+"}
+     *     requirements={"id"="\d+"},
+     *     methods={"POST"}
      * )
-     * @Method("POST")
      * @param AccessRule $accessRule
      * @return \Symfony\Component\HttpFoundation\Response
      */

@@ -10,13 +10,18 @@ use AppBundle\Event\TeamEvent;
 use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Form\Type\CreateTeamMembershipType;
 use AppBundle\Form\Type\CreateTeamType;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
 class TeamAdminController extends BaseController
 {
     /**
-     * @Route("/kontrollpanel/team/avdeling/{id}", name="teamadmin_show", defaults={"id":null}, methods={"GET"})
+     * @Route("/kontrollpanel/team/avdeling/{id}",
+     *     name="teamadmin_show",
+     *     defaults={"id":null},
+     *     methods={"GET"}
+     *     )
+     *
      * @param Department|null $department
      *
      * @return \Symfony\Component\HttpFoundation\Response

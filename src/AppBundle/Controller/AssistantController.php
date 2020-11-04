@@ -11,7 +11,6 @@ use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Service\ApplicationAdmission;
 use AppBundle\Service\FilterService;
 use AppBundle\Service\GeoLocation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -26,8 +25,9 @@ class AssistantController extends BaseController
      * @Route("/avdeling/{shortName}",
      *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
      * @Route("/opptak/avdeling/{id}",
-     *     requirements={"id"="\d+"})
-     * @Method({"GET", "POST"})
+     *     requirements={"id"="\d+"},
+     *     methods={"GET", "POST"}
+     *     )
      *
      * @param Request $request
      * @param Department $department
@@ -64,8 +64,7 @@ class AssistantController extends BaseController
     }
 
     /**
-     * @Route("/opptak")
-     * @Method({"GET", "POST"})
+     * @Route("/opptak", methods={"GET", "POST"})
      *
      * @param Request $request
      * @param Department $department
@@ -170,7 +169,9 @@ class AssistantController extends BaseController
     }
 
     /**
-     * @Route("/stand/opptak/{shortName}", name="application_stand_form", requirements={"shortName"="\w+"})
+     * @Route("/stand/opptak/{shortName}",
+     *     name="application_stand_form",
+     *     requirements={"shortName"="\w+"})
      *
      * @param Request $request
      * @param Department $department

@@ -22,8 +22,7 @@ use AppBundle\Service\InterviewManager;
 use DateTime;
 use InvalidArgumentException;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
@@ -37,8 +36,9 @@ class InterviewController extends BaseController
     /**
      * @Route("/kontrollpanel/intervju/conduct/{id}",
      *     name="interview_conduct",
-     *     requirements={"id"="\d+"},)
-     * @Method({"GET", "POST"})
+     *     requirements={"id"="\d+"},
+     *     methods={"GET", "POST"}
+     *     )
      *
      * @param Request $request
      * @param Application $application

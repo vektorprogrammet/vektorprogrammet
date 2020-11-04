@@ -7,7 +7,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Form\Type\AdmissionSubscriberType;
 use AppBundle\Service\AdmissionNotifier;
 use InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
