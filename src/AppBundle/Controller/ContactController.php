@@ -22,7 +22,7 @@ class ContactController extends BaseController
      *
      * @Route("/kontakt",
      *     name="contact",
-     *     methods={"GET", "{POST"})
+     *     methods={"GET", "POST"})
      *
      * @param Request $request
      * @param Department $department
