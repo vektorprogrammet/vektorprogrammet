@@ -19,6 +19,7 @@ use DateTime;
 use InvalidArgumentException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -36,7 +37,7 @@ class SurveyController extends BaseController
      * @param Request $request
      * @param Survey $survey
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Request $request, Survey $survey)
     {
@@ -87,7 +88,7 @@ class SurveyController extends BaseController
      * @param string $userid
      *
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function showIdAction(Request $request, Survey $survey, string $userid)
     {
@@ -305,9 +306,8 @@ class SurveyController extends BaseController
      *     methods={"GET"},
      * )
      *
-     * @param Semester|null $semester
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showSurveysAction(Request $request)
     {

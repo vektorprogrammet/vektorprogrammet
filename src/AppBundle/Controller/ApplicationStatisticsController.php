@@ -6,12 +6,13 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Service\ApplicationData;
 use AppBundle\Service\AssistantHistoryData;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationStatisticsController extends BaseController
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function showAction(Request $request)

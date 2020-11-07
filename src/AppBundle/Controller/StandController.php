@@ -8,6 +8,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Service\AdmissionStatistics;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class StandController extends BaseController
 {
@@ -16,7 +17,7 @@ class StandController extends BaseController
      * @Route("/kontrollpanel/stand", name="stand")
      *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function indexAction(Request $request)

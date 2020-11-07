@@ -9,6 +9,7 @@ use Doctrine\ORM\NoResultException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AccountController extends BaseController
@@ -19,7 +20,7 @@ class AccountController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -66,7 +67,7 @@ class AccountController extends BaseController
     /**
      * @Route("api/account/user")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
      */
     public function getUserAction()

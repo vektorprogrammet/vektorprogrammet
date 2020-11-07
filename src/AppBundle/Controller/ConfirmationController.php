@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ConfirmationController extends BaseController
@@ -9,7 +10,7 @@ class ConfirmationController extends BaseController
     /**
      * @Route("/bekreftelse", name="confirmation", methods={"GET"})
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction()
     {

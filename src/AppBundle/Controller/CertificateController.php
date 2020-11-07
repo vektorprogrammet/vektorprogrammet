@@ -9,7 +9,9 @@ use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
 use AppBundle\Service\FileUploader;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CertificateController extends BaseController
 {
@@ -23,7 +25,7 @@ class CertificateController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function showAction(Request $request)
     {

@@ -12,13 +12,14 @@ use AppBundle\Service\AccessControlService;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AccessRuleController extends Controller
 {
     
     /**
      * @Route("/kontrollpanel/admin/accessrules", name="access_rules_show")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {
@@ -44,8 +45,8 @@ class AccessRuleController extends Controller
      *     requirements={"id"="\d+"}
      * )
      * @param Request $request
-     * @param AccessRule $accessRule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param AccessRule|null $accessRule
+     * @return Response
      */
     public function createRuleAction(Request $request, AccessRule $accessRule = null)
     {
@@ -88,8 +89,8 @@ class AccessRuleController extends Controller
      *     requirements={"id"="\d+"}
      * )
      * @param Request $request
-     * @param AccessRule $accessRule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param AccessRule|null $accessRule
+     * @return Response
      */
     public function createRoutingRuleAction(Request $request, AccessRule $accessRule = null)
     {
@@ -131,7 +132,7 @@ class AccessRuleController extends Controller
      *
      * @param Request $request
      * @param AccessRule $rule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function copyAccessRuleAction(Request $request, AccessRule $rule)
     {
@@ -150,7 +151,7 @@ class AccessRuleController extends Controller
      *     methods={"POST"}
      * )
      * @param AccessRule $accessRule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function deleteAction(AccessRule $accessRule)
     {

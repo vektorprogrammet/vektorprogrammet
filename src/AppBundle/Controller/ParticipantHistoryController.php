@@ -6,12 +6,13 @@ use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\TeamMembership;
 use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ParticipantHistoryController extends BaseController
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showAction(Request $request)
     {

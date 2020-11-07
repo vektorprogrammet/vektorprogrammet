@@ -7,8 +7,11 @@ use AppBundle\Entity\Team;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
 use AppBundle\Service\ApplicationAdmission;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ExistingUserAdmissionController extends BaseController
@@ -21,9 +24,9 @@ class ExistingUserAdmissionController extends BaseController
      *
      * @param Request $request
      *
-     * @return null|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return null|RedirectResponse|Response
      * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function showAction(Request $request)
     {

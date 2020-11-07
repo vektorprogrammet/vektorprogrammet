@@ -6,7 +6,9 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use Doctrine\ORM\NonUniqueResultException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
@@ -25,9 +27,9 @@ class PartyController extends AbstractFOSRestController
      *     methods={"GET"}
      * )
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws NotFoundHttpException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function applicationCountAction(Department $department)
     {
@@ -44,8 +46,8 @@ class PartyController extends AbstractFOSRestController
      *     methods={"GET"}
      * )
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     * @throws NonUniqueResultException
      */
     public function newestApplicationsAction(Department $department)
     {
@@ -87,8 +89,8 @@ class PartyController extends AbstractFOSRestController
      *     methods={"GET"}
      * )
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     * @throws NonUniqueResultException
      */
     public function applicationDeadlineAction(Department $department)
     {
@@ -102,7 +104,7 @@ class PartyController extends AbstractFOSRestController
      * @param Department $department
      *
      * @return Application[]
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     private function getApplications(Department $department)
     {
@@ -117,7 +119,7 @@ class PartyController extends AbstractFOSRestController
      * @param Department $department
      *
      * @return AdmissionPeriod
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     private function getAdmissionPeriod(Department $department): AdmissionPeriod
     {

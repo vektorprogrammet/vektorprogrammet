@@ -12,6 +12,7 @@ use AppBundle\Form\Type\CreateTeamMembershipType;
 use AppBundle\Form\Type\CreateTeamType;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class TeamAdminController extends BaseController
 {
@@ -24,7 +25,7 @@ class TeamAdminController extends BaseController
      *
      * @param Department|null $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Department $department = null)
     {
