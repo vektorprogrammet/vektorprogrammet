@@ -24,6 +24,9 @@
               </b-form-input>
             </label>
           </b-form-group>
+          <p v-if="error" >
+            Obs: {{error}}
+          </p>
           <p class="d-flex justify-content-between">
             <b-button type="submit" variant="primary">Logg inn</b-button>
             <b-link href="#" class="ml-auto">Glemt passord?</b-link>
@@ -47,15 +50,21 @@
           username: '',
           password: '',
         },
+        error: null
       };
     },
     methods: {
       ...mapActions('account', ['login']),
-      onSubmit(evt) {
+      async onSubmit(evt) {
+        this.error = null;
         evt.preventDefault();
-        this.login(this.form).then(() => {
+        await this.login(this.form)
+        if (this.$store.getters['account/user'].loaded) {
           this.$router.push({name: 'my_page'});
-        });
+        } else {
+          this.error = "Feil brukernavn/passord";
+        }
+
       },
     },
   };
