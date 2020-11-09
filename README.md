@@ -38,6 +38,9 @@ sudo apt-get install php7.2-curl
 sudo apt-get install php7.2-xml
 ```
 
+Alternatively install Composer dependency manager from [here](https://getcomposer.org/).
+Then run `composer install`.
+
 
 
 

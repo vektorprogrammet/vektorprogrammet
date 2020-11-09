@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Article;
+use AppBundle\Entity\Department;
 use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Entity\Article;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * ArticleController is the controller responsible for articles,
@@ -28,15 +30,15 @@ class ArticleController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAllPublishedArticles();
+        $articles = $em->getRepository(Article::class)->findAllPublishedArticles();
 
-        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+        $departments = $em->getRepository(Department::class)->findAllDepartments();
 
         // Uses the knp_paginator bundle to separate the articles into pages
         $paginator = $this->get('knp_paginator');
@@ -58,15 +60,15 @@ class ArticleController extends BaseController
      * @param Request $request
      * @param $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showFilterAction(Request $request, $department)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAllArticlesByDepartments($department);
+        $articles = $em->getRepository(Article::class)->findAllArticlesByDepartments($department);
 
-        $departments = $em->getRepository('AppBundle:Department')->findAllDepartments();
+        $departments = $em->getRepository(Department::class)->findAllDepartments();
 
         // Uses the knp_paginator bundle to separate the articles into pages
         $paginator = $this->get('knp_paginator');
@@ -87,7 +89,7 @@ class ArticleController extends BaseController
      *
      * @param Article $article
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showSpecificAction(Article $article)
     {
@@ -102,13 +104,13 @@ class ArticleController extends BaseController
      *
      * @param $excludeId
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showOtherAction($excludeId)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')
+        $articles = $em->getRepository(Article::class)
             ->findLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
 
         return $this->render('article/sidebar_other.html.twig', array('articles' => $articles));
@@ -117,13 +119,13 @@ class ArticleController extends BaseController
     /**
      * Shows the news carousel.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showCarouselAction()
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
+        $articles = $em->getRepository(Article::class)->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
 
         return $this->render('article/carousel.html.twig', array('articles' => $articles));
     }
@@ -134,13 +136,13 @@ class ArticleController extends BaseController
      *
      * @param $id
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showDepartmentNewsAction($id)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
+        $articles = $em->getRepository(Article::class)->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
 
         return $this->render('article/department_news.html.twig', array('articles' => $articles));
     }

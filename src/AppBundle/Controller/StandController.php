@@ -2,17 +2,22 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\Application;
 use AppBundle\Service\AdmissionStatistics;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class StandController extends BaseController
 {
 
     /**
      * @Route("/kontrollpanel/stand", name="stand")
+     *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function indexAction(Request $request)
@@ -22,18 +27,18 @@ class StandController extends BaseController
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
 
-        $subscribers = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findFromWebByDepartment($department);
-        $subscribersInDepartmentAndSemester = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')
+        $subscribers = $this->getDoctrine()->getRepository(AdmissionSubscriber::class)->findFromWebByDepartment($department);
+        $subscribersInDepartmentAndSemester = $this->getDoctrine()->getRepository(AdmissionSubscriber::class)
             ->findFromWebByDepartmentAndSemester($department, $semester);
         $subData = $admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInDepartmentAndSemester, $semester);
 
-        $applications = $this->getDoctrine()->getRepository('AppBundle:Application')->findByDepartment($department);
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $applications = $this->getDoctrine()->getRepository(Application::class)->findByDepartment($department);
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
         $applicationsInSemester = [];
         if ($admissionPeriod !== null) {
             $applicationsInSemester = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findByAdmissionPeriod($admissionPeriod);
         }
         $appData = $admissionStatistics->generateGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);

@@ -7,9 +7,11 @@ use AppBundle\Entity\Department;
 use AppBundle\Form\Type\AdmissionSubscriberType;
 use AppBundle\Service\AdmissionNotifier;
 use InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdmissionSubscriberController extends BaseController
 {
@@ -20,7 +22,7 @@ class AdmissionSubscriberController extends BaseController
      * @param Request $request
      * @param Department $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function subscribePageAction(Request $request, Department $department)
     {
@@ -52,7 +54,7 @@ class AdmissionSubscriberController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function subscribeAction(Request $request)
     {
@@ -62,7 +64,7 @@ class AdmissionSubscriberController extends BaseController
         if (!$email || !$departmentId) {
             return new JsonResponse("Email or department missing", 400);
         }
-        $department = $this->getDoctrine()->getRepository('AppBundle:Department')->find($departmentId);
+        $department = $this->getDoctrine()->getRepository(Department::class)->find($departmentId);
         if (!$department) {
             return new JsonResponse("Invalid department", 400);
         }
@@ -80,11 +82,11 @@ class AdmissionSubscriberController extends BaseController
      * @Route("/opptak/notification/unsubscribe/{code}", name="admission_unsubscribe")
      * @param string $code
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function unsubscribeAction($code)
     {
-        $subscriber = $this->getDoctrine()->getRepository('AppBundle:AdmissionSubscriber')->findByUnsubscribeCode($code);
+        $subscriber = $this->getDoctrine()->getRepository(AdmissionSubscriber::class)->findByUnsubscribeCode($code);
         $this->addFlash('title', 'Opptaksvarsel - Avmelding');
         if (!$subscriber) {
             $this->addFlash('message', "Du vil ikke lengre motta varsler om opptak");

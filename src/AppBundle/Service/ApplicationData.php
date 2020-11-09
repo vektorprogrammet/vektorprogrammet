@@ -3,6 +3,8 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Entity\Application;
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\ApplicationRepository;
 use AppBundle\Entity\User;
@@ -37,7 +39,7 @@ class ApplicationData
     public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts)
     {
         $this->em = $em;
-        $this->applicationRepository = $this->em->getRepository('AppBundle:Application');
+        $this->applicationRepository = $this->em->getRepository(Application::class);
 
         if ($ts->getToken() !== null && $ts->getToken()->getUser() instanceof User) {
             $this->setDepartment($ts->getToken()->getUser()->getDepartment());
@@ -110,22 +112,22 @@ class ApplicationData
 
     public function getInterviewedAssistantsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:Application')->findInterviewedApplicants($this->admissionPeriod));
+        return count($this->em->getRepository(Application::class)->findInterviewedApplicants($this->admissionPeriod));
     }
 
     public function getAssignedInterviewsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:Application')->findAssignedApplicants($this->admissionPeriod));
+        return count($this->em->getRepository(Application::class)->findAssignedApplicants($this->admissionPeriod));
     }
 
     public function getTotalAssistantsCount(): int
     {
-        return count($this->em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester()));
+        return count($this->em->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester()));
     }
 
     public function getPositionsCount(): int
     {
-        $assistantHistories = $this->em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester());
+        $assistantHistories = $this->em->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester());
 
         return $this->countPositions($assistantHistories, $this->getTotalAssistantsCount());
     }

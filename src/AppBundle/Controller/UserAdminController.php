@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\CreateUserType;
+use AppBundle\Entity\Role;
 use AppBundle\Role\Roles;
 use AppBundle\Service\UserRegistration;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,7 +31,7 @@ class UserAdminController extends BaseController
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
-            $role = $this->getDoctrine()->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+            $role = $this->getDoctrine()->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
             $user->addRole($role);
 
             $em = $this->getDoctrine()->getManager();
@@ -52,13 +53,13 @@ class UserAdminController extends BaseController
     public function showAction()
     {
         // Finds all the departments
-        $activeDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
+        $activeDepartments = $this->getDoctrine()->getRepository(Department::class)->findActive();
 
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
 
-        $activeUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
-        $inActiveUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllInActiveUsersByDepartment($department);
+        $activeUsers = $this->getDoctrine()->getRepository(User::class)->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->getDoctrine()->getRepository(User::class)->findAllInActiveUsersByDepartment($department);
 
         return $this->render('user_admin/index.html.twig', array(
             'activeUsers' => $activeUsers,
@@ -71,10 +72,10 @@ class UserAdminController extends BaseController
     public function showUsersByDepartmentAction(Department $department)
     {
         // Finds all the departments
-        $activeDepartments = $this->getDoctrine()->getRepository('AppBundle:Department')->findActive();
+        $activeDepartments = $this->getDoctrine()->getRepository(Department::class)->findActive();
 
-        $activeUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllActiveUsersByDepartment($department);
-        $inActiveUsers = $this->getDoctrine()->getRepository('AppBundle:User')->findAllInActiveUsersByDepartment($department);
+        $activeUsers = $this->getDoctrine()->getRepository(User::class)->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->getDoctrine()->getRepository(User::class)->findAllInActiveUsersByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('user_admin/index.html.twig', array(

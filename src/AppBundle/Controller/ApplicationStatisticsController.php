@@ -2,15 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Service\ApplicationData;
 use AppBundle\Service\AssistantHistoryData;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationStatisticsController extends BaseController
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function showAction(Request $request)
@@ -18,7 +20,7 @@ class ApplicationStatisticsController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->getDoctrine()
-            ->getRepository('AppBundle:AdmissionPeriod')
+            ->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
 
         $assistantHistoryData = $this->get(AssistantHistoryData::class);

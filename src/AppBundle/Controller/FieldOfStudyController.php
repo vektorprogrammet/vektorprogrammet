@@ -12,7 +12,7 @@ class FieldOfStudyController extends BaseController
     public function showAction()
     {
         $department = $this->getUser()->getFieldOfStudy()->getDepartment();
-        $fieldOfStudies = $this->getDoctrine()->getRepository('AppBundle:FieldOfStudy')->findByDepartment($department);
+        $fieldOfStudies = $this->getDoctrine()->getRepository(FieldOfStudy::class)->findByDepartment($department);
 
         return $this->render('field_of_study/show_all.html.twig', array(
             'fieldOfStudies' => $fieldOfStudies,

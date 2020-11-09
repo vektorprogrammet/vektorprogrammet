@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\UserGroupCollectionType;
 use AppBundle\Service\UserGroupCollectionManager;
@@ -21,7 +22,7 @@ class UserGroupCollectionController extends BaseController
 
         $em = $this->getDoctrine()->getManager();
         $bolkNames = $em
-            ->getRepository('AppBundle:AssistantHistory')
+            ->getRepository(AssistantHistory::class)
             ->findAllBolkNames();
 
 

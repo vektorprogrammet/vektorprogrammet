@@ -9,7 +9,7 @@
             step: {{ step|default(15) }},
             dayOfWeekStart: 1,
         };
-
+        jQuery.datetimepicker.setLocale('no');
     {% for input in inputIds %}
     jQuery('#{{input}}').datetimepicker(options);
     {% endfor %}

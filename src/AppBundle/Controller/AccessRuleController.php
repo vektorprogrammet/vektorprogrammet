@@ -3,28 +3,29 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AccessRule;
+use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Form\Type\AccessRuleType;
 use AppBundle\Form\Type\RoutingAccessRuleType;
 use AppBundle\Role\ReversedRoleHierarchy;
 use AppBundle\Role\Roles;
 use AppBundle\Service\AccessControlService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AccessRuleController extends Controller
 {
     
     /**
      * @Route("/kontrollpanel/admin/accessrules", name="access_rules_show")
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {
-        $customRules = $this->getDoctrine()->getRepository('AppBundle:AccessRule')->findCustomRules();
-        $routingRules = $this->getDoctrine()->getRepository('AppBundle:AccessRule')->findRoutingRules();
-        $unhandledRules = $this->getDoctrine()->getRepository('AppBundle:UnhandledAccessRule')->findAll();
+        $customRules = $this->getDoctrine()->getRepository(AccessRule::class)->findCustomRules();
+        $routingRules = $this->getDoctrine()->getRepository(AccessRule::class)->findRoutingRules();
+        $unhandledRules = $this->getDoctrine()->getRepository(UnhandledAccessRule::class)->findAll();
         return $this->render('admin/access_rule/index.html.twig', array(
             'customRules' => $customRules,
             'routingRules' => $routingRules,
@@ -44,8 +45,8 @@ class AccessRuleController extends Controller
      *     requirements={"id"="\d+"}
      * )
      * @param Request $request
-     * @param AccessRule $accessRule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param AccessRule|null $accessRule
+     * @return Response
      */
     public function createRuleAction(Request $request, AccessRule $accessRule = null)
     {
@@ -88,8 +89,8 @@ class AccessRuleController extends Controller
      *     requirements={"id"="\d+"}
      * )
      * @param Request $request
-     * @param AccessRule $accessRule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param AccessRule|null $accessRule
+     * @return Response
      */
     public function createRoutingRuleAction(Request $request, AccessRule $accessRule = null)
     {
@@ -131,7 +132,7 @@ class AccessRuleController extends Controller
      *
      * @param Request $request
      * @param AccessRule $rule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function copyAccessRuleAction(Request $request, AccessRule $rule)
     {
@@ -146,11 +147,11 @@ class AccessRuleController extends Controller
     /**
      * @Route("/kontrollpanel/admin/accessrules/delete/{id}",
      *     name="access_rules_delete",
-     *     requirements={"id"="\d+"}
+     *     requirements={"id"="\d+"},
+     *     methods={"POST"}
      * )
-     * @Method("POST")
      * @param AccessRule $accessRule
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function deleteAction(AccessRule $accessRule)
     {

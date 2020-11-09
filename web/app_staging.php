@@ -17,7 +17,6 @@ if ( isset( $_SERVER['HTTP_CLIENT_IP'] )
 require __DIR__ . '/../vendor/autoload.php';
 
 $kernel = new AppKernel( 'staging', false );
-$kernel->loadClassCache();
 
 // If you use HTTP Cache and your application relies on the _method request parameter
 // to get the intended HTTP method, uncomment this line.

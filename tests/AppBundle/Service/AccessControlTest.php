@@ -6,6 +6,10 @@ namespace Tests\AppBundle\Service;
 
 use AppBundle\Entity\AccessRule;
 use AppBundle\Entity\Repository\UnhandledAccessRuleRepository;
+use AppBundle\Entity\Role;
+use AppBundle\Entity\Team;
+use AppBundle\Entity\UnhandledAccessRule;
+use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use AppBundle\Service\AccessControlService;
 use Tests\BaseKernelTestCase;
@@ -39,18 +43,18 @@ class AccessControlTest extends BaseKernelTestCase {
 
 		$this->service = $kernel->getContainer()->get(AccessControlService::class);
 		$em = $kernel->getContainer()->get('doctrine')->getManager();
-		$this->unhandledRepo = $em->getRepository('AppBundle:UnhandledAccessRule');
-		$this->inactiveUser = $em->getRepository('AppBundle:User')->findUserByEmail('inactive@mail.com');
-		$this->assistant = $em->getRepository('AppBundle:User')->findUserByEmail('assistant@gmail.com');
-		$this->teamMember = $em->getRepository('AppBundle:User')->findUserByEmail('marte@mail.no');
-		$this->teamMemberAndExecutiveBoardMember = $em->getRepository('AppBundle:User')->findUserByEmail('sortland@mail.com');
-		$this->inactiveTeamMember = $em->getRepository('AppBundle:User')->findUserByEmail('aai@b.c');
-		$this->executiveBoardMember = $em->getRepository('AppBundle:User')->findUserByEmail('angela@mail.no');
-		$this->inactiveExecutiveBoardMember = $em->getRepository('AppBundle:User')->findUserByEmail('jan-per-gustavio@gmail.com');
-		$this->admin = $em->getRepository('AppBundle:User')->findUserByEmail('admin@gmail.com');
-		$this->team = $em->getRepository('AppBundle:Team')->find(1);
-		$this->teamMemberRole = $em->getRepository('AppBundle:Role')->findByRoleName(Roles::TEAM_MEMBER);
-		$this->teamLeaderRole = $em->getRepository('AppBundle:Role')->findByRoleName(Roles::TEAM_LEADER);
+		$this->unhandledRepo = $em->getRepository(UnhandledAccessRule::class);
+		$this->inactiveUser = $em->getRepository(User::class)->findUserByEmail('inactive@mail.com');
+		$this->assistant = $em->getRepository(User::class)->findUserByEmail('assistant@gmail.com');
+		$this->teamMember = $em->getRepository(User::class)->findUserByEmail('marte@mail.no');
+		$this->teamMemberAndExecutiveBoardMember = $em->getRepository(User::class)->findUserByEmail('sortland@mail.com');
+		$this->inactiveTeamMember = $em->getRepository(User::class)->findUserByEmail('aai@b.c');
+		$this->executiveBoardMember = $em->getRepository(User::class)->findUserByEmail('angela@mail.no');
+		$this->inactiveExecutiveBoardMember = $em->getRepository(User::class)->findUserByEmail('jan-per-gustavio@gmail.com');
+		$this->admin = $em->getRepository(User::class)->findUserByEmail('admin@gmail.com');
+		$this->team = $em->getRepository(Team::class)->find(1);
+		$this->teamMemberRole = $em->getRepository(Role::class)->findByRoleName(Roles::TEAM_MEMBER);
+		$this->teamLeaderRole = $em->getRepository(Role::class)->findByRoleName(Roles::TEAM_LEADER);
 	}
 
 	public function testHasAccessWhenRuleDoesNotExist() {

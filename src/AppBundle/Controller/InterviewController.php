@@ -4,6 +4,9 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
+use AppBundle\Entity\InterviewSchema;
+use AppBundle\Entity\Team;
+use AppBundle\Entity\User;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
 use AppBundle\Form\InterviewNewTimeType;
@@ -19,10 +22,11 @@ use AppBundle\Service\InterviewManager;
 use DateTime;
 use InvalidArgumentException;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -34,13 +38,14 @@ class InterviewController extends BaseController
     /**
      * @Route("/kontrollpanel/intervju/conduct/{id}",
      *     name="interview_conduct",
-     *     requirements={"id"="\d+"},)
-     * @Method({"GET", "POST"})
+     *     requirements={"id"="\d+"},
+     *     methods={"GET", "POST"}
+     *     )
      *
      * @param Request $request
      * @param Application $application
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function conductAction(Request $request, Application $application)
     {
@@ -48,7 +53,7 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException();
         }
         $department = $this->getUser()->getDepartment();
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findActiveByDepartment($department);
+        $teams = $this->getDoctrine()->getRepository(Team::class)->findActiveByDepartment($department);
 
         if ($this->getUser() === $application->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array( 'error' => 'Du kan ikke intervjue deg selv' ));
@@ -102,7 +107,7 @@ class InterviewController extends BaseController
     /**
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function cancelAction(Interview $interview)
     {
@@ -119,7 +124,7 @@ class InterviewController extends BaseController
      *
      * @param Application $application
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Application $application)
     {
@@ -146,7 +151,7 @@ class InterviewController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteInterviewAction(Interview $interview, Request $request)
     {
@@ -176,7 +181,7 @@ class InterviewController extends BaseController
 
         // Get the application objects
         $em = $this->getDoctrine()->getManager();
-        $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $applicationIds ));
+        $applications = $em->getRepository(Application::class)->findBy(array( 'id' => $applicationIds ));
 
         // Delete the interviews
         foreach ($applications as $application) {
@@ -201,7 +206,7 @@ class InterviewController extends BaseController
      * @param Request $request
      * @param Application $application
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function scheduleAction(Request $request, Application $application)
     {
@@ -302,7 +307,7 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException();
         }
         $em = $this->getDoctrine()->getManager();
-        $application = $em->getRepository('AppBundle:Application')->find($id);
+        $application = $em->getRepository(Application::class)->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
         $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
@@ -342,7 +347,7 @@ class InterviewController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function bulkAssignAction(Request $request)
     {
@@ -357,9 +362,9 @@ class InterviewController extends BaseController
             // Get the info from the form
             $data = $request->request->all();
             // Get objects from database
-            $interviewer = $em->getRepository('AppBundle:User')->findOneBy(array( 'id' => $data['interview']['interviewer'] ));
-            $schema = $em->getRepository('AppBundle:InterviewSchema')->findOneBy(array( 'id' => $data['interview']['interviewSchema'] ));
-            $applications = $em->getRepository('AppBundle:Application')->findBy(array( 'id' => $data['application']['id'] ));
+            $interviewer = $em->getRepository(User::class)->findOneBy(array( 'id' => $data['interview']['interviewer'] ));
+            $schema = $em->getRepository(InterviewSchema::class)->findOneBy(array( 'id' => $data['interview']['interviewSchema'] ));
+            $applications = $em->getRepository(Application::class)->findBy(array( 'id' => $data['application']['id'] ));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
@@ -389,7 +394,7 @@ class InterviewController extends BaseController
     /**
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function acceptByResponseCodeAction(Interview $interview)
     {
@@ -416,7 +421,7 @@ class InterviewController extends BaseController
      * @param Request $request
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function requestNewTimeAction(Request $request, Interview $interview)
     {
@@ -454,7 +459,7 @@ class InterviewController extends BaseController
     /**
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function respondAction(Interview $interview)
     {
@@ -470,7 +475,7 @@ class InterviewController extends BaseController
      * @param Request $request
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function cancelByResponseCodeAction(Request $request, Interview $interview)
     {
@@ -509,7 +514,7 @@ class InterviewController extends BaseController
      * @param Request $request
      * @param Interview $interview
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function editStatusAction(Request $request, Interview $interview)
     {
@@ -561,7 +566,7 @@ class InterviewController extends BaseController
     {
         $semester = $interview->getApplication()->getSemester();
         $department = $interview->getApplication()->getDepartment();
-        $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
+        $teamUsers = $this->getDoctrine()->getRepository(User::class)
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(),$interview->getCoInterviewer())));
         $form = $this->createForm(AddCoInterviewerType::class, null, [

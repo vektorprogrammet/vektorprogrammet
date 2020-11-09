@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Signature;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -12,7 +13,7 @@ class SignatureController extends BaseController
     {
         $user = $this->getUser();
 
-        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($user);
+        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($user);
         if ($signature === null) {
             throw new NotFoundHttpException('Signature not found');
         }

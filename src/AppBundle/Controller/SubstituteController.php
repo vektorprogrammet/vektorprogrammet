@@ -2,8 +2,10 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Application;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use AppBundle\Form\Type\ModifySubstituteType;
 
@@ -15,7 +17,7 @@ class SubstituteController extends BaseController
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showAction(Request $request)
     {
@@ -24,13 +26,13 @@ class SubstituteController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
 
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
 
         $substitutes = null;
         if ($admissionPeriod !== null) {
             $substitutes = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findSubstitutesByAdmissionPeriod($admissionPeriod);
         }
 

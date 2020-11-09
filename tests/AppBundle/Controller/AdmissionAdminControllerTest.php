@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Entity\Interview;
 use Tests\BaseWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -241,7 +242,7 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $kernel->boot();
         $em = $kernel->getContainer()->get('doctrine.orm.entity_manager');
 
-        $interview = $em->getRepository('AppBundle:Interview')->findByResponseCode($response_code);
+        $interview = $em->getRepository(Interview::class)->findByResponseCode($response_code);
         $this->assertEquals('Test answer', $interview->getCancelMessage());
 
         return $client;

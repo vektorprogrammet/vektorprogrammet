@@ -41,7 +41,7 @@ class AccountController extends BaseController
         }
 
         try {
-            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findByUsernameOrEmail($username);
+            $user = $this->getDoctrine()->getRepository(User::class)->findByUsernameOrEmail($username);
         } catch (NoResultException $e) {
             $response->setStatusCode(401);
             $response->setContent('Username does not exist');

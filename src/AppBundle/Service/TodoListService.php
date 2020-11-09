@@ -43,7 +43,7 @@ class TodoListService
         if (empty($item->getTodoDeadlines())) {
             return false;
         } else {
-            $currentSemester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
+            $currentSemester = $this->em->getRepository(Semester::class)->findCurrentSemester();
             $deadlines = $item->getTodoDeadlines();
             return ($deadlines[0]->getSemester()->getId() == $currentSemester->getId());
         }
@@ -103,7 +103,7 @@ class TodoListService
      */
     public function hasDeadLineShortly(TodoItem $a)
     {
-        return ($a->hasShortDeadlineBySemester($this->em->getRepository('AppBundle:Semester')->findCurrentSemester()));
+        return ($a->hasShortDeadlineBySemester($this->em->getRepository(Semester::class)->findCurrentSemester()));
     }
 
     /**
@@ -180,7 +180,7 @@ class TodoListService
         $this->em->persist($todoItem);
 
         $correctSemester = empty($itemInfo->getSemester()) ?
-            $this->em->getRepository('AppBundle:Semester')->findCurrentSemester() :
+            $this->em->getRepository(Semester::class)->findCurrentSemester() :
             $itemInfo->getSemester();
 
         if ($itemInfo->getIsMandatory()) {
@@ -226,7 +226,7 @@ class TodoListService
 
         $preExistingMandatory = $itemInfo->getTodoMandatory();
         $previousMandatoryStatus = empty($preExistingMandatory) ? false : $preExistingMandatory->isMandatory();
-        $sr  = $this->em->getRepository('AppBundle:Semester');
+        $sr  = $this->em->getRepository(Semester::class);
         $currentSemester = $sr->findCurrentSemester();
 
 
@@ -348,7 +348,7 @@ class TodoListService
      */
     public function toggleCompletedItem(TodoItem $item, Semester $semester, Department $department)
     {
-        $completedItem = $this->em->getRepository('AppBundle:TodoCompleted')->findOneBy(
+        $completedItem = $this->em->getRepository(TodoCompleted::class)->findOneBy(
             array(
                 'semester' => $semester,
                 'department' => $department,
@@ -382,7 +382,7 @@ class TodoListService
      */
     public function getOrderedList(Department $department, Semester $semester)
     {
-        $repository = $this->em->getRepository('AppBundle:TodoItem');
+        $repository = $this->em->getRepository(TodoItem::class);
         $allTodoItems = $repository->findTodoListItemsBySemesterAndDepartment($semester, $department);
         $incompletedTodoItems = $this->getIncompletedTodoItems($allTodoItems, $semester, $department);
         $todoShortDeadLines = $this->getTodoItemsWithShortDeadline($incompletedTodoItems);

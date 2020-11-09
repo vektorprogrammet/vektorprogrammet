@@ -6,7 +6,9 @@ use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class SemesterController extends Controller
@@ -14,11 +16,11 @@ class SemesterController extends Controller
     /**
      * @Route(name="semester_show", path="/kontrollpanel/semesteradmin")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction()
     {
-        $semesters = $this->getDoctrine()->getRepository('AppBundle:Semester')->findAllOrderedByAge();
+        $semesters = $this->getDoctrine()->getRepository(Semester::class)->findAllOrderedByAge();
 
         return $this->render('semester_admin/index.html.twig', array(
             'semesters' => $semesters,
@@ -29,7 +31,7 @@ class SemesterController extends Controller
      * @Route(name="semester_create", path="/kontrollpanel/semesteradmin/opprett")
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function createSemesterAction(Request $request)
@@ -45,7 +47,7 @@ class SemesterController extends Controller
         // The fields of the form is checked if they contain the correct information
         if ($form->isValid()) {
             //Check if semester already exists
-            $existingSemester = $this->getDoctrine()->getManager()->getRepository('AppBundle:Semester')
+            $existingSemester = $this->getDoctrine()->getManager()->getRepository(Semester::class)
                 ->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());
 
             //Return to semester page if semester already exists

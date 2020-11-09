@@ -2,31 +2,37 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Feedback;
+use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Entity\Application;
+use AppBundle\Entity\ChangeLogItem;
 use AppBundle\Entity\Receipt;
+use AppBundle\Entity\Feedback;
+use AppBundle\Entity\Survey;
+use AppBundle\Entity\User;
 use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
 use AppBundle\Service\TodoListService;
 use AppBundle\Utils\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class WidgetController extends BaseController
 {
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function interviewsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
         $applicationsAssignedToUser = [];
 
         if ($admissionPeriod !== null) {
-            $applicationRepo = $this->getDoctrine()->getRepository('AppBundle:Application');
+            $applicationRepo = $this->getDoctrine()->getRepository(Application::class);
             $applicationsAssignedToUser = $applicationRepo->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
         }
 
@@ -35,13 +41,13 @@ class WidgetController extends BaseController
 
     public function receiptsAction()
     {
-        $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
+        $usersWithReceipts = $this->getDoctrine()->getRepository(User::class)->findAllUsersWithReceipts();
         $sorter = $this->container->get(Sorter::class);
 
         $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
         $sorter->sortUsersByReceiptStatus($usersWithReceipts);
 
-        $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
+        $pendingReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_PENDING);
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
 
         $hasReceipts = !empty($pendingReceipts);
@@ -55,7 +61,7 @@ class WidgetController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function applicationGraphAction(Request $request)
     {
@@ -64,12 +70,12 @@ class WidgetController extends BaseController
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
 
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
         $applicationsInSemester = [];
         if ($admissionPeriod !== null) {
             $applicationsInSemester = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findByAdmissionPeriod($admissionPeriod);
         }
         $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
@@ -83,14 +89,14 @@ class WidgetController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function availableSurveysAction(Request $request)
     {
         $semester = $this->getSemesterOrThrow404($request);
 
         $surveys = $this->getDoctrine()
-            ->getRepository('AppBundle:Survey')
+            ->getRepository(Survey::class)
             ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
 
 
@@ -101,7 +107,7 @@ class WidgetController extends BaseController
 
     public function changelogAction()
     {
-        $changeLogItems = $this->getDoctrine()->getRepository('AppBundle:ChangeLogItem')->findAllOrderedByDate();
+        $changeLogItems = $this->getDoctrine()->getRepository(ChangeLogItem::class)->findAllOrderedByDate();
         $changeLogItems = array_reverse($changeLogItems);
 
         return $this->render('widgets/changelog_widget.html.twig', [
@@ -111,7 +117,7 @@ class WidgetController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function todoAction(Request $request)
     {

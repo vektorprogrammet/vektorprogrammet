@@ -6,11 +6,13 @@ use AppBundle\Service\FileUploader;
 use AppBundle\Service\LogService;
 use AppBundle\Service\SlugMaker;
 use Exception;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Article;
 use AppBundle\Form\Type\ArticleType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * ArticleAdminController is the controller responsible for the administrative article actions,
@@ -26,13 +28,13 @@ class ArticleAdminController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $articles = $em->getRepository('AppBundle:Article')->findAllArticles();
+        $articles = $em->getRepository(Article::class)->findAllArticles();
 
         // Uses the knp_paginator bundle to separate the articles into pages.
         $paginator  = $this->get('knp_paginator');
@@ -52,7 +54,7 @@ class ArticleAdminController extends BaseController
      * @Route("/kontrollpanel/artikkel/kladd/{slug}", name="article_show_draft")
      * @param Article $article
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showDraftAction(Article $article)
     {
@@ -64,7 +66,7 @@ class ArticleAdminController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function createAction(Request $request)
     {
@@ -121,7 +123,7 @@ class ArticleAdminController extends BaseController
      * @param Request $request
      * @param Article $article
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editAction(Request $request, Article $article)
     {
@@ -200,7 +202,7 @@ class ArticleAdminController extends BaseController
     /**
      * @param Article $article
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteAction(Article $article)
     {

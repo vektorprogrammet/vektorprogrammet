@@ -5,15 +5,17 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SocialEvent;
 use AppBundle\Form\Type\SocialEventType;
 use DateTime;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\SocialEventManager;
+use Symfony\Component\HttpFoundation\Response;
 
 class SocialEventController extends BaseController
 {
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showAction(Request $request)
     {
@@ -21,7 +23,7 @@ class SocialEventController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
 
         $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository('AppBundle:SocialEvent');
+        $repository = $em->getRepository(SocialEvent::class);
         $SocialEventList = $repository->findSocialEventsBySemesterAndDepartment($semester, $department);
 
 
@@ -35,7 +37,7 @@ class SocialEventController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function createSocialEventAction(Request $request)
     {
@@ -94,7 +96,7 @@ class SocialEventController extends BaseController
     /**
      * @param Request $request
      * @param SocialEvent $event
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteSocialEventAction(Request $request, SocialEvent $event)
     {
