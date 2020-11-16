@@ -125,8 +125,6 @@ class UserGroupCollectionManager
         $users = array_merge($users, $selectedUsers);
 
 
-        $usersUnique = array_unique($users, SORT_REGULAR);
-
-        return $usersUnique;
+        return array_unique($users, SORT_REGULAR);
     }
 }

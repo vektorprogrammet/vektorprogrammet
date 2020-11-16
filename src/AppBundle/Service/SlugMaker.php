@@ -34,8 +34,6 @@ class SlugMaker
     {
         $a = array('Æ', 'Ø', 'Å', 'æ', 'ø', 'å', '&shy;', '-', '!', ',', '.');
         $b = array('AE', 'O', 'A', 'ae', 'o', 'a', '', '', '', '', '', '');
-        $newString = str_replace($a, $b, $string);
-
-        return $newString;
+        return str_replace($a, $b, $string);
     }
 }

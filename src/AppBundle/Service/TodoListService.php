@@ -69,11 +69,9 @@ class TodoListService
      */
     public function getMandatoryTodoItems(array $todoItems, $semester)
     {
-        $mandatoryItems = array_filter($todoItems, function (TodoItem $a) use ($semester) {
+        return array_filter($todoItems, function (TodoItem $a) use ($semester) {
             return ($a->isMandatoryBySemester($semester));
         });
-
-        return $mandatoryItems;
     }
 
 
@@ -389,8 +387,7 @@ class TodoListService
         $todoMandaoryNoDeadLine = $this->getMandatoryTodoItemsWithInsignificantDeadline($incompletedTodoItems, $semester);
         $todoNonMandatoryNoDeadline = $this->getNonMandatoryTodoItemsWithInsignificantDeadline($incompletedTodoItems, $semester);
         $completedTodoListItems = $repository->findCompletedTodoListItemsBySemesterAndDepartment($semester, $department);
-        $orderedList = array_merge($todoShortDeadLines, $todoMandaoryNoDeadLine, $todoNonMandatoryNoDeadline, $completedTodoListItems);
 
-        return $orderedList;
+        return array_merge($todoShortDeadLines, $todoMandaoryNoDeadLine, $todoNonMandatoryNoDeadline, $completedTodoListItems);
     }
 }
