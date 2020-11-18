@@ -38,12 +38,15 @@ security:
         dev:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
+            provider: chain_provider
         admin_area:
             pattern:    ^/admin
-            http_basic: ~ 
+            http_basic: ~
+            provider: chain_provider
         secured_area:
             anonymous: ~
             http_basic: ~
+            provider: chain_provider
             form_login:
                 login_path: /login
                 check_path: /login_check
