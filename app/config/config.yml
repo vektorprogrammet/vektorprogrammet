@@ -17,6 +17,8 @@ parameters:
     refresh_token: '%google_api_refresh_token%'
     disabled: true
 
+  container.dumper.inline_class_loader: true
+
   slack.notification_channel: '#notifications'
   slack.log_channel: '%log_channel%'
   slack.disable_delivery: '%slack_disabled%'
