@@ -26,6 +26,9 @@ services:
         arguments:
             - { timeout: 2 }
 
+    AppBundle\Sms\SlackSms:
+        autowire: true
+
     AppBundle\Sms\SmsSender:
         arguments:
             $env: '%kernel.environment%'
