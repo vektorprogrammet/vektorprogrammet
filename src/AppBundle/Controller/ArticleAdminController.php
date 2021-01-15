@@ -131,7 +131,7 @@ class ArticleAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $em      = $this->getDoctrine()->getManager();
+            $em = $this->getDoctrine()->getManager();
 
             $imageSmall = $this->get(FileUploader::class)->uploadArticleImage($request, 'imgsmall');
             if ($imageSmall) {
