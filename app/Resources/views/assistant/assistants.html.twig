@@ -126,19 +126,6 @@
             $('#department-box-selector').val(id);
         }
     </script>
-    {% if pixelId %}
-        <script>
-            (function addEventListeners() {
-                var submitsApplicationBtns = document.querySelectorAll('.submit-application');
-                for (var i = 0; i < submitsApplicationBtns.length; i++) {
-                    var submitsApplicationBtn = submitsApplicationBtns[i];
-                    submitsApplicationBtn.addEventListener('click', function() {
-                        fbq('track', 'CompleteRegistration', {value:  40.00, currency:'NOK'})
-                    });
-                }
-            })();
-        </script>
-    {% endif  %}
 
     <script>
       (function addEventListeners() {
@@ -221,9 +208,6 @@
             "<i class='fa fa-3x fa-check text-success'></i>" +
             "<p>Vi sender deg en melding når opptaket starter!</p>" +
             "</div>")
-            {% if pixelId %}
-                fbq('track', 'Lead', {value: 30.00, currency: 'NOK'});
-            {% endif %}
 
         }
         function setError(element, message) {
