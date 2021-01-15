@@ -6,7 +6,7 @@
   "dependencies": {
     "@coreui/coreui": "2.0.18",
     "@fortawesome/fontawesome-free": "5.4.1",
-    "axios": "^0.18.1",
+    "axios": "^0.21.1",
     "bootstrap": "^4.5.2",
     "ckeditor": "4.5.10",
     "cropperjs": "1.4.1",
