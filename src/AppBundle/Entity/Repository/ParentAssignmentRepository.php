@@ -4,7 +4,6 @@ namespace AppBundle\Entity\Repository;
 
 use Doctrine\ORM\EntityRepository;
 
-
 class ParentAssignmentRepository extends EntityRepository
 {
     public function findAllParentAssignments()
@@ -21,7 +20,7 @@ class ParentAssignmentRepository extends EntityRepository
         return $this->createQueryBuilder('parent_assignment')
             ->select('parent_assignment')
             ->where('parent_assignment.uniqueKey = :key')
-            ->setParameter('key',$key)
+            ->setParameter('key', $key)
             ->getQuery()
             ->getOneOrNullResult();
     }

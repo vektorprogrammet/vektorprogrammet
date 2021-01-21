@@ -34,8 +34,7 @@ class ParentCourseController extends BaseController
         $form->handleRequest($request);
 
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($parentCourse);
             $em->flush();
@@ -51,7 +50,6 @@ class ParentCourseController extends BaseController
             'form' => $form->createView(),
             'isCreate' => $isCreate
         ));
-
     }
 
     public function showAction()
@@ -72,5 +70,4 @@ class ParentCourseController extends BaseController
 
         return $this->redirectToRoute('parent_course_admin_show');
     }
-
 };

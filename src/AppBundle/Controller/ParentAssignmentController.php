@@ -12,7 +12,6 @@ class ParentAssignmentController extends BaseController
 {
     public function showAction(ParentCourse $course)
     {
-
         return $this->render('parent_course/parent_course_external_show.html.twig', array(
             'parentCourse' => $course,
         ));
@@ -25,13 +24,11 @@ class ParentAssignmentController extends BaseController
         $form->handleRequest($request);
 
 
-        if ($form->isValid())
-        {
+        if ($form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $randomString = uniqid();
             $parentAssignedWithGeneratedKey = $em->getRepository('AppBundle:ParentAssignment')->getParentAssignmentByUniqueKey($randomString);
-            while ($parentAssignedWithGeneratedKey != null)
-            {
+            while ($parentAssignedWithGeneratedKey != null) {
                 $randomString = uniqid();
                 $parentAssignedWithGeneratedKey = $em->getRepository('AppBundle:ParentAssignment')->getParentAssignmentByUniqueKey($randomString);
             }
@@ -52,7 +49,6 @@ class ParentAssignmentController extends BaseController
             'form' => $form->createView(),
             'parentCourse' => $course,
             ));
-
     }
 
     public function externalDeleteAction(int $uniqueKey)
@@ -94,7 +90,5 @@ class ParentAssignmentController extends BaseController
         $response['success'] = true;
 
         return new JsonResponse($response);
-
     }
-
 };

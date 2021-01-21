@@ -138,6 +138,5 @@ class EmailSender
             )))
             ->setContentType('text/html');
         $this->mailer->send($message, true);
-
     }
 }

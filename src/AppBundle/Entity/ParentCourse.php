@@ -210,4 +210,3 @@ class ParentCourse
         $this->assignedParents = $assignedParents;
     }
 }
-
