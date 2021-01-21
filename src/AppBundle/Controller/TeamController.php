@@ -2,8 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Role\Roles;
 use AppBundle\Entity\Team;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class TeamController extends BaseController
@@ -21,15 +21,10 @@ class TeamController extends BaseController
 
     public function showByDepartmentAndTeamAction($departmentCity, $teamName)
     {
-        $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByCityAndName($departmentCity, $teamName);
+        $teams = $this->getDoctrine()->getRepository(Team::class)->findByCityAndName($departmentCity, $teamName);
         if (count($teams) !== 1) {
             throw new NotFoundHttpException('Team not found');
         }
         return $this->showAction($teams[0]);
-    }
-
-    public function indexAction()
-    {
-        return $this->render('team/index.html.twig');
     }
 }

@@ -2,7 +2,8 @@
 
 namespace AppBundle\Controller;
 
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ClientController extends BaseController
 {
@@ -12,7 +13,7 @@ class ClientController extends BaseController
      * @Route("/assistent/min-side")
      * @Route("/party")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction()
     {

@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Receipt;
+use AppBundle\Entity\User;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
 use AppBundle\Role\Roles;
@@ -11,8 +13,6 @@ use AppBundle\Service\Sorter;
 use AppBundle\Utils\ReceiptStatistics;
 use DateTime;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\Receipt;
-use AppBundle\Entity\User;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -20,10 +20,10 @@ class ReceiptController extends BaseController
 {
     public function showAction()
     {
-        $usersWithReceipts = $this->getDoctrine()->getRepository('AppBundle:User')->findAllUsersWithReceipts();
-        $refundedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REFUNDED);
-        $pendingReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_PENDING);
-        $rejectedReceipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByStatus(Receipt::STATUS_REJECTED);
+        $usersWithReceipts = $this->getDoctrine()->getRepository(User::class)->findAllUsersWithReceipts();
+        $refundedReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_REFUNDED);
+        $pendingReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_PENDING);
+        $rejectedReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_REJECTED);
 
         $refundedReceiptStatistics = new ReceiptStatistics($refundedReceipts);
         $totalPayoutThisYear = $refundedReceiptStatistics->totalPayoutIn((new DateTime())->format('Y'));
@@ -50,7 +50,7 @@ class ReceiptController extends BaseController
 
     public function showIndividualAction(User $user)
     {
-        $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($user);
+        $receipts = $this->getDoctrine()->getRepository(Receipt::class)->findByUser($user);
 
         $sorter = $this->container->get(Sorter::class);
         $sorter->sortReceiptsBySubmitTime($receipts);
@@ -67,7 +67,7 @@ class ReceiptController extends BaseController
         $receipt = new Receipt();
         $receipt->setUser($this->getUser());
 
-        $receipts = $this->getDoctrine()->getRepository('AppBundle:Receipt')->findByUser($this->getUser());
+        $receipts = $this->getDoctrine()->getRepository(Receipt::class)->findByUser($this->getUser());
 
         $sorter = $this->container->get(Sorter::class);
         $sorter->sortReceiptsBySubmitTime($receipts);

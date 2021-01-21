@@ -2,23 +2,25 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Service\FileUploader;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\Type\SponsorType;
 use AppBundle\Entity\Sponsor;
+use AppBundle\Form\Type\SponsorType;
+use AppBundle\Service\FileUploader;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SponsorsController extends BaseController
 {
     /**
      * @Route("/kontrollpanel/sponsorer", name="sponsors_show")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function sponsorsShowAction()
     {
         $sponsors = $this->getDoctrine()
-            ->getRepository('AppBundle:Sponsor')
+            ->getRepository(Sponsor::class)
             ->findAll();
 
         return $this->render('sponsors/sponsors_show.html.twig', array(
@@ -29,10 +31,10 @@ class SponsorsController extends BaseController
     /**
      * @Route("/kontrollpanel/sponsor/create", name="sponsor_create")
      * @Route("/kontrollpanel/sponsor/edit/{id}", name="sponsor_edit")
-     * @param Sponsor $sponsor
+     * @param Sponsor|null $sponsor
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function sponsorEditAction(Sponsor $sponsor = null, Request $request)
     {
@@ -79,7 +81,7 @@ class SponsorsController extends BaseController
      * @Route("/kontrollpanel/sponsor/delete/{id}", name="sponsor_delete")
      * @param Sponsor $sponsor
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteSponsorAction(Sponsor $sponsor)
     {

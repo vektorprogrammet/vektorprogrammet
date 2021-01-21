@@ -2,13 +2,14 @@
 
 namespace AppBundle\Controller\Api;
 
+use AppBundle\Controller\BaseController;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\User;
 use Doctrine\ORM\NoResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use AppBundle\Controller\BaseController;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class AccountController extends BaseController
@@ -19,7 +20,7 @@ class AccountController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
@@ -37,7 +38,7 @@ class AccountController extends BaseController
         }
 
         try {
-            $user = $this->getDoctrine()->getRepository('AppBundle:User')->findByUsernameOrEmail($username);
+            $user = $this->getDoctrine()->getRepository(User::class)->findByUsernameOrEmail($username);
         } catch (NoResultException $e) {
             $response->setStatusCode(401);
             $response->setContent('Username does not exist');
@@ -66,7 +67,7 @@ class AccountController extends BaseController
     /**
      * @Route("api/account/user")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
      */
     public function getUserAction()

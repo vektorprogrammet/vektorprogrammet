@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Form\Type\SchoolCapacityEditType;
 use AppBundle\Form\Type\SchoolCapacityType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SchoolCapacityController extends BaseController
 {
@@ -13,14 +15,14 @@ class SchoolCapacityController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function createAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $currentSemester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $currentSemester = $this->getSemesterOrThrow404($request);
 
         $schoolCapacity = new SchoolCapacity();
         $schoolCapacity->setSemester($currentSemester);

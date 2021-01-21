@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Tests\BaseWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -38,7 +39,7 @@ class MailingListControllerTest extends BaseWebTestCase
         $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $user = $this->em->getRepository('AppBundle:User')->find($userID);
+        $user = $this->em->getRepository(User::class)->find($userID);
         $this->assertNotNull($user);
         $userEmailLength = strlen($user->getCompanyEmail());
 
@@ -62,6 +63,8 @@ class MailingListControllerTest extends BaseWebTestCase
         $lengthTeam = $this->generateListCountChars($client, 'Team');
         $lengthAll = $this->generateListCountChars($client, 'Alle');
 
+        $this->assertGreaterThan(0, $lengthAssistants);
+        $this->assertGreaterThan(0, $lengthTeam);
         $this->assertGreaterThan($lengthAssistants, $lengthAll);
         $this->assertGreaterThan($lengthTeam, $lengthAll);
     }
@@ -76,7 +79,7 @@ class MailingListControllerTest extends BaseWebTestCase
     {
         $crawler = $this->goTo('/kontrollpanel/epostlister', $client);
         $form = $crawler->selectButton('Generer')->form();
-        $form['generate_mailing_list[semester]'] = 2;
+        $form['generate_mailing_list[semester]'] = 1;
         $form['generate_mailing_list[type]'] = $type;
         $client->submit($form);
         $crawler = $client->followRedirect();

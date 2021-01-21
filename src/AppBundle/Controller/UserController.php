@@ -2,12 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Entity\Application;
+use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\Semester;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\ContentModeManager;
 use AppBundle\Twig\Extension\RoleExtension;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends BaseController
@@ -15,22 +20,22 @@ class UserController extends BaseController
     /**
      * @Route("/min-side", name="my_page")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function myPageAction()
     {
         $user = $this->getUser();
 
         $department = $user->getDepartment();
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
-            ->getRepository('AppBundle:AdmissionPeriod')
+            ->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
 
         $activeApplication = null;
         if (null !== $admissionPeriod) {
             $activeApplication = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findByUserInAdmissionPeriod($user, $admissionPeriod);
         }
 
@@ -38,7 +43,7 @@ class UserController extends BaseController
         if (null !== $activeApplication) {
             $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($activeApplication);
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($user);
+        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($user);
 
         return $this->render('my_page/my_page.html.twig', [
             "active_application" => $activeApplication,
@@ -50,14 +55,14 @@ class UserController extends BaseController
     /**
      * @Route("/profil/partnere", name="my_partners")
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function myPartnerAction()
     {
         if (!$this->getUser()->isActive()) {
             throw $this->createAccessDeniedException();
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesByUser($this->getUser());
+        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($this->getUser());
         if (empty($activeAssistantHistories)) {
             throw $this->createNotFoundException();
         }
@@ -66,7 +71,7 @@ class UserController extends BaseController
         $partnerCount = 0;
 
         foreach ($activeAssistantHistories as $activeHistory) {
-            $schoolHistories = $this->getDoctrine()->getRepository('AppBundle:AssistantHistory')->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
+            $schoolHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
             $partners = [];
 
             foreach ($schoolHistories as $sh) {
@@ -89,7 +94,7 @@ class UserController extends BaseController
             ];
         }
 
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
             'partnerInformations' => $partnerInformations,
             'partnerCount' => $partnerCount,
@@ -98,12 +103,15 @@ class UserController extends BaseController
     }
 
     /**
-     * @Route("profil/mode/{mode}", name="content_mode")
-     * @Method("POST")
+     * @Route("profil/mode/{mode}",
+     *     name="content_mode",
+     *     methods={"POST"}
+     *     )
+     *
      * @param Request $request
      * @param string $mode
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function changeContentModeAction(Request $request, string $mode)
     {

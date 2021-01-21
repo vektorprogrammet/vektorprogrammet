@@ -35,7 +35,7 @@ class StaticContentExtension extends AbstractExtension
         }
 
         $content = $this->em
-            ->getRepository('AppBundle:StaticContent')
+            ->getRepository(StaticContent::class)
             ->findOneByHtmlId($htmlId);
         if (!$content) {
             $content = new StaticContent();

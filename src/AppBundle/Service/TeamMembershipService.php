@@ -2,6 +2,8 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Event\TeamMembershipEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -19,12 +21,12 @@ class TeamMembershipService
 
     public function updateTeamMemberships()
     {
-        $teamMemberships = $this->em->getRepository('AppBundle:TeamMembership')->findBy(array('isSuspended' => false));
-        $currentSemesterStartDate = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester()->getSemesterStartDate();
+        $teamMemberships = $this->em->getRepository(TeamMembership::class)->findBy(array('isSuspended' => false));
+        $currentSemesterStartDate = $this->em->getRepository(Semester::class)->findCurrentSemester()->getStartDate();
         foreach ($teamMemberships as $teamMembership) {
             $endSemester = $teamMembership->getEndSemester();
             if ($endSemester) {
-                if ($endSemester->getSemesterEndDate() <= $currentSemesterStartDate) {
+                if ($endSemester->getEndDate() <= $currentSemesterStartDate) {
                     $teamMembership->setIsSuspended(true);
                     $this->dispatcher->dispatch(TeamMembershipEvent::EXPIRED, new TeamMembershipEvent($teamMembership));
                 }

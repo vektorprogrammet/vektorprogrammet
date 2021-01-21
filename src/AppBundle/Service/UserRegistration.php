@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
@@ -43,8 +44,7 @@ class UserRegistration
 
     public function createActivationEmail(User $user, $newUserCode)
     {
-        /** @var Swift_Message $emailMessage */
-        $emailMessage = (new Swift_Message())
+        return (new Swift_Message())
             ->setSubject('Velkommen til Vektorprogrammet!')
             ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setReplyTo($user->getFieldOfStudy()->getDepartment()->getEmail())
@@ -53,8 +53,6 @@ class UserRegistration
                 'newUserCode' => $newUserCode,
                 'name' => $user->getFullName(),
             )));
-
-        return $emailMessage;
     }
 
     public function sendActivationCode(User $user)
@@ -72,7 +70,7 @@ class UserRegistration
     public function activateUserByNewUserCode(string $newUserCode)
     {
         $hashedNewUserCode = $this->getHashedCode($newUserCode);
-        $user = $this->em->getRepository('AppBundle:User')->findUserByNewUserCode($hashedNewUserCode);
+        $user = $this->em->getRepository(User::class)->findUserByNewUserCode($hashedNewUserCode);
         if ($user === null) {
             return null;
         }
@@ -87,7 +85,7 @@ class UserRegistration
         $user->setActive('1');
 
         if (count($user->getRoles()) === 0) {
-            $role = $this->em->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+            $role = $this->em->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
             $user->addRole($role);
         }
 

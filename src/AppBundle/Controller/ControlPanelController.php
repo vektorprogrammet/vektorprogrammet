@@ -2,16 +2,23 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Service\SbsData;
+use Symfony\Component\HttpFoundation\Request;
 
 class ControlPanelController extends BaseController
 {
-    public function showAction()
-    {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
 
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+    /**
+     *
+     * @param Request $request
+     */
+    public function showAction(Request $request)
+    {
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
+
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
 
         // Return the view to be rendered

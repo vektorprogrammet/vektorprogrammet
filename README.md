@@ -1,13 +1,13 @@
 <img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/master/app/Resources/assets/images/vektor_stor.png" alt="alt text" width="400" height="auto">
 
-![Build Status](https://travis-ci.org/vektorprogrammet/vektorprogrammet.svg?branch=master)
+![Build Status](https://travis-ci.com/vektorprogrammet/vektorprogrammet.svg?branch=master)
 
 
 
 # Set up development environment
 ## Requirements:
 - [PHP](http://php.net/downloads.php) version >= 7.1
-- [Node](https://nodejs.org/en/) version >= 8
+- [Node](https://nodejs.org/en/) version 12
 - [Git](https://git-scm.com/)
 
 ##### Required PHP-dependencies:
@@ -37,6 +37,9 @@ sudo apt-get install php7.2-gd
 sudo apt-get install php7.2-curl
 sudo apt-get install php7.2-xml
 ```
+
+Alternatively install Composer dependency manager from [here](https://getcomposer.org/).
+Then run `composer install`.
 
 
 
@@ -87,16 +90,16 @@ Tests should be run before opening a PR.
 ##### UNIX/LINUX:
 `npm run test`
 
-File specific test: 
-
-`npm run test "tests/PATH_TO_TEST" `
-
 ##### Windows:
 `npm run test:win`
 
 #### File specific test: 
 
 `npm run test "tests/PATH_TO_TEST" `
+
+or *(without needing the exact path)*
+
+`npm run test -- --filter "NAME_OF_FILE" `
 
 
 

@@ -1,9 +1,9 @@
 <?php
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Entity\Feedback;
+use AppBundle\Form\Type\FeedbackType;
+use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Service\SlackMessenger;
 
 class FeedbackController extends BaseController
@@ -30,8 +30,8 @@ class FeedbackController extends BaseController
             $em->persist($feedback);
             $em->flush();
 
-            //Notifies on slack (NotificationCHannel)
-            $messenger = $this->container->get('AppBundle\Service\SlackMessenger');
+            //Notifies on slack (NotificationChannel)
+            $messenger = $this->container->get(SlackMessenger::class);
             $messenger->notify($feedback->getSlackMessageBody());
 
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");

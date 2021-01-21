@@ -2,6 +2,7 @@
 
 namespace AppBundle\Command;
 
+use AppBundle\Entity\User;
 use AppBundle\Service\RoleManager;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
@@ -62,7 +63,7 @@ HELP
     {
         $startTime = microtime(true);
 
-        $users = $this->entityManager->getRepository('AppBundle:User')->findAll();
+        $users = $this->entityManager->getRepository(User::class)->findAll();
 
         foreach ($users as $user) {
             $roleUpdated = $this->roleManager->updateUserRole($user);

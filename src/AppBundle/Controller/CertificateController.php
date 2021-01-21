@@ -2,12 +2,16 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AssistantHistory;
+use AppBundle\Entity\CertificateRequest;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
 use AppBundle\Service\FileUploader;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class CertificateController extends BaseController
 {
@@ -21,17 +25,17 @@ class CertificateController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function showAction(Request $request)
     {
-        $department = $this->getDepartmentOrThrow404();
-        $semester = $this->getSemesterOrThrow404();
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
         $em = $this->getDoctrine()->getManager();
 
-        $assistants = $em->getRepository('AppBundle:AssistantHistory')->findByDepartmentAndSemester($department, $semester);
+        $assistants = $em->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($department, $semester);
 
-        $signature = $this->getDoctrine()->getRepository('AppBundle:Signature')->findByUser($this->getUser());
+        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($this->getUser());
         $oldPath = '';
         if ($signature === null) {
             $signature = new Signature();
@@ -64,7 +68,7 @@ class CertificateController extends BaseController
         }
 
         // Finds all the the certificate requests
-        $certificateRequests = $this->getDoctrine()->getRepository('AppBundle:CertificateRequest')->findAll();
+        $certificateRequests = $this->getDoctrine()->getRepository(CertificateRequest::class)->findAll();
 
         return $this->render('certificate/index.html.twig', array(
             'certificateRequests' => $certificateRequests,

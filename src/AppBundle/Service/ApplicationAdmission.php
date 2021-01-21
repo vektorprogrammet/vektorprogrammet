@@ -5,7 +5,8 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
+use AppBundle\Entity\Interview;
+use AppBundle\Entity\Role;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
@@ -36,14 +37,14 @@ class ApplicationAdmission
 
     public function createApplicationForExistingAssistant(User $user): Application
     {
-        $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($user->getDepartment());
+        $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($user->getDepartment());
 
-        $application = $this->em->getRepository('AppBundle:Application')->findByUserInAdmissionPeriod($user, $admissionPeriod);
+        $application = $this->em->getRepository(Application::class)->findByUserInAdmissionPeriod($user, $admissionPeriod);
         if ($application === null) {
             $application = new Application();
         }
 
-        $lastInterview = $this->em->getRepository('AppBundle:Interview')->findLatestInterviewByUser($user);
+        $lastInterview = $this->em->getRepository(Interview::class)->findLatestInterviewByUser($user);
 
         $application->setUser($user);
         $application->setAdmissionPeriod($admissionPeriod);
@@ -63,7 +64,7 @@ class ApplicationAdmission
             return false;
         }
         $department = $fos->getDepartment();
-        $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)
             ->findOneWithActiveAdmissionByDepartment($department);
         if ($admissionPeriod === null) {
             return false;
@@ -73,7 +74,7 @@ class ApplicationAdmission
 
     public function userHasAlreadyAppliedInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {
-        $existingApplications = $this->em->getRepository('AppBundle:Application')->findByEmailInAdmissionPeriod($user->getEmail(), $admissionPeriod);
+        $existingApplications = $this->em->getRepository(Application::class)->findByEmailInAdmissionPeriod($user->getEmail(), $admissionPeriod);
 
         return count($existingApplications) > 0;
     }
@@ -82,13 +83,13 @@ class ApplicationAdmission
     public function setCorrectUser(Application $application)
     {
         //Check if email belongs to an existing account and use that account
-        $user = $this->em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
+        $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $application->getUser()->getEmail()));
         if ($user !== null) {
             $application->setUser($user);
         }
 
         if (count($application->getUser()->getRoles()) === 0) {
-            $role = $this->em->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+            $role = $this->em->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
             $application->getUser()->addRole($role);
         }
     }
@@ -105,9 +106,9 @@ class ApplicationAdmission
         $department = null;
 
         if ($departmentIdQuery !== null) {
-            $department = $this->em->getRepository('AppBundle:Department')->find($departmentIdQuery);
+            $department = $this->em->getRepository(Department::class)->find($departmentIdQuery);
         } elseif ($departmentShortNameQuery !== null) {
-            $department = $this->em->getRepository('AppBundle:Department')->findDepartmentByShortName($departmentShortNameQuery);
+            $department = $this->em->getRepository(Department::class)->findDepartmentByShortName($departmentShortNameQuery);
         }
 
         if ($department === null) {
@@ -129,7 +130,7 @@ class ApplicationAdmission
             $content = $this->twig->render('error/no_assistanthistory.html.twig', array('user' => $user));
         } else {
             $department = $user->getDepartment();
-            $admissionPeriod = $this->em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+            $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
 
             if ($admissionPeriod === null) {
                 $content = $this->twig->render(':error:no_active_admission.html.twig');

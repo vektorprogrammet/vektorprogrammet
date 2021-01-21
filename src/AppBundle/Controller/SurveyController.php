@@ -7,6 +7,7 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyLinkClick;
 use AppBundle\Entity\SurveyNotification;
+use AppBundle\Entity\SurveyTaken;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Form\Type\SurveyExecuteType;
@@ -15,8 +16,10 @@ use AppBundle\Service\AccessControlService;
 use AppBundle\Service\SurveyManager;
 use AppBundle\Utils\CsvUtil;
 use DateTime;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use InvalidArgumentException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -34,7 +37,7 @@ class SurveyController extends BaseController
      * @param Request $request
      * @param Survey $survey
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Request $request, Survey $survey)
     {
@@ -85,7 +88,7 @@ class SurveyController extends BaseController
      * @param string $userid
      *
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function showIdAction(Request $request, Survey $survey, string $userid)
     {
@@ -150,7 +153,7 @@ class SurveyController extends BaseController
             $surveyTaken->removeNullAnswers();
             if ($form->isValid()) {
                 $allTakenSurveys = $em
-                    ->getRepository('AppBundle:SurveyTaken')
+                    ->getRepository(SurveyTaken::class)
                     ->findAllBySurveyAndUser($survey, $user);
 
                 if (!empty($allTakenSurveys)) {
@@ -198,7 +201,7 @@ class SurveyController extends BaseController
     public function showAdminAction(Request $request, Survey $survey)
     {
         if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
-            throw new \InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
+            throw new InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
         $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
         $surveyTaken = $this->get(SurveyManager::class)->predictSurveyTakenAnswers($surveyTaken);
@@ -268,7 +271,7 @@ class SurveyController extends BaseController
         $surveyClone = $survey->copy();
 
         $em = $this->getDoctrine()->getManager();
-        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $currentSemester = $em->getRepository(Semester::class)->findCurrentSemester();
         $surveyClone->setSemester($currentSemester);
 
         if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
@@ -303,17 +306,16 @@ class SurveyController extends BaseController
      *     methods={"GET"},
      * )
      *
-     * @param Semester|null $semester
-     *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @param Request $request
+     * @return Response
      */
-    public function showSurveysAction()
+    public function showSurveysAction(Request $request)
     {
-        $semester = $this->getSemesterOrThrow404();
-        $department = $this->getDepartmentOrThrow404();
+        $semester = $this->getSemesterOrThrow404($request);
+        $department = $this->getDepartmentOrThrow404($request);
 
 
-        $surveysWithDepartment = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+        $surveysWithDepartment = $this->getDoctrine()->getRepository(Survey::class)->findBy(
             [
                 'semester' => $semester,
                 'department' => $department,
@@ -321,14 +323,14 @@ class SurveyController extends BaseController
             ['id' => 'DESC']
         );
         foreach ($surveysWithDepartment as $survey) {
-            $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findAllTakenBySurvey($survey));
+            $totalAnswered = count($this->getDoctrine()->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey));
             $survey->setTotalAnswered($totalAnswered);
         }
 
 
         $globalSurveys = array();
         if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
-            $globalSurveys = $this->getDoctrine()->getRepository('AppBundle:Survey')->findBy(
+            $globalSurveys = $this->getDoctrine()->getRepository(Survey::class)->findBy(
                 [
                     'semester' => $semester,
                     'department' => null,
@@ -336,7 +338,7 @@ class SurveyController extends BaseController
                 ['id' => 'DESC']
             );
             foreach ($globalSurveys as $survey) {
-                $totalAnswered = count($this->getDoctrine()->getRepository('AppBundle:SurveyTaken')->findBy(array('survey' => $survey)));
+                $totalAnswered = count($this->getDoctrine()->getRepository(SurveyTaken::class)->findBy(array('survey' => $survey)));
                 $survey->setTotalAnswered($totalAnswered);
             }
         }

@@ -2,14 +2,17 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Team;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Service\ApplicationAdmission;
 use AppBundle\Service\FilterService;
 use AppBundle\Service\GeoLocation;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,15 +27,16 @@ class AssistantController extends BaseController
      * @Route("/avdeling/{shortName}",
      *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
      * @Route("/opptak/avdeling/{id}",
-     *     requirements={"id"="\d+"})
-     * @Method({"GET", "POST"})
+     *     requirements={"id"="\d+"},
+     *     methods={"GET", "POST"}
+     *     )
      *
      * @param Request $request
      * @param Department $department
      *
      * @return Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function admissionByShortNameAction(Request $request, Department $department)
     {
@@ -52,7 +56,7 @@ class AssistantController extends BaseController
     {
         $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
         $department = $this->getDoctrine()
-                ->getRepository('AppBundle:Department')
+                ->getRepository(Department::class)
                 ->findOneByCityCaseInsensitive($city);
         if ($department !== null) {
             return $this->indexAction($request, $department);
@@ -62,15 +66,14 @@ class AssistantController extends BaseController
     }
 
     /**
-     * @Route("/opptak")
-     * @Method({"GET", "POST"})
+     * @Route("/opptak", methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param Department $department
+     * @param Department|null $department
      *
      * @return Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function admissionAction(Request $request, Department $department = null)
     {
@@ -79,19 +82,17 @@ class AssistantController extends BaseController
 
     /**
      * @param Request $request
-     * @param Department $specificDepartment
+     * @param Department|null $specificDepartment
      * @param bool $scrollToAdmissionForm
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
      */
     public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
         $admissionManager = $this->get(ApplicationAdmission::class);
         $em = $this->getDoctrine()->getManager();
 
-        $departments = $em->getRepository('AppBundle:Department')->findActive();
+        $departments = $em->getRepository(Department::class)->findActive();
         $departments = $this->get(GeoLocation::class)->sortDepartmentsByDistanceFromClient($departments);
         $departmentsWithActiveAdmission = $this->get(FilterService::class)->filterDepartmentsByActiveAdmission($departments, true);
 
@@ -100,7 +101,7 @@ class AssistantController extends BaseController
             $specificDepartment = $departments[0];
         }
 
-        $teams = $em->getRepository('AppBundle:Team')->findByOpenApplicationAndDepartment($specificDepartment);
+        $teams = $em->getRepository(Team::class)->findByOpenApplicationAndDepartment($specificDepartment);
 
         $application = new Application();
 
@@ -128,7 +129,7 @@ class AssistantController extends BaseController
                     return $this->redirectToRoute('admission_existing_user');
                 }
 
-                $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+                $admissionPeriod = $em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
 
                 //If no active admission period is found
                 if (!$admissionPeriod) {
@@ -168,14 +169,16 @@ class AssistantController extends BaseController
     }
 
     /**
-     * @Route("/stand/opptak/{shortName}", name="application_stand_form", requirements={"shortName"="\w+"})
+     * @Route("/stand/opptak/{shortName}",
+     *     name="application_stand_form",
+     *     requirements={"shortName"="\w+"})
      *
      * @param Request $request
      * @param Department $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function subscribePageAction(Request $request, Department $department)
     {
@@ -202,7 +205,7 @@ class AssistantController extends BaseController
                 return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
             }
 
-            $admissionPeriod = $em->getRepository('AppBundle:AdmissionPeriod')->findOneWithActiveAdmissionByDepartment($department);
+            $admissionPeriod = $em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
             $application->setAdmissionPeriod($admissionPeriod);
             $em->persist($application);
             $em->flush();
