@@ -32,7 +32,7 @@ class SocialEventRepository extends EntityRepository
 
     public function findFutureSocialEventsBySemesterAndDepartment(Semester $semester, Department $department)
     {
-        $socialEvents = $this->createQueryBuilder('SocialEventItem')
+        return $this->createQueryBuilder('SocialEventItem')
             ->select('SocialEventItem')
             ->where('SocialEventItem.semester = :semester or SocialEventItem.semester is null')
             ->andWhere('SocialEventItem.department = :department or SocialEventItem.department is null')
@@ -41,6 +41,5 @@ class SocialEventRepository extends EntityRepository
             ->setParameters(['semester' => $semester, 'department' => $department, 'now' => new DateTime()])
             ->getQuery()
             ->getResult();
-        return $socialEvents;
     }
 }

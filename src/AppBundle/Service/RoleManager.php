@@ -2,10 +2,14 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\ExecutiveBoardMembership;
+use AppBundle\Entity\Role;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Google\GoogleUsers;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
@@ -69,7 +73,7 @@ class RoleManager
         if (in_array($alias, $this->aliases)) {
             return $this->roles[array_search($alias, $this->aliases)];
         } else {
-            throw new \InvalidArgumentException('Invalid alias: '.$alias);
+            throw new InvalidArgumentException('Invalid alias: '.$alias);
         }
     }
 
@@ -147,7 +151,7 @@ class RoleManager
 
     public function userIsInExecutiveBoard(User $user)
     {
-        $executiveBoardMembership = $this->em->getRepository('AppBundle:ExecutiveBoardMembership')->findByUser($user);
+        $executiveBoardMembership = $this->em->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
 
         return !empty($executiveBoardMembership);
     }
@@ -164,7 +168,7 @@ class RoleManager
 
     private function userIsInATeam(User $user, bool $teamLeader)
     {
-        $semester = $this->em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->em->getRepository(Semester::class)->findCurrentSemester();
         $teamMemberships = $user->getTeamMemberships();
 
         if ($semester === null) {
@@ -184,13 +188,13 @@ class RoleManager
     {
         $isValidRole = $this->isValidRole($role);
         if (!$isValidRole) {
-            throw new \InvalidArgumentException("Invalid role $role");
+            throw new InvalidArgumentException("Invalid role $role");
         }
         if ($this->userIsGranted($user, Roles::ADMIN)) {
             return false;
         }
 
-        $role = $this->em->getRepository('AppBundle:Role')->findByRoleName($role);
+        $role = $this->em->getRepository(Role::class)->findByRoleName($role);
         $roleNeedsToUpdate = array_search($role, $user->getRoles()) === false;
 
         if ($roleNeedsToUpdate) {

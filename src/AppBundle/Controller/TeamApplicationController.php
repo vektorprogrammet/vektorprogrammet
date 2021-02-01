@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Team;
 use AppBundle\Entity\TeamApplication;
+use AppBundle\Entity\TeamMembership;
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Form\Type\TeamApplicationType;
 use AppBundle\Role\Roles;
@@ -19,7 +20,7 @@ class TeamApplicationController extends BaseController
     public function showApplicationAction(TeamApplication $application)
     {
         $user = $this->getUser();
-        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeamAndUser($application->getTeam(), $user);
+        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeamAndUser($application->getTeam(), $user);
         if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
@@ -31,9 +32,9 @@ class TeamApplicationController extends BaseController
 
     public function showAllApplicationsAction(Team $team)
     {
-        $applications = $this->getDoctrine()->getRepository('AppBundle:TeamApplication')->findByTeam($team);
+        $applications = $this->getDoctrine()->getRepository(TeamApplication::class)->findByTeam($team);
         $user = $this->getUser();
-        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository('AppBundle:TeamMembership')->findActiveTeamMembershipsByTeamAndUser($team, $user);
+        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeamAndUser($team, $user);
         if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }

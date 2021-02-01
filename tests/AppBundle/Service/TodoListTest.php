@@ -1,4 +1,7 @@
 <?php
+
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\TodoItem;
 
 class TodoListTest extends \Tests\BaseKernelTestCase
@@ -20,12 +23,12 @@ class TodoListTest extends \Tests\BaseKernelTestCase
     private $completedItem;
 
     /**
-     * @var \AppBundle\Entity\Semester
+     * @var Semester
      */
     private $currentSemester;
 
     /**
-     * @var \AppBundle\Entity\Department
+     * @var Department
      */
     private $department;
 
@@ -62,11 +65,11 @@ class TodoListTest extends \Tests\BaseKernelTestCase
         $this->service = $service;
         $em = $kernel->getContainer()->get('doctrine')->getManager();
         $this->em = $em;
-        $todoRepo = $em->getRepository('AppBundle:TodoItem');
+        $todoRepo = $em->getRepository(TodoItem::class);
         $this->completedItem = $todoRepo->findOneBy(['title' => 'completedTodoItem']);
         $this->incompletedItem = $todoRepo->findOneBy(['title' => 'incompletedTodoItem']);
-        $this->currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
-        $this->department = $em->getRepository('AppBundle:Department')->findOneBy(['shortName' => 'NTNU']);
+        $this->currentSemester = $em->getRepository(Semester::class)->findCurrentSemester();
+        $this->department = $em->getRepository(Department::class)->findOneBy(['shortName' => 'NTNU']);
 
         $this->itemWithShortDeadline = $todoRepo->findOneBy(['title' => 'shortDeadlineItem']);
         $this->itemWithAlmostShortDeadline = $todoRepo->findOneBy(['title' => 'almostShortDeadlineItem']);

@@ -193,7 +193,7 @@ class SurveyTaken implements \JsonSerializable
         $ret[] = $affiliationQuestion;
         foreach ($this->surveyAnswers as $a) {
             //!$a->getSurveyQuestion()->getOptional() && - If optional results are not wanted
-            if (($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
+            if ($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list') {
                 $ret[] = $a;
             } elseif ($a->getSurveyQuestion()->getType() == 'check') {
                 $ret[] = $a;

@@ -2,17 +2,16 @@
 
 namespace AppBundle\Controller;
 
-use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Position;
 use AppBundle\Form\Type\CreatePositionType;
+use Symfony\Component\HttpFoundation\Request;
 
 class PositionController extends BaseController
 {
     public function showPositionsAction()
     {
         // Find all the positions
-        $positions = $this->getDoctrine()->getRepository('AppBundle:Position')->findAll();
+        $positions = $this->getDoctrine()->getRepository(Position::class)->findAll();
 
         // Return the view with suitable variables
         return $this->render('team_admin/show_positions.html.twig', array(

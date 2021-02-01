@@ -2,6 +2,7 @@
 
 namespace AppBundle\Twig\Extension;
 
+use AppBundle\Entity\Sponsor;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
@@ -31,7 +32,7 @@ class SponsorsExtension extends AbstractExtension
     public function getSponsors()
     {
         $sponsors = $this->doctrine
-            ->getRepository('AppBundle:Sponsor')
+            ->getRepository(Sponsor::class)
             ->findAll();
         if (!$sponsors) {
             return 'No sponsors :-(';
@@ -43,7 +44,7 @@ class SponsorsExtension extends AbstractExtension
     public function getSponsorsBySize($size)
     {
         $sponsors = $this->doctrine
-            ->getRepository('AppBundle:Sponsor')
+            ->getRepository(Sponsor::class)
             ->findBy(array('size' => $size));
         if (!$sponsors) {
             return [];

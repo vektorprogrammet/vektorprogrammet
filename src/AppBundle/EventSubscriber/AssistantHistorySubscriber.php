@@ -2,6 +2,7 @@
 
 namespace AppBundle\EventSubscriber;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Service\UserRegistration;
 use Doctrine\ORM\EntityManagerInterface;
@@ -61,7 +62,7 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
             $this->em->persist($user);
             $this->em->flush();
         } else { // Send new user code for user to create user name and password
-            $currentSemester = $this->em->getRepository('AppBundle:Semester')
+            $currentSemester = $this->em->getRepository(Semester::class)
                 ->findCurrentSemester();
 
             // Send new user code only if assistant history is added to current semester

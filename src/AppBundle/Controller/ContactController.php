@@ -3,39 +3,44 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\SupportTicketType;
 use AppBundle\Service\GeoLocation;
 use AppBundle\Service\LogService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends BaseController
 {
 
     /**
-     * @Route("/kontakt/avdeling/{id}", name="contact_department")
-     * @Route("/kontakt", name="contact")
-     * @Method({"GET", "POST"})
+     * @Route("/kontakt/avdeling/{id}",
+     *     name="contact_department",
+     *     methods={"GET", "POST"})
+     *
+     * @Route("/kontakt",
+     *     name="contact",
+     *     methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param Department $department
+     * @param Department|null $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request, Department $department = null)
     {
         if ($department === null) {
             $department = $this->get(GeoLocation::class)
-                ->findNearestDepartment($this->getDoctrine()->getRepository('AppBundle:Department')->findAll());
+                ->findNearestDepartment($this->getDoctrine()->getRepository(Department::class)->findAll());
         }
 
         $supportTicket = new SupportTicket();
         $supportTicket->setDepartment($department);
         $form = $this->createForm(SupportTicketType::class, $supportTicket, array(
-            'department_repository' => $this->getDoctrine()->getRepository('AppBundle:Department'),
+            'department_repository' => $this->getDoctrine()->getRepository(Department::class),
         ));
 
         $form->handleRequest($request);
@@ -49,7 +54,7 @@ class ContactController extends BaseController
             return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));
         }
 
-        $board = $this->getDoctrine()->getRepository('AppBundle:ExecutiveBoard')->findBoard();
+        $board = $this->getDoctrine()->getRepository(ExecutiveBoard::class)->findBoard();
         $scrollToForm = $form->isSubmitted() && !$form->isValid();
 
         return $this->render('contact/index.html.twig', array(

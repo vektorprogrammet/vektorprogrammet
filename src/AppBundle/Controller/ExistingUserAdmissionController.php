@@ -2,25 +2,31 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\Team;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
 use AppBundle\Service\ApplicationAdmission;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ExistingUserAdmissionController extends BaseController
 {
     /**
-     * @Route("/eksisterendeopptak", name="admission_existing_user")
-     * @Method({"GET", "POST"})
+     * @Route("/eksisterendeopptak",
+     *     name="admission_existing_user",
+     *     methods={"GET", "POST"}
+     * )
      *
      * @param Request $request
      *
-     * @return null|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return null|RedirectResponse|Response
      * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function showAction(Request $request)
     {
@@ -32,7 +38,7 @@ class ExistingUserAdmissionController extends BaseController
         }
 
         $department = $user->getDepartment();
-        $teams = $em->getRepository('AppBundle:Team')->findActiveByDepartment($department);
+        $teams = $em->getRepository(Team::class)->findActiveByDepartment($department);
 
         $application = $admissionManager->createApplicationForExistingAssistant($user);
 
@@ -52,7 +58,7 @@ class ExistingUserAdmissionController extends BaseController
             return $this->redirectToRoute('my_page');
         }
 
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
 
         return $this->render(':admission:existingUser.html.twig', array(
             'form' => $form->createView(),

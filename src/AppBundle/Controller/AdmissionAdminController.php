@@ -2,15 +2,22 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\Team;
+use AppBundle\Entity\TeamInterest;
+use AppBundle\Entity\User;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\InterviewCounter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -24,7 +31,7 @@ class AdmissionAdminController extends BaseController
      * This works as the restricted admission management method, only allowing users to manage applications within their department.
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Request $request)
     {
@@ -34,7 +41,7 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showNewApplicationsAction(Request $request)
     {
@@ -42,7 +49,7 @@ class AdmissionAdminController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
 
         $admissionPeriod = $this->getDoctrine()
-                ->getRepository('AppBundle:AdmissionPeriod')
+                ->getRepository(AdmissionPeriod::class)
                 ->findOneByDepartmentAndSemester($department, $semester);
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
@@ -52,7 +59,7 @@ class AdmissionAdminController extends BaseController
         $applications = [];
         if ($admissionPeriod !== null) {
             $applications = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findNewApplicationsByAdmissionPeriod($admissionPeriod);
         }
 
@@ -66,19 +73,19 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showAssignedApplicationsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 
-        $applicationRepo = $this->getDoctrine()->getRepository('AppBundle:Application');
+        $applicationRepo = $this->getDoctrine()->getRepository(Application::class);
 
         $applications = [];
         $interviewDistributions = [];
@@ -106,13 +113,13 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showInterviewedApplicationsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
@@ -121,7 +128,7 @@ class AdmissionAdminController extends BaseController
         $applications = [];
         if ($admissionPeriod !== null) {
             $applications = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findInterviewedApplicants($admissionPeriod);
         }
 
@@ -140,13 +147,13 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showExistingApplicationsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
@@ -155,7 +162,7 @@ class AdmissionAdminController extends BaseController
         $applications = [];
         if ($admissionPeriod !== null) {
             $applications = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findExistingApplicants($admissionPeriod);
         }
 
@@ -191,7 +198,7 @@ class AdmissionAdminController extends BaseController
      * @Route("/kontrollpanel/application/existing/delete/{id}", name="delete_application_existing_user")
      * @param Application $application
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteApplicationExistingAssistantAction(Application $application)
     {
@@ -218,13 +225,14 @@ class AdmissionAdminController extends BaseController
     public function bulkDeleteApplicationAction(Request $request)
     {
         // Get the ids from the form
-        $applicationIds = $request->request->get('application')['id'];
+        $applicationIds = array_map('intval', $request->request->get('application')['id']);
+
 
         $em = $this->getDoctrine()->getManager();
 
         // Delete the applications
         foreach ($applicationIds as $id) {
-            $application = $this->getDoctrine()->getRepository('AppBundle:Application')->find($id);
+            $application = $this->getDoctrine()->getRepository(Application::class)->find($id);
 
             if ($application !== null) {
                 $em->remove($application);
@@ -244,9 +252,9 @@ class AdmissionAdminController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
-        $currentSemester = $em->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $currentSemester = $em->getRepository(Semester::class)->findCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
-            ->getRepository('AppBundle:AdmissionPeriod')
+            ->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $currentSemester);
         if ($admissionPeriod === null) {
             throw new BadRequestHttpException();
@@ -260,7 +268,7 @@ class AdmissionAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isValid()) {
-            $user = $em->getRepository('AppBundle:User')->findOneBy(array('email' => $application->getUser()->getEmail()));
+            $user = $em->getRepository(User::class)->findOneBy(array('email' => $application->getUser()->getEmail()));
             if ($user !== null) {
                 $application->setUser($user);
             }
@@ -295,14 +303,14 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showTeamInterestAction(Request $request)
     {
         $user = $this->getUser();
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository('AppBundle:AdmissionPeriod')
+        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
 
         if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $department) {
@@ -313,13 +321,13 @@ class AdmissionAdminController extends BaseController
         $teams = [];
         if ($admissionPeriod !== null) {
             $applicationsWithTeamInterest = $this->getDoctrine()
-                ->getRepository('AppBundle:Application')
+                ->getRepository(Application::class)
                 ->findApplicationByTeamInterestAndAdmissionPeriod($admissionPeriod);
-            $teams = $this->getDoctrine()->getRepository('AppBundle:Team')->findByTeamInterestAndAdmissionPeriod($admissionPeriod);
+            $teams = $this->getDoctrine()->getRepository(Team::class)->findByTeamInterestAndAdmissionPeriod($admissionPeriod);
         }
 
         $possibleApplicants = $this->getDoctrine()
-            ->getRepository('AppBundle:TeamInterest')
+            ->getRepository(TeamInterest::class)
             ->findBy(array('semester' => $semester, 'department' => $department));
 
         return $this->render('admission_admin/teamInterest.html.twig', array(

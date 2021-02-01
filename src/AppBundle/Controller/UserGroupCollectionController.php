@@ -2,11 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\UserGroupCollectionType;
 use AppBundle\Service\UserGroupCollectionManager;
+use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use UnexpectedValueException;
 
 class UserGroupCollectionController extends BaseController
 {
@@ -19,7 +22,7 @@ class UserGroupCollectionController extends BaseController
 
         $em = $this->getDoctrine()->getManager();
         $bolkNames = $em
-            ->getRepository('AppBundle:AssistantHistory')
+            ->getRepository(AssistantHistory::class)
             ->findAllBolkNames();
 
 
@@ -41,10 +44,10 @@ class UserGroupCollectionController extends BaseController
                 $this->get(UserGroupCollectionManager::class)->initializeUserGroupCollection($userGroupCollection);
                 $this->addFlash("success", "Brukergruppering laget");
                 return $this->redirect($this->generateUrl('usergroup_collections'));
-            } catch (\InvalidArgumentException $e) {
+            } catch (InvalidArgumentException $e) {
                 $this->addFlash("danger", $e->getMessage());
                 return $this->redirect($this->generateUrl('usergroup_collection_create'));
-            } catch (\UnexpectedValueException $e) {
+            } catch (UnexpectedValueException $e) {
                 $this->addFlash("danger", $e->getMessage());
                 return $this->redirect($this->generateUrl('usergroup_collection_create'));
             }

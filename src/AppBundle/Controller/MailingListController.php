@@ -4,8 +4,10 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use AppBundle\Form\Type\GenerateMailingListType;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class MailingListController extends BaseController
@@ -13,7 +15,7 @@ class MailingListController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Request $request)
     {
@@ -54,13 +56,13 @@ class MailingListController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAssistantsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')
+        $users = $this->getDoctrine()->getRepository(User::class)
             ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
@@ -70,13 +72,13 @@ class MailingListController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showTeamAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $users = $this->getDoctrine()->getRepository('AppBundle:User')
+        $users = $this->getDoctrine()->getRepository(User::class)
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
@@ -86,15 +88,15 @@ class MailingListController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAllAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $assistantUsers = $this->getDoctrine()->getRepository('AppBundle:User')
+        $assistantUsers = $this->getDoctrine()->getRepository(User::class)
             ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
-        $teamUsers = $this->getDoctrine()->getRepository('AppBundle:User')
+        $teamUsers = $this->getDoctrine()->getRepository(User::class)
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $users = array_unique(array_merge($assistantUsers, $teamUsers));
 

@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
+use Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\InterviewSchema;
 use AppBundle\Form\Type\InterviewSchemaType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -21,7 +24,7 @@ class InterviewSchemaController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function createSchemaAction(Request $request)
     {
@@ -37,7 +40,7 @@ class InterviewSchemaController extends BaseController
      * @param Request         $request
      * @param InterviewSchema $schema
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      */
     public function editSchemaAction(Request $request, InterviewSchema $schema)
     {
@@ -61,11 +64,11 @@ class InterviewSchemaController extends BaseController
     /**
      * Shows the interview schemas page.
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showSchemasAction()
     {
-        $schemas = $this->getDoctrine()->getRepository('AppBundle:InterviewSchema')->findAll();
+        $schemas = $this->getDoctrine()->getRepository(InterviewSchema::class)->findAll();
 
         return $this->render('interview/schemas.html.twig', array('schemas' => $schemas));
     }
@@ -91,7 +94,7 @@ class InterviewSchemaController extends BaseController
                 $response['success'] = false;
                 $response['cause'] = 'Ikke tilstrekkelig rettigheter';
             }
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             $response = ['success' => false,
                 'code' => $e->getCode(),
                 'cause' => 'Det oppstod en feil.',

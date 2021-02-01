@@ -62,7 +62,7 @@ class ChangeLogController extends BaseController
     public function showAction()
     {
         $em = $this->getDoctrine()->getManager();
-        $changeLogItems = $em->getRepository('AppBundle:ChangeLogItem')->findAllOrderedByDate();
+        $changeLogItems = $em->getRepository(ChangeLogItem::class)->findAllOrderedByDate();
         $changeLogItems = array_reverse($changeLogItems);
 
         return $this->render('changelog/changelog_show_all.html.twig', array('changeLogItems' => $changeLogItems));

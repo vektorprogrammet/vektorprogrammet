@@ -17,7 +17,7 @@ class SlugMaker
 
     public function setSlugFor(Article $article)
     {
-        $slugs = $this->em->getRepository('AppBundle:Article')->findSlugs();
+        $slugs = $this->em->getRepository(Article::class)->findSlugs();
 
         $slug = strtolower(trim(preg_replace('/[^A-Za-z0-9-]+/', '-', $this->replaceCharacters($article->getTitle()))));
         $i = 2;
@@ -34,8 +34,6 @@ class SlugMaker
     {
         $a = array('Æ', 'Ø', 'Å', 'æ', 'ø', 'å', '&shy;', '-', '!', ',', '.');
         $b = array('AE', 'O', 'A', 'ae', 'o', 'a', '', '', '', '', '', '');
-        $newString = str_replace($a, $b, $string);
-
-        return $newString;
+        return str_replace($a, $b, $string);
     }
 }

@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Command;
 
+use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
@@ -78,14 +79,14 @@ class RoleManagerTest extends KernelTestCase
     private function updateAllUserRoles()
     {
         foreach ($this->mockUsers as $mockUser) {
-            $user = $this->em->getRepository('AppBundle:User')->findUserByEmail($mockUser->getEmail());
+            $user = $this->em->getRepository(User::class)->findUserByEmail($mockUser->getEmail());
             $this->roleManager->updateUserRole($user);
         }
     }
 
     private function assertThatUserWithEmailHasRole(string $email, string $role)
     {
-        $user = $this->em->getRepository('AppBundle:User')->findUserByEmail($email);
+        $user = $this->em->getRepository(User::class)->findUserByEmail($email);
         $this->assertEquals($role, current($user->getRoles())->getRole());
     }
 }

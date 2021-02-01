@@ -8,6 +8,7 @@ use AppBundle\Entity\UnhandledAccessRule;
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -41,7 +42,7 @@ class AccessControlService
 
     private function preloadCache()
     {
-        $accessRules = $this->entityManager->getRepository('AppBundle:AccessRule')->findAll();
+        $accessRules = $this->entityManager->getRepository(AccessRule::class)->findAll();
         foreach ($accessRules as $rule) {
             $key = $this->getKey($rule->getResource(), $rule->getMethod());
             if (!key_exists($key, $this->accessRulesCache)) {
@@ -50,7 +51,7 @@ class AccessControlService
             $this->accessRulesCache[$key][] = $rule;
         }
 
-        $unhandledRules = $this->entityManager->getRepository('AppBundle:UnhandledAccessRule')->findAll();
+        $unhandledRules = $this->entityManager->getRepository(UnhandledAccessRule::class)->findAll();
         foreach ($unhandledRules as $rule) {
             $key = $this->getKey($rule->getResource(), $rule->getMethod());
             if (!key_exists($key, $this->unhandledRulesCache)) {
@@ -63,7 +64,7 @@ class AccessControlService
     public function createRule(AccessRule $accessRule)
     {
         $em             = $this->entityManager;
-        $unhandledRules = $em->getRepository('AppBundle:UnhandledAccessRule')->findByResourceAndMethod($accessRule->getResource(), $accessRule->getMethod());
+        $unhandledRules = $em->getRepository(UnhandledAccessRule::class)->findByResourceAndMethod($accessRule->getResource(), $accessRule->getMethod());
         foreach ($unhandledRules as $unhandledRule) {
             $em->remove($unhandledRule);
         }
@@ -87,7 +88,7 @@ class AccessControlService
         }
 
         if (! is_array($resources)) {
-            throw new \InvalidArgumentException();
+            throw new InvalidArgumentException();
         }
 
         foreach ($resources as $resource => $method) {

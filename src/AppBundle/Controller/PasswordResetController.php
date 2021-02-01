@@ -2,11 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\PasswordReset;
 use AppBundle\Service\LogService;
 use AppBundle\Service\PasswordManager;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\NewPasswordType;
 use AppBundle\Form\Type\PasswordResetType;
+use Symfony\Component\HttpFoundation\Response;
 
 /**
  * Class PasswordResetController.
@@ -16,7 +19,7 @@ class PasswordResetController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      *
      * Shows the request new password page
      */
@@ -46,7 +49,7 @@ class PasswordResetController extends BaseController
                 $this->get(LogService::class)->notice("Password reset rejected: Someone tried to reset the password for an inactive account: $email");
             } else {
                 $this->get(LogService::class)->info("{$passwordReset->getUser()} requested a password reset");
-                $oldPasswordResets = $this->getDoctrine()->getRepository('AppBundle:PasswordReset')->findByUser($passwordReset->getUser());
+                $oldPasswordResets = $this->getDoctrine()->getRepository(PasswordReset::class)->findByUser($passwordReset->getUser());
                 $em = $this->getDoctrine()->getManager();
 
                 foreach ($oldPasswordResets as $oldPasswordReset) {
@@ -74,7 +77,7 @@ class PasswordResetController extends BaseController
      * @param $resetCode
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      *
      * This function resets stores the new password when the user goes to the url for resetting the password
      */

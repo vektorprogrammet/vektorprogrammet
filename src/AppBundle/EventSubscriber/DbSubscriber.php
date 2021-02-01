@@ -8,6 +8,7 @@ use AppBundle\Entity\InterviewQuestion;
 use AppBundle\Entity\InterviewQuestionAlternative;
 use AppBundle\Entity\InterviewScore;
 use AppBundle\Entity\PasswordReset;
+use AppBundle\Entity\Role;
 use AppBundle\Entity\SurveyAnswer;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Entity\SurveyQuestionAlternative;
@@ -77,7 +78,7 @@ class DbSubscriber implements EventSubscriber
             return;
         }
 
-        $defaultRole = $this->manager->getRepository('AppBundle:Role')->findByRoleName(Roles::ASSISTANT);
+        $defaultRole = $this->manager->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
         $user->addRole($defaultRole);
     }
 

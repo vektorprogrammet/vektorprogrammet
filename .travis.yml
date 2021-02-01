@@ -7,6 +7,7 @@ node_js:
   - 10
 
 before_script:
+  - composer self-update --rollback
   - composer install
 
 script:

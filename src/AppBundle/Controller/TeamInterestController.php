@@ -2,33 +2,37 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Semester;
 use AppBundle\Event\TeamInterestCreatedEvent;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterest;
 use AppBundle\Form\Type\TeamInterestType;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TeamInterestController extends BaseController
 {
 
     /**
-     * @Route(name="team_interest_form", path="/teaminteresse/{id}",
-     *      requirements={"id"="\d+"})
-     * @Method({"GET","POST"})
+     * @Route(name="team_interest_form",
+     *     path="/teaminteresse/{id}",
+     *     requirements={"id"="\d+"},
+     *     methods={"GET", "POST"}
+     * )
      *
-     * @param \AppBundle\Entity\Department|NULL $department
-     * @param \Symfony\Component\HttpFoundation\Request $request
+     * @param Department|NULL $department
+     * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     * @return RedirectResponse|Response
      * @throws \Doctrine\ORM\NoResultException
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function showTeamInterestFormAction(Department $department, Request $request)
     {
-        $semester = $this->getDoctrine()->getRepository('AppBundle:Semester')->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
         if ($semester === null) {
             throw new BadRequestHttpException('No current semester');
         }

@@ -2,6 +2,7 @@
 
 namespace Tests\AppBundle\Controller;
 
+use AppBundle\Entity\User;
 use Tests\BaseWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 
@@ -38,7 +39,7 @@ class MailingListControllerTest extends BaseWebTestCase
         $client->followRedirect();
         $this->assertTrue($client->getResponse()->isSuccessful());
 
-        $user = $this->em->getRepository('AppBundle:User')->find($userID);
+        $user = $this->em->getRepository(User::class)->find($userID);
         $this->assertNotNull($user);
         $userEmailLength = strlen($user->getCompanyEmail());
 
