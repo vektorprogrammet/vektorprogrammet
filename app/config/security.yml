@@ -41,6 +41,7 @@ security:
             provider: chain_provider
         admin_area:
             pattern:    ^/admin
+            logout_on_user_change: true
             http_basic: ~
             provider: chain_provider
         secured_area:
@@ -63,6 +64,7 @@ security:
             logout:
                 path:  /logout
                 target:  /
+            logout_on_user_change: true
 
 
     # with these settings you can restrict or allow access for different parts
