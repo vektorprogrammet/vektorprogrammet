@@ -7,6 +7,7 @@ use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
+use Exception;
 
 class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterface
 {
@@ -25,7 +26,7 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
      * Load data fixtures with the passed EntityManager
      *
      * @param ObjectManager $manager
-     * @throws \Exception
+     * @throws Exception
      */
     public function load(ObjectManager $manager)
     {

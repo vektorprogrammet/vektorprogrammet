@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -39,7 +41,7 @@ class InterviewSchema
      */
     public function __construct()
     {
-        $this->interviewQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->interviewQuestions = new ArrayCollection();
     }
 
     /**
@@ -55,11 +57,11 @@ class InterviewSchema
     /**
      * Add questions.
      *
-     * @param \AppBundle\Entity\InterviewQuestion $questions
+     * @param InterviewQuestion $questions
      *
      * @return InterviewSchema
      */
-    public function addInterviewQuestion(\AppBundle\Entity\InterviewQuestion $questions)
+    public function addInterviewQuestion(InterviewQuestion $questions)
     {
         $this->interviewQuestions[] = $questions;
 
@@ -69,7 +71,7 @@ class InterviewSchema
     /**
      * Remove questions.
      *
-     * @param \AppBundle\Entity\InterviewQuestion $questions
+     * @param InterviewQuestion $questions
      */
     public function removeInterviewQuestion(InterviewQuestion $questions)
     {
@@ -79,7 +81,7 @@ class InterviewSchema
     /**
      * Get questions.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getInterviewQuestions()
     {

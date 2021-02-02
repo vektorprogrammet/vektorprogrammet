@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * ArticleRepository.
@@ -120,7 +121,7 @@ class ArticleRepository extends EntityRepository
     /**
      * Finds all articles ordered descending by date created.
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function findAllArticles()
     {
@@ -143,7 +144,7 @@ class ArticleRepository extends EntityRepository
      *
      * @param $departments
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function findAllArticlesByDepartments($departments)
     {

@@ -94,11 +94,11 @@ class FieldOfStudy
     /**
      * Set department.
      *
-     * @param \AppBundle\Entity\Department $department
+     * @param Department $department
      *
      * @return FieldOfStudy
      */
-    public function setDepartment(\AppBundle\Entity\Department $department = null)
+    public function setDepartment(Department $department = null)
     {
         $this->department = $department;
 
@@ -108,7 +108,7 @@ class FieldOfStudy
     /**
      * Get department.
      *
-     * @return \AppBundle\Entity\Department
+     * @return Department
      */
     public function getDepartment()
     {

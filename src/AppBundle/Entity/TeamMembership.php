@@ -104,11 +104,11 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return TeamMembership
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -118,7 +118,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser(): User
     {
@@ -128,11 +128,11 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Set team.
      *
-     * @param \AppBundle\Entity\Team $team
+     * @param Team $team
      *
      * @return TeamMembership
      */
-    public function setTeam(\AppBundle\Entity\Team $team = null)
+    public function setTeam(Team $team = null)
     {
         $this->team = $team;
 
@@ -142,7 +142,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Get team.
      *
-     * @return \AppBundle\Entity\Team
+     * @return Team
      */
     public function getTeam()
     {
@@ -153,11 +153,11 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Set position.
      *
-     * @param \AppBundle\Entity\Position $position
+     * @param Position $position
      *
      * @return TeamMembership
      */
-    public function setPosition(\AppBundle\Entity\Position $position = null)
+    public function setPosition(Position $position = null)
     {
         $this->position = $position;
 
@@ -177,7 +177,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Set startSemester.
      *
-     * @param \AppBundle\Entity\Semester $startSemester
+     * @param Semester $startSemester
      *
      * @return TeamMembership
      */
@@ -191,7 +191,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Get startSemester.
      *
-     * @return \AppBundle\Entity\Semester
+     * @return Semester
      */
     public function getStartSemester()
     {
@@ -201,7 +201,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Set endSemester.
      *
-     * @param \AppBundle\Entity\Semester $endSemester
+     * @param Semester $endSemester
      *
      * @return TeamMembership
      */
@@ -215,7 +215,7 @@ class TeamMembership implements TeamMembershipInterface
     /**
      * Get endSemester.
      *
-     * @return \AppBundle\Entity\Semester
+     * @return Semester
      */
     public function getEndSemester()
     {

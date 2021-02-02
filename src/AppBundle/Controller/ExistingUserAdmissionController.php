@@ -25,7 +25,7 @@ class ExistingUserAdmissionController extends BaseController
      * @param Request $request
      *
      * @return null|RedirectResponse|Response
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      * @throws NonUniqueResultException
      */
     public function showAction(Request $request)

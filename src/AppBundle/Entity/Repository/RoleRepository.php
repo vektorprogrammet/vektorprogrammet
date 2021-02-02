@@ -4,6 +4,8 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Role;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class RoleRepository extends EntityRepository
 {
@@ -12,8 +14,8 @@ class RoleRepository extends EntityRepository
      *
      * @return Role
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function findByRoleName(string $roleName): Role
     {

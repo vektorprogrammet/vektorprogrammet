@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Validator\Constraints as CustomAssert;
@@ -59,7 +60,7 @@ class InfoMeeting
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {
@@ -67,7 +68,7 @@ class InfoMeeting
     }
 
     /**
-     * @param \DateTime $date
+     * @param DateTime $date
      */
     public function setDate($date)
     {

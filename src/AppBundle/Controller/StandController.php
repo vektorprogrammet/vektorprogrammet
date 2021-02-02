@@ -6,6 +6,7 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Application;
 use AppBundle\Service\AdmissionStatistics;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,7 +19,7 @@ class StandController extends BaseController
      *
      * @param Request $request
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function indexAction(Request $request)
     {

@@ -6,11 +6,13 @@ use AppBundle\Entity\Semester;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use AppBundle\Utils\SemesterUtil;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\QueryBuilder;
 
 class SemesterRepository extends EntityRepository
 {
     /**
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     public function queryForAllSemestersOrderedByAge()
     {
@@ -28,7 +30,7 @@ class SemesterRepository extends EntityRepository
     /**
      * @return Semester
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findCurrentSemester()
     {
@@ -50,7 +52,7 @@ class SemesterRepository extends EntityRepository
      * @param string $semesterTime
      * @param string $year
      * @return Semester|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findByTimeAndYear(string $semesterTime, string $year) : ? Semester
     {
@@ -69,7 +71,7 @@ class SemesterRepository extends EntityRepository
     /**
      * @param Semester $semester
      * @return Semester|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function getNextActive(Semester $semester): ? Semester
     {

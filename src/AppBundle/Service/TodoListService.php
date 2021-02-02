@@ -12,6 +12,9 @@ use AppBundle\Entity\TodoMandatory;
 use AppBundle\Entity\TodoDeadline;
 use AppBundle\Entity\TodoCompleted;
 use AppBundle\Model\TodoItemInfo;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 
 class TodoListService
 {
@@ -36,7 +39,7 @@ class TodoListService
      * @param TodoItem $item
      * @param Department $department
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function itemHasDeadlineThisSemesterByDepartment(TodoItem $item, Department $department)
     {
@@ -97,7 +100,7 @@ class TodoListService
     /**
      * @param TodoItem $a
      * @return bool
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function hasDeadLineShortly(TodoItem $a)
     {
@@ -160,8 +163,8 @@ class TodoListService
     /**
      * @param TodoItemInfo $itemInfo
      * @param EntityManagerInterface $em
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function generateEntities(TodoItemInfo $itemInfo)
     {
@@ -207,8 +210,8 @@ class TodoListService
     /**
      * @param TodoItemInfo $itemInfo
      * @param Semester $semester
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function editEntities(TodoItemInfo $itemInfo, Semester $semester)
     {
@@ -319,8 +322,8 @@ class TodoListService
      * @param TodoItem $item
      * @param Semester $semester
      * @param Department $department
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function completedItem(TodoItem $item, Semester $semester, Department $department)
     {
@@ -341,8 +344,8 @@ class TodoListService
      * @param Semester $semester
      * @param Department $department
      * @return bool
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function toggleCompletedItem(TodoItem $item, Semester $semester, Department $department)
     {

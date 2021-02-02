@@ -73,11 +73,11 @@ class InterviewAnswer
     /**
      * Set interview.
      *
-     * @param \AppBundle\Entity\Interview $interview
+     * @param Interview $interview
      *
      * @return InterviewAnswer
      */
-    public function setInterview(\AppBundle\Entity\Interview $interview = null)
+    public function setInterview(Interview $interview = null)
     {
         $this->interview = $interview;
 
@@ -87,7 +87,7 @@ class InterviewAnswer
     /**
      * Get interview.
      *
-     * @return \AppBundle\Entity\Interview
+     * @return Interview
      */
     public function getInterview()
     {
@@ -97,11 +97,11 @@ class InterviewAnswer
     /**
      * Set interviewQuestion.
      *
-     * @param \AppBundle\Entity\InterviewQuestion $interviewQuestion
+     * @param InterviewQuestion $interviewQuestion
      *
      * @return InterviewAnswer
      */
-    public function setInterviewQuestion(\AppBundle\Entity\InterviewQuestion $interviewQuestion = null)
+    public function setInterviewQuestion(InterviewQuestion $interviewQuestion = null)
     {
         $this->interviewQuestion = $interviewQuestion;
 
@@ -111,7 +111,7 @@ class InterviewAnswer
     /**
      * Get interviewQuestion.
      *
-     * @return \AppBundle\Entity\InterviewQuestion
+     * @return InterviewQuestion
      */
     public function getInterviewQuestion()
     {

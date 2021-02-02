@@ -73,7 +73,7 @@ class Semester implements PeriodInterface
      *
      * @return DateTime
      */
-    public function getStartDate(): \DateTime
+    public function getStartDate(): DateTime
     {
         $startMonth = $this->semesterTime == 'Vår' ? '01' : '08';
         return date_create($this->year.'-'.$startMonth.'-01 00:00:00');
@@ -85,7 +85,7 @@ class Semester implements PeriodInterface
      *
      * @return DateTime
      */
-    public function getEndDate(): \DateTime
+    public function getEndDate(): DateTime
     {
         $endMonth = $this->semesterTime == 'Vår' ? '07' : '12';
         return date_create($this->year.'-'.$endMonth.'-31 23:59:59');

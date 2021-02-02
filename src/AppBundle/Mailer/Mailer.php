@@ -4,13 +4,14 @@ namespace AppBundle\Mailer;
 
 use AppBundle\Google\Gmail;
 use AppBundle\Service\SlackMailer;
+use Swift_Mailer;
 use Swift_Message;
 
 class Mailer implements MailerInterface
 {
     private $mailer;
 
-    public function __construct(string $env, Gmail $gmail, \Swift_Mailer $swiftMailer, SlackMailer $slackMailer)
+    public function __construct(string $env, Gmail $gmail, Swift_Mailer $swiftMailer, SlackMailer $slackMailer)
     {
         if ($env === 'prod') {
             $this->mailer = $gmail;

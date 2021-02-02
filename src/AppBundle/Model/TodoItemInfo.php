@@ -7,6 +7,7 @@ use AppBundle\Entity\Semester;
 use AppBundle\Entity\TodoDeadline;
 use AppBundle\Entity\TodoItem;
 use AppBundle\Entity\TodoMandatory;
+use DateTime;
 
 class TodoItemInfo
 {
@@ -120,18 +121,18 @@ class TodoItemInfo
     }
 
     /**
-     * @return \DateTime
+     * @return DateTime
      */
-    public function getDeadlineDate(): ?\DateTime
+    public function getDeadlineDate(): ?DateTime
     {
         return $this->deadlineDate;
     }
 
     /**
-     * @param \DateTime $deadlineDate
+     * @param DateTime $deadlineDate
      * @return TodoItemInfo
      */
-    public function setDeadlineDate(\DateTime $deadlineDate = null): TodoItemInfo
+    public function setDeadlineDate(DateTime $deadlineDate = null): TodoItemInfo
     {
         $this->deadlineDate = $deadlineDate;
         return $this;

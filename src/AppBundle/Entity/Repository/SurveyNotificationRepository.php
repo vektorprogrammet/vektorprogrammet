@@ -4,6 +4,7 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\SurveyNotification;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 class SurveyNotificationRepository extends EntityRepository
 {
@@ -11,7 +12,7 @@ class SurveyNotificationRepository extends EntityRepository
     /**
      * @param string $identifier
      * @return SurveyNotification?
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findByUserIdentifier(string $identifier) : ?SurveyNotification
     {

@@ -2,7 +2,9 @@
 
 namespace AppBundle\AssistantScheduling;
 
-class School implements \JsonSerializable
+use JsonSerializable;
+
+class School implements JsonSerializable
 {
     /**
      * @var int

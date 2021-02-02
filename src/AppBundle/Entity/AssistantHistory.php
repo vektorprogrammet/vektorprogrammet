@@ -74,11 +74,11 @@ class AssistantHistory
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return AssistantHistory
      */
-    public function setUser(\AppBundle\Entity\User $user = null)
+    public function setUser(User $user = null)
     {
         $this->user = $user;
 
@@ -88,7 +88,7 @@ class AssistantHistory
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -98,11 +98,11 @@ class AssistantHistory
     /**
      * Set semester.
      *
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      *
      * @return AssistantHistory
      */
-    public function setSemester(\AppBundle\Entity\Semester $semester = null)
+    public function setSemester(Semester $semester = null)
     {
         $this->semester = $semester;
 
@@ -112,7 +112,7 @@ class AssistantHistory
     /**
      * Get semester.
      *
-     * @return \AppBundle\Entity\Semester
+     * @return Semester
      */
     public function getSemester()
     {
@@ -141,11 +141,11 @@ class AssistantHistory
     /**
      * Set school.
      *
-     * @param \AppBundle\Entity\School $school
+     * @param School $school
      *
      * @return AssistantHistory
      */
-    public function setSchool(\AppBundle\Entity\School $school = null)
+    public function setSchool(School $school = null)
     {
         $this->school = $school;
 
@@ -155,7 +155,7 @@ class AssistantHistory
     /**
      * Get school.
      *
-     * @return \AppBundle\Entity\School
+     * @return School
      */
     public function getSchool()
     {

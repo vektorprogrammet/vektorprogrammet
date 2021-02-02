@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -38,7 +39,7 @@ class TodoDeadline
     private $id;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="deadDate", type="date")
      */
@@ -58,7 +59,7 @@ class TodoDeadline
     /**
      * Set deadDate
      *
-     * @param \DateTime $deadDate
+     * @param DateTime $deadDate
      * @return TodoDeadline
      */
     public function setDeadDate($deadDate)
@@ -71,7 +72,7 @@ class TodoDeadline
     /**
      * Get deadDate
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDeadDate()
     {

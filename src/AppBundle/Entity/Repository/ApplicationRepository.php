@@ -8,6 +8,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\User;
 use AppBundle\Type\InterviewStatusType;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * ApplicationInfoRepository.
@@ -23,7 +24,7 @@ class ApplicationRepository extends EntityRepository
      * @param AdmissionPeriod $admissionPeriod
      *
      * @return Application|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findByUserInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {
@@ -42,7 +43,7 @@ class ApplicationRepository extends EntityRepository
      *
      * @return Application|null
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findActiveByUser(User $user)
     {

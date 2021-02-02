@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -29,7 +30,7 @@ class TodoCompleted
     private $todoItem;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="completedAt", type="date")
      */
@@ -63,7 +64,7 @@ class TodoCompleted
     /**
      * Set completedAt
      *
-     * @param \DateTime $completedAt
+     * @param DateTime $completedAt
      * @return TodoCompleted
      */
     public function setCompletedAt($completedAt)
@@ -75,7 +76,7 @@ class TodoCompleted
     /**
      * Get completedAt
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getCompletedAt()
     {
