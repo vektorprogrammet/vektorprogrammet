@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -48,7 +49,7 @@ class ChangeLogItem
     private $githubLink;
 
     /**
-     * @var \DateTime
+     * @var DateTime
      *
      * @ORM\Column(name="date", type="datetime")
      */
@@ -140,7 +141,7 @@ class ChangeLogItem
     /**
      * Set date.
      *
-     * @param \DateTime $date
+     * @param DateTime $date
      *
      * @return ChangeLogItem
      */
@@ -154,7 +155,7 @@ class ChangeLogItem
     /**
      * Get date.
      *
-     * @return \DateTime
+     * @return DateTime
      */
     public function getDate()
     {

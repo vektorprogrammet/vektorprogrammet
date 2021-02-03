@@ -165,7 +165,7 @@ class Feedback
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return Feedback
      */
@@ -179,7 +179,7 @@ class Feedback
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {

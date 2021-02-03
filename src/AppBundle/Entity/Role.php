@@ -94,11 +94,11 @@ class Role extends SymfonyRole
     /**
      * Add users.
      *
-     * @param \AppBundle\Entity\User $users
+     * @param User $users
      *
      * @return Role
      */
-    public function addUser(\AppBundle\Entity\User $users)
+    public function addUser(User $users)
     {
         $this->users[] = $users;
 
@@ -108,9 +108,9 @@ class Role extends SymfonyRole
     /**
      * Remove users.
      *
-     * @param \AppBundle\Entity\User $users
+     * @param User $users
      */
-    public function removeUser(\AppBundle\Entity\User $users)
+    public function removeUser(User $users)
     {
         $this->users->removeElement($users);
     }

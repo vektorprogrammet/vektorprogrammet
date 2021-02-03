@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -281,11 +282,11 @@ class Article
     /**
      * Add departments.
      *
-     * @param \AppBundle\Entity\Department $departments
+     * @param Department $departments
      *
      * @return Article
      */
-    public function addDepartment(\AppBundle\Entity\Department $departments)
+    public function addDepartment(Department $departments)
     {
         $this->departments[] = $departments;
 
@@ -295,9 +296,9 @@ class Article
     /**
      * Remove departments.
      *
-     * @param \AppBundle\Entity\Department $departments
+     * @param Department $departments
      */
-    public function removeDepartment(\AppBundle\Entity\Department $departments)
+    public function removeDepartment(Department $departments)
     {
         $this->departments->removeElement($departments);
     }
@@ -305,7 +306,7 @@ class Article
     /**
      * Get departments.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getDepartments()
     {
@@ -315,11 +316,11 @@ class Article
     /**
      * Set author.
      *
-     * @param \AppBundle\Entity\User $author
+     * @param User $author
      *
      * @return Article
      */
-    public function setAuthor(\AppBundle\Entity\User $author = null)
+    public function setAuthor(User $author = null)
     {
         $this->author = $author;
 
@@ -329,7 +330,7 @@ class Article
     /**
      * Get author.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getAuthor()
     {

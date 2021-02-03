@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -81,7 +83,7 @@ class InterviewQuestion
      */
     public function __construct()
     {
-        $this->alternatives = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->alternatives = new ArrayCollection();
     }
 
     /**
@@ -135,11 +137,11 @@ class InterviewQuestion
     /**
      * Add alternatives.
      *
-     * @param \AppBundle\Entity\InterviewQuestionAlternative $alternatives
+     * @param InterviewQuestionAlternative $alternatives
      *
      * @return InterviewQuestion
      */
-    public function addAlternative(\AppBundle\Entity\InterviewQuestionAlternative $alternatives)
+    public function addAlternative(InterviewQuestionAlternative $alternatives)
     {
         $this->alternatives[] = $alternatives;
 
@@ -151,9 +153,9 @@ class InterviewQuestion
     /**
      * Remove alternatives.
      *
-     * @param \AppBundle\Entity\InterviewQuestionAlternative $alternatives
+     * @param InterviewQuestionAlternative $alternatives
      */
-    public function removeAlternative(\AppBundle\Entity\InterviewQuestionAlternative $alternatives)
+    public function removeAlternative(InterviewQuestionAlternative $alternatives)
     {
         $this->alternatives->removeElement($alternatives);
 
@@ -163,7 +165,7 @@ class InterviewQuestion
     /**
      * Get alternatives.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getAlternatives()
     {

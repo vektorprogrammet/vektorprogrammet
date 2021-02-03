@@ -4,6 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
 use AppBundle\Role\Roles;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SecurityController extends BaseController
 {
@@ -28,8 +30,8 @@ class SecurityController extends BaseController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return RedirectResponse
+     * @throws NonUniqueResultException
      */
     public function loginRedirectAction()
     {

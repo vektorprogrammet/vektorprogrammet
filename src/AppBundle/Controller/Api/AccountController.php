@@ -5,6 +5,8 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\BaseController;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\User;
+use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -21,8 +23,8 @@ class AccountController extends BaseController
      * @param Request $request
      *
      * @return Response
-     * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws InvalidClassConstructorException
+     * @throws NonUniqueResultException
      */
     public function loginAction(Request $request)
     {
@@ -68,7 +70,7 @@ class AccountController extends BaseController
      * @Route("api/account/user")
      *
      * @return Response
-     * @throws \BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException
+     * @throws InvalidClassConstructorException
      */
     public function getUserAction()
     {

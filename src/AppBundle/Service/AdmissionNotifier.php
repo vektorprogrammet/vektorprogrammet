@@ -11,6 +11,8 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
@@ -107,8 +109,8 @@ class AdmissionNotifier
      * @param Semester $semester
      * @param Department $department
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     private function sendAdmissionNotification(AdmissionSubscriber $subscriber, Semester $semester, Department $department)
     {
@@ -166,8 +168,8 @@ class AdmissionNotifier
      * @param Semester $semester
      * @param Department $department
      *
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     private function sendInfoMeetingNotification(AdmissionSubscriber $subscriber, Semester $semester, Department $department)
     {

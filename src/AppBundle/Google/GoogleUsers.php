@@ -6,6 +6,7 @@ use AppBundle\Entity\User;
 use Google_Service_Directory;
 use Google_Service_Directory_User;
 use Google_Service_Directory_UserName;
+use Google_Service_Exception;
 
 class GoogleUsers extends GoogleService
 {
@@ -32,7 +33,7 @@ class GoogleUsers extends GoogleService
         }
         try {
             $results = $service->users->listUsers($optParams);
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $this->logServiceException($e, "getUsers()");
             return [];
         }
@@ -55,7 +56,7 @@ class GoogleUsers extends GoogleService
 
         try {
             return $service->users->get($companyEmail);
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             if ($e->getCode() !== 404) {
                 $this->logServiceException($e, "getUser('$companyEmail')");
             }
@@ -83,7 +84,7 @@ class GoogleUsers extends GoogleService
 
         try {
             $createdUser = $service->users->insert($googleUser);
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $this->logServiceException($e, "createUser() for $user");
             return null;
         }
@@ -114,7 +115,7 @@ class GoogleUsers extends GoogleService
 
         try {
             return $service->users->update($userKey, $googleUser);
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $this->logServiceException($e, "updateUser() $userKey ($user)");
             return null;
         }
@@ -134,7 +135,7 @@ class GoogleUsers extends GoogleService
         $service = new Google_Service_Directory($client);
         try {
             $service->users->delete($userKey);
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $this->logServiceException($e, "deleteUser('$userKey')");
         }
     }

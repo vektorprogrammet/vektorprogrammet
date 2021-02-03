@@ -2,14 +2,17 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="survey_question")
  */
-class SurveyQuestion implements \JsonSerializable
+class SurveyQuestion implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -123,7 +126,7 @@ class SurveyQuestion implements \JsonSerializable
      */
     public function __construct()
     {
-        $this->alternatives = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->alternatives = new ArrayCollection();
         $this->optional = false;
     }
 
@@ -178,11 +181,11 @@ class SurveyQuestion implements \JsonSerializable
     /**
      * Add alternatives.
      *
-     * @param \AppBundle\Entity\SurveyQuestionAlternative $alternatives
+     * @param SurveyQuestionAlternative $alternatives
      *
      * @return SurveyQuestion
      */
-    public function addAlternative(\AppBundle\Entity\SurveyQuestionAlternative $alternatives)
+    public function addAlternative(SurveyQuestionAlternative $alternatives)
     {
         $this->alternatives[] = $alternatives;
 
@@ -194,9 +197,9 @@ class SurveyQuestion implements \JsonSerializable
     /**
      * Remove alternatives.
      *
-     * @param \AppBundle\Entity\SurveyQuestionAlternative $alternatives
+     * @param SurveyQuestionAlternative $alternatives
      */
-    public function removeAlternative(\AppBundle\Entity\SurveyQuestionAlternative $alternatives)
+    public function removeAlternative(SurveyQuestionAlternative $alternatives)
     {
         $this->alternatives->removeElement($alternatives);
 
@@ -206,7 +209,7 @@ class SurveyQuestion implements \JsonSerializable
     /**
      * Get alternatives.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getAlternatives()
     {
@@ -216,8 +219,8 @@ class SurveyQuestion implements \JsonSerializable
     public function __clone()
     {
         $this->id = null;
-        $this->alternatives = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->answers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->alternatives = new ArrayCollection();
+        $this->answers = new ArrayCollection();
     }
 
     /**

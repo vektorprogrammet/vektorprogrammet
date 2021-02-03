@@ -6,6 +6,8 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 class SchoolCapacityRepository extends EntityRepository
 {
@@ -15,8 +17,8 @@ class SchoolCapacityRepository extends EntityRepository
      * @param Semester $semester
      *
      * @return SchoolCapacity
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function findBySchoolAndSemester($school, $semester)
     {

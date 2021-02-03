@@ -8,6 +8,8 @@ use AppBundle\AssistantScheduling\Assistant;
 use AppBundle\AssistantScheduling\School;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Entity\Semester;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AssistantSchedulingController extends BaseController
@@ -19,8 +21,8 @@ class AssistantSchedulingController extends BaseController
 
     /**
      * @return JsonResponse
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getAssistantsAction()
     {
@@ -85,8 +87,8 @@ class AssistantSchedulingController extends BaseController
 
     /**
      * @return JsonResponse
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function getSchoolsAction()
     {

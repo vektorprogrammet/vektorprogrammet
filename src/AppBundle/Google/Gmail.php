@@ -3,6 +3,8 @@
 namespace AppBundle\Google;
 
 use AppBundle\Mailer\MailerInterface;
+use Google_Service_Exception;
+use Google_Service_Gmail;
 use Google_Service_Gmail_Message;
 use Swift_Message;
 
@@ -22,12 +24,12 @@ class Gmail extends GoogleService implements MailerInterface
         $message->setFrom([$this->defaultEmail => "Vektorprogrammet"]);
 
         $client = $this->getClient();
-        $service = new \Google_Service_Gmail($client);
+        $service = new Google_Service_Gmail($client);
         $gmailMessage = $this->swiftMessageToGmailMessage($message);
 
         try {
             $res = $service->users_messages->send($this->defaultEmail, $gmailMessage);
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $this->logServiceException($e, "Failed to send email to {$this->recipientsToHeader($message->getTo())}: `{$message->getSubject()}`");
             return;
         }

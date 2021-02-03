@@ -7,6 +7,7 @@ use AppBundle\Entity\Interview;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Type\InterviewStatusType;
+use DateTime;
 use Doctrine\ORM\EntityRepository;
 
 /**
@@ -167,11 +168,11 @@ class InterviewRepository extends EntityRepository
      * All interviews scheduled to a time after $time and having PENDING
      * interview status apply.
      *
-     * @param \DateTime $time
+     * @param DateTime $time
      *
      * @return array
      */
-    public function findAcceptInterviewNotificationRecipients(\DateTime $time)
+    public function findAcceptInterviewNotificationRecipients(DateTime $time)
     {
         return $this->createQueryBuilder('i')
             ->select('i')

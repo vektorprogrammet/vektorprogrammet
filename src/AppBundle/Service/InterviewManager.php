@@ -11,6 +11,7 @@ use AppBundle\Role\Roles;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
 use AppBundle\Type\InterviewStatusType;
+use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
@@ -256,7 +257,7 @@ class InterviewManager
         $interviews = $this->em->getRepository(Interview::class)->findAcceptInterviewNotificationRecipients(new DateTime());
         /** @var Interview $interview */
         foreach ($interviews as $interview) {
-            $oneDay = new \DateInterval('P1D');
+            $oneDay = new DateInterval('P1D');
             $now = new DateTime();
             $moreThan24HoursSinceScheduled = $now->sub($oneDay) > $interview->getLastScheduleChanged();
             if ($interview->getNumAcceptInterviewRemindersSent() < self::MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT && $moreThan24HoursSinceScheduled) {
@@ -292,7 +293,7 @@ class InterviewManager
             ({$interview->getNumAcceptInterviewRemindersSent()}/$maxNum reminders sent)");
 
 
-        $oneDay = new \DateInterval('P1D');
+        $oneDay = new DateInterval('P1D');
         $now = new DateTime();
         $lessThan24HoursUntilInterview = $now->add($oneDay) > $interview->getScheduled();
         if ($lessThan24HoursUntilInterview) {

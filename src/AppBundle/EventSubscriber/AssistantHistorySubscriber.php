@@ -6,6 +6,9 @@ use AppBundle\Entity\Semester;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
 use AppBundle\Service\UserRegistration;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
@@ -47,9 +50,9 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
     /**
      * @param AssistantHistoryCreatedEvent $event
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     public function sendActivationMail(AssistantHistoryCreatedEvent $event)
     {

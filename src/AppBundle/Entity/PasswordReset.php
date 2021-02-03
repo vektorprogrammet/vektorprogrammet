@@ -108,7 +108,7 @@ class PasswordReset
     /**
      * Set user.
      *
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      *
      * @return PasswordReset
      */
@@ -122,7 +122,7 @@ class PasswordReset
     /**
      * Get user.
      *
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {

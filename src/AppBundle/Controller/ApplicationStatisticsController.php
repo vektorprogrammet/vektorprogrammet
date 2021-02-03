@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Service\ApplicationData;
 use AppBundle\Service\AssistantHistoryData;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,7 +14,7 @@ class ApplicationStatisticsController extends BaseController
     /**
      * @param Request $request
      * @return Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function showAction(Request $request)
     {
