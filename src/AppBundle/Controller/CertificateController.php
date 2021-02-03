@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\CertificateRequest;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\Signature;
 use AppBundle\Form\Type\CreateSignatureType;
 use AppBundle\Service\FileUploader;

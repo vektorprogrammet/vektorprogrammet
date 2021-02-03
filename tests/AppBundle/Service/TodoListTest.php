@@ -1,24 +1,34 @@
 <?php
 
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
-use AppBundle\Entity\TodoItem;
+namespace Tests\AppBundle\Service;
 
-class TodoListTest extends \Tests\BaseKernelTestCase
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Repository\TodoItemRepository;
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\TodoCompleted;
+use AppBundle\Entity\TodoItem;
+use AppBundle\Service\TodoListService;
+use DateTime;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
+use Tests\BaseKernelTestCase;
+
+class TodoListTest extends BaseKernelTestCase
 {
 
     /**
-     * @var \AppBundle\Service\TodoListService $service
+     * @var TodoListService $service
      */
     private $service;
 
     /**
-     * @var \Doctrine\ORM\EntityManager
+     * @var EntityManager
      */
     private $em;
 
     /**
-     * @var \AppBundle\Entity\TodoCompleted
+     * @var TodoCompleted
      */
     private $completedItem;
 
@@ -47,7 +57,7 @@ class TodoListTest extends \Tests\BaseKernelTestCase
     private $itemDeleted;
 
     /**
-     * @var \AppBundle\Entity\Repository\TodoItemRepository
+     * @var TodoItemRepository
      */
     private $todoRepo;
 
@@ -61,7 +71,7 @@ class TodoListTest extends \Tests\BaseKernelTestCase
         $kernel = $this->createKernel();
         $kernel->boot();
 
-        $service = $kernel->getContainer()->get(\AppBundle\Service\TodoListService::class);
+        $service = $kernel->getContainer()->get(TodoListService::class);
         $this->service = $service;
         $em = $kernel->getContainer()->get('doctrine')->getManager();
         $this->em = $em;
@@ -136,8 +146,8 @@ class TodoListTest extends \Tests\BaseKernelTestCase
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
     function testToggleCompletedItem()
     {

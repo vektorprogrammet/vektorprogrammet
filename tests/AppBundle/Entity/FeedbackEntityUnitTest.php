@@ -1,5 +1,7 @@
 <?php
 
+namespace Tests\AppBundle\Entity;
+
 use AppBundle\Entity\Feedback;
 use AppBundle\Entity\User;
 use PHPUnit\Framework\TestCase;
