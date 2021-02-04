@@ -207,26 +207,6 @@ ul.alternatives {
 .sponsor-img {
   max-height: 150px;
   vertical-align: middle;
-  .small {
-
-  }
-}
-
-//Team specific
-#oldTeamMembershipsButton {
-  margin: 30px 0;
-}
-
-#oldTeamMemberships {
-  margin-top: 30px;
-  display: none;
-}
-
-// Sponsor
-.vertical-align-image-helper {
-  display: inline-block;
-  height: 100%;
-  vertical-align: middle;
 }
 
 .sponsor-img-small {
@@ -251,7 +231,6 @@ ul.alternatives {
   @media screen and (min-width: 1000px) {
     max-width: 300px;
   }
-;
 }
 
 .sponsor-img-large {
@@ -401,7 +380,7 @@ ul.alternatives {
   .step-active {
     background-color: $vektor-white;
     border: 2px solid $vektor-blue;
-    box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.15);
+    box-shadow: 10px 10px 5px 0 rgba(0, 0, 0, 0.15);
   }
 
   .step-completed {
