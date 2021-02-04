@@ -16,12 +16,6 @@
 
     <v-flex xs12 class="status">
 
-      <!--<v-flex v-show="!allocating" xs12 sm6 offset-sm3>
-        <label> Maximum number of runs</label>
-        <v-slider v-model="numberOfRuns" dark thumb-label step="2"></v-slider>
-        <p>{{numberOfRuns}}</p>
-      </v-flex>-->
-
       <br>
       <v-btn v-show="!allocating" @click.native="allocate" primary light>Generer timeplan</v-btn>
       <div class="text-center" v-show="allocating">
