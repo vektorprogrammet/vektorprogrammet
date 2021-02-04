@@ -46,7 +46,7 @@ class InterviewSchemaController extends BaseController
         $form = $this->createForm(InterviewSchemaType::class, $schema);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($schema);
             $em->flush();

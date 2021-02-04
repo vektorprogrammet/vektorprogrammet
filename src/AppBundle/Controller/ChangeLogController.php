@@ -15,7 +15,7 @@ class ChangeLogController extends BaseController
         $form = $this->createForm(ChangeLogType::class, $changeLogItem);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($changeLogItem);
             $em->flush();

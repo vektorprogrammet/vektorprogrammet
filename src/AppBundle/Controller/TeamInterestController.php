@@ -47,7 +47,7 @@ class TeamInterestController extends BaseController
         ));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($teamInterest);
             $manager->flush();

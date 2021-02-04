@@ -31,7 +31,7 @@ class PositionController extends BaseController
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($position);
             $em->flush();

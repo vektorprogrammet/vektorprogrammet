@@ -60,7 +60,7 @@ class ExecutiveBoardController extends BaseController
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $member->setBoard($board);
 
             // Persist the board to the database

@@ -74,7 +74,7 @@ class InterviewController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $isNewInterview = !$interview->getInterviewed();
             $interview->setCancelled(false);
 
@@ -235,7 +235,7 @@ class InterviewController extends BaseController
         $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->validateLink($mapLink);
         if ($invalidMapLink) {
             $this->addFlash('danger', 'Kartlinken er ikke gyldig');
-        } elseif ($form->isValid()) {
+        } elseif ($form->isSubmitted() && $form->isValid()) {
             if (!$interview->getResponseCode()) {
                 $interview->generateAndSetResponseCode();
             }
@@ -318,7 +318,7 @@ class InterviewController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $application->getInterview()->setUser($user);
             $em->persist($application);
             $em->flush();
@@ -434,7 +434,7 @@ class InterviewController extends BaseController
         ));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $interview->requestNewTime();
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($interview);
@@ -486,7 +486,7 @@ class InterviewController extends BaseController
         $form = $this->createForm(CancelInterviewConfirmationType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $interview->setCancelMessage($data['message']);
             $interview->cancel();
@@ -574,7 +574,7 @@ class InterviewController extends BaseController
         ]);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $user = $data['user'];
             $interview->setCoInterviewer($user);

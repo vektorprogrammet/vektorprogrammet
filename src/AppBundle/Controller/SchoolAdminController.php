@@ -52,7 +52,7 @@ class SchoolAdminController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $assistantHistory->setUser($user);
             $em = $this->getDoctrine()->getManager();
             $em->persist($assistantHistory);
@@ -146,7 +146,7 @@ class SchoolAdminController extends BaseController
         $form->handleRequest($request);
 
         // Check if the form is valid
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($school);
             $em->flush();
@@ -169,7 +169,7 @@ class SchoolAdminController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             // Set the department of the school
             $school->addDepartment($department);
             $department->addSchool($school);

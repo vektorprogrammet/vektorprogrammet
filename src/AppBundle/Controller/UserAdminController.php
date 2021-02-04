@@ -30,7 +30,7 @@ class UserAdminController extends BaseController
         $form->handleRequest($request);
 
         // The fields of the form is checked if they contain the correct information
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $role = $this->getDoctrine()->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
             $user->addRole($role);
 
