@@ -46,7 +46,7 @@ class SemesterController extends Controller
         $form->handleRequest($request);
 
         // The fields of the form is checked if they contain the correct information
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             //Check if semester already exists
             $existingSemester = $this->getDoctrine()->getManager()->getRepository(Semester::class)
                 ->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());

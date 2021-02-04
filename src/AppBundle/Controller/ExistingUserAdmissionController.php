@@ -48,7 +48,7 @@ class ExistingUserAdmissionController extends BaseController
         ));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($application);
             $em->flush();
 

@@ -32,7 +32,7 @@ class SchoolCapacityController extends BaseController
         $form = $this->createForm(SchoolCapacityType::class, $schoolCapacity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($schoolCapacity);
             $em->flush();
@@ -51,7 +51,7 @@ class SchoolCapacityController extends BaseController
         $form = $this->createForm(SchoolCapacityEditType::class, $capacity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($capacity);
             $em->flush();

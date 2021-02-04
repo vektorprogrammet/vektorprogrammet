@@ -267,7 +267,7 @@ class AdmissionAdminController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $em->getRepository(User::class)->findOneBy(array('email' => $application->getUser()->getEmail()));
             if ($user !== null) {
                 $application->setUser($user);

@@ -22,7 +22,7 @@ class MailingListController extends BaseController
         $form = $this->createForm(GenerateMailingListType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $type = $data['type'];
             $semesterID = $data['semester']->getId();

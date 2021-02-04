@@ -56,7 +56,7 @@ class TodoListController extends BaseController
 
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $todoListService->generateEntities($itemInfo, $em);
             return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
@@ -92,7 +92,7 @@ class TodoListController extends BaseController
         $form->handleRequest($request);
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $todoListService->editEntities($itemInfo, $currentSemester);
             return $this->redirectToRoute('todo_list', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }

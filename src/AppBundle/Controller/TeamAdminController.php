@@ -54,7 +54,7 @@ class TeamAdminController extends BaseController
         ]);
 
         $form->handleRequest($request);
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $teamMembership->setIsSuspended(false);
             $em = $this->getDoctrine()->getManager();
             $em->persist($teamMembership);
@@ -90,7 +90,7 @@ class TeamAdminController extends BaseController
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 
             //set the team of the department
             $teamMembership->setTeam($team);
@@ -216,7 +216,7 @@ class TeamAdminController extends BaseController
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             //Don't persist if the preview button was clicked
             if (! $form->get('preview')->isClicked()) {
                 // Persist the team to the database
