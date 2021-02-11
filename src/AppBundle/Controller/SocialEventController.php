@@ -7,7 +7,6 @@ use AppBundle\Form\Type\SocialEventType;
 use DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Service\SocialEventManager;
 use Symfony\Component\HttpFoundation\Response;
 
 class SocialEventController extends BaseController

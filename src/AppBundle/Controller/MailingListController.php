@@ -2,8 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\GenerateMailingListType;
 use Symfony\Component\HttpFoundation\Request;

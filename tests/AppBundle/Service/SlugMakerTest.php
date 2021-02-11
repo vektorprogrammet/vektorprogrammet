@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Command;
+namespace Tests\AppBundle\Service;
 
 use AppBundle\Entity\Article;
 use AppBundle\Service\SlugMaker;

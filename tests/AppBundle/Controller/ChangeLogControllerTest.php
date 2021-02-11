@@ -1,5 +1,8 @@
 <?php
 
+namespace Tests\AppBundle\Controller;
+
+use DateTime;
 use Tests\BaseWebTestCase;
 
 class ChangeLogControllerTest extends BaseWebTestCase

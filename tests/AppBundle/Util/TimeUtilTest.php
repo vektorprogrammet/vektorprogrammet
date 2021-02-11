@@ -1,6 +1,9 @@
 <?php
 
+namespace Tests\AppBundle\Util;
+
 use AppBundle\Utils\TimeUtil;
+use DateTime;
 use PHPUnit\Framework\TestCase;
 
 class TimeUtilTest extends TestCase

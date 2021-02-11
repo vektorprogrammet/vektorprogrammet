@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Command;
+namespace Tests\AppBundle\Service;
 
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;

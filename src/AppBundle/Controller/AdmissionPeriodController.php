@@ -7,7 +7,6 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Form\Type\EditAdmissionPeriodType;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateAdmissionPeriodType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdmissionPeriodController extends BaseController
 {

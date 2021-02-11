@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Form\Type;
+namespace Tests\AppBundle\Type;
 
 use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\School;
