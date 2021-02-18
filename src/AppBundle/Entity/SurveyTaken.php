@@ -3,7 +3,9 @@
 namespace AppBundle\Entity;
 
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="survey_taken")
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SurveyTakenRepository")
  */
-class SurveyTaken implements \JsonSerializable
+class SurveyTaken implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -62,7 +64,7 @@ class SurveyTaken implements \JsonSerializable
      */
     public function __construct()
     {
-        $this->surveyAnswers = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->surveyAnswers = new ArrayCollection();
         $this->time = new DateTime();
     }
 
@@ -193,7 +195,7 @@ class SurveyTaken implements \JsonSerializable
         $ret[] = $affiliationQuestion;
         foreach ($this->surveyAnswers as $a) {
             //!$a->getSurveyQuestion()->getOptional() && - If optional results are not wanted
-            if (($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list')) {
+            if ($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list') {
                 $ret[] = $a;
             } elseif ($a->getSurveyQuestion()->getType() == 'check') {
                 $ret[] = $a;

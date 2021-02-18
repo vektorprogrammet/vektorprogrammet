@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -32,7 +33,7 @@ class SemesterController extends Controller
      * @param Request $request
      *
      * @return RedirectResponse|Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function createSemesterAction(Request $request)
     {
@@ -45,7 +46,7 @@ class SemesterController extends Controller
         $form->handleRequest($request);
 
         // The fields of the form is checked if they contain the correct information
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             //Check if semester already exists
             $existingSemester = $this->getDoctrine()->getManager()->getRepository(Semester::class)
                 ->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());

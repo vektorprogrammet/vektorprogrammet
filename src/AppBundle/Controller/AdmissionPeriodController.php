@@ -7,7 +7,6 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Form\Type\EditAdmissionPeriodType;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateAdmissionPeriodType;
-use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AdmissionPeriodController extends BaseController
 {
@@ -51,7 +50,7 @@ class AdmissionPeriodController extends BaseController
         if ($exists) {
             $this->addFlash('warning', 'Opptaksperioden ' . $admissionPeriod->getSemester() . ' finnes allerede.');
         }
-        if ($form->isValid() && !$exists) {
+        if ($form->isSubmitted() && $form->isValid() && !$exists) {
             $admissionPeriod->setDepartment($department);
 
             $em = $this->getDoctrine()->getManager();
@@ -75,7 +74,7 @@ class AdmissionPeriodController extends BaseController
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($admissionPeriod);
             $em->flush();

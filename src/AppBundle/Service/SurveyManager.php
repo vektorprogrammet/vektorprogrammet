@@ -188,8 +188,7 @@ class SurveyManager
     {
         $user = $taken->getUser();
         $ua = $this->getUserAffiliationOfUserBySemester($user, $taken->getSurvey()->getSemester());
-        $teamNames = $this->getTeamNamesAsString($ua);
-        return $teamNames;
+        return $this->getTeamNamesAsString($ua);
     }
 
     private function getTeamNamesAsString(array $teamNames): string

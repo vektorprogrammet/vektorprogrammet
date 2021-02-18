@@ -51,17 +51,17 @@ interface TeamInterface
     public function getAcceptApplication();
 
     /**
-     * @return \AppBundle\Entity\TeamMembershipInterface
+     * @return TeamMembershipInterface
      */
     public function getTeamMemberships();
 
     /**
-     * @return \AppBundle\Entity\TeamMembershipInterface
+     * @return TeamMembershipInterface
      */
     public function getActiveTeamMemberships();
 
     /**
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getActiveUsers();
 }

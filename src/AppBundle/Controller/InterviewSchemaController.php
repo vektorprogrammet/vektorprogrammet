@@ -4,7 +4,6 @@ namespace AppBundle\Controller;
 
 use AppBundle\Role\Roles;
 use Exception;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,7 +46,7 @@ class InterviewSchemaController extends BaseController
         $form = $this->createForm(InterviewSchemaType::class, $schema);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($schema);
             $em->flush();

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterface;
 use AppBundle\Entity\TeamMembershipInterface;
 
@@ -30,10 +31,10 @@ class FilterService
     /**
      * Returns only departments with active admission set to $hasActiveAdmission
      *
-     * @param \AppBundle\Entity\Department[] $departments
+     * @param Department[] $departments
      * @param boolean $hasActiveAdmission
      *
-     * @return \AppBundle\Entity\Department[]
+     * @return Department[]
      */
     public function filterDepartmentsByActiveAdmission($departments, $hasActiveAdmission)
     {

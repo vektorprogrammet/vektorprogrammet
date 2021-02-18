@@ -67,11 +67,11 @@ class InterviewQuestionAlternative
     /**
      * Set interviewQuestion.
      *
-     * @param \AppBundle\Entity\InterviewQuestion $interviewQuestion
+     * @param InterviewQuestion $interviewQuestion
      *
      * @return InterviewQuestionAlternative
      */
-    public function setInterviewQuestion(\AppBundle\Entity\InterviewQuestion $interviewQuestion = null)
+    public function setInterviewQuestion(InterviewQuestion $interviewQuestion = null)
     {
         $this->interviewQuestion = $interviewQuestion;
 
@@ -81,7 +81,7 @@ class InterviewQuestionAlternative
     /**
      * Get interviewQuestion.
      *
-     * @return \AppBundle\Entity\InterviewQuestion
+     * @return InterviewQuestion
      */
     public function getInterviewQuestion()
     {

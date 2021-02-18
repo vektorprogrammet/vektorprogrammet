@@ -158,7 +158,7 @@ class UserEntityUnitTest extends TestCase
 
         // Loop through the array and check for matches
         foreach ($roles as $role) {
-            if ($role1 == $role) {
+            if ($role1 === $role) {
                 // Assert the result
                 $this->assertEquals($role1, $role);
             }

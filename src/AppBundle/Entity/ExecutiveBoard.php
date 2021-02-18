@@ -102,7 +102,7 @@ class ExecutiveBoard implements TeamInterface
     /**
      * @param string $email
      *
-     * @return $this|\AppBundle\Entity\ExecutiveBoard
+     * @return $this|ExecutiveBoard
      */
     public function setEmail($email)
     {
@@ -122,7 +122,7 @@ class ExecutiveBoard implements TeamInterface
     /**
      * @param string $description
      *
-     * @return \AppBundle\Entity\ExecutiveBoard
+     * @return ExecutiveBoard
      */
     public function setDescription($description)
     {
@@ -142,7 +142,7 @@ class ExecutiveBoard implements TeamInterface
     /**
      * @param string $shortDescription
      *
-     * @return \AppBundle\Entity\ExecutiveBoard
+     * @return ExecutiveBoard
      */
     public function setShortDescription($shortDescription)
     {
@@ -160,7 +160,7 @@ class ExecutiveBoard implements TeamInterface
     }
 
     /**
-     * @return \AppBundle\Entity\ExecutiveBoardMembership[]
+     * @return ExecutiveBoardMembership[]
      */
     public function getTeamMemberships()
     {

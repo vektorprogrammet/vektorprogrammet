@@ -7,17 +7,17 @@ async function login(username, password) {
 
 async function logout() {
   const response = await http.post("/api/account/logout", {});
-  return await response.json();
+  return response.json();
 }
 
 async function getUser() {
   const response = await http.get("/api/account/user");
-  return await response.json();
+  return response.json();
 }
 
 async function getDepartment() {
   const response = await http.get("/api/account/get_department");
-  return await response.json();
+  return response.json();
 }
 
 export const accountService = {

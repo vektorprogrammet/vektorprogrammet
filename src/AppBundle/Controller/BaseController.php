@@ -4,21 +4,12 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use AppBundle\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BaseController extends Controller
 {
-    /**
-     * @return User|null
-     */
-    public function getUser(): ?User
-    {
-        return parent::getUser();
-    }
-
     /**
      * Tries to get department from the Request and opts to the user's department if none is found.
      * Returns null if none can be found this way.

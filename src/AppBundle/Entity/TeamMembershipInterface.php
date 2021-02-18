@@ -6,7 +6,7 @@ interface TeamMembershipInterface
 {
 
     /**
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser(): User;
 
@@ -16,31 +16,31 @@ interface TeamMembershipInterface
     public function getPositionName();
 
     /**
-     * @return \AppBundle\Entity\TeamInterface
+     * @return TeamInterface
      */
     public function getTeam();
 
     /**
-     * @return \AppBundle\Entity\Semester
+     * @return Semester
      */
     public function getStartSemester();
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      *
-     * @return \AppBundle\Entity\TeamMembershipInterface
+     * @return TeamMembershipInterface
      */
     public function setStartSemester(Semester $semester = null);
 
     /**
-     * @return \AppBundle\Entity\Semester
+     * @return Semester
      */
     public function getEndSemester();
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      *
-     * @return \AppBundle\Entity\TeamMembershipInterface
+     * @return TeamMembershipInterface
      */
     public function setEndSemester(Semester $semester = null);
 

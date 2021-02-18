@@ -5,6 +5,8 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\PasswordReset;
 use AppBundle\Entity\User;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 
 /**
  * PasswordResetRepository.
@@ -38,8 +40,8 @@ class PasswordResetRepository extends EntityRepository
      *
      * @return PasswordReset
      *
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function findPasswordResetByHashedResetCode($hashedResetCode)
     {

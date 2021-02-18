@@ -56,7 +56,7 @@ class SurveyController extends BaseController
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -151,7 +151,7 @@ class SurveyController extends BaseController
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $allTakenSurveys = $em
                     ->getRepository(SurveyTaken::class)
                     ->findAllBySurveyAndUser($survey, $user);
@@ -212,7 +212,7 @@ class SurveyController extends BaseController
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
 
-            if ($form->isValid()) {
+            if ($form->isSubmitted() && $form->isValid()) {
                 $em = $this->getDoctrine()->getManager();
                 $em->persist($surveyTaken);
                 $em->flush();
@@ -247,7 +247,7 @@ class SurveyController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->ensureAccess($survey);
             $em = $this->getDoctrine()->getManager();
             $em->persist($survey);
@@ -364,7 +364,7 @@ class SurveyController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($survey);
             $em->flush();

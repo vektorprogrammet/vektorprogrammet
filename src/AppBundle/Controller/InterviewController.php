@@ -56,14 +56,14 @@ class InterviewController extends BaseController
         $teams = $this->getDoctrine()->getRepository(Team::class)->findActiveByDepartment($department);
 
         if ($this->getUser() === $application->getUser()) {
-            return $this->render('error/control_panel_error.html.twig', array( 'error' => 'Du kan ikke intervjue deg selv' ));
+            return $this->render('error/control_panel_error.html.twig', array('error' => 'Du kan ikke intervjue deg selv'));
         }
 
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
         $interview = $this->get(InterviewManager::class)->initializeInterviewAnswers($application->getInterview());
 
         // Only admin and above, or the assigned interviewer, or the co interviewer should be able to conduct an interview
-        if (! $this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
+        if (!$this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
@@ -74,8 +74,8 @@ class InterviewController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $isNewInterview = ! $interview->getInterviewed();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $isNewInterview = !$interview->getInterviewed();
             $interview->setCancelled(false);
 
             $em = $this->getDoctrine()->getManager();
@@ -98,9 +98,9 @@ class InterviewController extends BaseController
 
         return $this->render('interview/conduct.html.twig', array(
             'application' => $application,
-            'department'  => $department,
-            'teams'       => $teams,
-            'form'        => $form->createView(),
+            'department' => $department,
+            'teams' => $teams,
+            'form' => $form->createView(),
         ));
     }
 
@@ -133,14 +133,14 @@ class InterviewController extends BaseController
         }
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
-        if (! $this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview) ||
-             $this->getUser() === $application->getUser()
+        if (!$this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview) ||
+            $this->getUser() === $application->getUser()
         ) {
             throw $this->createAccessDeniedException();
         }
 
-        return $this->render('interview/show.html.twig', array( 'interview'   => $interview,
-                                                                 'application' => $application
+        return $this->render('interview/show.html.twig', array('interview' => $interview,
+            'application' => $application
         ));
     }
 
@@ -181,7 +181,7 @@ class InterviewController extends BaseController
 
         // Get the application objects
         $em = $this->getDoctrine()->getManager();
-        $applications = $em->getRepository(Application::class)->findBy(array( 'id' => $applicationIds ));
+        $applications = $em->getRepository(Application::class)->findBy(array('id' => $applicationIds));
 
         // Delete the interviews
         foreach ($applications as $application) {
@@ -214,7 +214,7 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException('Interview not found.');
         }
         // Only admin and above, or the assigned interviewer should be able to book an interview
-        if (! $this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
+        if (!$this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
@@ -228,15 +228,15 @@ class InterviewController extends BaseController
         $data = $form->getData();
         $mapLink = $data['mapLink'];
         if ($form->isSubmitted()) {
-            if ($mapLink && ! (strpos($mapLink, 'http') === 0)) {
+            if ($mapLink && !(strpos($mapLink, 'http') === 0)) {
                 $mapLink = 'http://' . $mapLink;
             }
         }
-        $invalidMapLink = $form->isSubmitted() && ! empty($mapLink) && ! $this->validateLink($mapLink);
+        $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->validateLink($mapLink);
         if ($invalidMapLink) {
             $this->addFlash('danger', 'Kartlinken er ikke gyldig');
-        } elseif ($form->isValid()) {
-            if (! $interview->getResponseCode()) {
+        } elseif ($form->isSubmitted() && $form->isValid()) {
+            if (!$interview->getResponseCode()) {
                 $interview->generateAndSetResponseCode();
             }
 
@@ -251,7 +251,7 @@ class InterviewController extends BaseController
             if ($form->get('preview')->isClicked()) {
                 return $this->render('interview/preview.html.twig', array(
                     'interview' => $interview,
-                    'data'      => $data,
+                    'data' => $data,
                 ));
             }
 
@@ -268,8 +268,8 @@ class InterviewController extends BaseController
         }
 
         return $this->render('interview/schedule.html.twig', array(
-            'form'        => $form->createView(),
-            'interview'   => $interview,
+            'form' => $form->createView(),
+            'interview' => $interview,
             'application' => $application,
         ));
     }
@@ -310,7 +310,7 @@ class InterviewController extends BaseController
         $application = $em->getRepository(Application::class)->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
+        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([Roles::TEAM_MEMBER]);
 
         $form = $this->createForm(CreateInterviewType::class, $application, [
             'roles' => $roles
@@ -318,13 +318,13 @@ class InterviewController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $application->getInterview()->setUser($user);
             $em->persist($application);
             $em->flush();
 
             return new JsonResponse(
-                array( 'success' => true )
+                array('success' => true)
             );
         }
 
@@ -362,9 +362,9 @@ class InterviewController extends BaseController
             // Get the info from the form
             $data = $request->request->all();
             // Get objects from database
-            $interviewer = $em->getRepository(User::class)->findOneBy(array( 'id' => $data['interview']['interviewer'] ));
-            $schema = $em->getRepository(InterviewSchema::class)->findOneBy(array( 'id' => $data['interview']['interviewSchema'] ));
-            $applications = $em->getRepository(Application::class)->findBy(array( 'id' => $data['application']['id'] ));
+            $interviewer = $em->getRepository(User::class)->findOneBy(array('id' => $data['interview']['interviewer']));
+            $schema = $em->getRepository(InterviewSchema::class)->findOneBy(array('id' => $data['interview']['interviewSchema']));
+            $applications = $em->getRepository(Application::class)->findBy(array('id' => $data['application']['id']));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
@@ -414,7 +414,7 @@ class InterviewController extends BaseController
             return $this->redirectToRoute("my_page");
         }
 
-        return $this->redirectToRoute('interview_response', [ 'responseCode' => $interview->getResponseCode() ]);
+        return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
     }
 
     /**
@@ -425,7 +425,7 @@ class InterviewController extends BaseController
      */
     public function requestNewTimeAction(Request $request, Interview $interview)
     {
-        if (! $interview->isPending()) {
+        if (!$interview->isPending()) {
             throw $this->createNotFoundException();
         }
 
@@ -434,7 +434,7 @@ class InterviewController extends BaseController
         ));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $interview->requestNewTime();
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($interview);
@@ -447,12 +447,12 @@ class InterviewController extends BaseController
                 return $this->redirectToRoute("my_page");
             }
 
-            return $this->redirectToRoute('interview_response', [ 'responseCode' => $interview->getResponseCode() ]);
+            return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
         }
 
         return $this->render('interview/request_new_time.html.twig', array(
             'interview' => $interview,
-            'form'      => $form->createView()
+            'form' => $form->createView()
         ));
     }
 
@@ -466,7 +466,7 @@ class InterviewController extends BaseController
         $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($interview->getApplication());
 
         return $this->render('interview/response.html.twig', array(
-            'interview'          => $interview,
+            'interview' => $interview,
             'application_status' => $applicationStatus
         ));
     }
@@ -479,14 +479,14 @@ class InterviewController extends BaseController
      */
     public function cancelByResponseCodeAction(Request $request, Interview $interview)
     {
-        if (! $interview->isPending()) {
+        if (!$interview->isPending()) {
             throw $this->createNotFoundException();
         }
 
         $form = $this->createForm(CancelInterviewConfirmationType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $interview->setCancelMessage($data['message']);
             $interview->cancel();
@@ -501,12 +501,12 @@ class InterviewController extends BaseController
                 return $this->redirectToRoute("my_page");
             }
 
-            return $this->redirectToRoute('interview_response', [ 'responseCode' => $interview->getResponseCode() ]);
+            return $this->redirectToRoute('interview_response', ['responseCode' => $interview->getResponseCode()]);
         }
 
         return $this->render('interview/response_confirm_cancel.html.twig', array(
             'interview' => $interview,
-            'form'      => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -568,13 +568,13 @@ class InterviewController extends BaseController
         $department = $interview->getApplication()->getDepartment();
         $teamUsers = $this->getDoctrine()->getRepository(User::class)
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
-        $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(),$interview->getCoInterviewer())));
+        $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(), $interview->getCoInterviewer())));
         $form = $this->createForm(AddCoInterviewerType::class, null, [
             'teamUsers' => $coInterviewers
         ]);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $user = $data['user'];
             $interview->setCoInterviewer($user);
@@ -583,7 +583,7 @@ class InterviewController extends BaseController
             $em->flush();
 
             if ($request->get('from') === 'schedule') {
-                return $this->redirectToRoute('interview_schedule', array( 'id' => $interview->getApplication()->getId() ));
+                return $this->redirectToRoute('interview_schedule', array('id' => $interview->getApplication()->getId()));
             }
 
             return $this->redirectToRoute('applications_show_assigned', array(
@@ -593,7 +593,7 @@ class InterviewController extends BaseController
         }
 
         return $this->render('interview/assign_co_interview_form.html.twig', array(
-            'form'      => $form->createView(),
+            'form' => $form->createView(),
             'interview' => $interview
         ));
     }

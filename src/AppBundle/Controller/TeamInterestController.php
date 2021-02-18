@@ -7,6 +7,8 @@ use AppBundle\Event\TeamInterestCreatedEvent;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterest;
 use AppBundle\Form\Type\TeamInterestType;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -27,8 +29,8 @@ class TeamInterestController extends BaseController
      * @param Request $request
      *
      * @return RedirectResponse|Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function showTeamInterestFormAction(Department $department, Request $request)
     {
@@ -45,7 +47,7 @@ class TeamInterestController extends BaseController
         ));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($teamInterest);
             $manager->flush();

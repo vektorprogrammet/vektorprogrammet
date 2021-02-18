@@ -1,7 +1,7 @@
 <?php
 
 
-namespace AppBundle\Controller;
+namespace Tests\AppBundle\Controller;
 
 
 use Tests\BaseWebTestCase;

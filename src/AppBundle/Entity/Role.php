@@ -2,7 +2,7 @@
 
 namespace AppBundle\Entity;
 
-use Symfony\Component\Security\Core\Role\RoleInterface;
+use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\RoleRepository")
  */
-class Role implements RoleInterface
+class Role extends SymfonyRole
 {
     /**
      * @ORM\Column(name="id", type="integer", length=11)
@@ -94,11 +94,11 @@ class Role implements RoleInterface
     /**
      * Add users.
      *
-     * @param \AppBundle\Entity\User $users
+     * @param User $users
      *
      * @return Role
      */
-    public function addUser(\AppBundle\Entity\User $users)
+    public function addUser(User $users)
     {
         $this->users[] = $users;
 
@@ -108,9 +108,9 @@ class Role implements RoleInterface
     /**
      * Remove users.
      *
-     * @param \AppBundle\Entity\User $users
+     * @param User $users
      */
-    public function removeUser(\AppBundle\Entity\User $users)
+    public function removeUser(User $users)
     {
         $this->users->removeElement($users);
     }

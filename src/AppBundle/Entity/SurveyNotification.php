@@ -1,6 +1,7 @@
 <?php
 namespace AppBundle\Entity;
 
+use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -40,7 +41,7 @@ class SurveyNotification
 
 
     /**
-     * @var \DateTime
+     * @var DateTime
      * @ORM\Column(name="time_notification_Sent", type="datetime", nullable=true)
      */
     private $timeNotificationSent;
@@ -95,7 +96,7 @@ class SurveyNotification
 
 
     /**
-     * @param \DateTime[] $surveyLinkClicks
+     * @param DateTime[] $surveyLinkClicks
      */
     public function setSurveyLinkClicks(array $surveyLinkClicks): void
     {
@@ -103,7 +104,7 @@ class SurveyNotification
     }
 
     /**
-     * @return \DateTime[]
+     * @return DateTime[]
      */
     public function getSurveyLinkClicks()
     {
@@ -113,17 +114,17 @@ class SurveyNotification
 
 
     /**
-     * @return \DateTime?
+     * @return DateTime?
      */
-    public function getTimeNotificationSent(): ?\DateTime
+    public function getTimeNotificationSent(): ?DateTime
     {
         return $this->timeNotificationSent;
     }
 
     /**
-     * @param \DateTime $timeNotificationSent
+     * @param DateTime $timeNotificationSent
      */
-    public function setTimeNotificationSent(\DateTime $timeNotificationSent): void
+    public function setTimeNotificationSent(DateTime $timeNotificationSent): void
     {
         $this->timeNotificationSent = $timeNotificationSent;
     }

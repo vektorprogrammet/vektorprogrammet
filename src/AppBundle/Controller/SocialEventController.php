@@ -7,7 +7,6 @@ use AppBundle\Form\Type\SocialEventType;
 use DateTime;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Service\SocialEventManager;
 use Symfony\Component\HttpFoundation\Response;
 
 class SocialEventController extends BaseController
@@ -54,7 +53,7 @@ class SocialEventController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($socialEvent);
             $em->flush();
             return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
@@ -79,7 +78,7 @@ class SocialEventController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
         $em = $this->getDoctrine()->getManager();
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($social_event);
             $em->flush();
             return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);

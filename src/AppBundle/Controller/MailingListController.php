@@ -2,8 +2,6 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Department;
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\GenerateMailingListType;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +20,7 @@ class MailingListController extends BaseController
         $form = $this->createForm(GenerateMailingListType::class);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $type = $data['type'];
             $semesterID = $data['semester']->getId();

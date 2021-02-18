@@ -146,9 +146,9 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     }
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      *
-     * @return \AppBundle\Entity\ExecutiveBoardMembership
+     * @return ExecutiveBoardMembership
      */
     public function setStartSemester(Semester $semester = null)
     {
@@ -165,9 +165,9 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     }
 
     /**
-     * @param \AppBundle\Entity\Semester $semester
+     * @param Semester $semester
      *
-     * @return \AppBundle\Entity\ExecutiveBoardMembership
+     * @return ExecutiveBoardMembership
      */
     public function setEndSemester(Semester $semester = null)
     {
@@ -176,7 +176,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     }
 
     /**
-     * @return \AppBundle\Entity\Semester | null
+     * @return Semester | null
      */
     public function getEndSemester()
     {
@@ -192,7 +192,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
     }
 
     /**
-     * @return \AppBundle\Entity\TeamInterface
+     * @return TeamInterface
      */
     public function getTeam()
     {

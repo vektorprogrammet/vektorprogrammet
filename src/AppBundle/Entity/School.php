@@ -2,6 +2,8 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -75,7 +77,7 @@ class School
 
     public function __construct()
     {
-        $this->departments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->departments = new ArrayCollection();
         $this->international = false;
         $this->active = true;
     }
@@ -141,11 +143,11 @@ class School
     /**
      * Add departments.
      *
-     * @param \AppBundle\Entity\Department $departments
+     * @param Department $departments
      *
      * @return School
      */
-    public function addDepartment(\AppBundle\Entity\Department $departments)
+    public function addDepartment(Department $departments)
     {
         $this->departments[] = $departments;
 
@@ -155,9 +157,9 @@ class School
     /**
      * Remove departments.
      *
-     * @param \AppBundle\Entity\Department $departments
+     * @param Department $departments
      */
-    public function removeDepartment(\AppBundle\Entity\Department $departments)
+    public function removeDepartment(Department $departments)
     {
         $this->departments->removeElement($departments);
     }
@@ -165,7 +167,7 @@ class School
     /**
      * Get departments.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getDepartments()
     {

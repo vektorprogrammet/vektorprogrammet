@@ -79,7 +79,7 @@ class ArticleAdminController extends BaseController
             $this->get(SlugMaker::class)->setSlugFor($article);
         }
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
 
             // Set the author to the currently logged in user
@@ -130,8 +130,8 @@ class ArticleAdminController extends BaseController
         $form = $this->createForm(ArticleType::class, $article);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
-            $em      = $this->getDoctrine()->getManager();
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
 
             $imageSmall = $this->get(FileUploader::class)->uploadArticleImage($request, 'imgsmall');
             if ($imageSmall) {

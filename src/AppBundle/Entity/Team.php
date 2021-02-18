@@ -7,7 +7,6 @@ use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
-use JMS\Serializer\Annotation as JMS;
 
 /**
  * @ORM\Table(name="team")
@@ -228,7 +227,7 @@ class Team implements TeamInterface
     /**
      * @param string $email
      *
-     * @return $this|\AppBundle\Entity\Team
+     * @return $this|Team
      */
     public function setEmail($email)
     {
@@ -272,7 +271,7 @@ class Team implements TeamInterface
     /**
      * @param string $description
      *
-     * @return \AppBundle\Entity\Team
+     * @return Team
      */
     public function setDescription($description)
     {
@@ -292,7 +291,7 @@ class Team implements TeamInterface
     /**
      * @param string $shortDescription
      *
-     * @return \AppBundle\Entity\Team
+     * @return Team
      */
     public function setShortDescription($shortDescription)
     {

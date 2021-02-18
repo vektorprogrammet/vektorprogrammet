@@ -25,7 +25,7 @@ class ExistingUserAdmissionController extends BaseController
      * @param Request $request
      *
      * @return null|RedirectResponse|Response
-     * @throws \Doctrine\ORM\NoResultException
+     * @throws NoResultException
      * @throws NonUniqueResultException
      */
     public function showAction(Request $request)
@@ -48,7 +48,7 @@ class ExistingUserAdmissionController extends BaseController
         ));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($application);
             $em->flush();
 

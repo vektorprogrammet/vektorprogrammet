@@ -99,7 +99,7 @@ class PasswordResetController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->remove($passwordReset);
             $em->persist($user);
