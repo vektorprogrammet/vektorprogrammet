@@ -3,6 +3,10 @@
 namespace AppBundle\Google;
 
 use AppBundle\Entity\Team;
+use Google_Service_Drive;
+use Google_Service_Drive_Permission;
+use Google_Service_Drive_TeamDrive;
+use Google_Service_Exception;
 use Ramsey\Uuid\Uuid;
 
 class GoogleDrive extends GoogleService
@@ -15,21 +19,21 @@ class GoogleDrive extends GoogleService
         $folderName = $team->getDepartment()->getShortName() . ' - ' . $team->getName();
 
         $client  = $this->getClient();
-        $driveService = new \Google_Service_Drive($client);
+        $driveService = new Google_Service_Drive($client);
 
         $requestId = Uuid::uuid4()->toString();
-        $teamDriveMetadata = new \Google_Service_Drive_TeamDrive(array(
+        $teamDriveMetadata = new Google_Service_Drive_TeamDrive(array(
             'name' => $folderName));
 
         try {
             $teamDrive = $driveService->teamdrives->create($requestId, $teamDriveMetadata, array(
                 'fields' => 'id' ));
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $this->logServiceException($e, "createTeamDrive() for *$folderName*");
             return null;
         }
 
-        $permission = new \Google_Service_Drive_Permission();
+        $permission = new Google_Service_Drive_Permission();
         $permission->setType('group');
         $permission->setRole('fileOrganizer');
         $permission->setEmailAddress($team->getEmail());
@@ -39,7 +43,7 @@ class GoogleDrive extends GoogleService
                 'sendNotificationEmail' => false,
                 'supportsTeamDrives' => true,
             ));
-        } catch (\Google_Service_Exception $e) {
+        } catch (Google_Service_Exception $e) {
             $this->logServiceException($e, "granting drive persmissions for team *$folderName*");
             return null;
         }

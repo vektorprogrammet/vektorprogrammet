@@ -7,7 +7,3 @@
     name: 'Error403View',
   };
 </script>
-
-<style scoped>
-
-</style>

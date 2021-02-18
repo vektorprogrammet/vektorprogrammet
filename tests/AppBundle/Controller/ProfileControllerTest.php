@@ -57,7 +57,7 @@ class ProfileControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/kontrollpanel/profil/rediger/4');
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains(" Redigerer profil ")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains(" Rediger profil ")')->count());
 
         // Assert that we have the correct user
         $this->assertEquals(1, $crawler->filter('p:contains("Thomas Alm")')->count());
@@ -107,7 +107,7 @@ class ProfileControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/profil/rediger');
 
         // Assert that we have the correct page
-        $this->assertEquals(1, $crawler->filter('h1:contains(" Redigerer din profil ")')->count());
+        $this->assertEquals(1, $crawler->filter('h1:contains(" Rediger din profil ")')->count());
 
         $form = $crawler->selectButton('Lagre')->form();
 

@@ -5,8 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Service\RoleManager;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
 use AppBundle\Form\Type\CreateExecutiveBoardMembershipType;
@@ -61,7 +60,7 @@ class ExecutiveBoardController extends BaseController
         // Handle the form
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $member->setBoard($board);
 
             // Persist the board to the database
@@ -125,8 +124,11 @@ class ExecutiveBoardController extends BaseController
     }
 
     /**
-     * @Route("/kontrollpanel/hovedstyret/rediger_medlem/{id}", name="edit_executive_board_membership", requirements={"id"="\d+"})
-     * @Method({"GET", "POST"})
+     * @Route("/kontrollpanel/hovedstyret/rediger_medlem/{id}",
+     *     name="edit_executive_board_membership",
+     *     requirements={"id"="\d+"},
+     *     methods={"GET", "POST"}
+     * )
      *
      * @param Request $request
      * @param ExecutiveBoardMembership $member

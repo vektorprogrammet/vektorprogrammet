@@ -8,7 +8,6 @@ use AppBundle\Entity\TeamMembership;
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Form\Type\TeamApplicationType;
 use AppBundle\Role\Roles;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;

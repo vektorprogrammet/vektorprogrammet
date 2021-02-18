@@ -23,7 +23,7 @@ class BoardAndTeamController extends BaseController
         }
 
         $departmentStats = array();
-        /** @var \AppBundle\Entity\Department $department */
+        /** @var Department $department */
         foreach ($departments as $department) {
             $currentSemester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
             $userRepository = $this->getDoctrine()->getRepository(User::class);

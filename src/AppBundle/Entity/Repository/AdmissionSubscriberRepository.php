@@ -6,6 +6,7 @@ use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\QueryBuilder;
 
 class AdmissionSubscriberRepository extends EntityRepository
 {
@@ -13,7 +14,7 @@ class AdmissionSubscriberRepository extends EntityRepository
     /**
      * @param Department $department
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     private function findByDepartmentQueryBuilder(Department $department)
     {
@@ -54,7 +55,7 @@ class AdmissionSubscriberRepository extends EntityRepository
      * @param Department $department
      * @param Semester $semester
      *
-     * @return \Doctrine\ORM\QueryBuilder
+     * @return QueryBuilder
      */
     private function findByDepartmentAndSemesterQueryBuilder(Department $department, Semester $semester)
     {

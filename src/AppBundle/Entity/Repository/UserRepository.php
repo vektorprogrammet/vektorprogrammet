@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
+use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
@@ -142,7 +143,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @return User
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findUserByUsername($username)
     {
@@ -159,7 +160,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @return User
      * @throws NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findByUsernameOrEmail($login)
     {
@@ -180,7 +181,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @return User
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findUserByEmail($email)
     {
@@ -207,7 +208,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @return User
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findUserByNewUserCode($id)
     {

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -11,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\SurveyRepository")
  *
  */
-class Survey implements \JsonSerializable
+class Survey implements JsonSerializable
 {
     public static $SCHOOL_SURVEY = 0;
     public static $TEAM_SURVEY = 1;
@@ -182,7 +184,7 @@ class Survey implements \JsonSerializable
      */
     public function __construct()
     {
-        $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->surveyQuestions = new ArrayCollection();
         $this->confidential = false;
         $this->targetAudience = 0;
         $this->surveysTaken = [];
@@ -215,11 +217,11 @@ class Survey implements \JsonSerializable
     {
         $this->id = null;
         $this->semester = null;
-        $this->surveyQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->surveyQuestions = new ArrayCollection();
         $this->totalAnswered = 0;
     }
 
-    public function addSurveyQuestion(\AppBundle\Entity\SurveyQuestion $surveyQuestion)
+    public function addSurveyQuestion(SurveyQuestion $surveyQuestion)
     {
         $this->surveyQuestions[] = $surveyQuestion;
 
@@ -241,7 +243,7 @@ class Survey implements \JsonSerializable
         $ret = array('questions' => array());
         foreach ($this->surveyQuestions as $q) {
             // !$q->getOptional() &&
-            if (($q->getType() == 'radio' || $q->getType() == 'list')) {
+            if ($q->getType() == 'radio' || $q->getType() == 'list') {
                 $ret['questions'][] = $q;
             } elseif ($q->getType() == 'check') {
                 $ret['questions'][] = $q;

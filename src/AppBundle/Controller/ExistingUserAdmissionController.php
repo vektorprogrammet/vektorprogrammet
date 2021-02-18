@@ -7,22 +7,26 @@ use AppBundle\Entity\Team;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationExistingUserType;
 use AppBundle\Service\ApplicationAdmission;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ExistingUserAdmissionController extends BaseController
 {
     /**
-     * @Route("/eksisterendeopptak", name="admission_existing_user")
-     * @Method({"GET", "POST"})
+     * @Route("/eksisterendeopptak",
+     *     name="admission_existing_user",
+     *     methods={"GET", "POST"}
+     * )
      *
      * @param Request $request
      *
-     * @return null|\Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return null|RedirectResponse|Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function showAction(Request $request)
     {
@@ -44,7 +48,7 @@ class ExistingUserAdmissionController extends BaseController
         ));
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($application);
             $em->flush();
 

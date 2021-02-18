@@ -7,9 +7,11 @@ use AppBundle\Entity\Department;
 use AppBundle\Form\Type\AdmissionSubscriberType;
 use AppBundle\Service\AdmissionNotifier;
 use InvalidArgumentException;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class AdmissionSubscriberController extends BaseController
 {
@@ -20,7 +22,7 @@ class AdmissionSubscriberController extends BaseController
      * @param Request $request
      * @param Department $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function subscribePageAction(Request $request, Department $department)
     {
@@ -52,7 +54,7 @@ class AdmissionSubscriberController extends BaseController
      *
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function subscribeAction(Request $request)
     {
@@ -80,7 +82,7 @@ class AdmissionSubscriberController extends BaseController
      * @Route("/opptak/notification/unsubscribe/{code}", name="admission_unsubscribe")
      * @param string $code
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function unsubscribeAction($code)
     {

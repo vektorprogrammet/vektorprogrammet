@@ -9,22 +9,26 @@ use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\SupportTicketType;
 use AppBundle\Service\GeoLocation;
 use AppBundle\Service\LogService;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
 
 class ContactController extends BaseController
 {
 
     /**
-     * @Route("/kontakt/avdeling/{id}", name="contact_department")
-     * @Route("/kontakt", name="contact")
-     * @Method({"GET", "POST"})
+     * @Route("/kontakt/avdeling/{id}",
+     *     name="contact_department",
+     *     methods={"GET", "POST"})
+     *
+     * @Route("/kontakt",
+     *     name="contact",
+     *     methods={"GET", "POST"})
      *
      * @param Request $request
-     * @param Department $department
+     * @param Department|null $department
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function indexAction(Request $request, Department $department = null)
     {
@@ -43,7 +47,7 @@ class ContactController extends BaseController
         if ($form->isSubmitted() && $supportTicket->getDepartment() === null) {
             $this->get(LogService::class)->error("Could not send support ticket. Department was null.\n$supportTicket");
         }
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $this->get('event_dispatcher')
             ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
 

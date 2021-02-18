@@ -3,8 +3,9 @@
 namespace AppBundle\AssistantScheduling;
 
 use AppBundle\Entity\Application;
+use JsonSerializable;
 
-class Assistant implements \JsonSerializable
+class Assistant implements JsonSerializable
 {
     /**
      * @var string

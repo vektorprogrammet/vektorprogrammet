@@ -10,6 +10,7 @@ use AppBundle\Entity\User;
 use AppBundle\Utils\SemesterUtil;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 class AssistantHistoryRepository extends EntityRepository
 {
@@ -188,7 +189,7 @@ class AssistantHistoryRepository extends EntityRepository
      * @param Semester $semester
      *
      * @return int
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function numFemaleBySemester(Semester $semester): int
     {
@@ -206,7 +207,7 @@ class AssistantHistoryRepository extends EntityRepository
      * @param Semester $semester
      *
      * @return int
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function numMaleBySemester(Semester $semester): int
     {
@@ -222,7 +223,7 @@ class AssistantHistoryRepository extends EntityRepository
 
     /**
      * @return int
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function numFemale(): int
     {
@@ -236,7 +237,7 @@ class AssistantHistoryRepository extends EntityRepository
 
     /**
      * @return int
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function numMale(): int
     {

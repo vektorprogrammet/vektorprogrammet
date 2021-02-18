@@ -3,7 +3,6 @@
 
 namespace AppBundle\EventSubscriber;
 
-use AppBundle\Entity\Receipt;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Service\EmailSender;
 use Psr\Log\LoggerInterface;

@@ -5,11 +5,15 @@ namespace AppBundle\Entity;
 use AppBundle\Role\Roles;
 use AppBundle\Validator\Constraints as CustomAssert;
 use DateTime;
+use Doctrine\Common\Collections\Collection;
+use Serializable;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\User\EquatableInterface;
 
 /**
  * AppBundle\Entity\User.
@@ -28,7 +32,7 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
  *      groups={"create_user", "username", "edit_user"}
  * )
  */
-class User implements AdvancedUserInterface, \Serializable
+class User implements EquatableInterface, AdvancedUserInterface, Serializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -544,7 +548,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * Get certificateRequests.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getCertificateRequests()
     {
@@ -865,5 +869,10 @@ class User implements AdvancedUserInterface, \Serializable
         }
 
         return false;
+    }
+
+    public function isEqualTo(UserInterface $user)
+    {
+        return $this->password === $user->getPassword() && $this->user_name === $user->getUsername();
     }
 }

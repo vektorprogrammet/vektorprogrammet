@@ -306,7 +306,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -314,7 +314,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @param \AppBundle\Entity\User
+     * @param User
      */
     public function setUser($user)
     {

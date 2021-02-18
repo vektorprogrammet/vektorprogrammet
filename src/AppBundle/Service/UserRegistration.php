@@ -44,8 +44,7 @@ class UserRegistration
 
     public function createActivationEmail(User $user, $newUserCode)
     {
-        /** @var Swift_Message $emailMessage */
-        $emailMessage = (new Swift_Message())
+        return (new Swift_Message())
             ->setSubject('Velkommen til Vektorprogrammet!')
             ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
             ->setReplyTo($user->getFieldOfStudy()->getDepartment()->getEmail())
@@ -54,8 +53,6 @@ class UserRegistration
                 'newUserCode' => $newUserCode,
                 'name' => $user->getFullName(),
             )));
-
-        return $emailMessage;
     }
 
     public function sendActivationCode(User $user)

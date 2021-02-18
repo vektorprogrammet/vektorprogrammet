@@ -6,17 +6,20 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Application;
 use AppBundle\Service\AdmissionStatistics;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class StandController extends BaseController
 {
 
     /**
      * @Route("/kontrollpanel/stand", name="stand")
+     *
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return Response
+     * @throws NonUniqueResultException
      */
     public function indexAction(Request $request)
     {

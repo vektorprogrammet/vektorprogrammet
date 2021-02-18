@@ -5,6 +5,7 @@ namespace AppBundle\Entity;
 use AppBundle\Type\InterviewStatusType;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use InvalidArgumentException;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -279,7 +280,7 @@ class Interview
     /**
      * Get interviewAnswers.
      *
-     * @return \Doctrine\Common\Collections\Collection
+     * @return Collection
      */
     public function getInterviewAnswers()
     {
@@ -512,18 +513,24 @@ class Interview
     {
         switch ($this->interviewStatus) {
             case InterviewStatusType::NO_CONTACT:
-                return 'Ikke satt opp';
+                $status = 'Ikke satt opp';
+                break;
             case InterviewStatusType::PENDING:
-                return 'Ingen svar';
+                $status = 'Ingen svar';
+                break;
             case InterviewStatusType::ACCEPTED:
-                return 'Akseptert';
+                $status = 'Akseptert';
+                break;
             case InterviewStatusType::REQUEST_NEW_TIME:
-                return 'Ny tid ønskes';
+                $status = 'Ny tid ønskes';
+                break;
             case InterviewStatusType::CANCELLED:
-                return 'Kansellert';
+                $status = 'Kansellert';
+                break;
             default:
-                return 'Ingen svar';
+                $status = 'Ingen svar';
         }
+        return $status;
     }
 
     /**
@@ -533,18 +540,24 @@ class Interview
     {
         switch ($this->interviewStatus) {
             case InterviewStatusType::NO_CONTACT:
-                return '#9999ff';
+                $color = '#9999ff';
+                break;
             case InterviewStatusType::PENDING:
-                return '#0d97c4';
+                $color = '#0d97c4';
+                break;
             case InterviewStatusType::ACCEPTED:
-                return '#32CD32';
+                $color = '#32CD32';
+                break;
             case InterviewStatusType::REQUEST_NEW_TIME:
-                return '#F08A24';
+                $color = '#F08A24';
+                break;
             case InterviewStatusType::CANCELLED:
-                return '#f40f0f';
+                $color = '#f40f0f';
+                break;
             default:
-                return '#000000';
+                $color = '#000000';
         }
+        return $color;
     }
 
     /**

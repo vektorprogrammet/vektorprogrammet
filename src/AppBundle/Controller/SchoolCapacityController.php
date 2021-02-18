@@ -5,7 +5,11 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Form\Type\SchoolCapacityEditType;
 use AppBundle\Form\Type\SchoolCapacityType;
+use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\NoResultException;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class SchoolCapacityController extends BaseController
 {
@@ -13,9 +17,9 @@ class SchoolCapacityController extends BaseController
     /**
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
-     * @throws \Doctrine\ORM\NoResultException
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @return RedirectResponse|Response
+     * @throws NoResultException
+     * @throws NonUniqueResultException
      */
     public function createAction(Request $request)
     {
@@ -28,7 +32,7 @@ class SchoolCapacityController extends BaseController
         $form = $this->createForm(SchoolCapacityType::class, $schoolCapacity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($schoolCapacity);
             $em->flush();
@@ -47,7 +51,7 @@ class SchoolCapacityController extends BaseController
         $form = $this->createForm(SchoolCapacityEditType::class, $capacity);
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($capacity);
             $em->flush();

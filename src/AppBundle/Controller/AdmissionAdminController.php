@@ -12,10 +12,11 @@ use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\InterviewCounter;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
@@ -29,7 +30,7 @@ class AdmissionAdminController extends BaseController
      * This works as the restricted admission management method, only allowing users to manage applications within their department.
      * @param Request $request
      *
-     * @return \Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
     public function showAction(Request $request)
     {
@@ -39,7 +40,7 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showNewApplicationsAction(Request $request)
     {
@@ -71,7 +72,7 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showAssignedApplicationsAction(Request $request)
     {
@@ -111,7 +112,7 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showInterviewedApplicationsAction(Request $request)
     {
@@ -145,7 +146,7 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showExistingApplicationsAction(Request $request)
     {
@@ -196,7 +197,7 @@ class AdmissionAdminController extends BaseController
      * @Route("/kontrollpanel/application/existing/delete/{id}", name="delete_application_existing_user")
      * @param Application $application
      *
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     * @return RedirectResponse
      */
     public function deleteApplicationExistingAssistantAction(Application $application)
     {
@@ -265,7 +266,7 @@ class AdmissionAdminController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $user = $em->getRepository(User::class)->findOneBy(array('email' => $application->getUser()->getEmail()));
             if ($user !== null) {
                 $application->setUser($user);
@@ -301,7 +302,7 @@ class AdmissionAdminController extends BaseController
 
     /**
      * @param Request $request
-     * @return \Symfony\Component\HttpFoundation\Response|null
+     * @return Response|null
      */
     public function showTeamInterestAction(Request $request)
     {

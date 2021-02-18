@@ -83,7 +83,7 @@ class Receipt
     }
 
     /**
-     * @return \AppBundle\Entity\User
+     * @return User
      */
     public function getUser()
     {
@@ -91,7 +91,7 @@ class Receipt
     }
 
     /**
-     * @param \AppBundle\Entity\User $user
+     * @param User $user
      */
     public function setUser($user)
     {

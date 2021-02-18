@@ -74,7 +74,7 @@ class AdmissionPeriod implements PeriodInterface
     /**
      * Set department.
      *
-     * @param \AppBundle\Entity\Department $department
+     * @param Department $department
      *
      * @return AdmissionPeriod
      */
@@ -88,7 +88,7 @@ class AdmissionPeriod implements PeriodInterface
     /**
      * Get department.
      *
-     * @return \AppBundle\Entity\Department
+     * @return Department
      */
     public function getDepartment()
     {
@@ -114,7 +114,7 @@ class AdmissionPeriod implements PeriodInterface
      *
      * @return DateTime
      */
-    public function getStartDate(): ? \DateTime
+    public function getStartDate(): ?DateTime
     {
         return $this->startDate;
     }
@@ -139,7 +139,7 @@ class AdmissionPeriod implements PeriodInterface
      *
      * @return DateTime
      */
-    public function getEndDate(): ? \DateTime
+    public function getEndDate(): ?DateTime
     {
         return $this->endDate;
     }

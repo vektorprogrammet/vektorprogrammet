@@ -3,13 +3,14 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity
  * @ORM\Table(name="survey_question_alternative")
  */
-class SurveyQuestionAlternative implements \JsonSerializable
+class SurveyQuestionAlternative implements JsonSerializable
 {
     /**
      * @ORM\Id
@@ -67,11 +68,11 @@ class SurveyQuestionAlternative implements \JsonSerializable
     /**
      * Set surveyQuestion.
      *
-     * @param \AppBundle\Entity\SurveyQuestion $surveyQuestion
+     * @param SurveyQuestion $surveyQuestion
      *
      * @return SurveyQuestionAlternative
      */
-    public function setSurveyQuestion(\AppBundle\Entity\SurveyQuestion $surveyQuestion = null)
+    public function setSurveyQuestion(SurveyQuestion $surveyQuestion = null)
     {
         $this->surveyQuestion = $surveyQuestion;
 
@@ -81,7 +82,7 @@ class SurveyQuestionAlternative implements \JsonSerializable
     /**
      * Get surveyQuestion.
      *
-     * @return \AppBundle\Entity\SurveyQuestion
+     * @return SurveyQuestion
      */
     public function getSurveyQuestion()
     {

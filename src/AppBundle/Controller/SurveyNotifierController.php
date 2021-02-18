@@ -8,7 +8,7 @@ use AppBundle\Service\SurveyNotifier;
 use DateTime;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
@@ -17,10 +17,10 @@ class SurveyNotifierController extends BaseController
 
 
     /**
-    * @param Request $request
-    * @param SurveyNotificationCollection $surveyNotificationCollection
-    * @return \Symfony\Component\HttpFoundation\Response
-    */
+     * @param Request $request
+     * @param SurveyNotificationCollection|null $surveyNotificationCollection
+     * @return Response
+     */
     public function createSurveyNotifierAction(Request $request, SurveyNotificationCollection $surveyNotificationCollection = null)
     {
         $isUserGroupCollectionEmpty = empty($this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll());

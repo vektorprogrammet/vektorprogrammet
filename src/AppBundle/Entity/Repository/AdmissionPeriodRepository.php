@@ -7,6 +7,7 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Semester;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * AdmissionPeriodRepository
@@ -57,7 +58,7 @@ class AdmissionPeriodRepository extends EntityRepository
      * @param Semester $semester
      *
      * @return AdmissionPeriod|null
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findOneByDepartmentAndSemester(Department $department, Semester $semester): ?AdmissionPeriod
     {
@@ -76,7 +77,7 @@ class AdmissionPeriodRepository extends EntityRepository
      *
      * @return AdmissionPeriod|null
      *
-     * @throws \Doctrine\ORM\NonUniqueResultException
+     * @throws NonUniqueResultException
      */
     public function findOneWithActiveAdmissionByDepartment(Department $department, DateTime $time = null): ?AdmissionPeriod
     {
