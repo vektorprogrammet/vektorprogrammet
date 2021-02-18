@@ -12,7 +12,6 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Service\AdmissionStatistics;
 use AppBundle\Service\Sorter;
-use AppBundle\Service\TodoListService;
 use AppBundle\Utils\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -113,30 +112,6 @@ class WidgetController extends BaseController
         return $this->render('widgets/changelog_widget.html.twig', [
             'changeLogItems' => array_slice($changeLogItems, 0, 5)
         ]);
-    }
-
-    /**
-     * @param Request $request
-     * @return Response|null
-     */
-    public function todoAction(Request $request)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $currentSemester = $this->getSemesterOrThrow404($request);
-        $department = $this->getDepartmentOrThrow404($request);
-
-        $todoService = new TodoListService($em);
-
-        // Get sorted
-        $todoItems        = $todoService->getOrderedList($department, $currentSemester);
-        // Don't show completed
-        $incompletedItems = $todoService->getIncompletedTodoItems($todoItems, $currentSemester, $department);
-
-        return $this->render('widgets/todo_widget.html.twig', array(
-            'todo_items' => $incompletedItems,
-            'semester' => $currentSemester,
-            'department' => $department
-        ));
     }
 
     public function feedbackAction(Request $request)
