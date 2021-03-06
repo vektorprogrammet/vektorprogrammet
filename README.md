@@ -6,8 +6,8 @@
 
 # Set up development environment
 ## Requirements:
-- [PHP](http://php.net/downloads.php) version >= 7.1
-- [Node](https://nodejs.org/en/) version 12
+- [PHP](http://php.net/downloads.php) version 7.4
+- [Node](https://nodejs.org/en/) version 14
 - [Git](https://git-scm.com/)
 
 ##### Required PHP-dependencies:
@@ -29,13 +29,13 @@ Example for dependency `mbstring`:
 
 
 To install the PHP-dependencies on Ubuntu 
-(Example with Ubuntu as operating system and a php-version of 7.2)
+(Example with Ubuntu as operating system and a php-version of 7.4)
 ```
-sudo apt-get install php7.2-mbstring
-sudo apt-get install php7.2-sqlite
-sudo apt-get install php7.2-gd
-sudo apt-get install php7.2-curl
-sudo apt-get install php7.2-xml
+sudo apt-get install php7.4-mbstring
+sudo apt-get install php7.4-sqlite (php7.4-mysql for prod)
+sudo apt-get install php7.4-gd
+sudo apt-get install php7.4-curl
+sudo apt-get install php7.4-xml
 ```
 
 Alternatively install Composer dependency manager from [here](https://getcomposer.org/).
