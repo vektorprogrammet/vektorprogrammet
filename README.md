@@ -32,7 +32,7 @@ To install the PHP-dependencies on Ubuntu
 (Example with Ubuntu as operating system and a php-version of 7.4)
 ```
 sudo apt-get install php7.4-mbstring
-sudo apt-get install php7.4-sqlite (mphp7.4-mysql for prod)
+sudo apt-get install php7.4-sqlite (php7.4-mysql for prod)
 sudo apt-get install php7.4-gd
 sudo apt-get install php7.4-curl
 sudo apt-get install php7.4-xml
