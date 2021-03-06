@@ -27,6 +27,7 @@ class BaseController extends Controller
         } else {
             $department = $this->getDoctrine()->getRepository(Department::class)->find($departmentId);
         }
+        // Hello world :-)
         return $department;
     }
 
