@@ -2,6 +2,7 @@
   <v-flex xs12>
     <h3>Assistenter som ikke ble fordelt</h3>
     <table>
+      <caption>Tabell over assistenter</caption>
       <tr>
         <th>Navn</th>
         <th>Poeng</th>
