@@ -2,10 +2,10 @@
   <div>
     <h4>{{name}}</h4>
     <table>
+      <caption>SchoolTimeTable</caption>
       <thead>
       <tr>
-        <th></th>
-        <th v-for="day in weekDays">{{day}}</th>
+        <th scope="col" v-for="day in weekDays">{{day}}</th>
       </tr>
       </thead>
       <tbody>
