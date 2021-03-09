@@ -229,8 +229,6 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
             array('/kontrollpanel/skoleadmin'),
             array('/kontrollpanel/skoleadmin/brukere'),
             array('/kontrollpanel/skoleadmin/tildel/skole/1'),
-
-            array('/kontrollpanel/staging'),
         );
     }
 
