@@ -5,6 +5,9 @@ const defaultState = {
     loaded: false,
     loading: false,
   },
+  department: {
+    loaded: false
+  }
 };
 
 const state = {...defaultState};
@@ -25,7 +28,7 @@ const actions = {
       await accountService.logout();
       commit('logoutSuccessful');
     } catch (e) {
-      commit('logoutFailure');
+      commit('logoutFailure', e);
     }
   },
   async getUser({commit}) {
@@ -36,37 +39,58 @@ const actions = {
       commit('loginFailure');
     }
   },
+  async getDepartment({commit}) {
+    try {
+      const department = await accountService.getDepartment();
+      commit('departmentFetchSuccessful', department)
+    }catch (e) {
+      console.log(e)
+      commit('departmentFetchFailure', e);
+    }
+  }
 };
 
 const getters = {
-  user(state) {
-    return state.user;
+  user(currentState) {
+    return currentState.user;
   },
+  department(currentState) {
+    return currentState.department;
+  }
 };
 
 const mutations = {
-  loginRequest(state) {
-    state.user.loaded = false;
-    state.user.loading = true;
+  loginRequest(currentState) {
+    currentState.user.loaded = false;
+    currentState.user.loading = true;
   },
-  loginSuccessful(state, user) {
+  loginSuccessful(currentState, user) {
     if (!user.hasOwnProperty("username")) {
-      state.user = {...defaultState.user};
+      currentState.user = {...defaultState.user};
       return;
     }
 
-    state.user = {...state.user, ...user};
-    state.user.loading = false;
-    state.user.loaded = true;
+    currentState.user = {...currentState.user, ...user};
+    currentState.user.loading = false;
+    currentState.user.loaded = true;
   },
   loginFailure() {
     //TODO: Handle error
     // console.log('ERROR: ', e.message);
   },
-  logoutSuccessful(state) {
-    state.user = {...defaultState.user};
+  logoutSuccessful(currentState) {
+    currentState.user = {...defaultState.user};
+    currentState.department = {...defaultState.department};
   },
   logoutFailure() {
+    //TODO: Handle error
+    // console.log('ERROR: ', e);
+  },
+  departmentFetchSuccessful(currentState, department) {
+    currentState.department = {...defaultState.department, ...department};
+    currentState.department.loaded = true;
+  },
+  departmentFetchFailure() {
     //TODO: Handle error
     // console.log('ERROR: ', e);
   },

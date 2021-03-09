@@ -4,6 +4,7 @@ import store from '../store';
 
 import MyPageView from '../views/assistant/MyPageView';
 import LoginView from '../views/LoginView';
+import LogoutView from '../views/LogoutView'
 import Error404View from '../views/Error404View';
 import Error403View from '../views/Error403View';
 import StagingServerView from '../views/controlpanel/StagingServerView';
@@ -17,9 +18,18 @@ const router = new Router({
   mode: 'history',
   routes: [
     {
+      path: '/',
+      name: 'root'
+    },
+    {
       path: '/login',
       name: 'login',
       component: LoginView,
+    },
+    {
+      path: '/logout',
+      name: 'logout',
+      component: LogoutView
     },
     {
       path: '*',
@@ -64,18 +74,33 @@ const router = new Router({
 });
 
 router.beforeEach(async (to, from, next) => {
-  if (to.name === 'login' || to.name === '404') {
+  
+  if (to.name === '404'|| to.name === 'logout') {
     next();
     return;
   }
+
+  if (to.name === 'root') {
+    next({name: 'login'})
+    return;
+  }
+
   let loggedInUser = store.getters['account/user'];
   if (!loggedInUser.loaded) {
     await store.dispatch('account/getUser');
   }
-
   loggedInUser = store.getters['account/user'];
-  if (!loggedInUser.loaded) {
-    next({name: 'login'});
+
+  if (loggedInUser.loaded) {
+    await store.dispatch('account/getDepartment');
+  }
+
+  if (to.name === 'login') {
+    if (!loggedInUser.loaded){
+      next();
+    } else {
+      next({name: 'my_page'});
+    }
     return;
   }
 

@@ -34,8 +34,8 @@
                 <img  v-show="show_tor" src="../../assets/tor.png" alt="Tor" id="tor"/>
             </transition>
 
-            <div id="CountDown">
-                <CountDown></CountDown>
+            <div id="CountDown" v-if="deadline !== null">
+                <CountDown :deadline="deadline"></CountDown>
             </div>
 
             <div id="Dev-tools" v-if="isDev">
@@ -66,12 +66,15 @@
     import Velocity from 'velocity-animate';
     import { confetti } from 'dom-confetti';
     import Vektorlogo from "../../components/Vektorlogo";
+    
+    import { mapGetters } from 'vuex';
 
     export default {
         name: "PartyPageView",
         components: {Vektorlogo, CountDown},
         data() {
             return {
+                deadline: null,
                 number: 0,
                 sliding_number_of_applicants: 0,
                 show: true,
@@ -112,10 +115,15 @@
             animatedNumber: function() {
                 return this.sliding_number_of_applicants.toFixed(0);
             },
+            ...mapGetters({
+               loggedInUser: 'account/user',
+               department: 'account/department'
+            })
         },
 
         watch: {
             fetching_api: function () {
+                this.fetch_deadline();
                 this.fetch_applicants();
                 this.pop_applicants();
                 this.main_background_animate();
@@ -124,10 +132,17 @@
         },
 
         methods:{
+
+            fetch_deadline: async function() {
+                const payload = await axios.get('api/party/deadline/' + this.department.id + '/');
+                const deadline = payload.data;
+                this.deadline = deadline.toString();
+            },
+            
             fetch_applicants: function(){
                 window.setInterval(()=>{
                     axios
-                        .get('/api/party/application_count/1/')
+                        .get('/api/party/application_count/' + this.department.id + '/')
                         .then(response => {
                             if(this.last_number_of_applicants !== response.data){
                                 let new_applicants = response.data - this.last_number_of_applicants;
@@ -154,7 +169,7 @@
             btn_intro_click: function(){
                 this.show = false;
                 axios
-                    .get('/api/party/application_count/1/')
+                    .get('/api/party/application_count/' + this.department.id + '/')
                     .then(response => {
                         this.inc_number_of_applicants_anim(response.data, 2); //should be 10
                         this.fetching_api = true;
@@ -195,7 +210,7 @@
 
                 let firstName = user.firstName;
                 let sound = new Audio(require('../../assets/johncenaintro.mp3'));
-                let sound2 = new Audio('https://ttsaas.sigtot.com/'+ firstName);
+                let sound2 = new Audio('http://localhost:1337/'+ firstName);
                 let sound3 = new Audio(require('../../assets/johncenaout.mp3'));
 
                 sound.volume = 0.6;
@@ -268,7 +283,7 @@
 
             add_users: function(number, old_applicant_number) {
                 axios
-                    .get('/api/party/newest_applications/1/')
+                    .get('/api/party/newest_applications/' + this.department.id + '/')
                     .then( response =>  {
                         //API allows for maximum 5 last entries:
                         let limit = number > response.data.length ? response.data.length : number;

@@ -1,6 +1,6 @@
 <template>
     <div id="countdown">
-        <flip-countdown deadline = "2020-09-01 23:59:59"></flip-countdown>
+        <flip-countdown :deadline="deadline"></flip-countdown>
     </div>
     
 </template>
@@ -12,6 +12,7 @@
     export default {
         name: "CountDown",
         components: {FlipCountdown},
+        props: ['deadline'],
     }
 </script>
 
