@@ -308,6 +308,7 @@ sensio_framework_extra:
 fos_rest:
   param_fetcher_listener: true
   body_listener: true
+  routing_loader: false
   format_listener:
     enabled: true
     rules:
