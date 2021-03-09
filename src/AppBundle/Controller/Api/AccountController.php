@@ -5,20 +5,21 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\BaseController;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\User;
-use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
-use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
+use Exception;
 
 class AccountController extends BaseController
 {
 
     /**
-     * @Route("api/account/login")
+     * @Route(path="api/account/login", methods={"GET", "POST"})
      *
      * @param Request $request
      *
@@ -67,7 +68,25 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route("api/account/user")
+     * @Route(path="api/account/logout", methods={"POST"})
+     *
+     * @return Response
+     */
+    public function logoutAction()
+    {
+        try {
+            $this->get('security.token_storage')->setToken(null);
+            return new JsonResponse("Logout successful");
+        } catch (Exception $e) {
+            $response = new JsonResponse();
+            $response->setStatusCode(401);
+            $response->setContent($e);
+            return $response;
+        }
+    }
+
+    /**
+     * @Route(path="api/account/user", methods={"GET"})
      *
      * @return Response
      * @throws InvalidClassConstructorException
@@ -84,5 +103,37 @@ class AccountController extends BaseController
         $mapper->map($this->getUser(), $userDto);
 
         return new JsonResponse($userDto);
+    }
+
+
+    /**
+     * @param Request $request
+     *
+     * @Route(
+     *     path="api/account/get_department",
+     *     methods={"GET"}
+     * )
+     *
+     * @return Response
+     */
+    public function getDepartmentApi(Request $request)
+    {
+        if (!$this->getUser()) {
+            return new JsonResponse(null);
+        }
+
+        $department = $this->getUser()->getDepartment();
+
+        if (!$department) {
+            return new JsonResponse(null);
+        }
+        
+        // This is not a proper DTO, and should be changed, but as we really only need the id for now... :
+        $departmentDto = array(
+            "id" => $department->getId(),
+            "name" => $department->getName(),
+        );
+
+        return new JsonResponse($departmentDto);
     }
 }
