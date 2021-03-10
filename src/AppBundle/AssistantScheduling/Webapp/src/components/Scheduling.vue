@@ -1,5 +1,5 @@
 <template>
-  <v-layout row wrap>
+  <v-layout row wrap pt-8 >
 
     <v-flex xs12 sm6 offset-sm3 v-show="!allocating && !bestSchedule.hasOwnProperty('monday')">
       <h5>{{schools.length}} skoler valgt</h5>
@@ -132,9 +132,9 @@
   }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="sass" scoped>
   h5
-    text-align: center;
+    text-align: center
   .status
     margin-top: 30px
     text-align: center

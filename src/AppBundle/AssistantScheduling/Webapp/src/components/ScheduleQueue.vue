@@ -2,12 +2,13 @@
   <v-flex xs12>
     <h3>Assistenter som ikke ble fordelt</h3>
     <table>
+      <caption>Tabell over assistenter</caption>
       <tr>
-        <th>Navn</th>
-        <th>Poeng</th>
-        <th>Ønsket pulje</th>
-        <th>Dobbel stilling</th>
-        <th v-for="day in weekDays">{{day}}</th>
+        <th scope="col">Navn</th>
+        <th scope="col">Poeng</th>
+        <th scope="col">Ønsket pulje</th>
+        <th scope="col">Dobbel stilling</th>
+        <th scope="col" v-for="day in weekDays">{{day}}</th>
       </tr>
       <tr v-for="assistant in queue">
         <td>{{assistant.name}}</td>
@@ -34,7 +35,7 @@
   }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="sass" scoped>
   .status
     margin-top: 100px
     text-align: center

@@ -1,10 +1,12 @@
 <template>
   <v-app>
-    <v-toolbar>
-      <v-toolbar-title v-text="title"></v-toolbar-title>
+    <v-toolbar color="primary">
+      <v-toolbar-title class="title" v-text="title"></v-toolbar-title>
       <v-spacer></v-spacer>
       <v-toolbar-items>
-        <a class="home-link" :href="'/kontrollpanel'">Tilbake til kontrollpanelet</a>
+        <v-container>
+          <a class="home-link" :href="'/kontrollpanel'" v-text="homeLinkText"/>
+        </v-container>
       </v-toolbar-items>
     </v-toolbar>
     <main>
@@ -18,19 +20,30 @@
             <v-stepper-step step="3" editable>Generer!</v-stepper-step>
           </v-stepper-header>
           <v-stepper-content step="1">
-            <school-table></school-table>
-            <a class="add-school" href="/kontrollpanel/skole/capacity"><v-btn small success light>Legg til skole</v-btn></a>
-            <br>
-            <v-btn class="next" @click.native="goToStep(2)" primary light>Neste &gt;</v-btn>
+            <v-card flat min-height="300"> 
+              <school-table></school-table>
+              <a class="add-school" href="/kontrollpanel/skole/capacity"><v-btn small color="success">Legg til skole</v-btn></a>
+            </v-card>
+            <v-container pb-2>
+              <v-btn class="next" @click.native="goToStep(2)" color="primary">Neste &gt;</v-btn>
+            </v-container>
           </v-stepper-content>
           <v-stepper-content step="2">
-            <assistant-table></assistant-table>
-            <v-btn @click.native="goToStep(1)" dark>&lt; Tilbake</v-btn>
-            <v-btn class="next" @click.native="goToStep(3)" primary light>Neste &gt;</v-btn>
+            <v-card flat min-height="300"> 
+              <assistant-table></assistant-table>
+            </v-card>
+            <v-container pb-2>
+              <v-btn @click.native="goToStep(1)">&lt; Tilbake</v-btn>
+              <v-btn class="next" @click.native="goToStep(3)" color="primary">Neste &gt;</v-btn>
+            </v-container>
           </v-stepper-content>
           <v-stepper-content step="3">
-            <scheduling></scheduling>
-            <v-btn @click.native="goToStep(2)" dark>&lt; Tilbake</v-btn>
+            <v-card flat min-height="300"> 
+              <scheduling></scheduling>
+            </v-card>
+            <v-container pb-2>
+              <v-btn @click.native="goToStep(2)" m5>&lt; Tilbake</v-btn>
+            </v-container>
           </v-stepper-content>
         </v-stepper>
       </v-container>
@@ -52,7 +65,8 @@
     data() {
       return {
         title: 'Vektorprogrammet - Timeplangenerator',
-        stepper: 1
+        stepper: 1,
+        homeLinkText: "Tilbake til kontrollpanelet"
       }
     },
     created () {
@@ -107,12 +121,16 @@
   }
 </script>
 
-<style lang="stylus">
-  @import './stylus/main'
-
+<style lang="sass">
+  @import '~vuetify/src/styles/main.sass'
+  
   .home-link, .home-link:active, .home-link:visited
     color: #fff
-    text-decoration none
+    text-decoration: none
+  
+  .title
+    color: #fff
+    text-decoration: none
 
   .home-link:hover
     text-decoration: underline
@@ -121,8 +139,15 @@
     text-decoration: none
     margin-top: 25px
     display: block
-    text-align: center;
+    text-align: center
+  
+  .v-toolbar
+    display: block
+    flex: none
+
+  .button
+    margin: 100
 
   .next
-    float: right;
+    float: right
 </style>
