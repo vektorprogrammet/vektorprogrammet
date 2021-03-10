@@ -20,7 +20,7 @@
   }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="sass" scoped>
     .double
-        color: #0000ff;
+        color: #0000ff
 </style>

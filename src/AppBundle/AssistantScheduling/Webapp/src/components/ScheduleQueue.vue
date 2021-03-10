@@ -35,7 +35,7 @@
   }
 </script>
 
-<style lang="stylus" scoped>
+<style lang="sass" scoped>
   .status
     margin-top: 100px
     text-align: center
