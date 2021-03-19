@@ -120,6 +120,11 @@ class GeoLocation
 
         return $departments;
     }
+    public static function isValidIp(string $ip)
+    {
+        $ipPattern = '/^(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/';
+        return preg_match($ipPattern, $ip) === 1; //Returns 1 if match
+    }
 
     public function findCoordinates($ip)
     {
@@ -133,8 +138,12 @@ class GeoLocation
             return $coords;
         }
 
+        if (! self::isValidIp($ip)) {
+            return null;
+        }
+
         try {
-            $rawResponse = file_get_contents("http://ipinfo.io/$ip?token={$this->ipinfoToken}");
+            $rawResponse = file_get_contents("https://ipinfo.io/$ip?token={$this->ipinfoToken}");
             $response = json_decode($rawResponse, true);
         } catch (ErrorException $e) {
             $this->logger->warning("Could not get location from 
