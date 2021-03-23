@@ -1,6 +1,6 @@
 #!/bin/sh
 cd -
-log=var/logs/deploy.log
+log=/var/www/vektorprogrammet/var/logs/deploy.log
 cd ~/cron
 ./vektorprogrammet-backup >> $log 2>&1
 cd -
