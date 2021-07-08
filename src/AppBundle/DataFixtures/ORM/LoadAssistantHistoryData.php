@@ -27,7 +27,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah2->setSemester($this->getReference('semester-current'));
         $ah2->setDepartment($this->getReference('dep-1'));
         $ah2->setWorkdays(8);
-        $ah2->setBolk('Bolk 1, Bolk 2');
+        $ah2->setBolk('Bolk 2');
         $ah2->setDay('Mandag');
         $manager->persist($ah2);
 
@@ -51,9 +51,49 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah4->setDay('Fredag');
         $manager->persist($ah4);
 
-        $manager->flush();
 
         $this->addReference('ah-1', $ah1);
+
+        $semester1 = $this->getReference('semester-1');
+        $semester2 = $this->getReference('semester-2');
+        $semester3 = $this->getReference('semester-3');
+        $semesterCurrent = $this->getReference('semester-current');
+        $semesters = array($semester1, $semester2, $semester3, $semesterCurrent);
+
+        $department1 = $this->getReference('dep-1');
+        $department2 = $this->getReference('dep-2');
+        $departments = array($department1, $department2);
+
+        $bolks = array("Bolk 1", "Bolk 2");
+
+
+        for ($i = 0; $i < 10; ++$i) {
+            $userAssistant = $this->getReference('scheduling-assistant-'.$i);
+            $ah = new AssistantHistory();
+            $ah->setUser($userAssistant);
+            $ah->setSchool($this->getReference('school-1'));
+            $ah->setSemester($semesters[3]);
+            $ah->setDepartment($departments[0]);
+            $ah->setWorkdays(4*rand(1, 2));
+            $ah->setBolk($bolks[rand(0, 1)]);
+            $ah->setDay('Onsdag');
+            $manager->persist($ah);
+        }
+
+        for ($i = 10; $i < 50; ++$i) {
+            $userAssistant = $this->getReference('scheduling-assistant-'.$i);
+            $ah = new AssistantHistory();
+            $ah->setUser($userAssistant);
+            $ah->setSchool($this->getReference('school-1'));
+            $ah->setSemester($semesters[rand(0, 3)]);
+            $ah->setDepartment($departments[rand(0, 1)]);
+            $ah->setWorkdays(4*rand(1, 2));
+            $ah->setBolk($bolks[rand(0, 1)]);
+            $ah->setDay('Onsdag');
+            $manager->persist($ah);
+        }
+
+        $manager->flush();
     }
 
     public function getOrder()

@@ -45,9 +45,13 @@
                                                 {% if surveyNotificationCollection.isActive %} <i class="fas fa-eye text-primary"></i> Se {% else %} <i class="fa fa-pencil text-primary"></i> Rediger {% endif %}
                                             </a>
                                             {% if not surveyNotificationCollection.isActive %}
-                                                <a class="post-a dropdown-item" href="{{ path('survey_notifier_delete', {'id': surveyNotificationCollection.id }) }}">
-                                                    <i class="fas fa-trash-alt text-primary"></i> Slett
-                                                </a>
+                                                <form class="post-a dropdown-item"
+                                                      method="POST"
+                                                      action="{{ path('survey_notifier_delete', {'id': surveyNotificationCollection.id }) }}">
+                                                    <button class="button-link" type="submit">
+                                                        <i class="fas fa-trash-alt text-primary"></i> Slett
+                                                    </button>
+                                                </form>
                                             {% endif %}
                                         </div>
                                     </div>
@@ -66,7 +70,7 @@
                                         <form method="POST"
                                               action="{{ path('survey_notifier_send', {'id': surveyNotificationCollection.id }) }}"
                                               onsubmit="return confirm('Er du sikker på at du vil sende?')">
-                                            <button id="send-notifier" class="btn btn-link p-0" type="submit">
+                                            <button class="btn btn-link p-0" type="submit">
                                                 <i class="fas fa-bullhorn"></i> Send varsel
                                             </button>
                                         </form>
@@ -91,42 +95,3 @@
         </div>
 {% endblock %}
 
-
-{% block javascripts %}
-    <script>
-        window.onload = function() {
-
-            $('#send-notifier').on('click', function(event) {
-                event.preventDefault();
-                $.ajax({
-                    type: "POST",
-                    url: $("form").attr("action"),
-                    success: function (response) {
-                        if (response.success) {
-                            window.location.reload();
-                        } else {
-                            alert(response.cause);
-                        }
-                    }
-                });
-            });
-
-
-            $('.post-a').on('click', function(event) {
-                event.preventDefault();
-                $.ajax({
-                    type: "POST",
-                    url: $(this).attr('href'),
-                    success: function (response) {
-                        if (response.success) {
-                            window.location.reload();
-                        } else {
-                            alert(response.cause);
-                        }
-                    }
-                });
-            });
-        }
-
-    </script>
-{% endblock %}
