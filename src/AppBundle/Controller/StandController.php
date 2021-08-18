@@ -25,6 +25,7 @@ class StandController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
+        $appData = null;
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
 
@@ -41,8 +42,8 @@ class StandController extends BaseController
             $applicationsInSemester = $this->getDoctrine()
                 ->getRepository(Application::class)
                 ->findByAdmissionPeriod($admissionPeriod);
+            $appData = $admissionStatistics->generateGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
         }
-        $appData = $admissionStatistics->generateGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
 
 
         return $this->render('stand_admin/stand.html.twig', [

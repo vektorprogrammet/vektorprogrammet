@@ -25,15 +25,15 @@ class SurveyPopupController extends Controller
         if ($userShouldSeePopUp) {
             $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
 
-            $surveys = $this->getDoctrine()
-                ->getRepository(Survey::class)
-                ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
-
-            if (!empty($surveys)) {
-                $survey = end($surveys);
+            if($semester !== null){
+                $surveys = $this->getDoctrine()
+                    ->getRepository(Survey::class)
+                    ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
+                if (!empty($surveys)) {
+                    $survey = end($surveys);
+                }
             }
         }
-
 
         $routeName = $this->container->get('request_stack')->getMasterRequest()->get('_route');
         if (strpos($routeName, "survey_show") !== false) {
