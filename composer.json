@@ -31,7 +31,7 @@
         "symfony/swiftmailer-bundle": "^3.2.3",
         "twig/twig": "^2.0",
         "php": ">=7.1",
-        "symfony/symfony": "3.4.49",
+        "symfony/symfony": "3.4.*",
         "doctrine/dbal": "~2.8",
         "twig/extensions": "~1.0",
         "egeloen/ckeditor-bundle": "~6.0",
