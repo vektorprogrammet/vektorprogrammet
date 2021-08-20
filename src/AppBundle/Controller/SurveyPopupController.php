@@ -25,7 +25,7 @@ class SurveyPopupController extends Controller
         if ($userShouldSeePopUp) {
             $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
 
-            if($semester !== null){
+            if ($semester !== null) {
                 $surveys = $this->getDoctrine()
                     ->getRepository(Survey::class)
                     ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
