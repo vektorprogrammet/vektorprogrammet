@@ -3,10 +3,11 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Semester;
+use AppBundle\Utils\SemesterUtil;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
-use AppBundle\Utils\SemesterUtil;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 
 class SemesterRepository extends EntityRepository
@@ -51,7 +52,7 @@ class SemesterRepository extends EntityRepository
     /**
      * @return Semester
      * @throws NonUniqueResultException
-     * @throws \Doctrine\ORM\ORMException
+     * @throws ORMException
      */
     public function findOrCreateCurrentSemester()
     {
@@ -89,7 +90,7 @@ class SemesterRepository extends EntityRepository
     /**
      * @param Semester $semester
      * @return Semester|null
-     * @throws NonUniqueResultException
+     * @throws NonUniqueResultException|ORMException
      */
     public function getNextActive(Semester $semester): ? Semester
     {

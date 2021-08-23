@@ -3,12 +3,10 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Role\Roles;
 use AppBundle\Service\RoleManager;
 use DateTime;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
 class SurveyPopupController extends BaseController
