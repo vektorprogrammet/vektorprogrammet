@@ -80,3 +80,9 @@ services:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         public: false
         tags: [serializer.normalizer]
+
+    Symfony\Component\Serializer\NameConverter\NameConverterInterface: '@serializer.name_converter.camel_case_to_snake_case'
+
+    Symfony\Component\PropertyInfo\PropertyTypeExtractorInterface: '@doctrine.orm.default_entity_manager.property_info_extractor'
+
+

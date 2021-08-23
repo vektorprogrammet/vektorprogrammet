@@ -302,7 +302,7 @@ ewz_recaptcha:
 
 sensio_framework_extra:
   view:    { annotations: true }
-  router:  { annotations: true }
+  router:  { annotations: false }
   request: { converters: true }
 
 fos_rest:
