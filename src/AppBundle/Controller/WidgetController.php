@@ -66,6 +66,7 @@ class WidgetController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
+        $appData = null;
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
 
@@ -76,8 +77,8 @@ class WidgetController extends BaseController
             $applicationsInSemester = $this->getDoctrine()
                 ->getRepository(Application::class)
                 ->findByAdmissionPeriod($admissionPeriod);
+            $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
         }
-        $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
 
         return $this->render('widgets/application_graph_widget.html.twig', [
             'appData' => $appData,
