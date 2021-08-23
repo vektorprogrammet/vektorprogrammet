@@ -66,7 +66,7 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
             $this->em->flush();
         } else { // Send new user code for user to create user name and password
             $currentSemester = $this->em->getRepository(Semester::class)
-                ->findCurrentSemester();
+                ->findOrCreateCurrentSemester();
 
             // Send new user code only if assistant history is added to current semester
             if ($assistantHistory->getSemester() === $currentSemester && $user->getNewUserCode() === null) {

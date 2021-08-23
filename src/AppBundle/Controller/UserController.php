@@ -27,7 +27,7 @@ class UserController extends BaseController
         $user = $this->getUser();
 
         $department = $user->getDepartment();
-        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+        $semester = $this->getCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
             ->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);
@@ -94,7 +94,7 @@ class UserController extends BaseController
             ];
         }
 
-        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+        $semester = $this->getCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
             'partnerInformations' => $partnerInformations,
             'partnerCount' => $partnerCount,

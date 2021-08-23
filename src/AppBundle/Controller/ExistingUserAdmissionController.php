@@ -58,7 +58,7 @@ class ExistingUserAdmissionController extends BaseController
             return $this->redirectToRoute('my_page');
         }
 
-        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+        $semester = $this->getCurrentSemester();
 
         return $this->render(':admission:existingUser.html.twig', array(
             'form' => $form->createView(),

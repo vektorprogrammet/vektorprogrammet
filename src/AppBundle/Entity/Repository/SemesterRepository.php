@@ -49,6 +49,24 @@ class SemesterRepository extends EntityRepository
     }
 
     /**
+     * @return Semester
+     * @throws NonUniqueResultException
+     * @throws \Doctrine\ORM\ORMException
+     */
+    public function findOrCreateCurrentSemester()
+    {
+        $semester = $this->findCurrentSemester();
+        if ($semester == null) {
+            //Create a new semester
+            $now = new DateTime();
+            $semester = SemesterUtil::timeToSemester($now);
+            $this->getEntityManager()->persist($semester);
+            $this->getEntityManager()->flush();
+        }
+        return $semester;
+    }
+
+    /**
      * @param string $semesterTime
      * @param string $year
      * @return Semester|null
@@ -75,7 +93,7 @@ class SemesterRepository extends EntityRepository
      */
     public function getNextActive(Semester $semester): ? Semester
     {
-        if ($semester === $this->findCurrentSemester()) {
+        if ($semester === $this->findOrCreateCurrentSemester()) {
             return null;
         }
         if ($semester->getSemesterTime() === 'Høst') {

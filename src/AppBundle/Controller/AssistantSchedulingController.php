@@ -28,7 +28,8 @@ class AssistantSchedulingController extends BaseController
     {
         $user = $this->getUser();
 
-        $currentSemester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+        $currentSemester = $this->getCurrentSemester();
+
         $currentAdmissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($user->getDepartment(), $currentSemester);
         $applications = $this->getDoctrine()->getRepository(Application::class)->findAllAllocatableApplicationsByAdmissionPeriod($currentAdmissionPeriod);
@@ -94,7 +95,7 @@ class AssistantSchedulingController extends BaseController
     {
         $user = $this->getUser();
         $department = $user->getFieldOfStudy()->getDepartment();
-        $currentSemester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+        $currentSemester = $this->getCurrentSemester();
         $allCurrentSchoolCapacities = $this->getDoctrine()
             ->getRepository(SchoolCapacity::class)->findByDepartmentAndSemester($department, $currentSemester);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);

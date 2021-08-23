@@ -11,7 +11,7 @@ use DateTime;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Response;
 
-class SurveyPopupController extends Controller
+class SurveyPopupController extends BaseController
 {
     public function nextSurveyAction()
     {
@@ -23,17 +23,18 @@ class SurveyPopupController extends Controller
             $user->getLastPopUpTime()->diff(new DateTime())->days >= 1;
 
         if ($userShouldSeePopUp) {
-            $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+            $semester = $this->getCurrentSemester();
 
-            $surveys = $this->getDoctrine()
-                ->getRepository(Survey::class)
-                ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
+            if ($semester !== null) {
+                $surveys = $this->getDoctrine()
+                    ->getRepository(Survey::class)
+                    ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
 
-            if (!empty($surveys)) {
-                $survey = end($surveys);
+                if (!empty($surveys)) {
+                    $survey = end($surveys);
+                }
             }
         }
-
 
         $routeName = $this->container->get('request_stack')->getMasterRequest()->get('_route');
         if (strpos($routeName, "survey_show") !== false) {

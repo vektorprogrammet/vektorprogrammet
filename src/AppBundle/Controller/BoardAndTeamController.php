@@ -25,7 +25,7 @@ class BoardAndTeamController extends BaseController
         $departmentStats = array();
         /** @var Department $department */
         foreach ($departments as $department) {
-            $currentSemester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+            $currentSemester = $this->getCurrentSemester();
             $userRepository = $this->getDoctrine()->getRepository(User::class);
             $departmentStats[$department->getCity()] = array(
                 'numTeamMembers' => sizeof($userRepository->findUsersInDepartmentWithTeamMembershipInSemester($department, $currentSemester)),

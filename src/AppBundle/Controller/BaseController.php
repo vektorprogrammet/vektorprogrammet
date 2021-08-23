@@ -40,11 +40,16 @@ class BaseController extends Controller
     {
         $semesterId = $request->query->get('semester');
         if ($semesterId === null) {
-            $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+            $semester = $this->getCurrentSemester();
         } else {
             $semester = $this->getDoctrine()->getRepository(Semester::class)->find($semesterId);
         }
         return $semester;
+    }
+
+    public function getCurrentSemester(): Semester
+    {
+        return $this->getDoctrine()->getRepository(Semester::class)->findOrCreateCurrentSemester();
     }
 
     /**
