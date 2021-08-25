@@ -13,7 +13,7 @@ class SlugMakerTest extends KernelTestCase
      */
     private $slugMaker;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $kernel = $this->createKernel();
         $kernel->boot();

@@ -23,7 +23,7 @@ class RoleManagerTest extends KernelTestCase
      */
     private $mockUsers;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $kernel = $this->createKernel();
         $kernel->boot();

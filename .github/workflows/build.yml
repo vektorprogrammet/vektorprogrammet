@@ -21,10 +21,9 @@ jobs:
           php-version: '7.4'
           coverage: pcov
 
-      - name: Install pcov/clobber dependency
-        run: |
-          composer self-update --1
-          composer require pcov/clobber
+      #- name: Install pcov/clobber dependency
+      #  run: |
+      #    composer require pcov/clobber
 
       #- name: Cache dependencies installed with composer
       #  uses: actions/cache@v2
@@ -33,17 +32,20 @@ jobs:
       #    key: php-composer-${{ hashFiles('**/composer.json') }}
       - name: Install dependencies
         run: |
+          composer self-update --1
           composer install
 
-      - name: Setup PCOV
-        run: |
-          bin/pcov clobber
+      #- name: Setup PCOV
+      #  run: |
+      #    bin/pcov clobber
 
       - name: Run Test with Code Coverage
-        run: bin/phpunit --configuration=app/phpunit.xml.dist --coverage-clover=coverage.xml
+        run: |
+          bin/phpunit --configuration=app/phpunit.xml.dist --coverage-clover=coverage.xml
+          sed -i 's/\/home\/runner\/work\/vektorprogrammet\/vektorprogrammet\//\/github\/workspace\//g' coverage.xml
 
-      - name: fix code coverage paths
-        run: sed -i 's/\/home\/runner\/work\/vektorprogrammet\/vektorprogrammet\//\/github\/workspace\//g' coverage.xml
+      #- name: fix code coverage paths
+      #  run: sed -i 's/\/home\/runner\/work\/vektorprogrammet\/vektorprogrammet\//\/github\/workspace\//g' coverage.xml
 
       - name: SonarCloud Scan
         uses: SonarSource/sonarcloud-github-action@master

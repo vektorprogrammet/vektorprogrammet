@@ -13,7 +13,7 @@ class CompanyEmailMakerTest extends KernelTestCase
      */
     private $emailMaker;
 
-    protected function setUp()
+    protected function setUp() : void
     {
         $kernel = $this->createKernel();
         $kernel->boot();

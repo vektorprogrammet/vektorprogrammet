@@ -36,7 +36,7 @@ class AccessControlTest extends BaseKernelTestCase {
 	 */
 	private $unhandledRepo;
 
-	protected function setUp()
+	protected function setUp() : void
 	{
 		$kernel = $this->createKernel();
 		$kernel->boot();
