@@ -8,7 +8,8 @@ use Tests\BaseWebTestCase;
 
 class AccessRuleControllerTest extends BaseWebTestCase {
 
-	protected function setUp() {
+	protected function setUp() : void
+    {
 		parent::setUp();
 		$this->adminGoTo("/kontrollpanel/admin/accessrules"); // Initialize unhandled rules
 	}

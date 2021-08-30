@@ -14,7 +14,7 @@ class ReceiptControllerTest extends BaseWebTestCase
      */
     private $imagePaths;
 
-    public function setUp()
+    public function setUp() : void
     {
         // Keep track of all the initial files in the image folder
         $this->imagePaths = array();
@@ -206,7 +206,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
 

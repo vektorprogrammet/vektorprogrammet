@@ -55,8 +55,8 @@ class FeedbackControllerTest extends BaseWebTestCase
         $this->assertEquals(200, $client->getResponse()->getStatusCode());
 
         //Checks if Title and Description are in the new Feedback
-        $this->assertContains($testTitle, $crawler->filter('.card-header')->text());
-        $this->assertContains($testDescription, $crawler->filter('#description')->text());
+        $this->assertStringContainsString($testTitle, $crawler->filter('.card-header')->text());
+        $this->assertStringContainsString($testDescription, $crawler->filter('#description')->text());
 
 
     }

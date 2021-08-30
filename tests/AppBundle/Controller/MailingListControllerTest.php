@@ -13,7 +13,7 @@ class MailingListControllerTest extends BaseWebTestCase
      */
     private $em;
 
-    public function setUp()
+    public function setUp() : void
     {
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
@@ -49,7 +49,7 @@ class MailingListControllerTest extends BaseWebTestCase
         $this->assertEquals($lengthTeamOld + $userEmailLength + 2, $lengthTeamNew);
     }
 
-    protected function tearDown()
+    protected function tearDown() : void
     {
         parent::tearDown();
         $this->em->close();
