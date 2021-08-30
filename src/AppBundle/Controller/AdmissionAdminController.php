@@ -251,7 +251,7 @@ class AdmissionAdminController extends BaseController
     {
         $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
-        $currentSemester = $em->getRepository(Semester::class)->findCurrentSemester();
+        $currentSemester = $this->getCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
             ->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $currentSemester);

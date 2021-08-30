@@ -69,7 +69,7 @@ class AdmissionNotifier
     public function sendAdmissionNotifications()
     {
         $departments = $this->em->getRepository(Department::class)->findActive();
-        $semester = $this->em->getRepository(Semester::class)->findCurrentSemester();
+        $semester = $this->em->getRepository(Semester::class)->findOrCreateCurrentSemester();
         try {
             foreach ($departments as $department) {
                 $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneByDepartmentAndSemester($department, $semester);
@@ -126,7 +126,7 @@ class AdmissionNotifier
     public function sendInfoMeetingNotifications()
     {
         $departments = $this->em->getRepository(Department::class)->findActive();
-        $semester = $this->em->getRepository(Semester::class)->findCurrentSemester();
+        $semester = $this->em->getRepository(Semester::class)->findOrCreateCurrentSemester();
         try {
             foreach ($departments as $department) {
                 $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneByDepartmentAndSemester($department, $semester);

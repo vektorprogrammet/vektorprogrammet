@@ -34,7 +34,7 @@ class TeamInterestController extends BaseController
      */
     public function showTeamInterestFormAction(Department $department, Request $request)
     {
-        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+        $semester = $this->getCurrentSemester();
         if ($semester === null) {
             throw new BadRequestHttpException('No current semester');
         }

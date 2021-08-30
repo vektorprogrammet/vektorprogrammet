@@ -3,10 +3,11 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Semester;
+use AppBundle\Utils\SemesterUtil;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
-use AppBundle\Utils\SemesterUtil;
 use Doctrine\ORM\NonUniqueResultException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 
 class SemesterRepository extends EntityRepository
@@ -49,6 +50,24 @@ class SemesterRepository extends EntityRepository
     }
 
     /**
+     * @return Semester
+     * @throws NonUniqueResultException
+     * @throws ORMException
+     */
+    public function findOrCreateCurrentSemester()
+    {
+        $semester = $this->findCurrentSemester();
+        if ($semester == null) {
+            //Create a new semester
+            $now = new DateTime();
+            $semester = SemesterUtil::timeToSemester($now);
+            $this->getEntityManager()->persist($semester);
+            $this->getEntityManager()->flush();
+        }
+        return $semester;
+    }
+
+    /**
      * @param string $semesterTime
      * @param string $year
      * @return Semester|null
@@ -71,11 +90,11 @@ class SemesterRepository extends EntityRepository
     /**
      * @param Semester $semester
      * @return Semester|null
-     * @throws NonUniqueResultException
+     * @throws NonUniqueResultException|ORMException
      */
     public function getNextActive(Semester $semester): ? Semester
     {
-        if ($semester === $this->findCurrentSemester()) {
+        if ($semester === $this->findOrCreateCurrentSemester()) {
             return null;
         }
         if ($semester->getSemesterTime() === 'Høst') {

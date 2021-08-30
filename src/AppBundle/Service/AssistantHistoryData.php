@@ -24,7 +24,7 @@ class AssistantHistoryData
         } else {
             $this->department = $ts->getToken()->getUser()->getDepartment();
         }
-        $this->semester = $em->getRepository(Semester::class)->findCurrentSemester();
+        $this->semester = $em->getRepository(Semester::class)->findOrCreateCurrentSemester();
     }
 
     /**

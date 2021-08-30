@@ -5,8 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\ChangeLogItem;
-use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Feedback;
+use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\FeedbackType;
@@ -66,6 +66,7 @@ class WidgetController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
+        $appData = null;
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
 
@@ -76,8 +77,8 @@ class WidgetController extends BaseController
             $applicationsInSemester = $this->getDoctrine()
                 ->getRepository(Application::class)
                 ->findByAdmissionPeriod($admissionPeriod);
+            $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
         }
-        $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
 
         return $this->render('widgets/application_graph_widget.html.twig', [
             'appData' => $appData,
@@ -93,11 +94,12 @@ class WidgetController extends BaseController
     public function availableSurveysAction(Request $request)
     {
         $semester = $this->getSemesterOrThrow404($request);
-
-        $surveys = $this->getDoctrine()
-            ->getRepository(Survey::class)
-            ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
-
+        $surveys = [];
+        if ($semester !== null) {
+            $surveys = $this->getDoctrine()
+                ->getRepository(Survey::class)
+                ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
+        }
 
         return $this->render('widgets/available_surveys_widget.html.twig', [
             'availableSurveys' => $surveys,

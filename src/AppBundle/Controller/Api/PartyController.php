@@ -123,7 +123,7 @@ class PartyController extends AbstractFOSRestController
      */
     private function getAdmissionPeriod(Department $department): AdmissionPeriod
     {
-        $semester = $this->getDoctrine()->getRepository(Semester::class)->findCurrentSemester();
+        $semester = $this->getDoctrine()->getRepository(Semester::class)->findOrCreateCurrentSemester();
         $admissionPeriod = $this->getDoctrine()
             ->getRepository(AdmissionPeriod::class)
             ->findOneByDepartmentAndSemester($department, $semester);

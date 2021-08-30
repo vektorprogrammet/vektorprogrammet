@@ -22,7 +22,7 @@ class TeamMembershipService
     public function updateTeamMemberships()
     {
         $teamMemberships = $this->em->getRepository(TeamMembership::class)->findBy(array('isSuspended' => false));
-        $currentSemesterStartDate = $this->em->getRepository(Semester::class)->findCurrentSemester()->getStartDate();
+        $currentSemesterStartDate = $this->em->getRepository(Semester::class)->findOrCreateCurrentSemester()->getStartDate();
         foreach ($teamMemberships as $teamMembership) {
             $endSemester = $teamMembership->getEndSemester();
             if ($endSemester) {
