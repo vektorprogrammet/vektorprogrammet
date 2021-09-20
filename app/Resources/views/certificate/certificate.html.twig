@@ -123,6 +123,8 @@
     </style>
 </head>
 <body>
+    <div style="page-break-inside:avoid;">
+
     <div class="container">
         <h1 class="title">Attest - Vektorprogrammet</h1>
         <div>
@@ -173,19 +175,26 @@
             </p>
         {% endif %}
         <p class="bold courtesy-of">På vegne av Vektorprogrammet.</p>
-        <img src="{{ base_dir ~ "/../" ~ signature.signaturePath }}"
+
+
+        <!-- Replace placeholder with this: <img src="{{ base_dir ~ "/../" ~ signature.signaturePath }}" -->
+        <img src="https://via.placeholder.com/50"
              class="signature-image"
              alt="Signatur ble ikke funnet. Prøv å last ned attesten på nytt eller oppdater signaturen.">
-        <p>
+
+        <br>
             <span class="bold">{{ app.user }}</span>, <br>
             {{ signature.description }} <br>
             {{ 'now'|date ('d/m-Y') }}, {{ department.city }}
-        </p>
+
     </div>
+
+
     <div class="footer">
         <div class="padded">
             <hr>
-            <img src="{{ base_dir ~ asset('images/vektor-logo.svg') }}"
+            <!-- <img src="{{ base_dir ~ asset('images/vektor-logo.svg') }}" -->
+            <img src="https://via.placeholder.com/50"
                  class="logo"
                  alt="Logo ble ikke funnet. Prøv å laste ned attesten på nytt.">
             <p class="small">
@@ -196,5 +205,6 @@
             </p>
         </div>
     </div>
-</body>
-</html>
+        <!-- dompdf works in mysterious ways, to prevent a page break, /body and /html needs to be on the
+        same page as the final /div tag.. -->
+    </div></body></html>

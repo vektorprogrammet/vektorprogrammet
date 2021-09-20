@@ -17,12 +17,13 @@ use AppBundle\Role\Roles;
 use AppBundle\Service\LogService;
 use AppBundle\Service\RoleManager;
 use AppBundle\Service\UserRegistration;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use TFox\MpdfPortBundle\Response\PDFResponse;
 
 class ProfileController extends BaseController
 {
@@ -174,25 +175,22 @@ class ProfileController extends BaseController
     public function downloadCertificateAction(Request $request, User $user)
     {
         $em = $this->getDoctrine()->getManager();
-
         // Fetch the assistant history of the user
         $assistantHistory = $em->getRepository(AssistantHistory::class)->findByUser($user);
-
         // Find the work history of the user
         $teamMembership = $em->getRepository(TeamMembership::class)->findByUser($user);
-
         // Find the signature of the user creating the certificate
         $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($this->getUser());
-
         // Find department
         $department = $this->getUser()->getDepartment();
-
         // Find any additional comment
         $additional_comment = $signature->getAdditionalComment();
 
         if ($signature === null) {
             return $this->redirectToRoute('certificate_show');
         }
+
+        ##########
 
         $html = $this->renderView('certificate/certificate.html.twig', array(
             'user'                  => $user,
@@ -203,9 +201,32 @@ class ProfileController extends BaseController
             'department'            => $department,
             'base_dir'              => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
         ));
-        $mpdfService = $this->get('t_fox_mpdf_port.pdf');
 
-        return new PDFResponse($mpdfService->generatePdf($html));
+        ###############
+
+
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $options->isHtml5ParserEnabled(true); // method call is provided 1 parameters, but the method signature uses 0 parameters
+
+        $dompdf = new Dompdf($options);
+        $dompdf->setPaper('A4');
+
+        $html = preg_replace('/>\s+</', "><", $html);
+        $dompdf->loadHtml($html);
+
+
+        # Needs fix
+        $base_dir = $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath();
+        $dompdf->setBasePath($base_dir);
+        ## ----- ##
+
+        $dompdf->render();
+        $dompdf->stream(
+            $filename='attest.pdf'
+        );
+
+        ## TODO: add return statement
     }
 
     public function editProfileInformationAction(Request $request)
