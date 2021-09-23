@@ -192,6 +192,8 @@ class ProfileController extends BaseController
 
         ##########
 
+        # For debugging images
+        //return $this->render('certificate/certificate.html.twig', array(
         $html = $this->renderView('certificate/certificate.html.twig', array(
             'user'                  => $user,
             'assistantHistory'      => $assistantHistory,
@@ -207,7 +209,7 @@ class ProfileController extends BaseController
 
         $options = new Options();
         $options->setIsRemoteEnabled(true);
-        $options->isHtml5ParserEnabled(true); // method call is provided 1 parameters, but the method signature uses 0 parameters
+        //$options->isHtml5ParserEnabled(true); // method call is provided 1 parameters, but the method signature uses 0 parameters
 
         $dompdf = new Dompdf($options);
         $dompdf->setPaper('A4');
@@ -226,7 +228,7 @@ class ProfileController extends BaseController
             $filename='attest.pdf'
         );
 
-        ## TODO: add return statement
+        return null;
     }
 
     public function editProfileInformationAction(Request $request)
