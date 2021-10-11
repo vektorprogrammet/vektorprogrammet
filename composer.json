@@ -50,7 +50,8 @@
         "friendsofsymfony/rest-bundle": "^2.5",
         "symfony/serializer": "3.4.*",
         "ext-json": "*",
-        "ext-openssl": "*"
+        "ext-openssl": "*",
+        "laminas/laminas-zendframework-bridge": "^1.4"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.4",
