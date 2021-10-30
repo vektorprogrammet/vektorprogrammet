@@ -190,10 +190,6 @@ class ProfileController extends BaseController
             return $this->redirectToRoute('certificate_show');
         }
 
-        ##########
-
-        # For debugging images
-        //return $this->render('certificate/certificate.html.twig', array(
         $html = $this->renderView('certificate/certificate.html.twig', array(
             'user'                  => $user,
             'assistantHistory'      => $assistantHistory,
@@ -201,15 +197,11 @@ class ProfileController extends BaseController
             'signature'             => $signature,
             'additional_comment'    => $additional_comment,
             'department'            => $department,
-            'base_dir'              => $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath(),
+            'base_dir'              => $this->get('kernel')->getProjectDir() . '/web',
         ));
-
-        ###############
-
-
         $options = new Options();
         $options->setIsRemoteEnabled(true);
-        //$options->isHtml5ParserEnabled(true); // method call is provided 1 parameters, but the method signature uses 0 parameters
+        $options->setChroot("/../");
 
         $dompdf = new Dompdf($options);
         $dompdf->setPaper('A4');
@@ -217,16 +209,9 @@ class ProfileController extends BaseController
         $html = preg_replace('/>\s+</', "><", $html);
         $dompdf->loadHtml($html);
 
-
-        # Needs fix
-        $base_dir = $this->get('kernel')->getRootDir() . '/../web' . $request->getBasePath();
-        $dompdf->setBasePath($base_dir);
-        ## ----- ##
-
         $dompdf->render();
-        $dompdf->stream(
-            $filename='attest.pdf'
-        );
+
+        $dompdf->stream( $filename='attest.pdf');
 
         return null;
     }
