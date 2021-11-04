@@ -51,7 +51,8 @@
         "symfony/serializer": "3.4.*",
         "ext-json": "*",
         "ext-openssl": "*",
-        "laminas/laminas-zendframework-bridge": "^1.4"
+        "laminas/laminas-zendframework-bridge": "^1.4",
+        "dompdf/dompdf": "^1.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^7.4",

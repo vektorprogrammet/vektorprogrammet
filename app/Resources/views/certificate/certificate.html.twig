@@ -45,7 +45,6 @@
             font-size: 11pt;
             font-weight: 400;
             margin-bottom: 1.25rem;
-            text-rendering: optimizeLegibility;
             line-height: 1.6
         }
 
@@ -56,7 +55,6 @@
             line-height: 1.4;
             margin-bottom: .5rem;
             margin-top: .2rem;
-            text-rendering: optimizeLegibility
         }
 
         h1 {
@@ -77,10 +75,7 @@
             }
         }
         .container {
-            padding-left: 55px;
-            padding-right: 55px;
-            height: 100%;
-            padding-top: 55px;
+            padding: 50px 50px 0;
         }
 
         .footer {
@@ -89,7 +84,7 @@
             left: 0;
         }
         .padded {
-            padding: 0 85px;
+            padding: 0 50px;
         }
         .courtesy-of {
             margin-top: 15px;
@@ -123,6 +118,8 @@
     </style>
 </head>
 <body>
+    <div style="page-break-inside: auto">
+
     <div class="container">
         <h1 class="title">Attest - Vektorprogrammet</h1>
         <div>
@@ -173,21 +170,24 @@
             </p>
         {% endif %}
         <p class="bold courtesy-of">På vegne av Vektorprogrammet.</p>
+
+
         <img src="{{ base_dir ~ "/../" ~ signature.signaturePath }}"
              class="signature-image"
              alt="Signatur ble ikke funnet. Prøv å last ned attesten på nytt eller oppdater signaturen.">
-        <p>
+
+        <br>
             <span class="bold">{{ app.user }}</span>, <br>
             {{ signature.description }} <br>
             {{ 'now'|date ('d/m-Y') }}, {{ department.city }}
-        </p>
+
     </div>
-    <div class="footer">
+        <div class="footer">
         <div class="padded">
             <hr>
-            <img src="{{ base_dir ~ asset('images/vektor-logo.svg') }}"
-                 class="logo"
-                 alt="Logo ble ikke funnet. Prøv å laste ned attesten på nytt.">
+
+            <img src="{{(base_dir ~ asset('images/vektor_stor.png')) }}" class="logo" alt="Logo ble ikke funnet. Prøv å laste ned attesten på nytt.">
+
             <p class="small">
                 Vektorprogrammet <br/>
                 Høgskoleringen 5,
@@ -196,5 +196,6 @@
             </p>
         </div>
     </div>
-</body>
-</html>
+        <!-- dompdf works in mysterious ways, to prevent a page break, /body and /html needs to be on the
+        same page as the final /div tag.. -->
+    </div></body></html>
