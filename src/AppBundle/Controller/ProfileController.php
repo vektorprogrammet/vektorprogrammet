@@ -211,7 +211,7 @@ class ProfileController extends BaseController
 
         $dompdf->render();
 
-        $dompdf->stream( $filename='attest.pdf');
+        $dompdf->stream($filename='attest.pdf');
 
         return null;
     }
