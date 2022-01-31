@@ -88,7 +88,20 @@
           var reader = new FileReader();
 
           reader.onload = function (e) {
-            $('#receipt_picture').attr('src', e.target.result);
+			  if (e.target.result.startsWith("data:application/pdf")){
+			  	  $('#receipt_pdf').removeClass('d-none');
+				  $('#receipt_pdf').attr('data', e.target.result);
+				  $('#receipt_pdf').find('embed').attr('src', e.target.result);
+				  $('#receipt_pdf').find('a').attr('href', e.target.result);
+
+			  	  $('#receipt_picture').addClass('d-none');
+
+			  } else {
+			  	$('#receipt_pdf').addClass('d-none');
+
+			  	$('#receipt_picture').removeClass('d-none');
+				$('#receipt_picture').attr('src', e.target.result);
+			  }
           };
 
           reader.readAsDataURL(input.files[0]);
