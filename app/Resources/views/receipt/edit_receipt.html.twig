@@ -55,29 +55,29 @@
                     </div>
                     <div class="col-4">
                         <div>
-							{% if (receipt.picturePath matches '/\.pdf$/') %}
-								<div id="receipt_pdf">
-									<object data="{{asset(receipt.picturePath)}}" style="max-width: 100%; max-height:70%;" type="application/pdf" width="400" height="600">
-										<embed src="{{asset(receipt.picturePath)}}" type="application/pdf">
-											<p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{asset(receipt.picturePath)}}">Download PDF</a>.</p>
-										</embed>
-									</object>
-									<br>
-									<a href="{{asset(receipt.picturePath)}}" target="_blank">Åpne PDF i ny fane</a>
-								</div>
-								<img class="img-fluid d-none" src="{{ asset_with_version(receipt.picturePath) }}" id="receipt_picture">
-							{% else %}
-								<div id="receipt_pdf" class="d-none">
-									<object data="{{asset(receipt.picturePath)}}" style="max-width: 100%; max-height:70%;" type="application/pdf" width="400" height="600">
-										<embed src="{{asset(receipt.picturePath)}}" type="application/pdf">
-											<p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{asset(receipt.picturePath)}}">Download PDF</a>.</p>
-										</embed>
-									</object>
-									<br>
-									<a href="{{asset(receipt.picturePath)}}" target="_blank">Åpne PDF i ny fane</a>
-								</div>
-								<img class="img-fluid" src="{{ asset_with_version(receipt.picturePath) }}" id="receipt_picture">
-							{% endif %}
+                            {% if (receipt.picturePath matches '/\.pdf$/') %}
+                                <div id="receipt_pdf">
+                                    <object data="{{asset(receipt.picturePath)}}" style="max-width: 100%; max-height:70%;" type="application/pdf" width="400" height="600">
+                                        <embed src="{{asset(receipt.picturePath)}}" type="application/pdf">
+                                            <p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{asset(receipt.picturePath)}}">Download PDF</a>.</p>
+                                        </embed>
+                                    </object>
+                                    <br>
+                                    <a href="{{asset(receipt.picturePath)}}" target="_blank">Åpne PDF i ny fane</a>
+                                </div>
+                                <img class="img-fluid d-none" src="{{ asset_with_version(receipt.picturePath) }}" id="receipt_picture">
+                            {% else %}
+                                <div id="receipt_pdf" class="d-none">
+                                    <object data="{{asset(receipt.picturePath)}}" style="max-width: 100%; max-height:70%;" type="application/pdf" width="400" height="600">
+                                        <embed src="{{asset(receipt.picturePath)}}" type="application/pdf">
+                                            <p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{asset(receipt.picturePath)}}">Download PDF</a>.</p>
+                                        </embed>
+                                    </object>
+                                    <br>
+                                    <a href="{{asset(receipt.picturePath)}}" target="_blank">Åpne PDF i ny fane</a>
+                                </div>
+                                <img class="img-fluid" src="{{ asset_with_version(receipt.picturePath) }}" id="receipt_picture">
+                            {% endif %}
                         </div>
                     </div>
                 </div>
@@ -98,20 +98,20 @@
                 var reader = new FileReader();
 
                 reader.onload = function (e) {
-				  if (e.target.result.startsWith("data:application/pdf")){
-					  $('#receipt_pdf').removeClass('d-none');
-					  $('#receipt_pdf').find('object').attr('data', e.target.result);
-					  $('#receipt_pdf').find('embed').attr('src', e.target.result);
-					  $('#receipt_pdf').find('a').attr('href', e.target.result);
+                  if (e.target.result.startsWith("data:application/pdf")){
+                      $('#receipt_pdf').removeClass('d-none');
+                      $('#receipt_pdf').find('object').attr('data', e.target.result);
+                      $('#receipt_pdf').find('embed').attr('src', e.target.result);
+                      $('#receipt_pdf').find('a').attr('href', e.target.result);
 
-					  $('#receipt_picture').addClass('d-none');
+                      $('#receipt_picture').addClass('d-none');
 
-				  } else {
-					$('#receipt_pdf').addClass('d-none');
+                  } else {
+                    $('#receipt_pdf').addClass('d-none');
 
-					$('#receipt_picture').removeClass('d-none');
-					$('#receipt_picture').attr('src', e.target.result);
-				  }
+                    $('#receipt_picture').removeClass('d-none');
+                    $('#receipt_picture').attr('src', e.target.result);
+                  }
                 };
 
                 reader.readAsDataURL(input.files[0]);
