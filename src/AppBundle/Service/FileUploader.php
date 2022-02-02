@@ -87,7 +87,7 @@ class FileUploader
         if ($fileType === 'image' || $mimeType === "application/pdf") {
             return $this->uploadFile($file, $this->receiptFolder);
         } else {
-            throw new BadRequestHttpException('Filtypen må være et bilde.');
+            throw new BadRequestHttpException('Filtypen må være et bilde eller PDF.');
         }
     }
 

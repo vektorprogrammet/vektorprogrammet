@@ -24,7 +24,7 @@
                 <img class="img-fluid d-none" src="{{ asset(receipt.picturePath) }}" id="receipt_picture">
                 <object id="receipt_pdf" data="{{asset(receipt.picturePath)}}" class="d-none" style="max-width: 100%; max-height:70%;" type="application/pdf" width="400" height="600">
                     <embed src="{{asset(receipt.picturePath)}}" type="application/pdf">
-                        <p>This browser does not support PDFs. Please download the PDF to view it: <a href="{{asset(receipt.picturePath)}}">Download PDF</a>.</p>
+                        <p>Nettleseren din støtter ikke PDFer. Last ned PDF for å vise den: <a href="{{asset(receipt.picturePath)}}">Last ned PDF</a>.</p>
                     </embed>
                 </object>
             </div>
