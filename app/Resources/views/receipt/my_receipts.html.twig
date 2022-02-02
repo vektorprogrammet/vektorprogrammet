@@ -90,7 +90,7 @@
           reader.onload = function (e) {
               if (e.target.result.startsWith("data:application/pdf")){
                   $('#receipt_pdf').removeClass('d-none');
-                  $('#receipt_pdf').attr('data', e.target.result);
+                  $('#receipt_pdf').find('object').attr('data', e.target.result);
                   $('#receipt_pdf').find('embed').attr('src', e.target.result);
                   $('#receipt_pdf').find('a').attr('href', e.target.result);
 
