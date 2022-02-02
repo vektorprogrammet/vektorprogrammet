@@ -29,7 +29,7 @@
                             <div class="modal-content">
                                 <div class="modal-body">
                                     <div class="text-center">
-                                        <img class="img-fluid" src="{{ asset_with_version(receipt.picturePath) }}">
+                                        {{ include('widgets/receipt_viewer.html.twig') }}
                                         <br>
                                         <button type="button" class="btn btn-secondary mt-3" data-dismiss="modal"><i class="fa fa-close"></i> Lukk</button>
                                     </div>

@@ -1,0 +1,10 @@
+<div id="receipt_pdf" class="{{(receipt.picturePath matches '/\.pdf$/') ? '' : 'd-none'}}">
+ <object data="{{asset(receipt.picturePath)}}" style="max-width: 100%; max-height:70%;" type="application/pdf" width="400" height="600">
+     <embed src="{{asset(receipt.picturePath)}}" type="application/pdf">
+         <p>Nettleseren din støtter ikke PDFer. Last ned PDF for å vise den: <a href="{{asset(receipt.picturePath)}}">Last ned PDF</a>.</p>
+     </embed>
+ </object>
+ <br>
+ <a href="{{asset(receipt.picturePath)}}" target="_blank" rel="noopener">Åpne PDF i ny fane</a>
+</div>
+<img class="img-fluid {{(receipt.picturePath matches '/\.pdf$/') ? 'd-none' : ''}}" src="{{ asset_with_version(receipt.picturePath) }}" id="receipt_picture">
