@@ -60,10 +60,8 @@
                                     <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                            <div class="modal-body">
-                                <a href="{{ receipt.picturePath }}" target="_blank">
-                                    <img class="img-fluid" src="{{ receipt.picturePath }}">
-                                </a>
+                            <div class="modal-body mx-auto">
+                                 {{ include('widgets/receipt_viewer.html.twig') }}
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Lukk</button>

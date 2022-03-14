@@ -21,9 +21,8 @@
 
         <div class="col-12 col-sm-6 d-flex flex-column">
             <div class="{{ receipt.picturePath is not null ? '' : 'd-none' }}">
-                <img class="img-fluid" src="{{ asset(receipt.picturePath) }}" id="receipt_picture">
+                 {{ include('widgets/receipt_viewer.html.twig') }}
             </div>
         </div>
-
     </div>
 {{ form_end(form) }}
