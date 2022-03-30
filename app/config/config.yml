@@ -84,6 +84,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
+       sentry_js_url: "%sentry_frontend_src%"
        filebrowser_window_width: 1200 #The initial width of window when opened
        filebrowser_window_height: 800
     form_themes:
