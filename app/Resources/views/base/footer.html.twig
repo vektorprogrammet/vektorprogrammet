@@ -6,13 +6,14 @@
                     <h5>Om oss</h5>
                     <ul>
                         <li class="">
-                            <i class="fa fa-facebook-square"></i><!--
+                            <i class="fa fa-facebook-square"></i>
+                            <!--
                             --><a href="https://www.facebook.com/vektorprogrammet/" target="_blank">Trondheim&nbsp;</a>
                             <a href="https://www.facebook.com/vektorprogrammetNMBU/" target="_blank">Ås&nbsp;</a>
-                            <a href="https://www.facebook.com/Vektorprogrammet-UiO-1017596031601586/" target="_blank">Oslo&nbsp;</a>
                             <a href="https://www.facebook.com/VektorprogrammetBergen/" target="_blank">Bergen&nbsp;</a>
                         </li>
-                        <li class=""><i class="fa fa-envelope"></i><a href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a></li>
+                        <li class=""><i class="fa fa-envelope"></i><a
+                                href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a></li>
                         <li class=""><i class="fa fa-folder-open"></i>OrgNr: 998744814</li>
                         <li class=""><i class="fa fa-map-marker"></i>Høgskoleringen 5,
                             <br><i class="fa"></i>7491 Trondheim
@@ -39,7 +40,7 @@
                     <h5>Sponsorer og samarbeidspartnere</h5>
                     <ul>
                         {% for sponsor in get_sponsors() %}
-                            <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name }} </a></li>
+                        <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name }} </a></li>
                         {% endfor %}
                     </ul>
                 </div>
