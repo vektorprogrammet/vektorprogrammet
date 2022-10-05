@@ -66,10 +66,10 @@ class WidgetController extends BaseController
      */
     public function applicationGraphAction(Request $request, Department $department, Semester $semester)
     {
-        if (is_null($department)){
+        if (is_null($department)) {
             $department = $this->getDepartmentOrThrow404($request);
         }
-        if (is_null($semester)){
+        if (is_null($semester)) {
             $semester = $this->getSemesterOrThrow404($request);
         }
         $appData = null;
