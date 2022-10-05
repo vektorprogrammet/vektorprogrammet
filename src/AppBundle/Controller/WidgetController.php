@@ -8,6 +8,8 @@ use AppBundle\Entity\ChangeLogItem;
 use AppBundle\Entity\Feedback;
 use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Survey;
+use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\FeedbackType;
 use AppBundle\Service\AdmissionStatistics;
@@ -62,10 +64,14 @@ class WidgetController extends BaseController
      * @param Request $request
      * @return Response|null
      */
-    public function applicationGraphAction(Request $request)
+    public function applicationGraphAction(Request $request, Department $department, Semester $semester)
     {
-        $department = $this->getDepartmentOrThrow404($request);
-        $semester = $this->getSemesterOrThrow404($request);
+        if (is_null($department)){
+            $department = $this->getDepartmentOrThrow404($request);
+        }
+        if (is_null($semester)){
+            $semester = $this->getSemesterOrThrow404($request);
+        }
         $appData = null;
 
         $admissionStatistics = $this->get(AdmissionStatistics::class);
