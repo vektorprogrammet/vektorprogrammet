@@ -59,7 +59,7 @@ parameters:
     recaptcha_private_key: ~
     recaptcha_public_key: ~
 
-    log_channel: '#website_logs'
+    log_channel: '#web_website_logs'
 
     sentry_address: xxxx
 
