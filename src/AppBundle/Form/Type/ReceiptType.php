@@ -23,7 +23,7 @@ class ReceiptType extends AbstractType
                 'attr' => array('rows' => 3, 'placeholder' => 'Hva har du lagt ut penger for?'),
             ))
             ->add('sum', MoneyType::class, array(
-                'label' => 'Sum',
+                'label' => 'Sum du ønsker tilbakebetalt',
                 'required' => true,
                 'currency' => null,
                 'attr' => array('pattern' => '\d*[.,]?\d+$'),
