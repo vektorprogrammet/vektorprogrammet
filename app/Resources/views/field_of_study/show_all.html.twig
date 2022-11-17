@@ -22,7 +22,7 @@
     } %}
 		{% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'departmentId' %}
 		<a class="btn text-success" href="{{ path('create_field_of_study', { (departmentParameterName): department.id }) }}">
-			<i class="fa fa-plus"></i>
+			<em class="fa fa-plus"></em>
 			Ny linje</a>
 	</div>
 {% endblock %}
@@ -32,7 +32,7 @@
 		<div class="col-12 col-lg-6">
 			<div class="card">
 				<div class="card-header">
-					<i class="fa fa-align-justify"></i>
+					<em class="fa fa-align-justify"></em>
 					Linjer
 					{{ department }}
 					({{ fieldOfStudies|length }})
@@ -49,14 +49,14 @@
 								<td class="table-menu">
 									<div class="dropdown">
 										<div class="clickable px-2" id="options-{{ fieldOfStudy.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-											<i class="fa fa-ellipsis-v text-secondary"></i>
+											<em class="fa fa-ellipsis-v text-secondary"></em>
 										</div>
 										<div class="dropdown-menu pt-0" aria-labelledby="options-{{ fieldOfStudy.id }}">
 											<div class="dropdown-header mb-2">
 												<strong>{{ fieldOfStudy.name }}</strong>
 											</div>
 											<a href="{{ path('edit_field_of_study', { 'id': fieldOfStudy.id }) }}" class="dropdown-item">
-												<i class="fa fa-pencil text-primary"></i>
+												<em class="fa fa-pencil text-primary"></em>
 												Rediger
 											</a>
 										</div>
