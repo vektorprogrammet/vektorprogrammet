@@ -35,7 +35,8 @@ class FieldOfStudyController extends BaseController
             $isEdit = false;
         } else {
             // Check if a non-admin user is trying to edit FOS from department other than his own
-            if (!$this->isGranted(Roles::ADMIN) && $fieldOfStudy->getDepartment() !== $this->getUser()->getFieldOfStudy()->getDepartment()) {
+            if (!$this->isGranted(Roles::ADMIN) && $fieldOfStudy->getDepartment() !==
+                $this->getUser()->getFieldOfStudy()->getDepartment()) {
                 throw new AccessDeniedException();
             }
         }
@@ -44,7 +45,7 @@ class FieldOfStudyController extends BaseController
 
         $departmentId = $request->query->get("departmentId");
         // Use department from request if admin is creating a new field_of_study with id,
-        // else use department from current user 
+        // else use department from current user
         if (!$this->isGranted(Roles::ADMIN) && !$isEdit && !is_null($departmentId)) {
             $department = $this->getDoctrine()->getRepository(Department::class)->findDepartmentById($departmentId)[0];
             $fieldOfStudy->setDepartment($department);
