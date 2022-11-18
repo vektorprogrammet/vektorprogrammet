@@ -46,7 +46,7 @@ class FieldOfStudyController extends BaseController
         $departmentId = $request->query->get("departmentId");
         // Use department from request if admin is creating a new field_of_study with id,
         // else use department from current user
-        if (!$this->isGranted(Roles::ADMIN) && !$isEdit && !is_null($departmentId)) {
+        if ($this->isGranted(Roles::ADMIN) && !$isEdit && !is_null($departmentId)) {
             $department = $this->getDoctrine()->getRepository(Department::class)->findDepartmentById($departmentId)[0];
             $fieldOfStudy->setDepartment($department);
         } else {
