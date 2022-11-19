@@ -4,12 +4,11 @@
 	<li class="breadcrumb-item">
 		{% if is_granted_team_leader() %}
 			<a href="{{ path('show_field_of_studies') }}">
-			{% else %}
-				<a href="{{ path('show_field_of_studies') }}">
-				{% endif %}
-				Linjer
+		{% else %}
+			<a href="{{ path('show_field_of_studies') }}">
+		{% endif %}
+			Linjer
 			</a>
-		</li>
 	</li>
 {% endblock %}
 
@@ -23,7 +22,8 @@
 		{% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'departmentId' %}
 		<a class="btn text-success" href="{{ path('create_field_of_study', { (departmentParameterName): department.id }) }}">
 			<em class="fa fa-plus"></em>
-			Ny linje</a>
+			Ny linje
+		</a>
 	</div>
 {% endblock %}
 
@@ -71,4 +71,5 @@
 			</div>
 		</div>
 	</div>
-</li>{% endblock %}
+</li>
+{% endblock %}
