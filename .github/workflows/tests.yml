@@ -1,0 +1,75 @@
+name: PHPUnit tests
+run-name: ${{ github.actor }}
+on:
+  push:
+    branches:
+      - master
+  pull_request:
+    types: [opened, synchronize, reopened]
+
+jobs:
+  symfony:
+    name: Symfony 3.4 (PHP ${{ matrix.php-versions }})
+    # https://hub.docker.com/_/ubuntu/
+    runs-on: ubuntu-20.04
+    strategy:
+      fail-fast: true
+      matrix:
+        php-versions: ["7.3"]
+
+    steps:
+      # https://github.com/actions/checkout (official)
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # https://github.com/shivammathur/setup-php (community)
+      - name: Setup PHP, extensions and composer with shivammathur/setup-php
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-versions }}
+          extensions: xml, ctype, iconv, intl, pdo_sqlite, dom, filter, gd, iconv, json, mbstring, pdo, sqlite3
+          tools: composer:v1
+        env:
+          update: true
+
+      - name: Validate composer.json and composer.lock
+        run: composer validate
+
+      # Composer Cache Directory
+      - name: Get composer cache directory
+        id: composer-cache
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      # https://help.github.com/en/actions/configuring-and-managing-workflows/caching-dependencies-to-speed-up-workflows
+      - name: Cache composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }} # TODO fix: "cache not found for input keys: Linux-composer-"
+          restore-keys: ${{ runner.os }}-composer-
+
+      # Install dependencies with Composer Install
+      - name: Install Composer dependencies
+        run: composer install --no-progress --prefer-dist --optimize-autoloader
+
+      # TODO: clean up this task
+      - name: Update database
+        run: >-
+          mkdir -p ./var/data && 
+          rm -rf ./var/data/dev.db && 
+          touch ./var/data/dev.db && 
+          php bin/console doctrine:schema:update --force --env=dev && 
+          php bin/console doctrine:fixtures:load -n --env=dev && 
+          php bin/console doctrine:migrations:version -n --delete --all --env=dev && 
+          php bin/console doctrine:migrations:version -n --add --all --env=dev
+
+      # Symfony
+      - name: Check the Symfony console
+        run: |
+          php bin/console -V
+          php bin/console about
+
+      # Tests
+      - name: Run unit and functional tests
+        run: |
+          php bin/phpunit --configuration app/phpunit.xml.dist --stop-on-failure
