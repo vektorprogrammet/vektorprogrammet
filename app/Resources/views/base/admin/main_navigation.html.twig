@@ -318,9 +318,16 @@
                 ]
             } %}
 
-            {% if is_granted_admin() %}
-                <li class="nav-title">Admin</li>
-                {% include 'base/admin/nav_link.html.twig' with {
+	    <li class="nav-item">
+	    	<a class="nav-link" href="https://vektorprogrammet.slab.com/">
+		    <i class="fa nav-icon"><img src="{{ absolute_url(asset('images/slab.svg')) }}" alt="https://vektorprogrammet.slab.com/"></i>
+		    Slab
+		</a>
+	    </li>
+	    
+	    {% if is_granted_admin() %}
+	        <li class="nav-title">Admin</li>
+		{% include 'base/admin/nav_link.html.twig' with {
                     route: 'access_rules_show',
                     icon: 'shield-alt',
                     name: 'Access Control',
@@ -328,7 +335,6 @@
                         'access_rules_create',
                     ]
                 } %}
-
             {% endif %}
 
             <li class="nav-item mt-auto">
