@@ -9,13 +9,13 @@ on:
 
 jobs:
   symfony:
-    name: Symfony 5.4 (PHP ${{ matrix.php-versions }})
+    name: Symfony 3.4 (PHP ${{ matrix.php-versions }})
     # https://hub.docker.com/_/ubuntu/
     runs-on: ubuntu-20.04
     strategy:
       fail-fast: true
       matrix:
-        php-versions: ["7.4"]
+        php-versions: ["7.3"]
 
     steps:
       # https://github.com/actions/checkout (official)
