@@ -1,39 +1,39 @@
 {% extends 'adminBase.html.twig' %}
 {% block title %}Kontrollpanel{% endblock %}
 {% block stylesheets %}
-    <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/home.css') }}">
+<link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/home.css') }}">
 {% endblock %}
 
 {% block default_breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="{{ path('home') }}">Forsiden</a>
-    </li>
-    <li class="breadcrumb-item active">
-        Kontrollpanel
-    </li>
+<li class="breadcrumb-item">
+    <a href="{{ path('home') }}">Forsiden</a>
+</li>
+<li class="breadcrumb-item active">
+    Kontrollpanel
+</li>
 {% endblock %}
 
 
 {% block body %}
-    <div class="control-panel">
-        <div class="sbs my-5">
-            {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
-        </div>
-
-        <div class="row">
-            {% if admissionPeriod and admissionPeriod.hasActiveAdmission %}
-                {{ render(controller("AppBundle:Widget:applicationGraph")) }}
-            {% endif %}
-
-            {{ render(controller("AppBundle:Widget:availableSurveys")) }}
-            {{ render(controller("AppBundle:Widget:interviews")) }}
-            {{ render(controller("AppBundle:Widget:receipts")) }}
-            {{ render(controller("AppBundle:Widget:changelog")) }}
-            {{ render(controller("AppBundle:Widget:feedback",{'request': app.request})) }}
-
-            {% if not admissionPeriod or not admissionPeriod.hasActiveAdmission %}
-                {{ render(controller("AppBundle:Widget:applicationGraph")) }}
-            {% endif %}
-        </div>
+<div class="control-panel">
+    <div class="sbs my-5">
+        {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
     </div>
+
+    <div class="row">
+        {% if admissionPeriod and admissionPeriod.hasActiveAdmission %}
+        {{ render(controller("AppBundle:Widget:applicationGraph", {"department": department, "semester": semester})) }}
+        {% endif %}
+
+        {{ render(controller("AppBundle:Widget:availableSurveys")) }}
+        {{ render(controller("AppBundle:Widget:interviews")) }}
+        {{ render(controller("AppBundle:Widget:receipts")) }}
+        {{ render(controller("AppBundle:Widget:changelog")) }}
+        {{ render(controller("AppBundle:Widget:feedback",{'request': app.request})) }}
+
+        {% if not admissionPeriod or not admissionPeriod.hasActiveAdmission %}
+        {{ render(controller("AppBundle:Widget:applicationGraph", {"department": department, "semester": semester})) }}
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
