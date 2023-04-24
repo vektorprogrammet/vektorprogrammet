@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "vue": "^2.6.12",
-    "vue-resource": "^1.5.2",
+    "vue-resource": "^1.5.3",
     "vuetify": "^2.4.6",
     "vuex": "^3.6.2"
   },
