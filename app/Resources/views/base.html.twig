@@ -32,9 +32,9 @@
     <link href="https://fonts.googleapis.com/css?family=Lato:400,700&subset=latin" rel="stylesheet">
     <link rel="stylesheet" href="{{ asset_with_version('css/app.css') }}">
 
-
     {% block stylesheets %}{% endblock %}
 
+    <script src='{{sentry_js_url}}' crossorigin="anonymous"></script>
 </head>
 <body class="body">
 {% block header %}
