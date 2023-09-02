@@ -7,7 +7,7 @@ ENV NVM_DIR /usr/local/nvm
 ENV NODE_VERSION 14.21.3
 
 RUN apt-get update \
-    && apt-get -y install curl git gnupg unzip wget \
+    && apt-get -y install curl git gnupg unzip wget python2 \
         lsb-release apt-transport-https ca-certificates \
     #
     # Set up php-repo for apt
