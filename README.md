@@ -110,3 +110,16 @@ or *(without needing the exact path)*
 
 ### Reload database
 `npm run db:reload`
+
+## Docker:
+Build docker image:
+`npm run docker:build`
+
+Set up docker image:
+`npm run docker:setup`
+
+Run commands in docker image
+`npm run docker:run  -- <CMD>`
+
+e.g.
+`npm run docker:run -- npm run db:update`
