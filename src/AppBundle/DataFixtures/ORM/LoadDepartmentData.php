@@ -28,7 +28,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department1->addSchool($this->getReference('school-07'));
         $department1->addSchool($this->getReference('school-08'));
         $department1->addSchool($this->getReference('school-09'));
-        $department1->setAddress('Høgskoleringen 5 7491 Trondheim');
+        $department1->setAddress('Sem Sælands vei 1 7034 Trondheim');
         $department1->setCity('Trondheim');
         $department1->setLatitude('63.416057');
         $department1->setLongitude('10.408514');
