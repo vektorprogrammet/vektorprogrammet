@@ -114,7 +114,9 @@ security:
         - { path: ^/kontrollpanel/teamadmin/avdeling/opprett, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/teamadmin/update, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/team/avdeling/, roles: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/teamadmin/team/slett/bruker, roles: ROLE_TEAM_LEADER }
+        # TODO: Fix delete team user crashing the site
+        # Sletting av bruker gjør at teamssiden kræsjer for teamet brukeren var medlem av
+        # - { path: ^/kontrollpanel/teamadmin/team/slett/bruker, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/teamadmin/slett, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/linje, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/linjer, roles: ROLE_TEAM_LEADER }
