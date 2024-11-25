@@ -1,31 +1,33 @@
 {% extends 'adminBase.html.twig' %}
 
-{% set header = isEdit ? 'Endre ' ~ fieldOfStudy.shortName : 'Opprett ny linje' %}
+{% set header = isEdit ? 'Endre ' ~ fieldOfStudy.shortName : 'Opprett ny linje i ' ~ department %}
 
 {% block title %}
-    {{ header }}
+	{{ header }}
 {% endblock %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item">
-        <a href="{{ path('show_field_of_studies') }}">Linjer</a>
-    </li>
-    <li class="breadcrumb-item active">{{ header }}</li>
+	<li class="breadcrumb-item">
+		<a href="{{ path('show_field_of_studies') }}">Linjer</a>
+	</li>
+	<li class="breadcrumb-item active">{{ header }}</li>
 {% endblock %}
 
 
 {% block body %}
-    <div class="row">
-        <div class="col-12 col-md-8 col-lg-6">
-            <div class="card">
-                <div class="card-header"><i class="fa fa-bars"></i> {{ header }}</div>
-                <div class="card-body">
-                    {{ form_start(form) }}
-                    {{ form_widget(form) }}
-                    <button class="btn btn-primary">Lagre</button>
-                    {{ form_end(form) }}
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12 col-md-8 col-lg-6">
+			<div class="card">
+				<div class="card-header">
+					<em class="fa fa-bars"></em>
+					{{ header }}</div>
+				<div class="card-body">
+					{{ form_start(form) }}
+					{{ form_widget(form) }}
+					<button class="btn btn-primary">Lagre</button>
+					{{ form_end(form) }}
+				</div>
+			</div>
+		</div>
+	</div>
 {% endblock %}
