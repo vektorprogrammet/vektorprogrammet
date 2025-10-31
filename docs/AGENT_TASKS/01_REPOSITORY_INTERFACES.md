@@ -1,5 +1,14 @@
 # Agent Task: Create Repository Interfaces
 
+## ⚠️ Important: Read Coding Standards First
+**Before starting this task, read:**
+- `docs/AGENT_TASKS/CODING_STANDARDS.md`
+
+This task requires:
+- ✅ Type hints on all parameters
+- ✅ Return types on all methods
+- ✅ Complete PHPDoc comments
+
 ## Objective
 Create repository interfaces for all major entities to enable dependency injection and prepare for Laravel migration.
 

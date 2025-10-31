@@ -1,5 +1,14 @@
 # Agent Task: Create Service Interfaces
 
+## ⚠️ Important: Read Coding Standards First
+**Before starting this task, read:**
+- `docs/AGENT_TASKS/CODING_STANDARDS.md`
+
+This task requires:
+- ✅ Type hints on all parameters
+- ✅ Return types on all methods (including `void`)
+- ✅ Complete PHPDoc comments
+
 ## Objective
 Create interfaces for all service classes to enable dependency injection and prepare for Laravel migration.
 

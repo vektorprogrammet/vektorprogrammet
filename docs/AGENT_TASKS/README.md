@@ -97,6 +97,9 @@ All tasks should meet:
 - ✅ Existing functionality still works
 - ✅ Code follows patterns in examples
 - ✅ Tests pass (if they exist)
+- ✅ **All parameters have type hints** (see CODING_STANDARDS.md)
+- ✅ **All methods have return types** (see CODING_STANDARDS.md)
+- ✅ **Complete PHPDoc comments** (see CODING_STANDARDS.md)
 
 ## Communication
 
@@ -112,6 +115,20 @@ All agents should be familiar with:
 - `docs/SERVICE_EXTRACTION_GUIDE.md` - Overall strategy
 - `docs/REFACTORING_EXAMPLES.md` - Code examples
 - `docs/ARCHITECTURE_ANALYSIS.md` - System overview
+- **`docs/AGENT_TASKS/CODING_STANDARDS.md`** - **MANDATORY coding standards** ⚠️
+
+## ⚠️ Coding Standards
+
+**All agents MUST read and follow:**
+- **`docs/AGENT_TASKS/CODING_STANDARDS.md`**
+
+This document specifies mandatory requirements for:
+- ✅ Type hints on all parameters
+- ✅ Return types on all methods (including `void`)
+- ✅ PHPDoc requirements
+- ✅ Interface/implementation matching
+
+**Code that doesn't follow these standards will be flagged in reviews.**
 
 ## Getting Started
 
