@@ -2,9 +2,9 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Department;
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Article;
+use AppBundle\Service\Contract\ArticleServiceInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -25,6 +25,16 @@ class ArticleController extends BaseController
     // Number of articles shown in the other news side bar.
     const NUM_OTHER_ARTICLES = 8;
 
+    private $articleService;
+
+    /**
+     * @param ArticleServiceInterface $articleService
+     */
+    public function __construct(ArticleServiceInterface $articleService)
+    {
+        $this->articleService = $articleService;
+    }
+
     /**
      * Shows the news page.
      *
@@ -34,19 +44,11 @@ class ArticleController extends BaseController
      */
     public function showAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)->findAllPublishedArticles();
-
-        $departments = $em->getRepository(Department::class)->findAllDepartments();
-
-        // Uses the knp_paginator bundle to separate the articles into pages
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $articles,
+        $pagination = $this->articleService->getPaginatedArticles(
             $request->query->get('page', 1),
             self::NUM_ARTICLES
         );
+        $departments = $this->articleService->getAllDepartments();
 
         return $this->render('article/index.html.twig', array(
             'pagination' => $pagination,
@@ -64,19 +66,12 @@ class ArticleController extends BaseController
      */
     public function showFilterAction(Request $request, $department)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)->findAllArticlesByDepartments($department);
-
-        $departments = $em->getRepository(Department::class)->findAllDepartments();
-
-        // Uses the knp_paginator bundle to separate the articles into pages
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
-            $articles,
+        $pagination = $this->articleService->getPaginatedArticlesByDepartments(
+            $department,
             $request->query->get('page', 1),
             self::NUM_ARTICLES
         );
+        $departments = $this->articleService->getAllDepartments();
 
         return $this->render('article/index.html.twig', array(
             'pagination' => $pagination,
@@ -108,10 +103,7 @@ class ArticleController extends BaseController
      */
     public function showOtherAction($excludeId)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)
-            ->findLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
+        $articles = $this->articleService->getLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
 
         return $this->render('article/sidebar_other.html.twig', array('articles' => $articles));
     }
@@ -123,9 +115,7 @@ class ArticleController extends BaseController
      */
     public function showCarouselAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
+        $articles = $this->articleService->getCarouselArticles(self::NUM_CAROUSEL_ARTICLES);
 
         return $this->render('article/carousel.html.twig', array('articles' => $articles));
     }
@@ -140,9 +130,7 @@ class ArticleController extends BaseController
      */
     public function showDepartmentNewsAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
+        $articles = $this->articleService->getDepartmentArticles($id, self::NUM_ADMISSION_ARTICLES);
 
         return $this->render('article/department_news.html.twig', array('articles' => $articles));
     }

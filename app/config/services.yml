@@ -126,6 +126,15 @@ services:
     AppBundle\Service\Contract\UserGroupCollectionManagerInterface:
         alias: AppBundle\Service\UserGroupCollectionManager
 
+    AppBundle\Service\Contract\HomeServiceInterface:
+        alias: AppBundle\Service\HomeService
+
+    AppBundle\Service\Contract\PartnerServiceInterface:
+        alias: AppBundle\Service\PartnerService
+
+    AppBundle\Service\Contract\ArticleServiceInterface:
+        alias: AppBundle\Service\ArticleService
+
     AppBundle\:
         resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"
 

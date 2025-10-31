@@ -8,6 +8,7 @@ use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Semester;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\ContentModeManager;
+use AppBundle\Service\Contract\PartnerServiceInterface;
 use AppBundle\Twig\Extension\RoleExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,6 +18,15 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends BaseController
 {
+    private $partnerService;
+
+    /**
+     * @param PartnerServiceInterface $partnerService
+     */
+    public function __construct(PartnerServiceInterface $partnerService)
+    {
+        $this->partnerService = $partnerService;
+    }
     /**
      * @Route("/min-side", name="my_page")
      *
@@ -62,42 +72,17 @@ class UserController extends BaseController
         if (!$this->getUser()->isActive()) {
             throw $this->createAccessDeniedException();
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($this->getUser());
-        if (empty($activeAssistantHistories)) {
+
+        $partnerData = $this->partnerService->findPartnersForUser($this->getUser());
+
+        if (empty($partnerData['partnerInformations'])) {
             throw $this->createNotFoundException();
-        }
-
-        $partnerInformations = [];
-        $partnerCount = 0;
-
-        foreach ($activeAssistantHistories as $activeHistory) {
-            $schoolHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
-            $partners = [];
-
-            foreach ($schoolHistories as $sh) {
-                if ($sh->getUser() === $this->getUser()) {
-                    continue;
-                }
-                if ($sh->getDay() !== $activeHistory->getDay()) {
-                    continue;
-                }
-                if ($activeHistory->activeInGroup(1) && $sh->activeInGroup(1) ||
-                    $activeHistory->activeInGroup(2) && $sh->activeInGroup(2)) {
-                    $partners[] = $sh;
-                    $partnerCount++;
-                }
-            }
-            $partnerInformations[] = [
-                'school' => $activeHistory->getSchool(),
-                'assistantHistory' => $activeHistory,
-                'partners' => $partners,
-            ];
         }
 
         $semester = $this->getCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
-            'partnerInformations' => $partnerInformations,
-            'partnerCount' => $partnerCount,
+            'partnerInformations' => $partnerData['partnerInformations'],
+            'partnerCount' => $partnerData['partnerCount'],
             'semester' => $semester,
         ]);
     }
