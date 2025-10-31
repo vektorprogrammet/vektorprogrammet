@@ -3,6 +3,7 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Semester;
+use AppBundle\Repository\Contract\SemesterRepositoryInterface;
 use AppBundle\Utils\SemesterUtil;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
@@ -10,7 +11,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 
-class SemesterRepository extends EntityRepository
+class SemesterRepository extends EntityRepository implements SemesterRepositoryInterface
 {
     /**
      * @return QueryBuilder

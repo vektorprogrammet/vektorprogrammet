@@ -7,6 +7,28 @@ services:
             AppBundle\Mailer\MailerInterface: '@AppBundle\Mailer\Mailer'
             AppBundle\Sms\SmsSenderInterface: '@AppBundle\Sms\SmsSender'
 
+    # Repository interface bindings
+    AppBundle\Repository\Contract\ArticleRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ArticleRepository
+
+    AppBundle\Repository\Contract\UserRepositoryInterface:
+        alias: AppBundle\Entity\Repository\UserRepository
+
+    AppBundle\Repository\Contract\DepartmentRepositoryInterface:
+        alias: AppBundle\Entity\Repository\DepartmentRepository
+
+    AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface:
+        alias: AppBundle\Entity\Repository\AdmissionPeriodRepository
+
+    AppBundle\Repository\Contract\ApplicationRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ApplicationRepository
+
+    AppBundle\Repository\Contract\SemesterRepositoryInterface:
+        alias: AppBundle\Entity\Repository\SemesterRepository
+
+    AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface:
+        alias: AppBundle\Entity\Repository\AssistantHistoryRepository
+
     AppBundle\:
         resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"
 

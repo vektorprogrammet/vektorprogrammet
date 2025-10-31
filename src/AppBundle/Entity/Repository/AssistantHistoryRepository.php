@@ -7,12 +7,13 @@ use AppBundle\Entity\Department;
 use AppBundle\Entity\School;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
+use AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface;
 use AppBundle\Utils\SemesterUtil;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 
-class AssistantHistoryRepository extends EntityRepository
+class AssistantHistoryRepository extends EntityRepository implements AssistantHistoryRepositoryInterface
 {
     private function findByUserInit(User $user)
     {

@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Semester;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
 use DateTime;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -12,7 +13,7 @@ use Doctrine\ORM\NonUniqueResultException;
 /**
  * AdmissionPeriodRepository
  */
-class AdmissionPeriodRepository extends EntityRepository
+class AdmissionPeriodRepository extends EntityRepository implements AdmissionPeriodRepositoryInterface
 {
 
     /**
