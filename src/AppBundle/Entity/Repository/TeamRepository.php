@@ -5,6 +5,7 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Team;
+use AppBundle\Repository\Contract\TeamRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
@@ -12,7 +13,7 @@ use Doctrine\ORM\QueryBuilder;
 /**
  * TeamRepository.
  */
-class TeamRepository extends EntityRepository
+class TeamRepository extends EntityRepository implements TeamRepositoryInterface
 {
 
     /**
@@ -85,7 +86,7 @@ class TeamRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findAllEmails()
+    public function findAllEmails(): array
     {
         $result = $this->createQueryBuilder('team')
             ->select('team.email')
@@ -95,7 +96,7 @@ class TeamRepository extends EntityRepository
         return array_column($result, 'email');
     }
 
-    public function findByTeamInterestAndAdmissionPeriod(AdmissionPeriod $admissionPeriod)
+    public function findByTeamInterestAndAdmissionPeriod(AdmissionPeriod $admissionPeriod): array
     {
         return $this->createQueryBuilder('team')
             ->select('team')
@@ -112,7 +113,7 @@ class TeamRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findByCityAndName(string $departmentCity, string $name)
+    public function findByCityAndName(string $departmentCity, string $name): array
     {
         return $this->createQueryBuilder('team')
             ->select('team')

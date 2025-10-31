@@ -5,17 +5,17 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\User;
+use AppBundle\Repository\Contract\UserRepositoryInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\UserProviderInterface;
 use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
 
-class UserRepository extends EntityRepository implements UserProviderInterface
+class UserRepository extends EntityRepository implements UserRepositoryInterface
 {
-    public function findUsersInDepartmentWithTeamMembershipInSemester(Department $department, Semester $semester)
+    public function findUsersInDepartmentWithTeamMembershipInSemester(Department $department, Semester $semester): array
     {
         $users = $this->createQueryBuilder('user')
             ->select('user')
@@ -52,7 +52,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
      *
      * @return User[]
      */
-    public function findUsersWithAssistantHistoryInDepartmentAndSemester(Department $department, Semester $semester)
+    public function findUsersWithAssistantHistoryInDepartmentAndSemester(Department $department, Semester $semester): array
     {
         return $this->createQueryBuilder('user')
             ->select('user')
@@ -67,7 +67,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findAllUsersByDepartment($department)
+    public function findAllUsersByDepartment($department): array
     {
         $users = $this->getEntityManager()->createQuery('
 		
@@ -84,7 +84,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $users;
     }
 
-    public function findAllActiveUsersByDepartment($department)
+    public function findAllActiveUsersByDepartment($department): array
     {
         $users = $this->getEntityManager()->createQuery('
 		
@@ -102,7 +102,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $users;
     }
 
-    public function findAllInActiveUsersByDepartment($department)
+    public function findAllInActiveUsersByDepartment($department): array
     {
         return $this->createQueryBuilder('user')
             ->select('user')
@@ -114,7 +114,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findAllUsersByDepartmentAndRoles($department, $roles)
+    public function findAllUsersByDepartmentAndRoles($department, array $roles): array
     {
         return $this->createQueryBuilder('u')
             ->select('u')
@@ -129,7 +129,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findAllUsersWithReceipts()
+    public function findAllUsersWithReceipts(): array
     {
         return $this->createQueryBuilder('user')
             ->select('user')
@@ -139,13 +139,13 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     }
 
     /**
-     * @param $username
+     * @param string $username
      *
      * @return User
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function findUserByUsername($username)
+    public function findUserByUsername(string $username): User
     {
         return $this->createQueryBuilder('User')
             ->select('User')
@@ -156,13 +156,13 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     }
 
     /**
-     * @param $login
+     * @param string $login
      *
      * @return User
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function findByUsernameOrEmail($login)
+    public function findByUsernameOrEmail(string $login): User
     {
         return $this->createQueryBuilder('User')
                     ->select('User')
@@ -177,13 +177,13 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     }
 
     /**
-     * @param $email
+     * @param string $email
      *
-     * @return User
+     * @return User|null
      *
      * @throws NonUniqueResultException
      */
-    public function findUserByEmail($email)
+    public function findUserByEmail(string $email): ?User
     {
         return $this->createQueryBuilder('User')
             ->select('User')
@@ -193,7 +193,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getOneOrNullResult();
     }
 
-    public function findUserById($id)
+    public function findUserById(int $id): User
     {
         return $this->createQueryBuilder('User')
             ->select('User')
@@ -204,23 +204,23 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     }
 
     /**
-     * @param $id
+     * @param string $code
      *
-     * @return User
+     * @return User|null
      *
      * @throws NonUniqueResultException
      */
-    public function findUserByNewUserCode($id)
+    public function findUserByNewUserCode(string $code): ?User
     {
         return $this->createQueryBuilder('User')
             ->select('User')
             ->where('User.new_user_code = :id')
-            ->setParameter('id', $id)
+            ->setParameter('id', $code)
             ->getQuery()
             ->getOneOrNullResult();
     }
 
-    public function findAllCompanyEmails()
+    public function findAllCompanyEmails(): array
     {
         $results = $this->createQueryBuilder('user')
             ->select('user.companyEmail')
@@ -280,7 +280,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         || is_subclass_of($class, $this->getEntityName());
     }
 
-    public function findAssistants()
+    public function findAssistants(): array
     {
         return $this->createQueryBuilder('user')
             ->join('user.assistantHistories', 'ah')
@@ -289,7 +289,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
             ->getResult();
     }
 
-    public function findTeamMembers()
+    public function findTeamMembers(): array
     {
         return $this->createQueryBuilder('user')
                     ->join('user.teamMemberships', 'tm')

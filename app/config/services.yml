@@ -29,6 +29,21 @@ services:
     AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface:
         alias: AppBundle\Entity\Repository\AssistantHistoryRepository
 
+    AppBundle\Repository\Contract\InterviewRepositoryInterface:
+        alias: AppBundle\Entity\Repository\InterviewRepository
+
+    AppBundle\Repository\Contract\SurveyRepositoryInterface:
+        alias: AppBundle\Entity\Repository\SurveyRepository
+
+    AppBundle\Repository\Contract\ReceiptRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ReceiptRepository
+
+    AppBundle\Repository\Contract\TeamRepositoryInterface:
+        alias: AppBundle\Entity\Repository\TeamRepository
+
+    AppBundle\Repository\Contract\SchoolRepositoryInterface:
+        alias: AppBundle\Entity\Repository\SchoolRepository
+
     # Service interface bindings
     AppBundle\Service\Contract\ApplicationManagerInterface:
         alias: AppBundle\Service\ApplicationManager
@@ -125,15 +140,6 @@ services:
 
     AppBundle\Service\Contract\UserGroupCollectionManagerInterface:
         alias: AppBundle\Service\UserGroupCollectionManager
-
-    AppBundle\Service\Contract\HomeServiceInterface:
-        alias: AppBundle\Service\HomeService
-
-    AppBundle\Service\Contract\PartnerServiceInterface:
-        alias: AppBundle\Service\PartnerService
-
-    AppBundle\Service\Contract\ArticleServiceInterface:
-        alias: AppBundle\Service\ArticleService
 
     AppBundle\:
         resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"

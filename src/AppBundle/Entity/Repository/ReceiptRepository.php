@@ -2,18 +2,19 @@
 
 namespace AppBundle\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
-use AppBundle\Entity\User;
 use AppBundle\Entity\Receipt;
+use AppBundle\Entity\User;
+use AppBundle\Repository\Contract\ReceiptRepositoryInterface;
+use Doctrine\ORM\EntityRepository;
 
-class ReceiptRepository extends EntityRepository
+class ReceiptRepository extends EntityRepository implements ReceiptRepositoryInterface
 {
     /**
      * @param User $user
      *
      * @return Receipt[]
      */
-    public function findByUser(User $user)
+    public function findByUser(User $user): array
     {
         return $this->createQueryBuilder('receipt')
             ->select('receipt')
@@ -28,7 +29,7 @@ class ReceiptRepository extends EntityRepository
      *
      * @return Receipt[]
      */
-    public function findByStatus(string $status)
+    public function findByStatus(string $status): array
     {
         return $this->createQueryBuilder('receipt')
             ->select('receipt')

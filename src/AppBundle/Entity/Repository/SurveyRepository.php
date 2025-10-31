@@ -5,9 +5,10 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\Semester;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\User;
+use AppBundle\Repository\Contract\SurveyRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
-class SurveyRepository extends EntityRepository
+class SurveyRepository extends EntityRepository implements SurveyRepositoryInterface
 {
 
     /**
@@ -15,7 +16,7 @@ class SurveyRepository extends EntityRepository
      * @param Semester $semester
      * @return Survey[]
      */
-    public function findAllNotTakenByUserAndSemester(User $user, Semester $semester)
+    public function findAllNotTakenByUserAndSemester(User $user, Semester $semester): array
     {
         $department = $user->getDepartment();
         $qb = $this->_em->createQueryBuilder();

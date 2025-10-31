@@ -4,17 +4,18 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\School;
+use AppBundle\Repository\Contract\SchoolRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-class SchoolRepository extends EntityRepository
+class SchoolRepository extends EntityRepository implements SchoolRepositoryInterface
 {
     /**
      * @param Department $department
      *
      * @return School[]
      */
-    public function findActiveSchoolsByDepartment(Department $department)
+    public function findActiveSchoolsByDepartment(Department $department): array
     {
         return $this->getSchoolsByDepartmentQueryBuilder($department)
             ->andWhere('school.active = true')
@@ -27,7 +28,7 @@ class SchoolRepository extends EntityRepository
      *
      * @return School[]
      */
-    public function findInactiveSchoolsByDepartment(Department $department)
+    public function findInactiveSchoolsByDepartment(Department $department): array
     {
         return $this->getSchoolsByDepartmentQueryBuilder($department)
             ->andWhere('school.active = false')
