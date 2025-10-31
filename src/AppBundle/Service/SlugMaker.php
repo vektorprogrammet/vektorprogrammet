@@ -4,9 +4,10 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Article;
+use AppBundle\Service\Contract\SlugMakerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class SlugMaker
+class SlugMaker implements SlugMakerInterface
 {
     private $em;
 
@@ -15,7 +16,7 @@ class SlugMaker
         $this->em = $em;
     }
 
-    public function setSlugFor(Article $article)
+    public function setSlugFor(Article $article): string
     {
         $slugs = $this->em->getRepository(Article::class)->findSlugs();
 

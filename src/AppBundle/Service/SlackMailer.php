@@ -3,14 +3,16 @@
 namespace AppBundle\Service;
 
 use AppBundle\Mailer\MailerInterface;
+use AppBundle\Service\Contract\SlackMailerInterface;
+use AppBundle\Service\Contract\SlackMessengerInterface;
 use Nexy\Slack\Attachment;
 use Swift_Message;
 
-class SlackMailer implements MailerInterface
+class SlackMailer implements SlackMailerInterface
 {
     private $messenger;
 
-    public function __construct(SlackMessenger $messenger)
+    public function __construct(SlackMessengerInterface $messenger)
     {
         $this->messenger = $messenger;
     }

@@ -7,8 +7,9 @@ use AppBundle\Entity\TeamMembership;
 use AppBundle\Event\TeamMembershipEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use AppBundle\Service\Contract\TeamMembershipServiceInterface;
 
-class TeamMembershipService
+class TeamMembershipService implements TeamMembershipServiceInterface
 {
     private $em;
     private $dispatcher;

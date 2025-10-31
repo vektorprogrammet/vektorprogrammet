@@ -5,8 +5,9 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\InterviewDistribution;
+use AppBundle\Service\Contract\InterviewCounterInterface;
 
-class InterviewCounter
+class InterviewCounter implements InterviewCounterInterface
 {
     const YES = 'Ja';
     const MAYBE = 'Kanskje';
@@ -18,7 +19,7 @@ class InterviewCounter
      *
      * @return int
      */
-    public function count(array $applications, string $suitable)
+    public function count(array $applications, string $suitable): int
     {
         $count = 0;
 
@@ -43,7 +44,7 @@ class InterviewCounter
      *
      * @return array
      */
-    public function createInterviewDistributions(array $applications, AdmissionPeriod $admissionPeriod)
+    public function createInterviewDistributions(array $applications, AdmissionPeriod $admissionPeriod): array
     {
         $interviewDistributions = array();
 

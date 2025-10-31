@@ -4,10 +4,13 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Service\Contract\ApplicationDataInterface;
+use AppBundle\Service\Contract\InterviewNotificationManagerInterface;
+use AppBundle\Service\Contract\SlackMessengerInterface;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 
-class InterviewNotificationManager
+class InterviewNotificationManager implements InterviewNotificationManagerInterface
 {
     private $slackMessenger;
     private $applicationData;
@@ -16,11 +19,11 @@ class InterviewNotificationManager
     /**
      * InterviewNotificationManager constructor.
      *
-     * @param SlackMessenger $slackMessenger
-     * @param ApplicationData $applicationData
+     * @param SlackMessengerInterface $slackMessenger
+     * @param ApplicationDataInterface $applicationData
      * @param RouterInterface $router
      */
-    public function __construct(SlackMessenger $slackMessenger, ApplicationData $applicationData, RouterInterface $router)
+    public function __construct(SlackMessengerInterface $slackMessenger, ApplicationDataInterface $applicationData, RouterInterface $router)
     {
         $this->slackMessenger = $slackMessenger;
         $this->applicationData = $applicationData;

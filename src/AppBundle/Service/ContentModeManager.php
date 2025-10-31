@@ -3,9 +3,10 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Service\Contract\ContentModeManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ContentModeManager
+class ContentModeManager implements ContentModeManagerInterface
 {
     /**
      * @var SessionInterface
@@ -17,7 +18,7 @@ class ContentModeManager
         $this->session = $session;
     }
 
-    public function isEditMode()
+    public function isEditMode(): bool
     {
         return $this->session->get('edit-mode', false);
     }

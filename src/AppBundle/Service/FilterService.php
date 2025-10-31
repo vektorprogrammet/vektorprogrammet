@@ -5,8 +5,9 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterface;
 use AppBundle\Entity\TeamMembershipInterface;
+use AppBundle\Service\Contract\FilterServiceInterface;
 
-class FilterService
+class FilterService implements FilterServiceInterface
 {
 
     /**
@@ -17,7 +18,7 @@ class FilterService
      *
      * @return TeamMembershipInterface[]
      */
-    public function filterTeamMembershipsByTeam($teamMemberships, $team)
+    public function filterTeamMembershipsByTeam(array $teamMemberships, TeamInterface $team): array
     {
         $filtered = [];
         foreach ($teamMemberships as $teamMembership) {
@@ -36,7 +37,7 @@ class FilterService
      *
      * @return Department[]
      */
-    public function filterDepartmentsByActiveAdmission($departments, $hasActiveAdmission)
+    public function filterDepartmentsByActiveAdmission(array $departments, bool $hasActiveAdmission): array
     {
         $filtered = [];
         foreach ($departments as $department) {

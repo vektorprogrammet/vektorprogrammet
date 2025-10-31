@@ -13,8 +13,9 @@ use AppBundle\Utils\CsvUtil;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
+use AppBundle\Service\Contract\SurveyManagerInterface;
 
-class SurveyManager
+class SurveyManager implements SurveyManagerInterface
 {
     private $em;
 
@@ -42,7 +43,7 @@ class SurveyManager
         return $surveyTaken;
     }
 
-    public function initializeUserSurveyTaken(Survey $survey, User $user)
+    public function initializeUserSurveyTaken(Survey $survey, User $user): SurveyTaken
     {
         $surveyTaken = $this->initializeSurveyTaken($survey);
         $surveyTaken->setUser($user);
@@ -85,7 +86,7 @@ class SurveyManager
         return $surveyTaken;
     }
 
-    public function getUserAffiliationOfSurveyAnswers(Survey $survey)
+    public function getUserAffiliationOfSurveyAnswers(Survey $survey): array
     {
         $surveysTaken = $this->em->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey);
         $userAffiliation = array();
@@ -219,7 +220,7 @@ class SurveyManager
         return $userAffiliation;
     }
 
-    public function surveyResultToJson(Survey $survey)
+    public function surveyResultToJson(Survey $survey): array
     {
         $userAffiliation = $this->getUserAffiliationOfSurveyAnswers($survey);
         $surveysTaken = $this->em->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey);

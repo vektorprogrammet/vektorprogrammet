@@ -4,22 +4,24 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
+use AppBundle\Service\Contract\BetaRedirecterInterface;
+use AppBundle\Service\Contract\RoleManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class BetaRedirecter
+class BetaRedirecter implements BetaRedirecterInterface
 {
     private $tokenStorage;
     private $roleManager;
 
-    public function __construct(TokenStorageInterface $tokenStorage, RoleManager $roleManager)
+    public function __construct(TokenStorageInterface $tokenStorage, RoleManagerInterface $roleManager)
     {
         $this->tokenStorage = $tokenStorage;
         $this->roleManager = $roleManager;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(GetResponseEvent $event): GetResponseEvent
     {
         if (!$event->isMasterRequest()) {
             return $event;

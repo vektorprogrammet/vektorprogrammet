@@ -2,11 +2,12 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Receipt;
 use AppBundle\Entity\TeamMembershipInterface;
 use AppBundle\Entity\User;
-use AppBundle\Entity\Receipt;
+use AppBundle\Service\Contract\SorterInterface;
 
-class Sorter
+class Sorter implements SorterInterface
 {
     /**
      * @param User $user1
@@ -43,7 +44,7 @@ class Sorter
      *
      * @return int
      */
-    public function newestReceipt(Receipt $receipt1, Receipt $receipt2)
+    public function newestReceipt(Receipt $receipt1, Receipt $receipt2): int
     {
         if ($receipt1->getSubmitDate() === $receipt2->getSubmitDate()) {
             return 0;
@@ -57,7 +58,7 @@ class Sorter
      *
      * @return bool success
      */
-    public function sortUsersByReceiptSubmitTime(&$users)
+    public function sortUsersByReceiptSubmitTime(&$users): bool
     {
         return usort($users, array($this, 'userWithNewestReceipt'));
     }
@@ -85,7 +86,7 @@ class Sorter
      *
      * @return bool success
      */
-    public function sortReceiptsBySubmitTime(&$receipts)
+    public function sortReceiptsBySubmitTime(&$receipts): bool
     {
         return usort($receipts, array($this,'newestReceipt'));
     }

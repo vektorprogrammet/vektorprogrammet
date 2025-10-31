@@ -10,8 +10,9 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Swift_Message;
 use Twig\Environment;
+use AppBundle\Service\Contract\PasswordManagerInterface;
 
-class PasswordManager
+class PasswordManager implements PasswordManagerInterface
 {
     private $em;
     private $mailer;
@@ -73,7 +74,7 @@ class PasswordManager
         return $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
     }
 
-    public function createPasswordResetEntity(string $email)
+    public function createPasswordResetEntity(string $email): ?PasswordReset
     {
         $passwordReset = new PasswordReset();
 

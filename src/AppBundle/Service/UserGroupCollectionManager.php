@@ -7,11 +7,12 @@ use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\TeamMembership;
 use AppBundle\Entity\UserGroup;
+use AppBundle\Service\Contract\UserGroupCollectionManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use UnexpectedValueException;
 
-class UserGroupCollectionManager
+class UserGroupCollectionManager implements UserGroupCollectionManagerInterface
 {
     private $em;
 

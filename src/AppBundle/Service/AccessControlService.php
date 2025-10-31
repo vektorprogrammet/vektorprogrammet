@@ -11,8 +11,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
+use AppBundle\Service\Contract\AccessControlServiceInterface;
+use AppBundle\Service\Contract\RoleManagerInterface;
+use AppBundle\Service\Contract\UserServiceInterface;
 
-class AccessControlService
+class AccessControlService implements AccessControlServiceInterface
 {
     private $entityManager;
     private $router;
@@ -26,10 +29,10 @@ class AccessControlService
      *
      * @param EntityManagerInterface $entityManager
      * @param RouterInterface $router
-     * @param RoleManager $roleManager
-     * @param UserService $userService
+     * @param RoleManagerInterface $roleManager
+     * @param UserServiceInterface $userService
      */
-    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, RoleManager $roleManager, UserService $userService)
+    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, RoleManagerInterface $roleManager, UserServiceInterface $userService)
     {
         $this->entityManager = $entityManager;
         $this->router        = $router;
@@ -261,7 +264,7 @@ class AccessControlService
             $this->isRoute($route);
     }
 
-    public function getPath(string $name)
+    public function getPath(string $name): string
     {
         if (! $this->isRoute($name)) {
             return $name;

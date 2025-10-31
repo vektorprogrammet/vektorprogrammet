@@ -14,8 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
+use AppBundle\Service\Contract\ApplicationAdmissionInterface;
+use AppBundle\Service\Contract\LoginManagerInterface;
 
-class ApplicationAdmission
+class ApplicationAdmission implements ApplicationAdmissionInterface
 {
     private $em;
     private $twig;
@@ -26,9 +28,9 @@ class ApplicationAdmission
      *
      * @param EntityManagerInterface     $em
      * @param Environment $twig
-     * @param LoginManager      $loginManager
+     * @param LoginManagerInterface      $loginManager
      */
-    public function __construct(EntityManagerInterface $em, Environment $twig, LoginManager $loginManager)
+    public function __construct(EntityManagerInterface $em, Environment $twig, LoginManagerInterface $loginManager)
     {
         $this->em = $em;
         $this->twig = $twig;
@@ -54,7 +56,7 @@ class ApplicationAdmission
         return $application;
     }
 
-    public function userHasAlreadyApplied(User $user)
+    public function userHasAlreadyApplied(User $user): bool
     {
         $fos = $user->getFieldOfStudy();
         if ($fos === null) {
@@ -72,7 +74,7 @@ class ApplicationAdmission
         return $this->userHasAlreadyAppliedInAdmissionPeriod($user, $admissionPeriod);
     }
 
-    public function userHasAlreadyAppliedInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
+    public function userHasAlreadyAppliedInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod): bool
     {
         $existingApplications = $this->em->getRepository(Application::class)->findByEmailInAdmissionPeriod($user->getEmail(), $admissionPeriod);
 
@@ -118,7 +120,7 @@ class ApplicationAdmission
         return $department;
     }
 
-    public function renderErrorPage(User $user = null)
+    public function renderErrorPage(User $user = null): ?Response
     {
         $content = null;
 

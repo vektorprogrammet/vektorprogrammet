@@ -4,9 +4,10 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
+use AppBundle\Service\Contract\UserServiceInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserService
+class UserService implements UserServiceInterface
 {
     /**
      * @var TokenStorageInterface
@@ -21,7 +22,7 @@ class UserService
     /**
      * @return null|User
      */
-    public function getCurrentUser()
+    public function getCurrentUser(): ?User
     {
         $token = $this->tokenStorage->getToken();
         if (!$token) {

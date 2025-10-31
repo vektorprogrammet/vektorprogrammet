@@ -17,8 +17,10 @@ use Exception;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
+use AppBundle\Service\Contract\AdmissionNotifierInterface;
+use AppBundle\Service\Contract\EmailSenderInterface;
 
-class AdmissionNotifier
+class AdmissionNotifier implements AdmissionNotifierInterface
 {
     private $em;
     private $emailSender;
@@ -26,7 +28,7 @@ class AdmissionNotifier
     private $validator;
     private $sendLimit;
 
-    public function __construct(EntityManagerInterface $em, EmailSender $emailSender, LoggerInterface $logger, ValidatorInterface $validator, int $sendLimit)
+    public function __construct(EntityManagerInterface $em, EmailSenderInterface $emailSender, LoggerInterface $logger, ValidatorInterface $validator, int $sendLimit)
     {
         $this->em = $em;
         $this->emailSender = $emailSender;

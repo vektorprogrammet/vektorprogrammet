@@ -4,20 +4,22 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
+use AppBundle\Service\Contract\CompanyEmailMakerInterface;
+use AppBundle\Service\Contract\LogServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class CompanyEmailMaker
+class CompanyEmailMaker implements CompanyEmailMakerInterface
 {
     private $em;
     private $logger;
 
-    public function __construct(EntityManagerInterface $em, LogService $logger)
+    public function __construct(EntityManagerInterface $em, LogServiceInterface $logger)
     {
         $this->em = $em;
         $this->logger = $logger;
     }
 
-    public function setCompanyEmailFor(User $user, $blackList)
+    public function setCompanyEmailFor(User $user, array $blackList): ?string
     {
         $allCompanyEmails = $this->em->getRepository(User::class)->findAllCompanyEmails();
         $allEmails = array_merge($allCompanyEmails, $blackList);

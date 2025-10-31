@@ -8,8 +8,10 @@ use ErrorException;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use AppBundle\Service\Contract\GeoLocationInterface;
+use AppBundle\Service\Contract\LogServiceInterface;
 
-class GeoLocation
+class GeoLocation implements GeoLocationInterface
 {
     private $ipinfoToken;
     private $departmentRepo;
@@ -29,9 +31,9 @@ class GeoLocation
      * @param EntityManagerInterface $em
      * @param SessionInterface $session
      * @param RequestStack $requestStack
-     * @param LogService $logger
+     * @param LogServiceInterface $logger
      */
-    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, SessionInterface $session, RequestStack $requestStack, LogService $logger)
+    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, SessionInterface $session, RequestStack $requestStack, LogServiceInterface $logger)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository(Department::class);
@@ -46,7 +48,7 @@ class GeoLocation
      * @return Department
      * @throws InvalidArgumentException
      */
-    public function findNearestDepartment($departments)
+    public function findNearestDepartment(array $departments): Department
     {
         if (empty($departments)) {
             throw new InvalidArgumentException('$departments cannot be empty');
@@ -55,7 +57,7 @@ class GeoLocation
         return $this->sortDepartmentsByDistanceFromClient($departments)[0];
     }
 
-    public function findDepartmentClosestTo($coords)
+    public function findDepartmentClosestTo(array $coords): ?Department
     {
         $departments = $this->departmentRepo->findAll();
         if (count($departments) < 1) {
@@ -80,7 +82,7 @@ class GeoLocation
         return $closestDepartment;
     }
 
-    public function findCoordinatesOfCurrentRequest()
+    public function findCoordinatesOfCurrentRequest(): ?array
     {
         $ip = $this->clientIp();
         return $this->findCoordinates($ip);
@@ -90,7 +92,7 @@ class GeoLocation
      * @param Department[] $departments
      * @return Department[] $departments
      */
-    public function sortDepartmentsByDistanceFromClient($departments)
+    public function sortDepartmentsByDistanceFromClient(array $departments): array
     {
 //        $ip = '158.39.3.40'; // Oslo
 //        $ip = '146.185.181.87'; // Server location (Amsterdam)
@@ -121,7 +123,7 @@ class GeoLocation
         return $departments;
     }
 
-    public function findCoordinates($ip)
+    public function findCoordinates(string $ip): ?array
     {
         $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore-geo');
         if (!$this->ipinfoToken || $ignoreGeo) {
@@ -174,7 +176,7 @@ class GeoLocation
         return $coords;
     }
 
-    public function distance(float $fromLat, float $fromLon, float $toLat, float $toLon)
+    public function distance(float $fromLat, float $fromLon, float $toLat, float $toLon): float
     {
         $theta = $fromLon - $toLon;
         $dist = sin(deg2rad($fromLat)) * sin(deg2rad($toLat)) +  cos(deg2rad($fromLat)) * cos(deg2rad($toLat)) * cos(deg2rad($theta));
@@ -183,7 +185,7 @@ class GeoLocation
         return $dist * 60 * 1.1515 * 1609.344;
     }
 
-    public function clientIp()
+    public function clientIp(): ?string
     {
         $request = $this->requestStack->getCurrentRequest();
         if ($request->server->get('HTTP_CLIENT_IP') !== null) {

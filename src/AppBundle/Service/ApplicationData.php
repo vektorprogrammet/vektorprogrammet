@@ -8,10 +8,11 @@ use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\ApplicationRepository;
 use AppBundle\Entity\User;
+use AppBundle\Service\Contract\ApplicationDataInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ApplicationData
+class ApplicationData implements ApplicationDataInterface
 {
     /**
      * @var Department
@@ -137,7 +138,7 @@ class ApplicationData
         return $this->getAssignedInterviewsCount() + $this->getInterviewedAssistantsCount();
     }
 
-    public function applicantsNotYetInterviewedCount()
+    public function applicantsNotYetInterviewedCount(): int
     {
         return $this->getCount() - $this->getCancelledInterviewsCount() - $this->getInterviewedAssistantsCount() - $this->getPreviousParticipationCount();
     }

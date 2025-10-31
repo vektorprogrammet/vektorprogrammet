@@ -8,9 +8,10 @@ use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\PeriodInterface;
 use AppBundle\Entity\Semester;
+use AppBundle\Service\Contract\AdmissionStatisticsInterface;
 use DateTime;
 
-class AdmissionStatistics
+class AdmissionStatistics implements AdmissionStatisticsInterface
 {
 
     /**
@@ -19,7 +20,7 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateGraphDataFromSubscribersInSemester($subscribers, Semester $semester)
+    public function generateGraphDataFromSubscribersInSemester(array $subscribers, Semester $semester): array
     {
         $subData = $this->initializeDataArray($semester);
         return $this->populateSubscriberDataWithSubscribers($subData, $subscribers);
@@ -31,7 +32,7 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
+    public function generateGraphDataFromApplicationsInAdmissionPeriod(array $applications, AdmissionPeriod $admissionPeriod): array
     {
         $endDate = $admissionPeriod->getEndDate();
         $extraDays = $this->calculatePaddingDays($endDate);
@@ -46,7 +47,7 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
+    public function generateCumulativeGraphDataFromApplicationsInAdmissionPeriod(array $applications, AdmissionPeriod $admissionPeriod): array
     {
         $endDate =  $admissionPeriod->getEndDate();
         $extraDays = $this->calculatePaddingDays($endDate);

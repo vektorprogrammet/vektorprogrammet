@@ -3,9 +3,10 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Service\Contract\SbsDataInterface;
 use DateTime;
 
-class SbsData extends ApplicationData
+class SbsData extends ApplicationData implements SbsDataInterface
 {
     public function getTotalApplicationsCount(): int
     {
