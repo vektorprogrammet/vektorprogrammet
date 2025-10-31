@@ -23,12 +23,12 @@ interface ArticleServiceInterface
     /**
      * Get paginated articles filtered by departments.
      *
-     * @param string|array $departments Department short name(s) - single string or array of strings
+     * @param array $departments Array of department short names
      * @param int $page Page number
      * @param int $perPage Articles per page
      * @return \Knp\Component\Pager\Pagination\PaginationInterface
      */
-    public function getPaginatedArticlesByDepartments($departments, int $page = 1, int $perPage = 10): \Knp\Component\Pager\Pagination\PaginationInterface;
+    public function getPaginatedArticlesByDepartments(array $departments, int $page = 1, int $perPage = 10): \Knp\Component\Pager\Pagination\PaginationInterface;
 
     /**
      * Get all departments for filtering.

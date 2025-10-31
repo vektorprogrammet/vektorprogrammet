@@ -6,10 +6,16 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Semester;
-use AppBundle\Service\ApplicationManager;
-use AppBundle\Service\ContentModeManager;
+use AppBundle\Entity\User;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
+use AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface;
+use AppBundle\Repository\Contract\SemesterRepositoryInterface;
+use AppBundle\Role\Roles;
+use AppBundle\Service\Contract\ApplicationManagerInterface;
+use AppBundle\Service\Contract\ContentModeManagerInterface;
 use AppBundle\Service\Contract\PartnerServiceInterface;
-use AppBundle\Twig\Extension\RoleExtension;
+use AppBundle\Service\Contract\RoleManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,13 +25,42 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 class UserController extends BaseController
 {
     private $partnerService;
+    private $applicationManager;
+    private $contentModeManager;
+    private $roleManager;
+    private $admissionPeriodRepository;
+    private $applicationRepository;
+    private $assistantHistoryRepository;
+    private $semesterRepository;
 
     /**
      * @param PartnerServiceInterface $partnerService
+     * @param ApplicationManagerInterface $applicationManager
+     * @param ContentModeManagerInterface $contentModeManager
+     * @param RoleManagerInterface $roleManager
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
+     * @param SemesterRepositoryInterface $semesterRepository
      */
-    public function __construct(PartnerServiceInterface $partnerService)
-    {
+    public function __construct(
+        PartnerServiceInterface $partnerService,
+        ApplicationManagerInterface $applicationManager,
+        ContentModeManagerInterface $contentModeManager,
+        RoleManagerInterface $roleManager,
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        AssistantHistoryRepositoryInterface $assistantHistoryRepository,
+        SemesterRepositoryInterface $semesterRepository
+    ) {
         $this->partnerService = $partnerService;
+        $this->applicationManager = $applicationManager;
+        $this->contentModeManager = $contentModeManager;
+        $this->roleManager = $roleManager;
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->assistantHistoryRepository = $assistantHistoryRepository;
+        $this->semesterRepository = $semesterRepository;
     }
     /**
      * @Route("/min-side", name="my_page")
@@ -37,23 +72,19 @@ class UserController extends BaseController
         $user = $this->getUser();
 
         $department = $user->getDepartment();
-        $semester = $this->getCurrentSemester();
-        $admissionPeriod = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $semester = $this->semesterRepository->findOrCreateCurrentSemester();
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
 
         $activeApplication = null;
         if (null !== $admissionPeriod) {
-            $activeApplication = $this->getDoctrine()
-                ->getRepository(Application::class)
-                ->findByUserInAdmissionPeriod($user, $admissionPeriod);
+            $activeApplication = $this->applicationRepository->findByUserInAdmissionPeriod($user, $admissionPeriod);
         }
 
         $applicationStatus = null;
         if (null !== $activeApplication) {
-            $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($activeApplication);
+            $applicationStatus = $this->applicationManager->getApplicationStatus($activeApplication);
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($user);
+        $activeAssistantHistories = $this->assistantHistoryRepository->findActiveAssistantHistoriesByUser($user);
 
         return $this->render('my_page/my_page.html.twig', [
             "active_application" => $activeApplication,
@@ -79,7 +110,7 @@ class UserController extends BaseController
             throw $this->createNotFoundException();
         }
 
-        $semester = $this->getCurrentSemester();
+        $semester = $this->semesterRepository->findOrCreateCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
             'partnerInformations' => $partnerData['partnerInformations'],
             'partnerCount' => $partnerData['partnerCount'],
@@ -100,7 +131,12 @@ class UserController extends BaseController
      */
     public function changeContentModeAction(Request $request, string $mode)
     {
-        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
+        $user = $this->getUser();
+        if (!$user instanceof User) {
+            throw $this->createAccessDeniedException();
+        }
+
+        if (!$this->roleManager->userIsGranted($user, Roles::ADMIN) && !$this->roleManager->userIsInExecutiveBoard($user)) {
             throw $this->createAccessDeniedException();
         }
 
@@ -111,9 +147,9 @@ class UserController extends BaseController
         $isEditMode = $mode === 'edit-mode';
 
         if ($isEditMode) {
-            $this->get(ContentModeManager::class)->changeToEditMode();
+            $this->contentModeManager->changeToEditMode();
         } else {
-            $this->get(ContentModeManager::class)->changeToReadMode();
+            $this->contentModeManager->changeToReadMode();
         }
 
         $this->addFlash($isEditMode ? 'warning' : 'info', $isEditMode ? 'Du er nå i redigeringsmodus' : 'Du er nå i lesemodus');

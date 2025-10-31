@@ -3,11 +3,33 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
+use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\Contract\SlackMessengerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Service\SlackMessenger;
+use Symfony\Component\HttpFoundation\Response;
 
 class FeedbackController extends BaseController
 {
+    private $entityManager;
+    private $slackMessenger;
+    private $paginator;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param SlackMessengerInterface $slackMessenger
+     * @param PaginatorInterface $paginator
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        SlackMessengerInterface $slackMessenger,
+        PaginatorInterface $paginator
+    ) {
+        $this->entityManager = $entityManager;
+        $this->slackMessenger = $slackMessenger;
+        $this->paginator = $paginator;
+    }
+
     //shows form for submitting a new feedback
     public function indexAction(Request $request)
     {
@@ -24,15 +46,13 @@ class FeedbackController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             //Stores the submitted feedback
-            $em = $this->getDoctrine()->getManager();
             $feedback = $form->getData();
             $feedback->setUser($user);
-            $em->persist($feedback);
-            $em->flush();
+            $this->entityManager->persist($feedback);
+            $this->entityManager->flush();
 
             //Notifies on slack (NotificationChannel)
-            $messenger = $this->container->get(SlackMessenger::class);
-            $messenger->notify($feedback->getSlackMessageBody());
+            $this->slackMessenger->notify($feedback->getSlackMessageBody());
 
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
             
@@ -55,14 +75,13 @@ class FeedbackController extends BaseController
     //Lists all feedbacks
     public function showAllAction(Request $request)
     {
-        $paginator  = $this->get('knp_paginator');
-
-        $repository = $this->getDoctrine()->getRepository(Feedback::class);
+        // TODO: Create FeedbackRepositoryInterface and inject it
+        $repository = $this->entityManager->getRepository(Feedback::class);
 
         //Gets all feedbacks sorted by created_at
         $feedbacks = $repository->findAllSortByNewest();
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $feedbacks,
             $request->query->get('page', 1),
             15
@@ -74,11 +93,11 @@ class FeedbackController extends BaseController
             'title' => 'Alle tilbakemeldinger'
         ));
     }
+
     public function deleteAction(Feedback $feedback)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($feedback);
-        $em->flush();
+        $this->entityManager->remove($feedback);
+        $this->entityManager->flush();
 
         $this->addFlash("success", "\"". $feedback->getTitle()."\" ble slettet");
 

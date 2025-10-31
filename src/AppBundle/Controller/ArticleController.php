@@ -67,7 +67,7 @@ class ArticleController extends BaseController
     public function showFilterAction(Request $request, $department)
     {
         $pagination = $this->articleService->getPaginatedArticlesByDepartments(
-            $department,
+            [$department],
             $request->query->get('page', 1),
             self::NUM_ARTICLES
         );

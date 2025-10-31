@@ -50,13 +50,8 @@ class ArticleService implements ArticleServiceInterface
     /**
      * {@inheritdoc}
      */
-    public function getPaginatedArticlesByDepartments($departments, int $page = 1, int $perPage = 10): PaginationInterface
+    public function getPaginatedArticlesByDepartments(array $departments, int $page = 1, int $perPage = 10): PaginationInterface
     {
-        // Normalize to array if single department string is passed
-        if (!is_array($departments)) {
-            $departments = [$departments];
-        }
-
         $articles = $this->articleRepository->findAllArticlesByDepartments($departments);
 
         return $this->paginator->paginate(
