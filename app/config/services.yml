@@ -44,6 +44,15 @@ services:
     AppBundle\Repository\Contract\SchoolRepositoryInterface:
         alias: AppBundle\Entity\Repository\SchoolRepository
 
+    AppBundle\Repository\Contract\ExecutiveBoardRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ExecutiveBoardRepository
+
+    AppBundle\Repository\Contract\AdmissionSubscriberRepositoryInterface:
+        alias: AppBundle\Entity\Repository\AdmissionSubscriberRepository
+
+    AppBundle\Repository\Contract\FeedbackRepositoryInterface:
+        alias: AppBundle\Entity\Repository\FeedbackRepository
+
     # Service interface bindings
     AppBundle\Service\Contract\ApplicationManagerInterface:
         alias: AppBundle\Service\ApplicationManager

@@ -3,6 +3,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
+use AppBundle\Repository\Contract\FeedbackRepositoryInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Service\Contract\SlackMessengerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -14,20 +15,24 @@ class FeedbackController extends BaseController
     private $entityManager;
     private $slackMessenger;
     private $paginator;
+    private $feedbackRepository;
 
     /**
      * @param EntityManagerInterface $entityManager
      * @param SlackMessengerInterface $slackMessenger
      * @param PaginatorInterface $paginator
+     * @param FeedbackRepositoryInterface $feedbackRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         SlackMessengerInterface $slackMessenger,
-        PaginatorInterface $paginator
+        PaginatorInterface $paginator,
+        FeedbackRepositoryInterface $feedbackRepository
     ) {
         $this->entityManager = $entityManager;
         $this->slackMessenger = $slackMessenger;
         $this->paginator = $paginator;
+        $this->feedbackRepository = $feedbackRepository;
     }
 
     //shows form for submitting a new feedback
@@ -75,11 +80,8 @@ class FeedbackController extends BaseController
     //Lists all feedbacks
     public function showAllAction(Request $request)
     {
-        // TODO: Create FeedbackRepositoryInterface and inject it
-        $repository = $this->entityManager->getRepository(Feedback::class);
-
         //Gets all feedbacks sorted by created_at
-        $feedbacks = $repository->findAllSortByNewest();
+        $feedbacks = $this->feedbackRepository->findAllSortByNewest();
 
         $pagination = $this->paginator->paginate(
             $feedbacks,

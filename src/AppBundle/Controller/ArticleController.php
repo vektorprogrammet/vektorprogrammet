@@ -60,14 +60,20 @@ class ArticleController extends BaseController
      * Shows the news page, with articles for all departments and the given department.
      *
      * @param Request $request
-     * @param $department
+     * @param string|Department $department Department short name (string) or Department entity
      *
      * @return Response
      */
     public function showFilterAction(Request $request, $department)
     {
+        // Normalize to department short name (string)
+        // The repository method expects an array of short names (strings)
+        $departmentShortName = $department instanceof \AppBundle\Entity\Department
+            ? $department->getShortName()
+            : (string) $department;
+
         $pagination = $this->articleService->getPaginatedArticlesByDepartments(
-            [$department],
+            [$departmentShortName],
             $request->query->get('page', 1),
             self::NUM_ARTICLES
         );

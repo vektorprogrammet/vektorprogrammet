@@ -5,10 +5,11 @@ namespace AppBundle\Entity\Repository;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Repository\Contract\AdmissionSubscriberRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-class AdmissionSubscriberRepository extends EntityRepository
+class AdmissionSubscriberRepository extends EntityRepository implements AdmissionSubscriberRepositoryInterface
 {
 
     /**
@@ -25,11 +26,9 @@ class AdmissionSubscriberRepository extends EntityRepository
             ->setParameter('department', $department);
     }
     /**
-     * @param Department $department
-     *
-     * @return AdmissionSubscriber[]
+     * {@inheritdoc}
      */
-    public function findByDepartment(Department $department)
+    public function findByDepartment(Department $department): array
     {
         return $this
             ->findByDepartmentQueryBuilder($department)
@@ -38,11 +37,9 @@ class AdmissionSubscriberRepository extends EntityRepository
     }
 
     /**
-     * @param Department $department
-     *
-     * @return AdmissionSubscriber[]
+     * {@inheritdoc}
      */
-    public function findFromWebByDepartment(Department $department)
+    public function findFromWebByDepartment(Department $department): array
     {
         return $this
             ->findByDepartmentQueryBuilder($department)
@@ -71,12 +68,9 @@ class AdmissionSubscriberRepository extends EntityRepository
     }
 
     /**
-     * @param Department $department
-     * @param Semester $semester
-     *
-     * @return AdmissionSubscriber[]
+     * {@inheritdoc}
      */
-    public function findFromWebByDepartmentAndSemester(Department $department, Semester $semester)
+    public function findFromWebByDepartmentAndSemester(Department $department, Semester $semester): array
     {
         return $this
             ->findByDepartmentAndSemesterQueryBuilder($department, $semester)
@@ -88,12 +82,9 @@ class AdmissionSubscriberRepository extends EntityRepository
     }
 
     /**
-     * @param string $email
-     * @param Department $department
-     *
-     * @return AdmissionSubscriber
+     * {@inheritdoc}
      */
-    public function findByEmailAndDepartment(string $email, Department $department)
+    public function findByEmailAndDepartment(string $email, Department $department): ?AdmissionSubscriber
     {
         return $this
             ->createQueryBuilder('subscriber')
@@ -107,11 +98,9 @@ class AdmissionSubscriberRepository extends EntityRepository
     }
 
     /**
-     * @param string $code
-     *
-     * @return AdmissionSubscriber
+     * {@inheritdoc}
      */
-    public function findByUnsubscribeCode(string $code)
+    public function findByUnsubscribeCode(string $code): ?AdmissionSubscriber
     {
         return $this
             ->createQueryBuilder('subscriber')

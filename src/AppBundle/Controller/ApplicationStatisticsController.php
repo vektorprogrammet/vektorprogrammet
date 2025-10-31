@@ -2,15 +2,34 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\AdmissionPeriod;
-use AppBundle\Service\ApplicationData;
-use AppBundle\Service\AssistantHistoryData;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Service\Contract\ApplicationDataInterface;
+use AppBundle\Service\Contract\AssistantHistoryDataInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationStatisticsController extends BaseController
 {
+    private $admissionPeriodRepository;
+    private $assistantHistoryData;
+    private $applicationData;
+
+    /**
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param AssistantHistoryDataInterface $assistantHistoryData
+     * @param ApplicationDataInterface $applicationData
+     */
+    public function __construct(
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        AssistantHistoryDataInterface $assistantHistoryData,
+        ApplicationDataInterface $applicationData
+    ) {
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->assistantHistoryData = $assistantHistoryData;
+        $this->applicationData = $applicationData;
+    }
+
     /**
      * @param Request $request
      * @return Response
@@ -20,14 +39,12 @@ class ApplicationStatisticsController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
 
-        $assistantHistoryData = $this->get(AssistantHistoryData::class);
+        $assistantHistoryData = $this->assistantHistoryData;
         $assistantHistoryData->setSemester($semester)->setDepartment($department);
 
-        $applicationData = $this->get(ApplicationData::class);
+        $applicationData = $this->applicationData;
         if ($admissionPeriod !== null) {
             $applicationData->setAdmissionPeriod($admissionPeriod);
         }
