@@ -9,8 +9,9 @@ use AppBundle\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Swift_Message;
 use Twig\Environment;
+use AppBundle\Service\Contract\UserRegistrationInterface;
 
-class UserRegistration
+class UserRegistration implements UserRegistrationInterface
 {
     private $twig;
     private $em;

@@ -8,8 +8,9 @@ use Monolog\Logger;
 use Nexy\Slack\Attachment;
 use Nexy\Slack\Client;
 use Nexy\Slack\Message;
+use AppBundle\Service\Contract\SlackMessengerInterface;
 
-class SlackMessenger
+class SlackMessenger implements SlackMessengerInterface
 {
     private $slackClient;
     private $notificationChannel;

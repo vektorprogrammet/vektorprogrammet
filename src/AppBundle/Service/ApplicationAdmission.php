@@ -14,8 +14,10 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Twig\Environment;
+use AppBundle\Service\Contract\ApplicationAdmissionInterface;
+use AppBundle\Service\Contract\LoginManagerInterface;
 
-class ApplicationAdmission
+class ApplicationAdmission implements ApplicationAdmissionInterface
 {
     private $em;
     private $twig;
@@ -26,9 +28,9 @@ class ApplicationAdmission
      *
      * @param EntityManagerInterface     $em
      * @param Environment $twig
-     * @param LoginManager      $loginManager
+     * @param LoginManagerInterface      $loginManager
      */
-    public function __construct(EntityManagerInterface $em, Environment $twig, LoginManager $loginManager)
+    public function __construct(EntityManagerInterface $em, Environment $twig, LoginManagerInterface $loginManager)
     {
         $this->em = $em;
         $this->twig = $twig;

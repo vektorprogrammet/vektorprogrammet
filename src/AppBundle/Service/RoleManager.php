@@ -12,8 +12,9 @@ use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use AppBundle\Service\Contract\RoleManagerInterface;
 
-class RoleManager
+class RoleManager implements RoleManagerInterface
 {
     private $roles = array();
     private $aliases = array();

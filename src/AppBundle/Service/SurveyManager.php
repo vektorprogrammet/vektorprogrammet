@@ -13,8 +13,9 @@ use AppBundle\Utils\CsvUtil;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use RuntimeException;
+use AppBundle\Service\Contract\SurveyManagerInterface;
 
-class SurveyManager
+class SurveyManager implements SurveyManagerInterface
 {
     private $em;
 

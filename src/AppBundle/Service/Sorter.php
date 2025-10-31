@@ -2,11 +2,12 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Receipt;
 use AppBundle\Entity\TeamMembershipInterface;
 use AppBundle\Entity\User;
-use AppBundle\Entity\Receipt;
+use AppBundle\Service\Contract\SorterInterface;
 
-class Sorter
+class Sorter implements SorterInterface
 {
     /**
      * @param User $user1

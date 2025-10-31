@@ -7,6 +7,125 @@ services:
             AppBundle\Mailer\MailerInterface: '@AppBundle\Mailer\Mailer'
             AppBundle\Sms\SmsSenderInterface: '@AppBundle\Sms\SmsSender'
 
+    # Repository interface bindings
+    AppBundle\Repository\Contract\ArticleRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ArticleRepository
+
+    AppBundle\Repository\Contract\UserRepositoryInterface:
+        alias: AppBundle\Entity\Repository\UserRepository
+
+    AppBundle\Repository\Contract\DepartmentRepositoryInterface:
+        alias: AppBundle\Entity\Repository\DepartmentRepository
+
+    AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface:
+        alias: AppBundle\Entity\Repository\AdmissionPeriodRepository
+
+    AppBundle\Repository\Contract\ApplicationRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ApplicationRepository
+
+    AppBundle\Repository\Contract\SemesterRepositoryInterface:
+        alias: AppBundle\Entity\Repository\SemesterRepository
+
+    AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface:
+        alias: AppBundle\Entity\Repository\AssistantHistoryRepository
+
+    # Service interface bindings
+    AppBundle\Service\Contract\ApplicationManagerInterface:
+        alias: AppBundle\Service\ApplicationManager
+
+    AppBundle\Service\Contract\InterviewManagerInterface:
+        alias: AppBundle\Service\InterviewManager
+
+    AppBundle\Service\Contract\SurveyManagerInterface:
+        alias: AppBundle\Service\SurveyManager
+
+    AppBundle\Service\Contract\UserServiceInterface:
+        alias: AppBundle\Service\UserService
+
+    AppBundle\Service\Contract\RoleManagerInterface:
+        alias: AppBundle\Service\RoleManager
+
+    AppBundle\Service\Contract\FileUploaderInterface:
+        alias: AppBundle\Service\FileUploader
+
+    AppBundle\Service\Contract\GeoLocationInterface:
+        alias: AppBundle\Service\GeoLocation
+
+    AppBundle\Service\Contract\PasswordManagerInterface:
+        alias: AppBundle\Service\PasswordManager
+
+    AppBundle\Service\Contract\LoginManagerInterface:
+        alias: AppBundle\Service\LoginManager
+
+    AppBundle\Service\Contract\UserRegistrationInterface:
+        alias: AppBundle\Service\UserRegistration
+
+    AppBundle\Service\Contract\AdmissionNotifierInterface:
+        alias: AppBundle\Service\AdmissionNotifier
+
+    AppBundle\Service\Contract\SlackMessengerInterface:
+        alias: AppBundle\Service\SlackMessenger
+
+    AppBundle\Service\Contract\EmailSenderInterface:
+        alias: AppBundle\Service\EmailSender
+
+    AppBundle\Service\Contract\TeamMembershipServiceInterface:
+        alias: AppBundle\Service\TeamMembershipService
+
+    AppBundle\Service\Contract\SurveyNotifierInterface:
+        alias: AppBundle\Service\SurveyNotifier
+
+    AppBundle\Service\Contract\AccessControlServiceInterface:
+        alias: AppBundle\Service\AccessControlService
+
+    AppBundle\Service\Contract\ApplicationAdmissionInterface:
+        alias: AppBundle\Service\ApplicationAdmission
+
+    AppBundle\Service\Contract\ApplicationDataInterface:
+        alias: AppBundle\Service\ApplicationData
+
+    AppBundle\Service\Contract\AssistantHistoryDataInterface:
+        alias: AppBundle\Service\AssistantHistoryData
+
+    AppBundle\Service\Contract\CompanyEmailMakerInterface:
+        alias: AppBundle\Service\CompanyEmailMaker
+
+    AppBundle\Service\Contract\ContentModeManagerInterface:
+        alias: AppBundle\Service\ContentModeManager
+
+    AppBundle\Service\Contract\FilterServiceInterface:
+        alias: AppBundle\Service\FilterService
+
+    AppBundle\Service\Contract\InterviewCounterInterface:
+        alias: AppBundle\Service\InterviewCounter
+
+    AppBundle\Service\Contract\InterviewNotificationManagerInterface:
+        alias: AppBundle\Service\InterviewNotificationManager
+
+    AppBundle\Service\Contract\LogServiceInterface:
+        alias: AppBundle\Service\LogService
+
+    AppBundle\Service\Contract\SbsDataInterface:
+        alias: AppBundle\Service\SbsData
+
+    AppBundle\Service\Contract\SlackMailerInterface:
+        alias: AppBundle\Service\SlackMailer
+
+    AppBundle\Service\Contract\SlugMakerInterface:
+        alias: AppBundle\Service\SlugMaker
+
+    AppBundle\Service\Contract\SorterInterface:
+        alias: AppBundle\Service\Sorter
+
+    AppBundle\Service\Contract\AdmissionStatisticsInterface:
+        alias: AppBundle\Service\AdmissionStatistics
+
+    AppBundle\Service\Contract\BetaRedirecterInterface:
+        alias: AppBundle\Service\BetaRedirecter
+
+    AppBundle\Service\Contract\UserGroupCollectionManagerInterface:
+        alias: AppBundle\Service\UserGroupCollectionManager
+
     AppBundle\:
         resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"
 

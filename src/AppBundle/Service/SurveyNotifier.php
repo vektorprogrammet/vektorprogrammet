@@ -7,7 +7,7 @@ use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\SurveyNotification;
 use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\SurveyTaken;
-use AppBundle\Mailer\Mailer;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
 use DateTime;
@@ -16,8 +16,9 @@ use Psr\Log\LoggerInterface;
 use Swift_Message;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
+use AppBundle\Service\Contract\SurveyNotifierInterface;
 
-class SurveyNotifier
+class SurveyNotifier implements SurveyNotifierInterface
 {
     private $em;
     private $mailer;
@@ -31,14 +32,14 @@ class SurveyNotifier
     /**
      * SurveyNotifier constructor.
      * @param string $fromEmail
-     * @param Mailer $mailer
+     * @param MailerInterface $mailer
      * @param Environment $twig
      * @param LoggerInterface $logger
      * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(string $fromEmail, Mailer $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(string $fromEmail, MailerInterface $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->fromEmail = $fromEmail;
         $this->mailer = $mailer;

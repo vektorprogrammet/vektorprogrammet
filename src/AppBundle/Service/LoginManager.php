@@ -5,8 +5,9 @@ namespace AppBundle\Service;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Twig\Environment;
+use AppBundle\Service\Contract\LoginManagerInterface;
 
-class LoginManager
+class LoginManager implements LoginManagerInterface
 {
     private $twig;
     private $authenticationUtils;

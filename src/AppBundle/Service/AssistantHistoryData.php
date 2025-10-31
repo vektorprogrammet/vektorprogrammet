@@ -5,16 +5,18 @@ namespace AppBundle\Service;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Service\Contract\AssistantHistoryDataInterface;
+use AppBundle\Service\Contract\GeoLocationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class AssistantHistoryData
+class AssistantHistoryData implements AssistantHistoryDataInterface
 {
     private $assistantHistoryRepository;
     private $semester;
     private $department;
 
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts, GeoLocation $geoLocation)
+    public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts, GeoLocationInterface $geoLocation)
     {
         $this->assistantHistoryRepository = $em->getRepository(AssistantHistory::class);
         $user = $ts->getToken()->getUser();

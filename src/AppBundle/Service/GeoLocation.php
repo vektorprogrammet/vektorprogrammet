@@ -8,8 +8,10 @@ use ErrorException;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use AppBundle\Service\Contract\GeoLocationInterface;
+use AppBundle\Service\Contract\LogServiceInterface;
 
-class GeoLocation
+class GeoLocation implements GeoLocationInterface
 {
     private $ipinfoToken;
     private $departmentRepo;
@@ -29,9 +31,9 @@ class GeoLocation
      * @param EntityManagerInterface $em
      * @param SessionInterface $session
      * @param RequestStack $requestStack
-     * @param LogService $logger
+     * @param LogServiceInterface $logger
      */
-    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, SessionInterface $session, RequestStack $requestStack, LogService $logger)
+    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, SessionInterface $session, RequestStack $requestStack, LogServiceInterface $logger)
     {
         $this->ipinfoToken = $ipinfoToken;
         $this->departmentRepo = $em->getRepository(Department::class);

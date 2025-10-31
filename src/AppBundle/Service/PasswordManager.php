@@ -10,8 +10,9 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Swift_Message;
 use Twig\Environment;
+use AppBundle\Service\Contract\PasswordManagerInterface;
 
-class PasswordManager
+class PasswordManager implements PasswordManagerInterface
 {
     private $em;
     private $mailer;

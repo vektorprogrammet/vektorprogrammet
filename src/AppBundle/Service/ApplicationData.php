@@ -8,10 +8,11 @@ use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Repository\ApplicationRepository;
 use AppBundle\Entity\User;
+use AppBundle\Service\Contract\ApplicationDataInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class ApplicationData
+class ApplicationData implements ApplicationDataInterface
 {
     /**
      * @var Department

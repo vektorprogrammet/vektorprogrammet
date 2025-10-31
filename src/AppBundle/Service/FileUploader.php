@@ -7,8 +7,9 @@ use Symfony\Component\HttpFoundation\File\Exception\UploadException;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use AppBundle\Service\Contract\FileUploaderInterface;
 
-class FileUploader
+class FileUploader implements FileUploaderInterface
 {
     private $signatureFolder;
     private $logoFolder;

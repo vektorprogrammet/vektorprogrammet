@@ -5,8 +5,9 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\TeamInterface;
 use AppBundle\Entity\TeamMembershipInterface;
+use AppBundle\Service\Contract\FilterServiceInterface;
 
-class FilterService
+class FilterService implements FilterServiceInterface
 {
 
     /**

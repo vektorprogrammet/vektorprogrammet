@@ -9,8 +9,9 @@ use AppBundle\Mailer\MailerInterface;
 use Swift_Message;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
+use AppBundle\Service\Contract\EmailSenderInterface;
 
-class EmailSender
+class EmailSender implements EmailSenderInterface
 {
     private $mailer;
     private $twig;

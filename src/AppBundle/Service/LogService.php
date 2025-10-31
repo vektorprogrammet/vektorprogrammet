@@ -2,11 +2,14 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Service\Contract\LogServiceInterface;
+use AppBundle\Service\Contract\SlackMessengerInterface;
+use AppBundle\Service\Contract\UserServiceInterface;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 
-class LogService implements LoggerInterface
+class LogService implements LogServiceInterface
 {
     private $monoLogger;
     private $slackMessenger;
@@ -21,12 +24,12 @@ class LogService implements LoggerInterface
      * LogService constructor.
      *
      * @param Logger $monoLogger
-     * @param SlackMessenger $slackMessenger
-     * @param UserService $userService
+     * @param SlackMessengerInterface $slackMessenger
+     * @param UserServiceInterface $userService
      * @param RequestStack $requestStack
      * @param string $env
      */
-    public function __construct(Logger $monoLogger, SlackMessenger $slackMessenger, UserService $userService, RequestStack $requestStack, string $env)
+    public function __construct(Logger $monoLogger, SlackMessengerInterface $slackMessenger, UserServiceInterface $userService, RequestStack $requestStack, string $env)
     {
         $this->monoLogger = $monoLogger;
         $this->slackMessenger = $slackMessenger;

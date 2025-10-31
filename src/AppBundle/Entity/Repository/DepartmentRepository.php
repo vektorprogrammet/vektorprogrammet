@@ -3,10 +3,11 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
+use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\QueryBuilder;
 
-class DepartmentRepository extends EntityRepository
+class DepartmentRepository extends EntityRepository implements DepartmentRepositoryInterface
 {
     public function findAllDepartments()
     {
@@ -49,15 +50,6 @@ class DepartmentRepository extends EntityRepository
         ')
             ->setParameter('shortName', $shortName)
             ->getOneOrNullResult();
-    }
-
-    public function findAllDepartment()
-    {
-        $this->createQueryBuilder('Department')
-            ->select('Department')
-            ->distinct()
-            ->getQuery()
-            ->getResult();
     }
 
     /**

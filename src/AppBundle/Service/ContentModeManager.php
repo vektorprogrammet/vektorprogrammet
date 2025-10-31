@@ -3,9 +3,10 @@
 
 namespace AppBundle\Service;
 
+use AppBundle\Service\Contract\ContentModeManagerInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
-class ContentModeManager
+class ContentModeManager implements ContentModeManagerInterface
 {
     /**
      * @var SessionInterface

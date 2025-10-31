@@ -6,7 +6,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Interview;
 use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\User;
-use AppBundle\Mailer\Mailer;
+use AppBundle\Mailer\MailerInterface;
 use AppBundle\Role\Roles;
 use AppBundle\Sms\Sms;
 use AppBundle\Sms\SmsSenderInterface;
@@ -20,8 +20,9 @@ use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Environment;
+use AppBundle\Service\Contract\InterviewManagerInterface;
 
-class InterviewManager
+class InterviewManager implements InterviewManagerInterface
 {
     private $tokenStorage;
     private $authorizationChecker;
@@ -39,14 +40,14 @@ class InterviewManager
      *
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param Mailer $mailer
+     * @param MailerInterface $mailer
      * @param Environment $twig
      * @param LoggerInterface $logger
      * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, Mailer $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, MailerInterface $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;

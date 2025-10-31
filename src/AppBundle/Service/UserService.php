@@ -4,9 +4,10 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\User;
+use AppBundle\Service\Contract\UserServiceInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
-class UserService
+class UserService implements UserServiceInterface
 {
     /**
      * @var TokenStorageInterface

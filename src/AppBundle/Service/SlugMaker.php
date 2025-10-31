@@ -4,9 +4,10 @@
 namespace AppBundle\Service;
 
 use AppBundle\Entity\Article;
+use AppBundle\Service\Contract\SlugMakerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-class SlugMaker
+class SlugMaker implements SlugMakerInterface
 {
     private $em;
 

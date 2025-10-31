@@ -5,9 +5,10 @@ namespace AppBundle\Service;
 
 use AppBundle\Entity\Application;
 use AppBundle\Model\ApplicationStatus;
+use AppBundle\Service\Contract\ApplicationManagerInterface;
 use AppBundle\Type\InterviewStatusType;
 
-class ApplicationManager
+class ApplicationManager implements ApplicationManagerInterface
 {
     public function getApplicationStatus(Application $application): ApplicationStatus
     {
