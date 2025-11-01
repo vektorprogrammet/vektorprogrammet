@@ -98,9 +98,8 @@ class SubstituteController extends BaseController
     {
         $application->setSubstitute(false);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($application);
-        $em->flush();
+        $this->entityManager->persist($application);
+        $this->entityManager->flush();
 
         // Redirect to substitute page, set semester to that of the deleted substitute
         return $this->redirectToRoute('substitute_show', array(
@@ -117,9 +116,8 @@ class SubstituteController extends BaseController
         }
         $application->setSubstitute(true);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($application);
-        $em->flush();
+        $this->entityManager->persist($application);
+        $this->entityManager->flush();
 
         // Redirect to substitute page, set semester to that of the newly added substitute
         return $this->redirectToRoute('substitute_show', array(

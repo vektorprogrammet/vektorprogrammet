@@ -7,6 +7,7 @@ use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\ExecutiveBoardMembership;
 use AppBundle\Form\Type\CreateExecutiveBoardMembershipType;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
+use AppBundle\Service\Contract\ExecutiveBoardServiceInterface;
 use AppBundle\Service\Contract\RoleManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,17 +18,21 @@ class ExecutiveBoardController extends BaseController
 {
     private $entityManager;
     private $roleManager;
+    private $executiveBoardService;
 
     /**
      * @param EntityManagerInterface $entityManager
      * @param RoleManagerInterface $roleManager
+     * @param ExecutiveBoardServiceInterface $executiveBoardService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        RoleManagerInterface $roleManager
+        RoleManagerInterface $roleManager,
+        ExecutiveBoardServiceInterface $executiveBoardService
     ) {
         $this->entityManager = $entityManager;
         $this->roleManager = $roleManager;
+        $this->executiveBoardService = $executiveBoardService;
     }
     public function showAction()
     {
@@ -42,20 +47,13 @@ class ExecutiveBoardController extends BaseController
     {
         $board = $this->entityManager->getRepository(ExecutiveBoard::class)->findBoard();
         $members = $this->entityManager->getRepository(ExecutiveBoardMembership::class)->findAll();
-        $activeMembers = [];
-        $inactiveMembers = [];
-        foreach ($members as $member) {
-            if ($member->isActive()) {
-                $activeMembers[] = $member;
-            } else {
-                $inactiveMembers[] = $member;
-            }
-        }
+        
+        $separatedMembers = $this->executiveBoardService->separateMembersByStatus($members);
 
         return $this->render(':executive_board:index.html.twig', array(
             'board_name' => $board->getName(),
-            'active_members' => $activeMembers,
-            'inactive_members' => $inactiveMembers,
+            'active_members' => $separatedMembers['active'],
+            'inactive_members' => $separatedMembers['inactive'],
         ));
     }
 

@@ -19,6 +19,7 @@ use AppBundle\Role\ReversedRoleHierarchy;
 use AppBundle\Role\Roles;
 use AppBundle\Service\ApplicationManager;
 use AppBundle\Service\InterviewManager;
+use AppBundle\Service\Contract\InterviewSchedulingServiceInterface;
 use DateTime;
 use InvalidArgumentException;
 use Exception;
@@ -37,6 +38,7 @@ class InterviewController extends BaseController
 {
     private $interviewManager;
     private $applicationManager;
+    private $interviewSchedulingService;
     private $teamRepository;
     private $userRepository;
     private $applicationRepository;
@@ -47,6 +49,7 @@ class InterviewController extends BaseController
     /**
      * @param InterviewManagerInterface $interviewManager
      * @param ApplicationManagerInterface $applicationManager
+     * @param InterviewSchedulingServiceInterface $interviewSchedulingService
      * @param TeamRepositoryInterface $teamRepository
      * @param UserRepositoryInterface $userRepository
      * @param ApplicationRepositoryInterface $applicationRepository
@@ -57,6 +60,7 @@ class InterviewController extends BaseController
     public function __construct(
         InterviewManagerInterface $interviewManager,
         ApplicationManagerInterface $applicationManager,
+        InterviewSchedulingServiceInterface $interviewSchedulingService,
         TeamRepositoryInterface $teamRepository,
         UserRepositoryInterface $userRepository,
         ApplicationRepositoryInterface $applicationRepository,
@@ -66,6 +70,7 @@ class InterviewController extends BaseController
     ) {
         $this->interviewManager = $interviewManager;
         $this->applicationManager = $applicationManager;
+        $this->interviewSchedulingService = $interviewSchedulingService;
         $this->teamRepository = $teamRepository;
         $this->userRepository = $userRepository;
         $this->applicationRepository = $applicationRepository;
@@ -120,12 +125,7 @@ class InterviewController extends BaseController
             $this->entityManager->persist($interview);
             $this->entityManager->flush();
             if ($isNewInterview && $form->get('saveAndSend')->isClicked()) {
-                $interview->setInterviewed(true);
-                $interview->setConducted(new DateTime());
-                $this->entityManager->persist($interview);
-                $this->entityManager->flush();
-
-                $this->eventDispatcher->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
+                $this->interviewSchedulingService->conductInterview($interview, $application);
             }
 
             return $this->redirectToRoute('applications_show_interviewed', array(
@@ -261,27 +261,18 @@ class InterviewController extends BaseController
         $form->handleRequest($request);
 
         $data = $form->getData();
-        $mapLink = $data['mapLink'];
+        $mapLink = $data['mapLink'] ?? null;
         if ($form->isSubmitted()) {
             if ($mapLink && !(strpos($mapLink, 'http') === 0)) {
                 $mapLink = 'http://' . $mapLink;
             }
         }
-        $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->validateLink($mapLink);
+        $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->interviewSchedulingService->validateMapLink($mapLink);
         if ($invalidMapLink) {
             $this->addFlash('danger', 'Kartlinken er ikke gyldig');
         } elseif ($form->isSubmitted() && $form->isValid()) {
-            if (!$interview->getResponseCode()) {
-                $interview->generateAndSetResponseCode();
-            }
-
-            // Update the scheduled time for the interview
-            $interview->setScheduled($data['datetime']);
-            $interview->setRoom($data['room']);
-            $interview->setCampus($data['campus']);
-
-            $interview->setMapLink($mapLink);
-            $interview->resetStatus();
+            $data['mapLink'] = $mapLink;
+            $this->interviewSchedulingService->scheduleInterview($interview, $data);
 
             if ($form->get('preview')->isClicked()) {
                 return $this->render('interview/preview.html.twig', array(
@@ -290,12 +281,9 @@ class InterviewController extends BaseController
                 ));
             }
 
-            $this->entityManager->persist($interview);
-            $this->entityManager->flush();
-
             // Send email if the send button was clicked
             if ($form->get('saveAndSend')->isClicked()) {
-                $this->eventDispatcher->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
+                $this->interviewSchedulingService->sendScheduleEmail($interview, $data);
             }
 
             return $this->redirectToRoute('applications_show_assigned', array('department' => $application->getDepartment()->getId(), 'semester' => $application->getSemester()->getId()));
@@ -308,21 +296,6 @@ class InterviewController extends BaseController
         ));
     }
 
-    private function validateLink($link)
-    {
-        if (empty($link)) {
-            return false;
-        }
-
-        try {
-            $headers = get_headers($link);
-            $statusCode = intval(explode(" ", $headers[0])[1]);
-        } catch (Exception $e) {
-            return false;
-        }
-
-        return $statusCode < 400;
-    }
 
     /**
      * Renders and handles the submission of the assign interview form.
@@ -352,9 +325,8 @@ class InterviewController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $application->getInterview()->setUser($user);
-            $this->entityManager->persist($application);
-            $this->entityManager->flush();
+            $schema = $application->getInterview()->getInterviewSchema();
+            $this->interviewSchedulingService->assignInterviewer($this->getUser(), $application, $schema);
 
             return new JsonResponse(
                 array('success' => true)
@@ -398,15 +370,8 @@ class InterviewController extends BaseController
             $schema = $this->entityManager->getRepository(InterviewSchema::class)->findOneBy(array('id' => $data['interview']['interviewSchema']));
             $applications = $this->applicationRepository->findBy(array('id' => $data['application']['id']));
 
-            // Update or create new interviews for all the given applications
-            foreach ($applications as $application) {
-                $this->interviewManager->assignInterviewerToApplication($interviewer, $application);
-
-                $application->getInterview()->setInterviewSchema($schema);
-                $this->entityManager->persist($application);
-            }
-
-            $this->entityManager->flush();
+            // Bulk assign interviews
+            $this->interviewSchedulingService->bulkAssignInterviews($interviewer, $applications, $schema);
 
             $this->addFlash('success', 'Søknadene ble fordelt til ' . $interviewer);
 
@@ -430,9 +395,7 @@ class InterviewController extends BaseController
      */
     public function acceptByResponseCodeAction(Interview $interview)
     {
-        $interview->acceptInterview();
-        $this->entityManager->persist($interview);
-        $this->entityManager->flush();
+        $this->interviewSchedulingService->processInterviewResponse($interview, 'accept');
 
         $formattedDate = $interview->getScheduled()->format('d. M');
         $formattedTime = $interview->getScheduled()->format('H:i');
@@ -466,11 +429,7 @@ class InterviewController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $interview->requestNewTime();
-            $this->entityManager->persist($interview);
-            $this->entityManager->flush();
-
-            $this->interviewManager->sendRescheduleEmail($interview);
+            $this->interviewSchedulingService->processInterviewResponse($interview, 'request_new_time');
             $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. Vi tar kontakt med deg når vi har funnet en ny intervjutid.");
 
             if ($interview->getUser() === $this->getUser()) {
@@ -518,12 +477,7 @@ class InterviewController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
-            $interview->setCancelMessage($data['message']);
-            $interview->cancel();
-            $this->entityManager->persist($interview);
-            $this->entityManager->flush();
-
-            $this->interviewManager->sendCancelEmail($interview);
+            $this->interviewSchedulingService->processInterviewResponse($interview, 'cancel', ['message' => $data['message']]);
             $this->addFlash('success', "Du har kansellert intervjuet ditt.");
 
             if ($interview->getUser() === $this->getUser()) {

@@ -100,10 +100,8 @@ class MailingListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $assistantUsers = $this->getDoctrine()->getRepository(User::class)
-            ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
-        $teamUsers = $this->getDoctrine()->getRepository(User::class)
-            ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
+        $assistantUsers = $this->userRepository->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
+        $teamUsers = $this->userRepository->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $users = array_unique(array_merge($assistantUsers, $teamUsers));
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(

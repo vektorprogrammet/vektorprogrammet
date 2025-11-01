@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
 use AppBundle\Repository\Contract\SemesterRepositoryInterface;
+use AppBundle\Service\Contract\SemesterValidationServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -17,17 +18,21 @@ class SemesterController extends BaseController
 {
     private $semesterRepository;
     private $entityManager;
+    private $semesterValidationService;
 
     /**
      * @param SemesterRepositoryInterface $semesterRepository
      * @param EntityManagerInterface $entityManager
+     * @param SemesterValidationServiceInterface $semesterValidationService
      */
     public function __construct(
         SemesterRepositoryInterface $semesterRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        SemesterValidationServiceInterface $semesterValidationService
     ) {
         $this->semesterRepository = $semesterRepository;
         $this->entityManager = $entityManager;
+        $this->semesterValidationService = $semesterValidationService;
     }
     /**
      * @Route(name="semester_show", path="/kontrollpanel/semesteradmin")
@@ -63,7 +68,7 @@ class SemesterController extends BaseController
         // The fields of the form is checked if they contain the correct information
         if ($form->isSubmitted() && $form->isValid()) {
             //Check if semester already exists
-            $existingSemester = $this->semesterRepository->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());
+            $existingSemester = $this->semesterValidationService->findExistingSemester($semester->getSemesterTime(), $semester->getYear());
 
             //Return to semester page if semester already exists
             if ($existingSemester !== null) {

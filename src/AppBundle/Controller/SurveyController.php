@@ -16,6 +16,7 @@ use AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface;
 use AppBundle\Repository\Contract\SemesterRepositoryInterface;
 use AppBundle\Service\Contract\AccessControlServiceInterface;
 use AppBundle\Service\Contract\SurveyManagerInterface;
+use AppBundle\Service\Contract\SurveyExecutionServiceInterface;
 use AppBundle\Utils\CsvUtil;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
@@ -34,6 +35,7 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class SurveyController extends BaseController
 {
     private $surveyManager;
+    private $surveyExecutionService;
     private $accessControlService;
     private $entityManager;
     private $assistantHistoryRepository;
@@ -41,6 +43,7 @@ class SurveyController extends BaseController
 
     /**
      * @param SurveyManagerInterface $surveyManager
+     * @param SurveyExecutionServiceInterface $surveyExecutionService
      * @param AccessControlServiceInterface $accessControlService
      * @param EntityManagerInterface $entityManager
      * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
@@ -48,12 +51,14 @@ class SurveyController extends BaseController
      */
     public function __construct(
         SurveyManagerInterface $surveyManager,
+        SurveyExecutionServiceInterface $surveyExecutionService,
         AccessControlServiceInterface $accessControlService,
         EntityManagerInterface $entityManager,
         AssistantHistoryRepositoryInterface $assistantHistoryRepository,
         SemesterRepositoryInterface $semesterRepository
     ) {
         $this->surveyManager = $surveyManager;
+        $this->surveyExecutionService = $surveyExecutionService;
         $this->accessControlService = $accessControlService;
         $this->entityManager = $entityManager;
         $this->assistantHistoryRepository = $assistantHistoryRepository;
@@ -120,26 +125,13 @@ class SurveyController extends BaseController
      */
     public function showIdAction(Request $request, Survey $survey, string $userid)
     {
-        $notification = $this->entityManager->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
+        $executionResult = $this->surveyExecutionService->executeSurvey($survey, null, $userid);
+        $surveyTaken = $executionResult['surveyTaken'];
+        $user = $executionResult['user'] ?? null;
 
-
-        if ($notification === null) {
+        if ($surveyTaken === null || $user === null) {
             return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
         }
-
-        $sameSurvey = $notification->getSurveyNotificationCollection()->getSurvey() == $survey;
-
-        if (!$sameSurvey) {
-            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-        }
-
-
-        $surveyLinkClick = new SurveyLinkClick();
-        $surveyLinkClick->setNotification($notification);
-        $this->entityManager->persist($surveyLinkClick);
-        $this->entityManager->flush();
-
-        $user = $notification->getUser();
 
         return $this->showUserMainAction($request, $survey, $user, $userid);
     }
@@ -158,39 +150,20 @@ class SurveyController extends BaseController
 
     private function showUserMainAction(Request $request, Survey $survey, User $user, string $identifier = null)
     {
-        $surveyTaken = $this->surveyManager->initializeUserSurveyTaken($survey, $user);
+        $executionResult = $this->surveyExecutionService->executeSurvey($survey, $user, $identifier);
+        $surveyTaken = $executionResult['surveyTaken'];
+
+        if ($surveyTaken === null || ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY && $executionResult['school'] === null)) {
+            return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
+        }
+
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
-        if ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
-            $assistantHistory = $this->assistantHistoryRepository->findMostRecentByUser($user);
-
-            if (empty($assistantHistory)) {
-                return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
-            }
-            $assistantHistory = $assistantHistory[0];
-            $school = $assistantHistory->getSchool();
-            $surveyTaken->setSchool($school);
-        }
-
-
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            if ($form->isSubmitted() && $form->isValid()) {
-                $allTakenSurveys = $this->entityManager
-                    ->getRepository(SurveyTaken::class)
-                    ->findAllBySurveyAndUser($survey, $user);
-
-                if (!empty($allTakenSurveys)) {
-                    foreach ($allTakenSurveys as $oldTakenSurvey) {
-                        $this->entityManager->remove($oldTakenSurvey);
-                    }
-                }
-
-                $user->setLastPopUpTime(new DateTime());
-                $this->entityManager->persist($user);
-                $this->entityManager->persist($surveyTaken);
-                $this->entityManager->flush();
+            if ($form->isValid()) {
+                $this->surveyExecutionService->processSubmission($survey, $surveyTaken, $user);
 
                 $this->addFlash('success', 'Mottatt svar!');
                 return $this->render('survey/finish_page.html.twig', [
@@ -272,7 +245,9 @@ class SurveyController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->ensureAccess($survey);
+            if (!$this->surveyExecutionService->checkAccess($this->getUser(), $survey)) {
+                throw new AccessDeniedException();
+            }
             $this->entityManager->persist($survey);
             $this->entityManager->flush();
 
@@ -289,7 +264,9 @@ class SurveyController extends BaseController
 
     public function copySurveyAction(Request $request, Survey $survey)
     {
-        $this->ensureAccess($survey);
+        if (!$this->surveyExecutionService->checkAccess($this->getUser(), $survey)) {
+            throw new AccessDeniedException();
+        }
 
         $surveyClone = $survey->copy();
 
@@ -344,8 +321,8 @@ class SurveyController extends BaseController
             ['id' => 'DESC']
         );
         foreach ($surveysWithDepartment as $survey) {
-            $totalAnswered = count($this->entityManager->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey));
-            $survey->setTotalAnswered($totalAnswered);
+            $stats = $this->surveyExecutionService->calculateStatistics($survey);
+            $survey->setTotalAnswered($stats['totalAnswered']);
         }
 
 
@@ -359,8 +336,8 @@ class SurveyController extends BaseController
                 ['id' => 'DESC']
             );
             foreach ($globalSurveys as $survey) {
-                $totalAnswered = count($this->entityManager->getRepository(SurveyTaken::class)->findBy(array('survey' => $survey)));
-                $survey->setTotalAnswered($totalAnswered);
+                $stats = $this->surveyExecutionService->calculateStatistics($survey);
+                $survey->setTotalAnswered($stats['totalAnswered']);
             }
         }
 
@@ -375,7 +352,9 @@ class SurveyController extends BaseController
 
     public function editSurveyAction(Request $request, Survey $survey)
     {
-        $this->ensureAccess($survey);
+        if (!$this->surveyExecutionService->checkAccess($this->getUser(), $survey)) {
+            throw new AccessDeniedException();
+        }
 
         if ($this->accessControlService->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
@@ -410,7 +389,9 @@ class SurveyController extends BaseController
      */
     public function deleteSurveyAction(Survey $survey)
     {
-        $this->ensureAccess($survey);
+        if (!$this->surveyExecutionService->checkAccess($this->getUser(), $survey)) {
+            throw new AccessDeniedException();
+        }
 
         $this->entityManager->remove($survey);
         $this->entityManager->flush();
@@ -427,18 +408,16 @@ class SurveyController extends BaseController
      */
     public function resultSurveyAction(Survey $survey)
     {
-        $this->ensureAccess($survey);
-
-        if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
-            $textAnswers = $this->surveyManager->getTextAnswerWithSchoolResults($survey);
-        } else {
-            $textAnswers = $this->surveyManager->getTextAnswerWithTeamResults($survey);
+        if (!$this->surveyExecutionService->checkAccess($this->getUser(), $survey)) {
+            throw new AccessDeniedException();
         }
 
+        $results = $this->surveyExecutionService->prepareResults($survey);
+
         return $this->render('survey/survey_result.html.twig', array(
-            'textAnswers' => $textAnswers,
+            'textAnswers' => $results['textAnswers'],
             'survey' => $survey,
-            'surveyTargetAudience' => $survey->getTargetAudience(),
+            'surveyTargetAudience' => $results['surveyTargetAudience'],
         ));
     }
 
@@ -451,7 +430,9 @@ class SurveyController extends BaseController
      */
     public function getSurveyResultAction(Survey $survey)
     {
-        $this->ensureAccess($survey);
+        if (!$this->surveyExecutionService->checkAccess($this->getUser(), $survey)) {
+            throw new AccessDeniedException();
+        }
         return new JsonResponse($this->surveyManager->surveyResultToJson($survey));
     }
 
@@ -464,7 +445,9 @@ class SurveyController extends BaseController
      */
     public function getSurveyResultCSVAction(Survey $survey):Response
     {
-        $this->ensureAccess($survey);
+        if (!$this->surveyExecutionService->checkAccess($this->getUser(), $survey)) {
+            throw new AccessDeniedException();
+        }
         $csv_string = $this->surveyManager->surveyResultsToCsv($survey);
         return CsvUtil::makeCsvResponse($csv_string);
     }
@@ -491,29 +474,4 @@ class SurveyController extends BaseController
     }
 
 
-    /**
-     * @param Survey $survey
-     *
-     * Throws unless you are in the same department as the survey, or you are a survey_admin.
-     * If the survey is confidential, only survey_admin has access.
-     *
-     * @throws AccessDeniedException
-     */
-    private function ensureAccess(Survey $survey)
-    {
-        $user = $this->getUser();
-
-        $isSurveyAdmin = $this->accessControlService->checkAccess("survey_admin");
-        $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
-
-        if ($survey->isConfidential() && !$isSurveyAdmin) {
-            throw new AccessDeniedException();
-        }
-
-        if ($isSameDepartment || $isSurveyAdmin) {
-            return;
-        }
-
-        throw new AccessDeniedException();
-    }
 }

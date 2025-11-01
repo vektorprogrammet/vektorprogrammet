@@ -51,8 +51,29 @@ services:
     AppBundle\Service\Contract\InterviewManagerInterface:
         alias: AppBundle\Service\InterviewManager
 
+    AppBundle\Service\Contract\InterviewSchedulingServiceInterface:
+        alias: AppBundle\Service\InterviewSchedulingService
+
     AppBundle\Service\Contract\SurveyManagerInterface:
         alias: AppBundle\Service\SurveyManager
+
+    AppBundle\Service\Contract\SurveyExecutionServiceInterface:
+        alias: AppBundle\Service\SurveyExecutionService
+
+    AppBundle\Service\Contract\AdmissionServiceInterface:
+        alias: AppBundle\Service\AdmissionService
+
+    AppBundle\Service\Contract\AdmissionPeriodValidationServiceInterface:
+        alias: AppBundle\Service\AdmissionPeriodValidationService
+
+    AppBundle\Service\Contract\CertificateServiceInterface:
+        alias: AppBundle\Service\CertificateService
+
+    AppBundle\Service\Contract\ExecutiveBoardServiceInterface:
+        alias: AppBundle\Service\ExecutiveBoardService
+
+    AppBundle\Service\Contract\SemesterValidationServiceInterface:
+        alias: AppBundle\Service\SemesterValidationService
 
     AppBundle\Service\Contract\UserServiceInterface:
         alias: AppBundle\Service\UserService

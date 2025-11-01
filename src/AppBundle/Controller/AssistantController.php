@@ -12,6 +12,7 @@ use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
 use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
 use AppBundle\Repository\Contract\TeamRepositoryInterface;
 use AppBundle\Service\Contract\ApplicationAdmissionInterface;
+use AppBundle\Service\Contract\AdmissionServiceInterface;
 use AppBundle\Service\Contract\FilterServiceInterface;
 use AppBundle\Service\Contract\GeoLocationInterface;
 use Doctrine\ORM\EntityManagerInterface;
@@ -27,6 +28,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class AssistantController extends BaseController
 {
     private $admissionManager;
+    private $admissionService;
     private $entityManager;
     private $departmentRepository;
     private $geoLocation;
@@ -39,6 +41,7 @@ class AssistantController extends BaseController
 
     /**
      * @param ApplicationAdmissionInterface $admissionManager
+     * @param AdmissionServiceInterface $admissionService
      * @param EntityManagerInterface $entityManager
      * @param DepartmentRepositoryInterface $departmentRepository
      * @param GeoLocationInterface $geoLocation
@@ -51,6 +54,7 @@ class AssistantController extends BaseController
      */
     public function __construct(
         ApplicationAdmissionInterface $admissionManager,
+        AdmissionServiceInterface $admissionService,
         EntityManagerInterface $entityManager,
         DepartmentRepositoryInterface $departmentRepository,
         GeoLocationInterface $geoLocation,
@@ -62,6 +66,7 @@ class AssistantController extends BaseController
         KernelInterface $kernel
     ) {
         $this->admissionManager = $admissionManager;
+        $this->admissionService = $admissionService;
         $this->entityManager = $entityManager;
         $this->departmentRepository = $departmentRepository;
         $this->geoLocation = $geoLocation;
@@ -107,8 +112,7 @@ class AssistantController extends BaseController
      */
     public function admissionCaseInsensitiveAction(Request $request, $city)
     {
-        $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
-        $department = $this->departmentRepository->findOneByCityCaseInsensitive($city);
+        $department = $this->admissionService->findDepartmentByCity($city);
         if ($department !== null) {
             return $this->indexAction($request, $department);
         } else {
@@ -140,16 +144,13 @@ class AssistantController extends BaseController
      */
     public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
-        $departments = $this->departmentRepository->findActive();
-        $departments = $this->geoLocation->sortDepartmentsByDistanceFromClient($departments);
-        $departmentsWithActiveAdmission = $this->filterService->filterDepartmentsByActiveAdmission($departments, true);
+        $pageData = $this->admissionService->prepareAdmissionPageData($specificDepartment);
+        $departments = $pageData['departments'];
+        $departmentsWithActiveAdmission = $pageData['departmentsWithActiveAdmission'];
+        $specificDepartment = $pageData['specificDepartment'];
+        $teams = $pageData['teams'];
 
         $departmentInUrl = $specificDepartment !== null;
-        if (!$departmentInUrl) {
-            $specificDepartment = $departments[0];
-        }
-
-        $teams = $this->teamRepository->findByOpenApplicationAndDepartment($specificDepartment);
 
         $application = new Application();
 
@@ -171,26 +172,20 @@ class AssistantController extends BaseController
             }
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $this->admissionManager->setCorrectUser($application);
+                $submissionResult = $this->admissionService->submitApplication($application, $department);
 
-                if ($application->getUser()->hasBeenAssistant()) {
+                if (isset($submissionResult['hasBeenAssistant']) && $submissionResult['hasBeenAssistant']) {
                     return $this->redirectToRoute('admission_existing_user');
                 }
 
-                $admissionPeriod = $this->admissionPeriodRepository->findOneWithActiveAdmissionByDepartment($department);
-
-                //If no active admission period is found
-                if (!$admissionPeriod) {
-                    $this->addFlash('danger', $department . ' sitt opptak er dessverre stengt.');
+                if (isset($submissionResult['error'])) {
+                    $this->addFlash('danger', $submissionResult['error']);
                     return $this->redirectToRoute('assistants');
                 }
-                $application->setAdmissionPeriod($admissionPeriod);
-                $this->entityManager->persist($application);
-                $this->entityManager->flush();
 
-                $this->eventDispatcher->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
-
-                return $this->redirectToRoute('application_confirmation');
+                if (isset($submissionResult['redirectRoute'])) {
+                    return $this->redirectToRoute($submissionResult['redirectRoute']);
+                }
             }
 
             $formViews[$department->getCity()] = $form->createView();
@@ -244,19 +239,17 @@ class AssistantController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->admissionManager->setCorrectUser($application);
+            $submissionResult = $this->admissionService->submitApplication($application, $department);
 
-            if ($application->getUser()->hasBeenAssistant()) {
+            if (isset($submissionResult['hasBeenAssistant']) && $submissionResult['hasBeenAssistant']) {
                 $this->addFlash('warning', $application->getUser()->getEmail().' har vært assistent før. Logg inn med brukeren din for å søke igjen.');
                 return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
             }
 
-            $admissionPeriod = $this->admissionPeriodRepository->findOneWithActiveAdmissionByDepartment($department);
-            $application->setAdmissionPeriod($admissionPeriod);
-            $this->entityManager->persist($application);
-            $this->entityManager->flush();
-
-            $this->eventDispatcher->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            if (isset($submissionResult['error'])) {
+                $this->addFlash('danger', $submissionResult['error']);
+                return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
+            }
 
             $this->addFlash('success', $application->getUser()->getEmail().' har blitt registrert. Du vil få en e-post med kvittering på søknaden.');
             return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);

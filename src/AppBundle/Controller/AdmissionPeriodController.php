@@ -7,6 +7,7 @@ use AppBundle\Entity\Department;
 use AppBundle\Form\Type\CreateAdmissionPeriodType;
 use AppBundle\Form\Type\EditAdmissionPeriodType;
 use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Service\Contract\AdmissionPeriodValidationServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -14,17 +15,21 @@ class AdmissionPeriodController extends BaseController
 {
     private $admissionPeriodRepository;
     private $entityManager;
+    private $admissionPeriodValidationService;
 
     /**
      * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
      * @param EntityManagerInterface $entityManager
+     * @param AdmissionPeriodValidationServiceInterface $admissionPeriodValidationService
      */
     public function __construct(
         AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
-        EntityManagerInterface $entityManager
+        EntityManagerInterface $entityManager,
+        AdmissionPeriodValidationServiceInterface $admissionPeriodValidationService
     ) {
         $this->admissionPeriodRepository = $admissionPeriodRepository;
         $this->entityManager = $entityManager;
+        $this->admissionPeriodValidationService = $admissionPeriodValidationService;
     }
     public function showAction()
     {
@@ -57,9 +62,7 @@ class AdmissionPeriodController extends BaseController
 
         $form->handleRequest($request);
 
-        $exists = $department->getAdmissionPeriods()->exists(function ($key, $value) use ($admissionPeriod) {
-            return $value->getSemester() === $admissionPeriod->getSemester();
-        });
+        $exists = $this->admissionPeriodValidationService->semesterExistsForDepartment($admissionPeriod, $department);
 
         if ($exists) {
             $this->addFlash('warning', 'Opptaksperioden ' . $admissionPeriod->getSemester() . ' finnes allerede.');
