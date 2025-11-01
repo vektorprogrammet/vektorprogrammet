@@ -2,18 +2,39 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\AdmissionPeriod;
-use AppBundle\Entity\Application;
 use AppBundle\AssistantScheduling\Assistant;
 use AppBundle\AssistantScheduling\School;
+use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Entity\Application;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Entity\Semester;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AssistantSchedulingController extends BaseController
 {
+    private $admissionPeriodRepository;
+    private $applicationRepository;
+    private $entityManager;
+
+    /**
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->entityManager = $entityManager;
+    }
     public function indexAction()
     {
         return $this->render('assistant_scheduling/index.html.twig');
@@ -30,9 +51,8 @@ class AssistantSchedulingController extends BaseController
 
         $currentSemester = $this->getCurrentSemester();
 
-        $currentAdmissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($user->getDepartment(), $currentSemester);
-        $applications = $this->getDoctrine()->getRepository(Application::class)->findAllAllocatableApplicationsByAdmissionPeriod($currentAdmissionPeriod);
+        $currentAdmissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($user->getDepartment(), $currentSemester);
+        $applications = $this->applicationRepository->findAllAllocatableApplicationsByAdmissionPeriod($currentAdmissionPeriod);
 
         $assistants = $this->getAssistantAvailableDays($applications);
 
@@ -96,8 +116,7 @@ class AssistantSchedulingController extends BaseController
         $user = $this->getUser();
         $department = $user->getFieldOfStudy()->getDepartment();
         $currentSemester = $this->getCurrentSemester();
-        $allCurrentSchoolCapacities = $this->getDoctrine()
-            ->getRepository(SchoolCapacity::class)->findByDepartmentAndSemester($department, $currentSemester);
+        $allCurrentSchoolCapacities = $this->entityManager->getRepository(SchoolCapacity::class)->findByDepartmentAndSemester($department, $currentSemester);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
         return new JsonResponse(json_encode($schools));

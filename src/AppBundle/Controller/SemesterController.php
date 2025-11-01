@@ -4,16 +4,31 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
+use AppBundle\Repository\Contract\SemesterRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SemesterController extends Controller
+class SemesterController extends BaseController
 {
+    private $semesterRepository;
+    private $entityManager;
+
+    /**
+     * @param SemesterRepositoryInterface $semesterRepository
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        SemesterRepositoryInterface $semesterRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->semesterRepository = $semesterRepository;
+        $this->entityManager = $entityManager;
+    }
     /**
      * @Route(name="semester_show", path="/kontrollpanel/semesteradmin")
      *
@@ -21,7 +36,7 @@ class SemesterController extends Controller
      */
     public function showAction()
     {
-        $semesters = $this->getDoctrine()->getRepository(Semester::class)->findAllOrderedByAge();
+        $semesters = $this->semesterRepository->findAllOrderedByAge();
 
         return $this->render('semester_admin/index.html.twig', array(
             'semesters' => $semesters,
@@ -48,8 +63,7 @@ class SemesterController extends Controller
         // The fields of the form is checked if they contain the correct information
         if ($form->isSubmitted() && $form->isValid()) {
             //Check if semester already exists
-            $existingSemester = $this->getDoctrine()->getManager()->getRepository(Semester::class)
-                ->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());
+            $existingSemester = $this->semesterRepository->findByTimeAndYear($semester->getSemesterTime(), $semester->getYear());
 
             //Return to semester page if semester already exists
             if ($existingSemester !== null) {
@@ -57,9 +71,8 @@ class SemesterController extends Controller
                 return $this->redirectToRoute('semester_create');
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($semester);
-            $em->flush();
+            $this->entityManager->persist($semester);
+            $this->entityManager->flush();
 
             return $this->redirectToRoute('semester_show');
         }
@@ -72,9 +85,8 @@ class SemesterController extends Controller
 
     public function deleteAction(Semester $semester)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($semester);
-        $em->flush();
+        $this->entityManager->remove($semester);
+        $this->entityManager->flush();
 
         return new JsonResponse(array('success' => true));
     }

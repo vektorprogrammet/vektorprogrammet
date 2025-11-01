@@ -3,12 +3,28 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Repository\Contract\UserRepositoryInterface;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 class SsoController extends BaseController
 {
+    private $userRepository;
+    private $passwordEncoder;
+
+    /**
+     * @param UserRepositoryInterface $userRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     */
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        UserPasswordEncoderInterface $passwordEncoder
+    ) {
+        $this->userRepository = $userRepository;
+        $this->passwordEncoder = $passwordEncoder;
+    }
     public function loginAction(Request $request)
     {
         $response = new JsonResponse();
@@ -23,14 +39,14 @@ class SsoController extends BaseController
         }
 
         try {
-            $user = $this->getDoctrine()->getRepository(User::class)->findByUsernameOrEmail($username);
+            $user = $this->userRepository->findByUsernameOrEmail($username);
         } catch (NoResultException $e) {
             $response->setStatusCode(401);
             $response->setContent('Username does not exist');
             return $response;
         }
 
-        $validPassword = $this->get('security.password_encoder')->isPasswordValid($user, $password);
+        $validPassword = $this->passwordEncoder->isPasswordValid($user, $password);
         if (!$validPassword) {
             $response->setStatusCode(401);
             $response->setContent('Wrong password');

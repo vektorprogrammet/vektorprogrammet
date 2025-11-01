@@ -6,9 +6,9 @@ use AppBundle\Entity\Receipt;
 use AppBundle\Entity\User;
 use AppBundle\Event\ReceiptEvent;
 use AppBundle\Form\Type\ReceiptType;
-use AppBundle\Role\Roles;
 use AppBundle\Repository\Contract\ReceiptRepositoryInterface;
 use AppBundle\Repository\Contract\UserRepositoryInterface;
+use AppBundle\Role\Roles;
 use AppBundle\Service\Contract\FileUploaderInterface;
 use AppBundle\Service\Contract\RoleManagerInterface;
 use AppBundle\Service\Contract\SorterInterface;
@@ -22,8 +22,8 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ReceiptController extends BaseController
 {
-    private $receiptRepository;
     private $userRepository;
+    private $receiptRepository;
     private $sorter;
     private $fileUploader;
     private $roleManager;
@@ -31,8 +31,8 @@ class ReceiptController extends BaseController
     private $eventDispatcher;
 
     /**
-     * @param ReceiptRepositoryInterface $receiptRepository
      * @param UserRepositoryInterface $userRepository
+     * @param ReceiptRepositoryInterface $receiptRepository
      * @param SorterInterface $sorter
      * @param FileUploaderInterface $fileUploader
      * @param RoleManagerInterface $roleManager
@@ -40,23 +40,22 @@ class ReceiptController extends BaseController
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
-        ReceiptRepositoryInterface $receiptRepository,
         UserRepositoryInterface $userRepository,
+        ReceiptRepositoryInterface $receiptRepository,
         SorterInterface $sorter,
         FileUploaderInterface $fileUploader,
         RoleManagerInterface $roleManager,
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
-        $this->receiptRepository = $receiptRepository;
         $this->userRepository = $userRepository;
+        $this->receiptRepository = $receiptRepository;
         $this->sorter = $sorter;
         $this->fileUploader = $fileUploader;
         $this->roleManager = $roleManager;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
     }
-
     public function showAction()
     {
         $usersWithReceipts = $this->userRepository->findAllUsersWithReceipts();

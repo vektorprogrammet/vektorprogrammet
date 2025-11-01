@@ -3,7 +3,11 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Article;
-use AppBundle\Service\Contract\ArticleServiceInterface;
+use AppBundle\Entity\Department;
+use AppBundle\Repository\Contract\ArticleRepositoryInterface;
+use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -13,6 +17,28 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class ArticleController extends BaseController
 {
+    private $articleRepository;
+    private $departmentRepository;
+    private $paginator;
+    private $entityManager;
+
+    /**
+     * @param ArticleRepositoryInterface $articleRepository
+     * @param DepartmentRepositoryInterface $departmentRepository
+     * @param PaginatorInterface $paginator
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        ArticleRepositoryInterface $articleRepository,
+        DepartmentRepositoryInterface $departmentRepository,
+        PaginatorInterface $paginator,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->articleRepository = $articleRepository;
+        $this->departmentRepository = $departmentRepository;
+        $this->paginator = $paginator;
+        $this->entityManager = $entityManager;
+    }
     // Number of articles shown on the news page.
     const NUM_ARTICLES = 10;
 
@@ -25,16 +51,6 @@ class ArticleController extends BaseController
     // Number of articles shown in the other news side bar.
     const NUM_OTHER_ARTICLES = 8;
 
-    private $articleService;
-
-    /**
-     * @param ArticleServiceInterface $articleService
-     */
-    public function __construct(ArticleServiceInterface $articleService)
-    {
-        $this->articleService = $articleService;
-    }
-
     /**
      * Shows the news page.
      *
@@ -44,11 +60,16 @@ class ArticleController extends BaseController
      */
     public function showAction(Request $request)
     {
-        $pagination = $this->articleService->getPaginatedArticles(
+        $articles = $this->articleRepository->findAllPublishedArticles();
+
+        $departments = $this->departmentRepository->findAllDepartments();
+
+        // Uses the knp_paginator bundle to separate the articles into pages
+        $pagination = $this->paginator->paginate(
+            $articles,
             $request->query->get('page', 1),
             self::NUM_ARTICLES
         );
-        $departments = $this->articleService->getAllDepartments();
 
         return $this->render('article/index.html.twig', array(
             'pagination' => $pagination,
@@ -60,24 +81,22 @@ class ArticleController extends BaseController
      * Shows the news page, with articles for all departments and the given department.
      *
      * @param Request $request
-     * @param string|Department $department Department short name (string) or Department entity
+     * @param $department
      *
      * @return Response
      */
     public function showFilterAction(Request $request, $department)
     {
-        // Normalize to department short name (string)
-        // The repository method expects an array of short names (strings)
-        $departmentShortName = $department instanceof \AppBundle\Entity\Department
-            ? $department->getShortName()
-            : (string) $department;
+        $articles = $this->articleRepository->findAllArticlesByDepartments($department);
 
-        $pagination = $this->articleService->getPaginatedArticlesByDepartments(
-            [$departmentShortName],
+        $departments = $this->departmentRepository->findAllDepartments();
+
+        // Uses the knp_paginator bundle to separate the articles into pages
+        $pagination = $this->paginator->paginate(
+            $articles,
             $request->query->get('page', 1),
             self::NUM_ARTICLES
         );
-        $departments = $this->articleService->getAllDepartments();
 
         return $this->render('article/index.html.twig', array(
             'pagination' => $pagination,
@@ -109,7 +128,8 @@ class ArticleController extends BaseController
      */
     public function showOtherAction($excludeId)
     {
-        $articles = $this->articleService->getLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
+        $articles = $this->articleRepository
+            ->findLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
 
         return $this->render('article/sidebar_other.html.twig', array('articles' => $articles));
     }
@@ -121,7 +141,7 @@ class ArticleController extends BaseController
      */
     public function showCarouselAction()
     {
-        $articles = $this->articleService->getCarouselArticles(self::NUM_CAROUSEL_ARTICLES);
+        $articles = $this->articleRepository->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
 
         return $this->render('article/carousel.html.twig', array('articles' => $articles));
     }
@@ -136,7 +156,7 @@ class ArticleController extends BaseController
      */
     public function showDepartmentNewsAction($id)
     {
-        $articles = $this->articleService->getDepartmentArticles($id, self::NUM_ADMISSION_ARTICLES);
+        $articles = $this->articleRepository->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
 
         return $this->render('article/department_news.html.twig', array('articles' => $articles));
     }

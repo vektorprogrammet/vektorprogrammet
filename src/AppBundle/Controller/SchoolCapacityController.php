@@ -5,6 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Form\Type\SchoolCapacityEditType;
 use AppBundle\Form\Type\SchoolCapacityType;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -13,6 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SchoolCapacityController extends BaseController
 {
+    private $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
 
     /**
      * @param Request $request
@@ -33,9 +43,8 @@ class SchoolCapacityController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($schoolCapacity);
-            $em->flush();
+            $this->entityManager->persist($schoolCapacity);
+            $this->entityManager->flush();
 
             return $this->redirect($this->generateUrl('school_allocation'));
         }

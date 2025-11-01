@@ -44,66 +44,6 @@ services:
     AppBundle\Repository\Contract\SchoolRepositoryInterface:
         alias: AppBundle\Entity\Repository\SchoolRepository
 
-    AppBundle\Repository\Contract\ExecutiveBoardRepositoryInterface:
-        alias: AppBundle\Entity\Repository\ExecutiveBoardRepository
-
-    AppBundle\Repository\Contract\AdmissionSubscriberRepositoryInterface:
-        alias: AppBundle\Entity\Repository\AdmissionSubscriberRepository
-
-    AppBundle\Repository\Contract\FeedbackRepositoryInterface:
-        alias: AppBundle\Entity\Repository\FeedbackRepository
-
-    AppBundle\Repository\Contract\FieldOfStudyRepositoryInterface:
-        alias: AppBundle\Entity\Repository\FieldOfStudyRepository
-
-    AppBundle\Repository\Contract\RoleRepositoryInterface:
-        alias: AppBundle\Entity\Repository\RoleRepository
-
-    AppBundle\Repository\Contract\TeamMembershipRepositoryInterface:
-        alias: AppBundle\Entity\Repository\TeamMembershipRepository
-
-    AppBundle\Repository\Contract\AccessRuleRepositoryInterface:
-        alias: AppBundle\Entity\Repository\AccessRuleRepository
-
-    AppBundle\Repository\Contract\AdmissionRepositoryInterface:
-        alias: AppBundle\Entity\Repository\AdmissionRepository
-
-    AppBundle\Repository\Contract\AdmissionNotificationRepositoryInterface:
-        alias: AppBundle\Entity\Repository\AdmissionNotificationRepository
-
-    AppBundle\Repository\Contract\StaticContentRepositoryInterface:
-        alias: AppBundle\Entity\Repository\StaticContentRepository
-
-    AppBundle\Repository\Contract\SignatureRepositoryInterface:
-        alias: AppBundle\Entity\Repository\SignatureRepository
-
-    AppBundle\Repository\Contract\TeamApplicationRepositoryInterface:
-        alias: AppBundle\Entity\Repository\TeamApplicationRepository
-
-    AppBundle\Repository\Contract\SurveyTakenRepositoryInterface:
-        alias: AppBundle\Entity\Repository\SurveyTakenRepository
-
-    AppBundle\Repository\Contract\SurveyNotificationRepositoryInterface:
-        alias: AppBundle\Entity\Repository\SurveyNotificationRepository
-
-    AppBundle\Repository\Contract\SocialEventRepositoryInterface:
-        alias: AppBundle\Entity\Repository\SocialEventRepository
-
-    AppBundle\Repository\Contract\SchoolCapacityRepositoryInterface:
-        alias: AppBundle\Entity\Repository\SchoolCapacityRepository
-
-    AppBundle\Repository\Contract\ChangeLogItemRepositoryInterface:
-        alias: AppBundle\Entity\Repository\ChangeLogItemRepository
-
-    AppBundle\Repository\Contract\PasswordResetRepositoryInterface:
-        alias: AppBundle\Entity\Repository\PasswordResetRepository
-
-    AppBundle\Repository\Contract\UnhandledAccessRuleRepositoryInterface:
-        alias: AppBundle\Entity\Repository\UnhandledAccessRuleRepository
-
-    AppBundle\Repository\Contract\ExecutiveBoardMembershipRepositoryInterface:
-        alias: AppBundle\Entity\Repository\ExecutiveBoardMembershipRepository
-
     # Service interface bindings
     AppBundle\Service\Contract\ApplicationManagerInterface:
         alias: AppBundle\Service\ApplicationManager
@@ -200,15 +140,6 @@ services:
 
     AppBundle\Service\Contract\UserGroupCollectionManagerInterface:
         alias: AppBundle\Service\UserGroupCollectionManager
-
-    AppBundle\Service\Contract\HomeServiceInterface:
-        alias: AppBundle\Service\HomeService
-
-    AppBundle\Service\Contract\ArticleServiceInterface:
-        alias: AppBundle\Service\ArticleService
-
-    AppBundle\Service\Contract\PartnerServiceInterface:
-        alias: AppBundle\Service\PartnerService
 
     AppBundle\:
         resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"

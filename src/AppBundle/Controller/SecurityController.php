@@ -3,21 +3,40 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Application;
+use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
 use AppBundle\Role\Roles;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Authentication\AuthenticationUtils;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class SecurityController extends BaseController
 {
+    private $authenticationUtils;
+    private $authorizationChecker;
+    private $applicationRepository;
+
+    /**
+     * @param AuthenticationUtils $authenticationUtils
+     * @param AuthorizationCheckerInterface $authorizationChecker
+     * @param ApplicationRepositoryInterface $applicationRepository
+     */
+    public function __construct(
+        AuthenticationUtils $authenticationUtils,
+        AuthorizationCheckerInterface $authorizationChecker,
+        ApplicationRepositoryInterface $applicationRepository
+    ) {
+        $this->authenticationUtils = $authenticationUtils;
+        $this->authorizationChecker = $authorizationChecker;
+        $this->applicationRepository = $applicationRepository;
+    }
     public function loginAction()
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
-
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $this->authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $lastUsername = $this->authenticationUtils->getLastUsername();
 
         return $this->render(
             'login/login.html.twig',
@@ -35,9 +54,9 @@ class SecurityController extends BaseController
      */
     public function loginRedirectAction()
     {
-        if ($this->get('security.authorization_checker')->isGranted(Roles::TEAM_MEMBER)) {
+        if ($this->authorizationChecker->isGranted(Roles::TEAM_MEMBER)) {
             return $this->redirectToRoute('control_panel');
-        } elseif ($this->getDoctrine()->getRepository(Application::class)->findActiveByUser($this->getUser())) {
+        } elseif ($this->applicationRepository->findActiveByUser($this->getUser())) {
             return $this->redirectToRoute('my_page');
         } else {
             return $this->redirectToRoute('profile');

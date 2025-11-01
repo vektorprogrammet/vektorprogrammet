@@ -2,48 +2,45 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
+use AppBundle\Entity\ExecutiveBoard;
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\User;
 use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
-use AppBundle\Repository\Contract\ExecutiveBoardRepositoryInterface;
 use AppBundle\Repository\Contract\UserRepositoryInterface;
-use AppBundle\Repository\Contract\SemesterRepositoryInterface;
 use AppBundle\Service\Contract\GeoLocationInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 class BoardAndTeamController extends BaseController
 {
     private $departmentRepository;
-    private $geoLocation;
     private $userRepository;
-    private $semesterRepository;
-    private $executiveBoardRepository;
+    private $geoLocation;
+    private $entityManager;
 
     /**
      * @param DepartmentRepositoryInterface $departmentRepository
-     * @param GeoLocationInterface $geoLocation
      * @param UserRepositoryInterface $userRepository
-     * @param SemesterRepositoryInterface $semesterRepository
-     * @param ExecutiveBoardRepositoryInterface $executiveBoardRepository
+     * @param GeoLocationInterface $geoLocation
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         DepartmentRepositoryInterface $departmentRepository,
-        GeoLocationInterface $geoLocation,
         UserRepositoryInterface $userRepository,
-        SemesterRepositoryInterface $semesterRepository,
-        ExecutiveBoardRepositoryInterface $executiveBoardRepository
+        GeoLocationInterface $geoLocation,
+        EntityManagerInterface $entityManager
     ) {
         $this->departmentRepository = $departmentRepository;
-        $this->geoLocation = $geoLocation;
         $this->userRepository = $userRepository;
-        $this->semesterRepository = $semesterRepository;
-        $this->executiveBoardRepository = $executiveBoardRepository;
+        $this->geoLocation = $geoLocation;
+        $this->entityManager = $entityManager;
     }
-
     public function showAction()
     {
         // Find all departments
         $departments = $this->departmentRepository->findActive();
         $departments = $this->geoLocation->sortDepartmentsByDistanceFromClient($departments);
-        
-        $board = $this->executiveBoardRepository->findBoard();
+        $board = $this->entityManager->getRepository(ExecutiveBoard::class)->findBoard();
 
         $numberOfTeams = 0;
         foreach ($departments as $department) {
@@ -51,9 +48,9 @@ class BoardAndTeamController extends BaseController
         }
 
         $departmentStats = array();
-        /** @var \AppBundle\Entity\Department $department */
+        /** @var Department $department */
         foreach ($departments as $department) {
-            $currentSemester = $this->semesterRepository->findOrCreateCurrentSemester();
+            $currentSemester = $this->getCurrentSemester();
             $departmentStats[$department->getCity()] = array(
                 'numTeamMembers' => sizeof($this->userRepository->findUsersInDepartmentWithTeamMembershipInSemester($department, $currentSemester)),
                 'numAssistants' => sizeof($this->userRepository->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $currentSemester)),

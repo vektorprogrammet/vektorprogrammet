@@ -2,20 +2,56 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\School;
 use AppBundle\Entity\User;
 use AppBundle\Event\AssistantHistoryCreatedEvent;
-use AppBundle\Role\Roles;
-use Exception;
-use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\School;
-use AppBundle\Form\Type\CreateSchoolType;
-use AppBundle\Entity\AssistantHistory;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
+use AppBundle\Form\Type\CreateSchoolType;
+use AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface;
+use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
+use AppBundle\Repository\Contract\SchoolRepositoryInterface;
+use AppBundle\Repository\Contract\UserRepositoryInterface;
+use AppBundle\Role\Roles;
+use Doctrine\ORM\EntityManagerInterface;
+use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class SchoolAdminController extends BaseController
 {
+    private $assistantHistoryRepository;
+    private $departmentRepository;
+    private $userRepository;
+    private $schoolRepository;
+    private $entityManager;
+    private $eventDispatcher;
+
+    /**
+     * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
+     * @param DepartmentRepositoryInterface $departmentRepository
+     * @param UserRepositoryInterface $userRepository
+     * @param SchoolRepositoryInterface $schoolRepository
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(
+        AssistantHistoryRepositoryInterface $assistantHistoryRepository,
+        DepartmentRepositoryInterface $departmentRepository,
+        UserRepositoryInterface $userRepository,
+        SchoolRepositoryInterface $schoolRepository,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->assistantHistoryRepository = $assistantHistoryRepository;
+        $this->departmentRepository = $departmentRepository;
+        $this->userRepository = $userRepository;
+        $this->schoolRepository = $schoolRepository;
+        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
+    }
     public function showSpecificSchoolAction(School $school)
     {
         // This prevents admins to see other departments' schools
@@ -25,8 +61,8 @@ class SchoolAdminController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        $inactiveAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findInactiveAssistantHistoriesBySchool($school);
-        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesBySchool($school);
+        $inactiveAssistantHistories = $this->assistantHistoryRepository->findInactiveAssistantHistoriesBySchool($school);
+        $activeAssistantHistories = $this->assistantHistoryRepository->findActiveAssistantHistoriesBySchool($school);
 
         return $this->render('school_admin/specific_school.html.twig', array(
             'activeAssistantHistories' => $activeAssistantHistories,
@@ -54,11 +90,10 @@ class SchoolAdminController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $assistantHistory->setUser($user);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($assistantHistory);
-            $em->flush();
+            $this->entityManager->persist($assistantHistory);
+            $this->entityManager->flush();
 
-            $this->get('event_dispatcher')->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
+            $this->eventDispatcher->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
 
             return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
         }
@@ -72,9 +107,9 @@ class SchoolAdminController extends BaseController
 
     public function showUsersByDepartmentSuperadminAction(Department $department)
     {
-        $activeDepartments = $this->getDoctrine()->getRepository(Department::class)->findActive();
+        $activeDepartments = $this->departmentRepository->findActive();
 
-        $users = $this->getDoctrine()->getRepository(User::class)->findAllUsersByDepartment($department);
+        $users = $this->userRepository->findAllUsersByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
@@ -89,13 +124,13 @@ class SchoolAdminController extends BaseController
         $user = $this->getUser();
 
         // Finds all the departments
-        $activeDepartments = $this->getDoctrine()->getRepository(Department::class)->findActive();
+        $activeDepartments = $this->departmentRepository->findActive();
 
         // Find the department of the user
         $department = $user->getFieldOfStudy()->getDepartment();
 
         // Find all the users of the department that are active
-        $users = $this->getDoctrine()->getRepository(User::class)->findAllUsersByDepartment($department);
+        $users = $this->userRepository->findAllUsersByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('school_admin/all_users.html.twig', array(
@@ -111,9 +146,9 @@ class SchoolAdminController extends BaseController
         $department = $this->getUser()->getDepartment();
 
         // Find schools that are connected to the department of the user
-        $activeSchools = $this->getDoctrine()->getRepository(School::class)->findActiveSchoolsByDepartment($department);
+        $activeSchools = $this->schoolRepository->findActiveSchoolsByDepartment($department);
 
-        $inactiveSchools = $this->getDoctrine()->getRepository(School::class)->findInactiveSchoolsByDepartment($department);
+        $inactiveSchools = $this->schoolRepository->findInactiveSchoolsByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('school_admin/index.html.twig', array(
@@ -126,8 +161,8 @@ class SchoolAdminController extends BaseController
     public function showSchoolsByDepartmentAction(Department $department)
     {
         // Finds the schools for the given department
-        $activeSchools = $this->getDoctrine()->getRepository(School::class)->findActiveSchoolsByDepartment($department);
-        $inactiveSchools = $this->getDoctrine()->getRepository(School::class)->findInactiveSchoolsByDepartment($department);
+        $activeSchools = $this->schoolRepository->findActiveSchoolsByDepartment($department);
+        $inactiveSchools = $this->schoolRepository->findInactiveSchoolsByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('school_admin/index.html.twig', array(
@@ -147,9 +182,8 @@ class SchoolAdminController extends BaseController
 
         // Check if the form is valid
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($school);
-            $em->flush();
+            $this->entityManager->persist($school);
+            $this->entityManager->flush();
 
             return $this->redirect($this->generateUrl('schooladmin_show'));
         }
@@ -174,10 +208,9 @@ class SchoolAdminController extends BaseController
             $school->addDepartment($department);
             $department->addSchool($school);
             // If valid insert into database
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($school);
-            $em->persist($department);
-            $em->flush();
+            $this->entityManager->persist($school);
+            $this->entityManager->persist($department);
+            $this->entityManager->flush();
 
             return $this->redirect($this->generateUrl('schooladmin_show'));
         }
@@ -192,9 +225,8 @@ class SchoolAdminController extends BaseController
     {
         try {
             // This deletes the given school
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($school);
-            $em->flush();
+            $this->entityManager->remove($school);
+            $this->entityManager->flush();
 
             // a response back to AJAX
             $response['success'] = true;
@@ -213,9 +245,8 @@ class SchoolAdminController extends BaseController
     {
         try {
             // This deletes the assistant history
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($assistantHistory);
-            $em->flush();
+            $this->entityManager->remove($assistantHistory);
+            $this->entityManager->flush();
 
             // a response back to AJAX
             $response['success'] = true;

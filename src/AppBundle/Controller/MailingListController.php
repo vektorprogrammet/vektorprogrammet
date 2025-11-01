@@ -4,12 +4,22 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\GenerateMailingListType;
+use AppBundle\Repository\Contract\UserRepositoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class MailingListController extends BaseController
 {
+    private $userRepository;
+
+    /**
+     * @param UserRepositoryInterface $userRepository
+     */
+    public function __construct(UserRepositoryInterface $userRepository)
+    {
+        $this->userRepository = $userRepository;
+    }
     /**
      * @param Request $request
      *
@@ -60,8 +70,7 @@ class MailingListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $users = $this->getDoctrine()->getRepository(User::class)
-            ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
+        $users = $this->userRepository->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
             'users' => $users,
@@ -76,8 +85,7 @@ class MailingListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $users = $this->getDoctrine()->getRepository(User::class)
-            ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
+        $users = $this->userRepository->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
             'users' => $users,

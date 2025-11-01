@@ -12,10 +12,13 @@ use AppBundle\Entity\User;
 use AppBundle\Form\Type\SurveyAdminType;
 use AppBundle\Form\Type\SurveyExecuteType;
 use AppBundle\Form\Type\SurveyType;
-use AppBundle\Service\AccessControlService;
-use AppBundle\Service\SurveyManager;
+use AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface;
+use AppBundle\Repository\Contract\SemesterRepositoryInterface;
+use AppBundle\Service\Contract\AccessControlServiceInterface;
+use AppBundle\Service\Contract\SurveyManagerInterface;
 use AppBundle\Utils\CsvUtil;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -30,6 +33,32 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
  */
 class SurveyController extends BaseController
 {
+    private $surveyManager;
+    private $accessControlService;
+    private $entityManager;
+    private $assistantHistoryRepository;
+    private $semesterRepository;
+
+    /**
+     * @param SurveyManagerInterface $surveyManager
+     * @param AccessControlServiceInterface $accessControlService
+     * @param EntityManagerInterface $entityManager
+     * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
+     * @param SemesterRepositoryInterface $semesterRepository
+     */
+    public function __construct(
+        SurveyManagerInterface $surveyManager,
+        AccessControlServiceInterface $accessControlService,
+        EntityManagerInterface $entityManager,
+        AssistantHistoryRepositoryInterface $assistantHistoryRepository,
+        SemesterRepositoryInterface $semesterRepository
+    ) {
+        $this->surveyManager = $surveyManager;
+        $this->accessControlService = $accessControlService;
+        $this->entityManager = $entityManager;
+        $this->assistantHistoryRepository = $assistantHistoryRepository;
+        $this->semesterRepository = $semesterRepository;
+    }
 
     /**
      * Shows the given survey.
@@ -41,7 +70,7 @@ class SurveyController extends BaseController
      */
     public function showAction(Request $request, Survey $survey)
     {
-        $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
+        $surveyTaken = $this->surveyManager->initializeSurveyTaken($survey);
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY || $survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             $form = $this->createForm(SurveyExecuteType::class, $surveyTaken, array(
                 'validation_groups' => array('schoolSpecific'),
@@ -57,9 +86,8 @@ class SurveyController extends BaseController
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
             if ($form->isSubmitted() && $form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($surveyTaken);
-                $em->flush();
+                $this->entityManager->persist($surveyTaken);
+                $this->entityManager->flush();
 
                 $this->addFlash('success', 'Mottatt svar!');
 
@@ -92,8 +120,7 @@ class SurveyController extends BaseController
      */
     public function showIdAction(Request $request, Survey $survey, string $userid)
     {
-        $em = $this->getDoctrine()->getManager();
-        $notification = $em->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
+        $notification = $this->entityManager->getRepository(SurveyNotification::class)->findByUserIdentifier($userid);
 
 
         if ($notification === null) {
@@ -109,8 +136,8 @@ class SurveyController extends BaseController
 
         $surveyLinkClick = new SurveyLinkClick();
         $surveyLinkClick->setNotification($notification);
-        $em->persist($surveyLinkClick);
-        $em->flush();
+        $this->entityManager->persist($surveyLinkClick);
+        $this->entityManager->flush();
 
         $user = $notification->getUser();
 
@@ -131,14 +158,12 @@ class SurveyController extends BaseController
 
     private function showUserMainAction(Request $request, Survey $survey, User $user, string $identifier = null)
     {
-        $surveyTaken = $this->get(SurveyManager::class)->initializeUserSurveyTaken($survey, $user);
+        $surveyTaken = $this->surveyManager->initializeUserSurveyTaken($survey, $user);
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
 
-        $em = $this->getDoctrine()->getManager();
-
         if ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
-            $assistantHistory = $em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
+            $assistantHistory = $this->assistantHistoryRepository->findMostRecentByUser($user);
 
             if (empty($assistantHistory)) {
                 return $this->redirectToRoute('survey_show', array('id' => $survey->getId()));
@@ -152,20 +177,20 @@ class SurveyController extends BaseController
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
             if ($form->isSubmitted() && $form->isValid()) {
-                $allTakenSurveys = $em
+                $allTakenSurveys = $this->entityManager
                     ->getRepository(SurveyTaken::class)
                     ->findAllBySurveyAndUser($survey, $user);
 
                 if (!empty($allTakenSurveys)) {
                     foreach ($allTakenSurveys as $oldTakenSurvey) {
-                        $em->remove($oldTakenSurvey);
+                        $this->entityManager->remove($oldTakenSurvey);
                     }
                 }
 
                 $user->setLastPopUpTime(new DateTime());
-                $em->persist($user);
-                $em->persist($surveyTaken);
-                $em->flush();
+                $this->entityManager->persist($user);
+                $this->entityManager->persist($surveyTaken);
+                $this->entityManager->flush();
 
                 $this->addFlash('success', 'Mottatt svar!');
                 return $this->render('survey/finish_page.html.twig', [
@@ -203,8 +228,8 @@ class SurveyController extends BaseController
         if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
             throw new InvalidArgumentException("Er team undersøkelse og har derfor ingen admin utfylling");
         }
-        $surveyTaken = $this->get(SurveyManager::class)->initializeSurveyTaken($survey);
-        $surveyTaken = $this->get(SurveyManager::class)->predictSurveyTakenAnswers($surveyTaken);
+        $surveyTaken = $this->surveyManager->initializeSurveyTaken($survey);
+        $surveyTaken = $this->surveyManager->predictSurveyTakenAnswers($surveyTaken);
 
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
         $form->handleRequest($request);
@@ -213,9 +238,8 @@ class SurveyController extends BaseController
             $surveyTaken->removeNullAnswers();
 
             if ($form->isSubmitted() && $form->isValid()) {
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($surveyTaken);
-                $em->flush();
+                $this->entityManager->persist($surveyTaken);
+                $this->entityManager->flush();
 
                 $this->addFlash('undersokelse-notice', 'Mottatt svar!');
             } else {
@@ -239,7 +263,7 @@ class SurveyController extends BaseController
         $survey = new Survey();
         $survey->setDepartment($this->getUser()->getDepartment());
 
-        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+        if ($this->accessControlService->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
         } else {
             $form = $this->createForm(SurveyType::class, $survey);
@@ -249,9 +273,8 @@ class SurveyController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->ensureAccess($survey);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($survey);
-            $em->flush();
+            $this->entityManager->persist($survey);
+            $this->entityManager->flush();
 
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.
@@ -270,25 +293,23 @@ class SurveyController extends BaseController
 
         $surveyClone = $survey->copy();
 
-        $em = $this->getDoctrine()->getManager();
-        $currentSemester = $this->getCurrentSemester();
+        $currentSemester = $this->semesterRepository->findOrCreateCurrentSemester();
         $surveyClone->setSemester($currentSemester);
 
-        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+        if ($this->accessControlService->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $surveyClone);
         } else {
             $form = $this->createForm(SurveyType::class, $surveyClone);
         }
 
-        $em->flush();
+        $this->entityManager->flush();
 
         $form->handleRequest($request);
 
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($surveyClone);
-            $em->flush();
+            $this->entityManager->persist($surveyClone);
+            $this->entityManager->flush();
 
             return $this->redirect($this->generateUrl('surveys'));
         }
@@ -315,7 +336,7 @@ class SurveyController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
 
 
-        $surveysWithDepartment = $this->getDoctrine()->getRepository(Survey::class)->findBy(
+        $surveysWithDepartment = $this->entityManager->getRepository(Survey::class)->findBy(
             [
                 'semester' => $semester,
                 'department' => $department,
@@ -323,14 +344,14 @@ class SurveyController extends BaseController
             ['id' => 'DESC']
         );
         foreach ($surveysWithDepartment as $survey) {
-            $totalAnswered = count($this->getDoctrine()->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey));
+            $totalAnswered = count($this->entityManager->getRepository(SurveyTaken::class)->findAllTakenBySurvey($survey));
             $survey->setTotalAnswered($totalAnswered);
         }
 
 
         $globalSurveys = array();
-        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
-            $globalSurveys = $this->getDoctrine()->getRepository(Survey::class)->findBy(
+        if ($this->accessControlService->checkAccess("survey_admin")) {
+            $globalSurveys = $this->entityManager->getRepository(Survey::class)->findBy(
                 [
                     'semester' => $semester,
                     'department' => null,
@@ -338,7 +359,7 @@ class SurveyController extends BaseController
                 ['id' => 'DESC']
             );
             foreach ($globalSurveys as $survey) {
-                $totalAnswered = count($this->getDoctrine()->getRepository(SurveyTaken::class)->findBy(array('survey' => $survey)));
+                $totalAnswered = count($this->entityManager->getRepository(SurveyTaken::class)->findBy(array('survey' => $survey)));
                 $survey->setTotalAnswered($totalAnswered);
             }
         }
@@ -356,7 +377,7 @@ class SurveyController extends BaseController
     {
         $this->ensureAccess($survey);
 
-        if ($this->get(AccessControlService::class)->checkAccess("survey_admin")) {
+        if ($this->accessControlService->checkAccess("survey_admin")) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
         } else {
             $form = $this->createForm(SurveyType::class, $survey);
@@ -365,9 +386,8 @@ class SurveyController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($survey);
-            $em->flush();
+            $this->entityManager->persist($survey);
+            $this->entityManager->flush();
 
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.
@@ -392,9 +412,8 @@ class SurveyController extends BaseController
     {
         $this->ensureAccess($survey);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($survey);
-        $em->flush();
+        $this->entityManager->remove($survey);
+        $this->entityManager->flush();
         $response['success'] = true;
         return new JsonResponse($response);
     }
@@ -411,11 +430,9 @@ class SurveyController extends BaseController
         $this->ensureAccess($survey);
 
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
-            $textAnswers = $this->get(SurveyManager::class)
-                ->getTextAnswerWithSchoolResults($survey);
+            $textAnswers = $this->surveyManager->getTextAnswerWithSchoolResults($survey);
         } else {
-            $textAnswers = $this->get(SurveyManager::class)
-                ->getTextAnswerWithTeamResults($survey);
+            $textAnswers = $this->surveyManager->getTextAnswerWithTeamResults($survey);
         }
 
         return $this->render('survey/survey_result.html.twig', array(
@@ -435,7 +452,7 @@ class SurveyController extends BaseController
     public function getSurveyResultAction(Survey $survey)
     {
         $this->ensureAccess($survey);
-        return new JsonResponse($this->get(SurveyManager::class)->surveyResultToJson($survey));
+        return new JsonResponse($this->surveyManager->surveyResultToJson($survey));
     }
 
     /**
@@ -448,8 +465,7 @@ class SurveyController extends BaseController
     public function getSurveyResultCSVAction(Survey $survey):Response
     {
         $this->ensureAccess($survey);
-        $sm = $this->get(SurveyManager::class);
-        $csv_string = $sm->surveyResultsToCsv($survey);
+        $csv_string = $this->surveyManager->surveyResultsToCsv($survey);
         return CsvUtil::makeCsvResponse($csv_string);
     }
 
@@ -460,7 +476,7 @@ class SurveyController extends BaseController
             return null;
         }
 
-        $this->get(SurveyManager::class)->toggleReservedFromPopUp($this->getUser());
+        $this->surveyManager->toggleReservedFromPopUp($this->getUser());
 
         return new JsonResponse();
     }
@@ -469,9 +485,8 @@ class SurveyController extends BaseController
     {
         $user = $this->getUser();
         $user->setLastPopUpTime(new DateTime());
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($user);
-        $em->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
         return new JsonResponse();
     }
 
@@ -488,7 +503,7 @@ class SurveyController extends BaseController
     {
         $user = $this->getUser();
 
-        $isSurveyAdmin = $this->get(AccessControlService::class)->checkAccess("survey_admin");
+        $isSurveyAdmin = $this->accessControlService->checkAccess("survey_admin");
         $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
 
         if ($survey->isConfidential() && !$isSurveyAdmin) {

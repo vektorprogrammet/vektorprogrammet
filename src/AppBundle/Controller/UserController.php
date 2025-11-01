@@ -6,16 +6,13 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\Semester;
-use AppBundle\Entity\User;
 use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
 use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
 use AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface;
 use AppBundle\Repository\Contract\SemesterRepositoryInterface;
-use AppBundle\Role\Roles;
 use AppBundle\Service\Contract\ApplicationManagerInterface;
 use AppBundle\Service\Contract\ContentModeManagerInterface;
-use AppBundle\Service\Contract\PartnerServiceInterface;
-use AppBundle\Service\Contract\RoleManagerInterface;
+use AppBundle\Twig\Extension\RoleExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -24,43 +21,39 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends BaseController
 {
-    private $partnerService;
-    private $applicationManager;
-    private $contentModeManager;
-    private $roleManager;
     private $admissionPeriodRepository;
     private $applicationRepository;
     private $assistantHistoryRepository;
     private $semesterRepository;
+    private $applicationManager;
+    private $roleExtension;
+    private $contentModeManager;
 
     /**
-     * @param PartnerServiceInterface $partnerService
-     * @param ApplicationManagerInterface $applicationManager
-     * @param ContentModeManagerInterface $contentModeManager
-     * @param RoleManagerInterface $roleManager
      * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
      * @param ApplicationRepositoryInterface $applicationRepository
      * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
      * @param SemesterRepositoryInterface $semesterRepository
+     * @param ApplicationManagerInterface $applicationManager
+     * @param RoleExtension $roleExtension
+     * @param ContentModeManagerInterface $contentModeManager
      */
     public function __construct(
-        PartnerServiceInterface $partnerService,
-        ApplicationManagerInterface $applicationManager,
-        ContentModeManagerInterface $contentModeManager,
-        RoleManagerInterface $roleManager,
         AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
         ApplicationRepositoryInterface $applicationRepository,
         AssistantHistoryRepositoryInterface $assistantHistoryRepository,
-        SemesterRepositoryInterface $semesterRepository
+        SemesterRepositoryInterface $semesterRepository,
+        ApplicationManagerInterface $applicationManager,
+        RoleExtension $roleExtension,
+        ContentModeManagerInterface $contentModeManager
     ) {
-        $this->partnerService = $partnerService;
-        $this->applicationManager = $applicationManager;
-        $this->contentModeManager = $contentModeManager;
-        $this->roleManager = $roleManager;
         $this->admissionPeriodRepository = $admissionPeriodRepository;
         $this->applicationRepository = $applicationRepository;
         $this->assistantHistoryRepository = $assistantHistoryRepository;
         $this->semesterRepository = $semesterRepository;
+        $this->applicationManager = $applicationManager;
+        $this->roleExtension = $roleExtension;
+        $this->contentModeManager = $contentModeManager;
     }
     /**
      * @Route("/min-side", name="my_page")
@@ -103,17 +96,42 @@ class UserController extends BaseController
         if (!$this->getUser()->isActive()) {
             throw $this->createAccessDeniedException();
         }
-
-        $partnerData = $this->partnerService->findPartnersForUser($this->getUser());
-
-        if (empty($partnerData['partnerInformations'])) {
+        $activeAssistantHistories = $this->assistantHistoryRepository->findActiveAssistantHistoriesByUser($this->getUser());
+        if (empty($activeAssistantHistories)) {
             throw $this->createNotFoundException();
+        }
+
+        $partnerInformations = [];
+        $partnerCount = 0;
+
+        foreach ($activeAssistantHistories as $activeHistory) {
+            $schoolHistories = $this->assistantHistoryRepository->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
+            $partners = [];
+
+            foreach ($schoolHistories as $sh) {
+                if ($sh->getUser() === $this->getUser()) {
+                    continue;
+                }
+                if ($sh->getDay() !== $activeHistory->getDay()) {
+                    continue;
+                }
+                if ($activeHistory->activeInGroup(1) && $sh->activeInGroup(1) ||
+                    $activeHistory->activeInGroup(2) && $sh->activeInGroup(2)) {
+                    $partners[] = $sh;
+                    $partnerCount++;
+                }
+            }
+            $partnerInformations[] = [
+                'school' => $activeHistory->getSchool(),
+                'assistantHistory' => $activeHistory,
+                'partners' => $partners,
+            ];
         }
 
         $semester = $this->semesterRepository->findOrCreateCurrentSemester();
         return $this->render('user/my_partner.html.twig', [
-            'partnerInformations' => $partnerData['partnerInformations'],
-            'partnerCount' => $partnerData['partnerCount'],
+            'partnerInformations' => $partnerInformations,
+            'partnerCount' => $partnerCount,
             'semester' => $semester,
         ]);
     }
@@ -131,12 +149,7 @@ class UserController extends BaseController
      */
     public function changeContentModeAction(Request $request, string $mode)
     {
-        $user = $this->getUser();
-        if (!$user instanceof User) {
-            throw $this->createAccessDeniedException();
-        }
-
-        if (!$this->roleManager->userIsGranted($user, Roles::ADMIN) && !$this->roleManager->userIsInExecutiveBoard($user)) {
+        if (!$this->roleExtension->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 

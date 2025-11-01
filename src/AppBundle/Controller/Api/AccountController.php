@@ -5,18 +5,49 @@ namespace AppBundle\Controller\Api;
 use AppBundle\Controller\BaseController;
 use AppBundle\DataTransferObject\UserDto;
 use AppBundle\Entity\User;
+use AppBundle\Repository\Contract\UserRepositoryInterface;
+use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
+use BCC\AutoMapperBundle\Mapper\MapperInterface;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
-use Exception;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class AccountController extends BaseController
 {
+    private $userRepository;
+    private $passwordEncoder;
+    private $tokenStorage;
+    private $session;
+    private $mapper;
+
+    /**
+     * @param UserRepositoryInterface $userRepository
+     * @param UserPasswordEncoderInterface $passwordEncoder
+     * @param TokenStorageInterface $tokenStorage
+     * @param SessionInterface $session
+     * @param MapperInterface $mapper
+     */
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        UserPasswordEncoderInterface $passwordEncoder,
+        TokenStorageInterface $tokenStorage,
+        SessionInterface $session,
+        MapperInterface $mapper
+    ) {
+        $this->userRepository = $userRepository;
+        $this->passwordEncoder = $passwordEncoder;
+        $this->tokenStorage = $tokenStorage;
+        $this->session = $session;
+        $this->mapper = $mapper;
+    }
 
     /**
      * @Route(path="api/account/login", methods={"GET", "POST"})
@@ -41,14 +72,14 @@ class AccountController extends BaseController
         }
 
         try {
-            $user = $this->getDoctrine()->getRepository(User::class)->findByUsernameOrEmail($username);
+            $user = $this->userRepository->findByUsernameOrEmail($username);
         } catch (NoResultException $e) {
             $response->setStatusCode(401);
             $response->setContent('Username does not exist');
             return $response;
         }
 
-        $validPassword = $this->get('security.password_encoder')->isPasswordValid($user, $password);
+        $validPassword = $this->passwordEncoder->isPasswordValid($user, $password);
         if (!$validPassword) {
             $response->setStatusCode(401);
             $response->setContent('Wrong password');
@@ -56,13 +87,12 @@ class AccountController extends BaseController
         }
 
         $token = new UsernamePasswordToken($user, null, 'secured_area', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-        $this->get('session')->set('_security_secured_area', serialize($token));
+        $this->tokenStorage->setToken($token);
+        $this->session->set('_security_secured_area', serialize($token));
 
-        $mapper = $this->get('bcc_auto_mapper.mapper');
-        $mapper->createMap(User::class, UserDto::class);
+        $this->mapper->createMap(User::class, UserDto::class);
         $userDto = new UserDto();
-        $mapper->map($user, $userDto);
+        $this->mapper->map($user, $userDto);
 
         return new JsonResponse($userDto);
     }
@@ -75,7 +105,7 @@ class AccountController extends BaseController
     public function logoutAction()
     {
         try {
-            $this->get('security.token_storage')->setToken(null);
+            $this->tokenStorage->setToken(null);
             return new JsonResponse("Logout successful");
         } catch (Exception $e) {
             $response = new JsonResponse();
@@ -97,10 +127,9 @@ class AccountController extends BaseController
             return new JsonResponse(null);
         }
 
-        $mapper = $this->get('bcc_auto_mapper.mapper');
-        $mapper->createMap(User::class, UserDto::class);
+        $this->mapper->createMap(User::class, UserDto::class);
         $userDto = new UserDto();
-        $mapper->map($this->getUser(), $userDto);
+        $this->mapper->map($this->getUser(), $userDto);
 
         return new JsonResponse($userDto);
     }

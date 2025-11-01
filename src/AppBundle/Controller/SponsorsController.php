@@ -4,7 +4,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Sponsor;
 use AppBundle\Form\Type\SponsorType;
-use AppBundle\Service\FileUploader;
+use AppBundle\Service\Contract\FileUploaderInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -12,6 +13,20 @@ use Symfony\Component\HttpFoundation\Response;
 
 class SponsorsController extends BaseController
 {
+    private $fileUploader;
+    private $entityManager;
+
+    /**
+     * @param FileUploaderInterface $fileUploader
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        FileUploaderInterface $fileUploader,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->fileUploader = $fileUploader;
+        $this->entityManager = $entityManager;
+    }
     /**
      * @Route("/kontrollpanel/sponsorer", name="sponsors_show")
      *
@@ -19,7 +34,7 @@ class SponsorsController extends BaseController
      */
     public function sponsorsShowAction()
     {
-        $sponsors = $this->getDoctrine()
+        $sponsors = $this->entityManager
             ->getRepository(Sponsor::class)
             ->findAll();
 
@@ -50,17 +65,16 @@ class SponsorsController extends BaseController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             if (!is_null($request->files->get('sponsor')['logoImagePath'])) {
-                $imgPath = $this->get(FileUploader::class)->uploadSponsor($request);
-                $this->get(FileUploader::class)->deleteSponsor($oldImgPath);
+                $imgPath = $this->fileUploader->uploadSponsor($request);
+                $this->fileUploader->deleteSponsor($oldImgPath);
 
                 $sponsor->setLogoImagePath($imgPath);
             } else {
                 $sponsor->setLogoImagePath($oldImgPath);
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($sponsor);
-            $em->flush();
+            $this->entityManager->persist($sponsor);
+            $this->entityManager->flush();
 
             $this->addFlash(
                 "success",
@@ -86,12 +100,11 @@ class SponsorsController extends BaseController
     public function deleteSponsorAction(Sponsor $sponsor)
     {
         if ($sponsor->getLogoImagePath()) {
-            $this->get(FileUploader::class)->deleteSponsor($sponsor->getLogoImagePath());
+            $this->fileUploader->deleteSponsor($sponsor->getLogoImagePath());
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($sponsor);
-        $em->flush();
+        $this->entityManager->remove($sponsor);
+        $this->entityManager->flush();
 
         $this->addFlash("success", "Sponsor {$sponsor->getName()} ble slettet.");
         return $this->redirectToRoute("sponsors_show");

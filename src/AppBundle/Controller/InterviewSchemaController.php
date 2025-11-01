@@ -2,13 +2,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\InterviewSchema;
+use AppBundle\Form\Type\InterviewSchemaType;
 use AppBundle\Role\Roles;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use AppBundle\Entity\InterviewSchema;
-use AppBundle\Form\Type\InterviewSchemaType;
 use Symfony\Component\HttpFoundation\Response;
 
 /**
@@ -17,6 +18,15 @@ use Symfony\Component\HttpFoundation\Response;
  */
 class InterviewSchemaController extends BaseController
 {
+    private $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     /**
      * Shows and handles the submission of the create interview schema form.
      * Uses the same form as the edit action.
@@ -47,9 +57,8 @@ class InterviewSchemaController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($schema);
-            $em->flush();
+            $this->entityManager->persist($schema);
+            $this->entityManager->flush();
             return $this->redirect($this->generateUrl('interview_schema'));
         }
 
@@ -67,7 +76,7 @@ class InterviewSchemaController extends BaseController
      */
     public function showSchemasAction()
     {
-        $schemas = $this->getDoctrine()->getRepository(InterviewSchema::class)->findAll();
+        $schemas = $this->entityManager->getRepository(InterviewSchema::class)->findAll();
 
         return $this->render('interview/schemas.html.twig', array('schemas' => $schemas));
     }
@@ -84,9 +93,8 @@ class InterviewSchemaController extends BaseController
     {
         try {
             if ($this->isGranted(Roles::TEAM_LEADER)) {
-                $em = $this->getDoctrine()->getManager();
-                $em->remove($schema);
-                $em->flush();
+                $this->entityManager->remove($schema);
+                $this->entityManager->flush();
 
                 $response['success'] = true;
             } else {

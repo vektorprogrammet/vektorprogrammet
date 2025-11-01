@@ -10,8 +10,13 @@ use AppBundle\Entity\TeamInterest;
 use AppBundle\Entity\User;
 use AppBundle\Event\ApplicationCreatedEvent;
 use AppBundle\Form\Type\ApplicationType;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
+use AppBundle\Repository\Contract\TeamRepositoryInterface;
 use AppBundle\Role\Roles;
-use AppBundle\Service\InterviewCounter;
+use AppBundle\Service\Contract\InterviewCounterInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -25,6 +30,36 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class AdmissionAdminController extends BaseController
 {
+    private $admissionPeriodRepository;
+    private $applicationRepository;
+    private $teamRepository;
+    private $interviewCounter;
+    private $entityManager;
+    private $eventDispatcher;
+
+    /**
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param TeamRepositoryInterface $teamRepository
+     * @param InterviewCounterInterface $interviewCounter
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        TeamRepositoryInterface $teamRepository,
+        InterviewCounterInterface $interviewCounter,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->teamRepository = $teamRepository;
+        $this->interviewCounter = $interviewCounter;
+        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
+    }
     /**
      * Shows the admission admin page. Shows only applications for the department of the logged in user.
      * This works as the restricted admission management method, only allowing users to manage applications within their department.
@@ -47,9 +82,7 @@ class AdmissionAdminController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $department = $this->getDepartmentOrThrow404($request);
 
-        $admissionPeriod = $this->getDoctrine()
-                ->getRepository(AdmissionPeriod::class)
-                ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
@@ -57,9 +90,7 @@ class AdmissionAdminController extends BaseController
 
         $applications = [];
         if ($admissionPeriod !== null) {
-            $applications = $this->getDoctrine()
-                ->getRepository(Application::class)
-                ->findNewApplicationsByAdmissionPeriod($admissionPeriod);
+            $applications = $this->applicationRepository->findNewApplicationsByAdmissionPeriod($admissionPeriod);
         }
 
         return $this->render('admission_admin/new_applications_table.html.twig', array(
@@ -78,13 +109,10 @@ class AdmissionAdminController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
-
-        $applicationRepo = $this->getDoctrine()->getRepository(Application::class);
 
         $applications = [];
         $interviewDistributions = [];
@@ -92,11 +120,10 @@ class AdmissionAdminController extends BaseController
         $applicationsAssignedToUser = [];
 
         if ($admissionPeriod !== null) {
-            $applications = $applicationRepo->findAssignedApplicants($admissionPeriod);
-            $interviewDistributions = $this->get(InterviewCounter::class)
-                ->createInterviewDistributions($applications, $admissionPeriod);
-            $cancelledApplications = $applicationRepo->findCancelledApplicants($admissionPeriod);
-            $applicationsAssignedToUser = $applicationRepo->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
+            $applications = $this->applicationRepository->findAssignedApplicants($admissionPeriod);
+            $interviewDistributions = $this->interviewCounter->createInterviewDistributions($applications, $admissionPeriod);
+            $cancelledApplications = $this->applicationRepository->findCancelledApplicants($admissionPeriod);
+            $applicationsAssignedToUser = $this->applicationRepository->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
         }
 
         return $this->render('admission_admin/assigned_applications_table.html.twig', array(
@@ -118,29 +145,24 @@ class AdmissionAdminController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 
         $applications = [];
         if ($admissionPeriod !== null) {
-            $applications = $this->getDoctrine()
-                ->getRepository(Application::class)
-                ->findInterviewedApplicants($admissionPeriod);
+            $applications = $this->applicationRepository->findInterviewedApplicants($admissionPeriod);
         }
-
-        $counter = $this->get(InterviewCounter::class);
 
         return $this->render('admission_admin/interviewed_applications_table.html.twig', array(
             'status' => 'interviewed',
             'applications' => $applications,
             'department' => $department,
             'semester' => $semester,
-            'yes' => $counter->count($applications, InterviewCounter::YES),
-            'no' => $counter->count($applications, InterviewCounter::NO),
-            'maybe' => $counter->count($applications, InterviewCounter::MAYBE),
+            'yes' => $this->interviewCounter->count($applications, InterviewCounter::YES),
+            'no' => $this->interviewCounter->count($applications, InterviewCounter::NO),
+            'maybe' => $this->interviewCounter->count($applications, InterviewCounter::MAYBE),
         ));
     }
 
@@ -152,17 +174,14 @@ class AdmissionAdminController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
 
         if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
         $applications = [];
         if ($admissionPeriod !== null) {
-            $applications = $this->getDoctrine()
-                ->getRepository(Application::class)
-                ->findExistingApplicants($admissionPeriod);
+            $applications = $this->applicationRepository->findExistingApplicants($admissionPeriod);
         }
 
         return $this->render('admission_admin/existing_assistants_applications_table.html.twig', array(
@@ -183,10 +202,8 @@ class AdmissionAdminController extends BaseController
      */
     public function deleteApplicationByIdAction(Application $application)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $em->remove($application);
-        $em->flush();
+        $this->entityManager->remove($application);
+        $this->entityManager->flush();
 
         return new JsonResponse([
             'success' => true,
@@ -201,9 +218,8 @@ class AdmissionAdminController extends BaseController
      */
     public function deleteApplicationExistingAssistantAction(Application $application)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($application);
-        $em->flush();
+        $this->entityManager->remove($application);
+        $this->entityManager->flush();
 
         $this->addFlash('success', 'Søknaden ble slettet.');
 
@@ -226,19 +242,16 @@ class AdmissionAdminController extends BaseController
         // Get the ids from the form
         $applicationIds = array_map('intval', $request->request->get('application')['id']);
 
-
-        $em = $this->getDoctrine()->getManager();
-
         // Delete the applications
         foreach ($applicationIds as $id) {
-            $application = $this->getDoctrine()->getRepository(Application::class)->find($id);
+            $application = $this->entityManager->getRepository(Application::class)->find($id);
 
             if ($application !== null) {
-                $em->remove($application);
+                $this->entityManager->remove($application);
             }
         }
 
-        $em->flush();
+        $this->entityManager->flush();
 
         $this->addFlash('success', 'Søknadene ble slettet.');
 
@@ -249,12 +262,9 @@ class AdmissionAdminController extends BaseController
 
     public function createApplicationAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
         $department = $this->getUser()->getDepartment();
         $currentSemester = $this->getCurrentSemester();
-        $admissionPeriod = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $currentSemester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $currentSemester);
         if ($admissionPeriod === null) {
             throw new BadRequestHttpException();
         }
@@ -267,17 +277,17 @@ class AdmissionAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $user = $em->getRepository(User::class)->findOneBy(array('email' => $application->getUser()->getEmail()));
+            $user = $this->entityManager->getRepository(User::class)->findOneBy(array('email' => $application->getUser()->getEmail()));
             if ($user !== null) {
                 $application->setUser($user);
             }
             $application->setAdmissionPeriod($admissionPeriod);
-            $em->persist($application);
-            $em->flush();
+            $this->entityManager->persist($application);
+            $this->entityManager->flush();
 
             $this->addFlash('admission-notice', 'Søknaden er registrert.');
 
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->eventDispatcher->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
             return $this->redirectToRoute('register_applicant', array('id' => $department->getId()));
         }
@@ -309,8 +319,7 @@ class AdmissionAdminController extends BaseController
         $user = $this->getUser();
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
 
         if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
@@ -319,14 +328,11 @@ class AdmissionAdminController extends BaseController
         $applicationsWithTeamInterest = [];
         $teams = [];
         if ($admissionPeriod !== null) {
-            $applicationsWithTeamInterest = $this->getDoctrine()
-                ->getRepository(Application::class)
-                ->findApplicationByTeamInterestAndAdmissionPeriod($admissionPeriod);
-            $teams = $this->getDoctrine()->getRepository(Team::class)->findByTeamInterestAndAdmissionPeriod($admissionPeriod);
+            $applicationsWithTeamInterest = $this->applicationRepository->findApplicationByTeamInterestAndAdmissionPeriod($admissionPeriod);
+            $teams = $this->teamRepository->findByTeamInterestAndAdmissionPeriod($admissionPeriod);
         }
 
-        $possibleApplicants = $this->getDoctrine()
-            ->getRepository(TeamInterest::class)
+        $possibleApplicants = $this->entityManager->getRepository(TeamInterest::class)
             ->findBy(array('semester' => $semester, 'department' => $department));
 
         return $this->render('admission_admin/teamInterest.html.twig', array(

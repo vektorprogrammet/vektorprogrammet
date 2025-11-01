@@ -35,6 +35,45 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
  */
 class InterviewController extends BaseController
 {
+    private $interviewManager;
+    private $applicationManager;
+    private $teamRepository;
+    private $userRepository;
+    private $applicationRepository;
+    private $entityManager;
+    private $eventDispatcher;
+    private $reversedRoleHierarchy;
+
+    /**
+     * @param InterviewManagerInterface $interviewManager
+     * @param ApplicationManagerInterface $applicationManager
+     * @param TeamRepositoryInterface $teamRepository
+     * @param UserRepositoryInterface $userRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
+     * @param ReversedRoleHierarchy $reversedRoleHierarchy
+     */
+    public function __construct(
+        InterviewManagerInterface $interviewManager,
+        ApplicationManagerInterface $applicationManager,
+        TeamRepositoryInterface $teamRepository,
+        UserRepositoryInterface $userRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher,
+        ReversedRoleHierarchy $reversedRoleHierarchy
+    ) {
+        $this->interviewManager = $interviewManager;
+        $this->applicationManager = $applicationManager;
+        $this->teamRepository = $teamRepository;
+        $this->userRepository = $userRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
+        $this->reversedRoleHierarchy = $reversedRoleHierarchy;
+    }
+
     /**
      * @Route("/kontrollpanel/intervju/conduct/{id}",
      *     name="interview_conduct",
@@ -53,17 +92,17 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException();
         }
         $department = $this->getUser()->getDepartment();
-        $teams = $this->getDoctrine()->getRepository(Team::class)->findActiveByDepartment($department);
+        $teams = $this->teamRepository->findActiveByDepartment($department);
 
         if ($this->getUser() === $application->getUser()) {
             return $this->render('error/control_panel_error.html.twig', array('error' => 'Du kan ikke intervjue deg selv'));
         }
 
         // If the interview has not yet been conducted, create up to date answer objects for all questions in schema
-        $interview = $this->get(InterviewManager::class)->initializeInterviewAnswers($application->getInterview());
+        $interview = $this->interviewManager->initializeInterviewAnswers($application->getInterview());
 
         // Only admin and above, or the assigned interviewer, or the co interviewer should be able to conduct an interview
-        if (!$this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
+        if (!$this->interviewManager->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
@@ -78,16 +117,15 @@ class InterviewController extends BaseController
             $isNewInterview = !$interview->getInterviewed();
             $interview->setCancelled(false);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($interview);
-            $em->flush();
+            $this->entityManager->persist($interview);
+            $this->entityManager->flush();
             if ($isNewInterview && $form->get('saveAndSend')->isClicked()) {
                 $interview->setInterviewed(true);
                 $interview->setConducted(new DateTime());
-                $em->persist($interview);
-                $em->flush();
+                $this->entityManager->persist($interview);
+                $this->entityManager->flush();
 
-                $this->get('event_dispatcher')->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
+                $this->eventDispatcher->dispatch(InterviewConductedEvent::NAME, new InterviewConductedEvent($application));
             }
 
             return $this->redirectToRoute('applications_show_interviewed', array(
@@ -112,9 +150,8 @@ class InterviewController extends BaseController
     public function cancelAction(Interview $interview)
     {
         $interview->setCancelled(true);
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($interview);
-        $manager->flush();
+        $this->entityManager->persist($interview);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('applications_show_assigned');
     }
@@ -133,7 +170,7 @@ class InterviewController extends BaseController
         }
 
         // Only accessible for admin and above, or team members belonging to the same department as the interview
-        if (!$this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview) ||
+        if (!$this->interviewManager->loggedInUserCanSeeInterview($interview) ||
             $this->getUser() === $application->getUser()
         ) {
             throw $this->createAccessDeniedException();
@@ -157,9 +194,8 @@ class InterviewController extends BaseController
     {
         $interview->getApplication()->setInterview(null);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($interview);
-        $em->flush();
+        $this->entityManager->remove($interview);
+        $this->entityManager->flush();
 
         return $this->redirect($request->headers->get('referer'));
     }
@@ -180,18 +216,17 @@ class InterviewController extends BaseController
         $applicationIds = $request->request->get('application')['id'];
 
         // Get the application objects
-        $em = $this->getDoctrine()->getManager();
-        $applications = $em->getRepository(Application::class)->findBy(array('id' => $applicationIds));
+        $applications = $this->applicationRepository->findBy(array('id' => $applicationIds));
 
         // Delete the interviews
         foreach ($applications as $application) {
             $interview = $application->getInterview();
             if ($interview) {
-                $em->remove($interview);
+                $this->entityManager->remove($interview);
             }
             $application->setInterview(null);
         }
-        $em->flush();
+        $this->entityManager->flush();
 
         // AJAX response
         return new JsonResponse(array(
@@ -214,12 +249,12 @@ class InterviewController extends BaseController
             throw $this->createNotFoundException('Interview not found.');
         }
         // Only admin and above, or the assigned interviewer should be able to book an interview
-        if (!$this->get(InterviewManager::class)->loggedInUserCanSeeInterview($interview)) {
+        if (!$this->interviewManager->loggedInUserCanSeeInterview($interview)) {
             throw $this->createAccessDeniedException();
         }
 
         // Set the default data for the form
-        $defaultData = $this->get(InterviewManager::class)->getDefaultScheduleFormData($interview);
+        $defaultData = $this->interviewManager->getDefaultScheduleFormData($interview);
 
         $form = $this->createForm(ScheduleInterviewType::class, $defaultData);
 
@@ -255,13 +290,12 @@ class InterviewController extends BaseController
                 ));
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($interview);
-            $em->flush();
+            $this->entityManager->persist($interview);
+            $this->entityManager->flush();
 
             // Send email if the send button was clicked
             if ($form->get('saveAndSend')->isClicked()) {
-                $this->get('event_dispatcher')->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
+                $this->eventDispatcher->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
             }
 
             return $this->redirectToRoute('applications_show_assigned', array('department' => $application->getDepartment()->getId(), 'semester' => $application->getSemester()->getId()));
@@ -306,11 +340,10 @@ class InterviewController extends BaseController
         if ($id === null) {
             throw $this->createNotFoundException();
         }
-        $em = $this->getDoctrine()->getManager();
-        $application = $em->getRepository(Application::class)->find($id);
+        $application = $this->applicationRepository->find($id);
         $user = $application->getUser();
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([Roles::TEAM_MEMBER]);
+        $roles = $this->reversedRoleHierarchy->getParentRoles([Roles::TEAM_MEMBER]);
 
         $form = $this->createForm(CreateInterviewType::class, $application, [
             'roles' => $roles
@@ -320,8 +353,8 @@ class InterviewController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $application->getInterview()->setUser($user);
-            $em->persist($application);
-            $em->flush();
+            $this->entityManager->persist($application);
+            $this->entityManager->flush();
 
             return new JsonResponse(
                 array('success' => true)
@@ -352,29 +385,28 @@ class InterviewController extends BaseController
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
-        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([Roles::TEAM_MEMBER]);
+        $roles = $this->reversedRoleHierarchy->getParentRoles([Roles::TEAM_MEMBER]);
         $form = $this->createForm(CreateInterviewType::class, null, [
             'roles' => $roles
         ]);
 
         if ($request->isMethod('POST')) {
-            $em = $this->getDoctrine()->getManager();
             // Get the info from the form
             $data = $request->request->all();
             // Get objects from database
-            $interviewer = $em->getRepository(User::class)->findOneBy(array('id' => $data['interview']['interviewer']));
-            $schema = $em->getRepository(InterviewSchema::class)->findOneBy(array('id' => $data['interview']['interviewSchema']));
-            $applications = $em->getRepository(Application::class)->findBy(array('id' => $data['application']['id']));
+            $interviewer = $this->userRepository->findOneBy(array('id' => $data['interview']['interviewer']));
+            $schema = $this->entityManager->getRepository(InterviewSchema::class)->findOneBy(array('id' => $data['interview']['interviewSchema']));
+            $applications = $this->applicationRepository->findBy(array('id' => $data['application']['id']));
 
             // Update or create new interviews for all the given applications
             foreach ($applications as $application) {
-                $this->get(InterviewManager::class)->assignInterviewerToApplication($interviewer, $application);
+                $this->interviewManager->assignInterviewerToApplication($interviewer, $application);
 
                 $application->getInterview()->setInterviewSchema($schema);
-                $em->persist($application);
+                $this->entityManager->persist($application);
             }
 
-            $em->flush();
+            $this->entityManager->flush();
 
             $this->addFlash('success', 'Søknadene ble fordelt til ' . $interviewer);
 
@@ -399,9 +431,8 @@ class InterviewController extends BaseController
     public function acceptByResponseCodeAction(Interview $interview)
     {
         $interview->acceptInterview();
-        $manager = $this->getDoctrine()->getManager();
-        $manager->persist($interview);
-        $manager->flush();
+        $this->entityManager->persist($interview);
+        $this->entityManager->flush();
 
         $formattedDate = $interview->getScheduled()->format('d. M');
         $formattedTime = $interview->getScheduled()->format('H:i');
@@ -436,11 +467,10 @@ class InterviewController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $interview->requestNewTime();
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($interview);
-            $manager->flush();
+            $this->entityManager->persist($interview);
+            $this->entityManager->flush();
 
-            $this->get(InterviewManager::class)->sendRescheduleEmail($interview);
+            $this->interviewManager->sendRescheduleEmail($interview);
             $this->addFlash('success', "Forspørsel om ny intervjutid er sendt. Vi tar kontakt med deg når vi har funnet en ny intervjutid.");
 
             if ($interview->getUser() === $this->getUser()) {
@@ -463,7 +493,7 @@ class InterviewController extends BaseController
      */
     public function respondAction(Interview $interview)
     {
-        $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($interview->getApplication());
+        $applicationStatus = $this->applicationManager->getApplicationStatus($interview->getApplication());
 
         return $this->render('interview/response.html.twig', array(
             'interview' => $interview,
@@ -490,11 +520,10 @@ class InterviewController extends BaseController
             $data = $form->getData();
             $interview->setCancelMessage($data['message']);
             $interview->cancel();
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($interview);
-            $manager->flush();
+            $this->entityManager->persist($interview);
+            $this->entityManager->flush();
 
-            $this->get(InterviewManager::class)->sendCancelEmail($interview);
+            $this->interviewManager->sendCancelEmail($interview);
             $this->addFlash('success', "Du har kansellert intervjuet ditt.");
 
             if ($interview->getUser() === $this->getUser()) {
@@ -524,8 +553,7 @@ class InterviewController extends BaseController
         } catch (InvalidArgumentException $e) {
             throw new BadRequestHttpException();
         }
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
+        $this->entityManager->flush();
 
         return $this->redirectToRoute(
             'interview_schedule',
@@ -554,10 +582,9 @@ class InterviewController extends BaseController
         }
 
         $interview->setCoInterviewer($this->getUser());
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($interview);
-        $em->flush();
-        $this->get('event_dispatcher')->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+        $this->entityManager->persist($interview);
+        $this->entityManager->flush();
+        $this->eventDispatcher->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
 
         return $this->redirectToRoute('applications_show_assigned');
     }
@@ -566,7 +593,7 @@ class InterviewController extends BaseController
     {
         $semester = $interview->getApplication()->getSemester();
         $department = $interview->getApplication()->getDepartment();
-        $teamUsers = $this->getDoctrine()->getRepository(User::class)
+        $teamUsers = $this->userRepository
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(), $interview->getCoInterviewer())));
         $form = $this->createForm(AddCoInterviewerType::class, null, [
@@ -578,9 +605,8 @@ class InterviewController extends BaseController
             $data = $form->getData();
             $user = $data['user'];
             $interview->setCoInterviewer($user);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($interview);
-            $em->flush();
+            $this->entityManager->persist($interview);
+            $this->entityManager->flush();
 
             if ($request->get('from') === 'schedule') {
                 return $this->redirectToRoute('interview_schedule', array('id' => $interview->getApplication()->getId()));
@@ -601,9 +627,8 @@ class InterviewController extends BaseController
     public function clearCoInterviewerAction(Interview $interview)
     {
         $interview->setCoInterviewer(null);
-        $em = $this->getDoctrine()->getManager();
-        $em->persist($interview);
-        $em->flush();
+        $this->entityManager->persist($interview);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('applications_show_assigned');
     }

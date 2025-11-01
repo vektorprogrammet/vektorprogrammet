@@ -2,10 +2,13 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
+use AppBundle\Entity\AdmissionSubscriber;
+use AppBundle\Entity\Application;
 use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
-use AppBundle\Repository\Contract\AdmissionSubscriberRepositoryInterface;
 use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
 use AppBundle\Service\Contract\AdmissionStatisticsInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,26 +17,26 @@ use Symfony\Component\HttpFoundation\Response;
 class StandController extends BaseController
 {
     private $admissionStatistics;
-    private $applicationRepository;
     private $admissionPeriodRepository;
-    private $admissionSubscriberRepository;
+    private $applicationRepository;
+    private $entityManager;
 
     /**
      * @param AdmissionStatisticsInterface $admissionStatistics
-     * @param ApplicationRepositoryInterface $applicationRepository
      * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
-     * @param AdmissionSubscriberRepositoryInterface $admissionSubscriberRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         AdmissionStatisticsInterface $admissionStatistics,
-        ApplicationRepositoryInterface $applicationRepository,
         AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
-        AdmissionSubscriberRepositoryInterface $admissionSubscriberRepository
+        ApplicationRepositoryInterface $applicationRepository,
+        EntityManagerInterface $entityManager
     ) {
         $this->admissionStatistics = $admissionStatistics;
-        $this->applicationRepository = $applicationRepository;
         $this->admissionPeriodRepository = $admissionPeriodRepository;
-        $this->admissionSubscriberRepository = $admissionSubscriberRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -48,8 +51,8 @@ class StandController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
 
-        $subscribers = $this->admissionSubscriberRepository->findFromWebByDepartment($department);
-        $subscribersInDepartmentAndSemester = $this->admissionSubscriberRepository
+        $subscribers = $this->entityManager->getRepository(AdmissionSubscriber::class)->findFromWebByDepartment($department);
+        $subscribersInDepartmentAndSemester = $this->entityManager->getRepository(AdmissionSubscriber::class)
             ->findFromWebByDepartmentAndSemester($department, $semester);
         $subData = $this->admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInDepartmentAndSemester, $semester);
 

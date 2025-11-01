@@ -2,21 +2,37 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Semester;
-use AppBundle\Event\TeamInterestCreatedEvent;
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
 use AppBundle\Entity\TeamInterest;
+use AppBundle\Event\TeamInterestCreatedEvent;
 use AppBundle\Form\Type\TeamInterestType;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Annotation\Route;
 
 class TeamInterestController extends BaseController
 {
+    private $entityManager;
+    private $eventDispatcher;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
+    }
 
     /**
      * @Route(name="team_interest_form",
@@ -48,11 +64,10 @@ class TeamInterestController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($teamInterest);
-            $manager->flush();
+            $this->entityManager->persist($teamInterest);
+            $this->entityManager->flush();
 
-            $this->get('event_dispatcher')->dispatch(TeamInterestCreatedEvent::NAME, new TeamInterestCreatedEvent($teamInterest));
+            $this->eventDispatcher->dispatch(TeamInterestCreatedEvent::NAME, new TeamInterestCreatedEvent($teamInterest));
 
             return $this->redirectToRoute('team_interest_form', array(
                 'id' => $department->getId(),

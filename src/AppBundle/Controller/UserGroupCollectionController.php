@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AssistantHistory;
 use AppBundle\Entity\UserGroupCollection;
 use AppBundle\Form\Type\UserGroupCollectionType;
-use AppBundle\Service\UserGroupCollectionManager;
+use AppBundle\Repository\Contract\AssistantHistoryRepositoryInterface;
+use AppBundle\Service\Contract\UserGroupCollectionManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -13,6 +15,25 @@ use UnexpectedValueException;
 
 class UserGroupCollectionController extends BaseController
 {
+    private $entityManager;
+    private $assistantHistoryRepository;
+    private $userGroupCollectionManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
+     * @param UserGroupCollectionManagerInterface $userGroupCollectionManager
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        AssistantHistoryRepositoryInterface $assistantHistoryRepository,
+        UserGroupCollectionManagerInterface $userGroupCollectionManager
+    ) {
+        $this->entityManager = $entityManager;
+        $this->assistantHistoryRepository = $assistantHistoryRepository;
+        $this->userGroupCollectionManager = $userGroupCollectionManager;
+    }
+
     public function createUserGroupCollectionAction(Request $request, UserGroupCollection $userGroupCollection = null)
     {
         if ($isCreate = $userGroupCollection === null) {
@@ -20,10 +41,7 @@ class UserGroupCollectionController extends BaseController
         }
         $isEditable = !$userGroupCollection->isDeletable();
 
-        $em = $this->getDoctrine()->getManager();
-        $bolkNames = $em
-            ->getRepository(AssistantHistory::class)
-            ->findAllBolkNames();
+        $bolkNames = $this->assistantHistoryRepository->findAllBolkNames();
 
 
         $form = $this->createForm(UserGroupCollectionType::class, $userGroupCollection, array(
@@ -36,12 +54,12 @@ class UserGroupCollectionController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             if (!$isCreate) {
                 foreach ($userGroupCollection->getUserGroups() as $userGroup) {
-                    $em->remove($userGroup);
+                    $this->entityManager->remove($userGroup);
                 }
             }
 
             try {
-                $this->get(UserGroupCollectionManager::class)->initializeUserGroupCollection($userGroupCollection);
+                $this->userGroupCollectionManager->initializeUserGroupCollection($userGroupCollection);
                 $this->addFlash("success", "Brukergruppering laget");
                 return $this->redirect($this->generateUrl('usergroup_collections'));
             } catch (InvalidArgumentException $e) {
@@ -62,7 +80,7 @@ class UserGroupCollectionController extends BaseController
 
     public function userGroupCollectionsAction()
     {
-        $userGroupCollections =$this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll();
+        $userGroupCollections = $this->entityManager->getRepository(UserGroupCollection::class)->findAll();
 
         return $this->render('usergroup_collection/usergroup_collections.html.twig', array(
             'userGroupCollections' => $userGroupCollections,
@@ -76,9 +94,8 @@ class UserGroupCollectionController extends BaseController
             return new JsonResponse($response);
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($userGroupCollection);
-        $em->flush();
+        $this->entityManager->remove($userGroupCollection);
+        $this->entityManager->flush();
         $response['success'] = true;
         return new JsonResponse($response);
     }

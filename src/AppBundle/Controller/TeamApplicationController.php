@@ -8,18 +8,34 @@ use AppBundle\Entity\TeamMembership;
 use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Form\Type\TeamApplicationType;
 use AppBundle\Role\Roles;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class TeamApplicationController extends BaseController
 {
+    private $entityManager;
+    private $eventDispatcher;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param EventDispatcherInterface $eventDispatcher
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        EventDispatcherInterface $eventDispatcher
+    ) {
+        $this->entityManager = $entityManager;
+        $this->eventDispatcher = $eventDispatcher;
+    }
     public function showApplicationAction(TeamApplication $application)
     {
         $user = $this->getUser();
-        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeamAndUser($application->getTeam(), $user);
+        $activeUserHistoriesInTeam = $this->entityManager->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeamAndUser($application->getTeam(), $user);
         if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
@@ -31,9 +47,9 @@ class TeamApplicationController extends BaseController
 
     public function showAllApplicationsAction(Team $team)
     {
-        $applications = $this->getDoctrine()->getRepository(TeamApplication::class)->findByTeam($team);
+        $applications = $this->entityManager->getRepository(TeamApplication::class)->findByTeam($team);
         $user = $this->getUser();
-        $activeUserHistoriesInTeam = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeamAndUser($team, $user);
+        $activeUserHistoriesInTeam = $this->entityManager->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeamAndUser($team, $user);
         if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
@@ -46,10 +62,8 @@ class TeamApplicationController extends BaseController
 
     public function deleteTeamApplicationByIdAction(TeamApplication $teamApplication)
     {
-        $manager = $this->getDoctrine()->getManager();
-
-        $manager->remove($teamApplication);
-        $manager->flush();
+        $this->entityManager->remove($teamApplication);
+        $this->entityManager->flush();
 
         return $this->redirectToRoute('team_application_show_all', array('id' => $teamApplication->getTeam()->getId()));
     }
@@ -66,11 +80,10 @@ class TeamApplicationController extends BaseController
         if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplicationAndDeadline()) {
             $teamApplication->setTeam($team);
 
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($teamApplication);
-            $manager->flush();
+            $this->entityManager->persist($teamApplication);
+            $this->entityManager->flush();
 
-            $this->get('event_dispatcher')->dispatch(TeamApplicationCreatedEvent::NAME, new TeamApplicationCreatedEvent($teamApplication));
+            $this->eventDispatcher->dispatch(TeamApplicationCreatedEvent::NAME, new TeamApplicationCreatedEvent($teamApplication));
 
             return $this->redirectToRoute('team_application_confirmation', array(
                 'team_name' => $team->getName(),

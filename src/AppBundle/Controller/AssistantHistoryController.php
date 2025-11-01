@@ -3,24 +3,38 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AssistantHistory;
-use AppBundle\Role\Roles;
 use AppBundle\Form\Type\CreateAssistantHistoryType;
-use AppBundle\Service\LogService;
+use AppBundle\Role\Roles;
+use AppBundle\Service\Contract\LogServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class AssistantHistoryController extends BaseController
 {
+    private $entityManager;
+    private $logService;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param LogServiceInterface $logService
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        LogServiceInterface $logService
+    ) {
+        $this->entityManager = $entityManager;
+        $this->logService = $logService;
+    }
     public function deleteAction(AssistantHistory $assistantHistory)
     {
         if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
             $this->createAccessDeniedException();
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($assistantHistory);
-        $em->flush();
+        $this->entityManager->remove($assistantHistory);
+        $this->entityManager->flush();
 
-        $this->get(LogService::class)->info(
+        $this->logService->info(
             "{$this->getUser()} deleted {$assistantHistory->getUser()}'s assistant history on ".
             "{$assistantHistory->getSchool()->getName()} {$assistantHistory->getSemester()->getName()}"
         );
@@ -30,8 +44,6 @@ class AssistantHistoryController extends BaseController
 
     public function editAction(Request $request, AssistantHistory $assistantHistory)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $department = $assistantHistory->getUser()->getDepartment();
         $form = $this->createForm(CreateAssistantHistoryType::class, $assistantHistory, [
             'department' => $department
@@ -39,8 +51,8 @@ class AssistantHistoryController extends BaseController
         $form->handleRequest($request);
 
         if ($form -> isValid()) {
-            $em->persist($assistantHistory);
-            $em->flush();
+            $this->entityManager->persist($assistantHistory);
+            $this->entityManager->flush();
             return $this->redirectToRoute('participanthistory_show');
         }
         return $this->render("participant_history/participant_history_edit.html.twig", array(

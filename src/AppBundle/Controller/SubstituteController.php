@@ -3,11 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AdmissionPeriod;
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\Application;
+use AppBundle\Form\Type\ModifySubstituteType;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use AppBundle\Form\Type\ModifySubstituteType;
 
 /**
  * SubstituteController is the controller responsible for substitute assistants,
@@ -15,6 +18,24 @@ use AppBundle\Form\Type\ModifySubstituteType;
  */
 class SubstituteController extends BaseController
 {
+    private $admissionPeriodRepository;
+    private $applicationRepository;
+    private $entityManager;
+
+    /**
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->entityManager = $entityManager;
+    }
     /**
      * @param Request $request
      * @return Response|null
@@ -26,14 +47,11 @@ class SubstituteController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
 
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
 
         $substitutes = null;
         if ($admissionPeriod !== null) {
-            $substitutes = $this->getDoctrine()
-                ->getRepository(Application::class)
-                ->findSubstitutesByAdmissionPeriod($admissionPeriod);
+            $substitutes = $this->applicationRepository->findSubstitutesByAdmissionPeriod($admissionPeriod);
         }
 
         return $this->render('substitute/index.html.twig', array(
@@ -59,9 +77,8 @@ class SubstituteController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($application);
-            $em->flush();
+            $this->entityManager->persist($application);
+            $this->entityManager->flush();
 
             // Need some form of redirect. Will cause wrong database entries if the form is rendered again
             // after a valid submit, without remaking the form with up to date question objects from the database.

@@ -3,19 +3,43 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\PasswordReset;
-use AppBundle\Service\LogService;
-use AppBundle\Service\PasswordManager;
-use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Form\Type\NewPasswordType;
 use AppBundle\Form\Type\PasswordResetType;
+use AppBundle\Service\Contract\LogServiceInterface;
+use AppBundle\Service\Contract\PasswordManagerInterface;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 /**
  * Class PasswordResetController.
  */
 class PasswordResetController extends BaseController
 {
+    private $passwordManager;
+    private $logService;
+    private $entityManager;
+    private $session;
+
+    /**
+     * @param PasswordManagerInterface $passwordManager
+     * @param LogServiceInterface $logService
+     * @param EntityManagerInterface $entityManager
+     * @param SessionInterface $session
+     */
+    public function __construct(
+        PasswordManagerInterface $passwordManager,
+        LogServiceInterface $logService,
+        EntityManagerInterface $entityManager,
+        SessionInterface $session
+    ) {
+        $this->passwordManager = $passwordManager;
+        $this->logService = $logService;
+        $this->entityManager = $entityManager;
+        $this->session = $session;
+    }
     /**
      * @param Request $request
      *
@@ -33,33 +57,32 @@ class PasswordResetController extends BaseController
         //Checks if the form is valid
         if ($form->isSubmitted() && $form->isValid()) {
             $email = $form->get('email')->getData();
-            $passwordReset = $this->get(PasswordManager::class)->createPasswordResetEntity($email);
+            $passwordReset = $this->passwordManager->createPasswordResetEntity($email);
 
             if ($passwordReset === null) {
                 $errorMsg = "Det finnes ingen brukere med denne e-postadressen";
                 $ending   = '@vektorprogrammet.no';
                 if (strlen($email) > strlen($ending) && substr($email, strlen($email) - strlen($ending)) === $ending) {
                     $errorMsg = 'Kan ikke resette passord med "@vektorprogrammet.no"-adresse. Prøv din private e-post';
-                    $this->get(LogService::class)->info("Password reset rejected: Someone tried to reset password with a company email: $email");
+                    $this->logService->info("Password reset rejected: Someone tried to reset password with a company email: $email");
                 }
-                $this->get('session')->getFlashBag()->add('errorMessage', "<em>$errorMsg</em>");
+                $this->session->getFlashBag()->add('errorMessage', "<em>$errorMsg</em>");
             } elseif (!$passwordReset->getUser()->isActive()) {
                 $errorMsg = "Brukeren med denne e-postadressen er deaktivert. Ta kontakt med it@vektorprogrammet.no for å aktivere brukeren din.";
-                $this->get('session')->getFlashBag()->add('errorMessage', "<em>$errorMsg</em>");
-                $this->get(LogService::class)->notice("Password reset rejected: Someone tried to reset the password for an inactive account: $email");
+                $this->session->getFlashBag()->add('errorMessage', "<em>$errorMsg</em>");
+                $this->logService->notice("Password reset rejected: Someone tried to reset the password for an inactive account: $email");
             } else {
-                $this->get(LogService::class)->info("{$passwordReset->getUser()} requested a password reset");
-                $oldPasswordResets = $this->getDoctrine()->getRepository(PasswordReset::class)->findByUser($passwordReset->getUser());
-                $em = $this->getDoctrine()->getManager();
+                $this->logService->info("{$passwordReset->getUser()} requested a password reset");
+                $oldPasswordResets = $this->entityManager->getRepository(PasswordReset::class)->findByUser($passwordReset->getUser());
 
                 foreach ($oldPasswordResets as $oldPasswordReset) {
-                    $em->remove($oldPasswordReset);
+                    $this->entityManager->remove($oldPasswordReset);
                 }
 
-                $em->persist($passwordReset);
-                $em->flush();
+                $this->entityManager->persist($passwordReset);
+                $this->entityManager->flush();
 
-                $this->get(PasswordManager::class)->sendResetCode($passwordReset);
+                $this->passwordManager->sendResetCode($passwordReset);
 
                 return $this->redirectToRoute('reset_password_confirmation');
             }
@@ -83,16 +106,14 @@ class PasswordResetController extends BaseController
      */
     public function resetPasswordAction($resetCode, Request $request)
     {
-        $passwordManager = $this->get(PasswordManager::class);
-
-        if (!$passwordManager->resetCodeIsValid($resetCode) || $passwordManager->resetCodeHasExpired($resetCode)) {
+        if (!$this->passwordManager->resetCodeIsValid($resetCode) || $this->passwordManager->resetCodeHasExpired($resetCode)) {
             return $this->render('error/error_message.html.twig', array(
                 'title' => 'Ugyldig kode',
                 'message' => "Koden er ugyldig eller utløpt. Gå til <a href='{$this->generateUrl('reset_password')}'>Glemt passord?</a> for å få tilsendt ny link.",
             ));
         }
 
-        $passwordReset = $passwordManager->getPasswordResetByResetCode($resetCode);
+        $passwordReset = $this->passwordManager->getPasswordResetByResetCode($resetCode);
         $user = $passwordReset->getUser();
 
         $form = $this->createForm(NewPasswordType::class, $user);
@@ -100,12 +121,11 @@ class PasswordResetController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($passwordReset);
-            $em->persist($user);
-            $em->flush();
+            $this->entityManager->remove($passwordReset);
+            $this->entityManager->persist($user);
+            $this->entityManager->flush();
 
-            $this->get(LogService::class)->info("{$passwordReset->getUser()} successfully created a new password from the reset link");
+            $this->logService->info("{$passwordReset->getUser()} successfully created a new password from the reset link");
 
             return $this->redirectToRoute('login_route');
         }

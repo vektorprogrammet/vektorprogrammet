@@ -2,13 +2,28 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Service\LogService;
+use AppBundle\Service\Contract\LogServiceInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class GitHubController extends BaseController
 {
+    private $logService;
+    private $parameterBag;
+
+    /**
+     * @param LogServiceInterface $logService
+     * @param ParameterBagInterface $parameterBag
+     */
+    public function __construct(
+        LogServiceInterface $logService,
+        ParameterBagInterface $parameterBag
+    ) {
+        $this->logService = $logService;
+        $this->parameterBag = $parameterBag;
+    }
     private $repositoryName = 'vektorprogrammet/vektorprogrammet';
 
     public function deployAction(Request $request)
@@ -31,13 +46,13 @@ class GitHubController extends BaseController
 
         // Execute deploy script if there is a push to master
         if ($isCorrectRepository && $isMaster && $commit !== null) {
-            $this->get(LogService::class)->info(
+            $this->logService->info(
                 "New commit on master by *$committer*:\n".
                 "```$message```\n".
                 "Deploying changes..."
             );
-            shell_exec($this->getParameter('kernel.root_dir').'/../deploy.sh');
-            $this->get(LogService::class)->info('Deploy complete');
+            shell_exec($this->parameterBag->get('kernel.root_dir').'/../deploy.sh');
+            $this->logService->info('Deploy complete');
 
             return new JsonResponse(['status' => 'Deployed']);
         } else {

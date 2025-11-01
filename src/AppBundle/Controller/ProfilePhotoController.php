@@ -4,12 +4,27 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
 use AppBundle\Role\Roles;
-use AppBundle\Service\FileUploader;
-use Symfony\Component\HttpFoundation\Request;
+use AppBundle\Service\Contract\FileUploaderInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 class ProfilePhotoController extends BaseController
 {
+    private $fileUploader;
+    private $entityManager;
+
+    /**
+     * @param FileUploaderInterface $fileUploader
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(
+        FileUploaderInterface $fileUploader,
+        EntityManagerInterface $entityManager
+    ) {
+        $this->fileUploader = $fileUploader;
+        $this->entityManager = $entityManager;
+    }
     public function showEditProfilePhotoAction(User $user)
     {
         $loggedInUser = $this->getUser();
@@ -29,15 +44,15 @@ class ProfilePhotoController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        $picturePath = $this->get(FileUploader::class)->uploadProfileImage($request);
+        $picturePath = $this->fileUploader->uploadProfileImage($request);
         if (!$picturePath) {
             return new JsonResponse("Kunne ikke laste inn bildet", 400);
         }
 
-        $this->get(FileUploader::class)->deleteProfileImage($user->getPicturePath());
+        $this->fileUploader->deleteProfileImage($user->getPicturePath());
         $user->setPicturePath($picturePath);
 
-        $this->getDoctrine()->getManager()->flush();
+        $this->entityManager->flush();
 
         return new JsonResponse("Upload OK");
     }

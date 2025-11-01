@@ -6,6 +6,9 @@ use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
+use AppBundle\Repository\Contract\SemesterRepositoryInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +20,24 @@ use Symfony\Component\Serializer\Serializer;
 
 class PartyController extends AbstractFOSRestController
 {
+    private $admissionPeriodRepository;
+    private $applicationRepository;
+    private $semesterRepository;
+
+    /**
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param SemesterRepositoryInterface $semesterRepository
+     */
+    public function __construct(
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        SemesterRepositoryInterface $semesterRepository
+    ) {
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->semesterRepository = $semesterRepository;
+    }
     const NUM_APPLICATIONS = 5;
 
     /**
@@ -110,9 +131,7 @@ class PartyController extends AbstractFOSRestController
     {
         $admissionPeriod = $this->getAdmissionPeriod($department);
 
-        return $this->getDoctrine()
-            ->getRepository(Application::class)
-            ->findByAdmissionPeriod($admissionPeriod);
+        return $this->applicationRepository->findByAdmissionPeriod($admissionPeriod);
     }
 
     /**
@@ -123,10 +142,8 @@ class PartyController extends AbstractFOSRestController
      */
     private function getAdmissionPeriod(Department $department): AdmissionPeriod
     {
-        $semester = $this->getDoctrine()->getRepository(Semester::class)->findOrCreateCurrentSemester();
-        $admissionPeriod = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $semester = $this->semesterRepository->findOrCreateCurrentSemester();
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
         if ($admissionPeriod === null) {
             throw new NotFoundHttpException();
         }

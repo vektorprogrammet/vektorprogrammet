@@ -3,13 +3,14 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\SupportTicket;
 use AppBundle\Event\SupportTicketCreatedEvent;
 use AppBundle\Form\Type\SupportTicketType;
 use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
-use AppBundle\Repository\Contract\ExecutiveBoardRepositoryInterface;
 use AppBundle\Service\Contract\GeoLocationInterface;
 use AppBundle\Service\Contract\LogServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -18,30 +19,30 @@ use Symfony\Component\Routing\Annotation\Route;
 class ContactController extends BaseController
 {
     private $geoLocation;
-    private $logService;
     private $departmentRepository;
+    private $logService;
     private $eventDispatcher;
-    private $executiveBoardRepository;
+    private $entityManager;
 
     /**
      * @param GeoLocationInterface $geoLocation
-     * @param LogServiceInterface $logService
      * @param DepartmentRepositoryInterface $departmentRepository
+     * @param LogServiceInterface $logService
      * @param EventDispatcherInterface $eventDispatcher
-     * @param ExecutiveBoardRepositoryInterface $executiveBoardRepository
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         GeoLocationInterface $geoLocation,
-        LogServiceInterface $logService,
         DepartmentRepositoryInterface $departmentRepository,
+        LogServiceInterface $logService,
         EventDispatcherInterface $eventDispatcher,
-        ExecutiveBoardRepositoryInterface $executiveBoardRepository
+        EntityManagerInterface $entityManager
     ) {
         $this->geoLocation = $geoLocation;
-        $this->logService = $logService;
         $this->departmentRepository = $departmentRepository;
+        $this->logService = $logService;
         $this->eventDispatcher = $eventDispatcher;
-        $this->executiveBoardRepository = $executiveBoardRepository;
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -58,7 +59,7 @@ class ContactController extends BaseController
      *
      * @return Response
      */
-    public function indexAction(Request $request, ?Department $department = null)
+    public function indexAction(Request $request, Department $department = null)
     {
         if ($department === null) {
             $department = $this->geoLocation
@@ -76,12 +77,13 @@ class ContactController extends BaseController
             $this->logService->error("Could not send support ticket. Department was null.\n$supportTicket");
         }
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->eventDispatcher->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
+            $this->eventDispatcher
+            ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
 
             return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));
         }
 
-        $board = $this->executiveBoardRepository->findBoard();
+        $board = $this->entityManager->getRepository(ExecutiveBoard::class)->findBoard();
         $scrollToForm = $form->isSubmitted() && !$form->isValid();
 
         return $this->render('contact/index.html.twig', array(

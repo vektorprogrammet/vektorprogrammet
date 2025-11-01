@@ -5,7 +5,9 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\AdmissionSubscriber;
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\AdmissionSubscriberType;
-use AppBundle\Service\AdmissionNotifier;
+use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
+use AppBundle\Service\Contract\AdmissionNotifierInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -15,6 +17,24 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdmissionSubscriberController extends BaseController
 {
+    private $admissionNotifier;
+    private $entityManager;
+    private $departmentRepository;
+
+    /**
+     * @param AdmissionNotifierInterface $admissionNotifier
+     * @param EntityManagerInterface $entityManager
+     * @param DepartmentRepositoryInterface $departmentRepository
+     */
+    public function __construct(
+        AdmissionNotifierInterface $admissionNotifier,
+        EntityManagerInterface $entityManager,
+        DepartmentRepositoryInterface $departmentRepository
+    ) {
+        $this->admissionNotifier = $admissionNotifier;
+        $this->entityManager = $entityManager;
+        $this->departmentRepository = $departmentRepository;
+    }
     /**
      * @Route("/interesseliste/{shortName}", name="interest_list", requirements={"shortName"="\w+"})
      * @Route("/interesseliste/{id}", name="interest_list_by_id", requirements={"id"="\d+"})
@@ -34,7 +54,7 @@ class AdmissionSubscriberController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             try {
-                $this->get(AdmissionNotifier::class)->createSubscription($department, $subscriber->getEmail(), $subscriber->getInfoMeeting());
+                $this->admissionNotifier->createSubscription($department, $subscriber->getEmail(), $subscriber->getInfoMeeting());
                 $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
             } catch (InvalidArgumentException $e) {
                 $this->addFlash('danger', 'Kunne ikke melde '.$subscriber->getEmail().' på interesselisten. Vennligst prøv igjen.');
@@ -64,13 +84,13 @@ class AdmissionSubscriberController extends BaseController
         if (!$email || !$departmentId) {
             return new JsonResponse("Email or department missing", 400);
         }
-        $department = $this->getDoctrine()->getRepository(Department::class)->find($departmentId);
+        $department = $this->entityManager->getRepository(Department::class)->find($departmentId);
         if (!$department) {
             return new JsonResponse("Invalid department", 400);
         }
 
         try {
-            $this->get(AdmissionNotifier::class)->createSubscription($department, $email, $infoMeeting);
+            $this->admissionNotifier->createSubscription($department, $email, $infoMeeting);
         } catch (InvalidArgumentException $e) {
             return new JsonResponse($e->getMessage(), 400);
         }
@@ -86,16 +106,15 @@ class AdmissionSubscriberController extends BaseController
      */
     public function unsubscribeAction($code)
     {
-        $subscriber = $this->getDoctrine()->getRepository(AdmissionSubscriber::class)->findByUnsubscribeCode($code);
+        $subscriber = $this->entityManager->getRepository(AdmissionSubscriber::class)->findByUnsubscribeCode($code);
         $this->addFlash('title', 'Opptaksvarsel - Avmelding');
         if (!$subscriber) {
             $this->addFlash('message', "Du vil ikke lengre motta varsler om opptak");
         } else {
             $email = $subscriber->getEmail();
             $this->addFlash('message', "Du vil ikke lengre motta varsler om opptak på $email");
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($subscriber);
-            $em->flush();
+            $this->entityManager->remove($subscriber);
+            $this->entityManager->flush();
         }
 
         return $this->redirectToRoute('confirmation');

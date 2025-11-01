@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AdmissionPeriod;
 use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
 use AppBundle\Service\Contract\ApplicationDataInterface;
 use AppBundle\Service\Contract\AssistantHistoryDataInterface;
@@ -29,7 +30,6 @@ class ApplicationStatisticsController extends BaseController
         $this->assistantHistoryData = $assistantHistoryData;
         $this->applicationData = $applicationData;
     }
-
     /**
      * @param Request $request
      * @return Response
@@ -41,17 +41,15 @@ class ApplicationStatisticsController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
 
-        $assistantHistoryData = $this->assistantHistoryData;
-        $assistantHistoryData->setSemester($semester)->setDepartment($department);
+        $this->assistantHistoryData->setSemester($semester)->setDepartment($department);
 
-        $applicationData = $this->applicationData;
         if ($admissionPeriod !== null) {
-            $applicationData->setAdmissionPeriod($admissionPeriod);
+            $this->applicationData->setAdmissionPeriod($admissionPeriod);
         }
 
         return $this->render('statistics/statistics.html.twig', array(
-            'applicationData' => $applicationData,
-            'assistantHistoryData' => $assistantHistoryData,
+            'applicationData' => $this->applicationData,
+            'assistantHistoryData' => $this->assistantHistoryData,
             'semester' => $semester,
             'department' => $department,
         ));

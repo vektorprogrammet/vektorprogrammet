@@ -3,17 +3,33 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Signature;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SignatureController extends BaseController
 {
+    private $entityManager;
+    private $parameterBag;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param ParameterBagInterface $parameterBag
+     */
+    public function __construct(
+        EntityManagerInterface $entityManager,
+        ParameterBagInterface $parameterBag
+    ) {
+        $this->entityManager = $entityManager;
+        $this->parameterBag = $parameterBag;
+    }
     public function showSignatureImageAction($imageName)
     {
         $user = $this->getUser();
 
-        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($user);
+        $signature = $this->entityManager->getRepository(Signature::class)->findByUser($user);
         if ($signature === null) {
             throw new NotFoundHttpException('Signature not found');
         }
@@ -25,6 +41,6 @@ class SignatureController extends BaseController
             throw new AccessDeniedException();
         }
 
-        return new BinaryFileResponse($this->container->getParameter('signature_images').'/'.$signatureFileName);
+        return new BinaryFileResponse($this->parameterBag->get('signature_images').'/'.$signatureFileName);
     }
 }

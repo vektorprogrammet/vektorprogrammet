@@ -1,14 +1,23 @@
 <?php
 
-
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\ChangeLogItem;
 use AppBundle\Form\Type\ChangeLogType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ChangeLogController extends BaseController
 {
+    private $entityManager;
+
+    /**
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
     public function createChangeLogAction(Request $request)
     {
         $changeLogItem = new ChangeLogItem();
@@ -16,9 +25,8 @@ class ChangeLogController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($changeLogItem);
-            $em->flush();
+            $this->entityManager->persist($changeLogItem);
+            $this->entityManager->flush();
 
             return $this->redirect($this->generateUrl('changelog_show_all'));
         }
@@ -50,9 +58,8 @@ class ChangeLogController extends BaseController
 
     public function deleteChangeLogAction(ChangeLogItem $changeLogItem)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($changeLogItem);
-        $em->flush();
+        $this->entityManager->remove($changeLogItem);
+        $this->entityManager->flush();
 
         $this->addFlash("success", "\"".$changeLogItem->getTitle()."\" ble slettet");
 
@@ -61,8 +68,7 @@ class ChangeLogController extends BaseController
 
     public function showAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $changeLogItems = $em->getRepository(ChangeLogItem::class)->findAllOrderedByDate();
+        $changeLogItems = $this->entityManager->getRepository(ChangeLogItem::class)->findAllOrderedByDate();
         $changeLogItems = array_reverse($changeLogItems);
 
         return $this->render('changelog/changelog_show_all.html.twig', array('changeLogItems' => $changeLogItems));

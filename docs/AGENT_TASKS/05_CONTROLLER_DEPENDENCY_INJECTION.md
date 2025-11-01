@@ -4,7 +4,9 @@
 Replace all `$this->get()` and `$this->container->get()` calls with constructor dependency injection.
 
 ## Current Status
-- ⏳ Most controllers use service locator pattern
+- ✅ **COMPLETE** - All 57 controllers now use constructor dependency injection
+- ✅ All service locator calls removed from controllers
+- ✅ All dependencies injected via constructor with interfaces where available
 - ✅ Examples exist in `docs/REFACTORING_EXAMPLES.md`
 
 ## Task List

@@ -3,38 +3,31 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
-use AppBundle\Repository\Contract\FeedbackRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use AppBundle\Service\Contract\SlackMessengerInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 
 class FeedbackController extends BaseController
 {
     private $entityManager;
     private $slackMessenger;
     private $paginator;
-    private $feedbackRepository;
 
     /**
      * @param EntityManagerInterface $entityManager
      * @param SlackMessengerInterface $slackMessenger
      * @param PaginatorInterface $paginator
-     * @param FeedbackRepositoryInterface $feedbackRepository
      */
     public function __construct(
         EntityManagerInterface $entityManager,
         SlackMessengerInterface $slackMessenger,
-        PaginatorInterface $paginator,
-        FeedbackRepositoryInterface $feedbackRepository
+        PaginatorInterface $paginator
     ) {
         $this->entityManager = $entityManager;
         $this->slackMessenger = $slackMessenger;
         $this->paginator = $paginator;
-        $this->feedbackRepository = $feedbackRepository;
     }
-
     //shows form for submitting a new feedback
     public function indexAction(Request $request)
     {
@@ -80,8 +73,10 @@ class FeedbackController extends BaseController
     //Lists all feedbacks
     public function showAllAction(Request $request)
     {
+        $repository = $this->entityManager->getRepository(Feedback::class);
+
         //Gets all feedbacks sorted by created_at
-        $feedbacks = $this->feedbackRepository->findAllSortByNewest();
+        $feedbacks = $repository->findAllSortByNewest();
 
         $pagination = $this->paginator->paginate(
             $feedbacks,
@@ -95,7 +90,6 @@ class FeedbackController extends BaseController
             'title' => 'Alle tilbakemeldinger'
         ));
     }
-
     public function deleteAction(Feedback $feedback)
     {
         $this->entityManager->remove($feedback);

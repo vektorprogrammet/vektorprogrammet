@@ -10,14 +10,58 @@ use AppBundle\Entity\Receipt;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\User;
 use AppBundle\Form\Type\FeedbackType;
-use AppBundle\Service\AdmissionStatistics;
-use AppBundle\Service\Sorter;
+use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
+use AppBundle\Repository\Contract\ReceiptRepositoryInterface;
+use AppBundle\Repository\Contract\SurveyRepositoryInterface;
+use AppBundle\Repository\Contract\UserRepositoryInterface;
+use AppBundle\Service\Contract\AdmissionStatisticsInterface;
+use AppBundle\Service\Contract\SorterInterface;
 use AppBundle\Utils\ReceiptStatistics;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class WidgetController extends BaseController
 {
+    private $admissionPeriodRepository;
+    private $applicationRepository;
+    private $userRepository;
+    private $receiptRepository;
+    private $surveyRepository;
+    private $entityManager;
+    private $sorter;
+    private $admissionStatistics;
+
+    /**
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param UserRepositoryInterface $userRepository
+     * @param ReceiptRepositoryInterface $receiptRepository
+     * @param SurveyRepositoryInterface $surveyRepository
+     * @param EntityManagerInterface $entityManager
+     * @param SorterInterface $sorter
+     * @param AdmissionStatisticsInterface $admissionStatistics
+     */
+    public function __construct(
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        UserRepositoryInterface $userRepository,
+        ReceiptRepositoryInterface $receiptRepository,
+        SurveyRepositoryInterface $surveyRepository,
+        EntityManagerInterface $entityManager,
+        SorterInterface $sorter,
+        AdmissionStatisticsInterface $admissionStatistics
+    ) {
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->userRepository = $userRepository;
+        $this->receiptRepository = $receiptRepository;
+        $this->surveyRepository = $surveyRepository;
+        $this->entityManager = $entityManager;
+        $this->sorter = $sorter;
+        $this->admissionStatistics = $admissionStatistics;
+    }
     /**
      * @param Request $request
      * @return Response|null
@@ -26,13 +70,11 @@ class WidgetController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
         $applicationsAssignedToUser = [];
 
         if ($admissionPeriod !== null) {
-            $applicationRepo = $this->getDoctrine()->getRepository(Application::class);
-            $applicationsAssignedToUser = $applicationRepo->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
+            $applicationsAssignedToUser = $this->applicationRepository->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
         }
 
         return $this->render('widgets/interviews_widget.html.twig', ['applications' => $applicationsAssignedToUser]);
@@ -40,13 +82,12 @@ class WidgetController extends BaseController
 
     public function receiptsAction()
     {
-        $usersWithReceipts = $this->getDoctrine()->getRepository(User::class)->findAllUsersWithReceipts();
-        $sorter = $this->container->get(Sorter::class);
+        $usersWithReceipts = $this->userRepository->findAllUsersWithReceipts();
 
-        $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
-        $sorter->sortUsersByReceiptStatus($usersWithReceipts);
+        $this->sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
+        $this->sorter->sortUsersByReceiptStatus($usersWithReceipts);
 
-        $pendingReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_PENDING);
+        $pendingReceipts = $this->receiptRepository->findByStatus(Receipt::STATUS_PENDING);
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
 
         $hasReceipts = !empty($pendingReceipts);
@@ -68,16 +109,11 @@ class WidgetController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $appData = null;
 
-        $admissionStatistics = $this->get(AdmissionStatistics::class);
-
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
-            ->findOneByDepartmentAndSemester($department, $semester);
+        $admissionPeriod = $this->admissionPeriodRepository->findOneByDepartmentAndSemester($department, $semester);
         $applicationsInSemester = [];
         if ($admissionPeriod !== null) {
-            $applicationsInSemester = $this->getDoctrine()
-                ->getRepository(Application::class)
-                ->findByAdmissionPeriod($admissionPeriod);
-            $appData = $admissionStatistics->generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
+            $applicationsInSemester = $this->applicationRepository->findByAdmissionPeriod($admissionPeriod);
+            $appData = $this->admissionStatistics->generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
         }
 
         return $this->render('widgets/application_graph_widget.html.twig', [
@@ -96,9 +132,7 @@ class WidgetController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $surveys = [];
         if ($semester !== null) {
-            $surveys = $this->getDoctrine()
-                ->getRepository(Survey::class)
-                ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
+            $surveys = $this->surveyRepository->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
         }
 
         return $this->render('widgets/available_surveys_widget.html.twig', [
@@ -108,7 +142,7 @@ class WidgetController extends BaseController
 
     public function changelogAction()
     {
-        $changeLogItems = $this->getDoctrine()->getRepository(ChangeLogItem::class)->findAllOrderedByDate();
+        $changeLogItems = $this->entityManager->getRepository(ChangeLogItem::class)->findAllOrderedByDate();
         $changeLogItems = array_reverse($changeLogItems);
 
         return $this->render('widgets/changelog_widget.html.twig', [
