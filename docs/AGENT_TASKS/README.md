@@ -4,78 +4,110 @@ This directory contains detailed task specifications for agents to work on refac
 
 ## Available Tasks
 
+### ✅ Foundation Phase (Complete)
+
 ### 1. Repository Interfaces
 **File:** `01_REPOSITORY_INTERFACES.md`
 **Priority:** High
-**Status:** ⏳ In Progress
-
-Create repository interfaces for all major entities. Two examples already exist (Article, User).
-
-**Next Steps:**
-- Create interfaces for Department, AdmissionPeriod, Application, Semester, AssistantHistory
-- Then continue with remaining repositories
+**Status:** ✅ 84% Complete (32/38 interfaces created)
 
 ### 2. Update Repositories
 **File:** `02_UPDATE_REPOSITORIES.md`
-**Priority:** High (after interfaces created)
-**Status:** ⏳ Pending
-
-Update existing Doctrine repositories to implement their interfaces.
-
-**Prerequisites:**
-- Corresponding interface must exist (from Task 01)
+**Priority:** High
+**Status:** ✅ Complete (all created interfaces implemented)
 
 ### 3. Service Interfaces
 **File:** `03_SERVICE_INTERFACES.md`
 **Priority:** High
-**Status:** ⏳ Pending
+**Status:** ✅ Complete (32/32 services have interfaces)
 
-Create interfaces for all 32 services. Two already exist (Mailer, SmsSender).
-
-**Next Steps:**
-- Start with high-priority services used by controllers
-- Work through medium and low priority
-
-### 4. Extract Business Logic
-**File:** `04_EXTRACT_BUSINESS_LOGIC.md`
-**Priority:** High
-**Status:** ⏳ Pending
-
-Extract complex business logic from controllers into service classes.
-
-**Examples Provided:**
-- HomeController → HomeService
-- UserController → PartnerService
-- ArticleController → ArticleService (pattern)
+### ✅ Injection Phase (Complete)
 
 ### 5. Controller Dependency Injection
 **File:** `05_CONTROLLER_DEPENDENCY_INJECTION.md`
-**Priority:** Medium (after services/repositories refactored)
-**Status:** ⏳ Pending
+**Priority:** Medium
+**Status:** ✅ Complete (57/57 controllers refactored)
 
-Replace service locator pattern (`$this->get()`) with constructor injection.
+---
 
-**Prerequisites:**
-- Repository interfaces created
-- Service interfaces created
-- Business logic extracted (where applicable)
+### ⏳ Extraction Phase (In Progress)
+
+### 4. Extract Business Logic - High Priority
+**File:** `04_EXTRACT_BUSINESS_LOGIC.md`
+**Priority:** High
+**Status:** ✅ Delegated (9 controllers)
+
+### 6. Extract Business Logic - Medium Priority
+**File:** `06_EXTRACT_MEDIUM_PRIORITY_LOGIC.md`
+**Priority:** Medium
+**Status:** ⏳ Ready for Delegation (8 controllers)
+
+Extract business logic from:
+- CertificateController
+- SchoolAdminController
+- ArticleAdminController
+- DepartmentController
+- SemesterController
+- FieldOfStudyController
+- ExecutiveBoardController
+- AdmissionPeriodController
+
+### 8. Analyze Additional Controllers
+**File:** `08_ANALYZE_ADDITIONAL_CONTROLLERS.md`
+**Priority:** Medium
+**Status:** ⏳ Ready (5+ controllers)
+
+Analyze for extraction opportunities:
+- AssistantSchedulingController
+- ExistingUserAdmissionController
+- SubstituteController
+- TeamApplicationController
+- WidgetController
+
+### 9. Extract Business Logic - Low Priority
+**File:** `09_EXTRACT_LOW_PRIORITY_LOGIC.md`
+**Priority:** Low
+**Status:** ⏳ Ready (7 controllers)
+
+Review low-priority controllers for any extraction opportunities.
+
+---
+
+### ⏳ Finalization Phase (Ready)
+
+### 7. Remaining Repository Interfaces
+**File:** `07_REMAINING_REPOSITORY_INTERFACES.md`
+**Priority:** Low
+**Status:** ⏳ Ready (6 repositories remaining)
+
+Complete repository abstraction:
+- CertificateRequestRepository
+- InfoMeetingRepository
+- PositionRepository
+- SponsorRepository
+- SurveyAnswerRepository
+- UserGroupRepository/UserGroupCollectionRepository
 
 ## Workflow Recommendation
 
-### Phase 1: Foundation (Do First)
-1. **Agent 01:** Create repository interfaces (all high priority ones)
-2. **Agent 02:** Update repositories to implement interfaces
-3. **Agent 03:** Create service interfaces (high priority services first)
+### ✅ Phase 1: Foundation (Complete)
+1. **Agent 01:** Create repository interfaces ✅ (84% - 32/38)
+2. **Agent 02:** Update repositories to implement interfaces ✅
+3. **Agent 03:** Create service interfaces ✅ (100% - 32/32)
 
-### Phase 2: Extraction (Do in Parallel)
-4. **Agent 04:** Extract business logic from controllers
-   - Can work on different controllers in parallel
-   - Start with: HomeController, UserController, ArticleController
+### ✅ Phase 3: Injection (Complete)
+5. **Agent 05:** Refactor controllers to use dependency injection ✅ (100% - 57/57)
 
-### Phase 3: Injection (After Phase 1 & 2)
-5. **Agent 05:** Refactor controllers to use dependency injection
-   - Requires interfaces from Phase 1
-   - Benefits from services extracted in Phase 2
+### ⏳ Phase 2: Extraction (In Progress)
+4. **Agent 04:** Extract business logic from high-priority controllers ✅ Delegated (9 controllers)
+6. **Agent 06:** Extract business logic from medium-priority controllers ⏳ Ready (8 controllers)
+8. **Agent 08:** Analyze additional controllers ⏳ Ready (5+ controllers)
+9. **Agent 09:** Review low-priority controllers ⏳ Ready (7 controllers)
+
+### ⏳ Phase 4: Finalization (Ready)
+7. **Agent 07:** Complete remaining repository interfaces ⏳ Ready (6 repositories)
+
+**Current Focus:** Business logic extraction from medium-priority controllers
 
 ## Task Completion Checklist
 
