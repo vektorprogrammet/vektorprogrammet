@@ -13,6 +13,13 @@ use AppBundle\Entity\User;
 interface ExecutiveBoardMembershipRepositoryInterface
 {
     /**
+     * Find all executive board memberships.
+     *
+     * @return ExecutiveBoardMembership[]
+     */
+    public function findAll(): array;
+
+    /**
      * Find executive board memberships by user.
      *
      * @param User $user

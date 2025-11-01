@@ -11,6 +11,7 @@ use AppBundle\Event\TeamMembershipEvent;
 use AppBundle\Form\Type\CreateTeamMembershipType;
 use AppBundle\Form\Type\CreateTeamType;
 use AppBundle\Repository\Contract\TeamRepositoryInterface;
+use AppBundle\Service\Contract\TeamAdminServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
@@ -22,20 +23,24 @@ class TeamAdminController extends BaseController
     private $teamRepository;
     private $entityManager;
     private $eventDispatcher;
+    private $teamAdminService;
 
     /**
      * @param TeamRepositoryInterface $teamRepository
      * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
+     * @param TeamAdminServiceInterface $teamAdminService
      */
     public function __construct(
         TeamRepositoryInterface $teamRepository,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        TeamAdminServiceInterface $teamAdminService
     ) {
         $this->teamRepository = $teamRepository;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->teamAdminService = $teamAdminService;
     }
     /**
      * @Route("/kontrollpanel/team/avdeling/{id}",
@@ -48,20 +53,17 @@ class TeamAdminController extends BaseController
      *
      * @return Response
      */
-    public function showAction(Department $department = null)
+    public function showAction(?Department $department = null)
     {
         if ($department === null) {
             $department = $this->getUser()->getDepartment();
         }
 
-        // Find teams that are connected to the department of the user
-        $activeTeams   = $this->teamRepository->findActiveByDepartment($department);
-        $inactiveTeams = $this->teamRepository->findInactiveByDepartment($department);
+        $teamsData = $this->teamAdminService->getTeamsData($department);
 
-        // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
-            'active_teams'   => $activeTeams,
-            'inactive_teams' => $inactiveTeams,
+            'active_teams'   => $teamsData['active_teams'],
+            'inactive_teams' => $teamsData['inactive_teams'],
             'department'     => $department,
         ));
     }
@@ -132,39 +134,9 @@ class TeamAdminController extends BaseController
 
     public function showSpecificTeamAction(Team $team)
     {
-        // Find all TeamMembership entities based on team
-        $activeTeamMemberships   = $this->entityManager->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeam($team);
-        $inActiveTeamMemberships = $this->entityManager->getRepository(TeamMembership::class)->findInactiveTeamMembershipsByTeam($team);
-        usort($activeTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
-        usort($inActiveTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
+        $teamData = $this->teamAdminService->getSpecificTeamData($team, $this->getUser());
 
-        $user                      = $this->getUser();
-        $currentUserTeamMembership = $this->entityManager->getRepository(TeamMembership::class)->findActiveTeamMembershipsByUser($user);
-        $isUserInTeam              = false;
-        foreach ($currentUserTeamMembership as $wh) {
-            if (in_array($wh, $activeTeamMemberships)) {
-                $isUserInTeam = true;
-            }
-        }
-
-        // Return the view with suitable variables
-        return $this->render('team_admin/specific_team.html.twig', array(
-            'team'                    => $team,
-            'activeTeamMemberships'   => $activeTeamMemberships,
-            'inActiveTeamMemberships' => $inActiveTeamMemberships,
-            'isUserInTeam'            => $isUserInTeam,
-        ));
-    }
-
-    /**
-     * @param TeamMembership $a
-     * @param TeamMembership $b
-     *
-     * @return bool
-     */
-    private function sortTeamMembershipsByEndDate($a, $b)
-    {
-        return $a->getStartSemester()->getStartDate() < $b->getStartSemester()->getStartDate();
+        return $this->render('team_admin/specific_team.html.twig', $teamData);
     }
 
     public function updateTeamAction(Request $request, Team $team)
@@ -273,13 +245,9 @@ class TeamAdminController extends BaseController
 
     public function deleteTeamByIdAction(Team $team)
     {
-        foreach ($team->getTeamMemberships() as $teamMembership) {
-            $teamMembership->setDeletedTeamName($team->getName());
-            $this->entityManager->persist($teamMembership);
-        }
+        $this->teamAdminService->deleteTeam($team);
 
-        $this->entityManager->remove($team);
-        $this->entityManager->flush();
+        $this->eventDispatcher->dispatch(TeamEvent::DELETED, new TeamEvent($team, $team->getEmail()));
 
         return $this->redirectToRoute("teamadmin_show", [ "id" => $team->getDepartment()->getId() ]);
     }

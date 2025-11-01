@@ -44,6 +44,15 @@ services:
     AppBundle\Repository\Contract\SchoolRepositoryInterface:
         alias: AppBundle\Entity\Repository\SchoolRepository
 
+    AppBundle\Repository\Contract\FieldOfStudyRepositoryInterface:
+        alias: AppBundle\Entity\Repository\FieldOfStudyRepository
+
+    AppBundle\Repository\Contract\ExecutiveBoardRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ExecutiveBoardRepository
+
+    AppBundle\Repository\Contract\ExecutiveBoardMembershipRepositoryInterface:
+        alias: AppBundle\Entity\Repository\ExecutiveBoardMembershipRepository
+
     # Service interface bindings
     AppBundle\Service\Contract\ApplicationManagerInterface:
         alias: AppBundle\Service\ApplicationManager
@@ -143,6 +152,27 @@ services:
 
     AppBundle\Service\Contract\SbsDataInterface:
         alias: AppBundle\Service\SbsData
+
+    AppBundle\Service\Contract\SchoolManagementServiceInterface:
+        alias: AppBundle\Service\SchoolManagementService
+
+    AppBundle\Service\Contract\ArticleManagementServiceInterface:
+        alias: AppBundle\Service\ArticleManagementService
+
+    AppBundle\Service\Contract\DepartmentManagementServiceInterface:
+        alias: AppBundle\Service\DepartmentManagementService
+
+    AppBundle\Service\Contract\SemesterManagementServiceInterface:
+        alias: AppBundle\Service\SemesterManagementService
+
+    AppBundle\Service\Contract\FieldOfStudyManagementServiceInterface:
+        alias: AppBundle\Service\FieldOfStudyManagementService
+
+    AppBundle\Service\Contract\ExecutiveBoardManagementServiceInterface:
+        alias: AppBundle\Service\ExecutiveBoardManagementService
+
+    AppBundle\Service\Contract\AdmissionPeriodManagementServiceInterface:
+        alias: AppBundle\Service\AdmissionPeriodManagementService
 
     AppBundle\Service\Contract\SlackMailerInterface:
         alias: AppBundle\Service\SlackMailer

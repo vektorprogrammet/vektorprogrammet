@@ -4,25 +4,25 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\FieldOfStudy;
 use AppBundle\Form\Type\FieldOfStudyType;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\Contract\FieldOfStudyManagementServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FieldOfStudyController extends BaseController
 {
-    private $entityManager;
+    private $fieldOfStudyManagementService;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param FieldOfStudyManagementServiceInterface $fieldOfStudyManagementService
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(FieldOfStudyManagementServiceInterface $fieldOfStudyManagementService)
     {
-        $this->entityManager = $entityManager;
+        $this->fieldOfStudyManagementService = $fieldOfStudyManagementService;
     }
     public function showAction()
     {
         $department = $this->getUser()->getFieldOfStudy()->getDepartment();
-        $fieldOfStudies = $this->entityManager->getRepository(FieldOfStudy::class)->findByDepartment($department);
+        $fieldOfStudies = $this->fieldOfStudyManagementService->getFieldsOfStudyByDepartment($department);
 
         return $this->render('field_of_study/show_all.html.twig', array(
             'fieldOfStudies' => $fieldOfStudies,
@@ -30,7 +30,7 @@ class FieldOfStudyController extends BaseController
         ));
     }
 
-    public function editAction(Request $request, FieldOfStudy $fieldOfStudy = null)
+    public function editAction(Request $request, ?FieldOfStudy $fieldOfStudy = null)
     {
         $isEdit = true;
         if ($fieldOfStudy === null) {
@@ -46,9 +46,8 @@ class FieldOfStudyController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $fieldOfStudy->setDepartment($this->getUser()->getFieldOfStudy()->getDepartment());
-            $this->entityManager->persist($fieldOfStudy);
-            $this->entityManager->flush();
+            $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+            $this->fieldOfStudyManagementService->saveFieldOfStudy($fieldOfStudy, $department);
 
             return $this->redirectToRoute('show_field_of_studies');
         }

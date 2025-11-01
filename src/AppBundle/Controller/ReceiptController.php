@@ -10,9 +10,9 @@ use AppBundle\Repository\Contract\ReceiptRepositoryInterface;
 use AppBundle\Repository\Contract\UserRepositoryInterface;
 use AppBundle\Role\Roles;
 use AppBundle\Service\Contract\FileUploaderInterface;
+use AppBundle\Service\Contract\ReceiptStatisticsServiceInterface;
 use AppBundle\Service\Contract\RoleManagerInterface;
 use AppBundle\Service\Contract\SorterInterface;
-use AppBundle\Utils\ReceiptStatistics;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -29,6 +29,7 @@ class ReceiptController extends BaseController
     private $roleManager;
     private $entityManager;
     private $eventDispatcher;
+    private $receiptStatisticsService;
 
     /**
      * @param UserRepositoryInterface $userRepository
@@ -38,6 +39,7 @@ class ReceiptController extends BaseController
      * @param RoleManagerInterface $roleManager
      * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
+     * @param ReceiptStatisticsServiceInterface $receiptStatisticsService
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
@@ -46,7 +48,8 @@ class ReceiptController extends BaseController
         FileUploaderInterface $fileUploader,
         RoleManagerInterface $roleManager,
         EntityManagerInterface $entityManager,
-        EventDispatcherInterface $eventDispatcher
+        EventDispatcherInterface $eventDispatcher,
+        ReceiptStatisticsServiceInterface $receiptStatisticsService
     ) {
         $this->userRepository = $userRepository;
         $this->receiptRepository = $receiptRepository;
@@ -55,41 +58,26 @@ class ReceiptController extends BaseController
         $this->roleManager = $roleManager;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
+        $this->receiptStatisticsService = $receiptStatisticsService;
     }
     public function showAction()
     {
-        $usersWithReceipts = $this->userRepository->findAllUsersWithReceipts();
-        $refundedReceipts = $this->receiptRepository->findByStatus(Receipt::STATUS_REFUNDED);
-        $pendingReceipts = $this->receiptRepository->findByStatus(Receipt::STATUS_PENDING);
-        $rejectedReceipts = $this->receiptRepository->findByStatus(Receipt::STATUS_REJECTED);
-
-        $refundedReceiptStatistics = new ReceiptStatistics($refundedReceipts);
-        $totalPayoutThisYear = $refundedReceiptStatistics->totalPayoutIn((new DateTime())->format('Y'));
-        $avgRefundTimeInHours = $refundedReceiptStatistics->averageRefundTimeInHours();
-
-        $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
-        $rejectedReceiptStatistics = new ReceiptStatistics($rejectedReceipts);
-
-        $this->sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
-        $this->sorter->sortUsersByReceiptStatus($usersWithReceipts);
+        $statistics = $this->receiptStatisticsService->calculateReceiptStatistics();
 
         return $this->render('receipt_admin/show_receipts.html.twig', array(
-            'users_with_receipts' => $usersWithReceipts,
+            'users_with_receipts' => $statistics['users_with_receipts'],
             'current_user' => $this->getUser(),
-            'total_payout' => $totalPayoutThisYear,
-            'avg_refund_time_in_hours' => $avgRefundTimeInHours,
-            'pending_statistics' => $pendingReceiptStatistics,
-            'rejected_statistics' => $rejectedReceiptStatistics,
-            'refunded_statistics' => $refundedReceiptStatistics
+            'total_payout' => $statistics['total_payout'],
+            'avg_refund_time_in_hours' => $statistics['avg_refund_time_in_hours'],
+            'pending_statistics' => $statistics['pending_statistics'],
+            'rejected_statistics' => $statistics['rejected_statistics'],
+            'refunded_statistics' => $statistics['refunded_statistics']
         ));
     }
 
     public function showIndividualAction(User $user)
     {
-        $receipts = $this->receiptRepository->findByUser($user);
-
-        $this->sorter->sortReceiptsBySubmitTime($receipts);
-        $this->sorter->sortReceiptsByStatus($receipts);
+        $receipts = $this->receiptStatisticsService->getSortedReceiptsForUser($user);
 
         return $this->render('receipt_admin/show_individual_receipts.html.twig', array(
             'user' => $user,
@@ -102,10 +90,7 @@ class ReceiptController extends BaseController
         $receipt = new Receipt();
         $receipt->setUser($this->getUser());
 
-        $receipts = $this->receiptRepository->findByUser($this->getUser());
-
-        $this->sorter->sortReceiptsBySubmitTime($receipts);
-        $this->sorter->sortReceiptsByStatus($receipts);
+        $receipts = $this->receiptStatisticsService->getSortedReceiptsForUser($this->getUser());
 
         $form = $this->createForm(ReceiptType::class, $receipt);
 
@@ -187,30 +172,13 @@ class ReceiptController extends BaseController
     public function editStatusAction(Request $request, Receipt $receipt)
     {
         $status = $request->get('status');
-        if ($status !== Receipt::STATUS_PENDING &&
-            $status !== Receipt::STATUS_REFUNDED &&
-            $status !== Receipt::STATUS_REJECTED) {
-            throw new BadRequestHttpException('Invalid status');
-        }
-
+        
         if ($status === $receipt->getStatus()) {
             return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
         }
 
-        $receipt->setStatus($status);
-        if ($status === Receipt::STATUS_REFUNDED && !$receipt->getRefundDate()) {
-            $receipt->setRefundDate(new DateTime());
-        }
-
+        $this->receiptStatisticsService->processStatusChange($receipt, $status);
         $this->entityManager->flush();
-
-        if ($status === Receipt::STATUS_REFUNDED) {
-            $this->eventDispatcher->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
-        } elseif ($status === Receipt::STATUS_REJECTED) {
-            $this->eventDispatcher->dispatch(ReceiptEvent::REJECTED, new ReceiptEvent($receipt));
-        } elseif ($status === Receipt::STATUS_PENDING) {
-            $this->eventDispatcher->dispatch(ReceiptEvent::PENDING, new ReceiptEvent($receipt));
-        }
 
         return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
     }

@@ -10,8 +10,15 @@ use Doctrine\ORM\EntityRepository;
 class ExecutiveBoardMembershipRepository extends EntityRepository implements ExecutiveBoardMembershipRepositoryInterface
 {
     /**
-     * @param User $user
-     * @return ExecutiveBoardMembership[]
+     * {@inheritdoc}
+     */
+    public function findAll(): array
+    {
+        return parent::findAll();
+    }
+
+    /**
+     * {@inheritdoc}
      */
     public function findByUser(User $user): array
     {

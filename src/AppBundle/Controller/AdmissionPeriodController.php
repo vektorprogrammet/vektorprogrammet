@@ -7,29 +7,24 @@ use AppBundle\Entity\Department;
 use AppBundle\Form\Type\CreateAdmissionPeriodType;
 use AppBundle\Form\Type\EditAdmissionPeriodType;
 use AppBundle\Repository\Contract\AdmissionPeriodRepositoryInterface;
-use AppBundle\Service\Contract\AdmissionPeriodValidationServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\Contract\AdmissionPeriodManagementServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class AdmissionPeriodController extends BaseController
 {
     private $admissionPeriodRepository;
-    private $entityManager;
-    private $admissionPeriodValidationService;
+    private $admissionPeriodManagementService;
 
     /**
      * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
-     * @param EntityManagerInterface $entityManager
-     * @param AdmissionPeriodValidationServiceInterface $admissionPeriodValidationService
+     * @param AdmissionPeriodManagementServiceInterface $admissionPeriodManagementService
      */
     public function __construct(
         AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
-        EntityManagerInterface $entityManager,
-        AdmissionPeriodValidationServiceInterface $admissionPeriodValidationService
+        AdmissionPeriodManagementServiceInterface $admissionPeriodManagementService
     ) {
         $this->admissionPeriodRepository = $admissionPeriodRepository;
-        $this->entityManager = $entityManager;
-        $this->admissionPeriodValidationService = $admissionPeriodValidationService;
+        $this->admissionPeriodManagementService = $admissionPeriodManagementService;
     }
     public function showAction()
     {
@@ -62,18 +57,14 @@ class AdmissionPeriodController extends BaseController
 
         $form->handleRequest($request);
 
-        $exists = $this->admissionPeriodValidationService->semesterExistsForDepartment($admissionPeriod, $department);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $result = $this->admissionPeriodManagementService->createAdmissionPeriod($admissionPeriod, $department);
 
-        if ($exists) {
-            $this->addFlash('warning', 'Opptaksperioden ' . $admissionPeriod->getSemester() . ' finnes allerede.');
-        }
-        if ($form->isSubmitted() && $form->isValid() && !$exists) {
-            $admissionPeriod->setDepartment($department);
-
-            $this->entityManager->persist($admissionPeriod);
-            $this->entityManager->flush();
-
-            return $this->redirectToRoute('admission_period_admin_show_by_department', array('id' => $department->getId()));
+            if ($result['exists']) {
+                $this->addFlash('warning', 'Opptaksperioden ' . $admissionPeriod->getSemester() . ' finnes allerede.');
+            } else {
+                return $this->redirectToRoute('admission_period_admin_show_by_department', array('id' => $department->getId()));
+            }
         }
 
         // Render the view
@@ -91,8 +82,7 @@ class AdmissionPeriodController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($admissionPeriod);
-            $this->entityManager->flush();
+            $this->admissionPeriodManagementService->updateAdmissionPeriod($admissionPeriod);
 
             return $this->redirectToRoute('admission_period_admin_show_by_department', array('id' => $admissionPeriod->getDepartment()->getId()));
         }
@@ -106,12 +96,7 @@ class AdmissionPeriodController extends BaseController
 
     public function deleteAction(AdmissionPeriod $admissionPeriod)
     {
-        $infoMeeting = $admissionPeriod->getInfoMeeting();
-        if ($infoMeeting) {
-            $this->entityManager->remove($infoMeeting);
-        }
-        $this->entityManager->remove($admissionPeriod);
-        $this->entityManager->flush();
+        $this->admissionPeriodManagementService->deleteAdmissionPeriod($admissionPeriod);
 
         return $this->redirectToRoute('admission_period_admin_show_by_department', ['id' => $admissionPeriod->getDepartment()->getId()]);
     }

@@ -4,19 +4,19 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Form\Type\CreateDepartmentType;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\Contract\DepartmentManagementServiceInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class DepartmentController extends BaseController
 {
-    private $entityManager;
+    private $departmentManagementService;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param DepartmentManagementServiceInterface $departmentManagementService
      */
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(DepartmentManagementServiceInterface $departmentManagementService)
     {
-        $this->entityManager = $entityManager;
+        $this->departmentManagementService = $departmentManagementService;
     }
     public function showAction()
     {
@@ -32,8 +32,7 @@ class DepartmentController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($department);
-            $this->entityManager->flush();
+            $this->departmentManagementService->createDepartment($department);
 
             $this->addFlash("success", "$department ble opprettet");
 
@@ -47,8 +46,7 @@ class DepartmentController extends BaseController
 
     public function deleteDepartmentByIdAction(Department $department)
     {
-        $this->entityManager->remove($department);
-        $this->entityManager->flush();
+        $this->departmentManagementService->deleteDepartment($department);
 
         $this->addFlash("success", "Avdelingen ble slettet");
 
@@ -62,8 +60,7 @@ class DepartmentController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($department);
-            $this->entityManager->flush();
+            $this->departmentManagementService->updateDepartment($department);
 
             $this->addFlash("success", "$department ble oppdatert");
 

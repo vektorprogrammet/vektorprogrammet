@@ -9,6 +9,7 @@ use AppBundle\Entity\Role;
 use AppBundle\Repository\Contract\DepartmentRepositoryInterface;
 use AppBundle\Repository\Contract\UserRepositoryInterface;
 use AppBundle\Role\Roles;
+use AppBundle\Service\Contract\UserManagementServiceInterface;
 use AppBundle\Service\Contract\UserRegistrationInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -19,25 +20,29 @@ class UserAdminController extends BaseController
     private $userRepository;
     private $entityManager;
     private $userRegistration;
+    private $userManagementService;
 
     /**
      * @param DepartmentRepositoryInterface $departmentRepository
      * @param UserRepositoryInterface $userRepository
      * @param EntityManagerInterface $entityManager
      * @param UserRegistrationInterface $userRegistration
+     * @param UserManagementServiceInterface $userManagementService
      */
     public function __construct(
         DepartmentRepositoryInterface $departmentRepository,
         UserRepositoryInterface $userRepository,
         EntityManagerInterface $entityManager,
-        UserRegistrationInterface $userRegistration
+        UserRegistrationInterface $userRegistration,
+        UserManagementServiceInterface $userManagementService
     ) {
         $this->departmentRepository = $departmentRepository;
         $this->userRepository = $userRepository;
         $this->entityManager = $entityManager;
         $this->userRegistration = $userRegistration;
+        $this->userManagementService = $userManagementService;
     }
-    public function createUserAction(Request $request, Department $department = null)
+    public function createUserAction(Request $request, ?Department $department = null)
     {
         if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
             $department = $this->getUser()->getDepartment();
@@ -56,13 +61,7 @@ class UserAdminController extends BaseController
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isSubmitted() && $form->isValid()) {
-            $role = $this->entityManager->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
-            $user->addRole($role);
-
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-
-            $this->userRegistration->sendActivationCode($user);
+            $this->userManagementService->createUserWithDefaults($user, $department);
 
             return $this->redirectToRoute('useradmin_show');
         }
@@ -76,36 +75,28 @@ class UserAdminController extends BaseController
 
     public function showAction()
     {
-        // Finds all the departments
-        $activeDepartments = $this->departmentRepository->findActive();
-
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
 
-        $activeUsers = $this->userRepository->findAllActiveUsersByDepartment($department);
-        $inActiveUsers = $this->userRepository->findAllInActiveUsersByDepartment($department);
+        $userData = $this->userManagementService->getFilteredUsersByDepartment($department);
 
         return $this->render('user_admin/index.html.twig', array(
-            'activeUsers' => $activeUsers,
-            'inActiveUsers' => $inActiveUsers,
-            'departments' => $activeDepartments,
+            'activeUsers' => $userData['activeUsers'],
+            'inActiveUsers' => $userData['inActiveUsers'],
+            'departments' => $userData['activeDepartments'],
             'department' => $department,
         ));
     }
 
     public function showUsersByDepartmentAction(Department $department)
     {
-        // Finds all the departments
-        $activeDepartments = $this->departmentRepository->findActive();
-
-        $activeUsers = $this->userRepository->findAllActiveUsersByDepartment($department);
-        $inActiveUsers = $this->userRepository->findAllInActiveUsersByDepartment($department);
+        $userData = $this->userManagementService->getFilteredUsersByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('user_admin/index.html.twig', array(
-            'activeUsers' => $activeUsers,
-            'inActiveUsers' => $inActiveUsers,
-            'departments' => $activeDepartments,
+            'activeUsers' => $userData['activeUsers'],
+            'inActiveUsers' => $userData['inActiveUsers'],
+            'departments' => $userData['activeDepartments'],
             'department' => $department,
         ));
     }

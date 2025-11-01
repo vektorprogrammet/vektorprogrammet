@@ -5,8 +5,7 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\Semester;
 use AppBundle\Form\Type\CreateSemesterType;
 use AppBundle\Repository\Contract\SemesterRepositoryInterface;
-use AppBundle\Service\Contract\SemesterValidationServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\Contract\SemesterManagementServiceInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -17,22 +16,18 @@ use Symfony\Component\Routing\Annotation\Route;
 class SemesterController extends BaseController
 {
     private $semesterRepository;
-    private $entityManager;
-    private $semesterValidationService;
+    private $semesterManagementService;
 
     /**
      * @param SemesterRepositoryInterface $semesterRepository
-     * @param EntityManagerInterface $entityManager
-     * @param SemesterValidationServiceInterface $semesterValidationService
+     * @param SemesterManagementServiceInterface $semesterManagementService
      */
     public function __construct(
         SemesterRepositoryInterface $semesterRepository,
-        EntityManagerInterface $entityManager,
-        SemesterValidationServiceInterface $semesterValidationService
+        SemesterManagementServiceInterface $semesterManagementService
     ) {
         $this->semesterRepository = $semesterRepository;
-        $this->entityManager = $entityManager;
-        $this->semesterValidationService = $semesterValidationService;
+        $this->semesterManagementService = $semesterManagementService;
     }
     /**
      * @Route(name="semester_show", path="/kontrollpanel/semesteradmin")
@@ -67,17 +62,13 @@ class SemesterController extends BaseController
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isSubmitted() && $form->isValid()) {
-            //Check if semester already exists
-            $existingSemester = $this->semesterValidationService->findExistingSemester($semester->getSemesterTime(), $semester->getYear());
+            $result = $this->semesterManagementService->createSemester($semester);
 
-            //Return to semester page if semester already exists
-            if ($existingSemester !== null) {
+            if (!$result['success']) {
+                $existingSemester = $result['existingSemester'];
                 $this->addFlash('warning', "Semesteret $existingSemester finnes allerede");
                 return $this->redirectToRoute('semester_create');
             }
-
-            $this->entityManager->persist($semester);
-            $this->entityManager->flush();
 
             return $this->redirectToRoute('semester_show');
         }
@@ -90,8 +81,7 @@ class SemesterController extends BaseController
 
     public function deleteAction(Semester $semester)
     {
-        $this->entityManager->remove($semester);
-        $this->entityManager->flush();
+        $this->semesterManagementService->deleteSemester($semester);
 
         return new JsonResponse(array('success' => true));
     }

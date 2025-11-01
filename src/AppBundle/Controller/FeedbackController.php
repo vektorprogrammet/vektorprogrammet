@@ -3,7 +3,8 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Feedback;
 use AppBundle\Form\Type\FeedbackType;
-use AppBundle\Service\Contract\SlackMessengerInterface;
+use AppBundle\Repository\Contract\FeedbackRepositoryInterface;
+use AppBundle\Service\Contract\FeedbackSubmissionServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -11,21 +12,25 @@ use Symfony\Component\HttpFoundation\Request;
 class FeedbackController extends BaseController
 {
     private $entityManager;
-    private $slackMessenger;
+    private $feedbackSubmissionService;
+    private $feedbackRepository;
     private $paginator;
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @param SlackMessengerInterface $slackMessenger
+     * @param FeedbackSubmissionServiceInterface $feedbackSubmissionService
+     * @param FeedbackRepositoryInterface $feedbackRepository
      * @param PaginatorInterface $paginator
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        SlackMessengerInterface $slackMessenger,
+        FeedbackSubmissionServiceInterface $feedbackSubmissionService,
+        FeedbackRepositoryInterface $feedbackRepository,
         PaginatorInterface $paginator
     ) {
         $this->entityManager = $entityManager;
-        $this->slackMessenger = $slackMessenger;
+        $this->feedbackSubmissionService = $feedbackSubmissionService;
+        $this->feedbackRepository = $feedbackRepository;
         $this->paginator = $paginator;
     }
     //shows form for submitting a new feedback
@@ -43,18 +48,12 @@ class FeedbackController extends BaseController
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            //Stores the submitted feedback
             $feedback = $form->getData();
-            $feedback->setUser($user);
-            $this->entityManager->persist($feedback);
-            $this->entityManager->flush();
-
-            //Notifies on slack (NotificationChannel)
-            $this->slackMessenger->notify($feedback->getSlackMessageBody());
+            $this->feedbackSubmissionService->submitFeedback($feedback, $user);
 
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
             
-            return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
+            return $this->redirect($returnUri);
         }
 
         return $this->render('feedback_admin/feedback_admin_index.html.twig', array(
@@ -73,10 +72,8 @@ class FeedbackController extends BaseController
     //Lists all feedbacks
     public function showAllAction(Request $request)
     {
-        $repository = $this->entityManager->getRepository(Feedback::class);
-
         //Gets all feedbacks sorted by created_at
-        $feedbacks = $repository->findAllSortByNewest();
+        $feedbacks = $this->feedbackRepository->findAllSortByNewest();
 
         $pagination = $this->paginator->paginate(
             $feedbacks,

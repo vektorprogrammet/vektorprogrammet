@@ -7,8 +7,10 @@ use AppBundle\Entity\ExecutiveBoard;
 use AppBundle\Entity\ExecutiveBoardMembership;
 use AppBundle\Form\Type\CreateExecutiveBoardMembershipType;
 use AppBundle\Form\Type\CreateExecutiveBoardType;
+use AppBundle\Repository\Contract\ExecutiveBoardRepositoryInterface;
+use AppBundle\Repository\Contract\ExecutiveBoardMembershipRepositoryInterface;
 use AppBundle\Service\Contract\ExecutiveBoardServiceInterface;
-use AppBundle\Service\Contract\RoleManagerInterface;
+use AppBundle\Service\Contract\ExecutiveBoardManagementServiceInterface;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,26 +19,34 @@ use Symfony\Component\Routing\Annotation\Route;
 class ExecutiveBoardController extends BaseController
 {
     private $entityManager;
-    private $roleManager;
+    private $executiveBoardRepository;
+    private $executiveBoardMembershipRepository;
     private $executiveBoardService;
+    private $executiveBoardManagementService;
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @param RoleManagerInterface $roleManager
+     * @param ExecutiveBoardRepositoryInterface $executiveBoardRepository
+     * @param ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository
      * @param ExecutiveBoardServiceInterface $executiveBoardService
+     * @param ExecutiveBoardManagementServiceInterface $executiveBoardManagementService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
-        RoleManagerInterface $roleManager,
-        ExecutiveBoardServiceInterface $executiveBoardService
+        ExecutiveBoardRepositoryInterface $executiveBoardRepository,
+        ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository,
+        ExecutiveBoardServiceInterface $executiveBoardService,
+        ExecutiveBoardManagementServiceInterface $executiveBoardManagementService
     ) {
         $this->entityManager = $entityManager;
-        $this->roleManager = $roleManager;
+        $this->executiveBoardRepository = $executiveBoardRepository;
+        $this->executiveBoardMembershipRepository = $executiveBoardMembershipRepository;
         $this->executiveBoardService = $executiveBoardService;
+        $this->executiveBoardManagementService = $executiveBoardManagementService;
     }
     public function showAction()
     {
-        $board = $this->entityManager->getRepository(ExecutiveBoard::class)->findBoard();
+        $board = $this->executiveBoardRepository->findBoard();
 
         return $this->render('team/team_page.html.twig', array(
             'team'  => $board,
@@ -45,8 +55,8 @@ class ExecutiveBoardController extends BaseController
 
     public function showAdminAction()
     {
-        $board = $this->entityManager->getRepository(ExecutiveBoard::class)->findBoard();
-        $members = $this->entityManager->getRepository(ExecutiveBoardMembership::class)->findAll();
+        $board = $this->executiveBoardRepository->findBoard();
+        $members = $this->executiveBoardMembershipRepository->findAll();
         
         $separatedMembers = $this->executiveBoardService->separateMembersByStatus($members);
 
@@ -74,13 +84,7 @@ class ExecutiveBoardController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $member->setBoard($board);
-
-            // Persist the board to the database
-            $this->entityManager->persist($member);
-            $this->entityManager->flush();
-
-            $this->roleManager->updateUserRole($member->getUser());
+            $this->executiveBoardManagementService->createMembership($member, $board, $this->getUser());
 
             return $this->redirect($this->generateUrl('executive_board_show'));
         }
@@ -94,17 +98,14 @@ class ExecutiveBoardController extends BaseController
 
     public function removeUserFromBoardByIdAction(ExecutiveBoardMembership $member)
     {
-        $this->entityManager->remove($member);
-        $this->entityManager->flush();
-
-        $this->roleManager->updateUserRole($member->getUser());
+        $this->executiveBoardManagementService->removeMembership($member);
 
         return $this->redirect($this->generateUrl('executive_board_show'));
     }
 
     public function updateBoardAction(Request $request)
     {
-        $board = $this->entityManager->getRepository(ExecutiveBoard::class)->findBoard();
+        $board = $this->executiveBoardRepository->findBoard();
 
         // Create the form
         $form = $this->createForm(CreateExecutiveBoardType::class, $board);
@@ -114,9 +115,7 @@ class ExecutiveBoardController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             //Don't persist if the preview button was clicked
             if (!$form->get('preview')->isClicked()) {
-                // Persist the board to the database
-                $this->entityManager->persist($board);
-                $this->entityManager->flush();
+                $this->executiveBoardManagementService->updateBoard($board);
 
                 return $this->redirect($this->generateUrl('executive_board_show'));
             }
@@ -155,8 +154,7 @@ class ExecutiveBoardController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->entityManager->persist($member);
-            $this->entityManager->flush();
+            $this->executiveBoardManagementService->updateMembership($member);
             return $this->redirectToRoute('executive_board_show');
         }
 

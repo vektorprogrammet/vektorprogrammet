@@ -3,12 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Repository\Contract\ArticleRepositoryInterface;
-use AppBundle\Service\Contract\FileUploaderInterface;
-use AppBundle\Service\Contract\LogServiceInterface;
-use AppBundle\Service\Contract\SlugMakerInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use AppBundle\Service\Contract\ArticleManagementServiceInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Exception;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,34 +20,22 @@ use Symfony\Component\HttpFoundation\Response;
 class ArticleAdminController extends BaseController
 {
     private $articleRepository;
-    private $entityManager;
     private $paginator;
-    private $slugMaker;
-    private $fileUploader;
-    private $logService;
+    private $articleManagementService;
 
     /**
      * @param ArticleRepositoryInterface $articleRepository
-     * @param EntityManagerInterface $entityManager
      * @param PaginatorInterface $paginator
-     * @param SlugMakerInterface $slugMaker
-     * @param FileUploaderInterface $fileUploader
-     * @param LogServiceInterface $logService
+     * @param ArticleManagementServiceInterface $articleManagementService
      */
     public function __construct(
         ArticleRepositoryInterface $articleRepository,
-        EntityManagerInterface $entityManager,
         PaginatorInterface $paginator,
-        SlugMakerInterface $slugMaker,
-        FileUploaderInterface $fileUploader,
-        LogServiceInterface $logService
+        ArticleManagementServiceInterface $articleManagementService
     ) {
         $this->articleRepository = $articleRepository;
-        $this->entityManager = $entityManager;
         $this->paginator = $paginator;
-        $this->slugMaker = $slugMaker;
-        $this->fileUploader = $fileUploader;
-        $this->logService = $logService;
+        $this->articleManagementService = $articleManagementService;
     }
 
     // Number of articles shown per page on the admin page
@@ -106,32 +90,14 @@ class ArticleAdminController extends BaseController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted()) {
-            $this->slugMaker->setSlugFor($article);
-        }
-
         if ($form->isSubmitted() && $form->isValid()) {
-            // Set the author to the currently logged in user
-            $article->setAuthor($this->getUser());
+            $result = $this->articleManagementService->createArticle($article, $this->getUser(), $request);
 
-            $imageSmall = $this->fileUploader->uploadArticleImage($request, 'imgsmall');
-            $imageLarge = $this->fileUploader->uploadArticleImage($request, 'imglarge');
-            if (!$imageSmall || !$imageLarge) {
+            if (!$result['success']) {
                 return new JsonResponse("Error", 400);
             }
 
-            $article->setImageSmall($imageSmall);
-            $article->setImageLarge($imageLarge);
-
-            $this->entityManager->persist($article);
-            $this->entityManager->flush();
-
-            $this->addFlash(
-                'success',
-                'Artikkelen har blitt publisert.'
-            );
-
-            $this->logService->info("A new article \"{$article->getTitle()}\" by {$article->getAuthor()} has been published");
+            $this->addFlash('success', 'Artikkelen har blitt publisert.');
 
             return new JsonResponse("ok");
         } elseif ($form->isSubmitted()) {
@@ -160,24 +126,9 @@ class ArticleAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $imageSmall = $this->fileUploader->uploadArticleImage($request, 'imgsmall');
-            if ($imageSmall) {
-                $article->setImageSmall($imageSmall);
-            }
-            $imageLarge = $this->fileUploader->uploadArticleImage($request, 'imglarge');
-            if ($imageLarge) {
-                $article->setImageLarge($imageLarge);
-            }
+            $this->articleManagementService->updateArticle($article, $this->getUser(), $request);
 
-            $this->entityManager->persist($article);
-            $this->entityManager->flush();
-
-            $this->addFlash(
-                'success',
-                'Endringene har blitt publisert.'
-            );
-
-            $this->logService->info("The article \"{$article->getTitle()}\" was edited by {$this->getUser()}");
+            $this->addFlash('success', 'Endringene har blitt publisert.');
 
             return new JsonResponse("ok");
         } elseif ($form->isSubmitted()) {
@@ -201,28 +152,16 @@ class ArticleAdminController extends BaseController
      */
     public function stickyAction(Article $article)
     {
-        try {
-            if ($article->getSticky()) {
-                $article->setSticky(false);
-                $response['sticky'] = false;
-            } else {
-                $article->setSticky(true);
-                $response['sticky'] = true;
-            }
+        $result = $this->articleManagementService->toggleStickyStatus($article);
 
-            $this->entityManager->persist($article);
-            $this->entityManager->flush();
-
-            $response['success'] = true;
-        } catch (Exception $e) {
-            $response = [
-                'success' => false,
-                'code'    => $e->getCode(),
-                'cause'   => 'Det oppstod en feil.',
-            ];
+        if (!$result['success']) {
+            return new JsonResponse($result['error']);
         }
 
-        return new JsonResponse($response);
+        return new JsonResponse([
+            'success' => true,
+            'sticky' => $result['sticky'],
+        ]);
     }
 
     /**
@@ -232,8 +171,7 @@ class ArticleAdminController extends BaseController
      */
     public function deleteAction(Article $article)
     {
-        $this->entityManager->remove($article);
-        $this->entityManager->flush();
+        $this->articleManagementService->deleteArticle($article);
 
         $this->addFlash("success", "Artikkelen ble slettet");
 

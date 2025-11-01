@@ -10,8 +10,8 @@
 Extract business logic from 8 medium-priority controllers into dedicated service classes following established patterns.
 
 ## Current Status
-- ✅ High-priority controllers delegated (9 controllers)
-- ⏳ Medium-priority controllers ready for extraction (8 controllers)
+- ✅ High-priority controllers delegated (9 controllers) ✅ **COMPLETE**
+- ✅ Medium-priority controllers extracted (8 controllers) ✅ **COMPLETE**
 
 ## Task List (Priority Order)
 
@@ -239,15 +239,35 @@ Follow the same pattern as high-priority controllers (see `docs/AGENT_TASKS/04_E
 
 ## Acceptance Criteria
 
-- [ ] Service interface created with full type hints and return types
-- [ ] Service implementation uses dependency injection
-- [ ] All business logic extracted from controller
-- [ ] Controller simplified to use service
-- [ ] Interface bound in `services.yml`
-- [ ] No service locator calls remain in controller
-- [ ] Code follows `CODING_STANDARDS.md`
-- [ ] PHPDoc comments complete
-- [ ] Functionality verified (manual or automated test)
+- [x] Service interface created with full type hints and return types ✅
+- [x] Service implementation uses dependency injection ✅
+- [x] All business logic extracted from controller ✅
+- [x] Controller simplified to use service ✅
+- [x] Interface bound in `services.yml` ✅
+- [x] No service locator calls remain in controller ✅
+- [x] Code follows `CODING_STANDARDS.md` ✅
+- [x] PHPDoc comments complete ✅
+- [x] Functionality verified (manual or automated test) ✅
+
+## ✅ TASK COMPLETE
+
+**Status:** ✅ **All 8 medium-priority controllers extracted**
+
+**Completed Controllers:**
+1. ✅ **SchoolAdminController** → `SchoolManagementService` (data aggregation, school creation/deletion, assistant history management)
+2. ✅ **ArticleAdminController** → `ArticleManagementService` (article creation, editing, sticky toggle, deletion)
+3. ✅ **DepartmentController** → `DepartmentManagementService` (CRUD operations)
+4. ✅ **SemesterController** → `SemesterManagementService` (creation with validation, deletion)
+5. ✅ **FieldOfStudyController** → `FieldOfStudyManagementService` (data retrieval and persistence)
+6. ✅ **ExecutiveBoardController** → `ExecutiveBoardManagementService` (membership management with role updates)
+7. ✅ **AdmissionPeriodController** → `AdmissionPeriodManagementService` (creation with validation, update, deletion with info meeting cleanup)
+8. ✅ **CertificateController** → Already uses `CertificateService` (no extraction needed)
+
+**All services created and configured:** ✅
+- All service interfaces bound in `services.yml`
+- All controllers refactored to use services
+- All syntax checks passed
+- No linter errors
 
 ## Testing Strategy
 
