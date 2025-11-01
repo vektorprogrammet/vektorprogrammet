@@ -11,7 +11,7 @@ use Carbon\Carbon;
 
 /**
  * Application Model (converted from Doctrine)
- * 
+ *
  * @property int $id
  * @property int $admission_period_id
  * @property string $year_of_study
@@ -94,11 +94,11 @@ class Application extends Model
     /**
      * Boot the model.
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
-        static::creating(function ($application) {
+        static::creating(function ($application): void {
             if (empty($application->last_edited)) {
                 $application->last_edited = Carbon::now();
             }
@@ -126,10 +126,11 @@ class Application extends Model
 
     /**
      * Get the interview for the application.
+     * Application table has interview_id column pointing to Interview.id
      */
     public function interview(): HasOne
     {
-        return $this->hasOne(Interview::class, 'application_id');
+        return $this->hasOne(Interview::class, 'id', 'interview_id');
     }
 
     /**

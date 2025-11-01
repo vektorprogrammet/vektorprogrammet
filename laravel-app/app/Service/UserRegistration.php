@@ -5,29 +5,37 @@ namespace App\Service;
 use App\Models\Role;
 use App\Models\User;
 use App\Mailer\MailerInterface;
+use App\Repository\Contract\RoleRepositoryInterface;
+use App\Repository\Contract\UserRepositoryInterface;
 use App\Role\Roles;
-use Doctrine\ORM\EntityManagerInterface;
 use Swift_Message;
 use Twig\Environment;
 use App\Service\Contract\UserRegistrationInterface;
 
 class UserRegistration implements UserRegistrationInterface
 {
-    private $twig;
-    private $em;
-    private $mailer;
+    private Environment $twig;
+    private UserRepositoryInterface $userRepository;
+    private RoleRepositoryInterface $roleRepository;
+    private MailerInterface $mailer;
 
     /**
      * UserRegistration constructor.
      *
      * @param Environment $twig
-     * @param EntityManagerInterface     $em
-     * @param MailerInterface   $mailer
+     * @param UserRepositoryInterface $userRepository
+     * @param RoleRepositoryInterface $roleRepository
+     * @param MailerInterface $mailer
      */
-    public function __construct(Environment $twig, EntityManagerInterface $em, MailerInterface $mailer)
-    {
+    public function __construct(
+        Environment $twig,
+        UserRepositoryInterface $userRepository,
+        RoleRepositoryInterface $roleRepository,
+        MailerInterface $mailer
+    ) {
         $this->twig = $twig;
-        $this->em = $em;
+        $this->userRepository = $userRepository;
+        $this->roleRepository = $roleRepository;
         $this->mailer = $mailer;
     }
 
@@ -35,10 +43,9 @@ class UserRegistration implements UserRegistrationInterface
     {
         $newUserCode = bin2hex(openssl_random_pseudo_bytes(16));
         $hashedNewUserCode = hash('sha512', $newUserCode, false);
-        $user->setNewUserCode($hashedNewUserCode);
+        $user->new_user_code = $hashedNewUserCode;
 
-        $this->em->persist($user);
-        $this->em->flush();
+        $user->save();
 
         return $newUserCode;
     }
@@ -48,8 +55,8 @@ class UserRegistration implements UserRegistrationInterface
         return (new Swift_Message())
             ->setSubject('Velkommen til Vektorprogrammet!')
             ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setReplyTo($user->getFieldOfStudy()->getDepartment()->getEmail())
-            ->setTo($user->getEmail())
+            ->setReplyTo($user->fieldOfStudy->department->email ?? 'ikkesvar@vektorprogrammet.no')
+            ->setTo($user->email)
             ->setBody($this->twig->render('new_user/create_new_user_email.txt.twig', array(
                 'newUserCode' => $newUserCode,
                 'name' => $user->getFullName(),
@@ -71,24 +78,26 @@ class UserRegistration implements UserRegistrationInterface
     public function activateUserByNewUserCode(string $newUserCode): ?User
     {
         $hashedNewUserCode = $this->getHashedCode($newUserCode);
-        $user = $this->em->getRepository(User::class)->findUserByNewUserCode($hashedNewUserCode);
+        $user = $this->userRepository->findUserByNewUserCode($hashedNewUserCode);
         if ($user === null) {
             return null;
         }
 
-        if ($user->getUserName() === null) {
+        if ($user->user_name === null) {
             // Set default username to email
-            $user->setUserName($user->getEmail());
+            $user->user_name = $user->email;
         }
 
-        $user->setNewUserCode(null);
+        $user->new_user_code = null;
+        $user->is_active = true;
 
-        $user->setActive('1');
-
-        if (count($user->getRoles()) === 0) {
-            $role = $this->em->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
-            $user->addRole($role);
+        $userRoles = $user->roles;
+        if ($userRoles === null || $userRoles->isEmpty()) {
+            $role = $this->roleRepository->findByRoleName(Roles::ASSISTANT);
+            $user->roles()->sync([$role->id]);
         }
+
+        $user->save();
 
         return $user;
     }

@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Models\Department;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\Contract\DepartmentRepositoryInterface;
 use ErrorException;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -13,30 +13,36 @@ use App\Service\Contract\LogServiceInterface;
 
 class GeoLocation implements GeoLocationInterface
 {
-    private $ipinfoToken;
-    private $departmentRepo;
-    private $session;
-    private $requestStack;
-    private $logger;
+    private string $ipinfoToken;
+    private DepartmentRepositoryInterface $departmentRepository;
+    private SessionInterface $session;
+    private RequestStack $requestStack;
+    private LogServiceInterface $logger;
     /**
      * @var array
      */
-    private $ignoredAsns;
+    private array $ignoredAsns;
 
     /**
      * GeoLocation constructor.
      *
      * @param string $ipinfoToken
      * @param array $ignoredAsns
-     * @param EntityManagerInterface $em
+     * @param DepartmentRepositoryInterface $departmentRepository
      * @param SessionInterface $session
      * @param RequestStack $requestStack
      * @param LogServiceInterface $logger
      */
-    public function __construct(string $ipinfoToken, array $ignoredAsns, EntityManagerInterface $em, SessionInterface $session, RequestStack $requestStack, LogServiceInterface $logger)
-    {
+    public function __construct(
+        string $ipinfoToken,
+        array $ignoredAsns,
+        DepartmentRepositoryInterface $departmentRepository,
+        SessionInterface $session,
+        RequestStack $requestStack,
+        LogServiceInterface $logger
+    ) {
         $this->ipinfoToken = $ipinfoToken;
-        $this->departmentRepo = $em->getRepository(Department::class);
+        $this->departmentRepository = $departmentRepository;
         $this->session = $session;
         $this->requestStack = $requestStack;
         $this->logger = $logger;
@@ -59,7 +65,7 @@ class GeoLocation implements GeoLocationInterface
 
     public function findDepartmentClosestTo(array $coords): ?Department
     {
-        $departments = $this->departmentRepo->findAll();
+        $departments = $this->departmentRepository->findAll();
         if (count($departments) < 1) {
             return null;
         }
@@ -69,8 +75,8 @@ class GeoLocation implements GeoLocationInterface
         foreach ($departments as $department) {
             $fromLat = floatval($coords['lat']);
             $fromLon = floatval($coords['lon']);
-            $toLat = floatval($department->getLatitude());
-            $toLon = floatval($department->getLongitude());
+            $toLat = floatval($department->latitude ?? 0);
+            $toLon = floatval($department->longitude ?? 0);
             $distance = $this->distance($fromLat, $fromLon, $toLat, $toLon);
 
             if ($shortestDistance < 0 || $distance < $shortestDistance) {
@@ -109,15 +115,15 @@ class GeoLocation implements GeoLocationInterface
             $fromLat = floatval($coords['lat']);
             $fromLon = floatval($coords['lon']);
 
-            $aLat = floatval($a->getLatitude());
-            $aLon = floatval($a->getLongitude());
+            $aLat = floatval($a->latitude ?? 0);
+            $aLon = floatval($a->longitude ?? 0);
             $aDistance = $this->distance($fromLat, $fromLon, $aLat, $aLon);
 
-            $bLat = floatval($b->getLatitude());
-            $bLon = floatval($b->getLongitude());
+            $bLat = floatval($b->latitude ?? 0);
+            $bLon = floatval($b->longitude ?? 0);
             $bDistance = $this->distance($fromLat, $fromLon, $bLat, $bLon);
 
-            return $aDistance - $bDistance;
+            return $aDistance <=> $bDistance;
         });
 
         return $departments;

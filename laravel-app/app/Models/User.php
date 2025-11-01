@@ -76,11 +76,11 @@ class User extends Authenticatable
     /**
      * Boot the model.
      */
-    protected static function boot()
+    protected static function boot(): void
     {
         parent::boot();
 
-        static::creating(function ($user) {
+        static::creating(function ($user): void {
             if (empty($user->last_pop_up_time)) {
                 $user->last_pop_up_time = Carbon::create(2000, 1, 1);
             }
@@ -153,8 +153,10 @@ class User extends Authenticatable
 
     /**
      * Get the user's department (via field of study).
+     *
+     * @return Department|null
      */
-    public function getDepartment()
+    public function getDepartment(): ?Department
     {
         return $this->fieldOfStudy?->department;
     }
@@ -190,8 +192,10 @@ class User extends Authenticatable
 
     /**
      * Get active team memberships.
+     *
+     * @return array
      */
-    public function getActiveTeamMemberships()
+    public function getActiveTeamMemberships(): array
     {
         return $this->teamMemberships()
             ->whereNull('end_semester_id')
@@ -201,8 +205,10 @@ class User extends Authenticatable
 
     /**
      * Get active executive board memberships.
+     *
+     * @return array
      */
-    public function getActiveExecutiveBoardMemberships()
+    public function getActiveExecutiveBoardMemberships(): array
     {
         return $this->executiveBoardMemberships()
             ->where(function ($query) {

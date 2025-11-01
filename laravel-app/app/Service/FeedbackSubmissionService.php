@@ -6,7 +6,6 @@ use App\Models\Feedback;
 use App\Models\User;
 use App\Service\Contract\FeedbackSubmissionServiceInterface;
 use App\Service\Contract\SlackMessengerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service for feedback submission workflow.
@@ -14,18 +13,14 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class FeedbackSubmissionService implements FeedbackSubmissionServiceInterface
 {
-    private $entityManager;
-    private $slackMessenger;
+    private SlackMessengerInterface $slackMessenger;
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param SlackMessengerInterface $slackMessenger
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         SlackMessengerInterface $slackMessenger
     ) {
-        $this->entityManager = $entityManager;
         $this->slackMessenger = $slackMessenger;
     }
 
@@ -34,9 +29,8 @@ class FeedbackSubmissionService implements FeedbackSubmissionServiceInterface
      */
     public function submitFeedback(Feedback $feedback, User $user): void
     {
-        $feedback->setUser($user);
-        $this->entityManager->persist($feedback);
-        $this->entityManager->flush();
+        $feedback->user_id = $user->id;
+        $feedback->save();
 
         // Notifies on slack (NotificationChannel)
         $this->slackMessenger->notify($feedback->getSlackMessageBody());

@@ -8,8 +8,13 @@ use App\Models\Department;
 use App\Models\Interview;
 use App\Models\Role;
 use App\Models\User;
+use App\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use App\Repository\Contract\ApplicationRepositoryInterface;
+use App\Repository\Contract\DepartmentRepositoryInterface;
+use App\Repository\Contract\InterviewRepositoryInterface;
+use App\Repository\Contract\RoleRepositoryInterface;
+use App\Repository\Contract\UserRepositoryInterface;
 use App\Role\Roles;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -19,55 +24,87 @@ use App\Service\Contract\LoginManagerInterface;
 
 class ApplicationAdmission implements ApplicationAdmissionInterface
 {
-    private $em;
-    private $twig;
-    private $loginManager;
+    private AdmissionPeriodRepositoryInterface $admissionPeriodRepository;
+    private ApplicationRepositoryInterface $applicationRepository;
+    private DepartmentRepositoryInterface $departmentRepository;
+    private InterviewRepositoryInterface $interviewRepository;
+    private RoleRepositoryInterface $roleRepository;
+    private UserRepositoryInterface $userRepository;
+    private Environment $twig;
+    private LoginManagerInterface $loginManager;
 
     /**
      * AdmissionManager constructor.
      *
-     * @param EntityManagerInterface     $em
+     * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param DepartmentRepositoryInterface $departmentRepository
+     * @param InterviewRepositoryInterface $interviewRepository
+     * @param RoleRepositoryInterface $roleRepository
+     * @param UserRepositoryInterface $userRepository
      * @param Environment $twig
-     * @param LoginManagerInterface      $loginManager
+     * @param LoginManagerInterface $loginManager
      */
-    public function __construct(EntityManagerInterface $em, Environment $twig, LoginManagerInterface $loginManager)
-    {
-        $this->em = $em;
+    public function __construct(
+        AdmissionPeriodRepositoryInterface $admissionPeriodRepository,
+        ApplicationRepositoryInterface $applicationRepository,
+        DepartmentRepositoryInterface $departmentRepository,
+        InterviewRepositoryInterface $interviewRepository,
+        RoleRepositoryInterface $roleRepository,
+        UserRepositoryInterface $userRepository,
+        Environment $twig,
+        LoginManagerInterface $loginManager
+    ) {
+        $this->admissionPeriodRepository = $admissionPeriodRepository;
+        $this->applicationRepository = $applicationRepository;
+        $this->departmentRepository = $departmentRepository;
+        $this->interviewRepository = $interviewRepository;
+        $this->roleRepository = $roleRepository;
+        $this->userRepository = $userRepository;
         $this->twig = $twig;
         $this->loginManager = $loginManager;
     }
 
     public function createApplicationForExistingAssistant(User $user): Application
     {
-        $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($user->getDepartment());
+        $department = $user->fieldOfStudy->department ?? null;
+        if ($department === null) {
+            throw new \RuntimeException('User has no department');
+        }
+        
+        $admissionPeriod = $this->admissionPeriodRepository->findOneWithActiveAdmissionByDepartment($department);
 
-        $application = $this->em->getRepository(Application::class)->findByUserInAdmissionPeriod($user, $admissionPeriod);
+        $application = $this->applicationRepository->findByUserInAdmissionPeriod($user, $admissionPeriod);
         if ($application === null) {
             $application = new Application();
         }
 
-        $lastInterview = $this->em->getRepository(Interview::class)->findLatestInterviewByUser($user);
+        $lastInterview = $this->interviewRepository->findLatestInterviewByUser($user);
 
-        $application->setUser($user);
-        $application->setAdmissionPeriod($admissionPeriod);
-        $application->setPreviousParticipation(true);
-        $application->setInterview($lastInterview);
+        $application->user_id = $user->id;
+        $application->admission_period_id = $admissionPeriod->id;
+        $application->previous_participation = true;
+        if ($lastInterview !== null) {
+            $application->interview_id = $lastInterview->id;
+        }
 
         return $application;
     }
 
     public function userHasAlreadyApplied(User $user): bool
     {
-        $fos = $user->getFieldOfStudy();
-        if ($fos === null) {
+        $fieldOfStudy = $user->fieldOfStudy;
+        if ($fieldOfStudy === null) {
             /* User has no field of study, and hence no department, so we
             cannot know if he/she has already applied in the current semester,
             as this depends on the department. */
             return false;
         }
-        $department = $fos->getDepartment();
-        $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)
-            ->findOneWithActiveAdmissionByDepartment($department);
+        $department = $fieldOfStudy->department ?? null;
+        if ($department === null) {
+            return false;
+        }
+        $admissionPeriod = $this->admissionPeriodRepository->findOneWithActiveAdmissionByDepartment($department);
         if ($admissionPeriod === null) {
             return false;
         }
@@ -76,23 +113,31 @@ class ApplicationAdmission implements ApplicationAdmissionInterface
 
     public function userHasAlreadyAppliedInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod): bool
     {
-        $existingApplications = $this->em->getRepository(Application::class)->findByEmailInAdmissionPeriod($user->getEmail(), $admissionPeriod);
+        $existingApplications = $this->applicationRepository->findByEmailInAdmissionPeriod($user->email, $admissionPeriod);
 
         return count($existingApplications) > 0;
     }
 
 
-    public function setCorrectUser(Application $application)
+    public function setCorrectUser(Application $application): void
     {
         //Check if email belongs to an existing account and use that account
-        $user = $this->em->getRepository(User::class)->findOneBy(array('email' => $application->getUser()->getEmail()));
+        $userEmail = $application->user->email ?? null;
+        if ($userEmail === null) {
+            return;
+        }
+        
+        $user = $this->userRepository->findUserByEmail($userEmail);
         if ($user !== null) {
-            $application->setUser($user);
+            $application->user_id = $user->id;
         }
 
-        if (count($application->getUser()->getRoles()) === 0) {
-            $role = $this->em->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
-            $application->getUser()->addRole($role);
+        $applicationUser = $application->user;
+        $userRoles = $applicationUser->roles ?? collect([]);
+        if ($userRoles->isEmpty()) {
+            $role = $this->roleRepository->findByRoleName(Roles::ASSISTANT);
+            $applicationUser->roles()->sync([$role->id]);
+            $applicationUser->save();
         }
     }
 
@@ -108,13 +153,14 @@ class ApplicationAdmission implements ApplicationAdmissionInterface
         $department = null;
 
         if ($departmentIdQuery !== null) {
-            $department = $this->em->getRepository(Department::class)->find($departmentIdQuery);
+            // Note: Direct find() might need to be added to DepartmentRepository if not available
+            $department = \App\Models\Department::find($departmentIdQuery);
         } elseif ($departmentShortNameQuery !== null) {
-            $department = $this->em->getRepository(Department::class)->findDepartmentByShortName($departmentShortNameQuery);
+            $department = $this->departmentRepository->findDepartmentByShortName($departmentShortNameQuery);
         }
 
         if ($department === null) {
-            throw  new NotFoundHttpException('Department not found');
+            throw new NotFoundHttpException('Department not found');
         }
 
         return $department;
@@ -131,11 +177,15 @@ class ApplicationAdmission implements ApplicationAdmissionInterface
         } elseif (!$user->hasBeenAssistant()) {
             $content = $this->twig->render('error/no_assistanthistory.html.twig', array('user' => $user));
         } else {
-            $department = $user->getDepartment();
-            $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
-
-            if ($admissionPeriod === null) {
+            $department = $user->fieldOfStudy->department ?? null;
+            if ($department === null) {
                 $content = $this->twig->render(':error:no_active_admission.html.twig');
+            } else {
+                $admissionPeriod = $this->admissionPeriodRepository->findOneWithActiveAdmissionByDepartment($department);
+
+                if ($admissionPeriod === null) {
+                    $content = $this->twig->render(':error:no_active_admission.html.twig');
+                }
             }
         }
 

@@ -7,8 +7,10 @@ use App\Models\Role;
 use App\Models\Semester;
 use App\Models\User;
 use App\Google\GoogleUsers;
+use App\Repository\Contract\ExecutiveBoardMembershipRepositoryInterface;
+use App\Repository\Contract\RoleRepositoryInterface;
+use App\Repository\Contract\SemesterRepositoryInterface;
 use App\Role\Roles;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -16,23 +18,33 @@ use App\Service\Contract\RoleManagerInterface;
 
 class RoleManager implements RoleManagerInterface
 {
-    private $roles = array();
-    private $aliases = array();
-    private $authorizationChecker;
-    private $em;
-    private $logger;
-    private $googleUserService;
+    private array $roles;
+    private array $aliases;
+    private AuthorizationCheckerInterface $authorizationChecker;
+    private ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository;
+    private SemesterRepositoryInterface $semesterRepository;
+    private RoleRepositoryInterface $roleRepository;
+    private LoggerInterface $logger;
+    private GoogleUsers $googleUserService;
 
     /**
      * RoleManager constructor.
      *
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param EntityManagerInterface $em
+     * @param ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository
+     * @param SemesterRepositoryInterface $semesterRepository
+     * @param RoleRepositoryInterface $roleRepository
      * @param LoggerInterface $logger
      * @param GoogleUsers $googleUserService
      */
-    public function __construct(AuthorizationCheckerInterface $authorizationChecker, EntityManagerInterface $em, LoggerInterface $logger, GoogleUsers $googleUserService)
-    {
+    public function __construct(
+        AuthorizationCheckerInterface $authorizationChecker,
+        ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository,
+        SemesterRepositoryInterface $semesterRepository,
+        RoleRepositoryInterface $roleRepository,
+        LoggerInterface $logger,
+        GoogleUsers $googleUserService
+    ) {
         $this->roles = array(
             Roles::ASSISTANT,
             Roles::TEAM_MEMBER,
@@ -46,7 +58,9 @@ class RoleManager implements RoleManagerInterface
             Roles::ALIAS_ADMIN,
         );
         $this->authorizationChecker = $authorizationChecker;
-        $this->em = $em;
+        $this->executiveBoardMembershipRepository = $executiveBoardMembershipRepository;
+        $this->semesterRepository = $semesterRepository;
+        $this->roleRepository = $roleRepository;
         $this->logger = $logger;
         $this->googleUserService = $googleUserService;
     }
@@ -115,14 +129,24 @@ class RoleManager implements RoleManagerInterface
             Roles::ADMIN,
         );
 
-        if (empty($user->getRoles())) {
+        $userRoles = $user->roles;
+        if ($userRoles === null || $userRoles->isEmpty()) {
             return false;
         }
 
-        $userRole = $user->getRoles()[0]->getRole();
+        $userRole = $userRoles->first();
+        $userRoleName = $userRole->role ?? null;
 
-        $userAccessLevel = array_search($userRole, $roles);
+        if ($userRoleName === null) {
+            return false;
+        }
+
+        $userAccessLevel = array_search($userRoleName, $roles);
         $roleAccessLevel = array_search($role, $roles);
+
+        if ($userAccessLevel === false || $roleAccessLevel === false) {
+            return false;
+        }
 
         return $userAccessLevel >= $roleAccessLevel;
     }
@@ -142,67 +166,84 @@ class RoleManager implements RoleManagerInterface
             $updated = $this->setUserRole($user, Roles::ASSISTANT);
         }
 
-        if ($updated && $user->getCompanyEmail()) {
+        if ($updated && $user->company_email) {
             $shouldSuspendGoogleUser = !$this->userIsGranted($user, Roles::TEAM_MEMBER);
-            $this->googleUserService->updateUser($user->getCompanyEmail(), $user, $shouldSuspendGoogleUser);
+            $this->googleUserService->updateUser($user->company_email, $user, $shouldSuspendGoogleUser);
         }
 
         return $updated;
     }
 
-    public function userIsInExecutiveBoard(User $user)
+    public function userIsInExecutiveBoard(User $user): bool
     {
-        $executiveBoardMembership = $this->em->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
+        $executiveBoardMembership = $this->executiveBoardMembershipRepository->findByUser($user);
 
         return !empty($executiveBoardMembership);
     }
 
-    private function userIsTeamLeader(User $user)
+    private function userIsTeamLeader(User $user): bool
     {
         return $this->userIsInATeam($user, true);
     }
 
-    private function userIsTeamMember(User $user)
+    private function userIsTeamMember(User $user): bool
     {
         return $this->userIsInATeam($user, false);
     }
 
-    private function userIsInATeam(User $user, bool $teamLeader)
+    private function userIsInATeam(User $user, bool $teamLeader): bool
     {
-        $semester = $this->em->getRepository(Semester::class)->findOrCreateCurrentSemester();
-        $teamMemberships = $user->getTeamMemberships();
+        $semester = $this->semesterRepository->findOrCreateCurrentSemester();
+        $teamMemberships = $user->teamMemberships ?? [];
 
         if ($semester === null) {
             return false;
         }
 
         foreach ($teamMemberships as $teamMembership) {
-            if ($teamMembership->isActiveInSemester($semester) && $teamMembership->isTeamLeader() === $teamLeader) {
-                return true;
+            // Note: isActiveInSemester() and isTeamLeader() methods need to exist on TeamMembership model
+            if (method_exists($teamMembership, 'isActiveInSemester') && 
+                method_exists($teamMembership, 'isTeamLeader')) {
+                if ($teamMembership->isActiveInSemester($semester) && $teamMembership->isTeamLeader() === $teamLeader) {
+                    return true;
+                }
             }
         }
 
         return false;
     }
 
-    private function setUserRole(User $user, string $role)
+    private function setUserRole(User $user, string $roleName): bool
     {
-        $isValidRole = $this->isValidRole($role);
+        $isValidRole = $this->isValidRole($roleName);
         if (!$isValidRole) {
-            throw new InvalidArgumentException("Invalid role $role");
+            throw new InvalidArgumentException("Invalid role $roleName");
         }
         if ($this->userIsGranted($user, Roles::ADMIN)) {
             return false;
         }
 
-        $role = $this->em->getRepository(Role::class)->findByRoleName($role);
-        $roleNeedsToUpdate = array_search($role, $user->getRoles()) === false;
+        $role = $this->roleRepository->findByRoleName($roleName);
+        $userRoles = $user->roles;
+        
+        // Check if user already has this role
+        $roleNeedsToUpdate = true;
+        if ($userRoles && $userRoles->isNotEmpty()) {
+            foreach ($userRoles as $userRole) {
+                if ($userRole->id === $role->id) {
+                    $roleNeedsToUpdate = false;
+                    break;
+                }
+            }
+        }
 
         if ($roleNeedsToUpdate) {
-            $user->setRoles([$role]);
-            $this->em->flush();
+            $user->roles()->sync([$role->id]);
+            $user->save();
 
-            $this->logger->info("Automatic role update ({$user->getDepartment()}): $user has been updated to $role");
+            $department = $user->fieldOfStudy->department ?? null;
+            $departmentName = $department ? $department->short_name : 'Unknown';
+            $this->logger->info("Automatic role update ($departmentName): $user has been updated to $roleName");
             return true;
         }
 

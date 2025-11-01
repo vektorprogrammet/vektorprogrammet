@@ -5,25 +5,20 @@ namespace App\Service;
 use App\Models\Semester;
 use App\Service\Contract\SemesterManagementServiceInterface;
 use App\Service\Contract\SemesterValidationServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service for managing semesters and semester-related business logic.
  */
 class SemesterManagementService implements SemesterManagementServiceInterface
 {
-    private $entityManager;
-    private $semesterValidationService;
+    private SemesterValidationServiceInterface $semesterValidationService;
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param SemesterValidationServiceInterface $semesterValidationService
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         SemesterValidationServiceInterface $semesterValidationService
     ) {
-        $this->entityManager = $entityManager;
         $this->semesterValidationService = $semesterValidationService;
     }
 
@@ -33,8 +28,8 @@ class SemesterManagementService implements SemesterManagementServiceInterface
     public function createSemester(Semester $semester): array
     {
         $existingSemester = $this->semesterValidationService->findExistingSemester(
-            $semester->getSemesterTime(),
-            $semester->getYear()
+            $semester->semester_time,
+            $semester->year
         );
 
         if ($existingSemester !== null) {
@@ -44,8 +39,7 @@ class SemesterManagementService implements SemesterManagementServiceInterface
             ];
         }
 
-        $this->entityManager->persist($semester);
-        $this->entityManager->flush();
+        $semester->save();
 
         return [
             'success' => true,
@@ -58,8 +52,7 @@ class SemesterManagementService implements SemesterManagementServiceInterface
      */
     public function deleteSemester(Semester $semester): void
     {
-        $this->entityManager->remove($semester);
-        $this->entityManager->flush();
+        $semester->delete();
     }
 }
 

@@ -9,10 +9,10 @@ use App\Models\TeamMembership;
 use App\Models\User;
 use App\Repository\Contract\AssistantHistoryRepositoryInterface;
 use App\Repository\Contract\ExecutiveBoardMembershipRepositoryInterface;
+use App\Repository\Contract\SignatureRepositoryInterface;
 use App\Repository\Contract\TeamMembershipRepositoryInterface;
 use App\Service\Contract\ProfileServiceInterface;
 use App\Service\Contract\RoleManagerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -22,31 +22,31 @@ use Dompdf\Options;
  */
 class ProfileService implements ProfileServiceInterface
 {
-    private $assistantHistoryRepository;
-    private $teamMembershipRepository;
-    private $executiveBoardMembershipRepository;
-    private $roleManager;
-    private $entityManager;
+    private AssistantHistoryRepositoryInterface $assistantHistoryRepository;
+    private TeamMembershipRepositoryInterface $teamMembershipRepository;
+    private ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository;
+    private SignatureRepositoryInterface $signatureRepository;
+    private RoleManagerInterface $roleManager;
 
     /**
      * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
      * @param TeamMembershipRepositoryInterface $teamMembershipRepository
      * @param ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository
+     * @param SignatureRepositoryInterface $signatureRepository
      * @param RoleManagerInterface $roleManager
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         AssistantHistoryRepositoryInterface $assistantHistoryRepository,
         TeamMembershipRepositoryInterface $teamMembershipRepository,
         ExecutiveBoardMembershipRepositoryInterface $executiveBoardMembershipRepository,
-        RoleManagerInterface $roleManager,
-        EntityManagerInterface $entityManager
+        SignatureRepositoryInterface $signatureRepository,
+        RoleManagerInterface $roleManager
     ) {
         $this->assistantHistoryRepository = $assistantHistoryRepository;
         $this->teamMembershipRepository = $teamMembershipRepository;
         $this->executiveBoardMembershipRepository = $executiveBoardMembershipRepository;
+        $this->signatureRepository = $signatureRepository;
         $this->roleManager = $roleManager;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -82,8 +82,8 @@ class ProfileService implements ProfileServiceInterface
      */
     public function activateUser(User $user): void
     {
-        $user->setActive(true);
-        $this->entityManager->flush();
+        $user->is_active = true;
+        $user->save();
     }
 
     /**
@@ -91,8 +91,8 @@ class ProfileService implements ProfileServiceInterface
      */
     public function deactivateUser(User $user): void
     {
-        $user->setActive(false);
-        $this->entityManager->flush();
+        $user->is_active = false;
+        $user->save();
     }
 
     /**
@@ -102,15 +102,14 @@ class ProfileService implements ProfileServiceInterface
     {
         $assistantHistory = $this->assistantHistoryRepository->findByUser($user);
         $teamMembership = $this->teamMembershipRepository->findByUser($user);
-        $signatureRepo = $this->entityManager->getRepository(Signature::class);
-        $signature = $signatureRepo->findByUser($signer);
+        $signature = $this->signatureRepository->findByUser($signer);
 
         if ($signature === null) {
             throw new \RuntimeException('Signature not found');
         }
 
         $department = $signer->getDepartment();
-        $additionalComment = $signature->getAdditionalComment();
+        $additionalComment = $signature->additional_comment ?? null;
 
         return [
             'user' => $user,

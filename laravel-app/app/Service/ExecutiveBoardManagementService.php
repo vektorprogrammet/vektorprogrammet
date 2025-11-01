@@ -7,25 +7,20 @@ use App\Models\ExecutiveBoardMembership;
 use App\Models\User;
 use App\Service\Contract\ExecutiveBoardManagementServiceInterface;
 use App\Service\Contract\RoleManagerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service for managing executive board memberships and board-related business logic.
  */
 class ExecutiveBoardManagementService implements ExecutiveBoardManagementServiceInterface
 {
-    private $entityManager;
-    private $roleManager;
+    private RoleManagerInterface $roleManager;
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param RoleManagerInterface $roleManager
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         RoleManagerInterface $roleManager
     ) {
-        $this->entityManager = $entityManager;
         $this->roleManager = $roleManager;
     }
 
@@ -34,10 +29,9 @@ class ExecutiveBoardManagementService implements ExecutiveBoardManagementService
      */
     public function createMembership(ExecutiveBoardMembership $membership, ExecutiveBoard $board, User $user): void
     {
-        $membership->setBoard($board);
-        $this->entityManager->persist($membership);
-        $this->entityManager->flush();
-        $this->roleManager->updateUserRole($membership->getUser());
+        $membership->board_id = $board->id;
+        $membership->save();
+        $this->roleManager->updateUserRole($membership->user);
     }
 
     /**
@@ -45,8 +39,7 @@ class ExecutiveBoardManagementService implements ExecutiveBoardManagementService
      */
     public function updateMembership(ExecutiveBoardMembership $membership): void
     {
-        $this->entityManager->persist($membership);
-        $this->entityManager->flush();
+        $membership->save();
     }
 
     /**
@@ -54,9 +47,8 @@ class ExecutiveBoardManagementService implements ExecutiveBoardManagementService
      */
     public function removeMembership(ExecutiveBoardMembership $membership): void
     {
-        $user = $membership->getUser();
-        $this->entityManager->remove($membership);
-        $this->entityManager->flush();
+        $user = $membership->user;
+        $membership->delete();
         $this->roleManager->updateUserRole($user);
     }
 
@@ -65,8 +57,7 @@ class ExecutiveBoardManagementService implements ExecutiveBoardManagementService
      */
     public function updateBoard(ExecutiveBoard $board): void
     {
-        $this->entityManager->persist($board);
-        $this->entityManager->flush();
+        $board->save();
     }
 }
 

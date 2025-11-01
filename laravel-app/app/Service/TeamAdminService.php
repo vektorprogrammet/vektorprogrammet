@@ -6,9 +6,9 @@ use App\Models\Department;
 use App\Models\Team;
 use App\Models\TeamMembership;
 use App\Models\User;
+use App\Repository\Contract\TeamMembershipRepositoryInterface;
 use App\Repository\Contract\TeamRepositoryInterface;
 use App\Service\Contract\TeamAdminServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service for team admin operations.
@@ -16,19 +16,19 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class TeamAdminService implements TeamAdminServiceInterface
 {
-    private $teamRepository;
-    private $entityManager;
+    private TeamRepositoryInterface $teamRepository;
+    private TeamMembershipRepositoryInterface $teamMembershipRepository;
 
     /**
      * @param TeamRepositoryInterface $teamRepository
-     * @param EntityManagerInterface $entityManager
+     * @param TeamMembershipRepositoryInterface $teamMembershipRepository
      */
     public function __construct(
         TeamRepositoryInterface $teamRepository,
-        EntityManagerInterface $entityManager
+        TeamMembershipRepositoryInterface $teamMembershipRepository
     ) {
         $this->teamRepository = $teamRepository;
-        $this->entityManager = $entityManager;
+        $this->teamMembershipRepository = $teamMembershipRepository;
     }
 
     /**
@@ -50,15 +50,13 @@ class TeamAdminService implements TeamAdminServiceInterface
      */
     public function getSpecificTeamData(Team $team, User $currentUser): array
     {
-        $teamMembershipRepo = $this->entityManager->getRepository(TeamMembership::class);
-        $activeTeamMemberships = $teamMembershipRepo->findActiveTeamMembershipsByTeam($team);
-        $inActiveTeamMemberships = $teamMembershipRepo->findInactiveTeamMembershipsByTeam($team);
+        $activeTeamMemberships = $this->teamMembershipRepository->findActiveTeamMembershipsByTeam($team);
+        $inActiveTeamMemberships = $this->teamMembershipRepository->findInactiveTeamMembershipsByTeam($team);
 
         $activeTeamMemberships = $this->sortTeamMembershipsByStartDate($activeTeamMemberships);
         $inActiveTeamMemberships = $this->sortTeamMembershipsByStartDate($inActiveTeamMemberships);
 
-        $teamMembershipRepo = $this->entityManager->getRepository(TeamMembership::class);
-        $currentUserTeamMembership = $teamMembershipRepo->findActiveTeamMembershipsByUser($currentUser);
+        $currentUserTeamMembership = $this->teamMembershipRepository->findActiveTeamMembershipsByUser($currentUser);
         $isUserInTeam = false;
         foreach ($currentUserTeamMembership as $membership) {
             if (in_array($membership, $activeTeamMemberships)) {
@@ -81,7 +79,7 @@ class TeamAdminService implements TeamAdminServiceInterface
     public function sortTeamMembershipsByStartDate(array $teamMemberships): array
     {
         usort($teamMemberships, function (TeamMembership $a, TeamMembership $b) {
-            return $a->getStartSemester()->getStartDate() < $b->getStartSemester()->getStartDate() ? -1 : 1;
+            return $a->startSemester->start_date < $b->startSemester->start_date ? -1 : 1;
         });
 
         return $teamMemberships;
@@ -92,13 +90,12 @@ class TeamAdminService implements TeamAdminServiceInterface
      */
     public function deleteTeam(Team $team): void
     {
-        foreach ($team->getTeamMemberships() as $teamMembership) {
-            $teamMembership->setDeletedTeamName($team->getName());
-            $this->entityManager->persist($teamMembership);
+        foreach ($team->teamMemberships as $teamMembership) {
+            $teamMembership->deleted_team_name = $team->name;
+            $teamMembership->save();
         }
 
-        $this->entityManager->remove($team);
-        $this->entityManager->flush();
+        $team->delete();
     }
 }
 

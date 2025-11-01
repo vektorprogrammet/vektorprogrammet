@@ -9,9 +9,9 @@ use App\Models\Semester;
 use App\Models\Signature;
 use App\Models\User;
 use App\Repository\Contract\AssistantHistoryRepositoryInterface;
+use App\Repository\Contract\SignatureRepositoryInterface;
 use App\Service\Contract\CertificateServiceInterface;
 use App\Service\Contract\FileUploaderInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -19,22 +19,22 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class CertificateService implements CertificateServiceInterface
 {
-    private $assistantHistoryRepository;
-    private $entityManager;
-    private $fileUploader;
+    private AssistantHistoryRepositoryInterface $assistantHistoryRepository;
+    private SignatureRepositoryInterface $signatureRepository;
+    private FileUploaderInterface $fileUploader;
 
     /**
      * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
-     * @param EntityManagerInterface $entityManager
+     * @param SignatureRepositoryInterface $signatureRepository
      * @param FileUploaderInterface $fileUploader
      */
     public function __construct(
         AssistantHistoryRepositoryInterface $assistantHistoryRepository,
-        EntityManagerInterface $entityManager,
+        SignatureRepositoryInterface $signatureRepository,
         FileUploaderInterface $fileUploader
     ) {
         $this->assistantHistoryRepository = $assistantHistoryRepository;
-        $this->entityManager = $entityManager;
+        $this->signatureRepository = $signatureRepository;
         $this->fileUploader = $fileUploader;
     }
 
@@ -43,7 +43,7 @@ class CertificateService implements CertificateServiceInterface
      */
     public function getOrCreateSignature(User $user): Signature
     {
-        $signature = $this->entityManager->getRepository(Signature::class)->findByUser($user);
+        $signature = $this->signatureRepository->findByUser($user);
 
         if ($signature === null) {
             $signature = new Signature();
@@ -57,20 +57,19 @@ class CertificateService implements CertificateServiceInterface
      */
     public function saveSignature(Signature $signature, Request $request, User $user): void
     {
-        $oldPath = $signature->getSignaturePath() ?? '';
+        $oldPath = $signature->signature_path ?? '';
         $isImageUpload = $request->files->get('create_signature')['signature_path'] !== null;
 
         if ($isImageUpload) {
             $signaturePath = $this->fileUploader->uploadSignature($request);
             $this->fileUploader->deleteSignature($oldPath);
-            $signature->setSignaturePath($signaturePath);
+            $signature->signature_path = $signaturePath;
         } else {
-            $signature->setSignaturePath($oldPath);
+            $signature->signature_path = $oldPath;
         }
 
-        $signature->setUser($user);
-        $this->entityManager->persist($signature);
-        $this->entityManager->flush();
+        $signature->user_id = $user->id;
+        $signature->save();
     }
 
     /**
@@ -86,7 +85,8 @@ class CertificateService implements CertificateServiceInterface
      */
     public function getAllCertificateRequests(): array
     {
-        return $this->entityManager->getRepository(CertificateRequest::class)->findAll();
+        // Note: CertificateRequestRepository not yet created - using model directly
+        return CertificateRequest::all()->toArray();
     }
 }
 

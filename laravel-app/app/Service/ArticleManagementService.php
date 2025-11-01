@@ -8,7 +8,6 @@ use App\Service\Contract\ArticleManagementServiceInterface;
 use App\Service\Contract\FileUploaderInterface;
 use App\Service\Contract\LogServiceInterface;
 use App\Service\Contract\SlugMakerInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -17,24 +16,20 @@ use Symfony\Component\HttpFoundation\Request;
  */
 class ArticleManagementService implements ArticleManagementServiceInterface
 {
-    private $entityManager;
-    private $slugMaker;
-    private $fileUploader;
-    private $logService;
+    private SlugMakerInterface $slugMaker;
+    private FileUploaderInterface $fileUploader;
+    private LogServiceInterface $logService;
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param SlugMakerInterface $slugMaker
      * @param FileUploaderInterface $fileUploader
      * @param LogServiceInterface $logService
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         SlugMakerInterface $slugMaker,
         FileUploaderInterface $fileUploader,
         LogServiceInterface $logService
     ) {
-        $this->entityManager = $entityManager;
         $this->slugMaker = $slugMaker;
         $this->fileUploader = $fileUploader;
         $this->logService = $logService;
@@ -45,7 +40,7 @@ class ArticleManagementService implements ArticleManagementServiceInterface
      */
     public function createArticle(Article $article, User $author, Request $request): array
     {
-        $article->setAuthor($author);
+        $article->author_id = $author->id;
         $this->slugMaker->setSlugFor($article);
 
         $imageSmall = $this->fileUploader->uploadArticleImage($request, 'imgsmall');
@@ -55,13 +50,12 @@ class ArticleManagementService implements ArticleManagementServiceInterface
             return ['success' => false, 'error' => 'Error uploading images'];
         }
 
-        $article->setImageSmall($imageSmall);
-        $article->setImageLarge($imageLarge);
+        $article->image_small = $imageSmall;
+        $article->image_large = $imageLarge;
 
-        $this->entityManager->persist($article);
-        $this->entityManager->flush();
+        $article->save();
 
-        $this->logService->info("A new article \"{$article->getTitle()}\" by {$article->getAuthor()} has been published");
+        $this->logService->info("A new article \"{$article->title}\" by {$author} has been published");
 
         return ['success' => true];
     }
@@ -73,18 +67,17 @@ class ArticleManagementService implements ArticleManagementServiceInterface
     {
         $imageSmall = $this->fileUploader->uploadArticleImage($request, 'imgsmall');
         if ($imageSmall) {
-            $article->setImageSmall($imageSmall);
+            $article->image_small = $imageSmall;
         }
 
         $imageLarge = $this->fileUploader->uploadArticleImage($request, 'imglarge');
         if ($imageLarge) {
-            $article->setImageLarge($imageLarge);
+            $article->image_large = $imageLarge;
         }
 
-        $this->entityManager->persist($article);
-        $this->entityManager->flush();
+        $article->save();
 
-        $this->logService->info("The article \"{$article->getTitle()}\" was edited by {$editor}");
+        $this->logService->info("The article \"{$article->title}\" was edited by {$editor}");
 
         return ['success' => true];
     }
@@ -95,16 +88,15 @@ class ArticleManagementService implements ArticleManagementServiceInterface
     public function toggleStickyStatus(Article $article): array
     {
         try {
-            if ($article->getSticky()) {
-                $article->setSticky(false);
+            if ($article->sticky) {
+                $article->sticky = false;
                 $sticky = false;
             } else {
-                $article->setSticky(true);
+                $article->sticky = true;
                 $sticky = true;
             }
 
-            $this->entityManager->persist($article);
-            $this->entityManager->flush();
+            $article->save();
 
             return [
                 'success' => true,
@@ -126,8 +118,7 @@ class ArticleManagementService implements ArticleManagementServiceInterface
      */
     public function deleteArticle(Article $article): void
     {
-        $this->entityManager->remove($article);
-        $this->entityManager->flush();
+        $article->delete();
     }
 }
 

@@ -6,8 +6,9 @@ namespace App\Service;
 use App\Models\AccessRule;
 use App\Models\UnhandledAccessRule;
 use App\Models\User;
+use App\Repository\Contract\AccessRuleRepositoryInterface;
+use App\Repository\Contract\UnhandledAccessRuleRepositoryInterface;
 use App\Role\Roles;
-use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
@@ -17,46 +18,54 @@ use App\Service\Contract\UserServiceInterface;
 
 class AccessControlService implements AccessControlServiceInterface
 {
-    private $entityManager;
-    private $router;
-    private $roleManager;
-    private $userService;
-    private $accessRulesCache;
-    private $unhandledRulesCache;
+    private AccessRuleRepositoryInterface $accessRuleRepository;
+    private UnhandledAccessRuleRepositoryInterface $unhandledAccessRuleRepository;
+    private RouterInterface $router;
+    private RoleManagerInterface $roleManager;
+    private UserServiceInterface $userService;
+    private array $accessRulesCache;
+    private array $unhandledRulesCache;
 
     /**
      * ResourceAccessSubscriber constructor.
      *
-     * @param EntityManagerInterface $entityManager
+     * @param AccessRuleRepositoryInterface $accessRuleRepository
+     * @param UnhandledAccessRuleRepositoryInterface $unhandledAccessRuleRepository
      * @param RouterInterface $router
      * @param RoleManagerInterface $roleManager
      * @param UserServiceInterface $userService
      */
-    public function __construct(EntityManagerInterface $entityManager, RouterInterface $router, RoleManagerInterface $roleManager, UserServiceInterface $userService)
-    {
-        $this->entityManager = $entityManager;
-        $this->router        = $router;
-        $this->roleManager   = $roleManager;
-        $this->userService   = $userService;
+    public function __construct(
+        AccessRuleRepositoryInterface $accessRuleRepository,
+        UnhandledAccessRuleRepositoryInterface $unhandledAccessRuleRepository,
+        RouterInterface $router,
+        RoleManagerInterface $roleManager,
+        UserServiceInterface $userService
+    ) {
+        $this->accessRuleRepository = $accessRuleRepository;
+        $this->unhandledAccessRuleRepository = $unhandledAccessRuleRepository;
+        $this->router = $router;
+        $this->roleManager = $roleManager;
+        $this->userService = $userService;
         $this->accessRulesCache = [];
         $this->unhandledRulesCache = [];
         $this->preloadCache();
     }
 
-    private function preloadCache()
+    private function preloadCache(): void
     {
-        $accessRules = $this->entityManager->getRepository(AccessRule::class)->findAll();
+        $accessRules = $this->accessRuleRepository->findAll();
         foreach ($accessRules as $rule) {
-            $key = $this->getKey($rule->getResource(), $rule->getMethod());
+            $key = $this->getKey($rule->resource ?? '', $rule->method ?? 'GET');
             if (!key_exists($key, $this->accessRulesCache)) {
                 $this->accessRulesCache[$key] = [];
             }
             $this->accessRulesCache[$key][] = $rule;
         }
 
-        $unhandledRules = $this->entityManager->getRepository(UnhandledAccessRule::class)->findAll();
+        $unhandledRules = $this->unhandledAccessRuleRepository->findAll();
         foreach ($unhandledRules as $rule) {
-            $key = $this->getKey($rule->getResource(), $rule->getMethod());
+            $key = $this->getKey($rule->resource ?? '', $rule->method ?? 'GET');
             if (!key_exists($key, $this->unhandledRulesCache)) {
                 $this->unhandledRulesCache[$key] = [];
             }
@@ -64,16 +73,17 @@ class AccessControlService implements AccessControlServiceInterface
         }
     }
 
-    public function createRule(AccessRule $accessRule)
+    public function createRule(AccessRule $accessRule): void
     {
-        $em             = $this->entityManager;
-        $unhandledRules = $em->getRepository(UnhandledAccessRule::class)->findByResourceAndMethod($accessRule->getResource(), $accessRule->getMethod());
+        $unhandledRules = $this->unhandledAccessRuleRepository->findByResourceAndMethod(
+            $accessRule->resource ?? '',
+            $accessRule->method ?? 'GET'
+        );
         foreach ($unhandledRules as $unhandledRule) {
-            $em->remove($unhandledRule);
+            $unhandledRule->delete();
         }
 
-        $em->persist($accessRule);
-        $em->flush();
+        $accessRule->save();
 
         $this->preloadCache();
     }
@@ -127,13 +137,15 @@ class AccessControlService implements AccessControlServiceInterface
         }
 
         $everyoneHasAccess = ! empty(array_filter($accessRules, function (AccessRule $rule) {
-            return $rule->isEmpty();
+            // Note: isEmpty() method needs to exist on AccessRule model
+            return method_exists($rule, 'isEmpty') && $rule->isEmpty();
         }));
         if (empty($accessRules) || $everyoneHasAccess) {
             return true;
         }
 
-        if ($user === null || empty($user->getRoles())) {
+        $userRoles = $user->roles;
+        if ($user === null || ($userRoles === null || $userRoles->isEmpty())) {
             return false;
         }
 
@@ -157,7 +169,8 @@ class AccessControlService implements AccessControlServiceInterface
 
     private function userHasAccessToRule(User $user, AccessRule $rule): bool
     {
-        if (count(is_countable($rule->getUsers()) ? $rule->getUsers() : array()) > 0 && ! ($user->isActive() && $this->userIsInRuleUserList($user, $rule))) {
+        $ruleUsers = $rule->users ?? collect([]);
+        if ($ruleUsers->isNotEmpty() && !($user->is_active && $this->userIsInRuleUserList($user, $rule))) {
             return false;
         }
 
@@ -165,7 +178,8 @@ class AccessControlService implements AccessControlServiceInterface
             return false;
         }
 
-        if (count(is_countable($rule->getRoles()) ? $rule->getRoles() : array()) > 0 && ! $this->userRoleHasAccessToRule($user, $rule)) {
+        $ruleRoles = $rule->roles ?? collect([]);
+        if ($ruleRoles->isNotEmpty() && !$this->userRoleHasAccessToRule($user, $rule)) {
             return false;
         }
 
@@ -174,10 +188,17 @@ class AccessControlService implements AccessControlServiceInterface
 
     private function userHasTeamOrExecutiveBoardAccessToRule(User $user, AccessRule $rule): bool
     {
-        $teamRule = count(is_countable($rule->getTeams()) ? $rule->getTeams() : array()) > 0;
-        $executiveRule = $rule->isForExecutiveBoard();
+        $ruleTeams = $rule->teams ?? collect([]);
+        $teamRule = $ruleTeams->isNotEmpty();
+        // Note: isForExecutiveBoard() method needs to exist on AccessRule model
+        $executiveRule = method_exists($rule, 'isForExecutiveBoard') && $rule->isForExecutiveBoard();
         $hasTeamAccess = $this->userHasTeamAccessToRule($user, $rule);
-        $hasExecutiveBoardAccess = count(is_countable($user->getActiveExecutiveBoardMemberships()) ? $user->getActiveExecutiveBoardMemberships() : array()) > 0;
+        // Note: getActiveExecutiveBoardMemberships() method needs to exist on User model
+        $executiveBoardMemberships = method_exists($user, 'getActiveExecutiveBoardMemberships') 
+            ? $user->getActiveExecutiveBoardMemberships() 
+            : collect([]);
+        $hasExecutiveBoardAccess = $executiveBoardMemberships->isNotEmpty();
+        
         if ($teamRule && $executiveRule && !($hasTeamAccess || $hasExecutiveBoardAccess)) {
             return false;
         } elseif ($teamRule && !$executiveRule && !$hasTeamAccess) {
@@ -191,13 +212,20 @@ class AccessControlService implements AccessControlServiceInterface
 
     private function userHasTeamAccessToRule(User $user, AccessRule $rule): bool
     {
-        if (empty($rule->getTeams())) {
+        $ruleTeams = $rule->teams ?? collect([]);
+        if ($ruleTeams->isEmpty()) {
             return false;
         }
 
-        foreach ($user->getActiveTeamMemberships() as $membership) {
-            foreach ($rule->getTeams() as $team) {
-                if ($membership->getTeam() === $team) {
+        // Note: getActiveTeamMemberships() method needs to exist on User model
+        $teamMemberships = method_exists($user, 'getActiveTeamMemberships') 
+            ? $user->getActiveTeamMemberships() 
+            : collect([]);
+
+        foreach ($teamMemberships as $membership) {
+            $team = $membership->team ?? null;
+            foreach ($ruleTeams as $ruleTeam) {
+                if ($team && $team->id === $ruleTeam->id) {
                     return true;
                 }
             }
@@ -208,8 +236,9 @@ class AccessControlService implements AccessControlServiceInterface
 
     private function userIsInRuleUserList(User $user, AccessRule $rule): bool
     {
-        foreach ($rule->getUsers() as $userInRule) {
-            if ($user === $userInRule) {
+        $ruleUsers = $rule->users ?? collect([]);
+        foreach ($ruleUsers as $userInRule) {
+            if ($user->id === $userInRule->id) {
                 return true;
             }
         }
@@ -219,9 +248,12 @@ class AccessControlService implements AccessControlServiceInterface
 
     private function userRoleHasAccessToRule(User $user, AccessRule $rule): bool
     {
-        foreach ($rule->getRoles() as $roleInRule) {
-            foreach ($user->getRoles() as $userRole) {
-                if ($roleInRule === $userRole) {
+        $ruleRoles = $rule->roles ?? collect([]);
+        $userRoles = $user->roles ?? collect([]);
+        
+        foreach ($ruleRoles as $roleInRule) {
+            foreach ($userRoles as $userRole) {
+                if ($roleInRule->id === $userRole->id) {
                     return true;
                 }
             }
@@ -278,14 +310,16 @@ class AccessControlService implements AccessControlServiceInterface
         return $this->router->getRouteCollection()->get($name) !== null;
     }
 
-    private function markRuleAsUnhandledIfNotExists(string $resource, string $method = 'GET')
+    private function markRuleAsUnhandledIfNotExists(string $resource, string $method = 'GET'): void
     {
         if ($this->isPrivateRoute($resource) || $this->unhandledRuleExists($resource, $method)) {
             return;
         }
 
-        $this->entityManager->persist(new UnhandledAccessRule($resource, $method));
-        $this->entityManager->flush();
+        $unhandledRule = new UnhandledAccessRule();
+        $unhandledRule->resource = $resource;
+        $unhandledRule->method = $method;
+        $unhandledRule->save();
 
         $this->preloadCache();
     }

@@ -14,7 +14,6 @@ use App\Repository\Contract\ApplicationRepositoryInterface;
 use App\Repository\Contract\TeamRepositoryInterface;
 use App\Service\Contract\AdmissionAdminServiceInterface;
 use App\Service\Contract\InterviewCounterInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -23,19 +22,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class AdmissionAdminService implements AdmissionAdminServiceInterface
 {
-    private $admissionPeriodRepository;
-    private $applicationRepository;
-    private $teamRepository;
-    private $interviewCounter;
-    private $entityManager;
-    private $eventDispatcher;
+    private AdmissionPeriodRepositoryInterface $admissionPeriodRepository;
+    private ApplicationRepositoryInterface $applicationRepository;
+    private TeamRepositoryInterface $teamRepository;
+    private InterviewCounterInterface $interviewCounter;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * @param AdmissionPeriodRepositoryInterface $admissionPeriodRepository
      * @param ApplicationRepositoryInterface $applicationRepository
      * @param TeamRepositoryInterface $teamRepository
      * @param InterviewCounterInterface $interviewCounter
-     * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
@@ -43,14 +40,12 @@ class AdmissionAdminService implements AdmissionAdminServiceInterface
         ApplicationRepositoryInterface $applicationRepository,
         TeamRepositoryInterface $teamRepository,
         InterviewCounterInterface $interviewCounter,
-        EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->admissionPeriodRepository = $admissionPeriodRepository;
         $this->applicationRepository = $applicationRepository;
         $this->teamRepository = $teamRepository;
         $this->interviewCounter = $interviewCounter;
-        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -109,14 +104,12 @@ class AdmissionAdminService implements AdmissionAdminServiceInterface
     public function bulkDeleteApplications(array $applicationIds): void
     {
         foreach ($applicationIds as $id) {
-            $application = $this->entityManager->getRepository(Application::class)->find($id);
+            $application = Application::find($id);
 
             if ($application !== null) {
-                $this->entityManager->remove($application);
+                $application->delete();
             }
         }
-
-        $this->entityManager->flush();
     }
 
     /**
@@ -125,12 +118,11 @@ class AdmissionAdminService implements AdmissionAdminServiceInterface
     public function createApplication(Application $application, AdmissionPeriod $admissionPeriod, ?User $existingUser = null): Application
     {
         if ($existingUser !== null) {
-            $application->setUser($existingUser);
+            $application->user_id = $existingUser->id;
         }
 
-        $application->setAdmissionPeriod($admissionPeriod);
-        $this->entityManager->persist($application);
-        $this->entityManager->flush();
+        $application->admission_period_id = $admissionPeriod->id;
+        $application->save();
 
         $this->eventDispatcher->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 
@@ -144,8 +136,12 @@ class AdmissionAdminService implements AdmissionAdminServiceInterface
     {
         $applicationsWithTeamInterest = $this->applicationRepository->findApplicationByTeamInterestAndAdmissionPeriod($admissionPeriod);
         $teams = $this->teamRepository->findByTeamInterestAndAdmissionPeriod($admissionPeriod);
-        $possibleApplicants = $this->entityManager->getRepository(TeamInterest::class)
-            ->findBy(array('semester' => $semester, 'department' => $department));
+        
+        // Note: TeamInterestRepository not yet created - using model directly
+        $possibleApplicants = TeamInterest::where('semester_id', $semester->id)
+            ->where('department_id', $department->id)
+            ->get()
+            ->toArray();
 
         return [
             'applicationsWithTeamInterest' => $applicationsWithTeamInterest,

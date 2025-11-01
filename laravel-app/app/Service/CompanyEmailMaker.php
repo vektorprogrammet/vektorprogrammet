@@ -4,27 +4,29 @@
 namespace App\Service;
 
 use App\Models\User;
+use App\Repository\Contract\UserRepositoryInterface;
 use App\Service\Contract\CompanyEmailMakerInterface;
 use App\Service\Contract\LogServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 class CompanyEmailMaker implements CompanyEmailMakerInterface
 {
-    private $em;
-    private $logger;
+    private UserRepositoryInterface $userRepository;
+    private LogServiceInterface $logger;
 
-    public function __construct(EntityManagerInterface $em, LogServiceInterface $logger)
-    {
-        $this->em = $em;
+    public function __construct(
+        UserRepositoryInterface $userRepository,
+        LogServiceInterface $logger
+    ) {
+        $this->userRepository = $userRepository;
         $this->logger = $logger;
     }
 
     public function setCompanyEmailFor(User $user, array $blackList): ?string
     {
-        $allCompanyEmails = $this->em->getRepository(User::class)->findAllCompanyEmails();
+        $allCompanyEmails = $this->userRepository->findAllCompanyEmails();
         $allEmails = array_merge($allCompanyEmails, $blackList);
-        $firstName = strtolower($this->replaceNorwegianCharacters($user->getFirstName()));
-        $fullName = strtolower($this->replaceNorwegianCharacters($user->getFullName()));
+        $firstName = strtolower($this->replaceNorwegianCharacters($user->first_name));
+        $fullName = strtolower($this->replaceNorwegianCharacters($user->first_name . ' ' . $user->last_name));
 
 
         $email = preg_replace('/\s+/', '.', $firstName) . '@vektorprogrammet.no';
@@ -44,8 +46,8 @@ class CompanyEmailMaker implements CompanyEmailMakerInterface
             return null;
         }
 
-        $user->setCompanyEmail($email);
-        $this->em->flush();
+        $user->company_email = $email;
+        $user->save();
         $this->logger->info("Created company email, $email, for $user");
         return $email;
     }

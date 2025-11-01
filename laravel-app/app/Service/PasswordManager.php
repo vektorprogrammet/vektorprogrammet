@@ -6,28 +6,36 @@ namespace App\Service;
 use App\Models\PasswordReset;
 use App\Models\User;
 use App\Mailer\MailerInterface;
+use App\Repository\Contract\PasswordResetRepositoryInterface;
+use App\Repository\Contract\UserRepositoryInterface;
 use DateTime;
-use Doctrine\ORM\EntityManagerInterface;
 use Swift_Message;
 use Twig\Environment;
 use App\Service\Contract\PasswordManagerInterface;
 
 class PasswordManager implements PasswordManagerInterface
 {
-    private $em;
-    private $mailer;
-    private $twig;
+    private PasswordResetRepositoryInterface $passwordResetRepository;
+    private UserRepositoryInterface $userRepository;
+    private MailerInterface $mailer;
+    private Environment $twig;
 
     /**
      * PasswordManager constructor.
      *
-     * @param EntityManagerInterface $em
+     * @param PasswordResetRepositoryInterface $passwordResetRepository
+     * @param UserRepositoryInterface $userRepository
      * @param MailerInterface $mailer
      * @param Environment $twig
      */
-    public function __construct(EntityManagerInterface $em, MailerInterface $mailer, Environment $twig)
-    {
-        $this->em = $em;
+    public function __construct(
+        PasswordResetRepositoryInterface $passwordResetRepository,
+        UserRepositoryInterface $userRepository,
+        MailerInterface $mailer,
+        Environment $twig
+    ) {
+        $this->passwordResetRepository = $passwordResetRepository;
+        $this->userRepository = $userRepository;
         $this->mailer = $mailer;
         $this->twig = $twig;
     }
@@ -45,23 +53,33 @@ class PasswordManager implements PasswordManagerInterface
     public function resetCodeIsValid(string $resetCode): bool
     {
         $hashedResetCode = $this->hashCode($resetCode);
-        $passwordReset = $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
+        $passwordReset = $this->passwordResetRepository->findPasswordResetByHashedResetCode($hashedResetCode);
 
-        return $passwordReset !== null && $passwordReset->getUser() !== null;
+        return $passwordReset !== null && $passwordReset->user !== null;
     }
 
     public function resetCodeHasExpired(string $resetCode): bool
     {
         $hashedResetCode = $this->hashCode($resetCode);
-        $passwordReset = $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
+        $passwordReset = $this->passwordResetRepository->findPasswordResetByHashedResetCode($hashedResetCode);
+
+        if ($passwordReset === null) {
+            return true;
+        }
 
         $currentTime = new DateTime();
-        $timeDifference = date_diff($passwordReset->getResetTime(), $currentTime);
+        $resetTime = $passwordReset->reset_time ?? null;
+        
+        if ($resetTime === null) {
+            return true;
+        }
+
+        $timeDifference = date_diff($resetTime instanceof DateTime ? $resetTime : new DateTime($resetTime), $currentTime);
 
         $hasExpired = $timeDifference->d > 1;
 
         if ($hasExpired) {
-            $this->em->getRepository(PasswordReset::class)->deletePasswordResetByHashedResetCode($hashedResetCode);
+            $this->passwordResetRepository->deletePasswordResetByHashedResetCode($hashedResetCode);
         }
 
         return $hasExpired;
@@ -71,7 +89,7 @@ class PasswordManager implements PasswordManagerInterface
     {
         $hashedResetCode = $this->hashCode($resetCode);
 
-        return $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
+        return $this->passwordResetRepository->findPasswordResetByHashedResetCode($hashedResetCode);
     }
 
     public function createPasswordResetEntity(string $email): ?PasswordReset
@@ -79,7 +97,7 @@ class PasswordManager implements PasswordManagerInterface
         $passwordReset = new PasswordReset();
 
         //Finds the user based on the email
-        $user = $this->em->getRepository(User::class)->findUserByEmail($email);
+        $user = $this->userRepository->findUserByEmail($email);
 
         if ($user === null) {
             return null;
@@ -92,9 +110,9 @@ class PasswordManager implements PasswordManagerInterface
         $hashedResetCode = $this->hashCode($resetCode);
 
         //Adds the info in the passwordReset entity
-        $passwordReset->setUser($user);
-        $passwordReset->setResetCode($resetCode);
-        $passwordReset->setHashedResetCode($hashedResetCode);
+        $passwordReset->user_id = $user->id;
+        $passwordReset->reset_code = $resetCode;
+        $passwordReset->hashed_reset_code = $hashedResetCode;
 
         return $passwordReset;
     }
@@ -105,10 +123,10 @@ class PasswordManager implements PasswordManagerInterface
         $emailMessage = (new Swift_Message())
             ->setSubject('Tilbakestill passord for vektorprogrammet.no')
             ->setFrom(array('ikkesvar@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setTo($passwordReset->getUser()->getEmail())
+            ->setTo($passwordReset->user->email)
             ->setBody($this->twig->render('reset_password/new_password_email.txt.twig', array(
-                'resetCode' => $passwordReset->getResetCode(),
-                'user' => $passwordReset->getUser(),
+                'resetCode' => $passwordReset->reset_code,
+                'user' => $passwordReset->user,
             )));
         $this->mailer->send($emailMessage);
     }

@@ -6,51 +6,50 @@ use App\Models\AdmissionPeriod;
 use App\Models\Application;
 use App\Models\AssistantHistory;
 use App\Models\Department;
-use App\Models\Repository\ApplicationRepository;
 use App\Models\User;
+use App\Repository\Contract\ApplicationRepositoryInterface;
+use App\Repository\Contract\AssistantHistoryRepositoryInterface;
 use App\Service\Contract\ApplicationDataInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ApplicationData implements ApplicationDataInterface
 {
-    /**
-     * @var Department
-     */
-    private $department;
-    /**
-     * @var AdmissionPeriod
-     */
-    private $admissionPeriod;
-    /**
-     * @var ApplicationRepository
-     */
-    private $applicationRepository;
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    private ?Department $department;
+    private ?AdmissionPeriod $admissionPeriod;
+    private ApplicationRepositoryInterface $applicationRepository;
+    private AssistantHistoryRepositoryInterface $assistantHistoryRepository;
 
     /**
      * ApplicationData constructor.
      *
-     * @param EntityManagerInterface $em
-     * @param TokenStorageInterface  $ts
+     * @param ApplicationRepositoryInterface $applicationRepository
+     * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
+     * @param TokenStorageInterface $ts
      */
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts)
-    {
-        $this->em = $em;
-        $this->applicationRepository = $this->em->getRepository(Application::class);
+    public function __construct(
+        ApplicationRepositoryInterface $applicationRepository,
+        AssistantHistoryRepositoryInterface $assistantHistoryRepository,
+        TokenStorageInterface $ts
+    ) {
+        $this->applicationRepository = $applicationRepository;
+        $this->assistantHistoryRepository = $assistantHistoryRepository;
 
-        if ($ts->getToken() !== null && $ts->getToken()->getUser() instanceof User) {
-            $this->setDepartment($ts->getToken()->getUser()->getDepartment());
+        $token = $ts->getToken();
+        if ($token !== null && $token->getUser() instanceof User) {
+            $user = $token->getUser();
+            $this->setDepartment($user->fieldOfStudy->department ?? null);
         }
     }
 
-    public function setDepartment(Department $department)
+    public function setDepartment(?Department $department): void
     {
         $this->department = $department;
-        $this->admissionPeriod = $department->getCurrentOrLatestAdmissionPeriod();
+        if ($department !== null) {
+            // Note: getCurrentOrLatestAdmissionPeriod() method needs to be implemented on Department model
+            $this->admissionPeriod = $department->currentOrLatestAdmissionPeriod ?? null;
+        } else {
+            $this->admissionPeriod = null;
+        }
     }
 
     public function setAdmissionPeriod(AdmissionPeriod $admissionPeriod)
@@ -113,22 +112,28 @@ class ApplicationData implements ApplicationDataInterface
 
     public function getInterviewedAssistantsCount(): int
     {
-        return count($this->em->getRepository(Application::class)->findInterviewedApplicants($this->admissionPeriod));
+        return count($this->applicationRepository->findInterviewedApplicants($this->admissionPeriod));
     }
 
     public function getAssignedInterviewsCount(): int
     {
-        return count($this->em->getRepository(Application::class)->findAssignedApplicants($this->admissionPeriod));
+        return count($this->applicationRepository->findAssignedApplicants($this->admissionPeriod));
     }
 
     public function getTotalAssistantsCount(): int
     {
-        return count($this->em->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester()));
+        if (!$this->admissionPeriod || !$this->department) {
+            return 0;
+        }
+        return count($this->assistantHistoryRepository->findByDepartmentAndSemester($this->department, $this->admissionPeriod->semester));
     }
 
     public function getPositionsCount(): int
     {
-        $assistantHistories = $this->em->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($this->department, $this->admissionPeriod->getSemester());
+        if (!$this->admissionPeriod || !$this->department) {
+            return 0;
+        }
+        $assistantHistories = $this->assistantHistoryRepository->findByDepartmentAndSemester($this->department, $this->admissionPeriod->semester);
 
         return $this->countPositions($assistantHistories, $this->getTotalAssistantsCount());
     }
@@ -150,10 +155,13 @@ class ApplicationData implements ApplicationDataInterface
 
     public function getFieldsOfStudyCounts(): array
     {
-        $fieldOfStudyCount = array();
-        $applicants = $this->applicationRepository->findBy(array('admissionPeriod' => $this->admissionPeriod));
+        if (!$this->admissionPeriod) {
+            return [];
+        }
+        $fieldOfStudyCount = [];
+        $applicants = $this->applicationRepository->findByAdmissionPeriod($this->admissionPeriod);
         foreach ($applicants as $applicant) {
-            $fieldOfStudyShortName = $applicant->getUser()->getFieldOfStudy()->getShortName();
+            $fieldOfStudyShortName = $applicant->user->fieldOfStudy->short_name ?? 'Unknown';
             if (array_key_exists($fieldOfStudyShortName, $fieldOfStudyCount)) {
                 ++$fieldOfStudyCount[$fieldOfStudyShortName];
             } else {
@@ -167,10 +175,13 @@ class ApplicationData implements ApplicationDataInterface
 
     public function getStudyYearCounts(): array
     {
-        $studyYearCounts = array();
-        $applicants = $this->applicationRepository->findBy(array('admissionPeriod' => $this->admissionPeriod));
+        if (!$this->admissionPeriod) {
+            return [];
+        }
+        $studyYearCounts = [];
+        $applicants = $this->applicationRepository->findByAdmissionPeriod($this->admissionPeriod);
         foreach ($applicants as $applicant) {
-            $studyYear = $applicant->getYearOfStudy();
+            $studyYear = $applicant->year_of_study ?? 0;
             if (array_key_exists($studyYear, $studyYearCounts)) {
                 ++$studyYearCounts[$studyYear];
             } else {
@@ -186,7 +197,7 @@ class ApplicationData implements ApplicationDataInterface
     {
         $positionsCount = $totalAssistantsCount;
         foreach ($assistantHistories as $assistant) {
-            if ($assistant->getBolk() === 'Bolk 1, Bolk 2') {
+            if (($assistant->bolk ?? '') === 'Bolk 1, Bolk 2') {
                 ++$positionsCount;
             }
         }
@@ -212,19 +223,22 @@ class ApplicationData implements ApplicationDataInterface
 
     public function getHeardAboutFrom(): array
     {
-        $heardAbout = array();
-        $applicants = $this->applicationRepository->findBy(array('admissionPeriod' => $this->admissionPeriod));
+        if (!$this->admissionPeriod) {
+            return [];
+        }
+        $heardAbout = [];
+        $applicants = $this->applicationRepository->findByAdmissionPeriod($this->admissionPeriod);
 
         foreach ($applicants as $applicant) {
-            $allHeardAboutFrom = $applicant->getHeardAboutFrom();
+            $allHeardAboutFrom = $applicant->heard_about_from ?? null;
 
             if ($allHeardAboutFrom === null) {
-                $allHeardAboutFrom = array(0=>"Ingen");
+                $allHeardAboutFrom = [0 => "Ingen"];
+            } elseif (!is_array($allHeardAboutFrom)) {
+                $allHeardAboutFrom = [$allHeardAboutFrom];
             }
 
-            for ($i = 0; $i < count($allHeardAboutFrom); $i++) {
-                $currentHeardAboutFrom = $allHeardAboutFrom[$i];
-
+            foreach ($allHeardAboutFrom as $currentHeardAboutFrom) {
                 if (array_key_exists($currentHeardAboutFrom, $heardAbout)) {
                     ++$heardAbout[$currentHeardAboutFrom];
                 } else {

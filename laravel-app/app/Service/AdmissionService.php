@@ -8,15 +8,13 @@ use App\Models\Department;
 use App\Models\Team;
 use App\Event\ApplicationCreatedEvent;
 use App\Repository\Contract\AdmissionPeriodRepositoryInterface;
+use App\Repository\Contract\ApplicationRepositoryInterface;
 use App\Repository\Contract\DepartmentRepositoryInterface;
 use App\Repository\Contract\TeamRepositoryInterface;
 use App\Service\Contract\AdmissionServiceInterface;
 use App\Service\Contract\ApplicationAdmissionInterface;
 use App\Service\Contract\FilterServiceInterface;
 use App\Service\Contract\GeoLocationInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -24,18 +22,18 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class AdmissionService implements AdmissionServiceInterface
 {
-    private $admissionManager;
-    private $entityManager;
-    private $departmentRepository;
-    private $geoLocation;
-    private $filterService;
-    private $teamRepository;
-    private $admissionPeriodRepository;
-    private $eventDispatcher;
+    private ApplicationAdmissionInterface $admissionManager;
+    private ApplicationRepositoryInterface $applicationRepository;
+    private DepartmentRepositoryInterface $departmentRepository;
+    private GeoLocationInterface $geoLocation;
+    private FilterServiceInterface $filterService;
+    private TeamRepositoryInterface $teamRepository;
+    private AdmissionPeriodRepositoryInterface $admissionPeriodRepository;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * @param ApplicationAdmissionInterface $admissionManager
-     * @param EntityManagerInterface $entityManager
+     * @param ApplicationRepositoryInterface $applicationRepository
      * @param DepartmentRepositoryInterface $departmentRepository
      * @param GeoLocationInterface $geoLocation
      * @param FilterServiceInterface $filterService
@@ -45,7 +43,7 @@ class AdmissionService implements AdmissionServiceInterface
      */
     public function __construct(
         ApplicationAdmissionInterface $admissionManager,
-        EntityManagerInterface $entityManager,
+        ApplicationRepositoryInterface $applicationRepository,
         DepartmentRepositoryInterface $departmentRepository,
         GeoLocationInterface $geoLocation,
         FilterServiceInterface $filterService,
@@ -54,7 +52,7 @@ class AdmissionService implements AdmissionServiceInterface
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->admissionManager = $admissionManager;
-        $this->entityManager = $entityManager;
+        $this->applicationRepository = $applicationRepository;
         $this->departmentRepository = $departmentRepository;
         $this->geoLocation = $geoLocation;
         $this->filterService = $filterService;
@@ -105,7 +103,7 @@ class AdmissionService implements AdmissionServiceInterface
         $this->admissionManager->setCorrectUser($application);
 
         // Check if user has been assistant before
-        if ($application->getUser()->hasBeenAssistant()) {
+        if ($application->user->hasBeenAssistant()) {
             return [
                 'application' => $application,
                 'redirectRoute' => 'admission_existing_user',
@@ -123,9 +121,8 @@ class AdmissionService implements AdmissionServiceInterface
             ];
         }
 
-        $application->setAdmissionPeriod($admissionPeriod);
-        $this->entityManager->persist($application);
-        $this->entityManager->flush();
+        $application->admission_period_id = $admissionPeriod->id;
+        $application->save();
 
         $this->eventDispatcher->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
 

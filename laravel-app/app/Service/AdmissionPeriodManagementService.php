@@ -6,25 +6,20 @@ use App\Models\AdmissionPeriod;
 use App\Models\Department;
 use App\Service\Contract\AdmissionPeriodManagementServiceInterface;
 use App\Service\Contract\AdmissionPeriodValidationServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service for managing admission periods and admission period-related business logic.
  */
 class AdmissionPeriodManagementService implements AdmissionPeriodManagementServiceInterface
 {
-    private $entityManager;
-    private $admissionPeriodValidationService;
+    private AdmissionPeriodValidationServiceInterface $admissionPeriodValidationService;
 
     /**
-     * @param EntityManagerInterface $entityManager
      * @param AdmissionPeriodValidationServiceInterface $admissionPeriodValidationService
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
         AdmissionPeriodValidationServiceInterface $admissionPeriodValidationService
     ) {
-        $this->entityManager = $entityManager;
         $this->admissionPeriodValidationService = $admissionPeriodValidationService;
     }
 
@@ -42,9 +37,8 @@ class AdmissionPeriodManagementService implements AdmissionPeriodManagementServi
             ];
         }
 
-        $admissionPeriod->setDepartment($department);
-        $this->entityManager->persist($admissionPeriod);
-        $this->entityManager->flush();
+        $admissionPeriod->department_id = $department->id;
+        $admissionPeriod->save();
 
         return [
             'success' => true,
@@ -57,8 +51,7 @@ class AdmissionPeriodManagementService implements AdmissionPeriodManagementServi
      */
     public function updateAdmissionPeriod(AdmissionPeriod $admissionPeriod): void
     {
-        $this->entityManager->persist($admissionPeriod);
-        $this->entityManager->flush();
+        $admissionPeriod->save();
     }
 
     /**
@@ -66,12 +59,11 @@ class AdmissionPeriodManagementService implements AdmissionPeriodManagementServi
      */
     public function deleteAdmissionPeriod(AdmissionPeriod $admissionPeriod): void
     {
-        $infoMeeting = $admissionPeriod->getInfoMeeting();
+        $infoMeeting = $admissionPeriod->infoMeeting ?? null;
         if ($infoMeeting !== null) {
-            $this->entityManager->remove($infoMeeting);
+            $infoMeeting->delete();
         }
-        $this->entityManager->remove($admissionPeriod);
-        $this->entityManager->flush();
+        $admissionPeriod->delete();
     }
 }
 

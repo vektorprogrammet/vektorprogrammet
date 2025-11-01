@@ -12,7 +12,6 @@ use App\Repository\Contract\DepartmentRepositoryInterface;
 use App\Repository\Contract\SchoolRepositoryInterface;
 use App\Repository\Contract\UserRepositoryInterface;
 use App\Service\Contract\SchoolManagementServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -20,19 +19,17 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
  */
 class SchoolManagementService implements SchoolManagementServiceInterface
 {
-    private $assistantHistoryRepository;
-    private $departmentRepository;
-    private $userRepository;
-    private $schoolRepository;
-    private $entityManager;
-    private $eventDispatcher;
+    private AssistantHistoryRepositoryInterface $assistantHistoryRepository;
+    private DepartmentRepositoryInterface $departmentRepository;
+    private UserRepositoryInterface $userRepository;
+    private SchoolRepositoryInterface $schoolRepository;
+    private EventDispatcherInterface $eventDispatcher;
 
     /**
      * @param AssistantHistoryRepositoryInterface $assistantHistoryRepository
      * @param DepartmentRepositoryInterface $departmentRepository
      * @param UserRepositoryInterface $userRepository
      * @param SchoolRepositoryInterface $schoolRepository
-     * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
@@ -40,14 +37,12 @@ class SchoolManagementService implements SchoolManagementServiceInterface
         DepartmentRepositoryInterface $departmentRepository,
         UserRepositoryInterface $userRepository,
         SchoolRepositoryInterface $schoolRepository,
-        EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher
     ) {
         $this->assistantHistoryRepository = $assistantHistoryRepository;
         $this->departmentRepository = $departmentRepository;
         $this->userRepository = $userRepository;
         $this->schoolRepository = $schoolRepository;
-        $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
     }
 
@@ -88,7 +83,7 @@ class SchoolManagementService implements SchoolManagementServiceInterface
 
         // If department is provided, use it; otherwise get from current user's field of study
         if ($department === null) {
-            $department = $currentUser->getFieldOfStudy()->getDepartment();
+            $department = $currentUser->fieldOfStudy->department;
         }
 
         $users = $this->userRepository->findAllUsersByDepartment($department);
@@ -105,9 +100,8 @@ class SchoolManagementService implements SchoolManagementServiceInterface
      */
     public function createAssistantHistory(AssistantHistory $assistantHistory, User $user): void
     {
-        $assistantHistory->setUser($user);
-        $this->entityManager->persist($assistantHistory);
-        $this->entityManager->flush();
+        $assistantHistory->user_id = $user->id;
+        $assistantHistory->save();
 
         $this->eventDispatcher->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
     }
@@ -117,11 +111,9 @@ class SchoolManagementService implements SchoolManagementServiceInterface
      */
     public function createSchoolForDepartment(School $school, Department $department): void
     {
-        $school->addDepartment($department);
-        $department->addSchool($school);
-        $this->entityManager->persist($school);
-        $this->entityManager->persist($department);
-        $this->entityManager->flush();
+        $school->departments()->attach($department->id);
+        $school->save();
+        $department->save();
     }
 
     /**
@@ -129,8 +121,7 @@ class SchoolManagementService implements SchoolManagementServiceInterface
      */
     public function deleteSchool(School $school): void
     {
-        $this->entityManager->remove($school);
-        $this->entityManager->flush();
+        $school->delete();
     }
 
     /**
@@ -138,8 +129,7 @@ class SchoolManagementService implements SchoolManagementServiceInterface
      */
     public function removeUserFromSchool(AssistantHistory $assistantHistory): void
     {
-        $this->entityManager->remove($assistantHistory);
-        $this->entityManager->flush();
+        $assistantHistory->delete();
     }
 }
 

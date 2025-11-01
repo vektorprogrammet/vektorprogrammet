@@ -11,7 +11,6 @@ use App\Repository\Contract\UserRepositoryInterface;
 use App\Role\Roles;
 use App\Service\Contract\UserManagementServiceInterface;
 use App\Service\Contract\UserRegistrationInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service for user management operations.
@@ -19,31 +18,27 @@ use Doctrine\ORM\EntityManagerInterface;
  */
 class UserManagementService implements UserManagementServiceInterface
 {
-    private $userRepository;
-    private $departmentRepository;
-    private $roleRepository;
-    private $userRegistration;
-    private $entityManager;
+    private UserRepositoryInterface $userRepository;
+    private DepartmentRepositoryInterface $departmentRepository;
+    private RoleRepositoryInterface $roleRepository;
+    private UserRegistrationInterface $userRegistration;
 
     /**
      * @param UserRepositoryInterface $userRepository
      * @param DepartmentRepositoryInterface $departmentRepository
      * @param RoleRepositoryInterface $roleRepository
      * @param UserRegistrationInterface $userRegistration
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
         UserRepositoryInterface $userRepository,
         DepartmentRepositoryInterface $departmentRepository,
         RoleRepositoryInterface $roleRepository,
-        UserRegistrationInterface $userRegistration,
-        EntityManagerInterface $entityManager
+        UserRegistrationInterface $userRegistration
     ) {
         $this->userRepository = $userRepository;
         $this->departmentRepository = $departmentRepository;
         $this->roleRepository = $roleRepository;
         $this->userRegistration = $userRegistration;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -51,11 +46,11 @@ class UserManagementService implements UserManagementServiceInterface
      */
     public function createUserWithDefaults(User $user, Department $department): void
     {
-        $role = $this->roleRepository->findByRoleName(Roles::ASSISTANT);
-        $user->addRole($role);
+        // Save user first so it has an ID for the relationship
+        $user->save();
 
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        $role = $this->roleRepository->findByRoleName(Roles::ASSISTANT);
+        $user->roles()->attach($role->id);
 
         $this->userRegistration->sendActivationCode($user);
     }

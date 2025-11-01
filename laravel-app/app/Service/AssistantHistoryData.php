@@ -5,28 +5,42 @@ namespace App\Service;
 use App\Models\AssistantHistory;
 use App\Models\Department;
 use App\Models\Semester;
+use App\Repository\Contract\AssistantHistoryRepositoryInterface;
+use App\Repository\Contract\DepartmentRepositoryInterface;
+use App\Repository\Contract\SemesterRepositoryInterface;
 use App\Service\Contract\AssistantHistoryDataInterface;
 use App\Service\Contract\GeoLocationInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class AssistantHistoryData implements AssistantHistoryDataInterface
 {
-    private $assistantHistoryRepository;
-    private $semester;
-    private $department;
+    private AssistantHistoryRepositoryInterface $assistantHistoryRepository;
+    private DepartmentRepositoryInterface $departmentRepository;
+    private SemesterRepositoryInterface $semesterRepository;
+    private ?Semester $semester;
+    private ?Department $department;
 
-    public function __construct(EntityManagerInterface $em, TokenStorageInterface $ts, GeoLocationInterface $geoLocation)
-    {
-        $this->assistantHistoryRepository = $em->getRepository(AssistantHistory::class);
-        $user = $ts->getToken()->getUser();
-        $departments = $em->getRepository(Department::class)->findAll();
-        if ($user == "anon.") {
+    public function __construct(
+        AssistantHistoryRepositoryInterface $assistantHistoryRepository,
+        DepartmentRepositoryInterface $departmentRepository,
+        SemesterRepositoryInterface $semesterRepository,
+        TokenStorageInterface $ts,
+        GeoLocationInterface $geoLocation
+    ) {
+        $this->assistantHistoryRepository = $assistantHistoryRepository;
+        $this->departmentRepository = $departmentRepository;
+        $this->semesterRepository = $semesterRepository;
+        
+        $token = $ts->getToken();
+        $user = $token ? $token->getUser() : null;
+        
+        $departments = $this->departmentRepository->findAll();
+        if ($user == "anon." || !$user) {
             $this->department = $geoLocation->findNearestDepartment($departments);
         } else {
-            $this->department = $ts->getToken()->getUser()->getDepartment();
+            $this->department = $user->fieldOfStudy->department ?? null;
         }
-        $this->semester = $em->getRepository(Semester::class)->findOrCreateCurrentSemester();
+        $this->semester = $this->semesterRepository->findOrCreateCurrentSemester();
     }
 
     /**
@@ -76,7 +90,7 @@ class AssistantHistoryData implements AssistantHistoryDataInterface
         $assistantHistories = $this->assistantHistoryRepository->findByDepartmentAndSemester($this->department, $this->semester);
         $positionsCount = count($assistantHistories);
         foreach ($assistantHistories as $assistant) {
-            if ($assistant->getBolk() === 'Bolk 1, Bolk 2') {
+            if (($assistant->bolk ?? '') === 'Bolk 1, Bolk 2') {
                 ++$positionsCount;
             }
         }

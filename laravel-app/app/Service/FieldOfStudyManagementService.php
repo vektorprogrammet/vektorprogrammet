@@ -6,26 +6,21 @@ use App\Models\Department;
 use App\Models\FieldOfStudy;
 use App\Repository\Contract\FieldOfStudyRepositoryInterface;
 use App\Service\Contract\FieldOfStudyManagementServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Service for managing fields of study and field of study-related business logic.
  */
 class FieldOfStudyManagementService implements FieldOfStudyManagementServiceInterface
 {
-    private $fieldOfStudyRepository;
-    private $entityManager;
+    private FieldOfStudyRepositoryInterface $fieldOfStudyRepository;
 
     /**
      * @param FieldOfStudyRepositoryInterface $fieldOfStudyRepository
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(
-        FieldOfStudyRepositoryInterface $fieldOfStudyRepository,
-        EntityManagerInterface $entityManager
+        FieldOfStudyRepositoryInterface $fieldOfStudyRepository
     ) {
         $this->fieldOfStudyRepository = $fieldOfStudyRepository;
-        $this->entityManager = $entityManager;
     }
 
     /**
@@ -41,9 +36,8 @@ class FieldOfStudyManagementService implements FieldOfStudyManagementServiceInte
      */
     public function saveFieldOfStudy(FieldOfStudy $fieldOfStudy, Department $department): void
     {
-        $fieldOfStudy->setDepartment($department);
-        $this->entityManager->persist($fieldOfStudy);
-        $this->entityManager->flush();
+        $fieldOfStudy->department_id = $department->id;
+        $fieldOfStudy->save();
     }
 }
 

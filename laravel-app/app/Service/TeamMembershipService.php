@@ -5,35 +5,44 @@ namespace App\Service;
 use App\Models\Semester;
 use App\Models\TeamMembership;
 use App\Event\TeamMembershipEvent;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use App\Repository\Contract\SemesterRepositoryInterface;
+use App\Repository\Contract\TeamMembershipRepositoryInterface;
 use App\Service\Contract\TeamMembershipServiceInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 class TeamMembershipService implements TeamMembershipServiceInterface
 {
-    private $em;
-    private $dispatcher;
+    private TeamMembershipRepositoryInterface $teamMembershipRepository;
+    private SemesterRepositoryInterface $semesterRepository;
+    private EventDispatcherInterface $dispatcher;
 
-    public function __construct(EntityManagerInterface $em, EventDispatcherInterface $dispatcher)
-    {
-        $this->em = $em;
+    public function __construct(
+        TeamMembershipRepositoryInterface $teamMembershipRepository,
+        SemesterRepositoryInterface $semesterRepository,
+        EventDispatcherInterface $dispatcher
+    ) {
+        $this->teamMembershipRepository = $teamMembershipRepository;
+        $this->semesterRepository = $semesterRepository;
         $this->dispatcher = $dispatcher;
     }
 
     public function updateTeamMemberships()
     {
-        $teamMemberships = $this->em->getRepository(TeamMembership::class)->findBy(array('isSuspended' => false));
-        $currentSemesterStartDate = $this->em->getRepository(Semester::class)->findOrCreateCurrentSemester()->getStartDate();
-        foreach ($teamMemberships as $teamMembership) {
-            $endSemester = $teamMembership->getEndSemester();
+        $activeMemberships = $this->teamMembershipRepository->findActiveTeamMemberships();
+        $currentSemester = $this->semesterRepository->findOrCreateCurrentSemester();
+        $currentSemesterStartDate = $currentSemester->start_date;
+
+        foreach ($activeMemberships as $teamMembership) {
+            $endSemester = $teamMembership->endSemester ?? null;
             if ($endSemester) {
-                if ($endSemester->getEndDate() <= $currentSemesterStartDate) {
-                    $teamMembership->setIsSuspended(true);
+                if ($endSemester->end_date <= $currentSemesterStartDate) {
+                    $teamMembership->is_suspended = true;
+                    $teamMembership->save();
                     $this->dispatcher->dispatch(TeamMembershipEvent::EXPIRED, new TeamMembershipEvent($teamMembership));
                 }
             }
         }
-        $this->em->flush();
-        return $teamMemberships;
+
+        return $activeMemberships;
     }
 }
