@@ -2,8 +2,8 @@
 
 ## ⚠️ Important: Read Standards First
 **Before starting, read:**
-- `docs/AGENT_TASKS/CODING_STANDARDS.md`
-- `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md`
+- `docs/tasks/CODING_STANDARDS.md`
+- `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md`
 
 ## Objective
 Extract any business logic from 7 low-priority controllers that are primarily CRUD operations but may have extraction opportunities.

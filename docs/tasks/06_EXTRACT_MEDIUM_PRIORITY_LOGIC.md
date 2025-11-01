@@ -2,8 +2,8 @@
 
 ## ⚠️ Important: Read Standards First
 **Before starting, read:**
-- `docs/AGENT_TASKS/CODING_STANDARDS.md` - Mandatory coding standards
-- `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md` - Base extraction pattern
+- `docs/tasks/CODING_STANDARDS.md` - Mandatory coding standards
+- `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md` - Base extraction pattern
 - `docs/REFACTORING_EXAMPLES.md` - Examples
 
 ## Objective
@@ -228,7 +228,7 @@ Extract business logic from 8 medium-priority controllers into dedicated service
 
 ## Implementation Pattern
 
-Follow the same pattern as high-priority controllers (see `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md`):
+Follow the same pattern as high-priority controllers (see `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md`):
 
 1. **Analyze Controller** - Identify business logic vs framework calls
 2. **Create Service Interface** - Define contract with proper types

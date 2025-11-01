@@ -357,7 +357,7 @@ These controllers have moderate business logic that should be extracted but are 
 ### 🟢 LOW PRIORITY - Simple CRUD (7 controllers) ✅ REVIEWED
 
 **Status:** ✅ Review Complete - No extraction needed  
-**Review Document:** `docs/AGENT_TASKS/09_LOW_PRIORITY_REVIEW_RESULTS.md`
+**Review Document:** `docs/tasks/09_LOW_PRIORITY_REVIEW_RESULTS.md`
 
 These controllers are primarily CRUD operations with minimal business logic. After thorough review, all 7 controllers were determined to be pure CRUD operations with no extractable business logic.
 

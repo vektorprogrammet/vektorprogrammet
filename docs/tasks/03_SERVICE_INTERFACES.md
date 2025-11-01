@@ -2,7 +2,7 @@
 
 ## ⚠️ Important: Read Coding Standards First
 **Before starting this task, read:**
-- `docs/AGENT_TASKS/CODING_STANDARDS.md`
+- `docs/tasks/CODING_STANDARDS.md`
 
 This task requires:
 - ✅ Type hints on all parameters

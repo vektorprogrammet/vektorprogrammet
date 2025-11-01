@@ -115,7 +115,7 @@ According to `ARCHITECTURE_ANALYSIS.md`, we are in the **"Before Migration"** ph
 - ✅ All dependencies injected via constructor with interfaces where available
 - ✅ BaseController helper methods use `getDoctrine()` (acceptable for utility methods)
 
-**Status:** See `docs/AGENT_TASKS/05_CONTROLLER_DEPENDENCY_INJECTION.md` - Task marked as **COMPLETE**
+**Status:** See `docs/tasks/05_CONTROLLER_DEPENDENCY_INJECTION.md` - Task marked as **COMPLETE**
 
 ---
 

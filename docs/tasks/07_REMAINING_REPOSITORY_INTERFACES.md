@@ -2,7 +2,7 @@
 
 ## ⚠️ Important: Read Coding Standards First
 **Before starting this task, read:**
-- `docs/AGENT_TASKS/CODING_STANDARDS.md`
+- `docs/tasks/CODING_STANDARDS.md`
 
 ## Objective
 Create repository interfaces for the 6 remaining repositories to complete the repository abstraction layer (currently 84% complete, target: 100%).

@@ -86,7 +86,7 @@
 ### Option B: Extract Business Logic from Controllers (High Priority) ⭐ RECOMMENDED
 
 **Task:** Task 04 - Extract Business Logic
-**File:** `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md`
+**File:** `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md`
 **Status:** ⏳ Pending
 
 **What This Involves:**
@@ -118,7 +118,7 @@
 ### Option C: Controller Dependency Injection (Medium Priority)
 
 **Task:** Task 05 - Controller Dependency Injection
-**File:** `docs/AGENT_TASKS/05_CONTROLLER_DEPENDENCY_INJECTION.md`
+**File:** `docs/tasks/05_CONTROLLER_DEPENDENCY_INJECTION.md`
 **Status:** ⏳ Pending
 
 **What This Involves:**
@@ -146,7 +146,7 @@
 
 #### Option 1: Extract Business Logic (Recommended)
 **Start with:** Task 04 - Extract Business Logic
-- **File:** `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md`
+- **File:** `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md`
 - **Why:** High priority, decouples business logic, makes controllers testable
 - **Can start:** Immediately (all prerequisites met)
 - **Estimated Time:** 2-4 weeks (depending on controller complexity)
@@ -210,12 +210,12 @@
 ### Active Tasks (Ready to Start)
 
 1. **Task 04: Extract Business Logic**
-   - File: `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md`
+   - File: `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md`
    - Status: Ready to start
    - Prerequisites: ✅ Met
 
 2. **Task 05: Controller Dependency Injection**
-   - File: `docs/AGENT_TASKS/05_CONTROLLER_DEPENDENCY_INJECTION.md`
+   - File: `docs/tasks/05_CONTROLLER_DEPENDENCY_INJECTION.md`
    - Status: Ready (but recommended after Task 04)
    - Prerequisites: ⏳ Extract business logic first (recommended)
 
@@ -231,7 +231,7 @@
 
 ### If You Want to Extract Business Logic (Recommended)
 
-1. **Read:** `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md`
+1. **Read:** `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md`
 2. **Review:** `docs/REFACTORING_EXAMPLES.md` for patterns
 3. **Start with:** HomeController or UserController
 4. **Follow:** Patterns in examples
@@ -239,14 +239,14 @@
 
 ### If You Want to Complete Repository Interfaces
 
-1. **Read:** `docs/AGENT_TASKS/01_REPOSITORY_INTERFACES.md`
+1. **Read:** `docs/tasks/01_REPOSITORY_INTERFACES.md`
 2. **Check:** Which interfaces still need to be created (5 remaining)
 3. **Follow:** Same patterns as completed interfaces
-4. **Follow:** `docs/AGENT_TASKS/CODING_STANDARDS.md`
+4. **Follow:** `docs/tasks/CODING_STANDARDS.md`
 
 ### If You Want to Do Dependency Injection
 
-1. **Read:** `docs/AGENT_TASKS/05_CONTROLLER_DEPENDENCY_INJECTION.md`
+1. **Read:** `docs/tasks/05_CONTROLLER_DEPENDENCY_INJECTION.md`
 2. **Wait for:** Business logic extraction (recommended)
 3. **Start with:** Controllers that have fewer dependencies
 
@@ -292,7 +292,7 @@
 5. Update controller to use service
 6. Test and commit
 
-**File to Read:** `docs/AGENT_TASKS/04_EXTRACT_BUSINESS_LOGIC.md`
+**File to Read:** `docs/tasks/04_EXTRACT_BUSINESS_LOGIC.md`
 
 ---
 
@@ -302,7 +302,7 @@ If you're unsure what to do next:
 1. Check this status document
 2. Read the task file for the task you're interested in
 3. Review `docs/REFACTORING_EXAMPLES.md` for patterns
-4. Check `docs/AGENT_TASKS/CODING_STANDARDS.md` for requirements
+4. Check `docs/tasks/CODING_STANDARDS.md` for requirements
 
 ---
 

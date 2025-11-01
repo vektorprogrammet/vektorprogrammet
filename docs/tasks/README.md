@@ -1,6 +1,6 @@
 # Agent Tasks for Symfony to Laravel Migration
 
-**👉 START HERE:** Read `docs/TASK_ORCHESTRATION.md` for current status, task priorities, and delegation guide.
+**👉 START HERE:** Read `docs/README.md` for current focus, or `docs/active/TASK_ORCHESTRATION.md` for detailed orchestration.
 
 This directory contains detailed task specifications for agents to work on refactoring tasks in parallel.
 
@@ -184,12 +184,12 @@ All agents should be familiar with:
 - `docs/SERVICE_EXTRACTION_GUIDE.md` - Overall strategy
 - `docs/REFACTORING_EXAMPLES.md` - Code examples
 - `docs/ARCHITECTURE_ANALYSIS.md` - System overview
-- **`docs/AGENT_TASKS/CODING_STANDARDS.md`** - **MANDATORY coding standards** ⚠️
+- **`docs/tasks/CODING_STANDARDS.md`** - **MANDATORY coding standards** ⚠️
 
 ## ⚠️ Coding Standards
 
 **All agents MUST read and follow:**
-- **`docs/AGENT_TASKS/CODING_STANDARDS.md`**
+- **`docs/tasks/CODING_STANDARDS.md`**
 
 This document specifies mandatory requirements for:
 - ✅ Type hints on all parameters
