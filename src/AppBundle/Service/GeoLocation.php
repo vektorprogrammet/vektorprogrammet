@@ -189,7 +189,7 @@ class GeoLocation implements GeoLocationInterface
     {
         $request = $this->requestStack->getCurrentRequest();
         if ($request->server->get('HTTP_CLIENT_IP') !== null) {
-            $request->server->get('HTTP_CLIENT_IP');
+            return $request->server->get('HTTP_CLIENT_IP');
         } elseif ($request->server->get('HTTP_X_FORWARDED_FOR') !== null) {
             return $request->server->get('HTTP_X_FORWARDED_FOR');
         } elseif ($request->server->get('HTTP_X_FORWARDED') !== null) {

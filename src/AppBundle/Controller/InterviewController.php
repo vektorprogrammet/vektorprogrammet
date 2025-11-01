@@ -218,15 +218,8 @@ class InterviewController extends BaseController
         // Get the application objects
         $applications = $this->applicationRepository->findBy(array('id' => $applicationIds));
 
-        // Delete the interviews
-        foreach ($applications as $application) {
-            $interview = $application->getInterview();
-            if ($interview) {
-                $this->entityManager->remove($interview);
-            }
-            $application->setInterview(null);
-        }
-        $this->entityManager->flush();
+        // Delete the interviews using service
+        $this->interviewSchedulingService->bulkDeleteInterviews($applications);
 
         // AJAX response
         return new JsonResponse(array(
@@ -517,7 +510,9 @@ class InterviewController extends BaseController
 
     public function assignCoInterviewerAction(Interview $interview)
     {
-        if ($interview->getUser() === $this->getUser()) {
+        $user = $this->getUser();
+
+        if ($interview->getUser() === $user) {
             return $this->render('error/control_panel_error.html.twig', array(
                 'error' => 'Kan ikke legge til deg selv som medintervjuer på ditt eget intervju'
             ));
@@ -529,27 +524,25 @@ class InterviewController extends BaseController
             ));
         }
 
-        if ($this->getUser() === $interview->getInterviewer()) {
+        if ($user === $interview->getInterviewer()) {
             return $this->render('error/control_panel_error.html.twig', array(
                 'error' => 'Kan ikke legge til deg selv som medintervjuer når du allerede er intervjuer'
             ));
         }
 
-        $interview->setCoInterviewer($this->getUser());
-        $this->entityManager->persist($interview);
-        $this->entityManager->flush();
-        $this->eventDispatcher->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+        $this->interviewSchedulingService->assignCoInterviewer($interview, $user);
 
         return $this->redirectToRoute('applications_show_assigned');
     }
 
     public function adminAssignCoInterviewerAction(Request $request, Interview $interview)
     {
-        $semester = $interview->getApplication()->getSemester();
-        $department = $interview->getApplication()->getDepartment();
-        $teamUsers = $this->userRepository
-            ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
-        $coInterviewers = array_merge(array_diff($teamUsers, array($interview->getInterviewer(), $interview->getCoInterviewer())));
+        $application = $interview->getApplication();
+        $semester = $application->getSemester();
+        $department = $application->getDepartment();
+        
+        $coInterviewers = $this->interviewSchedulingService->getAvailableCoInterviewers($interview);
+        
         $form = $this->createForm(AddCoInterviewerType::class, null, [
             'teamUsers' => $coInterviewers
         ]);
@@ -558,12 +551,10 @@ class InterviewController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $user = $data['user'];
-            $interview->setCoInterviewer($user);
-            $this->entityManager->persist($interview);
-            $this->entityManager->flush();
+            $this->interviewSchedulingService->assignCoInterviewer($interview, $user);
 
             if ($request->get('from') === 'schedule') {
-                return $this->redirectToRoute('interview_schedule', array('id' => $interview->getApplication()->getId()));
+                return $this->redirectToRoute('interview_schedule', array('id' => $application->getId()));
             }
 
             return $this->redirectToRoute('applications_show_assigned', array(
@@ -580,9 +571,7 @@ class InterviewController extends BaseController
 
     public function clearCoInterviewerAction(Interview $interview)
     {
-        $interview->setCoInterviewer(null);
-        $this->entityManager->persist($interview);
-        $this->entityManager->flush();
+        $this->interviewSchedulingService->clearCoInterviewer($interview);
 
         return $this->redirectToRoute('applications_show_assigned');
     }

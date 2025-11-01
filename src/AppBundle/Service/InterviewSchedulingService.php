@@ -9,6 +9,7 @@ use AppBundle\Entity\User;
 use AppBundle\Event\InterviewConductedEvent;
 use AppBundle\Event\InterviewEvent;
 use AppBundle\Repository\Contract\ApplicationRepositoryInterface;
+use AppBundle\Repository\Contract\UserRepositoryInterface;
 use AppBundle\Role\Roles;
 use AppBundle\Service\Contract\InterviewManagerInterface;
 use AppBundle\Service\Contract\InterviewSchedulingServiceInterface;
@@ -27,6 +28,7 @@ class InterviewSchedulingService implements InterviewSchedulingServiceInterface
     private $entityManager;
     private $eventDispatcher;
     private $applicationRepository;
+    private $userRepository;
     private $authorizationChecker;
 
     /**
@@ -34,6 +36,7 @@ class InterviewSchedulingService implements InterviewSchedulingServiceInterface
      * @param EntityManagerInterface $entityManager
      * @param EventDispatcherInterface $eventDispatcher
      * @param ApplicationRepositoryInterface $applicationRepository
+     * @param UserRepositoryInterface $userRepository
      * @param AuthorizationCheckerInterface $authorizationChecker
      */
     public function __construct(
@@ -41,12 +44,14 @@ class InterviewSchedulingService implements InterviewSchedulingServiceInterface
         EntityManagerInterface $entityManager,
         EventDispatcherInterface $eventDispatcher,
         ApplicationRepositoryInterface $applicationRepository,
+        UserRepositoryInterface $userRepository,
         AuthorizationCheckerInterface $authorizationChecker
     ) {
         $this->interviewManager = $interviewManager;
         $this->entityManager = $entityManager;
         $this->eventDispatcher = $eventDispatcher;
         $this->applicationRepository = $applicationRepository;
+        $this->userRepository = $userRepository;
         $this->authorizationChecker = $authorizationChecker;
     }
 
@@ -152,7 +157,7 @@ class InterviewSchedulingService implements InterviewSchedulingServiceInterface
      * @param array|null $data Additional data for the action
      * @return void
      */
-    public function processInterviewResponse(Interview $interview, string $action, array $data = null): void
+    public function processInterviewResponse(Interview $interview, string $action, ?array $data = null): void
     {
         switch ($action) {
             case 'accept':
@@ -220,6 +225,74 @@ class InterviewSchedulingService implements InterviewSchedulingServiceInterface
     public function sendScheduleEmail(Interview $interview, array $data): void
     {
         $this->eventDispatcher->dispatch(InterviewEvent::SCHEDULE, new InterviewEvent($interview, $data));
+    }
+
+    /**
+     * Bulk delete interviews for multiple applications.
+     *
+     * @param array $applications
+     * @return void
+     */
+    public function bulkDeleteInterviews(array $applications): void
+    {
+        foreach ($applications as $application) {
+            $interview = $application->getInterview();
+            if ($interview) {
+                $this->entityManager->remove($interview);
+            }
+            $application->setInterview(null);
+        }
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Assign a co-interviewer to an interview.
+     *
+     * @param Interview $interview
+     * @param User $coInterviewer
+     * @return void
+     */
+    public function assignCoInterviewer(Interview $interview, User $coInterviewer): void
+    {
+        $interview->setCoInterviewer($coInterviewer);
+        $this->entityManager->persist($interview);
+        $this->entityManager->flush();
+        $this->eventDispatcher->dispatch(InterviewEvent::COASSIGN, new InterviewEvent($interview));
+    }
+
+    /**
+     * Clear the co-interviewer from an interview.
+     *
+     * @param Interview $interview
+     * @return void
+     */
+    public function clearCoInterviewer(Interview $interview): void
+    {
+        $interview->setCoInterviewer(null);
+        $this->entityManager->persist($interview);
+        $this->entityManager->flush();
+    }
+
+    /**
+     * Get available co-interviewers for an interview (excluding main interviewer and current co-interviewer).
+     *
+     * @param Interview $interview
+     * @return array List of User entities available as co-interviewers
+     */
+    public function getAvailableCoInterviewers(Interview $interview): array
+    {
+        $application = $interview->getApplication();
+        $semester = $application->getSemester();
+        $department = $application->getDepartment();
+
+        $teamUsers = $this->userRepository
+            ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
+
+        // Exclude the main interviewer and current co-interviewer
+        $excludedUsers = array_filter([$interview->getInterviewer(), $interview->getCoInterviewer()]);
+        $coInterviewers = array_diff($teamUsers, $excludedUsers);
+
+        return array_values($coInterviewers);
     }
 }
 

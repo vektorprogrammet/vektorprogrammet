@@ -58,7 +58,7 @@ interface InterviewSchedulingServiceInterface
      * @param array|null $data Additional data for the action
      * @return void
      */
-    public function processInterviewResponse(Interview $interview, string $action, array $data = null): void;
+    public function processInterviewResponse(Interview $interview, string $action, ?array $data = null): void;
 
     /**
      * Check if user can access interview.
@@ -68,5 +68,56 @@ interface InterviewSchedulingServiceInterface
      * @return bool
      */
     public function canUserAccessInterview(User $user, Interview $interview): bool;
+
+    /**
+     * Bulk delete interviews for multiple applications.
+     *
+     * @param array $applications
+     * @return void
+     */
+    public function bulkDeleteInterviews(array $applications): void;
+
+    /**
+     * Assign a co-interviewer to an interview.
+     *
+     * @param Interview $interview
+     * @param User $coInterviewer
+     * @return void
+     */
+    public function assignCoInterviewer(Interview $interview, User $coInterviewer): void;
+
+    /**
+     * Clear the co-interviewer from an interview.
+     *
+     * @param Interview $interview
+     * @return void
+     */
+    public function clearCoInterviewer(Interview $interview): void;
+
+    /**
+     * Get available co-interviewers for an interview (excluding main interviewer and current co-interviewer).
+     *
+     * @param Interview $interview
+     * @return array List of User entities available as co-interviewers
+     */
+    public function getAvailableCoInterviewers(Interview $interview): array;
+
+    /**
+     * Conduct interview and mark as interviewed.
+     *
+     * @param Interview $interview
+     * @param Application $application
+     * @return void
+     */
+    public function conductInterview(Interview $interview, Application $application): void;
+
+    /**
+     * Send schedule email for interview.
+     *
+     * @param Interview $interview
+     * @param array $data
+     * @return void
+     */
+    public function sendScheduleEmail(Interview $interview, array $data): void;
 }
 
