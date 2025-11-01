@@ -3,11 +3,12 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Role;
+use AppBundle\Repository\Contract\RoleRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
-class RoleRepository extends EntityRepository
+class RoleRepository extends EntityRepository implements RoleRepositoryInterface
 {
     /**
      * @param string $roleName

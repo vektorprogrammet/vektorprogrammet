@@ -4,11 +4,17 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
+use AppBundle\Repository\Contract\AdmissionNotificationRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
-class AdmissionNotificationRepository extends EntityRepository
+class AdmissionNotificationRepository extends EntityRepository implements AdmissionNotificationRepositoryInterface
 {
-    public function findEmailsBySemesterAndDepartment(Semester $semester, Department $department)
+    /**
+     * @param Semester $semester
+     * @param Department $department
+     * @return string[]
+     */
+    public function findEmailsBySemesterAndDepartment(Semester $semester, Department $department): array
     {
         $res = $this->createQueryBuilder('notification')
             ->select('subscriber.email')
@@ -25,7 +31,12 @@ class AdmissionNotificationRepository extends EntityRepository
         }, $res);
     }
 
-    public function findEmailsBySemesterAndDepartmentAndInfoMeeting(Semester $semester, Department $department)
+    /**
+     * @param Semester $semester
+     * @param Department $department
+     * @return string[]
+     */
+    public function findEmailsBySemesterAndDepartmentAndInfoMeeting(Semester $semester, Department $department): array
     {
         $res = $this->createQueryBuilder('notification')
             ->select('subscriber.email')

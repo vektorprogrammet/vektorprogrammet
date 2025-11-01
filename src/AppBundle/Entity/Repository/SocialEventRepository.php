@@ -3,22 +3,23 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\Semester;
+use AppBundle\Entity\SocialEvent;
+use AppBundle\Repository\Contract\SocialEventRepositoryInterface;
 use DateTime;
-use \Doctrine\ORM\EntityRepository;
-use \AppBundle\Entity\Semester;
+use Doctrine\ORM\EntityRepository;
 
 /**
  * Class SocialEventRepository
  */
-class SocialEventRepository extends EntityRepository
+class SocialEventRepository extends EntityRepository implements SocialEventRepositoryInterface
 {
-
     /**
      * @param Semester $semester
      * @param Department $department
-     * @return array
+     * @return SocialEvent[]
      */
-    public function findSocialEventsBySemesterAndDepartment(Semester $semester, Department $department)
+    public function findSocialEventsBySemesterAndDepartment(Semester $semester, Department $department): array
     {
         return $this->createQueryBuilder('SocialEventItem')
             ->select('SocialEventItem')
@@ -30,7 +31,12 @@ class SocialEventRepository extends EntityRepository
             ->getResult();
     }
 
-    public function findFutureSocialEventsBySemesterAndDepartment(Semester $semester, Department $department)
+    /**
+     * @param Semester $semester
+     * @param Department $department
+     * @return SocialEvent[]
+     */
+    public function findFutureSocialEventsBySemesterAndDepartment(Semester $semester, Department $department): array
     {
         return $this->createQueryBuilder('SocialEventItem')
             ->select('SocialEventItem')

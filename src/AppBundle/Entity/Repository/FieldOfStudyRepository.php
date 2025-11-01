@@ -4,9 +4,10 @@ namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\FieldOfStudy;
+use AppBundle\Repository\Contract\FieldOfStudyRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 
-class FieldOfStudyRepository extends EntityRepository
+class FieldOfStudyRepository extends EntityRepository implements FieldOfStudyRepositoryInterface
 {
     /*	Perhaps not needed anymore?
 
@@ -27,7 +28,7 @@ class FieldOfStudyRepository extends EntityRepository
 <<<<<<< Updated upstream
     */
 
-    public function findAllFieldOfStudy()
+    public function findAllFieldOfStudy(): array
     {
         return $this->createQueryBuilder('FieldOfStudy')
             ->select('FieldOfStudy')
@@ -41,7 +42,7 @@ class FieldOfStudyRepository extends EntityRepository
      *
      * @return FieldOfStudy[]
      */
-    public function findByDepartment(Department $department)
+    public function findByDepartment(Department $department): array
     {
         return $this->createQueryBuilder('fieldOfStudy')
             ->select('fieldOfStudy')

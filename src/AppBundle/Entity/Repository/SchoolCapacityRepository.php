@@ -3,24 +3,25 @@
 namespace AppBundle\Entity\Repository;
 
 use AppBundle\Entity\Department;
+use AppBundle\Entity\School;
 use AppBundle\Entity\SchoolCapacity;
 use AppBundle\Entity\Semester;
+use AppBundle\Repository\Contract\SchoolCapacityRepositoryInterface;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 
-class SchoolCapacityRepository extends EntityRepository
+class SchoolCapacityRepository extends EntityRepository implements SchoolCapacityRepositoryInterface
 {
-
     /**
-     * @param Department $school
+     * @param School $school
      * @param Semester $semester
      *
      * @return SchoolCapacity
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function findBySchoolAndSemester($school, $semester)
+    public function findBySchoolAndSemester($school, $semester): SchoolCapacity
     {
         $schoolCapacities = $this->getEntityManager()->createQuery('
 		SELECT sc
@@ -41,7 +42,7 @@ class SchoolCapacityRepository extends EntityRepository
      *
      * @return SchoolCapacity[]
      */
-    public function findByDepartmentAndSemester(Department $department, Semester $semester)
+    public function findByDepartmentAndSemester(Department $department, Semester $semester): array
     {
         return $this->createQueryBuilder('sc')
             ->select('sc')
