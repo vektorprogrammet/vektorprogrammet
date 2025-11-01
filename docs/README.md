@@ -53,8 +53,15 @@
 ### Active Tasks (Current Focus)
 
 Located in [`active/`](active/):
-- [`12_CREATE_ELOQUENT_MODELS.md`](active/12_CREATE_ELOQUENT_MODELS.md) - **Ready NOW** 🔴
-- [`13_UPDATE_SERVICES_FOR_ELOQUENT.md`](active/13_UPDATE_SERVICES_FOR_ELOQUENT.md) - Waiting
+- [`12_CREATE_ELOQUENT_MODELS.md`](active/12_CREATE_ELOQUENT_MODELS.md) - **In Progress** ⏳
+- [`13_UPDATE_SERVICES_FOR_ELOQUENT.md`](active/13_UPDATE_SERVICES_FOR_ELOQUENT.md) - **In Progress** ⏳
+
+### Next Tasks (Can Prepare Now)
+
+Located in [`tasks/`](tasks/):
+- [`14_AUTHENTICATION_AUTHORIZATION.md`](tasks/14_AUTHENTICATION_AUTHORIZATION.md) - **Can start Phase 1 (Analysis)** 🟡
+- [`15_DATABASE_MIGRATIONS.md`](tasks/15_DATABASE_MIGRATIONS.md) - **Can start immediately** 🟡
+- [`16_TESTING_INFRASTRUCTURE.md`](tasks/16_TESTING_INFRASTRUCTURE.md) - **Can start immediately** 🟡
 
 ### All Task Files
 
