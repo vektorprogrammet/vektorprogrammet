@@ -79,7 +79,10 @@
     },
     "config": {
         "bin-dir": "bin",
-        "component-dir": "web/assets"
+        "component-dir": "web/assets",
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
     },
     "extra": {
         "symfony-app-dir": "app",
