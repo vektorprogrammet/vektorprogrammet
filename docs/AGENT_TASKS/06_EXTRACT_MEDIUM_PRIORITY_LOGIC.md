@@ -272,3 +272,4 @@ Follow the same pattern as high-priority controllers (see `docs/AGENT_TASKS/04_E
 - Consider whether extracted methods should be public or private in service
 - Document complex business rules in PHPDoc
 
+
