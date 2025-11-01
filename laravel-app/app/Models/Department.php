@@ -3,13 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Carbon\Carbon;
 
 /**
  * Department Model (converted from Doctrine)
- * 
+ *
  * @property int $id
  * @property string $name
  * @property string $short_name
@@ -26,6 +27,8 @@ use Carbon\Carbon;
  */
 class Department extends Model
 {
+    use HasFactory;
+
     protected $table = 'department';
 
     protected $fillable = [
