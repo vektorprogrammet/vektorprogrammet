@@ -15,11 +15,10 @@ use AppBundle\Form\Type\NewUserType;
 use AppBundle\Form\Type\UserCompanyEmailType;
 use AppBundle\Role\Roles;
 use AppBundle\Service\Contract\LogServiceInterface;
+use AppBundle\Service\Contract\ProfileServiceInterface;
 use AppBundle\Service\Contract\RoleManagerInterface;
 use AppBundle\Service\Contract\UserRegistrationInterface;
 use Doctrine\ORM\EntityManagerInterface;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 use Exception;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -40,6 +39,7 @@ class ProfileController extends BaseController
     private $tokenStorage;
     private $session;
     private $kernel;
+    private $profileService;
 
     /**
      * @param EntityManagerInterface $entityManager
@@ -50,6 +50,7 @@ class ProfileController extends BaseController
      * @param TokenStorageInterface $tokenStorage
      * @param SessionInterface $session
      * @param KernelInterface $kernel
+     * @param ProfileServiceInterface $profileService
      */
     public function __construct(
         EntityManagerInterface $entityManager,
@@ -59,7 +60,8 @@ class ProfileController extends BaseController
         EventDispatcherInterface $eventDispatcher,
         TokenStorageInterface $tokenStorage,
         SessionInterface $session,
-        KernelInterface $kernel
+        KernelInterface $kernel,
+        ProfileServiceInterface $profileService
     ) {
         $this->entityManager = $entityManager;
         $this->roleManager = $roleManager;
@@ -69,28 +71,14 @@ class ProfileController extends BaseController
         $this->tokenStorage = $tokenStorage;
         $this->session = $session;
         $this->kernel = $kernel;
+        $this->profileService = $profileService;
     }
     public function showAction()
     {
-        // Get the user currently signed in
         $user = $this->getUser();
+        $profileData = $this->profileService->getProfileData($user);
 
-        // Fetch the assistant history of the user
-        $assistantHistory = $this->entityManager->getRepository(AssistantHistory::class)->findByUser($user);
-
-        // Find the team history of the user
-        $teamMemberships = $this->entityManager->getRepository(TeamMembership::class)->findByUser($user);
-
-        // Find the executive board history of the user
-        $executiveBoardMemberships = $this->entityManager->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
-
-        // Render the view
-        return $this->render('profile/profile.html.twig', array(
-            'user'                      => $user,
-            'assistantHistory'          => $assistantHistory,
-            'teamMemberships'            => $teamMemberships,
-            'executiveBoardMemberships'  => $executiveBoardMemberships,
-        ));
+        return $this->render('profile/profile.html.twig', $profileData);
     }
 
     public function showSpecificProfileAction(User $user)
@@ -100,44 +88,27 @@ class ProfileController extends BaseController
             return $this->redirectToRoute('profile');
         }
 
-        // Find the work history of the user
-        $teamMemberships = $this->entityManager->getRepository(TeamMembership::class)->findByUser($user);
-
-        // Find the executive board history of the user
-        $executiveBoardMemberships = $this->entityManager->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
-
         $isGrantedAssistant = ($this->getUser() !== null && $this->roleManager->userIsGranted($this->getUser(), Roles::ASSISTANT));
 
-        if (empty($teamMemberships) && empty($executiveBoardMemberships) && !$isGrantedAssistant) {
+        if (!$this->profileService->canViewProfile($user, $this->getUser(), $isGrantedAssistant)) {
             throw $this->createAccessDeniedException();
         }
 
-        // Fetch the assistant history of the user
-        $assistantHistory = $this->entityManager->getRepository(AssistantHistory::class)->findByUser($user);
+        $profileData = $this->profileService->getProfileData($user);
 
-        // Render the view
-        return $this->render('profile/profile.html.twig', array(
-            'user'                      => $user,
-            'assistantHistory'          => $assistantHistory,
-            'teamMemberships'            => $teamMemberships,
-            'executiveBoardMemberships'  => $executiveBoardMemberships,
-        ));
+        return $this->render('profile/profile.html.twig', $profileData);
     }
 
     public function deactivateUserAction(User $user)
     {
-        $user->setActive(false);
-
-        $this->entityManager->flush();
+        $this->profileService->deactivateUser($user);
 
         return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
 
     public function activateUserAction(User $user)
     {
-        $user->setActive(true);
-
-        $this->entityManager->flush();
+        $this->profileService->activateUser($user);
 
         return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
@@ -208,43 +179,12 @@ class ProfileController extends BaseController
 
     public function downloadCertificateAction(Request $request, User $user)
     {
-        // Fetch the assistant history of the user
-        $assistantHistory = $this->entityManager->getRepository(AssistantHistory::class)->findByUser($user);
-        // Find the work history of the user
-        $teamMembership = $this->entityManager->getRepository(TeamMembership::class)->findByUser($user);
-        // Find the signature of the user creating the certificate
-        $signature = $this->entityManager->getRepository(Signature::class)->findByUser($this->getUser());
-        // Find department
-        $department = $this->getUser()->getDepartment();
-        // Find any additional comment
-        $additional_comment = $signature->getAdditionalComment();
+        $signer = $this->getUser();
+        $certificateData = $this->profileService->getCertificateData($user, $signer, $this->kernel->getProjectDir());
 
-        if ($signature === null) {
-            return $this->redirectToRoute('certificate_show');
-        }
-
-        $html = $this->renderView('certificate/certificate.html.twig', array(
-            'user'                  => $user,
-            'assistantHistory'      => $assistantHistory,
-            'teamMembership'        => $teamMembership,
-            'signature'             => $signature,
-            'additional_comment'    => $additional_comment,
-            'department'            => $department,
-            'base_dir'              => $this->kernel->getProjectDir() . '/web',
-        ));
-        $options = new Options();
-        $options->setIsRemoteEnabled(true);
-        $options->setChroot("/../");
-
-        $dompdf = new Dompdf($options);
-        $dompdf->setPaper('A4');
-
-        $html = preg_replace('/>\s+</', "><", $html);
-        $dompdf->loadHtml($html);
-
-        $dompdf->render();
-
-        $dompdf->stream($filename='attest.pdf');
+        $html = $this->renderView('certificate/certificate.html.twig', $certificateData);
+        
+        $this->profileService->generateCertificatePdf($html, 'attest.pdf');
 
         return null;
     }

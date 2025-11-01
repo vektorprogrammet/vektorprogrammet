@@ -13,6 +13,8 @@ use AppBundle\Repository\Contract\TeamMembershipRepositoryInterface;
 use AppBundle\Service\Contract\ProfileServiceInterface;
 use AppBundle\Service\Contract\RoleManagerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 /**
  * Service for profile operations.
@@ -119,6 +121,27 @@ class ProfileService implements ProfileServiceInterface
             'department' => $department,
             'base_dir' => $projectDir . '/web',
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function generateCertificatePdf(string $html, string $filename = 'attest.pdf'): void
+    {
+        $options = new Options();
+        $options->setIsRemoteEnabled(true);
+        $options->setChroot("/../");
+
+        $dompdf = new Dompdf($options);
+        $dompdf->setPaper('A4');
+
+        // Remove extra whitespace between tags
+        $html = preg_replace('/>\s+</', "><", $html);
+        $dompdf->loadHtml($html);
+
+        $dompdf->render();
+
+        $dompdf->stream($filename);
     }
 }
 

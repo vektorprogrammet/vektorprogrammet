@@ -55,6 +55,15 @@ interface ProfileServiceInterface
      * @return array
      */
     public function getCertificateData(User $user, User $signer, string $projectDir): array;
+
+    /**
+     * Generate PDF from HTML content for certificate.
+     *
+     * @param string $html The rendered HTML content
+     * @param string $filename The filename for the PDF (default: 'attest.pdf')
+     * @return void Outputs PDF directly via stream
+     */
+    public function generateCertificatePdf(string $html, string $filename = 'attest.pdf'): void;
 }
 
 
