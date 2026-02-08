@@ -4,58 +4,58 @@ services:
         autoconfigure: true
         public: true
         bind:
-            AppBundle\Mailer\MailerInterface: '@AppBundle\Mailer\Mailer'
-            AppBundle\Sms\SmsSenderInterface: '@AppBundle\Sms\SmsSender'
+            App\Mailer\MailerInterface: '@App\Mailer\Mailer'
+            App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
 
-    AppBundle\:
-        resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"
+    App\:
+        resource: "../../src/App/{Service, Role, Mailer, Sms}"
 
-    AppBundle\DataFixtures\ORM\:
-        resource: '../../src/AppBundle/DataFixtures/ORM'
+    App\DataFixtures\ORM\:
+        resource: '../../src/App/DataFixtures/ORM'
         tags: ['doctrine.fixture.orm']
 
-    AppBundle\Role\ReversedRoleHierarchy:
+    App\Role\ReversedRoleHierarchy:
         arguments:
             $hierarchy: '%security.role_hierarchy.roles%'
 
-    AppBundle\Service\AdmissionNotifier:
+    App\Service\AdmissionNotifier:
         arguments:
             $sendLimit: '%admission_notifier_limit%'
 
-    AppBundle\Sms\SlackSms:
+    App\Sms\SlackSms:
         autowire: true
 
-    AppBundle\Sms\SmsSender:
+    App\Sms\SmsSender:
         arguments:
             $env: '%kernel.environment%'
 
-    AppBundle\Sms\GatewayAPI:
+    App\Sms\GatewayAPI:
         arguments:
             $smsOptions: '%gateway_sms%'
 
-    AppBundle\Service\LogService:
+    App\Service\LogService:
         arguments:
             $env: '%kernel.environment%'
             $monoLogger: '@logger'
 
-    AppBundle\Mailer\Mailer:
+    App\Mailer\Mailer:
         arguments:
             $env: '%kernel.environment%'
 
-    AppBundle\Service\SurveyNotifier:
+    App\Service\SurveyNotifier:
         arguments:
             $fromEmail: '%default_survey_email%'
 
-    AppBundle\Service\GeoLocation:
+    App\Service\GeoLocation:
         arguments:
             $ipinfoToken: '%ipinfo_token%'
             $ignoredAsns: '%geo_ignored_asns%'
-    AppBundle\Service\EmailSender:
+    App\Service\EmailSender:
         arguments:
             $defaultEmail: '%default_from_email%'
             $economyEmail: '%economy_email%'
 
-    AppBundle\Service\SlackMessenger:
+    App\Service\SlackMessenger:
         arguments:
             $endpoint: '%slack_endpoint%'
             $notificationChannel: '%slack.notification_channel%'
@@ -63,7 +63,7 @@ services:
             $disableDelivery: '%slack.disable_delivery%'
             $logger: '@logger'
 
-    AppBundle\Service\FileUploader:
+    App\Service\FileUploader:
         arguments:
             $signatureFolder: '%signature_images%'
             $logoFolder: '%logo_images%'

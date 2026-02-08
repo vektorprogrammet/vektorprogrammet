@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\User;
-use AppBundle\Entity\Receipt;
+use App\Entity\User;
+use App\Entity\Receipt;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

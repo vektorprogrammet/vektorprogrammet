@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
-use AppBundle\Entity\User;
+use App\Entity\User;
 use Tests\BaseWebTestCase;
 use Symfony\Bundle\FrameworkBundle\Client;
 

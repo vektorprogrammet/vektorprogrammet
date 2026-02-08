@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Availability;
+namespace Tests\App\Availability;
 
 use Tests\BaseWebTestCase;
 

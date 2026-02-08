@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Type;
+namespace Tests\App\Type;
 
-use AppBundle\Form\Type\CreateDepartmentType;
-use AppBundle\Entity\Department;
+use App\Form\Type\CreateDepartmentType;
+use App\Entity\Department;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class CreateDepartmentTest extends TypeTestCase

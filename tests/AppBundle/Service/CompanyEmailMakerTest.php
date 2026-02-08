@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Service;
+namespace Tests\App\Service;
 
-use AppBundle\Entity\User;
-use AppBundle\Service\CompanyEmailMaker;
+use App\Entity\User;
+use App\Service\CompanyEmailMaker;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CompanyEmailMakerTest extends KernelTestCase

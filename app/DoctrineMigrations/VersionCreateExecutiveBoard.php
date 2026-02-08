@@ -2,7 +2,7 @@
 
 namespace Application\Migrations;
 
-use AppBundle\Entity\ExecutiveBoard;
+use App\Entity\ExecutiveBoard;
 use Doctrine\DBAL\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;

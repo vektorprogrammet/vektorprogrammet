@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Feedback;
-use AppBundle\Entity\User;
+use App\Entity\Feedback;
+use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class FeedbackEntityUnitTest extends TestCase

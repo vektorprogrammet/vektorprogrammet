@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Position;
+use App\Entity\Position;
 use PHPUnit\Framework\TestCase;
 
 class PositionEntityUnitTest extends TestCase

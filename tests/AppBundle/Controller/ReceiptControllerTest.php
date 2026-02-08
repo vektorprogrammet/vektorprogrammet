@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
 use Tests\BaseWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
-use AppBundle\Entity\Receipt;
+use App\Entity\Receipt;
 
 class ReceiptControllerTest extends BaseWebTestCase
 {

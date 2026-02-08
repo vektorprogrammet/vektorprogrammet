@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Type;
+namespace Tests\App\Type;
 
-use AppBundle\Form\Type\CreateSchoolType;
-use AppBundle\Entity\School;
+use App\Form\Type\CreateSchoolType;
+use App\Entity\School;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class CreateSchoolTest extends TypeTestCase

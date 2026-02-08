@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Service;
+namespace Tests\App\Service;
 
-use AppBundle\Entity\Department;
-use AppBundle\Service\GeoLocation;
-use AppBundle\Service\LogService;
+use App\Entity\Department;
+use App\Service\GeoLocation;
+use App\Service\LogService;
 use Doctrine\Common\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;

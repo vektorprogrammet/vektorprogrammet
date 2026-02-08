@@ -5,9 +5,9 @@ services:
         tags:
             - { name: twig.extension }
 
-    AppBundle\Twig\Extension\:
-        resource: "../../src/AppBundle/Twig/Extension"
+    App\Twig\Extension\:
+        resource: "../../src/App/Twig/Extension"
 
-    AppBundle\Twig\Extension\AssetExtension:
+    App\Twig\Extension\AssetExtension:
         arguments:
             $rootDir: '%kernel.project_dir%'

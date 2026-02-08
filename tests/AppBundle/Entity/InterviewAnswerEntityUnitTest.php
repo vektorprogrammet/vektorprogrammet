@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Interview;
-use AppBundle\Entity\InterviewAnswer;
-use AppBundle\Entity\InterviewQuestion;
+use App\Entity\Interview;
+use App\Entity\InterviewAnswer;
+use App\Entity\InterviewQuestion;
 use PHPUnit\Framework\TestCase;
 
 class InterviewAnswerEntityUnitTest extends TestCase

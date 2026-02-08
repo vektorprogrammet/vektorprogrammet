@@ -1,19 +1,19 @@
 <?php
 
-namespace Tests\AppBundle\Extension;
+namespace Tests\App\Extension;
 
-use AppBundle\Entity\AdmissionPeriod;
-use AppBundle\Entity\Department;
-use AppBundle\Entity\ExecutiveBoard;
-use AppBundle\Entity\ExecutiveBoardMembership;
-use AppBundle\Entity\Position;
-use AppBundle\Entity\Semester;
-use AppBundle\Entity\Team;
-use AppBundle\Entity\TeamMembership;
-use AppBundle\Entity\User;
-use AppBundle\Service\FilterService;
-use AppBundle\Service\Sorter;
-use AppBundle\Twig\Extension\TeamPositionSortExtension;
+use App\Entity\AdmissionPeriod;
+use App\Entity\Department;
+use App\Entity\ExecutiveBoard;
+use App\Entity\ExecutiveBoardMembership;
+use App\Entity\Position;
+use App\Entity\Semester;
+use App\Entity\Team;
+use App\Entity\TeamMembership;
+use App\Entity\User;
+use App\Service\FilterService;
+use App\Service\Sorter;
+use App\Twig\Extension\TeamPositionSortExtension;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

@@ -1,0 +1,42 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\AdmissionPeriod;
+use App\Service\ApplicationData;
+use App\Service\AssistantHistoryData;
+use Doctrine\ORM\NonUniqueResultException;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class ApplicationStatisticsController extends BaseController
+{
+    /**
+     * @param Request $request
+     * @return Response
+     * @throws NonUniqueResultException
+     */
+    public function showAction(Request $request)
+    {
+        $department = $this->getDepartmentOrThrow404($request);
+        $semester = $this->getSemesterOrThrow404($request);
+        $admissionPeriod = $this->getDoctrine()
+            ->getRepository(AdmissionPeriod::class)
+            ->findOneByDepartmentAndSemester($department, $semester);
+
+        $assistantHistoryData = $this->get(AssistantHistoryData::class);
+        $assistantHistoryData->setSemester($semester)->setDepartment($department);
+
+        $applicationData = $this->get(ApplicationData::class);
+        if ($admissionPeriod !== null) {
+            $applicationData->setAdmissionPeriod($admissionPeriod);
+        }
+
+        return $this->render('statistics/statistics.html.twig', array(
+            'applicationData' => $applicationData,
+            'assistantHistoryData' => $assistantHistoryData,
+            'semester' => $semester,
+            'department' => $department,
+        ));
+    }
+}

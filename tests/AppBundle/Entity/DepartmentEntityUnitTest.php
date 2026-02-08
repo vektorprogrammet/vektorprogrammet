@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\AdmissionPeriod;
-use AppBundle\Entity\Department;
-use AppBundle\Entity\FieldOfStudy;
-use AppBundle\Entity\School;
-use AppBundle\Entity\Team;
+use App\Entity\AdmissionPeriod;
+use App\Entity\Department;
+use App\Entity\FieldOfStudy;
+use App\Entity\School;
+use App\Entity\Team;
 use PHPUnit\Framework\TestCase;
 
 class DepartmentEntityUnitTest extends TestCase

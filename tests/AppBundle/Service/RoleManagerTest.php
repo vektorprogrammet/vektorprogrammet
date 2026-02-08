@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Service;
+namespace Tests\App\Service;
 
-use AppBundle\Entity\User;
-use AppBundle\Role\Roles;
-use AppBundle\Service\RoleManager;
+use App\Entity\User;
+use App\Role\Roles;
+use App\Service\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

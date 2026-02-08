@@ -1,21 +1,21 @@
 services:
-    AppBundle\Google\GoogleService:
+    App\Google\GoogleService:
         abstract: true
-        arguments: ['%google_api%', '@AppBundle\Service\LogService']
+        arguments: ['%google_api%', '@App\Service\LogService']
 
-    AppBundle\Google\Gmail:
-        parent: AppBundle\Google\GoogleService
+    App\Google\Gmail:
+        parent: App\Google\GoogleService
         calls:
             - [setDefaultEmail, ['%default_from_email%']]
 
-    AppBundle\Google\GoogleUsers:
-        parent: AppBundle\Google\GoogleService
+    App\Google\GoogleUsers:
+        parent: App\Google\GoogleService
 
-    AppBundle\Google\GoogleGroups:
-        parent: AppBundle\Google\GoogleService
+    App\Google\GoogleGroups:
+        parent: App\Google\GoogleService
 
-    AppBundle\Google\GoogleDrive:
-        parent: AppBundle\Google\GoogleService
+    App\Google\GoogleDrive:
+        parent: App\Google\GoogleService
 
-    AppBundle\Google\GoogleAPI:
-        arguments: ['%google_api%', '@AppBundle\Google\GoogleUsers', '@AppBundle\Google\GoogleGroups']
+    App\Google\GoogleAPI:
+        arguments: ['%google_api%', '@App\Google\GoogleUsers', '@App\Google\GoogleGroups']

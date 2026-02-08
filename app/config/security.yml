@@ -3,7 +3,7 @@
 security:
     # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
     encoders:
-        AppBundle\Entity\User:
+        App\Entity\User:
             algorithm: bcrypt
             cost: 12
 
@@ -20,15 +20,15 @@ security:
                 providers: [db_username, db_email, db_company_email]
         db_username:
             entity:
-                class: AppBundle:User
+                class: App\Entity\User
                 property: user_name
         db_email:
             entity:
-                class: AppBundle:User
+                class: App\Entity\User
                 property: email
         db_company_email:
             entity:
-                class: AppBundle:User
+                class: App\Entity\User
                 property: companyEmail
 
     # the main part of the security, where you can set up firewalls

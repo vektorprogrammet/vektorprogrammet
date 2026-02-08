@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Service;
+namespace Tests\App\Service;
 
-use AppBundle\Entity\Article;
-use AppBundle\Service\SlugMaker;
+use App\Entity\Article;
+use App\Service\SlugMaker;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class SlugMakerTest extends KernelTestCase

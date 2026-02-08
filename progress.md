@@ -93,5 +93,46 @@ Failures:
 
 ---
 
-## Sprint 3: Namespace Rename — NOT STARTED
-See `CLAUDE.md` for sprint plan details.
+## Sprint 3: Namespace Rename — COMPLETE
+
+### What Was Done
+1. Moved `src/AppBundle/` directory to `src/App/`
+2. Updated `composer.json` PSR-4 autoload: `AppBundle\\` → `App\\`, path `src/AppBundle` → `src/App`
+3. Updated namespace declarations in all 363 PHP source files: `namespace AppBundle\...` → `namespace App\...`
+4. Updated all `use` statements across 363 source + 68 test files
+5. Updated `AppKernel.php`: `new AppBundle\AppBundle()` → `new App\AppBundle()`
+6. Updated bundle class namespace: `namespace AppBundle` → `namespace App` (class name stays `AppBundle`)
+7. Updated FQCN references in 10 config files (services, security, event_subscribers, twig, validators, etc.)
+8. Updated filesystem resource paths in config: `../../src/AppBundle/` → `../../src/App/`
+9. Updated migration file FQCN reference
+10. Updated `package.json` scheduling paths: `src/AppBundle/...` → `src/App/...`
+
+### What Was NOT Changed (by design)
+- **Bundle shorthand references** stay as `AppBundle:Controller:action` in routing.yml — Symfony derives bundle name from class name (`AppBundle`), not namespace
+- **Doctrine shorthand** stays as `AppBundle:Entity` in DQL queries and form types — resolved via bundle name
+- **`@AppBundle/` resource references** stay unchanged in routing — resolved via bundle name
+- **Bundle class name** stays `AppBundle` (in `App` namespace) — required by Symfony 3.4 bundle system
+- **GitHub URLs in fixture data** — historical links, left as-is
+
+### Key Insight
+In Symfony 3.4, the bundle name (used for `@BundleName/`, `BundleName:Entity`, `BundleName:Controller:action`) is derived from the **class name**, not the namespace. So changing the namespace from `AppBundle\` to `App\` does NOT change the bundle name — it remains `AppBundle`. All shorthand references must continue using `AppBundle`.
+
+### Files Changed
+- `composer.json` — autoload PSR-4 mapping
+- `app/AppKernel.php` — bundle registration
+- `src/App/AppBundle.php` — bundle class namespace
+- 363 PHP files in `src/App/` — namespace + use statements
+- 68 PHP files in `tests/` — use statements
+- `app/config/services.yml` — FQCN refs + resource paths
+- `app/config/security.yml` — FQCN entity refs
+- `app/config/event_subscribers.yml` — FQCN refs + resource paths
+- `app/config/twig.yml` — FQCN refs + resource paths
+- `app/config/validators.yml` — FQCN refs + resource paths
+- `app/config/services_google.yml` — FQCN refs
+- `app/config/forms.yml` — FQCN refs
+- `app/config/automapper.yml` — FQCN refs
+- `app/DoctrineMigrations/VersionCreateExecutiveBoard.php` — use statement
+- `package.json` — scheduling script paths
+
+### Test Results
+496 tests, 1152 assertions, 2 pre-existing failures (unchanged)

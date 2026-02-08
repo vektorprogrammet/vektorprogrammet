@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Interview;
-use AppBundle\Entity\InterviewAnswer;
-use AppBundle\Entity\InterviewSchema;
-use AppBundle\Entity\InterviewScore;
-use AppBundle\Entity\User;
+use App\Entity\Interview;
+use App\Entity\InterviewAnswer;
+use App\Entity\InterviewSchema;
+use App\Entity\InterviewScore;
+use App\Entity\User;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

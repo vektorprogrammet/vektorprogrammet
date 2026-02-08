@@ -1,17 +1,17 @@
 <?php
 
 
-namespace Tests\AppBundle\Service;
+namespace Tests\App\Service;
 
 
-use AppBundle\Entity\AccessRule;
-use AppBundle\Entity\Repository\UnhandledAccessRuleRepository;
-use AppBundle\Entity\Role;
-use AppBundle\Entity\Team;
-use AppBundle\Entity\UnhandledAccessRule;
-use AppBundle\Entity\User;
-use AppBundle\Role\Roles;
-use AppBundle\Service\AccessControlService;
+use App\Entity\AccessRule;
+use App\Entity\Repository\UnhandledAccessRuleRepository;
+use App\Entity\Role;
+use App\Entity\Team;
+use App\Entity\UnhandledAccessRule;
+use App\Entity\User;
+use App\Role\Roles;
+use App\Service\AccessControlService;
 use Tests\BaseKernelTestCase;
 
 class AccessControlTest extends BaseKernelTestCase {

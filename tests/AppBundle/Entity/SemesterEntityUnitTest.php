@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Semester;
+use App\Entity\Semester;
 use PHPUnit\Framework\TestCase;
 
 class SemesterEntityUnitTest extends TestCase

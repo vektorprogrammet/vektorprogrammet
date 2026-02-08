@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Team;
-use AppBundle\Entity\Department;
+use App\Entity\Team;
+use App\Entity\Department;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 
