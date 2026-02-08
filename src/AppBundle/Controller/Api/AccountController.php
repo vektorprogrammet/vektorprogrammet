@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
 use Exception;
 
 class AccountController extends BaseController
@@ -24,7 +23,6 @@ class AccountController extends BaseController
      * @param Request $request
      *
      * @return Response
-     * @throws InvalidClassConstructorException
      * @throws NonUniqueResultException
      */
     public function loginAction(Request $request)
@@ -59,10 +57,7 @@ class AccountController extends BaseController
         $this->get('security.token_storage')->setToken($token);
         $this->get('session')->set('_security_secured_area', serialize($token));
 
-        $mapper = $this->get('bcc_auto_mapper.mapper');
-        $mapper->createMap(User::class, UserDto::class);
-        $userDto = new UserDto();
-        $mapper->map($user, $userDto);
+        $userDto = self::mapUserToDto($user);
 
         return new JsonResponse($userDto);
     }
@@ -89,7 +84,6 @@ class AccountController extends BaseController
      * @Route(path="api/account/user", methods={"GET"})
      *
      * @return Response
-     * @throws InvalidClassConstructorException
      */
     public function getUserAction()
     {
@@ -97,12 +91,23 @@ class AccountController extends BaseController
             return new JsonResponse(null);
         }
 
-        $mapper = $this->get('bcc_auto_mapper.mapper');
-        $mapper->createMap(User::class, UserDto::class);
-        $userDto = new UserDto();
-        $mapper->map($this->getUser(), $userDto);
+        $userDto = self::mapUserToDto($this->getUser());
 
         return new JsonResponse($userDto);
+    }
+
+    private static function mapUserToDto(User $user): UserDto
+    {
+        $dto = new UserDto();
+        $dto->firstName = $user->getFirstName();
+        $dto->lastName = $user->getLastName();
+        $dto->fullName = $user->getFullName();
+        $dto->username = $user->getUserName();
+        $dto->email = $user->getEmail();
+        $dto->companyEmail = $user->getCompanyEmail();
+        $dto->isAdmin = in_array('ROLE_ADMIN', $user->getRoles());
+
+        return $dto;
     }
 
 

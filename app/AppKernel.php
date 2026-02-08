@@ -22,9 +22,6 @@ class AppKernel extends Kernel
             new FM\ElfinderBundle\FMElfinderBundle(),
             new Liip\ImagineBundle\LiipImagineBundle(),
             new Doctrine\Bundle\MigrationsBundle\DoctrineMigrationsBundle(),
-	        new Http\HttplugBundle\HttplugBundle(),
-	        new Nexy\SlackBundle\NexySlackBundle(),
-	        new BCC\AutoMapperBundle\BCCAutoMapperBundle(),
             new EWZ\Bundle\RecaptchaBundle\EWZRecaptchaBundle(),
             new FOS\RestBundle\FOSRestBundle(),
         );
@@ -40,11 +37,9 @@ class AppKernel extends Kernel
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {
             $bundles[] = new Symfony\Bundle\DebugBundle\DebugBundle();
             $bundles[] = new Symfony\Bundle\WebProfilerBundle\WebProfilerBundle();
-            $bundles[] = new Sensio\Bundle\DistributionBundle\SensioDistributionBundle();
             $bundles[] = new NelmioCorsBundle();
 
             if ('dev' === $this->getEnvironment()) {
-                $bundles[] = new Sensio\Bundle\GeneratorBundle\SensioGeneratorBundle();
 	            $bundles[] = new Symfony\Bundle\WebServerBundle\WebServerBundle();
             }
         }

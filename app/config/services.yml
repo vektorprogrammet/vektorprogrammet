@@ -22,11 +22,6 @@ services:
         arguments:
             $sendLimit: '%admission_notifier_limit%'
 
-    guzzle.slack:
-        class: GuzzleHttp\Client
-        arguments:
-            - { timeout: 2 }
-
     AppBundle\Sms\SlackSms:
         autowire: true
 
@@ -62,10 +57,11 @@ services:
 
     AppBundle\Service\SlackMessenger:
         arguments:
-            $logger: '@logger'
+            $endpoint: '%slack_endpoint%'
             $notificationChannel: '%slack.notification_channel%'
             $logChannel: '%slack.log_channel%'
             $disableDelivery: '%slack.disable_delivery%'
+            $logger: '@logger'
 
     AppBundle\Service\FileUploader:
         arguments:
