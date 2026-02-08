@@ -6,4 +6,4 @@ services:
             - { name: validator.constraint_validator }
 
     App\Validator\Constraints\:
-        resource: "../../src/App/Validator/Constraints"
+        resource: "../src/App/Validator/Constraints"

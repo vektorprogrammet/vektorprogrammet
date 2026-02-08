@@ -60,7 +60,7 @@ framework:
     translator:      { fallbacks: ["%locale%"] }
     secret:          "%secret%"
     router:
-        resource: "%kernel.root_dir%/config/routing.yml"
+        resource: "%kernel.project_dir%/config/routing.yml"
         strict_requirements: ~
     form:            ~
     csrf_protection: ~
@@ -114,6 +114,8 @@ doctrine:
         auto_generate_proxy_classes: "%kernel.debug%"
         auto_mapping: true
 
+doctrine_migrations:
+    dir_name: "%kernel.project_dir%/migrations"
 
 # Swiftmailer Configuration
 swiftmailer:

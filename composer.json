@@ -58,7 +58,7 @@
     },
     "config": {
         "bin-dir": "bin",
-        "component-dir": "web/assets",
+        "component-dir": "public/assets",
         "audit": {
             "block-insecure": false
         },
@@ -68,7 +68,7 @@
     },
     "extra": {
         "symfony-app-dir": "app",
-        "symfony-web-dir": "web",
+        "symfony-web-dir": "public",
         "symfony-bin-dir": "bin",
         "symfony-var-dir": "var",
         "symfony-tests-dir": "tests",

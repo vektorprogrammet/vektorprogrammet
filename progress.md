@@ -136,3 +136,46 @@ In Symfony 3.4, the bundle name (used for `@BundleName/`, `BundleName:Entity`, `
 
 ### Test Results
 496 tests, 1152 assertions, 2 pre-existing failures (unchanged)
+
+---
+
+## Sprint 4: Directory Restructure — COMPLETE
+
+### What Was Done
+1. Moved `web/` → `public/` (front controllers, static assets)
+2. Moved `app/Resources/views/` → `templates/` with symlink `app/Resources/views` → `../../templates` for Symfony 3.4 colon-syntax backward compatibility
+3. Moved `app/config/` → `config/` (all config files)
+4. Moved `app/DoctrineMigrations/` → `migrations/`
+5. Moved `app/Resources/assets/` → `assets/` (SCSS, JS, images)
+6. Moved `app/phpunit.xml.dist` → `phpunit.xml.dist` (root)
+7. Moved `app/testBootstrap.php` → `tests/bootstrap.php`
+8. Added `getProjectDir()` override to `AppKernel` returning `dirname(__DIR__)`
+9. Updated `registerContainerConfiguration()` to use `dirname(__DIR__).'/config/...'`
+10. Replaced `%kernel.root_dir%/config/` → `%kernel.project_dir%/config/` in routing config
+11. Replaced `%kernel.root_dir%/../web` → `%kernel.project_dir%/public` in image_filters.yml
+12. Replaced `%kernel.root_dir%/../var/data/` → `%kernel.project_dir%/var/data/` in config_test.yml and parameters.yml.dist
+13. Updated all `resource:` paths from `../../src/App/` → `../src/App/` in services.yml, event_subscribers.yml, twig.yml, validators.yml
+14. Added `doctrine_migrations.dir_name: "%kernel.project_dir%/migrations"` to config.yml
+15. Updated `composer.json`: `component-dir` and `symfony-web-dir` to use `public`
+16. Updated `package.json`: test config path, docroot
+17. Updated `gulpfile.js`: all `web/` → `public/`, `app/Resources/assets/` → `assets/`, `src/AppBundle/` → `src/App/`
+18. Updated `.gitignore`: `/web/` → `/public/`, `/app/config/` → `/config/`, `/app/phpunit.xml` → `/phpunit.xml`
+19. Updated `.github/workflows/tests.yml`: phpunit config path
+20. Kept bundle overrides (`TwigBundle`, `FMElfinderBundle`) in `app/Resources/`
+
+### What Was NOT Moved (by design)
+- `app/AppKernel.php`, `app/AppCache.php`, `app/autoload.php` — still used by front controllers, will move in Sprint 5
+- `app/Resources/TwigBundle/`, `app/Resources/FMElfinderBundle/` — Symfony 3.4 expects bundle overrides at `{kernel.root_dir}/Resources/{BundleName}/views/`
+- `app/Resources/translations/` — translation files stay until Symfony 4.4
+
+### Key Design Decision: Symlink for Templates
+Symfony 3.4's colon-separated template syntax (`:admission:existingUser.html.twig`) resolves templates via `{kernel.root_dir}/Resources/views/`. Since `kernel.root_dir` remains `app/`, we created a symlink `app/Resources/views` → `../../templates` so both the new `templates/` directory and the legacy resolution path work. This symlink will be removed in Sprint 5.
+
+### Gotchas for Next Sprint
+- The symlink `app/Resources/views` → `../../templates` must be removed when the kernel moves to `src/Kernel.php`
+- Bundle overrides in `app/Resources/{BundleName}/` need to move to `templates/bundles/{BundleName}/`
+- `app/Resources/translations/` should move to `translations/` at root
+- `KERNEL_DIR` in `phpunit.xml.dist` can be removed once Symfony 4.4's WebTestCase is used
+
+### Test Results
+496 tests, 1152 assertions, 2 pre-existing failures (unchanged)

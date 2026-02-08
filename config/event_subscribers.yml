@@ -9,7 +9,7 @@ services:
             $env: '%kernel.environment%'
 
     App\EventSubscriber\:
-        resource: "../../src/App/EventSubscriber"
+        resource: "../src/App/EventSubscriber"
         tags:
             - { name: kernel.event_subscriber }
     App\EventSubscriber\DbSubscriber:

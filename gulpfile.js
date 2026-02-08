@@ -10,10 +10,10 @@ var gulp = require('gulp'),
     babel = require('gulp-babel');
 
 var path = {
-    dist: 'web/',
-    src: 'app/Resources/assets/',
+    dist: 'public/',
+    src: 'assets/',
     scheduling: {
-        src: 'src/AppBundle/AssistantScheduling/Webapp'
+        src: 'src/App/AssistantScheduling/Webapp'
     }
 };
 
@@ -84,39 +84,39 @@ function imagesDev () {
 
 function icons () {
   var r = gulp.src('node_modules/@fortawesome/fontawesome-free/webfonts/**.*')
-      .pipe(gulp.dest('web/webfonts/'));
+      .pipe(gulp.dest('public/webfonts/'));
   return r && gulp.src(path.src + 'webfonts/**.*')
-    .pipe(gulp.dest('web/webfonts/'));
+    .pipe(gulp.dest('public/webfonts/'));
 }
 
 function files () {
   return gulp.src(path.src + 'files/*')
-      .pipe(changed('web/files/'))
-      .pipe(gulp.dest('web/files/'))
+      .pipe(changed('public/files/'))
+      .pipe(gulp.dest('public/files/'))
 }
 
 function vendor () {
 
   var r = gulp.src('node_modules/dropzone/**/*')
-      .pipe(gulp.dest('web/vendor/dropzone/'));
+      .pipe(gulp.dest('public/vendor/dropzone/'));
 
   r = r && gulp.src('node_modules/cropperjs/dist/*')
-    .pipe(gulp.dest('web/vendor/cropperjs/'));
+    .pipe(gulp.dest('public/vendor/cropperjs/'));
 
   r = r && gulp.src(['node_modules/ckeditor/**/*', path.src + 'js/ckeditor/**/*'])
-      .pipe(gulp.dest('web/vendor/ckeditor/'));
+      .pipe(gulp.dest('public/vendor/ckeditor/'));
 
   r = r && gulp.src(path.src + '/js/coreui.js')
-    .pipe(gulp.dest('web/vendor/'));
+    .pipe(gulp.dest('public/vendor/'));
 
   r = r && gulp.src('node_modules/@coreui/coreui/dist/js/coreui.min.js')
-    .pipe(gulp.dest('web/vendor/'));
+    .pipe(gulp.dest('public/vendor/'));
 
   r = r && gulp.src('node_modules/bootstrap/dist/js/bootstrap.min.js')
-    .pipe(gulp.dest('web/js'));
+    .pipe(gulp.dest('public/js'));
 
   r = r && gulp.src('node_modules/jquery/dist/jquery.min.js')
-    .pipe(gulp.dest('web/js'));
+    .pipe(gulp.dest('public/js'));
 
   return r && gulp.src([
     'node_modules/jquery/dist/jquery.min.js',
@@ -130,9 +130,9 @@ function vendor () {
 
 function assistantSchedulingStaticFiles () {
   var r = gulp.src(path.scheduling.src + '/dist/build.js')
-        .pipe(gulp.dest('web/js/scheduling'));
+        .pipe(gulp.dest('public/js/scheduling'));
     return r && gulp.src(path.scheduling.src + '/dist/build.js.map')
-        .pipe(gulp.dest('web/js/scheduling'));
+        .pipe(gulp.dest('public/js/scheduling'));
 }
 
 

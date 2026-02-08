@@ -8,10 +8,10 @@ services:
             App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
 
     App\:
-        resource: "../../src/App/{Service, Role, Mailer, Sms}"
+        resource: "../src/App/{Service, Role, Mailer, Sms}"
 
     App\DataFixtures\ORM\:
-        resource: '../../src/App/DataFixtures/ORM'
+        resource: '../src/App/DataFixtures/ORM'
         tags: ['doctrine.fixture.orm']
 
     App\Role\ReversedRoleHierarchy:

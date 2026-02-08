@@ -2,12 +2,12 @@ liip_imagine:
     resolvers:
        default:
           web_path:
-            web_root: '%kernel.root_dir%/../web'
+            web_root: '%kernel.project_dir%/public'
 
     loaders:
       default:
         filesystem:
-          data_root: '%kernel.root_dir%/../web'
+          data_root: '%kernel.project_dir%/public'
 
     cache: ~
 

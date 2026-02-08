@@ -6,7 +6,7 @@ services:
             - { name: twig.extension }
 
     App\Twig\Extension\:
-        resource: "../../src/App/Twig/Extension"
+        resource: "../src/App/Twig/Extension"
 
     App\Twig\Extension\AssetExtension:
         arguments:

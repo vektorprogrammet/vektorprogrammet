@@ -11,7 +11,8 @@ We are incrementally upgrading this Symfony 3.4 monolith to Symfony 6.4. Track p
 - Sprint 1: COMPLETE (PR #1592, branch `modernize/sprint-1-remove-dead-dependencies`)
 - Sprint 2: COMPLETE (deprecated bundles replaced)
 - Sprint 3: COMPLETE (namespace rename AppBundle → App)
-- Sprint 4+: PENDING — see sprint plan below
+- Sprint 4: COMPLETE (directory restructure)
+- Sprint 5+: PENDING — see sprint plan below
 
 ## Critical Environment Setup
 
@@ -28,7 +29,7 @@ Always use these flags until elfinder-bundle is upgraded (Sprint 2):
 
 ### Running Tests
 ```bash
-/usr/local/opt/php@7.4/bin/php -d memory_limit=512M bin/phpunit -c app/phpunit.xml.dist
+/usr/local/opt/php@7.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist
 ```
 - Baseline: 496 tests, 1152 assertions
 - 2 pre-existing failures in `CompanyEmailMakerTest` (Norwegian character handling) — ignore these
@@ -47,13 +48,13 @@ Always use these flags until elfinder-bundle is upgraded (Sprint 2):
 | Controllers | 62 | `src/App/Controller/` (incl. `Api/`) |
 | Services | 33 | `src/App/Service/` |
 | Form Types | 68 | `src/App/Form/` |
-| Twig Templates | 264 | `app/Resources/views/` |
+| Twig Templates | 264 | `templates/` |
 | Event Subscribers | 14 | `src/App/EventSubscriber/` |
 | Twig Extensions | 12 | `src/App/Twig/Extension/` |
 | Console Commands | 6 | `src/App/Command/` |
 | Tests | 70 files, 496 tests | `tests/` |
-| Routes | ~180 | `app/config/routing.yml` |
-| Migrations | 71 | `app/DoctrineMigrations/` |
+| Routes | ~180 | `config/routing.yml` |
+| Migrations | 71 | `migrations/` |
 
 ## Key Architectural Patterns
 
@@ -63,14 +64,14 @@ Always use these flags until elfinder-bundle is upgraded (Sprint 2):
 - `getSemester(Request)` — resolves semester from query param or current
 - Uses `$this->getDoctrine()` throughout (deprecated in Symfony 4.4, removed in 6.0)
 
-### Security Model (`app/config/security.yml`)
+### Security Model (`config/security.yml`)
 - 4 roles: `ROLE_USER` (assistant) < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`
 - 3 user providers: username, email, companyEmail (chained)
 - `User` entity (`App\Entity\User`) implements `AdvancedUserInterface` + `Serializable` (both removed in Symfony 5/6)
 - 85+ access control rules with Norwegian URL paths
 - Password encoding: bcrypt, cost 12
 
-### Services (`app/config/services.yml`)
+### Services (`config/services.yml`)
 - Autowiring enabled, all services public
 - SlackMessenger now uses direct GuzzleHttp webhooks (rewritten in Sprint 1)
 - Mailer binding: `MailerInterface` → `Mailer` (SwiftMailer-based)
@@ -101,8 +102,8 @@ Replaced `egeloen/ckeditor-bundle` → `friendsofsymfony/ckeditor-bundle`. Upgra
 ### Sprint 3: Namespace Rename (AppBundle → App) — COMPLETE
 Renamed `AppBundle\` → `App\` namespace across 431 PHP files. Moved `src/AppBundle/` → `src/App/`. Updated FQCN references in all config files. Bundle shorthand (`AppBundle:Controller:action`, `AppBundle:Entity`, `@AppBundle/`) remains unchanged — Symfony derives bundle name from class name.
 
-### Sprint 4: Directory Restructure
-`web/` → `public/`, `app/config/` → `config/`, `app/Resources/views/` → `templates/`. Rewrite kernel, add Flex, create `.env`.
+### Sprint 4: Directory Restructure — COMPLETE
+`web/` → `public/`, `app/config/` → `config/`, `app/Resources/views/` → `templates/`, `app/DoctrineMigrations/` → `migrations/`, `app/Resources/assets/` → `assets/`, `app/phpunit.xml.dist` → `phpunit.xml.dist`. Added `getProjectDir()` to kernel. Symlink `app/Resources/views` → `templates/` for Symfony 3.4 colon-syntax template resolution. Flex and `.env` deferred to Sprint 5.
 
 ### Sprint 5: Symfony 3.4 → 4.4
 Replace `symfony/symfony` monolith with individual 4.4 packages. Fix `Controller` → `AbstractController`. Remove `logout_on_user_change`.
@@ -122,9 +123,9 @@ Update Dockerfile, CI/CD, README. Final test pass.
 ## Files You Should Read First
 - `composer.json` — current dependency state
 - `app/AppKernel.php` — registered bundles
-- `app/config/security.yml` — auth model and access control
-- `app/config/services.yml` — DI container config
-- `app/config/config.yml` — framework and bundle config
+- `config/security.yml` — auth model and access control
+- `config/services.yml` — DI container config
+- `config/config.yml` — framework and bundle config
 - `src/App/Controller/BaseController.php` — base class for all controllers
 - `src/App/Entity/User.php` — central entity
 - `progress.md` — what's been done and decisions made

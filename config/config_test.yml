@@ -34,7 +34,7 @@ doctrine:
                 port: null
                 user:    test
                 password: null
-                path:    "%kernel.root_dir%/../var/data/test.db"
-                dbname: "%kernel.root_dir%/../var/data/test.db"
+                path:    "%kernel.project_dir%/var/data/test.db"
+                dbname: "%kernel.project_dir%/var/data/test.db"
                 #memory: true
                 charset: utf8
