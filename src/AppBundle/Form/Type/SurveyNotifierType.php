@@ -5,7 +5,7 @@ namespace AppBundle\Form\Type;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\UserGroup;
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

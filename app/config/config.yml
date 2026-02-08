@@ -135,7 +135,7 @@ swiftmailer:
             spool:     { type: memory }
 
 
-ivory_ck_editor:
+fos_ck_editor:
     base_path: "vendor/ckeditor/"
     js_path: "vendor/ckeditor/ckeditor.js"
     default_config: default
