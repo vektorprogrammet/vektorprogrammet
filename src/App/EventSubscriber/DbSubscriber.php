@@ -17,7 +17,7 @@ use App\Entity\UnhandledAccessRule;
 use App\Entity\User;
 use App\Role\Roles;
 use Doctrine\Common\EventSubscriber;
-use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
+use Doctrine\Persistence\Event\LifecycleEventArgs;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 

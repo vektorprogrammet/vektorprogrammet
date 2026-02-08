@@ -92,7 +92,7 @@ class ReceiptController extends BaseController
             return $this->redirectToRoute('receipt_create');
         }
 
-        if (!$form->isValid()) {
+        if ($form->isSubmitted() && !$form->isValid()) {
             $receipt->setPicturePath(null);
         }
 
@@ -141,7 +141,7 @@ class ReceiptController extends BaseController
             return $this->redirectToRoute('receipt_create');
         }
 
-        if (!$form->isValid()) {
+        if ($form->isSubmitted() && !$form->isValid()) {
             $receipt->setPicturePath($oldPicturePath);
         }
 
@@ -214,7 +214,7 @@ class ReceiptController extends BaseController
             return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
         }
 
-        if (!$form->isValid()) {
+        if ($form->isSubmitted() && !$form->isValid()) {
             $receipt->setPicturePath($oldPicturePath);
         }
 

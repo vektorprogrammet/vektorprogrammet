@@ -72,11 +72,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         $users = $this->getEntityManager()->createQuery('
 		
 		SELECT u
-		FROM AppBundle:User u
+		FROM App\Entity\User u
 		JOIN u.fieldOfStudy fos
 		JOIN fos.department d
 		WHERE d.id = :department
-		
+
 		')
             ->setParameter('department', $department)
             ->getResult();
@@ -89,7 +89,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         $users = $this->getEntityManager()->createQuery('
 		
 		SELECT u
-		FROM AppBundle:User u
+		FROM App\Entity\User u
 		JOIN u.fieldOfStudy fos
 		JOIN fos.department d
 		WHERE d.id = :department

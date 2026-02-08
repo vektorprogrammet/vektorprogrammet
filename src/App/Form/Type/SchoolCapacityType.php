@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Repository\SchoolRepository;
+use App\Entity\School;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -18,7 +19,7 @@ class SchoolCapacityType extends AbstractType
         $builder
             ->add('school', EntityType::class, array(
                 'label' => 'Skole',
-                'class' => 'AppBundle:School',
+                'class' => School::class,
                 'query_builder' => function (SchoolRepository $er) use ($department) {
                     return $er->findActiveSchoolsWithoutCapacity($department);
                 },

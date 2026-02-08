@@ -12,7 +12,7 @@ use App\Entity\AdmissionPeriod;
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadAdmissionPeriodData extends AbstractFixture implements OrderedFixtureInterface
 {

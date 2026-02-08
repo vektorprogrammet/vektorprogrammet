@@ -2,9 +2,12 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Position;
 use App\Entity\Repository\PositionRepository;
 use App\Entity\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
+use App\Entity\Semester;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -23,7 +26,7 @@ class CreateTeamMembershipType extends AbstractType
         $builder
             ->add('user', EntityType::class, array(
                 'label' => 'Bruker',
-                'class' => 'AppBundle:User',
+                'class' => User::class,
                 'query_builder' => function (UserRepository $ur) {
                     return $ur->createQueryBuilder('u')
                         ->orderBy('u.firstName', 'ASC')
@@ -45,7 +48,7 @@ class CreateTeamMembershipType extends AbstractType
             ))
             ->add('position', EntityType::class, array(
                 'label' => 'Stillingstittel',
-                'class' => 'AppBundle:Position',
+                'class' => Position::class,
                 'query_builder' => function (PositionRepository $pr) {
                     return $pr->createQueryBuilder('p')
                         ->orderBy('p.name', 'ASC');
@@ -53,14 +56,14 @@ class CreateTeamMembershipType extends AbstractType
             ))
             ->add('startSemester', EntityType::class, array(
                 'label' => 'Start semester',
-                'class' => 'AppBundle:Semester',
+                'class' => Semester::class,
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
             ))
             ->add('endSemester', EntityType::class, array(
                 'label' => 'Slutt semester (Valgfritt)',
-                'class' => 'AppBundle:Semester',
+                'class' => Semester::class,
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },

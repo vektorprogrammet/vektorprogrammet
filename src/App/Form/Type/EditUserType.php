@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\FieldOfStudy;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -35,7 +36,7 @@ class EditUserType extends AbstractType
             ))
             ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
-                'class' => 'AppBundle:FieldOfStudy',
+                'class' => FieldOfStudy::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('f')
                         ->orderBy('f.shortName', 'ASC')

@@ -12,7 +12,7 @@ class DepartmentRepository extends EntityRepository
     {
         $departments = $this->getEntityManager()->createQuery('
 			SELECT d
-			FROM AppBundle:Department d
+			FROM App\Entity\Department d
 		')
             ->getResult();
 
@@ -23,7 +23,7 @@ class DepartmentRepository extends EntityRepository
     {
         $departments = $this->getEntityManager()->createQuery('
 			SELECT d
-			FROM AppBundle:Department d
+			FROM App\Entity\Department d
 			WHERE d.id = :id
 		')
             ->setParameter('id', $id)
@@ -44,7 +44,7 @@ class DepartmentRepository extends EntityRepository
     {
         return $this->getEntityManager()->createQuery('
             SELECT d
-            FROM AppBundle:Department d
+            FROM App\Entity\Department d
             WHERE lower(d.shortName) = lower(:shortName)
         ')
             ->setParameter('shortName', $shortName)

@@ -8,7 +8,9 @@
          bootstrap="tests/bootstrap.php"
 >
     <php>
-        <server name="KERNEL_DIR" value="app/" />
+        <env name="APP_ENV" value="test" />
+        <env name="APP_DEBUG" value="1" />
+        <env name="KERNEL_CLASS" value="Kernel" />
     </php>
     <testsuites>
         <testsuite name="Project">

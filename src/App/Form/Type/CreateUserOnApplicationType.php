@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\FieldOfStudy;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -41,7 +42,7 @@ class CreateUserOnApplicationType extends AbstractType
             ))
             ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
-                'class' => 'AppBundle:FieldOfStudy',
+                'class' => FieldOfStudy::class,
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('f')
                         ->orderBy('f.shortName', 'ASC')

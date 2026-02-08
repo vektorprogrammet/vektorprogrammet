@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Team;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -74,7 +75,7 @@ class ApplicationPracticalType extends AbstractType
 
         $builder->add('potentialTeams', EntityType::class, array(
             'label' => 'Hvilke team er du eventuelt interessert i?',
-            'class' => 'AppBundle:Team',
+            'class' => Team::class,
             'query_builder' => function (EntityRepository $entityRepository) {
                 return $entityRepository->createQueryBuilder('c');
             },

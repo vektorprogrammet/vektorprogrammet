@@ -21,7 +21,7 @@ class SurveyRepository extends EntityRepository
         $qb = $this->_em->createQueryBuilder();
         $exclude = $qb
                 ->select('IDENTITY(survey_taken.survey)')
-                ->from('AppBundle:SurveyTaken', 'survey_taken')
+                ->from('App\Entity\SurveyTaken', 'survey_taken')
                 ->where('survey_taken.user = :user');
 
         return $this->createQueryBuilder('survey')

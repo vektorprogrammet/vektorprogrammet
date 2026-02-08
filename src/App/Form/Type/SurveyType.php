@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Repository\SemesterRepository;
+use App\Entity\Semester;
 use App\Entity\Survey;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -19,7 +20,7 @@ class SurveyType extends AbstractType
     {
         $builder->add('semester', EntityType::class, array(
             'label' => 'Semester',
-            'class' => 'AppBundle:Semester',
+            'class' => Semester::class,
             'query_builder' => function (SemesterRepository $sr) {
                 return $sr->queryForAllSemestersOrderedByAge();
             },

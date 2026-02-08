@@ -1,131 +1,35 @@
 # Vektorprogrammet Monolith — AI Agent Context
 
 ## Project Overview
-Norwegian educational tutoring program ("Vektorprogrammet") management platform. Features: admissions, interviews, team management, scheduling, surveys, user management, CMS. All URLs are in Norwegian (e.g., `/kontrollpanel`, `/opptak`, `/undersokelse`).
+Norwegian educational tutoring program management platform (admissions, interviews, teams, surveys, CMS). URLs are in Norwegian. Incrementally upgrading Symfony 3.4 → 6.4. See `progress.md` for detailed history.
 
-## Active Modernization: Symfony 3.4 → 6.4
+## Sprint Status
+- Sprints 1-5: COMPLETE (dead deps, deprecated bundles, namespace rename, directory restructure, Symfony 4.4)
+- Sprint 6: Symfony 4.4 → 5.4 — Remove `AdvancedUserInterface`, SwiftMailer → Symfony Mailer, `encoders` → `password_hashers`, switch to PHP 8.x
+- Sprint 7: Symfony 5.4 → 6.4 — annotations → PHP 8 attributes, inject repos instead of `getDoctrine()`
+- Sprint 8-9: Frontend modernization, cleanup
 
-We are incrementally upgrading this Symfony 3.4 monolith to Symfony 6.4. Track progress in `progress.md`. The full sprint plan is below.
+## Environment Setup
 
-### Current Sprint Status
-- Sprint 1: COMPLETE (PR #1592, branch `modernize/sprint-1-remove-dead-dependencies`)
-- Sprint 2: COMPLETE (deprecated bundles replaced)
-- Sprint 3: COMPLETE (namespace rename AppBundle → App)
-- Sprint 4: COMPLETE (directory restructure)
-- Sprint 5+: PENDING — see sprint plan below
-
-## Critical Environment Setup
-
-### PHP Version
-- **System PHP is 8.5.2** — incompatible with Symfony 3.4
-- **Must use PHP 7.4** at `/usr/local/opt/php@7.4/bin/php` for all commands
-- Switch to system PHP only after reaching Symfony 5.4+ (Sprint 6)
-
-### Composer Commands
-Always use these flags until elfinder-bundle is upgraded (Sprint 2):
+**Must use PHP 7.4** (system PHP 8.5.2 is incompatible until Sprint 6):
 ```bash
+# PHP
+/usr/local/opt/php@7.4/bin/php
+
+# Composer
 /usr/local/opt/php@7.4/bin/php $(which composer) [command] --no-scripts --ignore-platform-req=composer-plugin-api
-```
 
-### Running Tests
-```bash
+# Tests (496 tests, 2 pre-existing CompanyEmailMakerTest failures — ignore)
 /usr/local/opt/php@7.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist
-```
-- Baseline: 496 tests, 1152 assertions
-- 2 pre-existing failures in `CompanyEmailMakerTest` (Norwegian character handling) — ignore these
 
-### Running Console
-```bash
+# Console
 /usr/local/opt/php@7.4/bin/php bin/console [command]
 ```
 
-## Codebase Scale
+## Key Architecture
+- **BaseController** (`src/App/Controller/BaseController.php`): extends `Controller` (not yet `AbstractController` — ~100 `$this->get()` calls need refactoring first, deferred to Sprint 6)
+- **Security**: 4 roles (`ROLE_USER` < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`), `User` implements `AdvancedUserInterface` + `Serializable` (removed in Symfony 5/6)
+- **Role entity**: `__toString()` returns `getRole()` (not `getName()`) — critical for Symfony 4.4 role resolution
 
-| Component | Count | Location |
-|---|---|---|
-| Entities | 91 | `src/App/Entity/` |
-| Repositories | 36 | `src/App/Entity/Repository/` |
-| Controllers | 62 | `src/App/Controller/` (incl. `Api/`) |
-| Services | 33 | `src/App/Service/` |
-| Form Types | 68 | `src/App/Form/` |
-| Twig Templates | 264 | `templates/` |
-| Event Subscribers | 14 | `src/App/EventSubscriber/` |
-| Twig Extensions | 12 | `src/App/Twig/Extension/` |
-| Console Commands | 6 | `src/App/Command/` |
-| Tests | 70 files, 496 tests | `tests/` |
-| Routes | ~180 | `config/routing.yml` |
-| Migrations | 71 | `migrations/` |
-
-## Key Architectural Patterns
-
-### BaseController (all admin controllers extend this)
-`src/App/Controller/BaseController.php` extends `Controller` (not `AbstractController`). Provides:
-- `getDepartment(Request)` — resolves department from query param or user
-- `getSemester(Request)` — resolves semester from query param or current
-- Uses `$this->getDoctrine()` throughout (deprecated in Symfony 4.4, removed in 6.0)
-
-### Security Model (`config/security.yml`)
-- 4 roles: `ROLE_USER` (assistant) < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`
-- 3 user providers: username, email, companyEmail (chained)
-- `User` entity (`App\Entity\User`) implements `AdvancedUserInterface` + `Serializable` (both removed in Symfony 5/6)
-- 85+ access control rules with Norwegian URL paths
-- Password encoding: bcrypt, cost 12
-
-### Services (`config/services.yml`)
-- Autowiring enabled, all services public
-- SlackMessenger now uses direct GuzzleHttp webhooks (rewritten in Sprint 1)
-- Mailer binding: `MailerInterface` → `Mailer` (SwiftMailer-based)
-- SMS binding: `SmsSenderInterface` → `SmsSender`
-
-### External Integrations
-- Google API (5 files in `src/App/Google/`): Gmail, Drive, Groups, Users
-- Slack: Direct webhook via `SlackMessenger` (rewritten Sprint 1)
-- SMS: GatewayAPI via `src/App/Sms/`
-- Email: SwiftMailer (to be replaced with Symfony Mailer in Sprint 6)
-- Sentry: Error tracking (prod/staging only)
-- reCAPTCHA: Currently disabled (`ewz_recaptcha.enabled: false`)
-
-### Frontend
-- Gulp 4 + Babel 6 + node-sass (all EOL)
-- Bootstrap 4.5 + CoreUI 2.0 + jQuery 3.5
-- Separate React sub-app: `src/App/AssistantScheduling/Webapp/`
-- Node.js 14.21.3 (EOL)
-
-## Sprint Plan (Symfony 3.4 → 6.4)
-
-### Sprint 1: Remove Dead Dependencies — COMPLETE
-Removed: sensio/distribution-bundle, sensio/generator-bundle, bcc/auto-mapper-bundle, twig/extensions, incenteev/composer-parameter-handler, nexylan/slack-bundle, php-http/guzzle6-adapter. Rewrote Slack integration.
-
-### Sprint 2: Replace Deprecated Bundles — COMPLETE
-Replaced `egeloen/ckeditor-bundle` → `friendsofsymfony/ckeditor-bundle`. Upgraded `doctrine/doctrine-migrations-bundle` to ^2.2, `sentry/sentry-symfony` to ^3.0, `knplabs/knp-paginator-bundle` to ~2.8. Deferred several upgrades to Sprint 5 (require Symfony 4.4).
-
-### Sprint 3: Namespace Rename (AppBundle → App) — COMPLETE
-Renamed `AppBundle\` → `App\` namespace across 431 PHP files. Moved `src/AppBundle/` → `src/App/`. Updated FQCN references in all config files. Bundle shorthand (`AppBundle:Controller:action`, `AppBundle:Entity`, `@AppBundle/`) remains unchanged — Symfony derives bundle name from class name.
-
-### Sprint 4: Directory Restructure — COMPLETE
-`web/` → `public/`, `app/config/` → `config/`, `app/Resources/views/` → `templates/`, `app/DoctrineMigrations/` → `migrations/`, `app/Resources/assets/` → `assets/`, `app/phpunit.xml.dist` → `phpunit.xml.dist`. Added `getProjectDir()` to kernel. Symlink `app/Resources/views` → `templates/` for Symfony 3.4 colon-syntax template resolution. Flex and `.env` deferred to Sprint 5.
-
-### Sprint 5: Symfony 3.4 → 4.4
-Replace `symfony/symfony` monolith with individual 4.4 packages. Fix `Controller` → `AbstractController`. Remove `logout_on_user_change`.
-
-### Sprint 6: Symfony 4.4 → 5.4
-Remove `AdvancedUserInterface`, build `UserChecker`. Replace SwiftMailer with Symfony Mailer. `encoders` → `password_hashers`. Can switch to system PHP 8.x after this.
-
-### Sprint 7: Symfony 5.4 → 6.4
-Remove `sensio/framework-extra-bundle`. Convert annotations → PHP 8 attributes (ORM + Route). Inject repos instead of `getDoctrine()`. Update PHPUnit to 10.x.
-
-### Sprint 8: Frontend Modernization
-Replace Gulp with Webpack Encore or Vite. Bootstrap 4 → 5. Node.js to LTS. Replace node-sass with dart-sass.
-
-### Sprint 9: Cleanup
-Update Dockerfile, CI/CD, README. Final test pass.
-
-## Files You Should Read First
-- `composer.json` — current dependency state
-- `app/AppKernel.php` — registered bundles
-- `config/security.yml` — auth model and access control
-- `config/services.yml` — DI container config
-- `config/config.yml` — framework and bundle config
-- `src/App/Controller/BaseController.php` — base class for all controllers
-- `src/App/Entity/User.php` — central entity
-- `progress.md` — what's been done and decisions made
+## Key Files
+`composer.json`, `src/Kernel.php`, `config/bundles.php`, `config/security.yml`, `config/services.yml`, `config/config.yml`, `src/App/Controller/BaseController.php`, `src/App/Entity/User.php`, `progress.md`

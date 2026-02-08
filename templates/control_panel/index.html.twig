@@ -17,22 +17,22 @@
 {% block body %}
     <div class="control-panel">
         <div class="sbs my-5">
-            {{ render(controller('AppBundle:ControlPanel:showSBS')) }}
+            {{ render(controller('App\\Controller\\ControlPanelController::showSBSAction')) }}
         </div>
 
         <div class="row">
             {% if admissionPeriod and admissionPeriod.hasActiveAdmission %}
-                {{ render(controller("AppBundle:Widget:applicationGraph")) }}
+                {{ render(controller("App\\Controller\\WidgetController::applicationGraphAction")) }}
             {% endif %}
 
-            {{ render(controller("AppBundle:Widget:availableSurveys")) }}
-            {{ render(controller("AppBundle:Widget:interviews")) }}
-            {{ render(controller("AppBundle:Widget:receipts")) }}
-            {{ render(controller("AppBundle:Widget:changelog")) }}
-            {{ render(controller("AppBundle:Widget:feedback",{'request': app.request})) }}
+            {{ render(controller("App\\Controller\\WidgetController::availableSurveysAction")) }}
+            {{ render(controller("App\\Controller\\WidgetController::interviewsAction")) }}
+            {{ render(controller("App\\Controller\\WidgetController::receiptsAction")) }}
+            {{ render(controller("App\\Controller\\WidgetController::changelogAction")) }}
+            {{ render(controller("App\\Controller\\WidgetController::feedbackAction",{'request': app.request})) }}
 
             {% if not admissionPeriod or not admissionPeriod.hasActiveAdmission %}
-                {{ render(controller("AppBundle:Widget:applicationGraph")) }}
+                {{ render(controller("App\\Controller\\WidgetController::applicationGraphAction")) }}
             {% endif %}
         </div>
     </div>

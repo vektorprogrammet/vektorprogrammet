@@ -5,7 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\ExecutiveBoard;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadExecutiveBoardData extends AbstractFixture implements OrderedFixtureInterface
 {

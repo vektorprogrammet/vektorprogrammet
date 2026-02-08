@@ -63,7 +63,7 @@ class TeamApplicationController extends BaseController
         $form = $this->createForm(TeamApplicationType::class, $teamApplication);
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplicationAndDeadline()) {
+        if ($form->isSubmitted() && $form->isValid() && $team->getAcceptApplicationAndDeadline()) {
             $teamApplication->setTeam($team);
 
             $manager = $this->getDoctrine()->getManager();

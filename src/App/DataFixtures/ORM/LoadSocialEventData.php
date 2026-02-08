@@ -6,7 +6,7 @@ use App\Entity\SocialEvent;
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadSocialEventData extends AbstractFixture implements OrderedFixtureInterface
 {

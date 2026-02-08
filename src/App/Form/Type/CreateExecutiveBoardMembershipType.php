@@ -4,6 +4,8 @@ namespace App\Form\Type;
 
 use App\Entity\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
+use App\Entity\Semester;
+use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -21,7 +23,7 @@ class CreateExecutiveBoardMembershipType extends AbstractType
         $builder
             ->add('user', EntityType::class, array(
                 'label' => 'Bruker',
-                'class' => 'AppBundle:User',
+                'class' => User::class,
                 'query_builder' => function (UserRepository $ur) {
                     return $ur->createQueryBuilder('u')
                         ->Join('u.fieldOfStudy', 'fos')
@@ -39,14 +41,14 @@ class CreateExecutiveBoardMembershipType extends AbstractType
             ))
             ->add('startSemester', EntityType::class, array(
                 'label' => 'Start semester',
-                'class' => 'AppBundle:Semester',
+                'class' => Semester::class,
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
             ))
             ->add('endSemester', EntityType::class, array(
                 'label' => 'Slutt semester (Valgfritt)',
-                'class' => 'AppBundle:Semester',
+                'class' => Semester::class,
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },

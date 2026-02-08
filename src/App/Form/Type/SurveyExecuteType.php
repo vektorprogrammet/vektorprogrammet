@@ -3,6 +3,7 @@
 namespace App\Form\Type;
 
 use App\Entity\Department;
+use App\Entity\School;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -21,7 +22,7 @@ class SurveyExecuteType extends AbstractType
         $builder->add('school', EntityType::class, array(
             'label' => 'School',
             'placeholder' => 'Velg Skole',
-            'class' => 'AppBundle:School',
+            'class' => School::class,
             'query_builder' => function (EntityRepository $er) use ($semester, $department) {
                 return $er
                     ->createQueryBuilder('school')

@@ -3,7 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use Doctrine\Common\DataFixtures\AbstractFixture;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use App\Entity\StaticContent;
 
 class LoadStatic_contentData extends AbstractFixture

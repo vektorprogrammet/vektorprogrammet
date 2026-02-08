@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Department;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -30,7 +31,7 @@ class ArticleType extends AbstractType
             ))
             ->add('departments', EntityType::class, array(
                 'label' => 'Regioner',
-                'class' => 'AppBundle:Department',
+                'class' => Department::class,
                 'multiple' => true,
                 'expanded' => true,
             ))

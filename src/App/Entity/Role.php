@@ -35,14 +35,15 @@ class Role extends SymfonyRole
      */
     private $users;
 
-    public function __construct()
+    public function __construct(string $role = '')
     {
+        parent::__construct($role);
         $this->users = new ArrayCollection();
     }
 
-    public function __toString()
+    public function __toString(): string
     {
-        return $this->getName();
+        return $this->getRole();
     }
 
     /**

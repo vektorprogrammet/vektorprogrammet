@@ -2,6 +2,9 @@
 
 namespace App\Form\Type;
 
+use App\Entity\Department;
+use App\Entity\Role;
+use App\Entity\Semester;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -67,7 +70,7 @@ class SocialEventType extends AbstractType
 
             ->add('department', EntityType::class, array(
                 'label' => 'Hvilken region skal arrangementet gjelde for?',
-                'class' => 'AppBundle:Department',
+                'class' => Department::class,
                 'data' => $this->department,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
@@ -77,7 +80,7 @@ class SocialEventType extends AbstractType
             ))
             ->add('semester', EntityType::class, array(
                 'label' => 'Hvilket semester skal arrangementet gjelde for?',
-                'class' => 'AppBundle:Semester',
+                'class' => Semester::class,
                 'data' => $this->semester,
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
@@ -86,7 +89,7 @@ class SocialEventType extends AbstractType
             ))
             ->add('role', EntityType::class, array(
                 'label' => 'Hvilke type brukere kan melde seg på arrangementet?',
-                'class' => 'AppBundle:Role',
+                'class' => Role::class,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('r')
                         ->select('r')

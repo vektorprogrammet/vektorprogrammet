@@ -45,10 +45,10 @@ class InterviewRepository extends EntityRepository
     {
         $interviews = $this->getEntityManager()->createQuery('
 		SELECT interview
-		FROM AppBundle:Interview interview
-		JOIN AppBundle:Application app
+		FROM App\Entity\Interview interview
+		JOIN App\Entity\Application app
 		WITH interview.application = app
-		JOIN AppBundle:ApplicationStatistic appStat
+		JOIN App\Entity\ApplicationStatistic appStat
 		WITH app.statistic = appStat
 		WHERE interview.interviewed = 1
 		AND appStat.semester = :semester
@@ -69,8 +69,8 @@ class InterviewRepository extends EntityRepository
     {
         $query = $this->getEntityManager()->createQuery('
         SELECT COUNT(i)
-        FROM AppBundle:Interview i
-        JOIN AppBundle:Application a
+        FROM App\Entity\Interview i
+        JOIN App\Entity\Application a
         WITH a.interview = i
         WHERE i.interviewer = ?1
         AND a.semester = ?2
@@ -86,7 +86,7 @@ class InterviewRepository extends EntityRepository
     {
         $query = $this->getEntityManager()->createQuery('
         SELECT i
-        FROM AppBundle:Interview i
+        FROM App\Entity\Interview i
         WHERE i.user = ?1
         ORDER BY i.conducted ASC
         ')

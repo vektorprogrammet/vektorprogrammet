@@ -5,7 +5,7 @@ namespace App\DataFixtures\ORM;
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use App\Entity\Semester;
 
 class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterface

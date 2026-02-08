@@ -82,7 +82,7 @@ class AssistantHistoryRepository extends EntityRepository
         $assistantHistories = $this->getEntityManager()->createQuery('
 		
 		SELECT ahistory
-		FROM AppBundle:AssistantHistory ahistory
+		FROM App\Entity\AssistantHistory ahistory
 		JOIN ahistory.school school
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user 
@@ -111,7 +111,7 @@ class AssistantHistoryRepository extends EntityRepository
         $assistantHistories = $this->getEntityManager()->createQuery('
 
 		SELECT ahistory
-		FROM AppBundle:AssistantHistory ahistory
+		FROM App\Entity\AssistantHistory ahistory
 		JOIN ahistory.school school
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user
@@ -138,7 +138,7 @@ class AssistantHistoryRepository extends EntityRepository
         $assistantHistories = $this->getEntityManager()->createQuery('
 		
 		SELECT ahistory
-		FROM AppBundle:AssistantHistory ahistory
+		FROM App\Entity\AssistantHistory ahistory
 		JOIN ahistory.school school
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user 
@@ -165,7 +165,7 @@ class AssistantHistoryRepository extends EntityRepository
         $assistantHistories = $this->getEntityManager()->createQuery('
 		
 		SELECT ahistory
-		FROM AppBundle:AssistantHistory ahistory
+		FROM App\Entity\AssistantHistory ahistory
 		JOIN ahistory.school school
 		JOIN ahistory.semester semester
 		JOIN ahistory.user user 

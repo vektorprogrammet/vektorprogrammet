@@ -247,7 +247,7 @@ class AdmissionRepository extends EntityRepository
         $numUsers = $this->getEntityManager()->createQuery('
 
 		SELECT COUNT (AppS.id)
-		FROM AppBundle:ApplicationStatistic AppS
+		FROM App\Entity\ApplicationStatistic AppS
 		JOIN AppS.semester s
 		JOIN s.department d
 		WHERE d.id = :department

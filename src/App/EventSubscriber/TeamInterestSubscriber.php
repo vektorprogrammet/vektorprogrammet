@@ -48,7 +48,7 @@ class TeamInterestSubscriber implements EventSubscriberInterface
             ->setFrom(array($fromEmail => "Vektorprogrammet $department"))
             ->setReplyTo($fromEmail)
             ->setTo($teamInterest->getEmail())
-            ->setBody($this->twig->render(":team_interest:team_interest_receipt.html.twig", array(
+            ->setBody($this->twig->render("team_interest/team_interest_receipt.html.twig", array(
                 'teamInterest' => $teamInterest,
             )))
             ->setContentType('text/html');

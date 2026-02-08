@@ -133,7 +133,7 @@ class ApplicationAdmission
             $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
 
             if ($admissionPeriod === null) {
-                $content = $this->twig->render(':error:no_active_admission.html.twig');
+                $content = $this->twig->render('error/no_active_admission.html.twig');
             }
         }
 

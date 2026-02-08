@@ -282,7 +282,7 @@ class AdmissionAdminController extends BaseController
             return $this->redirectToRoute('register_applicant', array('id' => $department->getId()));
         }
 
-        return $this->render(':admission_admin:create_application.html.twig', array(
+        return $this->render('admission_admin/create_application.html.twig', array(
             'department' => $department,
             'semester' => $currentSemester,
             'form' => $form->createView(),

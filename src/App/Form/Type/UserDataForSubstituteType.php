@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Entity\FieldOfStudy;
 use App\Entity\Repository\FieldOfStudyRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -32,7 +33,7 @@ class UserDataForSubstituteType extends AbstractType
             ))
             ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
-                'class' => 'AppBundle:FieldOfStudy',
+                'class' => FieldOfStudy::class,
 
                 'query_builder' => function (FieldOfStudyRepository $er) {
                     return $er->createQueryBuilder('f')

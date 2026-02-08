@@ -59,7 +59,7 @@ class TeamInterestController extends BaseController
             ));
         }
 
-        return $this->render(':team_interest:team_interest.html.twig', array(
+        return $this->render('team_interest/team_interest.html.twig', array(
             'form' => $form->createView(),
         ));
     }

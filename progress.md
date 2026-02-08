@@ -179,3 +179,95 @@ Symfony 3.4's colon-separated template syntax (`:admission:existingUser.html.twi
 
 ### Test Results
 496 tests, 1152 assertions, 2 pre-existing failures (unchanged)
+
+---
+
+## Sprint 5: Symfony 3.4 → 4.4 — COMPLETE
+
+### What Was Done
+1. **composer.json** — Split `symfony/symfony` monolith into 30+ individual 4.4.* packages. Added `symfony/dotenv`, `symfony/error-handler`. Upgraded: `doctrine/doctrine-bundle` ^2.0, `helios-ag/fm-elfinder-bundle` ^10.0, `knplabs/knp-paginator-bundle` ^5.0, `sensio/framework-extra-bundle` ^5.6, `friendsofsymfony/rest-bundle` ^2.8, `twig/twig` ^2.14. Removed `laminas/laminas-zendframework-bridge`.
+2. **config/bundles.php** — Created bundle registry extracted from `AppKernel::registerBundles()`, with env-specific loading
+3. **src/Kernel.php** — New Symfony 4.4 kernel using `MicroKernelTrait`. No namespace, autoloaded via classmap. Handles config and routing loading with environment-specific files.
+4. **public/index.php** — Unified front controller replacing `app.php`, `app_dev.php`, `app_staging.php`. Uses `Dotenv` and `APP_ENV`/`APP_DEBUG` env vars.
+5. **bin/console** — Rewritten for Symfony 4.4 bootstrap with `Dotenv`
+6. **.env / .env.test** — Created with `APP_ENV`, `APP_DEBUG`, `APP_SECRET`
+7. **config/routing.yml** — Converted all 190 `AppBundle:Controller:action` to FQCN `App\Controller\XController::yAction`. Changed annotation resource from `@AppBundle/Controller/` to `../src/App/Controller/`.
+8. **config/routing_api.yml** — Changed `@AppBundle/Controller/API/` to `../src/App/Controller/Api/`
+9. **Templates** — Fixed 12 `controller("AppBundle:X:y")` calls in Twig to FQCN format
+10. **DQL/Form types** — Converted 47 `AppBundle:EntityName` references to FQCN across 26 files
+11. **config/security.yml** — Removed `logout_on_user_change: true` (2 occurrences)
+12. **config/config.yml** — Removed `templating:` section, removed `framework.router.resource` (now in Kernel), added explicit Doctrine ORM mapping for `App\Entity`, cleaned up fm_elfinder config (removed `include_assets` — dropped in ^10)
+13. **config/config_dev.yml** — Removed `framework.router` override
+14. **config/parameters.yml** — Changed `kernel.root_dir` to `kernel.project_dir`
+15. **Doctrine persistence** — Updated `Doctrine\Common\Persistence` → `Doctrine\Persistence` in 33 files
+16. **Role entity** — Fixed `__toString(): string` to return `getRole()` not `getName()` (critical: Symfony 4.4's `getRoleNames()` uses `(string)$role`). Added `parent::__construct($role)` call.
+17. **Colon-syntax templates** — Fixed 4 controllers, 2 event subscribers, 1 service, and 2 Twig includes using `:dir:file.twig` → `dir/file.twig`
+18. **phpunit.xml.dist** — Replaced `KERNEL_DIR` server var with `APP_ENV`, `APP_DEBUG`, `KERNEL_CLASS` env vars
+19. **tests/bootstrap.php** — Updated to use new `Kernel` class with `Dotenv`
+20. **Moved files** — `app/Resources/translations/` → `translations/`, `app/Resources/TwigBundle/` → `templates/bundles/TwigBundle/`, `app/Resources/FMElfinderBundle/` → `templates/bundles/FMElfinderBundle/`
+21. **Deleted files** — `app/AppKernel.php`, `app/AppCache.php`, `app/autoload.php`, `src/App/AppBundle.php`, `public/app.php`, `public/app_dev.php`, `public/app_staging.php`, `app/Resources/views` symlink, entire `app/` directory
+
+### What Was Deferred
+- `Controller` → `AbstractController`: ~100 `$this->get()` calls across controllers need `getSubscribedServices()` override or refactoring. `Controller` still works in 4.4 (deprecated, removed in 5.0).
+- `symfony/flex` integration: Not strictly needed, may cause recipe management issues during upgrade
+- `AdvancedUserInterface` removal: Works in 4.4, removed in 5.0 (Sprint 6)
+- `Role` entity should stop extending `Symfony\Component\Security\Core\Role\Role` (Sprint 6)
+
+### Key Bugs Found & Fixed
+1. **`Dotenv::bootEnv()` doesn't exist in 4.4** — Used `(new Dotenv(true))->loadEnv()` instead
+2. **`fm-elfinder-bundle` ^10 removed `include_assets`** — Removed from all 7 elfinder instances in config.yml
+3. **`Doctrine\Common\Persistence` removed** — Updated all 33 files to `Doctrine\Persistence`
+4. **`Role::__toString()` broke auth** — In Symfony 4.4, `AbstractToken::getRoleNames()` calls `(string)$role` instead of `$role->getRole()`. Our `__toString()` returned human name ("Bruker") instead of role string ("ROLE_USER"), causing all authenticated users to get 403.
+5. **`KERNEL_CLASS` needed** — Symfony 4.4 `KernelTestCase` doesn't auto-discover non-namespaced kernel
+6. **`isValid()` before `isSubmitted()`** — Symfony 4.4 throws if `isValid()` called on unsubmitted form. Fixed in `ReceiptController` (3 occurrences), `ChangeLogController`, `TeamApplicationController`.
+7. **Colon-syntax template includes** — Found additional `:dir:file.twig` references in `executive_board/index.html.twig` (2), `TeamInterestSubscriber` (1), `IntroductionEmailSubscriber` (2), `ApplicationAdmission` (1).
+
+### Test Results
+496 tests, 1150 assertions, 3 failures (all pre-existing), 2 warnings (pre-existing)
+- `CompanyEmailMakerTest::testNorwegianCharacters` — pre-existing
+- `CompanyEmailMakerTest::testAccentCharacters` — pre-existing
+- `AdmissionPeriodEntityUnitTest::testShouldSendInfoMeetingNotification` — time-sensitive (fails near midnight)
+- `GeoLocationTest` — 2 warnings, pre-existing mock issue
+
+### Gotchas for Next Sprint (Sprint 6)
+- `Controller` class removed in Symfony 5.0 — must migrate to `AbstractController` with proper `getSubscribedServices()` or dependency injection
+- `AdvancedUserInterface` removed in 5.0 — implement `UserCheckerInterface` instead
+- `Role` extending `Symfony\Component\Security\Core\Role\Role` — that class removed in 5.0
+- `encoders:` config key renamed to `password_hashers:` in 5.3
+- `anonymous: ~` in firewalls removed in 5.0
+- SwiftMailer → Symfony Mailer
+
+---
+
+## Reference: vektor-backend Analysis
+
+An existing modernization attempt lives at `github.com/vektorprogrammet/vektor-backend`. It reached **Symfony 5.4 on PHP 8.2**. Key findings:
+
+### What they did
+- Jumped from Symfony 3.4 → 5.4 directly (skipped 4.4)
+- Split `symfony/symfony` monolith into individual 5.4 packages
+- Full Flex layout: `src/Kernel.php` with `MicroKernelTrait`, `config/bundles.php`, `.env`
+- Namespace `App\` mapped to `src/` (no AppBundle class)
+- All annotations → PHP 8 attributes (`#[ORM\Entity]`, `#[Route]`)
+- `Controller` → `AbstractController` with constructor-injected `ManagerRegistry`
+- `AdvancedUserInterface` + `Serializable` → `UserInterface` + `PasswordAuthenticatedUserInterface`
+- SwiftMailer → `symfony/mailer` with `MAILER_DSN`
+- `encoders` → `password_hashers`, `enable_authenticator_manager: true`
+- Added `rector/rector` for automated refactoring
+- Slack: `symfony/slack-notifier` (we use Guzzle webhooks — both work)
+- Added: EasyAdmin, JWT auth, API docs
+- Removed: FOS CKEditor, ElFinder, KnpPaginator, FOSRestBundle, Sentry
+- PHPUnit 9.5, `dama/doctrine-test-bundle` for fast DB test transactions
+- Frontend NOT modernized: still Gulp 4 + jQuery + Bootstrap 4
+
+### Useful reference files in vektor-backend
+- `composer.json` — target package list for Symfony 5.4
+- `config/packages/security.yaml` — migrated security config
+- `src/Entity/User.php` — User entity with PHP 8 attributes
+- `src/Kernel.php` — standard Flex kernel
+
+### Implications for our sprint plan
+1. **Skip 4.4**: Their success validates jumping 3.4 → 5.4 directly. 4.4 is EOL.
+2. **Use Rector**: Automates annotation→attribute, Controller→AbstractController, getDoctrine() removal
+3. **Their composer.json = our target deps** when splitting the monolith
+4. **dama/doctrine-test-bundle**: Consider adding for faster tests

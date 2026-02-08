@@ -60,7 +60,7 @@ class ExistingUserAdmissionController extends BaseController
 
         $semester = $this->getCurrentSemester();
 
-        return $this->render(':admission:existingUser.html.twig', array(
+        return $this->render('admission/existingUser.html.twig', array(
             'form' => $form->createView(),
             'department' => $user->getDepartment(),
             'semester' => $semester,

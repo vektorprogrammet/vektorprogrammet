@@ -6,7 +6,7 @@ use App\Entity\ChangeLogItem;
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Exception;
 
 class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterface

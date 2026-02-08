@@ -1,23 +1,23 @@
 sponsors:
     type: rest
-    resource: "@AppBundle/Controller/API/SponsorController.php"
+    resource: "../src/App/Controller/Api/SponsorController.php"
 
 departments:
     type: rest
-    resource: "@AppBundle/Controller/API/DepartmentController.php"
+    resource: "../src/App/Controller/Api/DepartmentController.php"
 
 teams:
     type: rest
-    resource: "@AppBundle/Controller/API/TeamController.php"
+    resource: "../src/App/Controller/Api/TeamController.php"
 
 applications:
     type: rest
-    resource: "@AppBundle/Controller/API/ApplicationController.php"
+    resource: "../src/App/Controller/Api/ApplicationController.php"
 
 receipts:
     type: rest
-    resource: "@AppBundle/Controller/API/ReceiptController.php"
+    resource: "../src/App/Controller/Api/ReceiptController.php"
 
 users:
     type: rest
-    resource: "@AppBundle/Controller/API/UserController.php"
+    resource: "../src/App/Controller/Api/UserController.php"

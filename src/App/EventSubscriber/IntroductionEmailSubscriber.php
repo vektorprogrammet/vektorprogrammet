@@ -51,7 +51,7 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
             ->setSubject('Velkommen til '.$team->getName())
             ->setFrom('vektorbot@vektorprogrammet.no')
             ->setTo($user->getEmail())
-            ->setBody($this->twig->render(':team_admin:welcome_team_membership_mail.html.twig', array(
+            ->setBody($this->twig->render('team_admin/welcome_team_membership_mail.html.twig', array(
                 'name' => $user->getFirstName(),
                 'team' => $team->getName(),
                 'position' => $position,
@@ -74,7 +74,7 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
             ->setSubject('Fullfør oppsettet med din Vektor-epost')
             ->setFrom('vektorbot@vektorprogrammet.no')
             ->setTo($user->getCompanyEmail())
-            ->setBody($this->twig->render(':team_admin:welcome_google_mail.html.twig', array(
+            ->setBody($this->twig->render('team_admin/welcome_google_mail.html.twig', array(
                 'name' => $user->getFirstName(),
             )))
             ->setContentType('text/html');

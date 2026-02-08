@@ -7,7 +7,7 @@ use App\Entity\SurveyQuestion;
 use App\Entity\SurveyQuestionAlternative;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
 {

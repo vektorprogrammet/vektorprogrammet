@@ -9,7 +9,7 @@ use App\Entity\User;
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use App\Entity\Application;
 
 class LoadApplicationData extends AbstractFixture implements OrderedFixtureInterface

@@ -4,8 +4,11 @@ require __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Dotenv\Dotenv;
 
-$kernel = new AppKernel('test', true); // create a "test" kernel
+(new Dotenv(true))->loadEnv(dirname(__DIR__).'/.env');
+
+$kernel = new Kernel('test', true);
 $kernel->boot();
 
 $application = new Application($kernel);
