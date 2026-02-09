@@ -1,125 +1,116 @@
 <img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/master/app/Resources/assets/images/vektor_stor.png" alt="alt text" width="400" height="auto">
 
-![Build Status](https://travis-ci.com/vektorprogrammet/vektorprogrammet.svg?branch=master)
+# Vektorprogrammet
 
+Management platform for Vektorprogrammet, a Norwegian student organization that provides free tutoring in STEM subjects to middle and high school students.
 
+## Tech Stack
 
-# Set up development environment
-## Requirements:
-- [PHP](http://php.net/downloads.php) version 7.4
-- [Node](https://nodejs.org/en/) version 14
+- **PHP** >= 8.1
+- **Symfony** 6.4 (LTS)
+- **Doctrine ORM** 2.x with SQLite (dev/test) or MySQL (prod)
+- **Twig** 3.x
+- **Node** 14 (frontend build)
+
+## Setup
+
+### Requirements
+
+- PHP 8.1+ with extensions: `pdo_sqlite`, `gd`, `mbstring`, `curl`, `xml`
+- [Composer](https://getcomposer.org/)
+- [Node.js](https://nodejs.org/) 14+
 - [Git](https://git-scm.com/)
 
-##### Required PHP-dependencies:
-* ext-pdo_sqlite
-* ext-gd2
-* ext-mbstring
-* ext-curl
-* ext-xml
+### Install
 
-#### How to install the php-dependencies
-
-Please find the file `php.ini`. (On Linux it is located at `/etc/php/version/cli/php.ini`).
-
-Uncomment all lines with the required PHP-dependencies.
-
-Example for dependency `mbstring`:
-
-`;extension=mbstring`       ---> `extension=mbstring`
-
-
-To install the PHP-dependencies on Ubuntu 
-(Example with Ubuntu as operating system and a php-version of 7.4)
-```
-sudo apt-get install php7.4-mbstring
-sudo apt-get install php7.4-sqlite (php7.4-mysql for prod)
-sudo apt-get install php7.4-gd
-sudo apt-get install php7.4-curl
-sudo apt-get install php7.4-xml
+```bash
+git clone https://github.com/vektorprogrammet/vektor-backend.git
+cd vektor-backend
+composer install
+npm install
+npm run build:dev
 ```
 
-Alternatively install Composer dependency manager from [here](https://getcomposer.org/).
-Then run `composer install`.
+### Database Setup
 
+```bash
+php bin/console doctrine:schema:create --env=dev
+php bin/console doctrine:fixtures:load --env=dev -n
+```
 
+### Start Server
 
+```bash
+php -S localhost:8000 -t public
+```
 
-## Setup:
-
-### Clone files:
-`git clone https://github.com/vektorprogrammet/vektorprogrammet.git`
-
-#### UNIX:
-`npm run setup`
-#### Windows:
-`npm run setup:win`
-
-### Start server on http://localhost:8000
-`npm start`
-
-
-### Build static files
-When adding new images or other non-code files, you can run:
-
-`npm run build`
-
-so that the files are put in the correct places. (this is automatically
-done when doing `npm start`)
+Or with the Symfony CLI: `symfony server:start`
 
 ## Users
-| Position     | Username   | Password |        Role        |
-| :----------: | :--------: |:--------:|:------------------:|
-| Assistent    | assistent  |   1234   |      ROLE_USER     |
-| Teammedlem   | teammember |   1234   |  ROLE_TEAM_MEMBER  |
-| Teamleder    | teamleader |   1234   |  ROLE_TEAM_LEADER  |
-| Admin        | admin      |   1234   |      ROLE_ADMIN    |
 
-
-## Code style
-Code style should follow a certain set of rules. Make sure your code 
-adheres to these rules before opening a PR. 
-
-### Fix style
-##### UNIX/LINUX:
-`npm run -s cs`
-##### Windows:
-`npm run -s cs:win`
+| Role | Username | Password | Symfony Role |
+|------|----------|----------|--------------|
+| Assistent | `assistent` | `1234` | ROLE_USER |
+| Teammedlem | `teammember` | `1234` | ROLE_TEAM_MEMBER |
+| Teamleder | `teamleader` | `1234` | ROLE_TEAM_LEADER |
+| Admin | `admin` | `1234` | ROLE_ADMIN |
 
 ## Testing
-Tests should be run before opening a PR.
-##### UNIX/LINUX:
-`npm run test`
 
-##### Windows:
-`npm run test:win`
+See [`docs/testing.md`](docs/testing.md) for full details on test suites, timing, and workflow.
 
-#### File specific test: 
+```bash
+# Quick unit tests (<1s)
+bin/phpunit --testsuite=unit
 
-`npm run test "tests/PATH_TO_TEST" `
+# Controller tests (~110s)
+bin/phpunit --testsuite=controller
 
-or *(without needing the exact path)*
+# Availability smoke tests (~67s)
+bin/phpunit --testsuite=availability
 
-`npm run test -- --filter "NAME_OF_FILE" `
+# Full suite (496 tests, ~3 min)
+bin/phpunit
+```
 
+## Project Structure
 
+```
+src/App/
+  Controller/     # ~55 controllers extending BaseController
+  Entity/         # Doctrine entities (annotation-mapped)
+  Service/        # Business logic services
+  Role/           # Role hierarchy
+  EventSubscriber/# Kernel event subscribers
+  Twig/           # Twig extensions
+  Command/        # Console commands
+templates/        # Twig templates
+config/           # Symfony config (YAML)
+tests/AppBundle/  # PHPUnit tests
+docs/             # Developer documentation
+.planning/        # Migration planning state
+```
 
-## Database
+## Architecture
 
-### Add new entities to the database and reload fixtures
-`npm run db:update`
+- `BaseController` extends `AbstractController` with bridge methods for `getDoctrine()` and `get()` (Sf6 compatibility, pending migration to constructor DI)
+- Role hierarchy: `ROLE_USER` < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`
+- `AccessControlService` manages route-level access rules with lazy-loaded cache
+- URLs are in Norwegian (e.g., `/kontrollpanel/utlegg`, `/opptak`)
 
-### Reload database
-`npm run db:reload`
+## Code Style
 
-## Docker:
-Build docker image:
-`npm run docker:build`
+```bash
+./bin/php-cs-fixer fix src/ --dry-run --diff -vv  # check
+./bin/php-cs-fixer fix src/ -vv                    # fix
+```
 
-Set up docker image:
-`npm run docker:setup`
+## Legacy npm Scripts
 
-Run commands in docker image
-`npm run docker:run  -- <CMD>`
+Some npm scripts in `package.json` still work as shortcuts:
 
-e.g.
-`npm run docker:run -- npm run db:update`
+```bash
+npm run test          # runs PHPUnit
+npm run build:dev     # builds frontend assets via gulp
+npm run db:reload     # reloads dev database with fixtures
+```
