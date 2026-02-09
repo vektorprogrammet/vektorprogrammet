@@ -192,8 +192,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         }
 
         if ($wantEmail) {
-            $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-            $this->assertEquals(1, $mailCollector->getMessageCount());
+            $mailCollector = $client->getProfile()->getCollector('mailer');
+            $this->assertCount(1, $mailCollector->getEvents()->getMessages());
         }
 
         $client->followRedirect();
@@ -213,10 +213,11 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
      */
     private function getResponseCodeFromEmail(KernelBrowser $client)
     {
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-        $message = $mailCollector->getMessages()[0];
-        $body = $message->getBody();
+        $mailCollector = $client->getProfile()->getCollector('mailer');
+        $messages = $mailCollector->getEvents()->getMessages();
+        $this->assertCount(1, $messages);
+        $message = $messages[0];
+        $body = $message->getHtmlBody() ?? $message->getTextBody();
         $start = strpos($body, 'intervju/') + 9;
         $messageStartingWithCode = substr($body, $start);
         $end = strpos($messageStartingWithCode, '"');

@@ -36,7 +36,7 @@ class GitHubController extends BaseController
                 "```$message```\n".
                 "Deploying changes..."
             );
-            shell_exec($this->getParameter('kernel.root_dir').'/../deploy.sh');
+            shell_exec($this->getParameter('kernel.project_dir').'/deploy.sh');
             $this->get(LogService::class)->info('Deploy complete');
 
             return new JsonResponse(['status' => 'Deployed']);

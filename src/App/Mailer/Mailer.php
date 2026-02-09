@@ -4,30 +4,32 @@ namespace App\Mailer;
 
 use App\Google\Gmail;
 use App\Service\SlackMailer;
-use Swift_Mailer;
-use Swift_Message;
+use Symfony\Component\Mailer\MailerInterface as SymfonyMailerInterface;
+use Symfony\Component\Mime\Email;
 
 class Mailer implements MailerInterface
 {
-    private $mailer;
+    private $gmail;
+    private $slackMailer;
+    private $symfonyMailer;
+    private $env;
 
-    public function __construct(string $env, Gmail $gmail, Swift_Mailer $swiftMailer, SlackMailer $slackMailer)
+    public function __construct(string $env, Gmail $gmail, SymfonyMailerInterface $symfonyMailer, SlackMailer $slackMailer)
     {
-        if ($env === 'prod') {
-            $this->mailer = $gmail;
-        } elseif ($env === 'staging') {
-            $this->mailer = $slackMailer;
-        } else {
-            $this->mailer = $swiftMailer;
-        }
+        $this->env = $env;
+        $this->gmail = $gmail;
+        $this->symfonyMailer = $symfonyMailer;
+        $this->slackMailer = $slackMailer;
     }
 
-    public function send(Swift_Message $message, bool $disableLogging = false)
+    public function send(Email $message, bool $disableLogging = false)
     {
-        if ($this->mailer instanceof Gmail) {
-            $this->mailer->send($message, $disableLogging);
+        if ($this->env === 'prod') {
+            $this->gmail->send($message, $disableLogging);
+        } elseif ($this->env === 'staging') {
+            $this->slackMailer->send($message);
         } else {
-            $this->mailer->send($message);
+            $this->symfonyMailer->send($message);
         }
     }
 }

@@ -6,10 +6,11 @@ use App\Entity\AccessRule;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Role;
 
 class LoadAccessRuleData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $rule = new AccessRule();
         $rule->setName("All departments");
@@ -20,7 +21,7 @@ class LoadAccessRuleData extends AbstractFixture implements OrderedFixtureInterf
 
         $manager->persist($rule);
 
-        $adminRule = $this->getReference("role-4");
+        $adminRule = $this->getReference("role-4", Role::class);
         $rule = new AccessRule();
         $rule->setName("Survey Admin");
         $rule->setResource("survey_admin");
@@ -34,7 +35,7 @@ class LoadAccessRuleData extends AbstractFixture implements OrderedFixtureInterf
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 4;
     }

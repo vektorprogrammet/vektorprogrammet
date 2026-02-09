@@ -9,21 +9,20 @@ Norwegian tutoring program management platform. URLs in Norwegian. Upgrading Sym
 
 ## Commands
 ```bash
-/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist   # tests (496, 14 known failures)
+/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist   # full tests (496)
 /usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist --filter="SorterTest"  # quick smoke
 /usr/local/opt/php@8.4/bin/php $(which composer) [cmd] --no-scripts  # composer
 ```
-Clear cache if service config changes: `rm -rf var/cache/test/`
+**IMPORTANT**: Tests MUST run with `dangerouslyDisableSandbox: true` — sandbox blocks vendor reads and SQLite writes.
+Use `run_in_background: true` for full test suite to avoid blocking (~2 min). Check results with `TaskOutput`.
+Clear cache if service config changes: `rm -rf var/cache/test/ && rm -f var/data/test.db`
 
-## Known Test Failures (14)
-- AccessRule (5): upstream deleted feature, routes 404
-- Receipt (2): null asset in test data
-- Interview/Survey template (3): "already rendered" in repeatable_question.html.twig
-- CompanyEmailMaker (2): macOS missing `nb_NO` locale
-- PasswordReset (1): deferred to Sprint 7 (SwiftMailer→Mailer)
+## Known Test Failures (23 = 6 errors + 17 failures)
+Pre-existing (15): AccessRule (5), Receipt (5), Interview/Survey template (3), CompanyEmailMaker (2)
+New from Sf6 (8): AdmissionAdmin scheduling (3), InterviewController scheduling (2), PasswordReset hashing (1), /utlegg (1), receipt edit (1)
 
 ## Architecture
-- `BaseController` extends `AbstractController` with `getSubscribedServices()` for ~35 services
+- `BaseController` extends `AbstractController` with `getSubscribedServices()` for ~35 services + bridge `getDoctrine()`/`get()` methods
 - Security: `ROLE_USER` < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`
 - `User` implements `UserInterface` + `PasswordAuthenticatedUserInterface`
 - `User::getRoles()` returns `string[]`; templates use `user.roleEntities` for entity access

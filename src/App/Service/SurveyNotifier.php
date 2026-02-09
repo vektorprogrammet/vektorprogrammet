@@ -7,13 +7,14 @@ use App\Entity\AssistantHistory;
 use App\Entity\SurveyNotification;
 use App\Entity\SurveyNotificationCollection;
 use App\Entity\SurveyTaken;
-use App\Mailer\Mailer;
+use App\Mailer\MailerInterface;
 use App\Sms\Sms;
 use App\Sms\SmsSenderInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
@@ -31,14 +32,14 @@ class SurveyNotifier
     /**
      * SurveyNotifier constructor.
      * @param string $fromEmail
-     * @param Mailer $mailer
+     * @param MailerInterface $mailer
      * @param Environment $twig
      * @param LoggerInterface $logger
      * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(string $fromEmail, Mailer $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(string $fromEmail, MailerInterface $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->fromEmail = $fromEmail;
         $this->mailer = $mailer;
@@ -230,15 +231,12 @@ class SurveyNotifier
             }
 
 
-            $message = (new Swift_Message())
-                ->setFrom(array($this->fromEmail => $emailFromName))
-                ->setSubject($subject)
-                ->setTo($email)
-                ->setReplyTo($this->fromEmail)
-                ->setBody(
-                    $content,
-                    'text/html'
-                );
+            $message = (new Email())
+                ->from(new Address($this->fromEmail, $emailFromName))
+                ->subject($subject)
+                ->to($email)
+                ->replyTo($this->fromEmail)
+                ->html($content);
             $this->mailer->send($message);
             $numEmailSent += 1;
             $this->em->flush();

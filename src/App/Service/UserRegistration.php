@@ -7,7 +7,8 @@ use App\Entity\User;
 use App\Mailer\MailerInterface;
 use App\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 class UserRegistration
@@ -44,12 +45,12 @@ class UserRegistration
 
     public function createActivationEmail(User $user, $newUserCode)
     {
-        return (new Swift_Message())
-            ->setSubject('Velkommen til Vektorprogrammet!')
-            ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setReplyTo($user->getFieldOfStudy()->getDepartment()->getEmail())
-            ->setTo($user->getEmail())
-            ->setBody($this->twig->render('new_user/create_new_user_email.txt.twig', array(
+        return (new Email())
+            ->subject('Velkommen til Vektorprogrammet!')
+            ->from(new Address('vektorprogrammet@vektorprogrammet.no', 'Vektorprogrammet'))
+            ->replyTo($user->getFieldOfStudy()->getDepartment()->getEmail())
+            ->to($user->getEmail())
+            ->text($this->twig->render('new_user/create_new_user_email.txt.twig', array(
                 'newUserCode' => $newUserCode,
                 'name' => $user->getFullName(),
             )));

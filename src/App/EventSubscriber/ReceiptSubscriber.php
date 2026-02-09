@@ -7,21 +7,21 @@ use App\Event\ReceiptEvent;
 use App\Service\EmailSender;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class ReceiptSubscriber implements EventSubscriberInterface
 {
     private $logger;
     private $emailSender;
-    private $session;
+    private $requestStack;
     private $tokenStorage;
 
-    public function __construct(LoggerInterface $logger, EmailSender $emailSender, SessionInterface $session, TokenStorageInterface $tokenStorage)
+    public function __construct(LoggerInterface $logger, EmailSender $emailSender, RequestStack $requestStack, TokenStorageInterface $tokenStorage)
     {
         $this->logger = $logger;
         $this->emailSender = $emailSender;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->tokenStorage = $tokenStorage;
     }
 
@@ -57,7 +57,7 @@ class ReceiptSubscriber implements EventSubscriberInterface
 
     public function addCreatedFlashMessage()
     {
-        $this->session->getFlashBag()->add('success', 'Utlegget ditt har blitt registrert.');
+        $this->requestStack->getSession()->getFlashBag()->add('success', 'Utlegget ditt har blitt registrert.');
     }
 
     public function logPendingEvent(ReceiptEvent $event)
@@ -116,7 +116,7 @@ class ReceiptSubscriber implements EventSubscriberInterface
     {
         $message = "Utlegget ble markert som 'Venter behandling'.";
 
-        $this->session->getFlashBag()->add('success', $message);
+        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
     }
 
     public function addRefundedFlashMessage(ReceiptEvent $event)
@@ -125,7 +125,7 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $email = $receipt->getUser()->getEmail();
         $message = "Utlegget ble markert som refundert og bekreftelsesmail sendt til $email.";
 
-        $this->session->getFlashBag()->add('success', $message);
+        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
     }
 
     public function addRejectedFlashMessage(ReceiptEvent $event)
@@ -134,16 +134,16 @@ class ReceiptSubscriber implements EventSubscriberInterface
         $email = $receipt->getUser()->getEmail();
         $message = "Utlegget ble markert som avvist og epostvarsel sendt til $email.";
 
-        $this->session->getFlashBag()->add('success', $message);
+        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
     }
 
     public function addEditedFlashMessage()
     {
-        $this->session->getFlashBag()->add('success', 'Endringene har blitt lagret.');
+        $this->requestStack->getSession()->getFlashBag()->add('success', 'Endringene har blitt lagret.');
     }
 
     public function addDeletedFlashMessage()
     {
-        $this->session->getFlashBag()->add('success', 'Utlegget ble slettet.');
+        $this->requestStack->getSession()->getFlashBag()->add('success', 'Utlegget ble slettet.');
     }
 }

@@ -8,10 +8,12 @@ use App\Entity\SurveyQuestionAlternative;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Semester;
+use App\Entity\Department;
 
 class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $surveyQuestion1 = new SurveyQuestion();
         $surveyQuestion2 = new SurveyQuestion();
@@ -44,8 +46,8 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($surveyQuestion3);
         $manager->flush();
 
-        $semester = $this->getReference('semester-current');
-        $department = $this->getReference('dep-1');
+        $semester = $this->getReference('semester-current', Semester::class);
+        $department = $this->getReference('dep-1', Department::class);
 
         $teamSurvey1 = new Survey();
         $teamSurvey1->setSemester($semester);
@@ -122,7 +124,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 6;
     }

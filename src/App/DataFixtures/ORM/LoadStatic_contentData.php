@@ -8,7 +8,7 @@ use App\Entity\StaticContent;
 
 class LoadStatic_contentData extends AbstractFixture
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $elements = array(
             'home-tagline' => '<p>- sender studenter til ungdomsskoler for &aring; hjelpe til som l&aelig;rerens assistent i matematikkundervisningen</p>',

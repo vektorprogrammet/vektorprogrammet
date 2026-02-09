@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $sponsor = new Sponsor();
         $sponsor->setName('NTNU');
@@ -40,7 +40,7 @@ class LoadSponsorData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }

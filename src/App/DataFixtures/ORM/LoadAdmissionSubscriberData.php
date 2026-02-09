@@ -7,16 +7,17 @@ use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Department;
 
 class LoadAdmissionSubscriberData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 365; $i++) {
             $date = new DateTime("-$i days");
             for ($j = 0; $j < rand(1, 10); $j++) {
                 $subscriber = new AdmissionSubscriber();
-                $subscriber->setDepartment($this->getReference('dep-1'));
+                $subscriber->setDepartment($this->getReference('dep-1', Department::class));
                 $subscriber->setTimestamp($date);
                 $subscriber->setEmail("sub$i.$j@vektorprogrammet.no");
                 $manager->persist($subscriber);
@@ -26,7 +27,7 @@ class LoadAdmissionSubscriberData extends AbstractFixture implements OrderedFixt
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

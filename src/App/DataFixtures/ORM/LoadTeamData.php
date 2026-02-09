@@ -3,6 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Team;
+use App\Entity\Department;
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -10,10 +11,10 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $team1 = new Team();
-        $team1->setDepartment($this->getReference('dep-1'));
+        $team1->setDepartment($this->getReference('dep-1', Department::class));
         $team1->setName('Styret');
         $team1->setEmail('styret@vektorprogrammet.no');
         $team1->setAcceptApplication(true);
@@ -76,7 +77,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($team1);
 
         $team2 = new Team();
-        $team2->setDepartment($this->getReference('dep-1'));
+        $team2->setDepartment($this->getReference('dep-1', Department::class));
         $team2->setName('IT');
         $team2->setEmail('IT@vektorprogrammet.no');
         $team2->setShortDescription('Det er vi som driver med IT');
@@ -85,7 +86,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($team2);
 
         $team3 = new Team();
-        $team3->setDepartment($this->getReference('dep-1'));
+        $team3->setDepartment($this->getReference('dep-1', Department::class));
         $team3->setName('Rekruttering');
         $team3->setEmail('rekruttering@vektorprogrammet.no');
         $team3->setShortDescription('Rekruttering');
@@ -93,7 +94,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($team3);
 
         $team4 = new Team();
-        $team4->setDepartment($this->getReference('dep-1'));
+        $team4->setDepartment($this->getReference('dep-1', Department::class));
         $team4->setName('Sponsor (Samarbeidskoordinatorer)');
         $team4->setEmail('sponsor@vektorprogrammet.no');
         $team4->setShortDescription('Sponsor');
@@ -101,14 +102,14 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($team4);
 
         $team5 = new Team();
-        $team5->setDepartment($this->getReference('dep-1'));
+        $team5->setDepartment($this->getReference('dep-1', Department::class));
         $team5->setName('Evaluering');
         $team5->setShortDescription('Evaluering');
         $team5->setAcceptApplication(false);
         $manager->persist($team5);
 
         $team6 = new Team();
-        $team6->setDepartment($this->getReference('dep-1'));
+        $team6->setDepartment($this->getReference('dep-1', Department::class));
         $team6->setName('Eksport');
         $team6->setShortDescription('Eksport');
         $team6->setAcceptApplication(false);
@@ -116,7 +117,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($team6);
 
         $team7 = new Team();
-        $team7->setDepartment($this->getReference('dep-1'));
+        $team7->setDepartment($this->getReference('dep-1', Department::class));
         $team7->setName('Skolekoordinering');
         $team7->setShortDescription('Skolekoordinering');
         $team7->setAcceptApplication(false);
@@ -124,32 +125,32 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $manager->persist($team7);
 
         $team2 = new Team();
-        $team2->setDepartment($this->getReference('dep-2'));
+        $team2->setDepartment($this->getReference('dep-2', Department::class));
         $team2->setName('Sponsor (Samarbeidskoordinatorer)');
         $manager->persist($team2);
 
         $team2 = new Team();
-        $team2->setDepartment($this->getReference('dep-2'));
+        $team2->setDepartment($this->getReference('dep-2', Department::class));
         $team2->setName('Sponsor (Samarbeidskoordinatorer)');
         $manager->persist($team2);
 
         $team2 = new Team();
-        $team2->setDepartment($this->getReference('dep-2'));
+        $team2->setDepartment($this->getReference('dep-2', Department::class));
         $team2->setName('Rekruttering');
         $manager->persist($team2);
 
         $team2 = new Team();
-        $team2->setDepartment($this->getReference('dep-3'));
+        $team2->setDepartment($this->getReference('dep-3', Department::class));
         $team2->setName('Sponsor (Samarbeidskoordinatorer   )');
         $manager->persist($team2);
 
         $team2 = new Team();
-        $team2->setDepartment($this->getReference('dep-3'));
+        $team2->setDepartment($this->getReference('dep-3', Department::class));
         $team2->setName('IT');
         $manager->persist($team2);
 
         $team2 = new Team();
-        $team2->setDepartment($this->getReference('dep-4'));
+        $team2->setDepartment($this->getReference('dep-4', Department::class));
         $team2->setName('TEAMET');
         $manager->persist($team2);
 
@@ -159,7 +160,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('team-2', $team2);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 3;
     }

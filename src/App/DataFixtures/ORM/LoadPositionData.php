@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadPositionData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $position1 = new Position();
         $position1->setName('Leder');
@@ -25,7 +25,7 @@ class LoadPositionData extends AbstractFixture implements OrderedFixtureInterfac
         $this->addReference('position-2', $position2);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }

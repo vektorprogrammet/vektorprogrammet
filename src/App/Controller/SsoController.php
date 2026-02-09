@@ -30,7 +30,7 @@ class SsoController extends BaseController
             return $response;
         }
 
-        $validPassword = $this->get('security.password_encoder')->isPasswordValid($user, $password);
+        $validPassword = $this->get('security.password_hasher')->isPasswordValid($user, $password);
         if (!$validPassword) {
             $response->setStatusCode(401);
             $response->setContent('Wrong password');

@@ -127,9 +127,9 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $token = new UsernamePasswordToken($user, null, 'secured_area', $user->getRoles());
+            $token = new UsernamePasswordToken($user, 'secured_area', $user->getRoles());
             $this->get('security.token_storage')->setToken($token);
-            $this->get('session')->set('_security_secured_area', serialize($token));
+            $this->get('request_stack')->getSession()->set('_security_secured_area', serialize($token));
 
             $this->get(LogService::class)->info("User $user activated with new user code");
 

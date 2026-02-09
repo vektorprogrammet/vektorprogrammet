@@ -594,7 +594,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
@@ -871,7 +871,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->user_name ?? '';
     }
 
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user): bool
     {
         return $this->password === $user->getPassword() && $this->user_name === $user->getUserIdentifier();
     }

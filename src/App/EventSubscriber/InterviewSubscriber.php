@@ -11,9 +11,10 @@ use App\Service\SbsData;
 use App\Sms\Sms;
 use App\Sms\SmsSenderInterface;
 use Psr\Log\LoggerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
@@ -21,7 +22,7 @@ class InterviewSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
-    private $session;
+    private $requestStack;
     private $logger;
     private $sbsData;
     private $notificationManager;
@@ -32,7 +33,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function __construct(
         MailerInterface $mailer,
         Environment $twig,
-        SessionInterface $session,
+        RequestStack $requestStack,
         LoggerInterface $logger,
         SbsData $sbsData,
         InterviewNotificationManager $notificationManager,
@@ -42,7 +43,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     ) {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->logger = $logger;
         $this->sbsData = $sbsData;
         $this->notificationManager = $notificationManager;
@@ -81,16 +82,15 @@ class InterviewSubscriber implements EventSubscriberInterface
         $interviewer = $application->getInterview()->getInterviewer();
 
         // Send email to the interviewee with a summary of the interview
-        $emailMessage = (new Swift_Message())
-            ->setSubject('Vektorprogrammet intervju')
-            ->setReplyTo(array($interviewer->getDepartment()->getEmail() => 'Vektorprogrammet'))
-            ->setTo($application->getUser()->getEmail())
-            ->setReplyTo($interviewer->getEmail())
-            ->setBody($this->twig->render('interview/interview_summary_email.html.twig', array(
+        $emailMessage = (new Email())
+            ->subject('Vektorprogrammet intervju')
+            ->replyTo(new Address($interviewer->getDepartment()->getEmail(), 'Vektorprogrammet'))
+            ->to($application->getUser()->getEmail())
+            ->replyTo($interviewer->getEmail())
+            ->html($this->twig->render('interview/interview_summary_email.html.twig', array(
                 'application' => $application,
                 'interviewer' => $interviewer,
-            )))
-            ->setContentType('text/html');
+            )));
         $this->mailer->send($emailMessage);
     }
 
@@ -99,7 +99,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $user = $event->getApplication()->getUser();
         $message = "Intervjuet med $user ble lagret. En kvittering med et sammendrag av praktisk informasjon fra intervjuet blir sendt til {$user->getEmail()}.";
 
-        $this->session->getFlashBag()->add('success', $message);
+        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
     }
 
     public function logEvent(InterviewConductedEvent $event)
@@ -181,12 +181,12 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function sendCoAssignedEmail(InterviewEvent $event)
     {
         $interview = $event->getInterview();
-        $emailMessage = (new Swift_Message())
-            ->setSubject('Vektorprogrammet intervju')
-            ->setFrom(array('vektorbot@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setTo($interview->getInterviewer()->getEmail())
-            ->setReplyTo($interview->getCoInterviewer()->getEmail())
-            ->setBody($this->twig->render('interview/co_interviewer_email.html.twig', array(
+        $emailMessage = (new Email())
+            ->subject('Vektorprogrammet intervju')
+            ->from(new Address('vektorbot@vektorprogrammet.no', 'Vektorprogrammet'))
+            ->to($interview->getInterviewer()->getEmail())
+            ->replyTo($interview->getCoInterviewer()->getEmail())
+            ->html($this->twig->render('interview/co_interviewer_email.html.twig', array(
                 'interview' => $interview
             )));
         $this->mailer->send($emailMessage);

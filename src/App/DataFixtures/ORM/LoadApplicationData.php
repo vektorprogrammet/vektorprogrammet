@@ -6,6 +6,9 @@ use App\Entity\Interview;
 use App\Entity\InterviewAnswer;
 use App\Entity\InterviewScore;
 use App\Entity\User;
+use App\Entity\AdmissionPeriod;
+use App\Entity\InterviewSchema;
+use App\Entity\Team;
 use DateTime;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
@@ -14,13 +17,13 @@ use App\Entity\Application;
 
 class LoadApplicationData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $application0 = new Application();
-        $application0->setUser($this->getReference('user-team-member'));
+        $application0->setUser($this->getReference('user-team-member', User::class));
         $application0->setPreviousParticipation(false);
         $application0->setYearOfStudy(1);
-        $application0->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application0->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $application0->setMonday(false);
         $application0->setTuesday(false);
         $application0->setWednesday(false);
@@ -31,10 +34,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($application0);
 
         $application1 = new Application();
-        $application1->setUser($this->getReference('user-10'));
+        $application1->setUser($this->getReference('user-10', User::class));
         $application1->setPreviousParticipation(true);
         $application1->setYearOfStudy(1);
-        $application1->setAdmissionPeriod($this->getReference('admission-period-5'));
+        $application1->setAdmissionPeriod($this->getReference('admission-period-5', AdmissionPeriod::class));
         $application1->setMonday(true);
         $application1->setTuesday(false);
         $application1->setWednesday(true);
@@ -45,10 +48,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($application1);
 
         $application2 = new Application();
-        $application2->setUser($this->getReference('user-11'));
+        $application2->setUser($this->getReference('user-11', User::class));
         $application2->setPreviousParticipation(false);
         $application2->setYearOfStudy(1);
-        $application2->setAdmissionPeriod($this->getReference('admission-period-1'));
+        $application2->setAdmissionPeriod($this->getReference('admission-period-1', AdmissionPeriod::class));
         $application2->setMonday(true);
         $application2->setTuesday(true);
         $application2->setWednesday(false);
@@ -59,19 +62,19 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($application2);
 
         $application3 = new Application();
-        $application3->setUser($this->getReference('user-12'));
+        $application3->setUser($this->getReference('user-12', User::class));
         $application3->setPreviousParticipation(false);
         $application3->setYearOfStudy(1);
-        $application3->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application3->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
 
         $manager->persist($application3);
 
         // The interview
         $interview3 = new Interview();
         $interview3->setInterviewed(true);
-        $interview3->setInterviewer($this->getReference('user-2'));
-        $interview3->setInterviewSchema($this->getReference('ischema-1'));
-        $interview3->setUser($this->getReference('user-12'));
+        $interview3->setInterviewer($this->getReference('user-2', User::class));
+        $interview3->setInterviewSchema($this->getReference('ischema-1', InterviewSchema::class));
+        $interview3->setUser($this->getReference('user-12', User::class));
         $application3->setInterview($interview3);
 
         // Create answer objects for all the questions in the schema
@@ -103,27 +106,27 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3->setDoublePosition(true);
         $application3->setTeamInterest(true);
         $application3->setPotentialTeams(array(
-            $this->getReference('team-1'),
-            $this->getReference('team-2'),
+            $this->getReference('team-1', Team::class),
+            $this->getReference('team-2', Team::class),
         ));
 
         $manager->persist($application3);
 
         // This application has a conducted interview which takes some code to set up
         $application4 = new Application();
-        $application4->setUser($this->getReference('user-13'));
+        $application4->setUser($this->getReference('user-13', User::class));
         $application4->setPreviousParticipation(false);
         $application4->setYearOfStudy(1);
-        $application4->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application4->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
 
         // The interview
         $interview4 = new Interview();
         $interview4->setInterviewed(true);
-        $interview4->setInterviewer($this->getReference('user-2'));
-        $interview4->setInterviewSchema($this->getReference('ischema-1'));
-        $interview4->setUser($this->getReference('user-13'));
+        $interview4->setInterviewer($this->getReference('user-2', User::class));
+        $interview4->setInterviewSchema($this->getReference('ischema-1', InterviewSchema::class));
+        $interview4->setUser($this->getReference('user-13', User::class));
         $application4->setTeamInterest(true);
-        $application4->setPotentialTeams(array($this->getReference('team-1')));
+        $application4->setPotentialTeams(array($this->getReference('team-1', Team::class)));
         $application4->setInterview($interview4);
 
         // Create answer objects for all the questions in the schema
@@ -157,15 +160,15 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($application4);
 
         $application5 = new Application();
-        $application5->setUser($this->getReference('user-assistant'));
+        $application5->setUser($this->getReference('user-assistant', User::class));
         $application5->setPreviousParticipation(false);
         $application5->setYearOfStudy(1);
-        $application5->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application5->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $interview5 = new Interview();
         $interview5->setInterviewed(false);
-        $interview5->setInterviewer($this->getReference('user-2'));
-        $interview5->setInterviewSchema($this->getReference('ischema-1'));
-        $interview5->setUser($this->getReference('user-assistant'));
+        $interview5->setInterviewer($this->getReference('user-2', User::class));
+        $interview5->setInterviewSchema($this->getReference('ischema-1', InterviewSchema::class));
+        $interview5->setUser($this->getReference('user-assistant', User::class));
         $interview5->setResponseCode('code');
         $interview5->setScheduled(new DateTime('+2 days'));
         $application5->setInterview($interview5);
@@ -173,15 +176,15 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($application5);
 
         $application6 = new Application();
-        $application6->setUser($this->getReference('user-8'));
+        $application6->setUser($this->getReference('user-8', User::class));
         $application6->setPreviousParticipation(false);
         $application6->setYearOfStudy(1);
-        $application6->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application6->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $interview6 = new Interview();
         $interview6->setInterviewed(false);
-        $interview6->setInterviewer($this->getReference('user-1'));
-        $interview6->setInterviewSchema($this->getReference('ischema-1'));
-        $interview6->setUser($this->getReference('user-8'));
+        $interview6->setInterviewer($this->getReference('user-1', User::class));
+        $interview6->setInterviewSchema($this->getReference('ischema-1', InterviewSchema::class));
+        $interview6->setUser($this->getReference('user-8', User::class));
         $interview6->setCancelled(true);
         $interview6->setCancelMessage('
         Jeg er en kjiping som ikke orker å være vektorassistent.
@@ -199,11 +202,11 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $this->setReference('application-0', $application0);
         $application20 = new Application();
         $this->setReference('application-1', $application1);
-        $application20->setUser($this->getReference('user-20'));
+        $application20->setUser($this->getReference('user-20', User::class));
         $this->setReference('application-2', $application2);
         $application20->setPreviousParticipation(false);
         $application20->setYearOfStudy(1);
-        $application20->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application20->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
 
         $application20->setMonday(false);
         $application20->setTuesday(false);
@@ -217,9 +220,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $interview20 = new Interview();
         $interview20->setInterviewed(true);
-        $interview20->setInterviewer($this->getReference('user-2'));
-        $interview20->setInterviewSchema($this->getReference('ischema-1'));
-        $interview20->setUser($this->getReference('user-20'));
+        $interview20->setInterviewer($this->getReference('user-2', User::class));
+        $interview20->setInterviewSchema($this->getReference('ischema-1', InterviewSchema::class));
+        $interview20->setUser($this->getReference('user-20', User::class));
         $interview20->setCancelled(false);
 
         // Create answer objects for all the questions in the schema
@@ -243,10 +246,10 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($application20);
 
         $application21 = new Application();
-        $application21->setUser($this->getReference('user-14'));
+        $application21->setUser($this->getReference('user-14', User::class));
         $application21->setPreviousParticipation(false);
         $application21->setYearOfStudy(1);
-        $application21->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application21->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $application21->setMonday('Ikke');
         $application21->setTuesday('Ikke');
         $application21->setWednesday('Ikke');
@@ -256,9 +259,9 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application21->setPreferredGroup("Bolk 1");
         $interview21 = new Interview();
         $interview21->setInterviewed(true);
-        $interview21->setInterviewer($this->getReference('user-2'));
-        $interview21->setInterviewSchema($this->getReference('ischema-1'));
-        $interview21->setUser($this->getReference('user-14'));
+        $interview21->setInterviewer($this->getReference('user-2', User::class));
+        $interview21->setInterviewSchema($this->getReference('ischema-1', InterviewSchema::class));
+        $interview21->setUser($this->getReference('user-14', User::class));
         $interview21->setCancelled(false);
         $application21->setInterview($interview21);
 
@@ -274,7 +277,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->persist($interview21);
 
         for ($i = 0; $i < 100; ++ $i) {
-            $user = $this->getReference('scheduling-user-' . $i);
+            $user = $this->getReference('scheduling-user-' . $i, User::class);
             $this->createSchedulingApplication($user, $manager);
         }
 
@@ -282,13 +285,13 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $this->setReference('application-1', $application1);
         $this->setReference('application-2', $application2);
 
-        $this->getReference('team-1')->setPotentialMembers(array($application3, $application4));
-        $this->getReference('team-2')->setPotentialMembers(array($application3));
+        $this->getReference('team-1', Team::class)->setPotentialMembers(array($application3, $application4));
+        $this->getReference('team-2', Team::class)->setPotentialMembers(array($application3));
 
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }
@@ -299,7 +302,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application->setUser($user);
         $application->setPreviousParticipation(mt_rand(0, 100) < 10 ? true : false);
         $application->setYearOfStudy(1);
-        $application->setAdmissionPeriod($this->getReference('admission-period-current'));
+        $application->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $application->setCreated((new DateTime('-'.mt_rand(0, 10).'days')));
         $randomArr = array( true, false, false, false, false );
         shuffle($randomArr);
@@ -315,8 +318,8 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
 
         $interview = new Interview();
         $interview->setInterviewed(true);
-        $interview->setInterviewer($this->getReference('user-2'));
-        $interview->setInterviewSchema($this->getReference('ischema-1'));
+        $interview->setInterviewer($this->getReference('user-2', User::class));
+        $interview->setInterviewSchema($this->getReference('ischema-1', InterviewSchema::class));
         $interview->setUser($user);
         $interview->setCancelled(false);
 

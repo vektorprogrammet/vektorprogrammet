@@ -6,18 +6,21 @@ use App\Entity\SchoolCapacity;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\School;
+use App\Entity\Semester;
+use App\Entity\Department;
 
 class LoadSchoolCapacityData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 10; ++$i) {
             $randomArr = array(true, false, false, false, false);
             shuffle($randomArr);
             $schoolCapacity = new SchoolCapacity();
-            $schoolCapacity->setSchool($this->getReference('school-0'.$i));
-            $schoolCapacity->setSemester($this->getReference('semester-current'));
-            $schoolCapacity->setDepartment($this->getReference('dep-1'));
+            $schoolCapacity->setSchool($this->getReference('school-0'.$i, School::class));
+            $schoolCapacity->setSemester($this->getReference('semester-current', Semester::class));
+            $schoolCapacity->setDepartment($this->getReference('dep-1', Department::class));
             $schoolCapacity->setMonday($randomArr[0] || mt_rand(0, 100) < 30 ? 2 : 0);
             $schoolCapacity->setTuesday($randomArr[1] || mt_rand(0, 100) < 30 ? 2 : 0);
             $schoolCapacity->setWednesday($randomArr[2] || mt_rand(0, 100) < 30 ? 2 : 0);
@@ -31,7 +34,7 @@ class LoadSchoolCapacityData extends AbstractFixture implements OrderedFixtureIn
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 4;
     }

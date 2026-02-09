@@ -4,29 +4,23 @@ namespace App\EventSubscriber;
 
 use App\Event\TeamApplicationCreatedEvent;
 use App\Mailer\MailerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 
 class TeamApplicationSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
-    private $session;
+    private $requestStack;
 
-    /**
-     * ApplicationAdmissionSubscriber constructor.
-     *
-     * @param MailerInterface $mailer
-     * @param Environment $twig
-     * @param SessionInterface $session
-     */
-    public function __construct(MailerInterface $mailer, Environment $twig, SessionInterface $session)
+    public function __construct(MailerInterface $mailer, Environment $twig, RequestStack $requestStack)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -54,12 +48,12 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
             $email = $team->getDepartment()->getEmail();
         }
 
-        $receipt = (new Swift_Message())
-            ->setSubject('Søknad til '.$team->getName().' mottatt')
-            ->setFrom(array($email => $team->getName()))
-            ->setReplyTo($email)
-            ->setTo($application->getEmail())
-            ->setBody($this->twig->render('team/receipt.html.twig', array(
+        $receipt = (new Email())
+            ->subject('Søknad til '.$team->getName().' mottatt')
+            ->from(new Address($email, $team->getName()))
+            ->replyTo($email)
+            ->to($application->getEmail())
+            ->text($this->twig->render('team/receipt.html.twig', array(
                 'team' => $team,
             )));
         $this->mailer->send($receipt);
@@ -74,12 +68,12 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
             $email = $team->getDepartment()->getEmail();
         }
 
-        $receipt = (new Swift_Message())
-            ->setSubject('Ny søker til '.$team->getName())
-            ->setFrom(array('vektorprogrammet@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setReplyTo($application->getEmail())
-            ->setTo($email)
-            ->setBody($this->twig->render('team/application_email.html.twig', array(
+        $receipt = (new Email())
+            ->subject('Ny søker til '.$team->getName())
+            ->from(new Address('vektorprogrammet@vektorprogrammet.no', 'Vektorprogrammet'))
+            ->replyTo($application->getEmail())
+            ->to($email)
+            ->text($this->twig->render('team/application_email.html.twig', array(
                 'application' => $application,
             )));
         $this->mailer->send($receipt);
@@ -87,6 +81,6 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
 
     public function addFlashMessage()
     {
-        $this->session->getFlashBag()->add('success', 'Søknaden er mottatt.');
+        $this->requestStack->getSession()->getFlashBag()->add('success', 'Søknaden er mottatt.');
     }
 }

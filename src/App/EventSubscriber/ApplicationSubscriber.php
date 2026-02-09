@@ -7,7 +7,7 @@ use App\Service\AdmissionNotifier;
 use App\Mailer\MailerInterface;
 use App\Service\UserRegistration;
 use Exception;
-use Swift_Message;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Twig\Environment;
 
@@ -16,19 +16,8 @@ class ApplicationSubscriber implements EventSubscriberInterface
     private $mailer;
     private $twig;
     private $admissionNotifier;
-    /**
-     * @var UserRegistration
-     */
     private $userRegistrationService;
 
-    /**
-     * ApplicationAdmissionSubscriber constructor.
-     *
-     * @param MailerInterface $mailer
-     * @param Environment $twig
-     * @param AdmissionNotifier $admissionNotifier
-     * @param UserRegistration $userRegistrationService
-     */
     public function __construct(MailerInterface $mailer, Environment $twig, AdmissionNotifier $admissionNotifier, UserRegistration $userRegistrationService)
     {
         $this->mailer = $mailer;
@@ -79,14 +68,14 @@ class ApplicationSubscriber implements EventSubscriberInterface
         }
 
         // Send a confirmation email with a copy of the application
-        $emailMessage = (new Swift_Message())
-                                      ->setSubject('Søknad - Vektorassistent')
-                                      ->setReplyTo($application->getDepartment()->getEmail())
-                                      ->setTo($application->getUser()->getEmail())
-                                      ->setBody($this->twig->render($template, array(
+        $emailMessage = (new Email())
+                                      ->subject('Søknad - Vektorassistent')
+                                      ->replyTo($application->getDepartment()->getEmail())
+                                      ->to($application->getUser()->getEmail())
+                                      ->html($this->twig->render($template, array(
                                           'application'   => $application,
                                           'new_user_code' => $newUserCode
-                                      )), 'text/html');
+                                      )));
 
         $this->mailer->send($emailMessage);
     }

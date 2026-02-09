@@ -6,7 +6,7 @@ use App\Entity\Application;
 use App\Entity\Interview;
 use App\Entity\InterviewAnswer;
 use App\Entity\User;
-use App\Mailer\Mailer;
+use App\Mailer\MailerInterface;
 use App\Role\Roles;
 use App\Sms\Sms;
 use App\Sms\SmsSenderInterface;
@@ -15,7 +15,7 @@ use DateInterval;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
@@ -39,14 +39,14 @@ class InterviewManager
      *
      * @param TokenStorageInterface $tokenStorage
      * @param AuthorizationCheckerInterface $authorizationChecker
-     * @param Mailer $mailer
+     * @param MailerInterface $mailer
      * @param Environment $twig
      * @param LoggerInterface $logger
      * @param EntityManagerInterface $em
      * @param RouterInterface $router
      * @param SmsSenderInterface $smsSender
      */
-    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, Mailer $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
+    public function __construct(TokenStorageInterface $tokenStorage, AuthorizationCheckerInterface $authorizationChecker, MailerInterface $mailer, Environment $twig, LoggerInterface $logger, EntityManagerInterface $em, RouterInterface $router, SmsSenderInterface $smsSender)
     {
         $this->tokenStorage = $tokenStorage;
         $this->authorizationChecker = $authorizationChecker;
@@ -128,11 +128,11 @@ class InterviewManager
      */
     public function sendScheduleEmail(Interview $interview, array $data)
     {
-        $message = (new Swift_Message())
-            ->setSubject('Intervju for vektorprogrammet')
-            ->setTo($data['to'])
-            ->setReplyTo($data['from'])
-            ->setBody(
+        $message = (new Email())
+            ->subject('Intervju for vektorprogrammet')
+            ->to($data['to'])
+            ->replyTo($data['from'])
+            ->html(
                 $this->twig->render(
                     'interview/email.html.twig',
                     array('message' => $data['message'],
@@ -145,8 +145,7 @@ class InterviewManager
                         'fromPhone' => $interview->getInterviewer()->getPhone(),
                         'responseCode' => $interview->getResponseCode(),
                     )
-                ),
-                'text/html'
+                )
             );
         $this->mailer->send($message);
     }
@@ -165,19 +164,18 @@ class InterviewManager
         }
 
         foreach ($interviewers as $interviewer) {
-            $message = (new Swift_Message())
-                ->setSubject("[$user] Intervju: Ønske om ny tid")
-                ->setTo($interviewer->getEmail())
-                ->setBody(
+            $message = (new Email())
+                ->subject("[$user] Intervju: Ønske om ny tid")
+                ->to($interviewer->getEmail())
+                ->html(
                     $this->twig->render(
                         'interview/reschedule_email.html.twig',
                         array('interview' => $interview,
                             'application' => $application,
                         )
-                    ),
-                    'text/html'
+                    )
                 );
-          
+
             $this->mailer->send($message);
         }
     }
@@ -197,16 +195,15 @@ class InterviewManager
 
         // Send mail to interviewer and co-interviewer
         foreach ($interviewers as $interviewer) {
-            $message = (new Swift_Message())
-                ->setSubject("[$user] Intervju: Kansellert")
-                ->setTo($interviewer->getEmail())
-                ->setBody(
+            $message = (new Email())
+                ->subject("[$user] Intervju: Kansellert")
+                ->to($interviewer->getEmail())
+                ->html(
                     $this->twig->render(
                         'interview/cancel_email.html.twig',
                         array('interview' => $interview,
                         )
-                    ),
-                    'text/html'
+                    )
                 );
 
             $this->mailer->send($message);
@@ -235,18 +232,17 @@ class InterviewManager
             return;
         }
 
-        $message = (new Swift_Message())
-             ->setSubject('Dine intervjuer dette semesteret')
-             ->setTo($interviewer->getEmail())
-             ->setBody(
+        $message = (new Email())
+             ->subject('Dine intervjuer dette semesteret')
+             ->to($interviewer->getEmail())
+             ->html(
                  $this->twig->render(
                      'interview/schedule_of_interviews_email.html.twig',
                      array(
                          'interviews'  => $interviews,
                          'interviewer' => $interviewer
                      )
-                 ),
-                 'text/html'
+                 )
              );
 
         $this->mailer->send($message);
@@ -268,17 +264,16 @@ class InterviewManager
 
     private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
     {
-        $message = (new Swift_Message())
-            ->setSubject('Påminnelse om intervju med Vektorprogrammet')
-            ->setTo($interview->getUser()->getEmail())
-            ->setBody(
+        $message = (new Email())
+            ->subject('Påminnelse om intervju med Vektorprogrammet')
+            ->to($interview->getUser()->getEmail())
+            ->html(
                 $this->twig->render(
                     'interview/accept_interview_reminder_email.html.twig',
                     array(
                         'interview' => $interview,
                     )
-                ),
-                'text/html'
+                )
             );
 
         $this->mailer->send($message);
@@ -331,8 +326,8 @@ class InterviewManager
 
 
         $message = "Hei, {$interview->getUser()->getFirstName()}!
-         
-Vi har satt opp et intervju for deg angående opptak til vektorprogrammet. 
+
+Vi har satt opp et intervju for deg angående opptak til vektorprogrammet.
 Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
 
         return array(

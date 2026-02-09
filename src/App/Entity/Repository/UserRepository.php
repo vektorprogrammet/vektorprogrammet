@@ -235,6 +235,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     These functions are used by UserProviderInterface
     */
 
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        return $this->loadUserByUsername($identifier);
+    }
+
     public function loadUserByUsername($username)
     {
         $q = $this

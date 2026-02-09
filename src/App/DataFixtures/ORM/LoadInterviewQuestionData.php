@@ -9,7 +9,7 @@ use App\Entity\InterviewQuestion;
 
 class LoadInterviewQuestionData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $question1 = new InterviewQuestion();
         $question1->setQuestion('Hva er din motivasjon for å søke vektorassistent?');
@@ -63,7 +63,7 @@ class LoadInterviewQuestionData extends AbstractFixture implements OrderedFixtur
         $this->setReference('iq-8', $question8);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }

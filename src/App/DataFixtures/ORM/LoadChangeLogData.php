@@ -17,7 +17,7 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
      *
      * @return integer
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }
@@ -28,7 +28,7 @@ class LoadChangeLogData extends AbstractFixture implements OrderedFixtureInterfa
      * @param ObjectManager $manager
      * @throws Exception
      */
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $changeLogItem = new ChangeLogItem();
         $changeLogItem->setTitle('Automatisk invitasjon til Slack for nye');

@@ -4,29 +4,23 @@ namespace App\EventSubscriber;
 
 use App\Event\TeamInterestCreatedEvent;
 use App\Mailer\MailerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 
 class TeamInterestSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
-    private $session;
+    private $requestStack;
 
-    /**
-     * TeamInterestSubscriber constructor.
-     *
-     * @param MailerInterface $mailer
-     * @param Environment $twig
-     * @param SessionInterface $session
-     */
-    public function __construct(MailerInterface $mailer, Environment $twig, SessionInterface $session)
+    public function __construct(MailerInterface $mailer, Environment $twig, RequestStack $requestStack)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     public static function getSubscribedEvents()
@@ -43,20 +37,19 @@ class TeamInterestSubscriber implements EventSubscriberInterface
         $department = $teamInterest->getDepartment();
         $fromEmail = $department->getEmail();
 
-        $receipt = (new Swift_Message())
-            ->setSubject("Teaminteresse i Vektorprogrammet")
-            ->setFrom(array($fromEmail => "Vektorprogrammet $department"))
-            ->setReplyTo($fromEmail)
-            ->setTo($teamInterest->getEmail())
-            ->setBody($this->twig->render("team_interest/team_interest_receipt.html.twig", array(
+        $receipt = (new Email())
+            ->subject("Teaminteresse i Vektorprogrammet")
+            ->from(new Address($fromEmail, "Vektorprogrammet $department"))
+            ->replyTo($fromEmail)
+            ->to($teamInterest->getEmail())
+            ->html($this->twig->render("team_interest/team_interest_receipt.html.twig", array(
                 'teamInterest' => $teamInterest,
-            )))
-            ->setContentType('text/html');
+            )));
         $this->mailer->send($receipt);
     }
 
     public function addFlashMessage()
     {
-        $this->session->getFlashBag()->add('success', 'Takk! Vi kontakter deg så fort som mulig.');
+        $this->requestStack->getSession()->getFlashBag()->add('success', 'Takk! Vi kontakter deg så fort som mulig.');
     }
 }

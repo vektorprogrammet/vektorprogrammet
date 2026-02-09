@@ -31,6 +31,7 @@ use App\Service\UserGroupCollectionManager;
 use App\Service\UserRegistration;
 use App\Twig\RoleExtension;
 use App\Utils\ReversedRoleHierarchy;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -40,12 +41,13 @@ class BaseController extends AbstractController
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
+            'doctrine' => '?Doctrine\Persistence\ManagerRegistry',
             'event_dispatcher' => '?Symfony\Component\EventDispatcher\EventDispatcherInterface',
-            'security.password_encoder' => '?Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface',
+            'security.password_hasher' => '?Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface',
             'kernel' => '?Symfony\Component\HttpKernel\KernelInterface',
             'knp_paginator' => '?Knp\Component\Pager\PaginatorInterface',
             'security.token_storage' => '?Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface',
-            'session' => '?Symfony\Component\HttpFoundation\Session\SessionInterface',
+            // 'session' removed — use request_stack->getSession() in Sf6
             'form.factory' => '?Symfony\Component\Form\FormFactoryInterface',
             'security.authentication_utils' => '?Symfony\Component\Security\Http\Authentication\AuthenticationUtils',
             'security.authorization_checker' => '?Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface',
@@ -77,6 +79,18 @@ class BaseController extends AbstractController
             UserRegistration::class => '?' . UserRegistration::class,
             ReversedRoleHierarchy::class => '?' . ReversedRoleHierarchy::class,
         ]);
+    }
+
+    // Bridge methods for Sf6 compat — getDoctrine() and get() were removed from AbstractController.
+    // TODO: Sprint 8 — replace all getDoctrine()/get() calls with proper DI, then remove these.
+    protected function getDoctrine(): ManagerRegistry
+    {
+        return $this->container->get('doctrine');
+    }
+
+    protected function get(string $id): object
+    {
+        return $this->container->get($id);
     }
 
     /**

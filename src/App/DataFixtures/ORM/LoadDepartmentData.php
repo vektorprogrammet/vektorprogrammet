@@ -6,28 +6,29 @@ use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use App\Entity\Department;
+use App\Entity\School;
 
 class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $department1 = new Department();
         $department1->setName('Norges teknisk-naturvitenskapelige universitet');
         $department1->setShortName('NTNU');
         $department1->setEmail('NTNU@mail.com');
-        $department1->addSchool($this->getReference('school-1'));
-        $department1->addSchool($this->getReference('school-2'));
-        $department1->addSchool($this->getReference('school-4'));
-        $department1->addSchool($this->getReference('school-00'));
-        $department1->addSchool($this->getReference('school-01'));
-        $department1->addSchool($this->getReference('school-02'));
-        $department1->addSchool($this->getReference('school-03'));
-        $department1->addSchool($this->getReference('school-04'));
-        $department1->addSchool($this->getReference('school-05'));
-        $department1->addSchool($this->getReference('school-06'));
-        $department1->addSchool($this->getReference('school-07'));
-        $department1->addSchool($this->getReference('school-08'));
-        $department1->addSchool($this->getReference('school-09'));
+        $department1->addSchool($this->getReference('school-1', School::class));
+        $department1->addSchool($this->getReference('school-2', School::class));
+        $department1->addSchool($this->getReference('school-4', School::class));
+        $department1->addSchool($this->getReference('school-00', School::class));
+        $department1->addSchool($this->getReference('school-01', School::class));
+        $department1->addSchool($this->getReference('school-02', School::class));
+        $department1->addSchool($this->getReference('school-03', School::class));
+        $department1->addSchool($this->getReference('school-04', School::class));
+        $department1->addSchool($this->getReference('school-05', School::class));
+        $department1->addSchool($this->getReference('school-06', School::class));
+        $department1->addSchool($this->getReference('school-07', School::class));
+        $department1->addSchool($this->getReference('school-08', School::class));
+        $department1->addSchool($this->getReference('school-09', School::class));
         $department1->setAddress('Sem Sælands vei 1 7034 Trondheim');
         $department1->setCity('Trondheim');
         $department1->setLatitude('63.416057');
@@ -39,7 +40,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department2->setName('Universitetet i Bergen');
         $department2->setShortName('UiB');
         $department2->setEmail('UiB@mail.com');
-        $department2->addSchool($this->getReference('school-3'));
+        $department2->addSchool($this->getReference('school-3', School::class));
         $department2->setAddress('*UiB adresse*');
         $department2->setCity('Bergen');
         $department2->setLatitude('60.387639');
@@ -51,7 +52,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department3->setName('Norges miljø- og biovitenskapelige universitet');
         $department3->setShortName('NMBU');
         $department3->setEmail('NMBU@mail.com');
-        $department3->addSchool($this->getReference('school-1'));
+        $department3->addSchool($this->getReference('school-1', School::class));
         $department3->setAddress('*NMBU adresse*');
         $department3->setCity('Ås');
         $department3->setLatitude('59.666108');
@@ -63,7 +64,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $department4->setName('Universitetet i Oslo');
         $department4->setShortName('UiO');
         $department4->setEmail('UiO@mail.com');
-        $department4->addSchool($this->getReference('school-2'));
+        $department4->addSchool($this->getReference('school-2', School::class));
         $department4->setAddress('*UiO adresse*');
         $department4->setCity('Oslo');
         $department4->setLatitude('59.939942');
@@ -79,7 +80,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $this->addReference('dep-4', $department4);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 2;
     }

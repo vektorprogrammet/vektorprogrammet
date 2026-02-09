@@ -10,7 +10,7 @@ use App\Entity\Semester;
 
 class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $now = new DateTime();
         $jul = 7;
@@ -50,7 +50,7 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
         $this->addReference('semester-3', $semester3);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 3;
     }

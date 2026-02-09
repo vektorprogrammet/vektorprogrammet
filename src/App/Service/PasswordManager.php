@@ -8,7 +8,8 @@ use App\Entity\User;
 use App\Mailer\MailerInterface;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 use Twig\Environment;
 
 class PasswordManager
@@ -101,11 +102,11 @@ class PasswordManager
     public function sendResetCode(PasswordReset $passwordReset)
     {
         //Sends a email with the url for resetting the password
-        $emailMessage = (new Swift_Message())
-            ->setSubject('Tilbakestill passord for vektorprogrammet.no')
-            ->setFrom(array('ikkesvar@vektorprogrammet.no' => 'Vektorprogrammet'))
-            ->setTo($passwordReset->getUser()->getEmail())
-            ->setBody($this->twig->render('reset_password/new_password_email.txt.twig', array(
+        $emailMessage = (new Email())
+            ->subject('Tilbakestill passord for vektorprogrammet.no')
+            ->from(new Address('ikkesvar@vektorprogrammet.no', 'Vektorprogrammet'))
+            ->to($passwordReset->getUser()->getEmail())
+            ->text($this->twig->render('reset_password/new_password_email.txt.twig', array(
                 'resetCode' => $passwordReset->getResetCode(),
                 'user' => $passwordReset->getUser(),
             )));

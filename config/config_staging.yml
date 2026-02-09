@@ -8,9 +8,6 @@ parameters:
         refresh_token: '%google_api_refresh_token%'
         disabled: true
 
-swiftmailer:
-    disable_delivery: true
-
 ewz_recaptcha:
     enabled: false
     public_key:  '%recaptcha_public_key%'

@@ -46,16 +46,16 @@ class AccountController extends BaseController
             return $response;
         }
 
-        $validPassword = $this->get('security.password_encoder')->isPasswordValid($user, $password);
+        $validPassword = $this->get('security.password_hasher')->isPasswordValid($user, $password);
         if (!$validPassword) {
             $response->setStatusCode(401);
             $response->setContent('Wrong password');
             return $response;
         }
 
-        $token = new UsernamePasswordToken($user, null, 'secured_area', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'secured_area', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
-        $this->get('session')->set('_security_secured_area', serialize($token));
+        $this->get('request_stack')->getSession()->set('_security_secured_area', serialize($token));
 
         $userDto = self::mapUserToDto($user);
 

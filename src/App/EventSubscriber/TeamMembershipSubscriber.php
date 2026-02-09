@@ -8,18 +8,18 @@ use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class TeamMembershipSubscriber implements EventSubscriberInterface
 {
-    private $session;
+    private $requestStack;
     private $logger;
     private $roleManager;
     private $em;
 
-    public function __construct(SessionInterface $session, LoggerInterface $logger, RoleManager $roleManager, EntityManagerInterface $em)
+    public function __construct(RequestStack $requestStack, LoggerInterface $logger, RoleManager $roleManager, EntityManagerInterface $em)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->logger = $logger;
         $this->roleManager = $roleManager;
         $this->em = $em;
@@ -58,7 +58,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
         $user = $teamMembership->getUser();
         $position = $teamMembership->getPosition();
 
-        $this->session->getFlashBag()->add('success', "$user har blitt lagt til i $team som $position.");
+        $this->requestStack->getSession()->getFlashBag()->add('success', "$user har blitt lagt til i $team som $position.");
     }
 
     public function addUpdatedFlashMessage(TeamMembershipEvent $event)
@@ -69,7 +69,7 @@ class TeamMembershipSubscriber implements EventSubscriberInterface
         $user = $teamMembership->getUser();
         $position = $teamMembership->getPosition();
 
-        $this->session->getFlashBag()->add('success', "$user i $team med stilling $position har blitt oppdatert.");
+        $this->requestStack->getSession()->getFlashBag()->add('success', "$user i $team med stilling $position har blitt oppdatert.");
     }
 
     public function logDeletedEvent(TeamMembershipEvent $event)

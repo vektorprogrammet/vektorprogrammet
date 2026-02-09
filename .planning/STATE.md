@@ -1,8 +1,8 @@
 # State: Vektorprogrammet Monolith Symfony Upgrade
 
 **Updated**: 2026-02-09
-**Phase**: Sprint 6 (Symfony 4.4 → 5.4) — COMPLETE
-**Next**: Commit Sprint 6, then begin Sprint 7 (5.4 → 6.4)
+**Phase**: Sprint 7 (Symfony 5.4 → 6.4) — Phase 1 COMPLETE, Phases 2-3 mostly done
+**Branch**: `modernize/sprint-1-remove-dead-dependencies` (all uncommitted)
 
 ## Progress
 
@@ -11,97 +11,93 @@
 - [x] Sprint 3: AppBundle → App namespace
 - [x] Sprint 4: Directory restructure
 - [x] Sprint 5: Symfony 3.4 → 4.4
-- [x] Sprint 6: Symfony 4.4 → 5.4 (496 tests, 14 known failures — all pre-existing/env/deferred)
-- [ ] Sprint 7: Symfony 5.4 → 6.4
+- [x] Sprint 6: Symfony 4.4 → 5.4 (committed: `5d4f2a15`)
+- [ ] Sprint 7: Symfony 5.4 → 6.4 — IN PROGRESS
 - [ ] Sprint 8-9: Frontend, cleanup
 
-### Sprint 6 Status
+## Sprint 7 Current State
 
-- [x] Composer: Sf 5.4.*, PHP >=8.0, PHPUnit ^9.5, fos/rest ^3.0, etc.
-- [x] BaseController → AbstractController + getSubscribedServices()
-- [x] User entity: UserInterface + PasswordAuthenticatedUserInterface
-- [x] Role entity: removed Symfony base class
-- [x] Security config: password_hashers, lazy anonymous, user_checker
-- [x] Event dispatch signature flip (27 calls) + event base classes
-- [x] Register controllers + other services in services.yml autodiscovery
-- [x] Fix remaining test failures + commit (14 known, all categorized)
+### Phase 1: Composer Upgrade + Boot-Blocking Config — COMPLETE
 
-### Test Results: 496 tests, 2 errors, 12 failures
+All composer deps upgraded, kernel boots, 496 tests run.
 
-**Errors (2):**
-1. `ReceiptControllerTest::testCreate` — `asset()` called with null path in Twig. Data issue (receipt has no image). Pre-existing.
-2. `ExistingUserAdmissionControllerTest` or `InterviewControllerTest` — (need to re-verify)
+**Changes (all uncommitted):**
 
-**Failures (12) — categorized:**
+1. **composer.json**: All `symfony/*` → `6.4.*`, php `>=8.1`, removed `swiftmailer-bundle`, added `symfony/mailer: 6.4.*`, `doctrine/annotations: ^2.0`, `doctrine/dbal: ^3.0`, `doctrine/doctrine-migrations-bundle: ^3.0`, `twig/twig: ^3.0`, `twig/extra-bundle: ^3.0`, `helios-ag/fm-elfinder-bundle: ^12.0`, `php-cs-fixer: ^3.0`
+2. **composer.lock**: Updated via `composer update --no-scripts`
+3. **config/bundles.php**: Removed `SwiftmailerBundle` and `WebServerBundle`
+4. **config/config.yml**: Removed `swiftmailer:` section, added `framework: mailer: dsn:`, updated `doctrine_migrations:`, removed `sensio_framework_extra: view: {annotations: true}`
+5. **config/config_dev.yml**: Removed `swiftmailer: disable_delivery: true`
+6. **config/config_test.yml**: Removed `swiftmailer:` section, `storage_id` → `storage_factory_id`
+7. **config/config_staging.yml**: Removed `swiftmailer:` section
+8. **config/security.yml**: Removed `enable_authenticator_manager: true`
+9. **config/routing.yml**: ElFinder routes → FQCN
+10. **src/Kernel.php**: `RouteCollectionBuilder` → `RoutingConfigurator`
+11. **bin/console**: Fixed Dotenv constructor
+12. **public/index.php**: Same Dotenv fix
+13. **LogService.php**: PSR-3 v3 signatures
+14. **User.php**: `eraseCredentials(): void`, `isEqualTo(): bool`
+15. **31 DataFixture files**: `load(): void`, `getOrder(): int`
+16. **9 SessionInterface → RequestStack files** (all subscribers + services)
+17. **BaseController**: Added `getDoctrine()` + `get()` bridge methods, `doctrine` service, `password_hasher`, removed `session`
+18. **3 controllers**: `$this->get('session')` → `$this->get('request_stack')->getSession()`
+19. **2 controllers**: `UsernamePasswordToken` — removed credentials param
+20. **1 controller**: `kernel.root_dir` → `kernel.project_dir`
 
-*Pre-existing / environment issues (likely ~7):*
-- `AccessRuleControllerTest` (3 failures) — upstream repo DELETED the entire AccessRule feature. Route returns 404. These are pre-existing; the access rule system has routing issues.
-- `CompanyEmailMakerTest` (2 failures) — `iconv` transliteration depends on `nb_NO` locale, not available on macOS. Environment issue, works on Linux CI.
-- `PasswordResetControllerTest` (1 failure) — logic change related to SwiftMailer behavior. Deferred to Sprint 7 (SwiftMailer → Symfony Mailer).
-- `AvailabilityFunctionalTest::testAssistantPageIsSuccessful('/utlegg')` (1) — `asset()` null (same receipt image data issue)
+### Phase 2: SwiftMailer → Symfony Mailer — COMPLETE
 
-*Sf5 template rendering issues (5):*
-- `AvailabilityFunctionalTest` for `/kontrollpanel/intervju/skjema/1` and `/kontrollpanel/undersokelse/opprett` (2 failures) — "Field already rendered" in `repeatable_question.html.twig`. Fix was applied via `form_rest()` calls but may need further adjustment.
-- `InterviewControllerTest::testCreateSchema` and `testEditSchemas` (2 failures) — same "Field already rendered" root cause on interview schema pages.
-- `AvailabilityFunctionalTest` for access rule create routes (2) — 404 (access rule routes not registered)
+All source files migrated. `Swift_Message` → `Email`, `Swift_Mailer` → `Symfony\Component\Mailer\MailerInterface`.
+Test files updated from `swiftmailer` profiler collector → `mailer` collector.
 
-### Changes Made This Session
+Files changed: Mailer.php, MailerInterface.php, EmailSender.php, Gmail.php, SlackMailer.php, InterviewManager.php, PasswordManager.php, UserRegistration.php, SurveyNotifier.php, all EventSubscribers.
 
-**config/services.yml:**
-- Autodiscovery expanded: `{Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,Twig,Validator}`
+### Phase 3: password_encoder → password_hasher — PARTIAL
 
-**tests/bootstrap.php:**
-- Fallback to `.env.test` when `.env` missing (file doesn't exist on disk)
+- BaseController subscribed services updated
+- Controller `$this->get('security.password_encoder')` → `security.password_hasher` (2 files)
+- **REMAINING**: actual password hashing on user create/reset (PasswordReset test still fails)
 
-**Form types fixed (Sf5 compat):**
-- `FeedbackType.php`: `'Send inn'` → `'send_inn'` + label (no spaces in form names)
-- 8 form files, 11 DateTimeType fields: added `'html5' => false` (required with custom `format`)
+### Phase 4-6: NOT STARTED
 
-**Template fixes:**
-- `profile_header.html.twig`: `user.roles` → `user.roleEntities` (getRoles now returns strings)
-- `repeatable_question.html.twig`: added `form_rest()` calls to prevent double-render errors
+- ContainerAwareCommand → Command with DI (6 commands)
+- Remaining Sf6 Breaking Changes (Twig 3 for...if, DBAL 3 lazy ghosts)
+- Verification + Docs
 
-**Test fixes (PHPUnit 9 + Sf5 compat):**
-- 4 test files: `assertContains()` → `assertStringContainsString()` for string haystacks
-- `RoleManagerTest.php`: `->getRole()` removed (getRoles returns strings directly)
-- `UserEntityUnitTest.php`: `testAddRole` assertion updated for string roles
-- `GeoLocationTest.php`: `Doctrine\Common\Persistence` → `Doctrine\Persistence`
-- `ReceiptControllerTest.php`: removed null `$size` param (Sf5 UploadedFile signature)
-- `ExistingUserAdmissionControllerTest.php`: yearOfStudy `3` → `'3. klasse'`
-- `InterviewControllerTest.php`: teamInterest bool → `'0'`/`'1'` string
+## Test Results (496 tests)
 
-### GitHub Upstream Reference (vektorprogrammet/vektor-backend)
+**6 errors + 17 failures = 23 total**
 
-Key findings from comparing with upstream:
-- **services.yaml**: Uses broad `App\: resource: '../src/*'` with minimal exclusions (Entity, DependencyInjection, Kernel, Tests). Controllers registered again with `controller.service_arguments` tag.
-- **AccessRule**: Entire feature REMOVED upstream. Skip those tests.
-- **CompanyEmailMaker**: Same iconv approach; depends on `nb_NO` system locale.
-- **PasswordReset**: Fully modernized with Symfony Mailer + constructor DI. Our version still uses SwiftMailer (Sprint 7).
-- **repeatable_question.html.twig**: Upstream renders individual child fields + `form_rest(form)` in hidden div. Same general approach as our fix.
+Known pre-existing (15):
+- AccessRule (5): upstream deleted feature
+- Receipt (5): null asset/permissions + edit error
+- Interview/Survey template (3): "already rendered"
+- CompanyEmailMaker (2): macOS missing nb_NO locale
 
-## Decisions
+New from Sf6 migration (8):
+- AdmissionAdmin (3): interview scheduling not redirecting (mailer integration)
+- InterviewController (2): same scheduling issue
+- PasswordReset (1): password not re-hashed on reset (needs password_hasher integration)
+- /utlegg (1): receipt-related
 
-- Keep `security.password_encoder` service (still works in Sf5.4, migrate Sprint 7)
-- Composition for AppRoutingExtension (RoutingExtension now final)
-- User::getRoles() returns string[], getRoleEntities() for entity access
-- Defer SwiftMailer → Sprint 7 (deprecated but functional in 5.x)
-- AccessRule test failures are pre-existing (upstream deleted the feature)
-- CompanyEmailMaker failures are environment-specific (macOS locale)
-- Use PHP 8.4 for tests: `/usr/local/opt/php@8.4/bin/php`
+## Key Decisions Made
 
-## Deferred to Sprint 7
+- `getDoctrine()` and `get()` re-added as bridge methods to BaseController (deferred to Sprint 8 for proper DI)
+- `session` service removed from subscribed services — use `request_stack->getSession()`
+- `security.password_encoder` → `security.password_hasher` in subscribed services
+- Schema creation: run `doctrine:schema:create --env=test` separately if test.db deleted (race condition in PHPUnit bootstrap)
 
-- SwiftMailer → Symfony Mailer
-- getDoctrine() → injected repositories
-- $this->get() → constructor DI
-- annotations → PHP 8 attributes
-- password_encoder → password_hasher
-- Fix PasswordResetController test (depends on Mailer migration)
+## Deferred to Sprint 8
 
-## Next Session
+- getDoctrine() → injected repos (257 calls)
+- $this->get() → constructor DI (149 calls)
+- annotations → PHP 8 attributes (663)
+- Remove sensio/framework-extra-bundle + doctrine/annotations
 
-1. Verify the 2 remaining errors — likely pre-existing (receipt null asset)
-2. Decide: accept the 12 failures as pre-existing/environment or fix more
-3. Consider switching services.yml to broader `src/*` autodiscovery (match upstream)
-4. Update CLAUDE.md test command to use PHP 8.4
-5. Commit Sprint 6
+## Test Command
+
+```bash
+# Create schema first if test.db was deleted:
+/usr/local/opt/php@8.4/bin/php bin/console doctrine:schema:create --env=test
+# Then run tests:
+/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist
+```

@@ -17,15 +17,6 @@ class LogService implements LoggerInterface
      */
     private $env;
 
-    /**
-     * LogService constructor.
-     *
-     * @param Logger $monoLogger
-     * @param SlackMessenger $slackMessenger
-     * @param UserService $userService
-     * @param RequestStack $requestStack
-     * @param string $env
-     */
     public function __construct(Logger $monoLogger, SlackMessenger $slackMessenger, UserService $userService, RequestStack $requestStack, string $env)
     {
         $this->monoLogger = $monoLogger;
@@ -35,121 +26,55 @@ class LogService implements LoggerInterface
         $this->env = $env;
     }
 
-    /**
-     * System is unusable.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function emergency($message, array $context = array())
+    public function emergency(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->emergency($message, $context);
         $this->log('EMERGENCY', $message, $context);
     }
 
-    /**
-     * Action must be taken immediately.
-     *
-     * Example: Entire website down, database unavailable, etc. This should
-     * trigger the SMS alerts and wake you up.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function alert($message, array $context = array())
+    public function alert(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->alert($message, $context);
         $this->log('ALERT', $message, $context);
     }
 
-    /**
-     * Critical conditions.
-     *
-     * Example: Application component unavailable, unexpected exception.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function critical($message, array $context = array())
+    public function critical(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->critical($message, $context);
         $this->log('CRITICAL', $message, $context);
     }
 
-    /**
-     * Runtime errors that do not require immediate action but should typically
-     * be logged and monitored.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function error($message, array $context = array())
+    public function error(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->error($message, $context);
         $this->log('ERROR', $message, $context);
     }
 
-    /**
-     * Exceptional occurrences that are not errors.
-     *
-     * Example: Use of deprecated APIs, poor use of an API, undesirable things
-     * that are not necessarily wrong.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function warning($message, array $context = array())
+    public function warning(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->warning($message, $context);
         $this->log('WARNING', $message, $context);
     }
 
-    /**
-     * Normal but significant events.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function notice($message, array $context = array())
+    public function notice(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->notice($message, $context);
         $this->log('NOTICE', $message, $context);
     }
 
-    /**
-     * Interesting events.
-     *
-     * Example: User logs in, SQL logs.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function info($message, array $context = array())
+    public function info(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->info($message, $context);
         $this->log('INFO', $message, $context);
     }
 
-    /**
-     * Detailed debug information.
-     *
-     * @param string $message
-     * @param array  $context
-     */
-    public function debug($message, array $context = array())
+    public function debug(\Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->debug($message, $context);
         $this->log('DEBUG', $message, $context);
     }
 
-    /**
-     * Logs with an arbitrary level.
-     *
-     * @param mixed  $level
-     * @param string $message
-     * @param array  $context
-     */
-    public function log($level, $message, array $context = array())
+    public function log($level, \Stringable|string $message, array $context = []): void
     {
         $this->monoLogger->log(200, $message, $context);
         $this->slackMessenger->log("", $this->createAttachmentData($level, $message, $context));

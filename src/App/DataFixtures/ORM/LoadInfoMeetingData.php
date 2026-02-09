@@ -9,6 +9,7 @@ use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use App\Entity\AdmissionPeriod;
 
 class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInterface, OrderedFixtureInterface
 {
@@ -19,7 +20,7 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
         $this->container = $container;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $infoMeetingUiO = new InfoMeeting();
         $date = new DateTime('now');
@@ -29,7 +30,7 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
         $infoMeetingUiO->setRoom("Parken");
         $infoMeetingUiO->setDescription("Det blir underholdning!");
 
-        $semester = $this->getReference('uio-admission-period-current');
+        $semester = $this->getReference('uio-admission-period-current', AdmissionPeriod::class);
         $semester->setInfoMeeting($infoMeetingUiO);
 
         $manager->persist($infoMeetingUiO);
@@ -43,7 +44,7 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
      *
      * @return integer
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 28;
     }

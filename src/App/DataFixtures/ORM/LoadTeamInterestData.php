@@ -6,18 +6,21 @@ use App\Entity\TeamInterest;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
+use App\Entity\Department;
+use App\Entity\Semester;
+use App\Entity\Team;
 
 class LoadTeamInterestData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $teamInterest1 = new TeamInterest();
         $teamInterest1
-            ->setDepartment($this->getReference('dep-1'))
-            ->setSemester($this->getReference('semester-current'))
+            ->setDepartment($this->getReference('dep-1', Department::class))
+            ->setSemester($this->getReference('semester-current', Semester::class))
             ->setPotentialTeams(array(
-                $this->getReference('team-1'),
-                $this->getReference('team-2'),))
+                $this->getReference('team-1', Team::class),
+                $this->getReference('team-2', Team::class),))
             ->setName('Magnus Carlsen')
             ->setEmail('magnus@gmail.com');
         $manager->persist($teamInterest1);
@@ -25,9 +28,9 @@ class LoadTeamInterestData extends AbstractFixture implements OrderedFixtureInte
 
         $teamInterest2 = new TeamInterest();
         $teamInterest2
-            ->setDepartment($this->getReference('dep-1'))
-            ->setSemester($this->getReference('semester-previous'))
-            ->setPotentialTeams(array($this->getReference('team-1')))
+            ->setDepartment($this->getReference('dep-1', Department::class))
+            ->setSemester($this->getReference('semester-previous', Semester::class))
+            ->setPotentialTeams(array($this->getReference('team-1', Team::class)))
             ->setName('Morten Nome')
             ->setEmail('nome@ntnu.no');
         $manager->persist($teamInterest2);
@@ -36,7 +39,7 @@ class LoadTeamInterestData extends AbstractFixture implements OrderedFixtureInte
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

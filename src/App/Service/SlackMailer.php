@@ -3,7 +3,8 @@
 namespace App\Service;
 
 use App\Mailer\MailerInterface;
-use Swift_Message;
+use Symfony\Component\Mime\Address;
+use Symfony\Component\Mime\Email;
 
 class SlackMailer implements MailerInterface
 {
@@ -14,18 +15,27 @@ class SlackMailer implements MailerInterface
         $this->messenger = $messenger;
     }
 
-    public function send(Swift_Message $message, bool $disableLogging = false)
+    public function send(Email $message, bool $disableLogging = false)
     {
-        $from = $message->getFrom();
-        $fromString = !is_array($from) ? $from : current($from) . ' - ' . key($from);
+        $toAddresses = $message->getTo();
+        $toStr = implode(', ', array_map(function (Address $a) { return $a->getAddress(); }, $toAddresses));
+
+        $fromAddresses = $message->getFrom();
+        $fromStr = '';
+        if (!empty($fromAddresses)) {
+            $first = $fromAddresses[0];
+            $fromStr = $first->getName() ? $first->getName() . ' - ' . $first->getAddress() : $first->getAddress();
+        }
+
+        $body = $message->getHtmlBody() ?: $message->getTextBody();
 
         $this->messenger->sendPayload([
             'text' => 'Email sent',
             'attachments' => [[
                 'color' => '#023874',
-                'author_name' => 'To: ' . implode(', ', array_keys($message->getTo())),
-                'text' => '*' . $message->getSubject() . "*\n```\n" . $message->getBody() . "\n```",
-                'footer' => 'From: ' . $fromString,
+                'author_name' => 'To: ' . $toStr,
+                'text' => '*' . $message->getSubject() . "*\n```\n" . $body . "\n```",
+                'footer' => 'From: ' . $fromStr,
             ]],
         ]);
     }

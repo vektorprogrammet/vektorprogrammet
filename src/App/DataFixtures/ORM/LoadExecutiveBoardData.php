@@ -9,7 +9,7 @@ use Doctrine\Persistence\ObjectManager;
 
 class LoadExecutiveBoardData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $board = new ExecutiveBoard();
         $board->setName('Hovedstyret');
@@ -52,7 +52,7 @@ class LoadExecutiveBoardData extends AbstractFixture implements OrderedFixtureIn
         $this->addReference('board', $board);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 3;
     }
