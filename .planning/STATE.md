@@ -15,6 +15,7 @@
 - [x] Sprint 6: Symfony 4.4 → 5.4 (committed: `5d4f2a15`)
 - [x] Sprint 7: Symfony 5.4 → 6.4 — COMPLETE (3 commits)
 - [x] Sprint 7b: Fix 15 Sf6 test regressions — COMPLETE
+- [x] Agent tooling: composer scripts, php-cs-fixer, PHPStan, CI workflow
 - [ ] Sprint 8-9: Frontend, cleanup
 
 ## Sprint 7b: Fix 15 Sf6 Test Regressions — COMPLETE
@@ -50,6 +51,14 @@ Fixed all 15 regressions. **496 tests, 2 failures** (CompanyEmailMaker only).
 - `session` service removed from subscribed services — use `request_stack->getSession()`
 - `security.password_encoder` → `security.password_hasher` in subscribed services
 - AccessControlService cache is now lazy (loaded on first access, not in constructor)
+
+## CI Workflow
+
+Replaced broken `tests.yml` (Sf 3.4/PHP 7.3) and `lintAndTest.yml` (missing runs-on) with unified `.github/workflows/ci.yml`:
+- **lint**: `composer lint` (php-cs-fixer --dry-run)
+- **analyse**: `composer analyse` (PHPStan level 1, needs `cache:clear --env=dev` first)
+- **test**: `composer test` (full PHPUnit suite, PHP 8.1 matrix)
+- `build.yml` (SonarCloud) unchanged
 
 ## Deferred to Sprint 8
 

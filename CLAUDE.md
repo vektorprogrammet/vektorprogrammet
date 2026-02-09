@@ -8,9 +8,18 @@ Norwegian tutoring program management platform. Symfony 6.4, PHP 8. Upgrading fr
 - Details: `.planning/STATE.md`
 
 ## Docs
-- **Testing**: `docs/testing.md` (commands, workflow, env) | `docs/testing-details.md` (file→test map, timing, DB)
-- **Architecture**: `docs/architecture.md` (controllers, roles, services, mailer)
-- **Console commands**: `docs/console-commands.md` (debug, doctrine, DI, cache)
+Each file covers one topic. Load only what you need to keep context small.
+
+| File | Topic |
+|------|-------|
+| `docs/overview.md` | Quick reference: commands, structure, CI, test users |
+| `docs/testing.md` | Test commands, workflow, environment |
+| `docs/testing-details.md` | File-to-test map, timing, DB internals |
+| `docs/architecture.md` | Controllers, roles, services, mailer |
+| `docs/console-commands.md` | Useful Symfony console commands |
+| `.github/workflows/ci.yml` | CI config (lint + analyse + test) |
+
+**`docs/`** = for both humans and AI agents. **`.planning/`** = for AI agents only (migration state, task plans).
 
 ## Critical Gotchas
 - Tests MUST run with `dangerouslyDisableSandbox: true` (SQLite + vendor reads)

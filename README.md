@@ -46,64 +46,33 @@ php -S localhost:8000 -t public
 
 Or with the Symfony CLI: `symfony server:start`
 
-## Users
-
-| Role | Username | Password | Symfony Role |
-|------|----------|----------|--------------|
-| Assistent | `assistent` | `1234` | ROLE_USER |
-| Teammedlem | `teammember` | `1234` | ROLE_TEAM_MEMBER |
-| Teamleder | `teamleader` | `1234` | ROLE_TEAM_LEADER |
-| Admin | `admin` | `1234` | ROLE_ADMIN |
-
-## Testing
-
-See [`docs/testing.md`](docs/testing.md) for full details on test suites, timing, and workflow.
+## Development
 
 ```bash
-# Quick unit tests (<1s)
-bin/phpunit --testsuite=unit
-
-# Controller tests (~110s)
-bin/phpunit --testsuite=controller
-
-# Availability smoke tests (~67s)
-bin/phpunit --testsuite=availability
-
-# Full suite (496 tests, ~3 min)
-bin/phpunit
+composer test      # Run full test suite
+composer lint      # Check code style
+composer fix       # Auto-fix code style
+composer analyse   # Static analysis
 ```
 
-## Project Structure
+See [`docs/overview.md`](docs/overview.md) for all commands, project structure, architecture, CI, and test users.
 
-```
-src/App/
-  Controller/     # ~55 controllers extending BaseController
-  Entity/         # Doctrine entities (annotation-mapped)
-  Service/        # Business logic services
-  Role/           # Role hierarchy
-  EventSubscriber/# Kernel event subscribers
-  Twig/           # Twig extensions
-  Command/        # Console commands
-templates/        # Twig templates
-config/           # Symfony config (YAML)
-tests/AppBundle/  # PHPUnit tests
-docs/             # Developer documentation
-.planning/        # Migration planning state
-```
+## Documentation
 
-## Architecture
+Documentation is split into modular single-topic files to stay focused and reduce noise.
 
-- `BaseController` extends `AbstractController` with bridge methods for `getDoctrine()` and `get()` (Sf6 compatibility, pending migration to constructor DI)
-- Role hierarchy: `ROLE_USER` < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`
-- `AccessControlService` manages route-level access rules with lazy-loaded cache
-- URLs are in Norwegian (e.g., `/kontrollpanel/utlegg`, `/opptak`)
+| File | Audience | Topic |
+|------|----------|-------|
+| `README.md` | Everyone | Setup and entry point |
+| [`docs/overview.md`](docs/overview.md) | Developers | Quick reference: commands, structure, CI, test users |
+| [`docs/testing.md`](docs/testing.md) | Developers | Test commands, workflow, environment |
+| [`docs/testing-details.md`](docs/testing-details.md) | Developers | File-to-test map, timing, DB internals |
+| [`docs/architecture.md`](docs/architecture.md) | Developers | Controllers, roles, services, mailer |
+| [`docs/console-commands.md`](docs/console-commands.md) | Developers | Useful Symfony console commands |
+| `CLAUDE.md` | AI agents | Agent-specific context and gotchas |
+| `.planning/STATE.md` | AI agents | Migration progress and decisions |
 
-## Code Style
-
-```bash
-./bin/php-cs-fixer fix src/ --dry-run --diff -vv  # check
-./bin/php-cs-fixer fix src/ -vv                    # fix
-```
+**Principles**: each doc covers one topic. `README.md` is the entry point; `docs/` has everything else. `.planning/` is for AI coding agents tracking migration state — humans can ignore it.
 
 ## Legacy npm Scripts
 

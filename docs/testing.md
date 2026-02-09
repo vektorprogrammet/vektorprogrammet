@@ -3,22 +3,18 @@
 ## Quick Reference
 
 ```bash
-# Full suite (496 tests, ~3 min)
-/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist
+# Via composer scripts (recommended)
+composer test                # Full suite (496 tests, ~3 min)
+composer test:unit           # 183 tests, <1s
+composer test:controller     # 131 tests, ~110s
+composer test:availability   # 182 tests, ~67s
 
-# By suite
-bin/phpunit --testsuite=unit          # 183 tests, <1s
-bin/phpunit --testsuite=controller    # 131 tests, ~110s
-bin/phpunit --testsuite=availability  # 182 tests, ~67s
-
-# Single test class
+# Direct phpunit (for filters/flags)
 bin/phpunit --filter="SorterTest"
-
-# Failed tests first, stop on first failure
 bin/phpunit --order-by=defects --stop-on-failure
 ```
 
-Replace `bin/phpunit` with `/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist` if running outside the project root or if the shorthand doesn't work.
+For the full suite, `composer test` handles memory limits and config automatically. Use `bin/phpunit` directly when you need custom flags like `--filter` or `--stop-on-failure`.
 
 ## Workflow
 
@@ -40,6 +36,10 @@ Pre-push:       full suite (no flags)                 ~3 min
 ## Known Failures
 
 None. All 496 tests pass.
+
+## CI
+
+Tests run automatically in GitHub Actions on push to `master` and on all PRs. The CI workflow also runs lint (`composer lint`) and static analysis (`composer analyse`) as separate parallel jobs. See [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
 
 ## More Details
 
