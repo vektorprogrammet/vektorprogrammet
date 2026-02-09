@@ -65,6 +65,7 @@ crashlytics-build.properties
 /node_modules/
 
 .php_cs.cache
+.php-cs-fixer.cache
 .phpunit.result.cache
 
 

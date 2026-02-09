@@ -79,6 +79,12 @@
         "nelmio/cors-bundle": "^2.0"
     },
     "scripts": {
+        "test": "@php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist",
+        "test:unit": "@php bin/phpunit --testsuite=unit",
+        "test:controller": "@php bin/phpunit --testsuite=controller",
+        "test:availability": "@php bin/phpunit --testsuite=availability",
+        "lint": "bin/php-cs-fixer fix --dry-run --diff",
+        "fix": "bin/php-cs-fixer fix"
     },
     "config": {
         "bin-dir": "bin",

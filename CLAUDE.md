@@ -10,6 +10,7 @@ Norwegian tutoring program management platform. Symfony 6.4, PHP 8. Upgrading fr
 ## Docs
 - **Testing**: `docs/testing.md` (commands, workflow, env) | `docs/testing-details.md` (file→test map, timing, DB)
 - **Architecture**: `docs/architecture.md` (controllers, roles, services, mailer)
+- **Console commands**: `docs/console-commands.md` (debug, doctrine, DI, cache)
 
 ## Critical Gotchas
 - Tests MUST run with `dangerouslyDisableSandbox: true` (SQLite + vendor reads)
