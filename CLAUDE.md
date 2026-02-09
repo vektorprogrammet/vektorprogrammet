@@ -3,8 +3,8 @@
 Norwegian tutoring program management platform. URLs in Norwegian. Upgrading Symfony 3.4 → 6.4. Details in `.planning/`.
 
 ## Sprints
-- 1-6: COMPLETE (Symfony 5.4, PHP 8)
-- 7: COMPLETE — 5.4→6.4, SwiftMailer→Mailer, ContainerAwareCommand→DI, Twig 3
+- 1-7: COMPLETE (Symfony 6.4, PHP 8)
+- 7b: COMPLETE — Fix 15 Sf6 test regressions (496 tests, 2 failures)
 - 8-9: frontend, cleanup
 
 ## Commands
@@ -17,8 +17,8 @@ Norwegian tutoring program management platform. URLs in Norwegian. Upgrading Sym
 Use `run_in_background: true` for full test suite to avoid blocking (~2 min). Check results with `TaskOutput`.
 Clear cache if service config changes: `rm -rf var/cache/test/ && rm -f var/data/test.db`
 
-## Known Test Failures (17 = 1 error + 16 failures, all pre-existing)
-AccessRule (5), Receipt (6 incl /utlegg), Interview/Survey template (3), CompanyEmailMaker (2), Survey create (1)
+## Known Test Failures (2 failures, pre-existing)
+CompanyEmailMaker (2): macOS missing nb_NO locale
 
 ## Architecture
 - `BaseController` extends `AbstractController` with `getSubscribedServices()` for ~35 services + bridge `getDoctrine()`/`get()` methods

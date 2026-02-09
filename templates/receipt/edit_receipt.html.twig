@@ -2,13 +2,13 @@
 
 {% block title %}Utlegg{% endblock %}
 
-{% if parent_template == 'adminBase.html.twig' %}
-    {% block breadcrumb %}
+{% block breadcrumb %}
+    {% if parent_template == 'adminBase.html.twig' %}
         <li class="breadcrumb-item"><a href="{{ path('receipts_show') }}">Utlegg</a></li>
         <li class="breadcrumb-item"><a href="{{ path('receipts_show_individual', {'user': receipt.user.id}) }}">{{ receipt.user }}</a></li>
         <li class="breadcrumb-item active">{{ receipt.visualId }}</li>
-    {% endblock %}
-{% endif %}
+    {% endif %}
+{% endblock %}
 
 
 {% block body %}
@@ -99,7 +99,7 @@
 
         $("#receipt_picturePath").change(function () {
             if(this.value === ''){
-                $('#receipt_picture').attr('src', '{{ asset(receipt.picturePath) }}');
+                $('#receipt_picture').attr('src', '{{ receipt.picturePath ? asset(receipt.picturePath) : '' }}');
             } else {
                 $('#receipt_picture').parent().removeClass('hide');
                 readURL(this);

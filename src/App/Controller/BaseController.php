@@ -30,7 +30,7 @@ use App\Service\SurveyNotifier;
 use App\Service\UserGroupCollectionManager;
 use App\Service\UserRegistration;
 use App\Twig\RoleExtension;
-use App\Utils\ReversedRoleHierarchy;
+use App\Role\ReversedRoleHierarchy;
 use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;

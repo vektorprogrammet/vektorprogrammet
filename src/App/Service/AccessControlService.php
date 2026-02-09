@@ -20,6 +20,7 @@ class AccessControlService
     private $userService;
     private $accessRulesCache;
     private $unhandledRulesCache;
+    private $cacheLoaded = false;
 
     /**
      * ResourceAccessSubscriber constructor.
@@ -37,11 +38,22 @@ class AccessControlService
         $this->userService   = $userService;
         $this->accessRulesCache = [];
         $this->unhandledRulesCache = [];
+    }
+
+    private function ensureCacheLoaded()
+    {
+        if ($this->cacheLoaded) {
+            return;
+        }
+        $this->cacheLoaded = true;
         $this->preloadCache();
     }
 
     private function preloadCache()
     {
+        $this->accessRulesCache = [];
+        $this->unhandledRulesCache = [];
+
         $accessRules = $this->entityManager->getRepository(AccessRule::class)->findAll();
         foreach ($accessRules as $rule) {
             $key = $this->getKey($rule->getResource(), $rule->getMethod());
@@ -72,7 +84,8 @@ class AccessControlService
         $em->persist($accessRule);
         $em->flush();
 
-        $this->preloadCache();
+        $this->cacheLoaded = false;
+        $this->ensureCacheLoaded();
     }
 
     public function checkAccess($resources, User $user = null): bool
@@ -284,7 +297,8 @@ class AccessControlService
         $this->entityManager->persist(new UnhandledAccessRule($resource, $method));
         $this->entityManager->flush();
 
-        $this->preloadCache();
+        $this->cacheLoaded = false;
+        $this->ensureCacheLoaded();
     }
 
     private function unhandledRuleExists(string $resource, $method)
@@ -294,6 +308,7 @@ class AccessControlService
 
     private function getAccessRules(string $resource, string $method)
     {
+        $this->ensureCacheLoaded();
         $key = $this->getKey($resource, $method);
         if (key_exists($key, $this->accessRulesCache)) {
             return $this->accessRulesCache[$key];
@@ -304,6 +319,7 @@ class AccessControlService
 
     private function getUnhandledRules(string $resource, string $method)
     {
+        $this->ensureCacheLoaded();
         $key = $this->getKey($resource, $method);
         if (key_exists($key, $this->unhandledRulesCache)) {
             return $this->unhandledRulesCache[$key];

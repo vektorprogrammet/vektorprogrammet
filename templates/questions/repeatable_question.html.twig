@@ -7,11 +7,9 @@
                 {% if questions.vars.prototype.optional is defined %}{{ form_row(questions.vars.prototype.optional) | e }}{% endif %}
                 ">
 </div>
-{# Mark remaining prototype fields as rendered so form_rest() does not re-render them (Symfony 5+ strictness) #}
-<div class="hide">
-    {{ form_rest(questions.vars.prototype.children['alternatives'].vars.prototype) }}
-    {{ form_rest(questions.vars.prototype) }}
-</div>
+{# Mark all prototype fields as rendered so form_rest() does not re-render them (Sf6 strictness) #}
+{% do questions.vars.prototype.children['alternatives'].vars.prototype.setRendered() %}
+{% do questions.vars.prototype.setRendered() %}
 
 <div id="questions">
     {% for question in questions %}
@@ -45,3 +43,4 @@
         </div>
     {% endfor %}
 </div>
+{% do questions.setRendered() %}
