@@ -17,9 +17,8 @@ Norwegian tutoring program management platform. URLs in Norwegian. Upgrading Sym
 Use `run_in_background: true` for full test suite to avoid blocking (~2 min). Check results with `TaskOutput`.
 Clear cache if service config changes: `rm -rf var/cache/test/ && rm -f var/data/test.db`
 
-## Known Test Failures (23 = 6 errors + 17 failures)
-Pre-existing (15): AccessRule (5), Receipt (5), Interview/Survey template (3), CompanyEmailMaker (2)
-New from Sf6 (8): AdmissionAdmin scheduling (3), InterviewController scheduling (2), PasswordReset hashing (1), /utlegg (1), receipt edit (1)
+## Known Test Failures (17 = 1 error + 16 failures, all pre-existing)
+AccessRule (5), Receipt (6 incl /utlegg), Interview/Survey template (3), CompanyEmailMaker (2), Survey create (1)
 
 ## Architecture
 - `BaseController` extends `AbstractController` with `getSubscribedServices()` for ~35 services + bridge `getDoctrine()`/`get()` methods

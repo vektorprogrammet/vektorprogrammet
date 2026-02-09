@@ -19,13 +19,14 @@ class PasswordResetControllerTest extends BaseWebTestCase
      */
     private function loginSuccessful($password)
     {
-        $crawler = $this->anonymousGoTo('/login');
+        $client = $this->createAnonymousClient();
+        $client->getCookieJar()->clear();
+        $crawler = $client->request('GET', '/login');
 
         $form = $crawler->selectButton('Logg inn')->form();
         $form['_username'] = self::username;
         $form['_password'] = $password;
         $form['_remember_me'] = false;
-        $client = $this->createAnonymousClient();
         $client->submit($form);
 
         $crawler = $client->request('GET', '/');

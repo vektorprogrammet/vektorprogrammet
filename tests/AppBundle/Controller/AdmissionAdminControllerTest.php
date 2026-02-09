@@ -155,8 +155,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
 
         // At this point we are about to send the email
-        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
         $form = $crawler->selectButton('Send invitasjon på sms og e-post')->form();
+        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
         $client->enableProfiler();
         $client->submit($form);
 
