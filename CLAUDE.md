@@ -7,18 +7,18 @@ Norwegian tutoring program management platform. URLs in Norwegian. Upgrading Sym
 - 7b: COMPLETE — Fix 15 Sf6 test regressions (496 tests, 2 failures)
 - 8-9: frontend, cleanup
 
-## Commands
+## Testing
+
+See **`docs/testing.md`** for full test workflow, suites, timing, and credentials.
+
 ```bash
-/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist   # full tests (496)
-/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist --filter="SorterTest"  # quick smoke
+bin/phpunit --testsuite=unit          # 183 tests, <1s
+bin/phpunit --testsuite=controller    # 131 tests, ~110s
+bin/phpunit --testsuite=availability  # 182 tests, ~67s
 /usr/local/opt/php@8.4/bin/php $(which composer) [cmd] --no-scripts  # composer
 ```
-**IMPORTANT**: Tests MUST run with `dangerouslyDisableSandbox: true` — sandbox blocks vendor reads and SQLite writes.
-Use `run_in_background: true` for full test suite to avoid blocking (~2 min). Check results with `TaskOutput`.
-Clear cache if service config changes: `rm -rf var/cache/test/ && rm -f var/data/test.db`
-
-## Known Test Failures (2 failures, pre-existing)
-CompanyEmailMaker (2): macOS missing nb_NO locale
+**IMPORTANT**: Tests MUST run with `dangerouslyDisableSandbox: true`.
+Use `run_in_background: true` for full suite (~3 min). Known failures: CompanyEmailMaker (2, locale).
 
 ## Architecture
 - `BaseController` extends `AbstractController` with `getSubscribedServices()` for ~35 services + bridge `getDoctrine()`/`get()` methods
