@@ -2,16 +2,22 @@
 
 namespace App\Entity\Repository;
 
-use App\Entity\Semester;
 use App\Utils\SemesterUtil;
 use DateTime;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\Semester;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 
-class SemesterRepository extends EntityRepository
+class SemesterRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Semester::class);
+    }
+
     /**
      * @return QueryBuilder
      */

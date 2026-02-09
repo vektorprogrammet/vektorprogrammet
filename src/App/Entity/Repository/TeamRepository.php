@@ -5,15 +5,21 @@ namespace App\Entity\Repository;
 use App\Entity\AdmissionPeriod;
 use App\Entity\Department;
 use App\Entity\Team;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\Query\Expr;
 use Doctrine\ORM\QueryBuilder;
 
 /**
  * TeamRepository.
  */
-class TeamRepository extends EntityRepository
+class TeamRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Team::class);
+    }
+
 
     /**
      * @param Department $department

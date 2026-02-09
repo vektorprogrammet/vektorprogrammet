@@ -3,11 +3,17 @@
 namespace App\Entity\Repository;
 
 use App\Entity\Department;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class DepartmentRepository extends EntityRepository
+class DepartmentRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Department::class);
+    }
+
     public function findAllDepartments()
     {
         $departments = $this->getEntityManager()->createQuery('

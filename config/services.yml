@@ -10,6 +10,9 @@ services:
     App\:
         resource: "../src/App/{Command,Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,Twig,Validator}"
 
+    App\Entity\Repository\:
+        resource: "../src/App/Entity/Repository/"
+
     App\DataFixtures\ORM\:
         resource: '../src/App/DataFixtures/ORM'
         tags: ['doctrine.fixture.orm']

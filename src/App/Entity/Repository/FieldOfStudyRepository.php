@@ -4,10 +4,16 @@ namespace App\Entity\Repository;
 
 use App\Entity\Department;
 use App\Entity\FieldOfStudy;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class FieldOfStudyRepository extends EntityRepository
+class FieldOfStudyRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, FieldOfStudy::class);
+    }
+
     /*	Perhaps not needed anymore?
 
     public function findFieldOfStudyByName($shortName){

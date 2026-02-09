@@ -4,11 +4,17 @@ namespace App\Entity\Repository;
 
 use App\Entity\Department;
 use App\Entity\School;
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\QueryBuilder;
 
-class SchoolRepository extends EntityRepository
+class SchoolRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, School::class);
+    }
+
     /**
      * @param Department $department
      *

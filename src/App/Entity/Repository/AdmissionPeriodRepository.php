@@ -3,17 +3,23 @@
 namespace App\Entity\Repository;
 
 use App\Entity\Department;
-use App\Entity\AdmissionPeriod;
 use App\Entity\Semester;
 use DateTime;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\AdmissionPeriod;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * AdmissionPeriodRepository
  */
-class AdmissionPeriodRepository extends EntityRepository
+class AdmissionPeriodRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AdmissionPeriod::class);
+    }
+
 
     /**
      * @param Department $department

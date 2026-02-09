@@ -10,7 +10,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  * TeamInterest
  *
  * @ORM\Table()
- * @ORM\Entity(repositoryClass="TeamInterestRepository")
+ * @ORM\Entity(repositoryClass="App\Entity\Repository\TeamInterestRepository")
  */
 class TeamInterest implements DepartmentSemesterInterface
 {

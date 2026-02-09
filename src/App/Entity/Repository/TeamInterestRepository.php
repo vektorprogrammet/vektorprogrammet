@@ -2,14 +2,14 @@
 
 namespace App\Entity\Repository;
 
-use App\Entity\InfoMeeting;
+use App\Entity\TeamInterest;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
-class InfoMeetingRepository extends ServiceEntityRepository
+class TeamInterestRepository extends ServiceEntityRepository
 {
     public function __construct(ManagerRegistry $registry)
     {
-        parent::__construct($registry, InfoMeeting::class);
+        parent::__construct($registry, TeamInterest::class);
     }
 }

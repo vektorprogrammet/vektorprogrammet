@@ -2,12 +2,18 @@
 
 namespace App\Entity\Repository;
 
-use Doctrine\ORM\EntityRepository;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\User;
 use App\Entity\Receipt;
 
-class ReceiptRepository extends EntityRepository
+class ReceiptRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, Receipt::class);
+    }
+
     /**
      * @param User $user
      *

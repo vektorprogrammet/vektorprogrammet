@@ -3,15 +3,22 @@
 namespace App\Entity\Repository;
 
 use App\Entity\Department;
+use App\Entity\Semester;
+use App\Entity\SocialEvent;
 use DateTime;
-use \Doctrine\ORM\EntityRepository;
-use \App\Entity\Semester;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * Class SocialEventRepository
  */
-class SocialEventRepository extends EntityRepository
+class SocialEventRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, SocialEvent::class);
+    }
+
 
     /**
      * @param Semester $semester

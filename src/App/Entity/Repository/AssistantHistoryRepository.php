@@ -2,18 +2,24 @@
 
 namespace App\Entity\Repository;
 
-use App\Entity\AssistantHistory;
 use App\Entity\Department;
 use App\Entity\School;
 use App\Entity\Semester;
 use App\Entity\User;
 use App\Utils\SemesterUtil;
 use DateTime;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\AssistantHistory;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\NonUniqueResultException;
 
-class AssistantHistoryRepository extends EntityRepository
+class AssistantHistoryRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AssistantHistory::class);
+    }
+
     private function findByUserInit(User $user)
     {
         return $this->createQueryBuilder('assistantHistory')

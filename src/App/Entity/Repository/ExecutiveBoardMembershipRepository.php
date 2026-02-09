@@ -3,10 +3,17 @@
 namespace App\Entity\Repository;
 
 use App\Entity\User;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\ExecutiveBoardMembership;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class ExecutiveBoardMembershipRepository extends EntityRepository
+class ExecutiveBoardMembershipRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, ExecutiveBoardMembership::class);
+    }
+
     public function findByUser(User $user)
     {
         return $this->createQueryBuilder('bm')

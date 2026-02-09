@@ -4,10 +4,17 @@ namespace App\Entity\Repository;
 
 use App\Entity\Department;
 use App\Entity\Semester;
-use Doctrine\ORM\EntityRepository;
+use App\Entity\AdmissionNotification;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\Persistence\ManagerRegistry;
 
-class AdmissionNotificationRepository extends EntityRepository
+class AdmissionNotificationRepository extends ServiceEntityRepository
 {
+    public function __construct(ManagerRegistry $registry)
+    {
+        parent::__construct($registry, AdmissionNotification::class);
+    }
+
     public function findEmailsBySemesterAndDepartment(Semester $semester, Department $department)
     {
         $res = $this->createQueryBuilder('notification')
