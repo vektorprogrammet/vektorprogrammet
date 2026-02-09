@@ -46,7 +46,7 @@
         "symfony/error-handler": "6.4.*",
         "symfony/password-hasher": "6.4.*",
         "symfony/polyfill-apcu": "^1.0",
-        "sensio/framework-extra-bundle": "^6.0",
+
         "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.5",

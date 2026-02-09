@@ -253,9 +253,6 @@ ewz_recaptcha:
     public_key: ''
     private_key: ''
 
-sensio_framework_extra:
-  router:  { annotations: true }
-  request: { converters: true }
 
 fos_rest:
   param_fetcher_listener: true
