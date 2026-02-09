@@ -4,7 +4,7 @@ Norwegian tutoring program management platform. URLs in Norwegian. Upgrading Sym
 
 ## Sprints
 - 1-6: COMPLETE (Symfony 5.4, PHP 8)
-- 7: 5.4→6.4 — SwiftMailer→Mailer, annotations→attributes, getDoctrine()→DI
+- 7: COMPLETE — 5.4→6.4, SwiftMailer→Mailer, ContainerAwareCommand→DI, Twig 3
 - 8-9: frontend, cleanup
 
 ## Commands

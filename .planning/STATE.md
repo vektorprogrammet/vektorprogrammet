@@ -3,7 +3,7 @@
 **Updated**: 2026-02-09
 **Phase**: Sprint 7 (Symfony 5.4 → 6.4) — ALL PHASES COMPLETE
 **Branch**: `modernize/sprint-1-remove-dead-dependencies`
-**Commits**: `8d2cb493` (Sf6 upgrade), `f6bbe7a1` (ContainerAwareCommand + Twig)
+**Commits**: `8d2cb493` (Sf6 upgrade), `f6bbe7a1` (ContainerAwareCommand + Twig), `0a2918d1` (test fixes)
 
 ## Progress
 
@@ -13,7 +13,7 @@
 - [x] Sprint 4: Directory restructure
 - [x] Sprint 5: Symfony 3.4 → 4.4
 - [x] Sprint 6: Symfony 4.4 → 5.4 (committed: `5d4f2a15`)
-- [ ] Sprint 7: Symfony 5.4 → 6.4 — IN PROGRESS
+- [x] Sprint 7: Symfony 5.4 → 6.4 — COMPLETE (3 commits)
 - [ ] Sprint 8-9: Frontend, cleanup
 
 ## Sprint 7 Phases
@@ -26,20 +26,20 @@ All composer deps upgraded, kernel boots. Changes: composer.json/lock, config/*.
 
 All source + test files migrated. `Swift_Message` → `Email`, `Swift_Mailer` → `MailerInterface`.
 
-### Phase 3: password_encoder → password_hasher — PARTIAL (commit `8d2cb493`)
+### Phase 3: password_encoder → password_hasher — COMPLETE (commit `8d2cb493`, test fix in `0a2918d1`)
 
 - BaseController subscribed services updated
 - Controller `security.password_encoder` → `security.password_hasher` (2 files)
-- **REMAINING**: PasswordReset test fails — password not re-hashed on reset
+- PasswordReset test fixed (session carryover issue, not hashing)
 
 ### Phase 4: ContainerAwareCommand → Command with DI — COMPLETE (commit `f6bbe7a1`)
 
 6 commands migrated. Command directory added to services.yml autowiring.
 
-### Phase 5: Twig 3 Compatibility — PARTIAL (commit `f6bbe7a1`)
+### Phase 5: Twig 3 Compatibility — COMPLETE (commit `f6bbe7a1`)
 
 - `for...if` → `|filter()` in 4 templates
-- **REMAINING**: `spaceless` filter deprecated in Twig 3.12 (footer.html.twig, form templates)
+- `spaceless` filter: deprecation warnings only (Twig 3.12), not errors. Will break in Twig 4.
 
 ### Phase 6: Fix Sf6 Test Regressions — COMPLETE
 
@@ -53,11 +53,11 @@ Fixed all 6 genuine Sf6 regressions:
 
 **1 error + 16 failures = 17 total (all pre-existing)**
 
-- AccessRule (5): upstream deleted feature
-- Receipt (6): `testCreate`, permissions x3, `testEdit`, `/utlegg`
-- Interview/Survey template (3): `testCreateSchema`, `testEditSchemas`, `/kontrollpanel/undersokelse/opprett`
+- AccessRule (5): upstream deleted feature (3 controller + 2 availability)
+- Receipt (6): `testCreate`, permissions x3, `testEdit` (error), `/utlegg`
+- Interview schema (2): `testCreateSchema`, `testEditSchemas`
+- Availability (2): `/kontrollpanel/intervju/skjema/1`, `/kontrollpanel/undersokelse/opprett`
 - CompanyEmailMaker (2): macOS missing nb_NO locale
-- Survey create (1): `/kontrollpanel/undersokelse/opprett`
 
 No Sf6 regressions remaining.
 
