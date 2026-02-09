@@ -9,10 +9,11 @@ Track test counts after each commit to catch regressions early.
 ## Running Tests
 
 ```bash
-rm -f var/data/test.db* && php -d memory_limit=512M bin/phpunit --no-coverage
+rm -rf var/cache/tes_/ var/data/test.db var/data/test.db-journal && php -d memory_limit=256M bin/phpunit --no-coverage
 ```
 
 ## Notes
-- Clean test DB before runs to avoid SQLite disk I/O errors
-- Memory limit 512M needed (160MB actual usage)
+- Clean test DB AND cache dir before runs to avoid stale cache / SQLite disk I/O errors
+- Memory limit 256M sufficient (160MB actual peak usage)
+- `testShouldSendInfoMeetingNotification` is flaky near midnight (time-of-day dependent)
 - If failures appear that weren't in baseline, investigate before committing
