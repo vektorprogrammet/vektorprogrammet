@@ -58,8 +58,7 @@ Fixed all 15 regressions. **496 tests, 2 failures** (CompanyEmailMaker only).
 - annotations → PHP 8 attributes (663)
 - Remove sensio/framework-extra-bundle + doctrine/annotations
 
-## Test Command
+## Reference
 
-```bash
-/usr/local/opt/php@8.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist
-```
+- Test commands & workflow: `docs/testing.md`
+- Architecture details: `docs/architecture.md`

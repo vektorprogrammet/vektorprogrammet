@@ -37,6 +37,57 @@ Before commit:  --order-by=defects --stop-on-failure  fast fail
 Pre-push:       full suite (no flags)                 ~3 min
 ```
 
+## File → Test Mapping
+
+Use `--filter=TestClassName` to run only the relevant test when editing a source file.
+
+| Source file pattern | Test class | Suite | Time |
+|---|---|---|---|
+| `Controller/AdmissionAdminController` | AdmissionAdminControllerTest | controller | ~12s |
+| `Controller/InterviewController` | InterviewControllerTest | controller | ~12s |
+| `Controller/ReceiptController` | ReceiptControllerTest | controller | ~10s |
+| `Controller/SchoolAdminController` | SchoolAdminControllerTest | controller | ~8s |
+| `Controller/TeamAdminController` | TeamAdminControllerTest | controller | ~7s |
+| `Controller/AccessRuleController` | AccessRuleControllerTest | controller | ~7s |
+| `Controller/SurveyPopupController` | SurveyPopUpControllerTest | controller | ~6s |
+| `Controller/MailingListController` | MailingListControllerTest | controller | ~5s |
+| `Controller/ExecutiveBoardController` | ExecutiveBoardControllerTest | controller | ~5s |
+| `Controller/UserAdminController` | UserAdminControllerTest | controller | ~3s |
+| `Controller/ProfileController` | ProfileControllerTest | controller | ~3s |
+| `Controller/SecurityController` | SecurityControllerTest | controller | ~2s |
+| `Controller/PasswordResetController` | PasswordResetControllerTest | controller | ~2s |
+| `Controller/DepartmentController` | DepartmentControllerTest | controller | ~2s |
+| `Controller/FeedbackController` | FeedbackControllerTest | controller | ~2s |
+| `Controller/HomeController` | HomeControllerTest | controller | ~1s |
+| `Controller/SubstituteController` | SubstituteControllerTest | controller | ~1s |
+| `Controller/ArticleController` | ArticleControllerTest | controller | ~1s |
+| `Controller/ArticleAdminController` | ArticleAdminControllerTest | controller | ~1s |
+| `Controller/AssistantController` | AssistantControllerTest | controller | ~1s |
+| `Controller/BoardAndTeamController` | BoardAndTeamControllerTest | controller | ~1s |
+| `Controller/SemesterController` | SemesterControllerTest | controller | ~1s |
+| `Controller/SocialEventController` | SocialEventControllerTest | controller | ~1s |
+| `Controller/TeamApplicationController` | TeamApplicationControllerTest | controller | ~1s |
+| `Controller/TeamInterestController` | TeamInterestControllerTest | controller | ~1s |
+| `Controller/ChangeLogController` | ChangeLogControllerTest | controller | ~1s |
+| `Controller/InfoMeetingController` | InfoMeetingControllerTest | controller | ~1s |
+| `Controller/AboutVektorController` | AboutVektorControllerTest | controller | ~1s |
+| `Controller/SchoolsController` | SchoolsControllerTest | controller | ~1s |
+| `Controller/StudentsController` | StudentsControllerTest | controller | ~1s |
+| `Controller/ExistingUserAdmissionController` | ExistingUserAdmissionControllerTest | controller | ~1s |
+| `Controller/ParticipantHistoryController` | ParticipantHistoryControllerTest | controller | ~1s |
+| `Entity/*` | *EntityUnitTest (matching name) | unit | <1s |
+| `Service/Sorter` | SorterTest | unit | <1s |
+| `Service/RoleManager` | RoleManagerTest | unit | <1s |
+| `Service/SlugMaker` | SlugMakerTest | unit | <1s |
+| `Service/CompanyEmailMaker` | CompanyEmailMakerTest | unit | <1s |
+| `Service/GeoLocation` | GeoLocationTest | unit | <1s |
+| `Service/AccessControl` | AccessControlTest | unit | <1s |
+| `Sms/GatewayApi` | GatewayApiTest | unit | <1s |
+| `Form/Type/*` | CreateDepartmentTest, CreatePositionTest, CreateSchoolTest | unit | <1s |
+| `templates/**/*.twig` | AvailabilityFunctionalTest | availability | ~67s |
+
+**No test?** Controllers without a dedicated test are covered by `AvailabilityFunctionalTest` (smoke test).
+
 ## Known Failures (2)
 
 `CompanyEmailMakerTest::testNorwegianCharacters` and `testAccentCharacters` fail on macOS due to missing `nb_NO` locale. Pre-existing since Sprint 1.
