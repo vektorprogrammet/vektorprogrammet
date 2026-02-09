@@ -1,35 +1,28 @@
-# Vektorprogrammet Monolith — AI Agent Context
+# Vektorprogrammet Monolith
 
-## Project Overview
-Norwegian educational tutoring program management platform (admissions, interviews, teams, surveys, CMS). URLs are in Norwegian. Incrementally upgrading Symfony 3.4 → 6.4. See `progress.md` for detailed history.
+Norwegian tutoring program management platform. URLs in Norwegian. Upgrading Symfony 3.4 → 6.4. Details in `progress.md`.
 
-## Sprint Status
-- Sprints 1-5: COMPLETE (dead deps, deprecated bundles, namespace rename, directory restructure, Symfony 4.4)
-- Sprint 6: Symfony 4.4 → 5.4 — Remove `AdvancedUserInterface`, SwiftMailer → Symfony Mailer, `encoders` → `password_hashers`, switch to PHP 8.x
-- Sprint 7: Symfony 5.4 → 6.4 — annotations → PHP 8 attributes, inject repos instead of `getDoctrine()`
-- Sprint 8-9: Frontend modernization, cleanup
+## Sprints
+- 1-5: COMPLETE (now on Symfony 4.4)
+- 6: 4.4→5.4 — remove `AdvancedUserInterface`, SwiftMailer→Mailer, `encoders`→`password_hashers`, switch to PHP 8
+- 7: 5.4→6.4 — annotations→attributes, inject repos instead of `getDoctrine()`
+- 8-9: frontend, cleanup
 
-## Environment Setup
-
-**Must use PHP 7.4** (system PHP 8.5.2 is incompatible until Sprint 6):
+## Commands (PHP 7.4 required until Sprint 6)
 ```bash
-# PHP
-/usr/local/opt/php@7.4/bin/php
-
-# Composer
-/usr/local/opt/php@7.4/bin/php $(which composer) [command] --no-scripts --ignore-platform-req=composer-plugin-api
-
-# Tests (496 tests, 2 pre-existing CompanyEmailMakerTest failures — ignore)
-/usr/local/opt/php@7.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist
-
-# Console
-/usr/local/opt/php@7.4/bin/php bin/console [command]
+/usr/local/opt/php@7.4/bin/php                                          # php
+/usr/local/opt/php@7.4/bin/php $(which composer) [cmd] --no-scripts --ignore-platform-req=composer-plugin-api  # composer
+/usr/local/opt/php@7.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist   # tests (496, 3 pre-existing failures)
+/usr/local/opt/php@7.4/bin/php -d memory_limit=512M bin/phpunit -c phpunit.xml.dist --filter="AvailabilityFunctionalTest|SecurityControllerTest"  # smoke test
 ```
 
-## Key Architecture
-- **BaseController** (`src/App/Controller/BaseController.php`): extends `Controller` (not yet `AbstractController` — ~100 `$this->get()` calls need refactoring first, deferred to Sprint 6)
-- **Security**: 4 roles (`ROLE_USER` < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`), `User` implements `AdvancedUserInterface` + `Serializable` (removed in Symfony 5/6)
-- **Role entity**: `__toString()` returns `getRole()` (not `getName()`) — critical for Symfony 4.4 role resolution
+## Architecture
+- `BaseController` extends `Controller` not `AbstractController` (~100 `$this->get()` calls, deferred to Sprint 6)
+- Security: `ROLE_USER` < `ROLE_TEAM_MEMBER` < `ROLE_TEAM_LEADER` < `ROLE_ADMIN`. `User` has `AdvancedUserInterface` + `Serializable` (removed in Sf5)
+- `Role::__toString()` returns `getRole()` not `getName()` — critical for Sf4.4 role resolution
 
-## Key Files
-`composer.json`, `src/Kernel.php`, `config/bundles.php`, `config/security.yml`, `config/services.yml`, `config/config.yml`, `src/App/Controller/BaseController.php`, `src/App/Entity/User.php`, `progress.md`
+## Workflow
+**Start**: read `progress.md`, run tests before changes, check `git status`/`git log`
+**Plan**: risk-first (architectural decisions before quick wins). Define explicit done-criteria per sprint. Never delete/redefine tasks mid-sprint.
+**Dev**: small commits per logical change. Run smoke tests between changes. When fixing a pattern, sweep ALL file types (controllers, subscribers, services, templates).
+**End**: update `progress.md`, leave tests passing, record lessons in memory files
