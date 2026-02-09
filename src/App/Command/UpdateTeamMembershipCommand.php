@@ -3,16 +3,19 @@
 namespace App\Command;
 
 use App\Service\TeamMembershipService;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateTeamMembershipCommand extends ContainerAwareCommand
+class UpdateTeamMembershipCommand extends Command
 {
-    /**
-     * @var TeamMembershipService
-     */
-    private $notifier;
+    private TeamMembershipService $teamMembershipService;
+
+    public function __construct(TeamMembershipService $teamMembershipService)
+    {
+        $this->teamMembershipService = $teamMembershipService;
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -24,13 +27,10 @@ class UpdateTeamMembershipCommand extends ContainerAwareCommand
             ->setDescription('Looks for expired team memberships');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->notifier = $this->getContainer()->get(TeamMembershipService::class);
-    }
+        $this->teamMembershipService->updateTeamMemberships();
 
-    protected function execute(InputInterface $input, OutputInterface $output)
-    {
-        $this->notifier->updateTeamMemberships();
+        return Command::SUCCESS;
     }
 }

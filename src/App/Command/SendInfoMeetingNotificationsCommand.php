@@ -3,16 +3,19 @@
 namespace App\Command;
 
 use App\Service\AdmissionNotifier;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SendInfoMeetingNotificationsCommand extends ContainerAwareCommand
+class SendInfoMeetingNotificationsCommand extends Command
 {
-    /**
-     * @var AdmissionNotifier
-     */
-    private $notifier;
+    private AdmissionNotifier $notifier;
+
+    public function __construct(AdmissionNotifier $notifier)
+    {
+        $this->notifier = $notifier;
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -24,13 +27,10 @@ class SendInfoMeetingNotificationsCommand extends ContainerAwareCommand
             ->setDescription('Sends notifications about info meeting to subscribers');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->notifier = $this->getContainer()->get(AdmissionNotifier::class);
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->notifier->sendInfoMeetingNotifications();
+
+        return Command::SUCCESS;
     }
 }

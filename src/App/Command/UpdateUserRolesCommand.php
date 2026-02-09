@@ -4,27 +4,23 @@ namespace App\Command;
 
 use App\Entity\User;
 use App\Service\RoleManager;
-use Doctrine\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateUserRolesCommand extends ContainerAwareCommand
+class UpdateUserRolesCommand extends Command
 {
-    /**
-     * @var ObjectManager
-     */
-    private $entityManager;
+    private EntityManagerInterface $entityManager;
+    private RoleManager $roleManager;
+    private int $rolesUpdatedCount = 0;
 
-    /**
-     * @var RoleManager
-     */
-    private $roleManager;
-
-    /**
-     * @var int
-     */
-    private $rolesUpdatedCount;
+    public function __construct(EntityManagerInterface $entityManager, RoleManager $roleManager)
+    {
+        $this->entityManager = $entityManager;
+        $this->roleManager = $roleManager;
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -44,22 +40,8 @@ Users NOT in team will be demoted to Assistants.
 HELP
             );
     }
-    /**
-     * This method is executed before the the execute() method. It's main purpose
-     * is to initialize the variables used in the rest of the command methods.
-     */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->entityManager = $this->getContainer()->get('doctrine')->getManager();
-        $this->roleManager = $this->getContainer()->get(RoleManager::class);
 
-        $this->rolesUpdatedCount = 0;
-    }
-    /**
-     * This method is executed after initialize(). It usually contains the logic
-     * to execute to complete this command task.
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
 
@@ -78,5 +60,7 @@ HELP
         $elapsedTime = ($finishTime - $startTime) * 1000;
 
         $output->writeln(sprintf('%d roles updated in %d ms', $this->rolesUpdatedCount, $elapsedTime));
+
+        return Command::SUCCESS;
     }
 }

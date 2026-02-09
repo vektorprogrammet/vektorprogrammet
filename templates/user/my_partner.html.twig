@@ -29,11 +29,11 @@
                                 <h3 class="text-center text-muted my-3">{{ school }} - {{ assistantHistory.day }}er</h3>
                             </div>
 
-                            {% for group in [1,2] if assistantHistory.activeInGroup(group) %}
+                            {% for group in [1,2]|filter(group => assistantHistory.activeInGroup(group)) %}
                                 <div class="col-12 col-md-6{{ not (assistantHistory.activeInGroup(1) and assistantHistory.activeInGroup(2)) ? ' offset-md-3':'' }}">
                                     <h5 class="text-center my-3">Bolk {{ group }}</h5>
                                     <div class="partners group-{{ group }}">
-                                        {% for partner in partners if partner.activeInGroup(group) %}
+                                        {% for partner in partners|filter(partner => partner.activeInGroup(group)) %}
                                             <div class="partner">
                                                 <img
                                                         src="{{ asset_with_version(partner.user.picturePath) }}"

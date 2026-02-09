@@ -8,7 +8,7 @@
 <hr>
 
 <h3>Ikke satt opp</h3>
-{% for interview in interviews if (interview.interviewStatus == 4) %}
+{% for interview in interviews|filter(interview => interview.interviewStatus == 4) %}
     <p><a href="https://vektorprogrammet.no{{ path('interview_schedule', {'id': interview.id}) }}">{{ interview.user }}</a></p>
 {% else %}
     Ingen<br>

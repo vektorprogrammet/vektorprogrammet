@@ -6,21 +6,21 @@ use App\Entity\Department;
 use App\Entity\Interview;
 use App\Service\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
+class SendListOfScheduledInterviewsCommand extends Command
 {
-    /**
-     * @var InterviewManager
-     */
-    private $interviewManager;
+    private InterviewManager $interviewManager;
+    private EntityManagerInterface $em;
 
-    /**
-     * @var EntityManagerInterface
-     */
-    private $em;
+    public function __construct(InterviewManager $interviewManager, EntityManagerInterface $em)
+    {
+        $this->interviewManager = $interviewManager;
+        $this->em = $em;
+        parent::__construct();
+    }
 
     /**
      * {@inheritdoc}
@@ -32,13 +32,7 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
             ->setDescription('Sends a list of scheduled interview to each interviewer');
     }
 
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->interviewManager = $this->getContainer()->get(InterviewManager::class);
-        $this->em = $this->getContainer()->get('doctrine.orm.default_entity_manager');
-    }
-
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $departments = $this->em->getRepository(Department::class)->findActive();
         foreach ($departments as $department) {
@@ -53,5 +47,7 @@ class SendListOfScheduledInterviewsCommand extends ContainerAwareCommand
                 $this->interviewManager->sendInterviewScheduleToInterviewer($interviewer);
             }
         }
+
+        return Command::SUCCESS;
     }
 }

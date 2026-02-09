@@ -3,16 +3,19 @@
 namespace App\Command;
 
 use App\Service\InterviewManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class SendAcceptInterviewReminderCommand extends ContainerAwareCommand
+class SendAcceptInterviewReminderCommand extends Command
 {
-    /**
-     * @var InterviewManager
-     */
-    private $interviewManager;
+    private InterviewManager $interviewManager;
+
+    public function __construct(InterviewManager $interviewManager)
+    {
+        $this->interviewManager = $interviewManager;
+        parent::__construct();
+    }
 
     /**
      * @inheritdoc
@@ -27,16 +30,10 @@ class SendAcceptInterviewReminderCommand extends ContainerAwareCommand
     /**
      * @inheritdoc
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
-    {
-        $this->interviewManager = $this->getContainer()->get(InterviewManager::class);
-    }
-
-    /**
-     * @inheritdoc
-     */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->interviewManager->sendAcceptInterviewReminders();
+
+        return Command::SUCCESS;
     }
 }
