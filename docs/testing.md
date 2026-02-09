@@ -88,9 +88,9 @@ Use `--filter=TestClassName` to run only the relevant test when editing a source
 
 **No test?** Controllers without a dedicated test are covered by `AvailabilityFunctionalTest` (smoke test).
 
-## Known Failures (2)
+## Known Failures
 
-`CompanyEmailMakerTest::testNorwegianCharacters` and `testAccentCharacters` fail on macOS due to missing `nb_NO` locale. Pre-existing since Sprint 1.
+None. All 496 tests pass.
 
 ## Environment Requirements
 

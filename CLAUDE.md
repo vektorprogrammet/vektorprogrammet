@@ -13,7 +13,7 @@ Norwegian tutoring program management platform. Symfony 6.4, PHP 8. Upgrading fr
 
 ## Critical Gotchas
 - Tests MUST run with `dangerouslyDisableSandbox: true` (SQLite + vendor reads)
-- Known failures: 2 CompanyEmailMaker tests (macOS locale, pre-existing)
+- All 496 tests pass (0 known failures)
 - HEREDOC in git commit fails in sandbox — use plain quoted strings
 
 ## Workflow
