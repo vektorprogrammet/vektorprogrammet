@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\User;
 use App\Role\Roles;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 
 class BetaRedirecter
@@ -19,9 +19,9 @@ class BetaRedirecter
         $this->roleManager = $roleManager;
     }
 
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
-        if (!$event->isMasterRequest()) {
+        if (!$event->isMainRequest()) {
             return $event;
         }
         if (!$this->userShouldBeRedirected()) {

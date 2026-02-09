@@ -48,6 +48,7 @@ class SocialEventType extends AbstractType
             ->add('startTime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
+                'html5' => false,
                 'label' => 'Starttid for arrangement',
                 'attr' => array(
                     'placeholder' => 'Klikk for å velge tidspunkt',
@@ -58,6 +59,7 @@ class SocialEventType extends AbstractType
             ->add('endTime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
+                'html5' => false,
                 'label' => 'Sluttid for arrangement',
                 'attr' => array(
                     'placeholder' => 'Klikk for å velge tidspunkt',

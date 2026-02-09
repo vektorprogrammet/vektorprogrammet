@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use App\Entity\Team;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class TeamEvent extends Event
 {

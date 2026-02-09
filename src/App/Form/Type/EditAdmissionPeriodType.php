@@ -16,6 +16,7 @@ class EditAdmissionPeriodType extends AbstractType
                 'label' => 'Opptak starttidspunkt',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
+                'html5' => false,
                 'attr' => array(
                     'placeholder' => 'Klikk for å velge tidspunkt',
                 ),
@@ -24,6 +25,7 @@ class EditAdmissionPeriodType extends AbstractType
                 'label' => 'Opptak sluttidspunkt',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
+                'html5' => false,
                 'attr' => array(
                     'placeholder' => 'Klikk for å velge tidspunkt',
                 ),

@@ -216,11 +216,11 @@ class AccessControlService
 
     private function userRoleHasAccessToRule(User $user, AccessRule $rule): bool
     {
+        $userRoleStrings = $user->getRoles();
         foreach ($rule->getRoles() as $roleInRule) {
-            foreach ($user->getRoles() as $userRole) {
-                if ($roleInRule === $userRole) {
-                    return true;
-                }
+            $roleString = $roleInRule instanceof \App\Entity\Role ? $roleInRule->getRole() : (string) $roleInRule;
+            if (in_array($roleString, $userRoleStrings, true)) {
+                return true;
             }
         }
 

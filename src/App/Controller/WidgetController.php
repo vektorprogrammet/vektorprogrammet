@@ -41,7 +41,7 @@ class WidgetController extends BaseController
     public function receiptsAction()
     {
         $usersWithReceipts = $this->getDoctrine()->getRepository(User::class)->findAllUsersWithReceipts();
-        $sorter = $this->container->get(Sorter::class);
+        $sorter = $this->get(Sorter::class);
 
         $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
         $sorter->sortUsersByReceiptStatus($usersWithReceipts);

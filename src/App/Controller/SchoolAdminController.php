@@ -58,7 +58,7 @@ class SchoolAdminController extends BaseController
             $em->persist($assistantHistory);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(AssistantHistoryCreatedEvent::NAME, new AssistantHistoryCreatedEvent($assistantHistory));
+            $this->get('event_dispatcher')->dispatch(new AssistantHistoryCreatedEvent($assistantHistory), AssistantHistoryCreatedEvent::NAME);
 
             return $this->redirect($this->generateUrl('schooladmin_show_users_of_department'));
         }

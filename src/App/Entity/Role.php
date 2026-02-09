@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Entity(repositoryClass="App\Entity\Repository\RoleRepository")
  */
-class Role extends SymfonyRole
+class Role
 {
     /**
      * @ORM\Column(name="id", type="integer", length=11)
@@ -37,7 +36,7 @@ class Role extends SymfonyRole
 
     public function __construct(string $role = '')
     {
-        parent::__construct($role);
+        $this->role = $role;
         $this->users = new ArrayCollection();
     }
 

@@ -5,7 +5,7 @@ namespace Tests\App\Service;
 use App\Entity\Department;
 use App\Service\GeoLocation;
 use App\Service\LogService;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\HttpFoundation\HeaderBag;
@@ -27,7 +27,7 @@ class GeoLocationTest extends TestCase
      */
     private $dep2;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->dep1 = new Department();

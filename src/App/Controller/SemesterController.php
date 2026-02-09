@@ -5,14 +5,13 @@ namespace App\Controller;
 use App\Entity\Semester;
 use App\Form\Type\CreateSemesterType;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
-class SemesterController extends Controller
+class SemesterController extends BaseController
 {
     /**
      * @Route(name="semester_show", path="/kontrollpanel/semesteradmin")

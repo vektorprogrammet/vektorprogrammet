@@ -70,7 +70,7 @@ class TeamApplicationController extends BaseController
             $manager->persist($teamApplication);
             $manager->flush();
 
-            $this->get('event_dispatcher')->dispatch(TeamApplicationCreatedEvent::NAME, new TeamApplicationCreatedEvent($teamApplication));
+            $this->get('event_dispatcher')->dispatch(new TeamApplicationCreatedEvent($teamApplication), TeamApplicationCreatedEvent::NAME);
 
             return $this->redirectToRoute('team_application_confirmation', array(
                 'team_name' => $team->getName(),

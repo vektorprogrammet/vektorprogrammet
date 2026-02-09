@@ -157,7 +157,7 @@ class LogService implements LoggerInterface
 
     private function createAttachmentData($level, $message, array $data)
     {
-        $request = $this->requestStack->getMasterRequest();
+        $request = $this->requestStack->getMainRequest();
         $method = $request ? $request->getMethod() : '';
         $path = $request ? $request->getPathInfo() : '???';
         if ('staging' === $this->env) {

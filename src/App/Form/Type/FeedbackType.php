@@ -39,6 +39,6 @@ class FeedbackType extends AbstractType
                 'data' => 'question'
 
             ))
-            ->add('Send inn', SubmitType::class);
+            ->add('send_inn', SubmitType::class, ['label' => 'Send inn']);
     }
 }

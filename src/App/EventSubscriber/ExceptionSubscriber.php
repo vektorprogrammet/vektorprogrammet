@@ -4,7 +4,7 @@ namespace App\EventSubscriber;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseForExceptionEvent;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\HttpExceptionInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -35,9 +35,9 @@ class ExceptionSubscriber implements EventSubscriberInterface
         );
     }
 
-    public function logException(GetResponseForExceptionEvent $event)
+    public function logException(ExceptionEvent $event)
     {
-        $exception = $event->getException();
+        $exception = $event->getThrowable();
         if ($exception instanceof HttpException) {
             $this->logHttpException($exception);
 

@@ -25,6 +25,7 @@ class ScheduleInterviewType extends AbstractType
             ->add('datetime', DateTimeType::class, array(
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
+                'html5' => false,
                 'label' => 'Tidspunkt',
                 'attr' => array('placeholder' => 'Klikk for å velge tidspunkt'),
             ))

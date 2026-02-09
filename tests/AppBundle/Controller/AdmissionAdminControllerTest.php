@@ -4,7 +4,7 @@ namespace Tests\App\Controller;
 
 use App\Entity\Interview;
 use Tests\BaseWebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class AdmissionAdminControllerTest extends BaseWebTestCase
 {
@@ -207,11 +207,11 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @param Client $client
+     * @param KernelBrowser $client
      *
      * @return string
      */
-    private function getResponseCodeFromEmail(Client $client)
+    private function getResponseCodeFromEmail(KernelBrowser $client)
     {
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
         $this->assertEquals(1, $mailCollector->getMessageCount());
@@ -225,12 +225,12 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @param Client $client
+     * @param KernelBrowser $client
      * @param string $response_code
      *
-     * @return Client
+     * @return KernelBrowser
      */
-    private function helperTestCancelConfirm(Client $client, string $response_code)
+    private function helperTestCancelConfirm(KernelBrowser $client, string $response_code)
     {
         $crawler = $this->goTo('/intervju/kanseller/tilbakemelding/'.$response_code, $client);
         $form = $crawler->selectButton('Kanseller')->form();

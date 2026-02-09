@@ -3,7 +3,7 @@
 namespace App\Event;
 
 use App\Entity\Application;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class ApplicationCreatedEvent extends Event
 {

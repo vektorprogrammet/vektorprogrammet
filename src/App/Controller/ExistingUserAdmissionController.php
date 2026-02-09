@@ -52,7 +52,7 @@ class ExistingUserAdmissionController extends BaseController
             $em->persist($application);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->get('event_dispatcher')->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
             $this->addFlash("success", "Søknad mottatt!");
 
             return $this->redirectToRoute('my_page');

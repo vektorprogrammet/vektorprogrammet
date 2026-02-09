@@ -118,7 +118,7 @@ class RoleManager
             return false;
         }
 
-        $userRole = $user->getRoles()[0]->getRole();
+        $userRole = $user->getRoles()[0];
 
         $userAccessLevel = array_search($userRole, $roles);
         $roleAccessLevel = array_search($role, $roles);
@@ -195,7 +195,7 @@ class RoleManager
         }
 
         $role = $this->em->getRepository(Role::class)->findByRoleName($role);
-        $roleNeedsToUpdate = array_search($role, $user->getRoles()) === false;
+        $roleNeedsToUpdate = array_search($role->getRole(), $user->getRoles()) === false;
 
         if ($roleNeedsToUpdate) {
             $user->setRoles([$role]);

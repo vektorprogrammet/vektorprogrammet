@@ -22,6 +22,7 @@ class InfoMeetingType extends AbstractType
                 'label' => 'Dato og klokkeslett',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
+                'html5' => false,
                 'attr' => [
                     'placeholder' => 'Klikk for å velge tidspunkt'
                 ]

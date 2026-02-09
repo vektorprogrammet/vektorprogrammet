@@ -6,7 +6,12 @@ use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Dotenv\Dotenv;
 
-(new Dotenv(true))->loadEnv(dirname(__DIR__).'/.env');
+$envFile = dirname(__DIR__).'/.env';
+if (is_file($envFile)) {
+    (new Dotenv())->bootEnv($envFile);
+} elseif (is_file($envFile.'.test')) {
+    (new Dotenv())->loadEnv($envFile.'.test', 'APP_ENV', 'test');
+}
 
 $kernel = new Kernel('test', true);
 $kernel->boot();

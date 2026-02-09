@@ -44,4 +44,9 @@ class FieldTypeHelpExtension extends AbstractTypeExtension
     {
         return FormType::class;
     }
+
+    public static function getExtendedTypes(): iterable
+    {
+        return [FormType::class];
+    }
 }

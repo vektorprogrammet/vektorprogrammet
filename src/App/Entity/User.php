@@ -6,14 +6,13 @@ use App\Role\Roles;
 use App\Validator\Constraints as CustomAssert;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
-use Serializable;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\EquatableInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
-use Symfony\Component\Security\Core\User\EquatableInterface;
 
 /**
  * App\Entity\User.
@@ -32,7 +31,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
  *      groups={"create_user", "username", "edit_user"}
  * )
  */
-class User implements EquatableInterface, AdvancedUserInterface, Serializable
+class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
     /**
      * @ORM\Column(type="integer")
@@ -247,7 +246,7 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -268,9 +267,21 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
     }
 
     /**
+     * @return string[]
+     */
+    public function getRoles(): array
+    {
+        $roles = is_array($this->roles) ? $this->roles : $this->roles->toArray();
+
+        return array_map(function (Role $role) {
+            return $role->getRole();
+        }, $roles);
+    }
+
+    /**
      * @return Role[]
      */
-    public function getRoles()
+    public function getRoleEntities(): array
     {
         if (is_array($this->roles)) {
             return $this->roles;
@@ -587,34 +598,20 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
     {
     }
 
-    /**
-     * @see \Serializable::serialize()
-     */
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize(array(
-            $this->id,
-            $this->user_name,
-            $this->password,
-            // see section on salt below
-            // $this->salt,
-        ));
+        return [
+            'id' => $this->id,
+            'user_name' => $this->user_name,
+            'password' => $this->password,
+        ];
     }
 
-    /**
-     * @see \Serializable::unserialize(
-     *
-     * @param $serialized
-     */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        list(
-            $this->id,
-            $this->user_name,
-            $this->password,
-            // see section on salt below
-            // $this->salt
-            ) = unserialize($serialized);
+        $this->id = $data['id'];
+        $this->user_name = $data['user_name'];
+        $this->password = $data['password'];
     }
 
     public function isAccountNonExpired()
@@ -640,11 +637,9 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
     /**
      * {@inheritdoc}
      */
-    public function getSalt()
+    public function getSalt(): ?string
     {
-        // you *may* need a real salt depending on your encoder
-        // see section on salt below
-        return;
+        return null;
     }
 
     /**
@@ -871,8 +866,13 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
         return false;
     }
 
+    public function getUserIdentifier(): string
+    {
+        return $this->user_name ?? '';
+    }
+
     public function isEqualTo(UserInterface $user)
     {
-        return $this->password === $user->getPassword() && $this->user_name === $user->getUsername();
+        return $this->password === $user->getPassword() && $this->user_name === $user->getUserIdentifier();
     }
 }

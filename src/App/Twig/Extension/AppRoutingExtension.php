@@ -3,30 +3,40 @@
 namespace App\Twig\Extension;
 
 use App\Service\AccessControlService;
-use Symfony\Bridge\Twig\Extension\RoutingExtension;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Twig\Extension\AbstractExtension;
+use Twig\TwigFunction;
 
-class AppRoutingExtension extends RoutingExtension
+class AppRoutingExtension extends AbstractExtension
 {
-
-    /**
-     * @var AccessControlService
-     */
     private $accessControlService;
+    private $urlGenerator;
 
     public function __construct(AccessControlService $accessControlService, UrlGeneratorInterface $urlGenerator)
     {
-        parent::__construct($urlGenerator);
-
         $this->accessControlService = $accessControlService;
+        $this->urlGenerator = $urlGenerator;
     }
 
-    public function getPath($name, $parameters = array(), $relative = false)
+    public function getFunctions(): array
+    {
+        return [
+            new TwigFunction('path', [$this, 'getPath']),
+            new TwigFunction('url', [$this, 'getUrl']),
+        ];
+    }
+
+    public function getPath(string $name, array $parameters = [], bool $relative = false): string
     {
         if (!$this->accessControlService->checkAccess($name)) {
             return "#noaccess";
         }
 
-        return parent::getPath($name, $parameters, $relative);
+        return $this->urlGenerator->generate($name, $parameters, $relative ? UrlGeneratorInterface::RELATIVE_PATH : UrlGeneratorInterface::ABSOLUTE_PATH);
+    }
+
+    public function getUrl(string $name, array $parameters = [], bool $schemeRelative = false): string
+    {
+        return $this->urlGenerator->generate($name, $parameters, $schemeRelative ? UrlGeneratorInterface::NETWORK_PATH : UrlGeneratorInterface::ABSOLUTE_URL);
     }
 }

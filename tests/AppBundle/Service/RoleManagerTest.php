@@ -23,7 +23,7 @@ class RoleManagerTest extends KernelTestCase
      */
     private $mockUsers;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $kernel = $this->createKernel();
         $kernel->boot();
@@ -87,7 +87,7 @@ class RoleManagerTest extends KernelTestCase
     private function assertThatUserWithEmailHasRole(string $email, string $role)
     {
         $user = $this->em->getRepository(User::class)->findUserByEmail($email);
-        $this->assertEquals($role, current($user->getRoles())->getRole());
+        $this->assertEquals($role, current($user->getRoles()));
     }
 }
 

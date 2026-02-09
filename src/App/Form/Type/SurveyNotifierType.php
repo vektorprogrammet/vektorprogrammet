@@ -33,6 +33,7 @@ class SurveyNotifierType extends AbstractType
                 'label' => "Varsel skal sendes fra (merk: vil bare tillate å sende fra gitt dato, vil ikke skje automatisk)",
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
+                'html5' => false,
                 'disabled' => !$this->canEdit
             ])
 

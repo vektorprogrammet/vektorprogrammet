@@ -3,7 +3,7 @@
 namespace Tests\App\Controller;
 
 use Tests\BaseWebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class PasswordResetControllerTest extends BaseWebTestCase
 {
@@ -67,9 +67,9 @@ class PasswordResetControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @param $client Client with profiler enabled
+     * @param $client KernelBrowser with profiler enabled
      */
-    private function assertNoEmailSent(Client $client)
+    private function assertNoEmailSent(KernelBrowser $client)
     {
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
         $this->assertEquals(0, $mailCollector->getMessageCount());

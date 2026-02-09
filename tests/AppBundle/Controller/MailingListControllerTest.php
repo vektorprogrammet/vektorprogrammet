@@ -4,7 +4,7 @@ namespace Tests\App\Controller;
 
 use App\Entity\User;
 use Tests\BaseWebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class MailingListControllerTest extends BaseWebTestCase
 {
@@ -13,7 +13,7 @@ class MailingListControllerTest extends BaseWebTestCase
      */
     private $em;
 
-    public function setUp()
+    protected function setUp(): void
     {
         self::bootKernel();
         $this->em = static::$kernel->getContainer()
@@ -49,7 +49,7 @@ class MailingListControllerTest extends BaseWebTestCase
         $this->assertEquals($lengthTeamOld + $userEmailLength + 2, $lengthTeamNew);
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
         $this->em->close();
@@ -70,12 +70,12 @@ class MailingListControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @param Client $client
+     * @param KernelBrowser $client
      * @param string $type
      *
      * @return int
      */
-    private function generateListCountChars(Client $client, string $type)
+    private function generateListCountChars(KernelBrowser $client, string $type)
     {
         $crawler = $this->goTo('/kontrollpanel/epostlister', $client);
         $form = $crawler->selectButton('Generer')->form();

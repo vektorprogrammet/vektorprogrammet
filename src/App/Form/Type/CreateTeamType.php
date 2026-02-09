@@ -38,6 +38,7 @@ class CreateTeamType extends AbstractType
                 'label' => 'Søknadsfrist',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
+                'html5' => false,
                 'required' => false,
             ))
             ->add('active', CheckboxType::class, array(

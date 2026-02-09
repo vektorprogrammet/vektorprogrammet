@@ -112,9 +112,9 @@ class DepartmentControllerTest extends BaseWebTestCase
         $crawler = $client->followRedirect();
 
         // Assert that we created a new entity
-        $this->assertContains('Trondheim2', $client->getResponse()->getContent());
-        $this->assertContains('NTNU2', $client->getResponse()->getContent());
-        $this->assertContains('NTNU@mail.com2', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Trondheim2', $client->getResponse()->getContent());
+        $this->assertStringContainsString('NTNU2', $client->getResponse()->getContent());
+        $this->assertStringContainsString('NTNU@mail.com2', $client->getResponse()->getContent());
 
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('a:contains("Trondheim2")')->count());

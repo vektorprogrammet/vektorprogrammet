@@ -31,6 +31,7 @@ class ChangeLogType extends AbstractType
             'label' => 'Velg dato endringen blir gjort',
             'format' => 'dd.MM.yyyy HH:mm',
             'widget' => 'single_text',
+            'html5' => false,
             'attr' => [
                 'placeholder' => 'Klikk for å velge tidspunkt',
                 'autocomplete' => 'off',

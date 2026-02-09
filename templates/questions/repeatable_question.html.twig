@@ -7,6 +7,11 @@
                 {% if questions.vars.prototype.optional is defined %}{{ form_row(questions.vars.prototype.optional) | e }}{% endif %}
                 ">
 </div>
+{# Mark remaining prototype fields as rendered so form_rest() does not re-render them (Symfony 5+ strictness) #}
+<div class="hide">
+    {{ form_rest(questions.vars.prototype.children['alternatives'].vars.prototype) }}
+    {{ form_rest(questions.vars.prototype) }}
+</div>
 
 <div id="questions">
     {% for question in questions %}
@@ -25,6 +30,8 @@
                             <div class="alternative">
                                 {{ form_row(alternative.alternative) }}
                             </div>
+                            {# Mark remaining alternative fields as rendered #}
+                            <div class="hide">{{ form_rest(alternative) }}</div>
                         {% endfor %}
                     </div>
                 </div>
@@ -32,6 +39,8 @@
                     <div class="buttons col-8 col-md-6 col-lg-4">
                     </div>
                 </div>
+                {# Mark remaining question fields as rendered so form_rest() does not re-render them #}
+                <div class="hide">{{ form_rest(question) }}</div>
             </div>
         </div>
     {% endfor %}

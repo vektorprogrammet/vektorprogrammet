@@ -123,7 +123,7 @@ class GeoLocation
 
     public function findCoordinates($ip)
     {
-        $ignoreGeo = $this->requestStack->getMasterRequest()->headers->get('ignore-geo');
+        $ignoreGeo = $this->requestStack->getMainRequest()->headers->get('ignore-geo');
         if (!$this->ipinfoToken || $ignoreGeo) {
             return null;
         }

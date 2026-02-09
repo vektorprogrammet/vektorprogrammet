@@ -31,7 +31,7 @@ class FeedbackController extends BaseController
             $em->flush();
 
             //Notifies on slack (NotificationChannel)
-            $messenger = $this->container->get(SlackMessenger::class);
+            $messenger = $this->get(SlackMessenger::class);
             $messenger->notify($feedback->getSlackMessageBody());
 
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
