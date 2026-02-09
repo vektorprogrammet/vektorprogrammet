@@ -43,7 +43,7 @@ Fixed all 15 regressions. **496 tests, 2 failures** (CompanyEmailMaker only).
 
 ## Test Results (496 tests)
 
-**0 errors + 2 failures = 2 total** (both pre-existing CompanyEmailMaker locale)
+**0 errors + 0 failures** — All 496 tests pass (1150 assertions). Baseline tracked in `.planning/test-baseline.md`.
 
 ## Key Decisions Made
 

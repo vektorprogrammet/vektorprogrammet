@@ -35,7 +35,11 @@ Pre-push:       full suite (no flags)                 ~3 min
 
 ## Known Failures
 
-None. All 496 tests pass.
+None. All 496 tests pass (1150 assertions).
+
+## Baseline Tracking
+
+Test counts are tracked in [`.planning/test-baseline.md`](../.planning/test-baseline.md). Update after each commit. If failure count grows, investigate before committing.
 
 ## CI
 
