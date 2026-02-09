@@ -287,7 +287,7 @@ class Assistant implements JsonSerializable
         $this->setAssignedDay($day);
     }
 
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return array(
             'id' => $this->getId(),

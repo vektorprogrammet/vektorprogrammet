@@ -105,7 +105,7 @@ class SurveyQuestionAlternative implements JsonSerializable
      *
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getAlternative();
     }

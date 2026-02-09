@@ -1,0 +1,319 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property App\\AssistantScheduling\\Assistant\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/AssistantScheduling/Assistant.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$accessRule \(App\\Entity\\AccessRule\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 2
+			path: src/App/Controller/AccessRuleController.php
+
+		-
+			message: '#^Call to an undefined method App\\Controller\\Api\\PartyController\:\:getDoctrine\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/App/Controller/Api/PartyController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$department \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/AssistantController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$specificDepartment \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/AssistantController.php
+
+		-
+			message: '#^Class App\\Twig\\RoleExtension not found\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/App/Controller/BaseController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$department \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/ContactController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$fieldOfStudy \(App\\Entity\\FieldOfStudy\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/FieldOfStudyController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$position \(App\\Entity\\Position\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/PositionController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$sponsor \(App\\Entity\\Sponsor\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/SponsorsController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#4 \$identifier \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/SurveyController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$surveyNotificationCollection \(App\\Entity\\SurveyNotificationCollection\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/SurveyNotifierController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$department \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/TeamAdminController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$department \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/UserAdminController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$userGroupCollection \(App\\Entity\\UserGroupCollection\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Controller/UserGroupCollectionController.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$container \(Symfony\\Component\\DependencyInjection\\ContainerInterface\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/DataFixtures/ORM/LoadInfoMeetingData.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$container \(Symfony\\Component\\DependencyInjection\\ContainerInterface\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/DataFixtures/ORM/LoadUserData.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$department \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/AdmissionPeriod.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$author \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Article.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$school \(App\\Entity\\School\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/AssistantHistory.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$semester \(App\\Entity\\Semester\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/AssistantHistory.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/AssistantHistory.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/CertificateRequest.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$board \(App\\Entity\\ExecutiveBoard\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/ExecutiveBoardMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$semester \(App\\Entity\\Semester\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 2
+			path: src/App/Entity/ExecutiveBoardMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/ExecutiveBoardMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$department \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/FieldOfStudy.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$cancelMessage \(string\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Interview.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$coInterviewer \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Interview.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$interviewSchema \(App\\Entity\\InterviewSchema\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Interview.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$interviewScore \(App\\Entity\\InterviewScore\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Interview.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$interviewer \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Interview.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 2
+			path: src/App/Entity/Interview.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$interview \(App\\Entity\\Interview\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/InterviewAnswer.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$interviewQuestion \(App\\Entity\\InterviewQuestion\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/InterviewAnswer.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$interviewQuestion \(App\\Entity\\InterviewQuestion\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/InterviewQuestionAlternative.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/PasswordReset.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$time \(DateTime\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Repository/AdmissionPeriodRepository.php
+
+		-
+			message: '#^Instantiated class Symfony\\Component\\Security\\Core\\Exception\\UsernameNotFoundException not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Entity/Repository/UserRepository.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$surveyQuestion \(App\\Entity\\SurveyQuestion\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/SurveyAnswer.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$surveyQuestion \(App\\Entity\\SurveyQuestion\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/SurveyQuestionAlternative.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$department \(App\\Entity\\Department\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/Team.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$endSemester \(App\\Entity\\Semester\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/TeamMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$position \(App\\Entity\\Position\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/TeamMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$startSemester \(App\\Entity\\Semester\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/TeamMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$team \(App\\Entity\\Team\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/TeamMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/TeamMembership.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$semester \(App\\Entity\\Semester\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 2
+			path: src/App/Entity/TeamMembershipInterface.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$fieldOfStudy \(App\\Entity\\FieldOfStudy\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Entity/User.php
+
+		-
+			message: '#^Access to an undefined property App\\Entity\\UserGroupCollection\:\:\$numberTotalUsers\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#2 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Service/AccessControlService.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Service/ApplicationAdmission.php
+
+		-
+			message: '#^Deprecated in PHP 8\.4\: Parameter \#1 \$user \(App\\Entity\\User\) is implicitly nullable via default value null\.$#'
+			identifier: parameter.implicitlyNullable
+			count: 1
+			path: src/App/Twig/Extension/RoleExtension.php

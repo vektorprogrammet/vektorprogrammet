@@ -132,7 +132,7 @@ class SurveyAnswer implements JsonSerializable
      *
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return array('question_id' => $this->surveyQuestion->getId(), 'answer' => $this->answer, 'answerArray' => $this->getAnswerArray());
     }
