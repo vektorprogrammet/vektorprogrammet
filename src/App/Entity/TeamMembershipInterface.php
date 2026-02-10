@@ -30,7 +30,7 @@ interface TeamMembershipInterface
      *
      * @return TeamMembershipInterface
      */
-    public function setStartSemester(Semester $semester = null);
+    public function setStartSemester(?Semester $semester = null);
 
     /**
      * @return Semester
@@ -42,7 +42,7 @@ interface TeamMembershipInterface
      *
      * @return TeamMembershipInterface
      */
-    public function setEndSemester(Semester $semester = null);
+    public function setEndSemester(?Semester $semester = null);
 
     /**
      * @return bool

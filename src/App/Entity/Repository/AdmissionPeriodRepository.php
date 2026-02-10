@@ -85,7 +85,7 @@ class AdmissionPeriodRepository extends ServiceEntityRepository
      *
      * @throws NonUniqueResultException
      */
-    public function findOneWithActiveAdmissionByDepartment(Department $department, DateTime $time = null): ?AdmissionPeriod
+    public function findOneWithActiveAdmissionByDepartment(Department $department, ?DateTime $time = null): ?AdmissionPeriod
     {
         if ($time === null) {
             $time = new DateTime();

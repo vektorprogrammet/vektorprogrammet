@@ -15,7 +15,7 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
 {
     private $container;
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null)
     {
         $this->container = $container;
     }

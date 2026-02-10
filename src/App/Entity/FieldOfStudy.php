@@ -88,7 +88,7 @@ class FieldOfStudy
      *
      * @return FieldOfStudy
      */
-    public function setDepartment(Department $department = null)
+    public function setDepartment(?Department $department = null)
     {
         $this->department = $department;
 

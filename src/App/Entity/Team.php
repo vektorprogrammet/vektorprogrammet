@@ -161,7 +161,7 @@ class Team implements TeamInterface
      *
      * @return Team
      */
-    public function setDepartment(Department $department = null)
+    public function setDepartment(?Department $department = null)
     {
         $this->department = $department;
 

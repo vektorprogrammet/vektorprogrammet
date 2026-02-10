@@ -101,7 +101,7 @@ class RoleExtension extends AbstractExtension
         return $this->roleManager->userIsInExecutiveBoard($user);
     }
 
-    public function userCanEditPage(User $user = null)
+    public function userCanEditPage(?User $user = null)
     {
         if ($user === null) {
             $token = $this->tokenStorage->getToken();
