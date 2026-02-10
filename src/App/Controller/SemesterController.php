@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SemesterController extends BaseController
 {
@@ -25,10 +25,9 @@ class SemesterController extends BaseController
     }
 
     /**
-     * @Route(name="semester_show", path="/kontrollpanel/semesteradmin")
-     *
      * @return Response
      */
+    #[Route(name: "semester_show", path: "/kontrollpanel/semesteradmin")]
     public function showAction()
     {
         $semesters = $this->semesterRepo->findAllOrderedByAge();
@@ -39,12 +38,12 @@ class SemesterController extends BaseController
     }
 
     /**
-     * @Route(name="semester_create", path="/kontrollpanel/semesteradmin/opprett")
      * @param Request $request
      *
      * @return RedirectResponse|Response
      * @throws NonUniqueResultException
      */
+    #[Route(name: "semester_create", path: "/kontrollpanel/semesteradmin/opprett")]
     public function createSemesterAction(Request $request)
     {
         $semester = new Semester();

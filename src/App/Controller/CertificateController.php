@@ -13,7 +13,7 @@ use App\Entity\Signature;
 use App\Form\Type\CreateSignatureType;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,17 +33,11 @@ class CertificateController extends BaseController
     }
 
     /**
-     * @Route(
-     *     "/kontrollpanel/attest/{id}",
-     *     name="certificate_show",
-     *     defaults={"id": null},
-     *     methods={"GET", "POST"}
-     * )
-     *
      * @param Request $request
      *
      * @return RedirectResponse|Response
      */
+    #[Route("/kontrollpanel/attest/{id}", name: "certificate_show", defaults: ["id" => null], methods: ["GET", "POST"])]
     public function showAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);

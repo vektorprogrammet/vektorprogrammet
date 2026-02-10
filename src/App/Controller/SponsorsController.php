@@ -8,7 +8,7 @@ use App\Entity\Sponsor;
 use App\Form\Type\SponsorType;
 use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,10 +25,9 @@ class SponsorsController extends BaseController
     }
 
     /**
-     * @Route("/kontrollpanel/sponsorer", name="sponsors_show")
-     *
      * @return Response
      */
+    #[Route("/kontrollpanel/sponsorer", name: "sponsors_show")]
     public function sponsorsShowAction()
     {
         $sponsors = $this->em->getRepository(Sponsor::class)->findAll();
@@ -39,13 +38,13 @@ class SponsorsController extends BaseController
     }
 
     /**
-     * @Route("/kontrollpanel/sponsor/create", name="sponsor_create")
-     * @Route("/kontrollpanel/sponsor/edit/{id}", name="sponsor_edit")
      * @param Sponsor|null $sponsor
      * @param Request $request
      *
      * @return RedirectResponse|Response
      */
+    #[Route("/kontrollpanel/sponsor/create", name: "sponsor_create")]
+    #[Route("/kontrollpanel/sponsor/edit/{id}", name: "sponsor_edit")]
     public function sponsorEditAction(Sponsor $sponsor = null, Request $request)
     {
         $isCreate = $sponsor === null;
@@ -87,11 +86,11 @@ class SponsorsController extends BaseController
     }
 
     /**
-     * @Route("/kontrollpanel/sponsor/delete/{id}", name="sponsor_delete")
      * @param Sponsor $sponsor
      *
      * @return RedirectResponse
      */
+    #[Route("/kontrollpanel/sponsor/delete/{id}", name: "sponsor_delete")]
     public function deleteSponsorAction(Sponsor $sponsor)
     {
         if ($sponsor->getLogoImagePath()) {

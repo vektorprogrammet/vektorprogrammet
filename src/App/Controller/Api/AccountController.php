@@ -11,7 +11,7 @@ use App\Entity\User;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
@@ -34,13 +34,12 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route(path="api/account/login", methods={"GET", "POST"})
-     *
      * @param Request $request
      *
      * @return Response
      * @throws NonUniqueResultException
      */
+    #[Route(path: "api/account/login", methods: ["GET", "POST"])]
     public function loginAction(Request $request)
     {
         $response = new JsonResponse();
@@ -79,10 +78,9 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route(path="api/account/logout", methods={"POST"})
-     *
      * @return Response
      */
+    #[Route(path: "api/account/logout", methods: ["POST"])]
     public function logoutAction()
     {
         try {
@@ -97,10 +95,9 @@ class AccountController extends BaseController
     }
 
     /**
-     * @Route(path="api/account/user", methods={"GET"})
-     *
      * @return Response
      */
+    #[Route(path: "api/account/user", methods: ["GET"])]
     public function getUserAction()
     {
         if (!$this->getUser()) {
@@ -130,13 +127,9 @@ class AccountController extends BaseController
     /**
      * @param Request $request
      *
-     * @Route(
-     *     path="api/account/get_department",
-     *     methods={"GET"}
-     * )
-     *
      * @return Response
      */
+    #[Route(path: "api/account/get_department", methods: ["GET"])]
     public function getDepartmentApi(Request $request)
     {
         if (!$this->getUser()) {

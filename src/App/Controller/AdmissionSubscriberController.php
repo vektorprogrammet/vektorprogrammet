@@ -11,7 +11,7 @@ use App\Form\Type\AdmissionSubscriberType;
 use App\Service\AdmissionNotifier;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -30,14 +30,13 @@ class AdmissionSubscriberController extends BaseController
     }
 
     /**
-     * @Route("/interesseliste/{shortName}", name="interest_list", requirements={"shortName"="\w+"})
-     * @Route("/interesseliste/{id}", name="interest_list_by_id", requirements={"id"="\d+"})
-     *
      * @param Request $request
      * @param Department $department
      *
      * @return Response
      */
+    #[Route("/interesseliste/{shortName}", name: "interest_list", requirements: ["shortName" => "\w+"])]
+    #[Route("/interesseliste/{id}", name: "interest_list_by_id", requirements: ["id" => "\d+"])]
     public function subscribePageAction(Request $request, Department $department)
     {
         $subscriber = new AdmissionSubscriber();
@@ -64,12 +63,11 @@ class AdmissionSubscriberController extends BaseController
     }
 
     /**
-     * @Route("/opptak/notification", name="admission_subscribe")
-     *
      * @param Request $request
      *
      * @return Response
      */
+    #[Route("/opptak/notification", name: "admission_subscribe")]
     public function subscribeAction(Request $request)
     {
         $email = $request->request->get('email');
@@ -93,11 +91,11 @@ class AdmissionSubscriberController extends BaseController
     }
 
     /**
-     * @Route("/opptak/notification/unsubscribe/{code}", name="admission_unsubscribe")
      * @param string $code
      *
      * @return RedirectResponse
      */
+    #[Route("/opptak/notification/unsubscribe/{code}", name: "admission_unsubscribe")]
     public function unsubscribeAction($code)
     {
         $subscriber = $this->admissionSubscriberRepo->findByUnsubscribeCode($code);

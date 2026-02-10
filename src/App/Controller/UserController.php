@@ -17,7 +17,7 @@ use App\Twig\Extension\RoleExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends BaseController
@@ -36,10 +36,9 @@ class UserController extends BaseController
     }
 
     /**
-     * @Route("/min-side", name="my_page")
-     *
      * @return Response
      */
+    #[Route("/min-side", name: "my_page")]
     public function myPageAction()
     {
         $user = $this->getUser();
@@ -69,10 +68,9 @@ class UserController extends BaseController
     }
 
     /**
-     * @Route("/profil/partnere", name="my_partners")
-     *
      * @return Response
      */
+    #[Route("/profil/partnere", name: "my_partners")]
     public function myPartnerAction()
     {
         if (!$this->getUser()->isActive()) {
@@ -119,16 +117,12 @@ class UserController extends BaseController
     }
 
     /**
-     * @Route("profil/mode/{mode}",
-     *     name="content_mode",
-     *     methods={"POST"}
-     *     )
-     *
      * @param Request $request
      * @param string $mode
      *
      * @return RedirectResponse
      */
+    #[Route("profil/mode/{mode}", name: "content_mode", methods: ["POST"])]
     public function changeContentModeAction(Request $request, string $mode)
     {
         if (!$this->roleExtension->userCanEditPage()) {

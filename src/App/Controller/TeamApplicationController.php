@@ -18,7 +18,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TeamApplicationController extends BaseController
 {
@@ -98,9 +98,9 @@ class TeamApplicationController extends BaseController
     }
 
     /**
-     * @Route("/team/application/bekreftelse/{team_name}", name="team_application_confirmation")
      * @return Response
      */
+    #[Route("/team/application/bekreftelse/{team_name}", name: "team_application_confirmation")]
     public function confirmationAction($team_name)
     {
         return $this->render('team/confirmation.html.twig', array(

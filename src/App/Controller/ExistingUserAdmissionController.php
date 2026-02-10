@@ -16,7 +16,7 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ExistingUserAdmissionController extends BaseController
 {
@@ -32,17 +32,13 @@ class ExistingUserAdmissionController extends BaseController
     }
 
     /**
-     * @Route("/eksisterendeopptak",
-     *     name="admission_existing_user",
-     *     methods={"GET", "POST"}
-     * )
-     *
      * @param Request $request
      *
      * @return null|RedirectResponse|Response
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
+    #[Route("/eksisterendeopptak", name: "admission_existing_user", methods: ["GET", "POST"])]
     public function showAction(Request $request)
     {
         $user = $this->getUser();

@@ -24,7 +24,7 @@ use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\KernelInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AssistantController extends BaseController
 {
@@ -48,15 +48,6 @@ class AssistantController extends BaseController
     /**
      * @deprecated This resource is only here to serve old urls (e.g. in old emails)
      *
-     * @Route("/opptak/{shortName}",
-     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
-     * @Route("/avdeling/{shortName}",
-     *     requirements={"shortName"="(NTNU|NMBU|UiB|UIB|UiO|UIO)"})
-     * @Route("/opptak/avdeling/{id}",
-     *     requirements={"id"="\d+"},
-     *     methods={"GET", "POST"}
-     *     )
-     *
      * @param Request $request
      * @param Department $department
      *
@@ -64,20 +55,22 @@ class AssistantController extends BaseController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
+    #[Route("/opptak/{shortName}", requirements: ["shortName" => "(NTNU|NMBU|UiB|UIB|UiO|UIO)"])]
+    #[Route("/avdeling/{shortName}", requirements: ["shortName" => "(NTNU|NMBU|UiB|UIB|UiO|UIO)"])]
+    #[Route("/opptak/avdeling/{id}", requirements: ["id" => "\d+"], methods: ["GET", "POST"])]
     public function admissionByShortNameAction(Request $request, Department $department)
     {
         return $this->indexAction($request, $department);
     }
 
     /**
-     * @Route("/opptak/{city}", name="admission_show_by_city_case_insensitive")
-     * @Route("/avdeling/{city}", name="admission_show_specific_department_by_city_case_insensitive")
-     *
      * @param Request $request
      * @param $city
      *
      * @return Response
      */
+    #[Route("/opptak/{city}", name: "admission_show_by_city_case_insensitive")]
+    #[Route("/avdeling/{city}", name: "admission_show_specific_department_by_city_case_insensitive")]
     public function admissionCaseInsensitiveAction(Request $request, $city)
     {
         $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
@@ -90,8 +83,6 @@ class AssistantController extends BaseController
     }
 
     /**
-     * @Route("/opptak", methods={"GET", "POST"})
-     *
      * @param Request $request
      * @param Department|null $department
      *
@@ -99,6 +90,7 @@ class AssistantController extends BaseController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
+    #[Route("/opptak", methods: ["GET", "POST"])]
     public function admissionAction(Request $request, Department $department = null)
     {
         return $this->indexAction($request, $department);
@@ -183,19 +175,15 @@ class AssistantController extends BaseController
     }
 
     /**
-     * @Route("/assistenter/opptak/bekreftelse", name="application_confirmation")
      * @return Response
      */
+    #[Route("/assistenter/opptak/bekreftelse", name: "application_confirmation")]
     public function confirmationAction()
     {
         return $this->render('admission/application_confirmation.html.twig');
     }
 
     /**
-     * @Route("/stand/opptak/{shortName}",
-     *     name="application_stand_form",
-     *     requirements={"shortName"="\w+"})
-     *
      * @param Request $request
      * @param Department $department
      *
@@ -203,6 +191,7 @@ class AssistantController extends BaseController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
+    #[Route("/stand/opptak/{shortName}", name: "application_stand_form", requirements: ["shortName" => "\w+"])]
     public function subscribePageAction(Request $request, Department $department)
     {
         if (!$department->activeAdmission()) {

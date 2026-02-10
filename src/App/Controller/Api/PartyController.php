@@ -13,7 +13,7 @@ use Doctrine\ORM\NonUniqueResultException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
@@ -32,15 +32,11 @@ class PartyController extends AbstractFOSRestController
     /**
      * @param Department $department
      *
-     * @Route(
-     *     "api/party/application_count/{department}/",
-     *     methods={"GET"}
-     * )
-     *
      * @return Response
      * @throws NotFoundHttpException
      * @throws NonUniqueResultException
      */
+    #[Route("api/party/application_count/{department}/", methods: ["GET"])]
     public function applicationCountAction(Department $department)
     {
         $applications = $this->getApplications($department);
@@ -51,14 +47,10 @@ class PartyController extends AbstractFOSRestController
     /**
      * @param Department $department
      *
-     * @Route(
-     *     "api/party/newest_applications/{department}/",
-     *     methods={"GET"}
-     * )
-     *
      * @return Response
      * @throws NonUniqueResultException
      */
+    #[Route("api/party/newest_applications/{department}/", methods: ["GET"])]
     public function newestApplicationsAction(Department $department)
     {
         $applications = $this->getApplications($department);
@@ -94,14 +86,10 @@ class PartyController extends AbstractFOSRestController
     /**
      * @param Department $department
      *
-     * @Route(
-     *     "api/party/deadline/{department}/",
-     *     methods={"GET"}
-     * )
-     *
      * @return Response
      * @throws NonUniqueResultException
      */
+    #[Route("api/party/deadline/{department}/", methods: ["GET"])]
     public function applicationDeadlineAction(Department $department)
     {
         $admissionPeriod = $this->getAdmissionPeriod($department);

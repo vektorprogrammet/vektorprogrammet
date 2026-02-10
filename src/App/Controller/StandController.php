@@ -12,7 +12,7 @@ use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SemesterRepository;
 use App\Service\AdmissionStatistics;
 use Doctrine\ORM\NonUniqueResultException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -30,12 +30,11 @@ class StandController extends BaseController
     }
 
     /**
-     * @Route("/kontrollpanel/stand", name="stand")
-     *
      * @param Request $request
      * @return Response
      * @throws NonUniqueResultException
      */
+    #[Route("/kontrollpanel/stand", name: "stand")]
     public function indexAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);

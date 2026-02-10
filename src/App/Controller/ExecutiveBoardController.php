@@ -15,7 +15,7 @@ use App\Service\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ExecutiveBoardController extends BaseController
 {
@@ -137,17 +137,12 @@ class ExecutiveBoardController extends BaseController
     }
 
     /**
-     * @Route("/kontrollpanel/hovedstyret/rediger_medlem/{id}",
-     *     name="edit_executive_board_membership",
-     *     requirements={"id"="\d+"},
-     *     methods={"GET", "POST"}
-     * )
-     *
      * @param Request $request
      * @param ExecutiveBoardMembership $member
      *
      * @return Response
      */
+    #[Route("/kontrollpanel/hovedstyret/rediger_medlem/{id}", name: "edit_executive_board_membership", requirements: ["id" => "\d+"], methods: ["GET", "POST"])]
     public function editMemberHistoryAction(Request $request, ExecutiveBoardMembership $member)
     {
         $user = $member->getUser(); // Store the $user object before the form touches our $member object with spooky user data

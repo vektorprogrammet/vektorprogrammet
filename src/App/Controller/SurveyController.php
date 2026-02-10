@@ -24,7 +24,7 @@ use App\Utils\CsvUtil;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -312,15 +312,10 @@ class SurveyController extends BaseController
     }
 
     /**
-     * @Route(
-     *     "/kontrollpanel/undersokelse/admin",
-     *     name="surveys",
-     *     methods={"GET"},
-     * )
-     *
      * @param Request $request
      * @return Response
      */
+    #[Route("/kontrollpanel/undersokelse/admin", name: "surveys", methods: ["GET"])]
     public function showSurveysAction(Request $request)
     {
         $semester = $this->getSemesterOrThrow404($request);

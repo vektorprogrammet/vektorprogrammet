@@ -11,7 +11,7 @@ use App\Service\SlugMaker;
 use Doctrine\ORM\EntityManagerInterface;
 use Exception;
 use Knp\Component\Pager\PaginatorInterface;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -66,11 +66,11 @@ class ArticleAdminController extends BaseController
     }
 
     /**
-     * @Route("/kontrollpanel/artikkel/kladd/{slug}", name="article_show_draft")
      * @param Article $article
      *
      * @return Response
      */
+    #[Route("/kontrollpanel/artikkel/kladd/{slug}", name: "article_show_draft")]
     public function showDraftAction(Article $article)
     {
         return $this->render('article/show.html.twig', array('article' => $article, 'isDraft' => true));

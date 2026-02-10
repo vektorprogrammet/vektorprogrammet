@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SemesterRepository;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ConfirmationController extends BaseController
 {
@@ -17,10 +17,9 @@ class ConfirmationController extends BaseController
     }
 
     /**
-     * @Route("/bekreftelse", name="confirmation", methods={"GET"})
-     *
      * @return Response
      */
+    #[Route("/bekreftelse", name: "confirmation", methods: ["GET"])]
     public function showAction()
     {
         return $this->render('confirmation/confirmation.html.twig');
