@@ -61,8 +61,6 @@ parameters:
 
     log_channel: '#website_logs'
 
-    sentry_address: xxxx
-
     # Webhook from GitHub to automatically deploy on push to master
 
 twig:
