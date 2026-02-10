@@ -3,6 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\Department;
+use App\Entity\Repository\ArticleRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Article;
 use Symfony\Component\HttpFoundation\Response;
@@ -25,6 +29,15 @@ class ArticleController extends BaseController
     // Number of articles shown in the other news side bar.
     const NUM_OTHER_ARTICLES = 8;
 
+    public function __construct(
+        private ArticleRepository $articleRepo,
+        private DepartmentRepository $departmentRepo,
+        private PaginatorInterface $paginator,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * Shows the news page.
      *
@@ -34,15 +47,12 @@ class ArticleController extends BaseController
      */
     public function showAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
+        $articles = $this->articleRepo->findAllPublishedArticles();
 
-        $articles = $em->getRepository(Article::class)->findAllPublishedArticles();
-
-        $departments = $em->getRepository(Department::class)->findAllDepartments();
+        $departments = $this->departmentRepo->findAllDepartments();
 
         // Uses the knp_paginator bundle to separate the articles into pages
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $articles,
             $request->query->get('page', 1),
             self::NUM_ARTICLES
@@ -64,15 +74,12 @@ class ArticleController extends BaseController
      */
     public function showFilterAction(Request $request, $department)
     {
-        $em = $this->getDoctrine()->getManager();
+        $articles = $this->articleRepo->findAllArticlesByDepartments($department);
 
-        $articles = $em->getRepository(Article::class)->findAllArticlesByDepartments($department);
-
-        $departments = $em->getRepository(Department::class)->findAllDepartments();
+        $departments = $this->departmentRepo->findAllDepartments();
 
         // Uses the knp_paginator bundle to separate the articles into pages
-        $paginator = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $articles,
             $request->query->get('page', 1),
             self::NUM_ARTICLES
@@ -108,9 +115,7 @@ class ArticleController extends BaseController
      */
     public function showOtherAction($excludeId)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)
+        $articles = $this->articleRepo
             ->findLatestArticles(self::NUM_OTHER_ARTICLES, $excludeId);
 
         return $this->render('article/sidebar_other.html.twig', array('articles' => $articles));
@@ -123,9 +128,7 @@ class ArticleController extends BaseController
      */
     public function showCarouselAction()
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
+        $articles = $this->articleRepo->findStickyAndLatestArticles(self::NUM_CAROUSEL_ARTICLES);
 
         return $this->render('article/carousel.html.twig', array('articles' => $articles));
     }
@@ -140,9 +143,7 @@ class ArticleController extends BaseController
      */
     public function showDepartmentNewsAction($id)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
+        $articles = $this->articleRepo->findLatestArticlesByDepartment($id, self::NUM_ADMISSION_ARTICLES);
 
         return $this->render('article/department_news.html.twig', array('articles' => $articles));
     }

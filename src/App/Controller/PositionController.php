@@ -3,15 +3,28 @@
 namespace App\Controller;
 
 use App\Entity\Position;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\PositionRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\CreatePositionType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class PositionController extends BaseController
 {
+    public function __construct(
+        private PositionRepository $positionRepo,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showPositionsAction()
     {
         // Find all the positions
-        $positions = $this->getDoctrine()->getRepository(Position::class)->findAll();
+        $positions = $this->positionRepo->findAll();
 
         // Return the view with suitable variables
         return $this->render('team_admin/show_positions.html.twig', array(
@@ -32,9 +45,8 @@ class PositionController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($position);
-            $em->flush();
+            $this->em->persist($position);
+            $this->em->flush();
 
             $flash = "Stillingen ble ";
             $flash .= $isCreate ? "opprettet." : "endret.";
@@ -53,9 +65,8 @@ class PositionController extends BaseController
 
     public function removePositionAction(Position $position)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($position);
-        $em->flush();
+        $this->em->remove($position);
+        $this->em->flush();
 
         $this->addFlash("success", "Stillingen ble slettet.");
 

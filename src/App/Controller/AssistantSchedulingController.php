@@ -4,6 +4,11 @@ namespace App\Controller;
 
 use App\Entity\AdmissionPeriod;
 use App\Entity\Application;
+use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Entity\Repository\ApplicationRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SchoolCapacityRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\AssistantScheduling\Assistant;
 use App\AssistantScheduling\School;
 use App\Entity\SchoolCapacity;
@@ -14,6 +19,16 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class AssistantSchedulingController extends BaseController
 {
+    public function __construct(
+        private AdmissionPeriodRepository $admissionPeriodRepo,
+        private ApplicationRepository $applicationRepo,
+        private SchoolCapacityRepository $schoolCapacityRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function indexAction()
     {
         return $this->render('assistant_scheduling/index.html.twig');
@@ -30,9 +45,9 @@ class AssistantSchedulingController extends BaseController
 
         $currentSemester = $this->getCurrentSemester();
 
-        $currentAdmissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
+        $currentAdmissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($user->getDepartment(), $currentSemester);
-        $applications = $this->getDoctrine()->getRepository(Application::class)->findAllAllocatableApplicationsByAdmissionPeriod($currentAdmissionPeriod);
+        $applications = $this->applicationRepo->findAllAllocatableApplicationsByAdmissionPeriod($currentAdmissionPeriod);
 
         $assistants = $this->getAssistantAvailableDays($applications);
 
@@ -96,8 +111,7 @@ class AssistantSchedulingController extends BaseController
         $user = $this->getUser();
         $department = $user->getFieldOfStudy()->getDepartment();
         $currentSemester = $this->getCurrentSemester();
-        $allCurrentSchoolCapacities = $this->getDoctrine()
-            ->getRepository(SchoolCapacity::class)->findByDepartmentAndSemester($department, $currentSemester);
+        $allCurrentSchoolCapacities = $this->schoolCapacityRepo->findByDepartmentAndSemester($department, $currentSemester);
         $schools = $this->generateSchoolsFromSchoolCapacities($allCurrentSchoolCapacities);
 
         return new JsonResponse(json_encode($schools));

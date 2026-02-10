@@ -2,14 +2,26 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Entity\User;
 use App\Role\Roles;
 use App\Service\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 class ProfilePhotoController extends BaseController
 {
+    public function __construct(
+        private FileUploader $fileUploader,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showEditProfilePhotoAction(User $user)
     {
         $loggedInUser = $this->getUser();
@@ -29,15 +41,15 @@ class ProfilePhotoController extends BaseController
             throw $this->createAccessDeniedException();
         }
 
-        $picturePath = $this->get(FileUploader::class)->uploadProfileImage($request);
+        $picturePath = $this->fileUploader->uploadProfileImage($request);
         if (!$picturePath) {
             return new JsonResponse("Kunne ikke laste inn bildet", 400);
         }
 
-        $this->get(FileUploader::class)->deleteProfileImage($user->getPicturePath());
+        $this->fileUploader->deleteProfileImage($user->getPicturePath());
         $user->setPicturePath($picturePath);
 
-        $this->getDoctrine()->getManager()->flush();
+        $this->em->flush();
 
         return new JsonResponse("Upload OK");
     }

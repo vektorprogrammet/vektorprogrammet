@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Entity\Semester;
 use App\Event\TeamInterestCreatedEvent;
 use App\Entity\Department;
 use App\Entity\TeamInterest;
 use App\Form\Type\TeamInterestType;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -17,6 +21,14 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class TeamInterestController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private EventDispatcherInterface $eventDispatcher,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
 
     /**
      * @Route(name="team_interest_form",
@@ -48,11 +60,10 @@ class TeamInterestController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($teamInterest);
-            $manager->flush();
+            $this->em->persist($teamInterest);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new TeamInterestCreatedEvent($teamInterest), TeamInterestCreatedEvent::NAME);
+            $this->eventDispatcher->dispatch(new TeamInterestCreatedEvent($teamInterest), TeamInterestCreatedEvent::NAME);
 
             return $this->redirectToRoute('team_interest_form', array(
                 'id' => $department->getId(),

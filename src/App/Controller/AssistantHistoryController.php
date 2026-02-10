@@ -3,24 +3,35 @@
 namespace App\Controller;
 
 use App\Entity\AssistantHistory;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Role\Roles;
 use App\Form\Type\CreateAssistantHistoryType;
 use App\Service\LogService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class AssistantHistoryController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private LogService $logService,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function deleteAction(AssistantHistory $assistantHistory)
     {
         if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
             $this->createAccessDeniedException();
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($assistantHistory);
-        $em->flush();
+        $this->em->remove($assistantHistory);
+        $this->em->flush();
 
-        $this->get(LogService::class)->info(
+        $this->logService->info(
             "{$this->getUser()} deleted {$assistantHistory->getUser()}'s assistant history on ".
             "{$assistantHistory->getSchool()->getName()} {$assistantHistory->getSemester()->getName()}"
         );
@@ -30,8 +41,6 @@ class AssistantHistoryController extends BaseController
 
     public function editAction(Request $request, AssistantHistory $assistantHistory)
     {
-        $em = $this->getDoctrine()->getManager();
-
         $department = $assistantHistory->getUser()->getDepartment();
         $form = $this->createForm(CreateAssistantHistoryType::class, $assistantHistory, [
             'department' => $department
@@ -39,8 +48,8 @@ class AssistantHistoryController extends BaseController
         $form->handleRequest($request);
 
         if ($form -> isValid()) {
-            $em->persist($assistantHistory);
-            $em->flush();
+            $this->em->persist($assistantHistory);
+            $this->em->flush();
             return $this->redirectToRoute('participanthistory_show');
         }
         return $this->render("participant_history/participant_history_edit.html.twig", array(

@@ -5,6 +5,11 @@ namespace App\Controller;
 use App\Entity\AdmissionPeriod;
 use App\Entity\Application;
 use App\Entity\AssistantHistory;
+use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Entity\Repository\ApplicationRepository;
+use App\Entity\Repository\AssistantHistoryRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Entity\Semester;
 use App\Service\ApplicationManager;
 use App\Service\ContentModeManager;
@@ -17,6 +22,19 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserController extends BaseController
 {
+    public function __construct(
+        private AdmissionPeriodRepository $admissionPeriodRepo,
+        private ApplicationRepository $applicationRepo,
+        private AssistantHistoryRepository $assistantHistoryRepo,
+        private ApplicationManager $applicationManager,
+        private RoleExtension $roleExtension,
+        private ContentModeManager $contentModeManager,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @Route("/min-side", name="my_page")
      *
@@ -28,22 +46,20 @@ class UserController extends BaseController
 
         $department = $user->getDepartment();
         $semester = $this->getCurrentSemester();
-        $admissionPeriod = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
+        $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
 
         $activeApplication = null;
         if (null !== $admissionPeriod) {
-            $activeApplication = $this->getDoctrine()
-                ->getRepository(Application::class)
+            $activeApplication = $this->applicationRepo
                 ->findByUserInAdmissionPeriod($user, $admissionPeriod);
         }
 
         $applicationStatus = null;
         if (null !== $activeApplication) {
-            $applicationStatus = $this->get(ApplicationManager::class)->getApplicationStatus($activeApplication);
+            $applicationStatus = $this->applicationManager->getApplicationStatus($activeApplication);
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($user);
+        $activeAssistantHistories = $this->assistantHistoryRepo->findActiveAssistantHistoriesByUser($user);
 
         return $this->render('my_page/my_page.html.twig', [
             "active_application" => $activeApplication,
@@ -62,7 +78,7 @@ class UserController extends BaseController
         if (!$this->getUser()->isActive()) {
             throw $this->createAccessDeniedException();
         }
-        $activeAssistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesByUser($this->getUser());
+        $activeAssistantHistories = $this->assistantHistoryRepo->findActiveAssistantHistoriesByUser($this->getUser());
         if (empty($activeAssistantHistories)) {
             throw $this->createNotFoundException();
         }
@@ -71,7 +87,7 @@ class UserController extends BaseController
         $partnerCount = 0;
 
         foreach ($activeAssistantHistories as $activeHistory) {
-            $schoolHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
+            $schoolHistories = $this->assistantHistoryRepo->findActiveAssistantHistoriesBySchool($activeHistory->getSchool());
             $partners = [];
 
             foreach ($schoolHistories as $sh) {
@@ -115,7 +131,7 @@ class UserController extends BaseController
      */
     public function changeContentModeAction(Request $request, string $mode)
     {
-        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
+        if (!$this->roleExtension->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -126,9 +142,9 @@ class UserController extends BaseController
         $isEditMode = $mode === 'edit-mode';
 
         if ($isEditMode) {
-            $this->get(ContentModeManager::class)->changeToEditMode();
+            $this->contentModeManager->changeToEditMode();
         } else {
-            $this->get(ContentModeManager::class)->changeToReadMode();
+            $this->contentModeManager->changeToReadMode();
         }
 
         $this->addFlash($isEditMode ? 'warning' : 'info', $isEditMode ? 'Du er nå i redigeringsmodus' : 'Du er nå i lesemodus');

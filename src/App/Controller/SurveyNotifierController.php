@@ -1,11 +1,14 @@
 <?php
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Entity\SurveyNotificationCollection;
 use App\Entity\UserGroupCollection;
 use App\Form\Type\SurveyNotifierType;
 use App\Service\SurveyNotifier;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,6 +17,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SurveyNotifierController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private SurveyNotifier $surveyNotifier,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
 
 
     /**
@@ -23,7 +34,7 @@ class SurveyNotifierController extends BaseController
      */
     public function createSurveyNotifierAction(Request $request, SurveyNotificationCollection $surveyNotificationCollection = null)
     {
-        $isUserGroupCollectionEmpty = empty($this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll());
+        $isUserGroupCollectionEmpty = empty($this->em->getRepository(UserGroupCollection::class)->findAll());
         if ($isUserGroupCollectionEmpty) {
             $this->addFlash("danger", "Brukergruppesamling må lages først");
             return $this->redirect($this->generateUrl('survey_notifiers'));
@@ -66,7 +77,7 @@ class SurveyNotifierController extends BaseController
                 );
             }
 
-            $this->get(SurveyNotifier::class)->initializeSurveyNotifier($surveyNotificationCollection);
+            $this->surveyNotifier->initializeSurveyNotifier($surveyNotificationCollection);
             return $this->redirect($this->generateUrl('survey_notifiers'));
         }
 
@@ -81,7 +92,7 @@ class SurveyNotifierController extends BaseController
 
     public function surveyNotificationCollectionsAction()
     {
-        $surveyNotificationCollections =$this->getDoctrine()->getManager()->getRepository(SurveyNotificationCollection::class)->findAll();
+        $surveyNotificationCollections = $this->em->getRepository(SurveyNotificationCollection::class)->findAll();
 
         return $this->render('survey/notifiers.html.twig', array(
              'surveyNotificationCollections' => $surveyNotificationCollections,
@@ -94,7 +105,7 @@ class SurveyNotifierController extends BaseController
         if ($surveyNotificationCollection->getTimeOfNotification() > new DateTime() || $surveyNotificationCollection->isAllSent()) {
             throw new AccessDeniedException();
         }
-        $this->get(SurveyNotifier::class)->sendNotifications($surveyNotificationCollection);
+        $this->surveyNotifier->sendNotifications($surveyNotificationCollection);
 
         if ($surveyNotificationCollection->isAllSent()) {
             $this->addFlash("success", "Sendt");
@@ -115,7 +126,7 @@ class SurveyNotifierController extends BaseController
             throw new AccessDeniedException();
         }
 
-        $this->getDoctrine()->getManager()->remove($surveyNotificationCollection);
+        $this->em->remove($surveyNotificationCollection);
         $response['success'] = true;
         return new JsonResponse($response);
     }

@@ -3,6 +3,10 @@
 namespace App\Controller;
 
 use App\Entity\AssistantHistory;
+use App\Entity\Repository\AssistantHistoryRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\TeamMembershipRepository;
 use App\Entity\TeamMembership;
 use App\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +14,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ParticipantHistoryController extends BaseController
 {
+    public function __construct(
+        private TeamMembershipRepository $teamMembershipRepo,
+        private AssistantHistoryRepository $assistantHistoryRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @param Request $request
      * @return Response|null
@@ -24,10 +37,10 @@ class ParticipantHistoryController extends BaseController
         }
 
         // Find all team memberships by department
-        $teamMemberships = $this->getDoctrine()->getRepository(TeamMembership::class)->findTeamMembershipsByDepartment($department);
+        $teamMemberships = $this->teamMembershipRepo->findTeamMembershipsByDepartment($department);
 
         // Find all assistantHistories by department
-        $assistantHistories = $this->getDoctrine()->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($department, $semester);
+        $assistantHistories = $this->assistantHistoryRepo->findByDepartmentAndSemester($department, $semester);
 
         return $this->render('participant_history/index.html.twig', array(
             'teamMemberships' => $teamMemberships,
