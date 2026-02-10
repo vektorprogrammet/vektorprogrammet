@@ -1,9 +1,9 @@
 # State: Vektorprogrammet Monolith Symfony Upgrade
 
-**Updated**: 2026-02-09
-**Phase**: Sprint 7b (Fix Sf6 Test Regressions) — COMPLETE
+**Updated**: 2026-02-10
+**Phase**: Sprint 8 (DI Migration + Annotations → Attributes) — IN PROGRESS
 **Branch**: `modernize/sprint-1-remove-dead-dependencies`
-**Commits**: `8d2cb493` (Sf6 upgrade), `f6bbe7a1` (ContainerAwareCommand + Twig), `0a2918d1` (test fixes), pending (fix 15 regressions)
+**Plan**: `.planning/phases/sprint-8/PLAN.md`
 
 ## Progress
 
@@ -16,58 +16,71 @@
 - [x] Sprint 7: Symfony 5.4 → 6.4 — COMPLETE (3 commits)
 - [x] Sprint 7b: Fix 15 Sf6 test regressions — COMPLETE
 - [x] Agent tooling: composer scripts, php-cs-fixer, PHPStan, CI workflow
-- [ ] Sprint 8-9: Frontend, cleanup
+- [ ] **Sprint 8**: DI migration + annotations → attributes (7 phases)
+  - [x] Phase 1: Remove sensio/framework-extra-bundle (`fb1276ae`)
+  - [x] Phase 2: Convert 35 repos → ServiceEntityRepository + services.yml (`6112447e`)
+  - [x] Phase 3: Entity annotations → attributes + custom validators (`be6db9eb`)
+  - [ ] **Phase 4**: Controller DI migration (60 controllers, 5 batches) — NOT STARTED
+  - [ ] Phase 5: Remove BaseController bridge methods
+  - [ ] Phase 6: @Route annotations → #[Route] attributes (21 controllers)
+  - [ ] Phase 7: Config updates + remove doctrine/annotations
+- [ ] Sprint 9: YAML route consolidation, frontend, PHPStan
 
-## Sprint 7b: Fix 15 Sf6 Test Regressions — COMPLETE
+## Sprint 8 Session Summary (2026-02-10)
 
-Fixed all 15 regressions. **496 tests, 2 failures** (CompanyEmailMaker only).
+### Completed Phases
 
-### Fix 1: ReversedRoleHierarchy Sf6 API (5 tests fixed)
-- Removed `new Role()` (private ctor in Sf6) and `getReachableRoles()` (removed in Sf6)
-- Replaced with `getReachableRoleNames()` which takes/returns string[]
-- Fixed BaseController wrong import: `App\Utils\ReversedRoleHierarchy` → `App\Role\ReversedRoleHierarchy`
+**Phase 1** — Remove sensio/framework-extra-bundle
+- Removed from composer.json, config/bundles.php, config/config.yml
+- Used `composer remove` to keep other package versions stable
+- Reduced memory limits from 512M to 256M (actual peak: 158MB)
 
-### Fix 2: Twig 3 Form Prototype Rendering (4 tests fixed)
-- `repeatable_question.html.twig`: replaced `form_rest()` on prototypes with `setRendered()` calls
-- Sf6 strict mode prevents rendering already-rendered fields; `form_rest()` on prototypes triggered this
-- Added `{% do questions.setRendered() %}` at end to prevent parent `form_rest(form)` from re-rendering
+**Phase 2** — Convert repos to ServiceEntityRepository
+- Converted 34 repos from EntityRepository to ServiceEntityRepository
+- Moved TeamInterestRepository from Entity/ to Entity/Repository/ (fixed namespace)
+- Updated TeamInterest entity repositoryClass to FQCN
+- Deleted 2 orphan repos: AdmissionRepository, OpptakRepository
+- Added Entity/Repository autodiscovery to services.yml
+- Fixed SocialEventRepository which had leading backslash in imports
 
-### Fix 3: Receipt Templates (6 tests fixed)
-- `receipt_viewer.html.twig`: null guards for `receipt.picturePath` — Sf6 `asset()` requires string, not null
-- `edit_receipt.html.twig`: moved `{% block breadcrumb %}` outside `{% if %}` — Twig 3 prohibits blocks inside conditionals
-- `edit_receipt.html.twig`: null guard on `asset(receipt.picturePath)` in JS section
+**Phase 3** — Entity annotations → attributes + custom validators
+- Converted 49 entities from @ORM\/@Assert\/@CustomAssert\ to PHP 8 attributes
+- Converted 5 custom validators from @Annotation to #[Attribute]
+- Switched Doctrine mapping type: annotation → attribute (config.yml)
+- Fixed multiple conversion issues:
+  - 13 entities missing #[ORM\Entity] (bare @ORM\Entity was dropped)
+  - JoinTable nested annotations → separate attributes (JoinColumn, InverseJoinColumn)
+  - options arrays: `"default"=false` → `"default" => false`
+  - Extra closing parens from `{`→`[` conversion
+  - Malformed docblocks (`**/` then `*/`)
+  - SurveyTaken groups: string → array
+  - Pre-existing SurveyNotification inversedBy mapping bug fixed
 
-### Fix 4: AccessControlService Bootstrap (all tests)
-- Made `preloadCache()` lazy — moved from constructor to `ensureCacheLoaded()` called on first access
-- Constructor `preloadCache()` opened SQLite connection before test DB existed, causing disk I/O errors on schema:create
+### Known Issues
+
+- `testShouldSendInfoMeetingNotification` is flaky near midnight (time-of-day dependent)
+- First test run after cache clear shows failures (Twig warmup); second run is clean
+- `composer update` without targeting can bump Sf packages to v7 (breaks UserRepository)
+
+## Next Session
+
+Start Phase 4: Controller DI migration. This is the largest phase (60 controllers).
+
+Key approach:
+1. Add optional constructor to BaseController (DepartmentRepo, SemesterRepo, ManagerRegistry)
+2. Migrate controllers in 5 batches (14-18 controllers each)
+3. Replace `getDoctrine()->getRepository()` with injected repos
+4. Replace `$this->get('service_id')` with injected services
+5. Special case: Api\PartyController extends AbstractFOSRestController
+
+Important: Clear var/cache/tes_/ before running tests after changes. The stale Twig cache causes false failures on first run.
 
 ## Test Results (496 tests)
 
 **0 errors + 0 failures** — All 496 tests pass (1150 assertions). Baseline tracked in `.planning/test-baseline.md`.
 
-## Key Decisions Made
-
-- `getDoctrine()` and `get()` re-added as bridge methods to BaseController (deferred to Sprint 8 for proper DI)
-- `session` service removed from subscribed services — use `request_stack->getSession()`
-- `security.password_encoder` → `security.password_hasher` in subscribed services
-- AccessControlService cache is now lazy (loaded on first access, not in constructor)
-
-## CI Workflow
-
-Replaced broken `tests.yml` (Sf 3.4/PHP 7.3) and `lintAndTest.yml` (missing runs-on) with unified `.github/workflows/ci.yml`:
-- **lint**: `composer lint` (php-cs-fixer --dry-run)
-- **analyse**: `composer analyse` (PHPStan level 1, needs `cache:clear --env=dev` first)
-- **test**: `composer test` (full PHPUnit suite, PHP 8.1 matrix)
-- `build.yml` (SonarCloud) unchanged
-
-## Deferred to Sprint 8
-
-- getDoctrine() → injected repos (257 calls)
-- $this->get() → constructor DI (149 calls)
-- annotations → PHP 8 attributes (663)
-- Remove sensio/framework-extra-bundle + doctrine/annotations
-
 ## Reference
 
+- Sprint 8 plan: `.planning/phases/sprint-8/PLAN.md`
 - Test commands & workflow: `docs/testing.md`
 - Architecture details: `docs/architecture.md`
