@@ -46,8 +46,6 @@
         "symfony/error-handler": "6.4.*",
         "symfony/password-hasher": "6.4.*",
         "symfony/polyfill-apcu": "^1.0",
-
-        "doctrine/annotations": "^2.0",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/orm": "^2.5",
         "doctrine/dbal": "^3.0",
