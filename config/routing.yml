@@ -1133,12 +1133,6 @@ file_browser:
  #  path: /public_files
   # defaults: { _controller: App\Controller\FileBrowserController::showPublicFilesAction }
 
-##########################################
-#                File uploader           #
-##########################################
-file_uploader:
-    path: /file_upload/  #Fix this
-
 ###########################################
 #                 File system             #
 #                                         #
