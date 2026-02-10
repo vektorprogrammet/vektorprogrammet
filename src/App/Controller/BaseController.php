@@ -3,6 +3,8 @@
 namespace App\Controller;
 
 use App\Entity\Department;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Entity\Semester;
 use App\Google\GoogleAPI;
 use App\Service\AccessControlService;
@@ -38,6 +40,17 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class BaseController extends AbstractController
 {
+    private ?DepartmentRepository $departmentRepo;
+    private ?SemesterRepository $semesterRepo;
+
+    public function __construct(
+        ?DepartmentRepository $departmentRepo = null,
+        ?SemesterRepository $semesterRepo = null,
+    ) {
+        $this->departmentRepo = $departmentRepo;
+        $this->semesterRepo = $semesterRepo;
+    }
+
     public static function getSubscribedServices(): array
     {
         return array_merge(parent::getSubscribedServices(), [
@@ -108,7 +121,8 @@ class BaseController extends AbstractController
                 $department = $this->getUser()->getDepartment();
             }
         } else {
-            $department = $this->getDoctrine()->getRepository(Department::class)->find($departmentId);
+            $repo = $this->departmentRepo ?? $this->getDoctrine()->getRepository(Department::class);
+            $department = $repo->find($departmentId);
         }
         return $department;
     }
