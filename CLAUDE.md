@@ -30,17 +30,15 @@ Symfony 6.4 / PHP 8 platform (upgraded from 3.4). Norwegian tutoring program man
 
 ## Skills & Agents
 
-### Skills (main context, interactive)
+### Skills (all from nori-workflow plugin — available in all projects)
 ```
 quick/obvious fix           -> just do it
 session start / "continue"  -> /orchestrate
 vague/big/multi-phase       -> /plan
+"test this" / "run tests"   -> /test
 "log decisions" / insights  -> /capture
 "sync knowledge" / promote  -> /knowledge-sync (promote only)
-```
-
-### User-global skills (available in all projects)
-```
+"review my code"            -> /review
 "ready for PR" / "ship"     -> /pr-prep
 agent design questions      -> /agent-expert
 research agent patterns     -> /agent-researcher

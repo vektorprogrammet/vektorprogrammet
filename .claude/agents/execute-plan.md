@@ -31,10 +31,7 @@ Before starting work, read these project references:
 
 ## Project Commands
 
-- `composer test` — full test suite (256M memory, required over raw phpunit)
-- `composer test -- --filter=TestName` — run specific test
-- `vendor/bin/php-cs-fixer fix --dry-run --diff` — check code style
-- `vendor/bin/phpstan analyse` — static analysis
+Read `docs/overview.md` for available project commands (test, lint, static analysis). If not available, check project `CLAUDE.md` for command references.
 
 ## Commit Format
 

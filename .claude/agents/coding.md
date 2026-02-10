@@ -4,7 +4,6 @@ description: Focused implementation agent. Works on 1-5 files, returns summary.
 model: sonnet
 maxTurns: 25
 tools: [Read, Edit, Write, Glob, Grep, Bash]
-memory: project
 ---
 
 # Coding Agent
@@ -21,15 +20,12 @@ Before starting work, read these project references:
 
 ## Project Commands
 
-- `composer test` — full test suite (256M memory, required over raw phpunit)
-- `composer test -- --filter=TestName` — run specific test
-- `vendor/bin/php-cs-fixer fix --dry-run --diff` — check code style
-- `vendor/bin/phpstan analyse` — static analysis
+Read `docs/overview.md` for available project commands (test, lint, static analysis). If not available, check project `CLAUDE.md` for command references.
 
 ## Constraints
 
 - Tests require `dangerouslyDisableSandbox: true` (SQLite + vendor reads)
-- Run relevant tests after changes: `composer test -- --filter=RelevantTest`
+- Run relevant tests after changes (see project commands above for test command syntax)
 - Do NOT run the full test suite — the verify agent handles that
 - Do NOT update STATE.md or commit — the orchestrator handles that
 - Do NOT explore unrelated code — stay focused on the task
