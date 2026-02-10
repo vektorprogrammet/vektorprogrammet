@@ -36,6 +36,21 @@ class TestDataManager
     {
     }
 
+    public static function getToken(): string
+    {
+        return getenv('TEST_TOKEN') ?: '';
+    }
+
+    public static function getDbFile(): string
+    {
+        return 'test' . self::getToken() . '.db';
+    }
+
+    public static function getBackupFile(): string
+    {
+        return 'test' . self::getToken() . '.db.bk';
+    }
+
     public static function executeCommand(Application $application, $command, Array $options = array()) {
         $options["--env"] = "test";
         $options["--quiet"] = true;
@@ -46,7 +61,7 @@ class TestDataManager
     }
 
     public static function deleteDatabase() {
-        foreach(array('test.db','test.db.bk') AS $file){
+        foreach(array(self::getDbFile(), self::getBackupFile()) AS $file){
             if(file_exists(self::$testDir . $file)){
                 unlink(self::$testDir . $file);
             }
@@ -54,10 +69,10 @@ class TestDataManager
     }
 
     public static function backupDatabase() {
-        copy(self::$testDir.'test.db', self::$testDir.'test.db.bk');
+        copy(self::$testDir . self::getDbFile(), self::$testDir . self::getBackupFile());
     }
 
     public static function restoreDatabase() {
-        copy(self::$testDir.'test.db.bk', self::$testDir.'test.db');
+        copy(self::$testDir . self::getBackupFile(), self::$testDir . self::getDbFile());
     }
 }

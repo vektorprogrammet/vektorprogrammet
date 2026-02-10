@@ -14,6 +14,17 @@ abstract class BaseWebTestCase extends WebTestCase
     private static $teamLeaderClient;
     private static $adminClient;
 
+    protected static function createClient(array $options = [], array $server = []): KernelBrowser
+    {
+        try {
+            return parent::createClient($options, $server);
+        } catch (\LogicException $e) {
+            // Sf6.4 blocks double-booting; shutdown stale kernel and retry
+            static::ensureKernelShutdown();
+            return parent::createClient($options, $server);
+        }
+    }
+
     protected static function createAnonymousClient() : KernelBrowser
     {
         if (self::$anonymousClient === null) {
@@ -71,7 +82,7 @@ abstract class BaseWebTestCase extends WebTestCase
         return self::$adminClient;
     }
 
-    protected function goTo(string $path, KernelBrowser $client = null) : Crawler
+    protected function goTo(string $path, ?KernelBrowser $client = null) : Crawler
     {
         if ($client === null) {
             $client = self::createAnonymousClient();
@@ -109,7 +120,7 @@ abstract class BaseWebTestCase extends WebTestCase
         return $this->goTo($path, self::createAdminClient());
     }
 
-    protected function countTableRows(string $path, KernelBrowser $client = null) : int
+    protected function countTableRows(string $path, ?KernelBrowser $client = null) : int
     {
         if ($client === null) {
             $client = self::createAdminClient();
