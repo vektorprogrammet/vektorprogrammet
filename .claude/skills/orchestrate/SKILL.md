@@ -96,10 +96,16 @@ Files to read: <list>
 Expected output: summary of changes made
 ```
 
-### Verify Agent
+### Verify Agent (full suite)
 ```
 Task tool with subagent_type: "general-purpose"
 Prompt: Read .claude/agents/verify.md for your role definition. Then verify the changes.
+```
+
+### Verify Agent (focused — for parallel verify)
+```
+Task tool with subagent_type: "general-purpose"
+Prompt: Read .claude/agents/verify.md for your role definition. Run ONLY focused tests: composer test -- --filter=<TestA|TestB>. Compare to baseline.
 ```
 
 ### State-Sync Agent

@@ -66,3 +66,4 @@ If REQUEST_CHANGES: present issues and ask user how to proceed.
 - Be specific: always include file:line references.
 - Be concise: one sentence per finding.
 - Don't nitpick style if conventions.md doesn't mention it.
+- If diff exceeds ~500 lines, warn user and suggest narrowing scope (e.g., specific file paths).

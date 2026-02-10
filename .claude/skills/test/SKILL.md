@@ -70,3 +70,4 @@ Run the suite directly:
 - Use `composer test` not raw `php bin/phpunit` (memory limit)
 - Interactive: ask before running if multiple tests match
 - Present results clearly with pass/fail and timing
+- `/test all` overlaps with verify agent. During orchestrated workflows, prefer verify agent. Use `/test all` for ad-hoc full runs outside orchestration.
