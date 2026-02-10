@@ -1,7 +1,7 @@
 ---
 name: orchestrate
 description: Session orchestrator. Routes tasks to agents/skills, sequences work, stays lean. Use at session start, "continue", "what's next", or when switching between tasks.
-allowed-tools: Read, Glob, Grep, Bash(*), Task(coding, verify, state-sync, execute-plan)
+allowed-tools: Read, Glob, Grep, Bash(*), Task(coding, verify, state-sync, execute-plan, web)
 ---
 
 # Orchestrate
@@ -32,8 +32,11 @@ If tests regress from baseline, that becomes top priority — flag it immediatel
 | Explore code | Spawn **Explore** agent (built-in) |
 | Verify changes | Spawn **verify** agent |
 | Sync state/knowledge | Spawn **state-sync** agent |
+| "test this", "run tests" | Invoke `/test` skill |
+| "review this", "check code" | Invoke `/review` skill |
 | "plan", vague/big scope | Invoke `/plan` skill |
 | "ready for PR", "ship" | Invoke `/pr-prep` skill |
+| Web research/doc lookup          | Spawn **web** agent with query                 |
 | Multiple independent tasks | Spawn parallel **coding** agents (max 3) |
 
 ## Quick Fix Path
@@ -99,6 +102,12 @@ Prompt: Read .claude/agents/state-sync.md for your role definition. Then sync st
 ```
 Task tool with subagent_type: "general-purpose"
 Prompt: Read .claude/agents/execute-plan.md for your role definition. Then implement task <id> from <plan-path>.
+```
+
+### Web Agent
+```
+Task tool with subagent_type: "general-purpose"
+Prompt: Read ~/.claude/agents/web.md for your role definition. [Optional: Read <overlay-path> first.] <query>
 ```
 
 ## Context Budget
