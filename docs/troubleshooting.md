@@ -103,6 +103,9 @@ Error → fix lookup for common issues. Organized by category.
 → Known Claude Code bug (v2.1.x). Internal function missing from build. Agent work completes fine — only the cleanup/handoff step crashes, so task reports "failed" even though all edits were applied. Safe to ignore. Affects custom subagents only (not built-in Explore/Plan/Bash).
 → Refs: [#22312](https://github.com/anthropics/claude-code/issues/22312), [#22087](https://github.com/anthropics/claude-code/issues/22087)
 
+**SubagentStop hook fields all empty/unknown**:
+→ Event data uses `agent_type` (not `agent_name`) and has no `stop_reason` field. Available fields: `agent_type`, `agent_id`, `agent_transcript_path`, `stop_hook_active` (bool), `session_id`, `cwd`, `permission_mode`.
+
 **Hook events silently ignored in settings.local.json**:
 → Hook events (`Stop`, `PostToolUse`, etc.) must be inside a `"hooks": {}` object, NOT as top-level keys. Top-level keys are silently ignored.
 
