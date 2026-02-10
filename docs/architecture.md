@@ -2,11 +2,9 @@
 
 ## Controllers
 
-`BaseController` extends Symfony's `AbstractController` with:
-- `getSubscribedServices()` providing ~35 services via service locator
-- Bridge methods `getDoctrine()` and `get()` — deferred to Sprint 8 for proper DI migration
-  - 257 `getDoctrine()` calls across 55 controllers
-  - 149 `$this->get()` calls across 40 controllers
+~61 controllers, all using constructor DI. `BaseController` extends Symfony's `AbstractController` with shared helpers (`getDepartment()`, `getCurrentSemester()`). No service locator or `getDoctrine()` calls — all dependencies injected via constructors.
+
+Routes are defined as `#[Route]` PHP 8 attributes directly on controller methods. Only 3 routes remain in `config/routing.yml`: elfinder (3rd-party), liip_imagine (bundle), and logout (firewall-handled).
 
 ## Security / Roles
 
@@ -35,9 +33,12 @@ ROLE_USER < ROLE_TEAM_MEMBER < ROLE_TEAM_LEADER < ROLE_ADMIN
 - Production: Gmail transport sets `from` header automatically
 - Dev/test: `Mailer::send()` must set explicit `from` header
 
-## Deferred Migrations (Sprint 8)
+## Completed Migrations (Sprint 8-9)
 
-- `getDoctrine()` → injected repositories (257 calls, 55 controllers)
-- `$this->get()` → constructor DI (149 calls, 40 controllers)
-- Annotations → PHP 8 attributes (663 annotations)
-- Remove `sensio/framework-extra-bundle` + `doctrine/annotations`
+- `getDoctrine()` / `$this->get()` → constructor DI (all controllers)
+- Doctrine annotations → `#[ORM\...]` PHP 8 attributes (all entities)
+- `@Route` annotations → `#[Route]` attributes (all controllers)
+- Removed `sensio/framework-extra-bundle` + `doctrine/annotations`
+- YAML routes → controller attributes (~193 routes migrated)
+- PHP 8.4 implicit nullable params fixed across 23 files
+- Rector configured for automated PHP deprecation fixes

@@ -65,11 +65,14 @@ Documentation is split into modular single-topic files to stay focused and reduc
 |------|----------|-------|
 | `README.md` | Everyone | Setup and entry point |
 | [`docs/overview.md`](docs/overview.md) | Developers | Quick reference: commands, structure, CI, test users |
+| [`docs/conventions.md`](docs/conventions.md) | Developers | Code conventions and patterns |
+| [`docs/troubleshooting.md`](docs/troubleshooting.md) | Developers | Error → fix lookup |
+| [`docs/knowledge-workflow.md`](docs/knowledge-workflow.md) | Everyone | How project knowledge is captured |
 | [`docs/testing.md`](docs/testing.md) | Developers | Test commands, workflow, environment |
 | [`docs/testing-details.md`](docs/testing-details.md) | Developers | File-to-test map, timing, DB internals |
 | [`docs/architecture.md`](docs/architecture.md) | Developers | Controllers, roles, services, mailer |
 | [`docs/console-commands.md`](docs/console-commands.md) | Developers | Useful Symfony console commands |
-| `CLAUDE.md` | AI agents | Agent-specific context and gotchas |
+| `CLAUDE.md` | AI agents | Agent workflow and skills |
 | `.planning/STATE.md` | AI agents | Migration progress and decisions |
 
 **Principles**: each doc covers one topic. `README.md` is the entry point; `docs/` has everything else. `.planning/` is for AI coding agents tracking migration state — humans can ignore it.

@@ -30,7 +30,7 @@ Pre-push:       full suite (no flags)                 ~3 min
 - **PHP 8.4**: `/usr/local/opt/php@8.4/bin/php`
 - **SQLite**: test DB at `var/data/test.db`
 - **Sandbox**: tests must run with sandbox disabled
-- **Memory**: 512M limit required
+- **Memory**: 256M limit (set by `composer test`; default 128M is insufficient)
 - **Credentials**: `assistent`/`teammember`/`teamleader`/`admin` — all password `1234`
 
 ## Known Failures
