@@ -1,7 +1,7 @@
 ---
 name: plan
 description: Interactive planner — interviews user, explores codebase, produces PLAN.md with agent-ready tasks. Use when "plan", "break down", "new feature", or scope is vague/big.
-allowed-tools: Read, Write, Edit, Glob, Grep, Bash(*), Task
+allowed-tools: Read, Write, Edit, Glob, Grep, Bash(*), Task(Explore)
 ---
 
 # Plan

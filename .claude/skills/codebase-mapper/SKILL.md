@@ -3,6 +3,7 @@ name: codebase-mapper
 description: Analyze codebase structure, stack, patterns, and concerns. Use when "analyze code", "understand codebase", "what's the stack", or exploring brownfield project.
 allowed-tools: Read, Grep, Glob, Bash(*)
 argument-hint: [deep]
+user-invocable: false
 ---
 
 # Codebase Mapper

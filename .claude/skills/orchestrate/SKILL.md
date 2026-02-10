@@ -121,7 +121,7 @@ After every agent spawn, before processing the result:
 
 ## Rules
 
-- Do NOT implement code changes directly — always delegate to a coding agent
+- Do NOT implement code changes directly (except quick fixes per the Quick Fix Path) — delegate to a coding agent
 - Do NOT run tests directly — always delegate to verify agent
 - DO read STATE.md, PLAN.md, and git status directly (small files, needed for routing)
 - Always confirm with user before starting work or moving to next wave
