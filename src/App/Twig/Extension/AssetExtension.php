@@ -46,7 +46,7 @@ class AssetExtension extends AbstractExtension
      */
     public function getAssetUrl($path, $packageName = null)
     {
-        if ($path === null || strlen($path) === 0) {
+        if ($path === null || strlen((string) $path) === 0) {
             return '';
         }
 
