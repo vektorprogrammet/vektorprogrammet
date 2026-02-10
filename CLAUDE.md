@@ -37,6 +37,7 @@ vague/big/multi-phase       -> /plan
 "ready for PR" / "ship"     -> /pr-prep
 agent design questions      -> /agent-expert
 research agent patterns     -> /agent-researcher
+"log decisions" / insights  -> /capture
 ```
 
 ### Agents (delegated by orchestrator)
@@ -53,7 +54,7 @@ explore codebase            -> Explore (built-in)
 - **Dev**: orchestrator sequences coding agent -> verify agent -> state-sync agent per task
 - **End** (Stop hook auto-reminds if staging has entries):
   1. Commit work, spawn state-sync agent. Leave tests passing.
-  2. Run `/knowledge-sync scan` to capture session insights, then `/knowledge-sync` to promote.
+  2. Run `/capture` to log session insights, then `/knowledge-sync` to promote staged entries.
   3. Update CLAUDE.md only if agent workflow changed.
 - Multi-step: `/plan` first, then `/orchestrate` to execute. Commit per task.
 - Context >50%: spawn fresh agent. Commit work + write status before stopping.
