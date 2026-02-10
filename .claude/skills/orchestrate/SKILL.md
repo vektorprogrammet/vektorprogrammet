@@ -37,7 +37,7 @@ If tests regress from baseline, that becomes top priority — flag it immediatel
 | "plan", vague/big scope | Invoke `/plan` skill |
 | "ready for PR", "ship" | Invoke `/pr-prep` skill |
 | Web research/doc lookup          | Spawn **web** agent with query                 |
-| Multiple independent tasks | Spawn parallel **coding** agents (max 3) |
+| Multiple independent tasks | Spawn parallel **coding** agents (max 3) → parallel verify → full verify |
 
 ## Quick Fix Path
 
@@ -75,6 +75,16 @@ When executing a PLAN.md:
 3. After each task: spawn verify agent
 4. After wave complete: spawn state-sync agent
 5. Present wave summary, ask user before proceeding to next wave
+
+### Parallel Verification
+
+When multiple coding agents ran in parallel on independent files:
+1. Spawn one verify agent per coding agent's changeset (max 3 parallel)
+2. Each verify agent runs focused tests: `composer test -- --filter=RelevantTest1|RelevantTest2`
+3. After all parallel verifies complete, spawn one final verify agent for full suite
+4. This catches cross-cutting regressions the focused tests might miss
+
+Fallback: If any parallel verify fails, stop and report — don't run the full suite.
 
 ## Agent Spawn Templates
 
