@@ -104,7 +104,8 @@ Error → fix lookup for common issues. Organized by category.
 → Refs: [#22312](https://github.com/anthropics/claude-code/issues/22312), [#22087](https://github.com/anthropics/claude-code/issues/22087)
 
 **SubagentStop hook fields all empty/unknown**:
-→ Event data uses `agent_type` (not `agent_name`) and has no `stop_reason` field. Available fields: `agent_type`, `agent_id`, `agent_transcript_path`, `stop_hook_active` (bool), `session_id`, `cwd`, `permission_mode`.
+→ Hook event data arrives via **stdin** (use `DATA=$(cat)`), NOT `$CLAUDE_HOOK_EVENT_DATA`. The env var is empty.
+→ Fields: `agent_type`, `agent_id`, `agent_transcript_path`, `stop_hook_active` (bool), `session_id`, `cwd`, `permission_mode`. No `agent_name` or `stop_reason`.
 
 **Hook events silently ignored in settings.local.json**:
 → Hook events (`Stop`, `PostToolUse`, etc.) must be inside a `"hooks": {}` object, NOT as top-level keys. Top-level keys are silently ignored.
