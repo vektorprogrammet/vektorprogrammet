@@ -88,7 +88,7 @@ class AccessControlService
         $this->ensureCacheLoaded();
     }
 
-    public function checkAccess($resources, User $user = null): bool
+    public function checkAccess($resources, ?User $user = null): bool
     {
         if ($user === null) {
             $user = $this->getLoggedInUser();

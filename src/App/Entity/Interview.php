@@ -137,7 +137,7 @@ class Interview
      *
      * @return Interview
      */
-    public function setInterviewSchema(InterviewSchema $interviewSchema = null)
+    public function setInterviewSchema(?InterviewSchema $interviewSchema = null)
     {
         $this->interviewSchema = $interviewSchema;
 
@@ -171,7 +171,7 @@ class Interview
      *
      * @return bool
      */
-    public function isCoInterviewer(User $user = null)
+    public function isCoInterviewer(?User $user = null)
     {
         return $user && $this->getCoInterviewer() && $user->getId() == $this->getCoInterviewer()->getId();
     }
@@ -183,7 +183,7 @@ class Interview
      *
      * @return Interview
      */
-    public function setCoInterviewer(User $coInterviewer = null)
+    public function setCoInterviewer(?User $coInterviewer = null)
     {
         $this->coInterviewer = $coInterviewer;
 
@@ -197,7 +197,7 @@ class Interview
      *
      * @return Interview
      */
-    public function setInterviewer(User $interviewer = null)
+    public function setInterviewer(?User $interviewer = null)
     {
         $this->interviewer = $interviewer;
 
@@ -255,7 +255,7 @@ class Interview
      *
      * @return Interview
      */
-    public function setInterviewScore(InterviewScore $interviewScore = null)
+    public function setInterviewScore(?InterviewScore $interviewScore = null)
     {
         $this->interviewScore = $interviewScore;
 
@@ -383,7 +383,7 @@ class Interview
      *
      * @return bool
      */
-    public function isInterviewer(User $user = null)
+    public function isInterviewer(?User $user = null)
     {
         return $user && $user->getId() == $this->getInterviewer()->getId();
     }
@@ -603,7 +603,7 @@ class Interview
     /**
      * @param string $cancelMessage
      */
-    public function setCancelMessage(string $cancelMessage = null)
+    public function setCancelMessage(?string $cancelMessage = null)
     {
         $this->cancelMessage = $cancelMessage;
     }

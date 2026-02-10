@@ -118,7 +118,7 @@ class ApplicationAdmission
         return $department;
     }
 
-    public function renderErrorPage(User $user = null)
+    public function renderErrorPage(?User $user = null)
     {
         $content = null;
 

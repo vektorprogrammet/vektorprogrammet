@@ -63,7 +63,7 @@ class InterviewQuestionAlternative
      *
      * @return InterviewQuestionAlternative
      */
-    public function setInterviewQuestion(InterviewQuestion $interviewQuestion = null)
+    public function setInterviewQuestion(?InterviewQuestion $interviewQuestion = null)
     {
         $this->interviewQuestion = $interviewQuestion;
 

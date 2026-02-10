@@ -92,7 +92,7 @@ class SurveyAnswer implements JsonSerializable
      *
      * @return SurveyAnswer
      */
-    public function setSurveyQuestion(SurveyQuestion $surveyQuestion = null)
+    public function setSurveyQuestion(?SurveyQuestion $surveyQuestion = null)
     {
         $this->surveyQuestion = $surveyQuestion;
 

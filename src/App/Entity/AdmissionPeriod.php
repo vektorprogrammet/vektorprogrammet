@@ -72,7 +72,7 @@ class AdmissionPeriod implements PeriodInterface
      *
      * @return AdmissionPeriod
      */
-    public function setDepartment(Department $department = null)
+    public function setDepartment(?Department $department = null)
     {
         $this->department = $department;
 

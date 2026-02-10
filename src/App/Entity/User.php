@@ -377,7 +377,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
      *
      * @return User
      */
-    public function setFieldOfStudy(FieldOfStudy $fieldOfStudy = null)
+    public function setFieldOfStudy(?FieldOfStudy $fieldOfStudy = null)
     {
         $this->fieldOfStudy = $fieldOfStudy;
 
