@@ -5,6 +5,9 @@ namespace App\Controller\Api;
 use App\Entity\AdmissionPeriod;
 use App\Entity\Application;
 use App\Entity\Department;
+use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Entity\Repository\ApplicationRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Entity\Semester;
 use Doctrine\ORM\NonUniqueResultException;
 use FOS\RestBundle\Controller\AbstractFOSRestController;
@@ -18,6 +21,13 @@ use Symfony\Component\Serializer\Serializer;
 class PartyController extends AbstractFOSRestController
 {
     const NUM_APPLICATIONS = 5;
+
+    public function __construct(
+        private SemesterRepository $semesterRepo,
+        private AdmissionPeriodRepository $admissionPeriodRepo,
+        private ApplicationRepository $applicationRepo,
+    ) {
+    }
 
     /**
      * @param Department $department
@@ -110,8 +120,7 @@ class PartyController extends AbstractFOSRestController
     {
         $admissionPeriod = $this->getAdmissionPeriod($department);
 
-        return $this->getDoctrine()
-            ->getRepository(Application::class)
+        return $this->applicationRepo
             ->findByAdmissionPeriod($admissionPeriod);
     }
 
@@ -123,9 +132,8 @@ class PartyController extends AbstractFOSRestController
      */
     private function getAdmissionPeriod(Department $department): AdmissionPeriod
     {
-        $semester = $this->getDoctrine()->getRepository(Semester::class)->findOrCreateCurrentSemester();
-        $admissionPeriod = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
+        $semester = $this->semesterRepo->findOrCreateCurrentSemester();
+        $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
         if ($admissionPeriod === null) {
             throw new NotFoundHttpException();

@@ -3,6 +3,9 @@
 namespace App\Controller;
 
 use App\Entity\AdmissionPeriod;
+use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Service\ApplicationData;
 use App\Service\AssistantHistoryData;
 use Doctrine\ORM\NonUniqueResultException;
@@ -11,6 +14,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class ApplicationStatisticsController extends BaseController
 {
+    public function __construct(
+        private AdmissionPeriodRepository $admissionPeriodRepo,
+        private AssistantHistoryData $assistantHistoryData,
+        private ApplicationData $applicationData,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @param Request $request
      * @return Response
@@ -20,21 +33,18 @@ class ApplicationStatisticsController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $admissionPeriod = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
+        $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
 
-        $assistantHistoryData = $this->get(AssistantHistoryData::class);
-        $assistantHistoryData->setSemester($semester)->setDepartment($department);
+        $this->assistantHistoryData->setSemester($semester)->setDepartment($department);
 
-        $applicationData = $this->get(ApplicationData::class);
         if ($admissionPeriod !== null) {
-            $applicationData->setAdmissionPeriod($admissionPeriod);
+            $this->applicationData->setAdmissionPeriod($admissionPeriod);
         }
 
         return $this->render('statistics/statistics.html.twig', array(
-            'applicationData' => $applicationData,
-            'assistantHistoryData' => $assistantHistoryData,
+            'applicationData' => $this->applicationData,
+            'assistantHistoryData' => $this->assistantHistoryData,
             'semester' => $semester,
             'department' => $department,
         ));

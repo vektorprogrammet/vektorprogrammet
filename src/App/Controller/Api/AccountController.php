@@ -4,6 +4,9 @@ namespace App\Controller\Api;
 
 use App\Controller\BaseController;
 use App\DataTransferObject\UserDto;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\NonUniqueResultException;
@@ -11,11 +14,24 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 use Exception;
 
 class AccountController extends BaseController
 {
+    public function __construct(
+        private UserRepository $userRepo,
+        private UserPasswordHasherInterface $passwordHasher,
+        private TokenStorageInterface $tokenStorage,
+        private RequestStack $requestStack,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
 
     /**
      * @Route(path="api/account/login", methods={"GET", "POST"})
@@ -39,14 +55,14 @@ class AccountController extends BaseController
         }
 
         try {
-            $user = $this->getDoctrine()->getRepository(User::class)->findByUsernameOrEmail($username);
+            $user = $this->userRepo->findByUsernameOrEmail($username);
         } catch (NoResultException $e) {
             $response->setStatusCode(401);
             $response->setContent('Username does not exist');
             return $response;
         }
 
-        $validPassword = $this->get('security.password_hasher')->isPasswordValid($user, $password);
+        $validPassword = $this->passwordHasher->isPasswordValid($user, $password);
         if (!$validPassword) {
             $response->setStatusCode(401);
             $response->setContent('Wrong password');
@@ -54,8 +70,8 @@ class AccountController extends BaseController
         }
 
         $token = new UsernamePasswordToken($user, 'secured_area', $user->getRoles());
-        $this->get('security.token_storage')->setToken($token);
-        $this->get('request_stack')->getSession()->set('_security_secured_area', serialize($token));
+        $this->tokenStorage->setToken($token);
+        $this->requestStack->getSession()->set('_security_secured_area', serialize($token));
 
         $userDto = self::mapUserToDto($user);
 
@@ -70,7 +86,7 @@ class AccountController extends BaseController
     public function logoutAction()
     {
         try {
-            $this->get('security.token_storage')->setToken(null);
+            $this->tokenStorage->setToken(null);
             return new JsonResponse("Logout successful");
         } catch (Exception $e) {
             $response = new JsonResponse();
@@ -132,7 +148,7 @@ class AccountController extends BaseController
         if (!$department) {
             return new JsonResponse(null);
         }
-        
+
         // This is not a proper DTO, and should be changed, but as we really only need the id for now... :
         $departmentDto = array(
             "id" => $department->getId(),

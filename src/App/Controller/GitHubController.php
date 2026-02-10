@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Service\LogService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +12,14 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 class GitHubController extends BaseController
 {
     private $repositoryName = 'vektorprogrammet/vektorprogrammet';
+
+    public function __construct(
+        private LogService $logService,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
 
     public function deployAction(Request $request)
     {
@@ -31,13 +41,13 @@ class GitHubController extends BaseController
 
         // Execute deploy script if there is a push to master
         if ($isCorrectRepository && $isMaster && $commit !== null) {
-            $this->get(LogService::class)->info(
+            $this->logService->info(
                 "New commit on master by *$committer*:\n".
                 "```$message```\n".
                 "Deploying changes..."
             );
             shell_exec($this->getParameter('kernel.project_dir').'/deploy.sh');
-            $this->get(LogService::class)->info('Deploy complete');
+            $this->logService->info('Deploy complete');
 
             return new JsonResponse(['status' => 'Deployed']);
         } else {

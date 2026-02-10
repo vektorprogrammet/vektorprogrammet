@@ -3,21 +3,34 @@
 namespace App\Controller;
 
 use App\Entity\Application;
+use App\Entity\Repository\ApplicationRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Role\Roles;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 class SecurityController extends BaseController
 {
+    public function __construct(
+        private AuthenticationUtils $authenticationUtils,
+        private AuthorizationCheckerInterface $authorizationChecker,
+        private ApplicationRepository $applicationRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function loginAction()
     {
-        $authenticationUtils = $this->get('security.authentication_utils');
-
         // get the login error if there is one
-        $error = $authenticationUtils->getLastAuthenticationError();
+        $error = $this->authenticationUtils->getLastAuthenticationError();
 
         // last username entered by the user
-        $lastUsername = $authenticationUtils->getLastUsername();
+        $lastUsername = $this->authenticationUtils->getLastUsername();
 
         return $this->render(
             'login/login.html.twig',
@@ -35,9 +48,9 @@ class SecurityController extends BaseController
      */
     public function loginRedirectAction()
     {
-        if ($this->get('security.authorization_checker')->isGranted(Roles::TEAM_MEMBER)) {
+        if ($this->authorizationChecker->isGranted(Roles::TEAM_MEMBER)) {
             return $this->redirectToRoute('control_panel');
-        } elseif ($this->getDoctrine()->getRepository(Application::class)->findActiveByUser($this->getUser())) {
+        } elseif ($this->applicationRepo->findActiveByUser($this->getUser())) {
             return $this->redirectToRoute('my_page');
         } else {
             return $this->redirectToRoute('profile');

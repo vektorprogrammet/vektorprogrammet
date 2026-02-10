@@ -2,12 +2,21 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
 class FileBrowserController extends BaseController
 {
+    public function __construct(
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * The controller that opens elFinder when the user presses the folde icon under "Min Vektor".
      *

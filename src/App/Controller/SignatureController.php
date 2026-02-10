@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\SignatureRepository;
 use App\Entity\Signature;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
@@ -9,11 +12,19 @@ use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SignatureController extends BaseController
 {
+    public function __construct(
+        private SignatureRepository $signatureRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showSignatureImageAction($imageName)
     {
         $user = $this->getUser();
 
-        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($user);
+        $signature = $this->signatureRepo->findByUser($user);
         if ($signature === null) {
             throw new NotFoundHttpException('Signature not found');
         }

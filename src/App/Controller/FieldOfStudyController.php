@@ -3,16 +3,29 @@
 namespace App\Controller;
 
 use App\Entity\FieldOfStudy;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\FieldOfStudyRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\FieldOfStudyType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FieldOfStudyController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private FieldOfStudyRepository $fieldOfStudyRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showAction()
     {
         $department = $this->getUser()->getFieldOfStudy()->getDepartment();
-        $fieldOfStudies = $this->getDoctrine()->getRepository(FieldOfStudy::class)->findByDepartment($department);
+        $fieldOfStudies = $this->fieldOfStudyRepo->findByDepartment($department);
 
         return $this->render('field_of_study/show_all.html.twig', array(
             'fieldOfStudies' => $fieldOfStudies,
@@ -37,9 +50,8 @@ class FieldOfStudyController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $fieldOfStudy->setDepartment($this->getUser()->getFieldOfStudy()->getDepartment());
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($fieldOfStudy);
-            $manager->flush();
+            $this->em->persist($fieldOfStudy);
+            $this->em->flush();
 
             return $this->redirectToRoute('show_field_of_studies');
         }

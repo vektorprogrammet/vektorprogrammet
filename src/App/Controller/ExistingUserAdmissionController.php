@@ -2,13 +2,17 @@
 
 namespace App\Controller;
 
-use App\Entity\Semester;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\TeamRepository;
 use App\Entity\Team;
 use App\Event\ApplicationCreatedEvent;
 use App\Form\Type\ApplicationExistingUserType;
 use App\Service\ApplicationAdmission;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -16,6 +20,17 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ExistingUserAdmissionController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private TeamRepository $teamRepo,
+        private ApplicationAdmission $applicationAdmission,
+        private EventDispatcherInterface $eventDispatcher,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @Route("/eksisterendeopptak",
      *     name="admission_existing_user",
@@ -31,14 +46,13 @@ class ExistingUserAdmissionController extends BaseController
     public function showAction(Request $request)
     {
         $user = $this->getUser();
-        $em = $this->getDoctrine()->getManager();
-        $admissionManager = $this->get(ApplicationAdmission::class);
+        $admissionManager = $this->applicationAdmission;
         if ($res = $admissionManager->renderErrorPage($user)) {
             return $res;
         }
 
         $department = $user->getDepartment();
-        $teams = $em->getRepository(Team::class)->findActiveByDepartment($department);
+        $teams = $this->teamRepo->findActiveByDepartment($department);
 
         $application = $admissionManager->createApplicationForExistingAssistant($user);
 
@@ -49,11 +63,11 @@ class ExistingUserAdmissionController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($application);
-            $em->flush();
+            $this->em->persist($application);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
-            $this->addFlash("success", "Søknad mottatt!");
+            $this->eventDispatcher->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
+            $this->addFlash("success", "Soknad mottatt!");
 
             return $this->redirectToRoute('my_page');
         }

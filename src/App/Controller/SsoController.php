@@ -2,13 +2,26 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class SsoController extends BaseController
 {
+    public function __construct(
+        private UserRepository $userRepo,
+        private UserPasswordHasherInterface $passwordHasher,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function loginAction(Request $request)
     {
         $response = new JsonResponse();
@@ -23,14 +36,14 @@ class SsoController extends BaseController
         }
 
         try {
-            $user = $this->getDoctrine()->getRepository(User::class)->findByUsernameOrEmail($username);
+            $user = $this->userRepo->findByUsernameOrEmail($username);
         } catch (NoResultException $e) {
             $response->setStatusCode(401);
             $response->setContent('Username does not exist');
             return $response;
         }
 
-        $validPassword = $this->get('security.password_hasher')->isPasswordValid($user, $password);
+        $validPassword = $this->passwordHasher->isPasswordValid($user, $password);
         if (!$validPassword) {
             $response->setStatusCode(401);
             $response->setContent('Wrong password');

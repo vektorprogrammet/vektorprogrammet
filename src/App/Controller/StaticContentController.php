@@ -2,14 +2,26 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Entity\StaticContent;
 use App\Twig\Extension\RoleExtension;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class StaticContentController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private RoleExtension $roleExtension,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * Updates the static text content in database.
      *
@@ -18,7 +30,7 @@ class StaticContentController extends BaseController
      */
     public function updateAction(Request $request)
     {
-        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
+        if (!$this->roleExtension->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -28,16 +40,15 @@ class StaticContentController extends BaseController
             throw new BadRequestHttpException("Invalid htmlID $htmlId");
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $content = $em->getRepository(StaticContent::class)->findOneByHtmlId($htmlId);
+        $content = $this->em->getRepository(StaticContent::class)->findOneByHtmlId($htmlId);
         if (!$content) {
             $content = new StaticContent();
             $content->setHtmlId($htmlId);
         }
 
         $content->setHtml($newContent);
-        $em->persist($content);
-        $em->flush();
+        $this->em->persist($content);
+        $this->em->flush();
 
         return new JsonResponse(array('status' => 'Database updated static element '.$htmlId.' New content: '.$newContent));
     }
