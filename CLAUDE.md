@@ -4,8 +4,8 @@ Symfony 6.4 / PHP 8 platform (upgraded from 3.4). Norwegian tutoring program man
 
 ## Status
 - Sprints 1-8: COMPLETE (Sf6 upgrade, constructor DI, PHP 8 attributes)
-- Sprint 9: IN PROGRESS (routes + deprecation fixes done, cleanup remaining)
-- Details: `.planning/STATE.md`
+- Sprint 9: IN PROGRESS (routes, deprecations, paratest, package cleanup done)
+- Details: `memory/STATE.md` (in project memory directory)
 
 ## Docs
 | File | Topic |
@@ -17,10 +17,8 @@ Symfony 6.4 / PHP 8 platform (upgraded from 3.4). Norwegian tutoring program man
 | `docs/testing-details.md` | File-to-test map, timing, DB internals |
 | `docs/architecture.md` | Controllers, roles, services, mailer |
 | `docs/knowledge-workflow.md` | How insights flow from staging → docs |
-| `.planning/test-baseline.md` | Test baseline for regression tracking |
-| `.planning/BOARD.md` | Work board (backlog/todo/in-progress/review/done) |
 
-`docs/` = humans + AI. `.planning/` = AI only.
+`docs/` = humans + AI. AI state lives in project memory directory (not in repo).
 
 ## Agent Gotchas
 - Tests: `dangerouslyDisableSandbox: true` always (SQLite + vendor reads)

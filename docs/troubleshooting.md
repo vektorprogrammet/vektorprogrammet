@@ -16,6 +16,10 @@ Error → fix lookup for common issues. Organized by category.
 
 **composer update without targeting → Sf7 bumps**:
 → Use `composer remove pkg` or `composer update specific-pkg` to avoid v7 drift
+→ Always check `composer show "symfony/*"` after dependency changes — transitive deps can pull v7
+
+**PHPStan shows 51 "errors" that are all unmatched ignore patterns**:
+→ Stale ignores in phpstan.neon from already-fixed deprecations. Need cleanup pass.
 
 ## Symfony 6 API
 
@@ -82,6 +86,12 @@ Error → fix lookup for common issues. Organized by category.
 
 **"createClient() already called"**:
 → Sf6 doesn't allow multiple createClient() — use ensureKernelShutdown() or reuse client
+
+**ParaTest: more failures with default runner than WrapperRunner**:
+→ Default runner spawns separate PHP processes per test FILE — more double-boot errors (10 vs 1). Use `--runner=WrapperRunner` which preserves static state across files within a worker.
+
+**ReceiptControllerTest::testDelete fails with redirect(null)**:
+→ Pre-existing bug: `ReceiptController.php:267` passes null URL to `redirect()`. Surfaces with fresh client state.
 
 ## Annotation → Attribute Conversion
 

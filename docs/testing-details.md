@@ -71,9 +71,11 @@ The bootstrap (`tests/bootstrap.php`) handles DB setup automatically:
 
 Each test's `tearDown()` restores from `test.db.bk`, so tests are isolated.
 
+**Parallel mode**: ParaTest sets `TEST_TOKEN` per worker (1, 2, 3...). The bootstrap creates `test1.db`, `test2.db`, etc. via `TestDataManager::getToken()`. Config resolves via `%env(default::TEST_TOKEN)%`.
+
 If you get stale DB errors, clear everything:
 ```bash
-rm -f var/data/test.db var/data/test.db.bk && rm -rf var/cache/test/
+rm -f var/data/test*.db var/data/test*.db.bk && rm -rf var/cache/test/
 ```
 
 ## Test Credentials

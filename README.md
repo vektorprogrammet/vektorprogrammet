@@ -73,9 +73,8 @@ Documentation is split into modular single-topic files to stay focused and reduc
 | [`docs/architecture.md`](docs/architecture.md) | Developers | Controllers, roles, services, mailer |
 | [`docs/console-commands.md`](docs/console-commands.md) | Developers | Useful Symfony console commands |
 | `CLAUDE.md` | AI agents | Agent workflow and skills |
-| `.planning/STATE.md` | AI agents | Migration progress and decisions |
 
-**Principles**: each doc covers one topic. `README.md` is the entry point; `docs/` has everything else. `.planning/` is for AI coding agents tracking migration state — humans can ignore it.
+**Principles**: each doc covers one topic. `README.md` is the entry point; `docs/` has everything else.
 
 ## Legacy npm Scripts
 

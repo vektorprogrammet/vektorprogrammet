@@ -20,9 +20,11 @@ Project conventions and patterns. Keep this updated as the codebase evolves.
 - Mailer: Symfony Mailer — dev/test must set explicit `from` header
 
 ## Testing
-- `composer test` for full suite (sets 256M memory limit)
+- `composer test` for full suite sequential (~193s, sets 256M memory limit)
+- `composer test:parallel` for parallel via ParaTest -p4 (~103s)
 - `bin/phpunit --filter=TestName` for targeted runs
 - SQLite test DB — bootstrap handles create/fixture/backup automatically
+- Per-worker DB isolation via `TEST_TOKEN` env var for parallel runs
 - 496 tests, 0 failures baseline
 
 ## Tooling

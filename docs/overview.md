@@ -5,7 +5,8 @@ Quick reference for working with the codebase. Each topic links to a dedicated d
 ## Composer Scripts
 
 ```bash
-composer test                # Full test suite (496 tests, ~3 min)
+composer test                # Full test suite sequential (496 tests, ~193s)
+composer test:parallel       # Full test suite parallel -p4 (496 tests, ~103s)
 composer test:unit           # Unit tests only (<1s)
 composer test:controller     # Controller tests (~110s)
 composer test:availability   # Availability smoke tests (~67s)
@@ -29,7 +30,6 @@ templates/        # Twig templates
 config/           # Symfony config (YAML for services/packages, routes via attributes)
 tests/AppBundle/  # PHPUnit tests
 docs/             # Developer documentation (modular, single-topic files)
-.planning/        # Migration state and plans (for AI coding agents)
 ```
 
 ## Architecture Highlights
