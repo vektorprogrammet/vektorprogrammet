@@ -45,13 +45,14 @@ research agent patterns     -> /agent-researcher
 kanban board                -> /board
 ```
 
-### Agents (delegated by orchestrator)
+### Agents (from nori-workflow plugin, overridable locally in `.claude/agents/`)
 ```
 clear 2-5 file task         -> coding agent
 execute PLAN.md task        -> execute-plan agent
 run tests/lint/baseline     -> verify agent
 update state + knowledge    -> state-sync agent
 explore codebase            -> Explore (built-in)
+web research                -> web agent
 ```
 
 ## Workflow
