@@ -4,6 +4,10 @@ namespace App\Controller;
 
 use App\Entity\Receipt;
 use App\Entity\User;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\ReceiptRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\UserRepository;
 use App\Event\ReceiptEvent;
 use App\Form\Type\ReceiptType;
 use App\Role\Roles;
@@ -12,18 +16,34 @@ use App\Service\RoleManager;
 use App\Service\Sorter;
 use App\Utils\ReceiptStatistics;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ReceiptController extends BaseController
 {
+    public function __construct(
+        private UserRepository $userRepo,
+        private ReceiptRepository $receiptRepo,
+        private Sorter $sorter,
+        private FileUploader $fileUploader,
+        private RoleManager $roleManager,
+        private EventDispatcherInterface $eventDispatcher,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showAction()
     {
-        $usersWithReceipts = $this->getDoctrine()->getRepository(User::class)->findAllUsersWithReceipts();
-        $refundedReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_REFUNDED);
-        $pendingReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_PENDING);
-        $rejectedReceipts = $this->getDoctrine()->getRepository(Receipt::class)->findByStatus(Receipt::STATUS_REJECTED);
+        $usersWithReceipts = $this->userRepo->findAllUsersWithReceipts();
+        $refundedReceipts = $this->receiptRepo->findByStatus(Receipt::STATUS_REFUNDED);
+        $pendingReceipts = $this->receiptRepo->findByStatus(Receipt::STATUS_PENDING);
+        $rejectedReceipts = $this->receiptRepo->findByStatus(Receipt::STATUS_REJECTED);
 
         $refundedReceiptStatistics = new ReceiptStatistics($refundedReceipts);
         $totalPayoutThisYear = $refundedReceiptStatistics->totalPayoutIn((new DateTime())->format('Y'));
@@ -32,10 +52,8 @@ class ReceiptController extends BaseController
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
         $rejectedReceiptStatistics = new ReceiptStatistics($rejectedReceipts);
 
-        $sorter = $this->get(Sorter::class);
-
-        $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
-        $sorter->sortUsersByReceiptStatus($usersWithReceipts);
+        $this->sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
+        $this->sorter->sortUsersByReceiptStatus($usersWithReceipts);
 
         return $this->render('receipt_admin/show_receipts.html.twig', array(
             'users_with_receipts' => $usersWithReceipts,
@@ -50,11 +68,10 @@ class ReceiptController extends BaseController
 
     public function showIndividualAction(User $user)
     {
-        $receipts = $this->getDoctrine()->getRepository(Receipt::class)->findByUser($user);
+        $receipts = $this->receiptRepo->findByUser($user);
 
-        $sorter = $this->get(Sorter::class);
-        $sorter->sortReceiptsBySubmitTime($receipts);
-        $sorter->sortReceiptsByStatus($receipts);
+        $this->sorter->sortReceiptsBySubmitTime($receipts);
+        $this->sorter->sortReceiptsByStatus($receipts);
 
         return $this->render('receipt_admin/show_individual_receipts.html.twig', array(
             'user' => $user,
@@ -67,11 +84,10 @@ class ReceiptController extends BaseController
         $receipt = new Receipt();
         $receipt->setUser($this->getUser());
 
-        $receipts = $this->getDoctrine()->getRepository(Receipt::class)->findByUser($this->getUser());
+        $receipts = $this->receiptRepo->findByUser($this->getUser());
 
-        $sorter = $this->get(Sorter::class);
-        $sorter->sortReceiptsBySubmitTime($receipts);
-        $sorter->sortReceiptsByStatus($receipts);
+        $this->sorter->sortReceiptsBySubmitTime($receipts);
+        $this->sorter->sortReceiptsByStatus($receipts);
 
         $form = $this->createForm(ReceiptType::class, $receipt);
 
@@ -80,14 +96,13 @@ class ReceiptController extends BaseController
         if ($form->isSubmitted() && $form->isValid()) {
             $isImageUpload = $request->files->get('receipt', ['picture_path']) !== null;
             if ($isImageUpload) {
-                $path = $this->get(FileUploader::class)->uploadReceipt($request);
+                $path = $this->fileUploader->uploadReceipt($request);
                 $receipt->setPicturePath($path);
             }
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($receipt);
-            $em->flush();
+            $this->em->persist($receipt);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::CREATED);
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::CREATED);
 
             return $this->redirectToRoute('receipt_create');
         }
@@ -124,19 +139,18 @@ class ReceiptController extends BaseController
 
             if ($isImageUpload) {
                 // Delete the old image file
-                $this->get(FileUploader::class)->deleteReceipt($oldPicturePath);
+                $this->fileUploader->deleteReceipt($oldPicturePath);
 
-                $path = $this->get(FileUploader::class)->uploadReceipt($request);
+                $path = $this->fileUploader->uploadReceipt($request);
                 $receipt->setPicturePath($path);
             } else {
                 $receipt->setPicturePath($oldPicturePath);
             } // If a new image hasn't been uploaded
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($receipt);
-            $em->flush();
+            $this->em->persist($receipt);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::EDITED);
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::EDITED);
 
             return $this->redirectToRoute('receipt_create');
         }
@@ -170,15 +184,14 @@ class ReceiptController extends BaseController
             $receipt->setRefundDate(new DateTime());
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
+        $this->em->flush();
 
         if ($status === Receipt::STATUS_REFUNDED) {
-            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::REFUNDED);
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::REFUNDED);
         } elseif ($status === Receipt::STATUS_REJECTED) {
-            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::REJECTED);
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::REJECTED);
         } elseif ($status === Receipt::STATUS_PENDING) {
-            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::PENDING);
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::PENDING);
         }
 
         return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
@@ -197,19 +210,18 @@ class ReceiptController extends BaseController
 
             if ($isImageUpload) {
                 // Delete the old image file
-                $this->get(FileUploader::class)->deleteReceipt($oldPicturePath);
+                $this->fileUploader->deleteReceipt($oldPicturePath);
 
-                $path = $this->get(FileUploader::class)->uploadReceipt($request);
+                $path = $this->fileUploader->uploadReceipt($request);
                 $receipt->setPicturePath($path);
             } else {
                 $receipt->setPicturePath($oldPicturePath);
             } // If a new image hasn't been uploaded
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($receipt);
-            $em->flush();
+            $this->em->persist($receipt);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::EDITED);
+            $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::EDITED);
 
             return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
         }
@@ -228,7 +240,7 @@ class ReceiptController extends BaseController
     public function deleteAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();
-        $isTeamLeader = $this->get(RoleManager::class)->userIsGranted($user, Roles::TEAM_LEADER);
+        $isTeamLeader = $this->roleManager->userIsGranted($user, Roles::TEAM_LEADER);
 
         $userCanDeleteReceipt = $isTeamLeader || ($user === $receipt->getUser() && $receipt->getStatus() === Receipt::STATUS_PENDING);
 
@@ -237,13 +249,12 @@ class ReceiptController extends BaseController
         }
 
         // Delete the image file
-        $this->get(FileUploader::class)->deleteReceipt($receipt->getPicturePath());
+        $this->fileUploader->deleteReceipt($receipt->getPicturePath());
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($receipt);
-        $em->flush();
+        $this->em->remove($receipt);
+        $this->em->flush();
 
-        $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::DELETED);
+        $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::DELETED);
 
         return $this->redirect($request->headers->get('referer'));
     }

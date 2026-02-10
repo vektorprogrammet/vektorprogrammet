@@ -3,28 +3,45 @@
 namespace App\Controller;
 
 use App\Entity\AccessRule;
+use App\Entity\Repository\AccessRuleRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\UnhandledAccessRuleRepository;
 use App\Entity\UnhandledAccessRule;
 use App\Form\Type\AccessRuleType;
 use App\Form\Type\RoutingAccessRuleType;
 use App\Role\ReversedRoleHierarchy;
 use App\Role\Roles;
 use App\Service\AccessControlService;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class AccessRuleController extends BaseController
 {
-    
+    public function __construct(
+        private AccessRuleRepository $accessRuleRepo,
+        private UnhandledAccessRuleRepository $unhandledAccessRuleRepo,
+        private ReversedRoleHierarchy $reversedRoleHierarchy,
+        private AccessControlService $accessControlService,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
+
     /**
      * @Route("/kontrollpanel/admin/accessrules", name="access_rules_show")
      * @return Response
      */
     public function indexAction()
     {
-        $customRules = $this->getDoctrine()->getRepository(AccessRule::class)->findCustomRules();
-        $routingRules = $this->getDoctrine()->getRepository(AccessRule::class)->findRoutingRules();
-        $unhandledRules = $this->getDoctrine()->getRepository(UnhandledAccessRule::class)->findAll();
+        $customRules = $this->accessRuleRepo->findCustomRules();
+        $routingRules = $this->accessRuleRepo->findRoutingRules();
+        $unhandledRules = $this->unhandledAccessRuleRepo->findAll();
         return $this->render('admin/access_rule/index.html.twig', array(
             'customRules' => $customRules,
             'routingRules' => $routingRules,
@@ -52,21 +69,21 @@ class AccessRuleController extends BaseController
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();
         }
-        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
+        $roles = $this->reversedRoleHierarchy->getParentRoles([ Roles::TEAM_MEMBER ]);
         $form = $this->createForm(AccessRuleType::class, $accessRule, [
             'roles' => $roles
         ]);
         $form->handleRequest($request);
-        
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->get(AccessControlService::class)->createRule($accessRule);
+            $this->accessControlService->createRule($accessRule);
 
             if ($isCreate) {
                 $this->addFlash("success", "Access rule created");
             } else {
                 $this->addFlash("success", "Access rule edited");
             }
-            
+
             return $this->redirectToRoute("access_rules_show");
         }
         return $this->render('admin/access_rule/create.html.twig', array(
@@ -96,8 +113,8 @@ class AccessRuleController extends BaseController
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();
         }
-        $roles = $this->get(ReversedRoleHierarchy::class)->getParentRoles([ Roles::TEAM_MEMBER ]);
-        $routes = $this->get(AccessControlService::class)->getRoutes();
+        $roles = $this->reversedRoleHierarchy->getParentRoles([ Roles::TEAM_MEMBER ]);
+        $routes = $this->accessControlService->getRoutes();
         $form = $this->createForm(RoutingAccessRuleType::class, $accessRule, [
             'routes' => $routes,
             'roles' => $roles
@@ -106,7 +123,7 @@ class AccessRuleController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $accessRule->setIsRoutingRule(true);
-            $this->get(AccessControlService::class)->createRule($accessRule);
+            $this->accessControlService->createRule($accessRule);
 
             if ($isCreate) {
                 $this->addFlash("success", "Access rule created");
@@ -139,7 +156,7 @@ class AccessRuleController extends BaseController
         if ($rule->isRoutingRule()) {
             return $this->createRoutingRuleAction($request, $clone);
         }
-        
+
         return $this->createRuleAction($request, $clone);
     }
 
@@ -154,9 +171,8 @@ class AccessRuleController extends BaseController
      */
     public function deleteAction(AccessRule $accessRule)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($accessRule);
-        $em->flush();
+        $this->em->remove($accessRule);
+        $this->em->flush();
 
         $this->addFlash("success", $accessRule->getName()." removed");
 

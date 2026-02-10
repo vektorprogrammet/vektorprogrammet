@@ -3,6 +3,11 @@
 namespace App\Controller;
 
 use App\Entity\Department;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\PositionRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\TeamMembershipRepository;
+use App\Entity\Repository\TeamRepository;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\Position;
@@ -10,12 +15,26 @@ use App\Event\TeamEvent;
 use App\Event\TeamMembershipEvent;
 use App\Form\Type\CreateTeamMembershipType;
 use App\Form\Type\CreateTeamType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class TeamAdminController extends BaseController
 {
+    public function __construct(
+        private TeamRepository $teamRepo,
+        private TeamMembershipRepository $teamMembershipRepo,
+        private PositionRepository $positionRepo,
+        private EventDispatcherInterface $eventDispatcher,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @Route("/kontrollpanel/team/avdeling/{id}",
      *     name="teamadmin_show",
@@ -34,8 +53,8 @@ class TeamAdminController extends BaseController
         }
 
         // Find teams that are connected to the department of the user
-        $activeTeams   = $this->getDoctrine()->getRepository(Team::class)->findActiveByDepartment($department);
-        $inactiveTeams = $this->getDoctrine()->getRepository(Team::class)->findInactiveByDepartment($department);
+        $activeTeams   = $this->teamRepo->findActiveByDepartment($department);
+        $inactiveTeams = $this->teamRepo->findInactiveByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
@@ -56,11 +75,10 @@ class TeamAdminController extends BaseController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $teamMembership->setIsSuspended(false);
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($teamMembership);
-            $em->flush();
+            $this->em->persist($teamMembership);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new TeamMembershipEvent($teamMembership), TeamMembershipEvent::EDITED);
+            $this->eventDispatcher->dispatch(new TeamMembershipEvent($teamMembership), TeamMembershipEvent::EDITED);
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array( 'id' => $teamMembership->getTeam()->getId() )));
         }
@@ -80,7 +98,7 @@ class TeamAdminController extends BaseController
         // Create a new TeamMembership entity
         $teamMembership = new TeamMembership();
         $teamMembership->setUser($this->getUser());
-        $teamMembership->setPosition($this->getDoctrine()->getRepository(Position::class)->findOneBy(array( 'name' => 'Medlem' )));
+        $teamMembership->setPosition($this->positionRepo->findOneBy(array( 'name' => 'Medlem' )));
 
         // Create a new formType with the needed variables
         $form = $this->createForm(CreateTeamMembershipType::class, $teamMembership, [
@@ -96,11 +114,10 @@ class TeamAdminController extends BaseController
             $teamMembership->setTeam($team);
 
             // Persist the team to the database
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($teamMembership);
-            $em->flush();
+            $this->em->persist($teamMembership);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new TeamMembershipEvent($teamMembership), TeamMembershipEvent::CREATED);
+            $this->eventDispatcher->dispatch(new TeamMembershipEvent($teamMembership), TeamMembershipEvent::CREATED);
 
             return $this->redirect($this->generateUrl('teamadmin_show_specific_team', array( 'id' => $team->getId() )));
         }
@@ -114,13 +131,13 @@ class TeamAdminController extends BaseController
     public function showSpecificTeamAction(Team $team)
     {
         // Find all TeamMembership entities based on team
-        $activeTeamMemberships   = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeam($team);
-        $inActiveTeamMemberships = $this->getDoctrine()->getRepository(TeamMembership::class)->findInactiveTeamMembershipsByTeam($team);
+        $activeTeamMemberships   = $this->teamMembershipRepo->findActiveTeamMembershipsByTeam($team);
+        $inActiveTeamMemberships = $this->teamMembershipRepo->findInactiveTeamMembershipsByTeam($team);
         usort($activeTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
         usort($inActiveTeamMemberships, array( $this, 'sortTeamMembershipsByEndDate' ));
 
         $user                      = $this->getUser();
-        $currentUserTeamMembership = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByUser($user);
+        $currentUserTeamMembership = $this->teamMembershipRepo->findActiveTeamMembershipsByUser($user);
         $isUserInTeam              = false;
         foreach ($currentUserTeamMembership as $wh) {
             if (in_array($wh, $activeTeamMemberships)) {
@@ -164,15 +181,14 @@ class TeamAdminController extends BaseController
             //Don't persist if the preview button was clicked
             if (! $form->get('preview')->isClicked()) {
                 // Persist the team to the database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($team);
-                $em->flush();
+                $this->em->persist($team);
+                $this->em->flush();
 
-                $this->get('event_dispatcher')->dispatch(new TeamEvent($team, $oldTeamEmail), TeamEvent::EDITED);
+                $this->eventDispatcher->dispatch(new TeamEvent($team, $oldTeamEmail), TeamEvent::EDITED);
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
-            $teamMemberships = $this->getDoctrine()->getRepository(TeamMembership::class)->findActiveTeamMembershipsByTeam($team);
+            $teamMemberships = $this->teamMembershipRepo->findActiveTeamMembershipsByTeam($team);
 
             // Render the teampage as a preview
             return $this->render('team/team_page.html.twig', array(
@@ -192,7 +208,7 @@ class TeamAdminController extends BaseController
     public function showTeamsByDepartmentAction(Department $department)
     {
         // Find teams that are connected to the department of the department ID sent in by the request
-        $teams = $this->getDoctrine()->getRepository(Team::class)->findByDepartment($department);
+        $teams = $this->teamRepo->findByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', array(
@@ -220,11 +236,10 @@ class TeamAdminController extends BaseController
             //Don't persist if the preview button was clicked
             if (! $form->get('preview')->isClicked()) {
                 // Persist the team to the database
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($team);
-                $em->flush();
+                $this->em->persist($team);
+                $this->em->flush();
 
-                $this->get('event_dispatcher')->dispatch(new TeamEvent($team, $team->getEmail()), TeamEvent::CREATED);
+                $this->eventDispatcher->dispatch(new TeamEvent($team, $team->getEmail()), TeamEvent::CREATED);
 
                 return $this->redirect($this->generateUrl('teamadmin_show'));
             }
@@ -246,26 +261,23 @@ class TeamAdminController extends BaseController
 
     public function removeUserFromTeamByIdAction(TeamMembership $teamMembership)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($teamMembership);
-        $em->flush();
+        $this->em->remove($teamMembership);
+        $this->em->flush();
 
-        $this->get('event_dispatcher')->dispatch(new TeamMembershipEvent($teamMembership), TeamMembershipEvent::DELETED);
+        $this->eventDispatcher->dispatch(new TeamMembershipEvent($teamMembership), TeamMembershipEvent::DELETED);
 
         return $this->redirectToRoute('teamadmin_show_specific_team', [ 'id' => $teamMembership->getTeam()->getId() ]);
     }
 
     public function deleteTeamByIdAction(Team $team)
     {
-        $em = $this->getDoctrine()->getManager();
-
         foreach ($team->getTeamMemberships() as $teamMembership) {
             $teamMembership->setDeletedTeamName($team->getName());
-            $em->persist($teamMembership);
+            $this->em->persist($teamMembership);
         }
 
-        $em->remove($team);
-        $em->flush();
+        $this->em->remove($team);
+        $this->em->flush();
 
         return $this->redirectToRoute("teamadmin_show", [ "id" => $team->getDepartment()->getId() ]);
     }

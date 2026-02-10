@@ -5,20 +5,46 @@ namespace App\Controller;
 use App\Entity\AdmissionPeriod;
 use App\Entity\Application;
 use App\Entity\Department;
+use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Entity\Repository\ApplicationRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\TeamRepository;
 use App\Entity\Team;
 use App\Event\ApplicationCreatedEvent;
 use App\Form\Type\ApplicationType;
 use App\Service\ApplicationAdmission;
 use App\Service\FilterService;
 use App\Service\GeoLocation;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Routing\Annotation\Route;
 
 class AssistantController extends BaseController
 {
+    public function __construct(
+        private DepartmentRepository $departmentRepo,
+        private AdmissionPeriodRepository $admissionPeriodRepo,
+        private TeamRepository $teamRepo,
+        private ApplicationRepository $applicationRepo,
+        private ApplicationAdmission $applicationAdmission,
+        private GeoLocation $geoLocation,
+        private FilterService $filterService,
+        private FormFactoryInterface $formFactory,
+        private KernelInterface $kernel,
+        private EventDispatcherInterface $eventDispatcher,
+        private EntityManagerInterface $em,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @deprecated This resource is only here to serve old urls (e.g. in old emails)
      *
@@ -42,7 +68,7 @@ class AssistantController extends BaseController
     {
         return $this->indexAction($request, $department);
     }
-    
+
     /**
      * @Route("/opptak/{city}", name="admission_show_by_city_case_insensitive")
      * @Route("/avdeling/{city}", name="admission_show_specific_department_by_city_case_insensitive")
@@ -55,9 +81,7 @@ class AssistantController extends BaseController
     public function admissionCaseInsensitiveAction(Request $request, $city)
     {
         $city = str_replace(array('æ', 'ø','å'), array('Æ','Ø','Å'), $city); // Make sqlite happy
-        $department = $this->getDoctrine()
-                ->getRepository(Department::class)
-                ->findOneByCityCaseInsensitive($city);
+        $department = $this->departmentRepo->findOneByCityCaseInsensitive($city);
         if ($department !== null) {
             return $this->indexAction($request, $department);
         } else {
@@ -89,19 +113,18 @@ class AssistantController extends BaseController
      */
     public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
-        $admissionManager = $this->get(ApplicationAdmission::class);
-        $em = $this->getDoctrine()->getManager();
+        $admissionManager = $this->applicationAdmission;
 
-        $departments = $em->getRepository(Department::class)->findActive();
-        $departments = $this->get(GeoLocation::class)->sortDepartmentsByDistanceFromClient($departments);
-        $departmentsWithActiveAdmission = $this->get(FilterService::class)->filterDepartmentsByActiveAdmission($departments, true);
+        $departments = $this->departmentRepo->findActive();
+        $departments = $this->geoLocation->sortDepartmentsByDistanceFromClient($departments);
+        $departmentsWithActiveAdmission = $this->filterService->filterDepartmentsByActiveAdmission($departments, true);
 
         $departmentInUrl = $specificDepartment !== null;
         if (!$departmentInUrl) {
             $specificDepartment = $departments[0];
         }
 
-        $teams = $em->getRepository(Team::class)->findByOpenApplicationAndDepartment($specificDepartment);
+        $teams = $this->teamRepo->findByOpenApplicationAndDepartment($specificDepartment);
 
         $application = new Application();
 
@@ -109,10 +132,10 @@ class AssistantController extends BaseController
 
         /** @var Department $department */
         foreach ($departments as $department) {
-            $form = $this->get('form.factory')->createNamedBuilder('application_'.$department->getId(), ApplicationType::class, $application, array(
+            $form = $this->formFactory->createNamedBuilder('application_'.$department->getId(), ApplicationType::class, $application, array(
                 'validation_groups' => array('admission'),
                 'departmentId' => $department->getId(),
-                'environment' => $this->get('kernel')->getEnvironment(),
+                'environment' => $this->kernel->getEnvironment(),
             ))->getForm();
 
             $form->handleRequest($request);
@@ -129,7 +152,7 @@ class AssistantController extends BaseController
                     return $this->redirectToRoute('admission_existing_user');
                 }
 
-                $admissionPeriod = $em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
+                $admissionPeriod = $this->admissionPeriodRepo->findOneWithActiveAdmissionByDepartment($department);
 
                 //If no active admission period is found
                 if (!$admissionPeriod) {
@@ -137,10 +160,10 @@ class AssistantController extends BaseController
                     return $this->redirectToRoute('assistants');
                 }
                 $application->setAdmissionPeriod($admissionPeriod);
-                $em->persist($application);
-                $em->flush();
+                $this->em->persist($application);
+                $this->em->flush();
 
-                $this->get('event_dispatcher')->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
+                $this->eventDispatcher->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
 
                 return $this->redirectToRoute('application_confirmation');
             }
@@ -185,14 +208,13 @@ class AssistantController extends BaseController
         if (!$department->activeAdmission()) {
             return $this->indexAction($request, $department);
         }
-        $admissionManager = $this->get(ApplicationAdmission::class);
-        $em = $this->getDoctrine()->getManager();
+        $admissionManager = $this->applicationAdmission;
         $application = new Application();
 
-        $form = $this->get('form.factory')->createNamedBuilder('application_'.$department->getId(), ApplicationType::class, $application, array(
+        $form = $this->formFactory->createNamedBuilder('application_'.$department->getId(), ApplicationType::class, $application, array(
             'validation_groups' => array('admission'),
             'departmentId' => $department->getId(),
-            'environment' => $this->get('kernel')->getEnvironment(),
+            'environment' => $this->kernel->getEnvironment(),
         ))->getForm();
 
         $form->handleRequest($request);
@@ -205,12 +227,12 @@ class AssistantController extends BaseController
                 return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);
             }
 
-            $admissionPeriod = $em->getRepository(AdmissionPeriod::class)->findOneWithActiveAdmissionByDepartment($department);
+            $admissionPeriod = $this->admissionPeriodRepo->findOneWithActiveAdmissionByDepartment($department);
             $application->setAdmissionPeriod($admissionPeriod);
-            $em->persist($application);
-            $em->flush();
+            $this->em->persist($application);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
+            $this->eventDispatcher->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
 
             $this->addFlash('success', $application->getUser()->getEmail().' har blitt registrert. Du vil få en e-post med kvittering på søknaden.');
             return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);

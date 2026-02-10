@@ -2,10 +2,15 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\ArticleRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Service\FileUploader;
 use App\Service\LogService;
 use App\Service\SlugMaker;
+use Doctrine\ORM\EntityManagerInterface;
 use Exception;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -23,6 +28,19 @@ class ArticleAdminController extends BaseController
     // Number of articles shown per page on the admin page
     const NUM_ARTICLES = 10;
 
+    public function __construct(
+        private ArticleRepository $articleRepo,
+        private PaginatorInterface $paginator,
+        private SlugMaker $slugMaker,
+        private FileUploader $fileUploader,
+        private LogService $logService,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * Shows the main page of the article administration.
      *
@@ -32,13 +50,10 @@ class ArticleAdminController extends BaseController
      */
     public function showAction(Request $request)
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $articles = $em->getRepository(Article::class)->findAllArticles();
+        $articles = $this->articleRepo->findAllArticles();
 
         // Uses the knp_paginator bundle to separate the articles into pages.
-        $paginator  = $this->get('knp_paginator');
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $articles,
             $request->query->get('page', 1),
             self::NUM_ARTICLES
@@ -76,17 +91,15 @@ class ArticleAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $this->get(SlugMaker::class)->setSlugFor($article);
+            $this->slugMaker->setSlugFor($article);
         }
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
             // Set the author to the currently logged in user
             $article->setAuthor($this->getUser());
 
-            $imageSmall = $this->get(FileUploader::class)->uploadArticleImage($request, 'imgsmall');
-            $imageLarge = $this->get(FileUploader::class)->uploadArticleImage($request, 'imglarge');
+            $imageSmall = $this->fileUploader->uploadArticleImage($request, 'imgsmall');
+            $imageLarge = $this->fileUploader->uploadArticleImage($request, 'imglarge');
             if (!$imageSmall || !$imageLarge) {
                 return new JsonResponse("Error", 400);
             }
@@ -94,15 +107,15 @@ class ArticleAdminController extends BaseController
             $article->setImageSmall($imageSmall);
             $article->setImageLarge($imageLarge);
 
-            $em->persist($article);
-            $em->flush();
+            $this->em->persist($article);
+            $this->em->flush();
 
             $this->addFlash(
                 'success',
                 'Artikkelen har blitt publisert.'
             );
 
-            $this->get(LogService::class)->info("A new article \"{$article->getTitle()}\" by {$article->getAuthor()} has been published");
+            $this->logService->info("A new article \"{$article->getTitle()}\" by {$article->getAuthor()} has been published");
 
             return new JsonResponse("ok");
         } elseif ($form->isSubmitted()) {
@@ -131,26 +144,24 @@ class ArticleAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-
-            $imageSmall = $this->get(FileUploader::class)->uploadArticleImage($request, 'imgsmall');
+            $imageSmall = $this->fileUploader->uploadArticleImage($request, 'imgsmall');
             if ($imageSmall) {
                 $article->setImageSmall($imageSmall);
             }
-            $imageLarge = $this->get(FileUploader::class)->uploadArticleImage($request, 'imglarge');
+            $imageLarge = $this->fileUploader->uploadArticleImage($request, 'imglarge');
             if ($imageLarge) {
                 $article->setImageLarge($imageLarge);
             }
 
-            $em->persist($article);
-            $em->flush();
+            $this->em->persist($article);
+            $this->em->flush();
 
             $this->addFlash(
                 'success',
                 'Endringene har blitt publisert.'
             );
 
-            $this->get(LogService::class)->info("The article \"{$article->getTitle()}\" was edited by {$this->getUser()}");
+            $this->logService->info("The article \"{$article->getTitle()}\" was edited by {$this->getUser()}");
 
             return new JsonResponse("ok");
         } elseif ($form->isSubmitted()) {
@@ -183,9 +194,8 @@ class ArticleAdminController extends BaseController
                 $response['sticky'] = true;
             }
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($article);
-            $em->flush();
+            $this->em->persist($article);
+            $this->em->flush();
 
             $response['success'] = true;
         } catch (Exception $e) {
@@ -206,9 +216,8 @@ class ArticleAdminController extends BaseController
      */
     public function deleteAction(Article $article)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($article);
-        $em->flush();
+        $this->em->remove($article);
+        $this->em->flush();
 
         $this->addFlash("success", "Artikkelen ble slettet");
 

@@ -8,6 +8,13 @@ use App\Entity\Role;
 use App\Entity\Signature;
 use App\Entity\TeamMembership;
 use App\Entity\User;
+use App\Entity\Repository\AssistantHistoryRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\ExecutiveBoardMembershipRepository;
+use App\Entity\Repository\RoleRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\SignatureRepository;
+use App\Entity\Repository\TeamMembershipRepository;
 use App\Event\UserEvent;
 use App\Form\Type\EditUserPasswordType;
 use App\Form\Type\EditUserType;
@@ -17,31 +24,54 @@ use App\Role\Roles;
 use App\Service\LogService;
 use App\Service\RoleManager;
 use App\Service\UserRegistration;
+use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 use Exception;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\HttpKernel\KernelInterface;
+use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ProfileController extends BaseController
 {
+    public function __construct(
+        private AssistantHistoryRepository $assistantHistoryRepo,
+        private TeamMembershipRepository $teamMembershipRepo,
+        private ExecutiveBoardMembershipRepository $executiveBoardMembershipRepo,
+        private RoleRepository $roleRepo,
+        private SignatureRepository $signatureRepo,
+        private UserRegistration $userRegistration,
+        private RoleManager $roleManager,
+        private LogService $logService,
+        private TokenStorageInterface $tokenStorage,
+        private RequestStack $requestStack,
+        private KernelInterface $kernel,
+        private EntityManagerInterface $em,
+        private EventDispatcherInterface $eventDispatcher,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showAction()
     {
         // Get the user currently signed in
         $user = $this->getUser();
 
-        $em = $this->getDoctrine()->getManager();
-
         // Fetch the assistant history of the user
-        $assistantHistory = $em->getRepository(AssistantHistory::class)->findByUser($user);
+        $assistantHistory = $this->assistantHistoryRepo->findByUser($user);
 
         // Find the team history of the user
-        $teamMemberships = $em->getRepository(TeamMembership::class)->findByUser($user);
+        $teamMemberships = $this->teamMembershipRepo->findByUser($user);
 
         // Find the executive board history of the user
-        $executiveBoardMemberships = $em->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
+        $executiveBoardMemberships = $this->executiveBoardMembershipRepo->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
@@ -59,22 +89,20 @@ class ProfileController extends BaseController
             return $this->redirectToRoute('profile');
         }
 
-        $em = $this->getDoctrine()->getManager();
-
         // Find the work history of the user
-        $teamMemberships = $em->getRepository(TeamMembership::class)->findByUser($user);
+        $teamMemberships = $this->teamMembershipRepo->findByUser($user);
 
         // Find the executive board history of the user
-        $executiveBoardMemberships = $em->getRepository(ExecutiveBoardMembership::class)->findByUser($user);
+        $executiveBoardMemberships = $this->executiveBoardMembershipRepo->findByUser($user);
 
-        $isGrantedAssistant = ($this->getUser() !== null && $this->get(RoleManager::class)->userIsGranted($this->getUser(), Roles::ASSISTANT));
+        $isGrantedAssistant = ($this->getUser() !== null && $this->roleManager->userIsGranted($this->getUser(), Roles::ASSISTANT));
 
         if (empty($teamMemberships) && empty($executiveBoardMemberships) && !$isGrantedAssistant) {
             throw $this->createAccessDeniedException();
         }
 
         // Fetch the assistant history of the user
-        $assistantHistory = $em->getRepository(AssistantHistory::class)->findByUser($user);
+        $assistantHistory = $this->assistantHistoryRepo->findByUser($user);
 
         // Render the view
         return $this->render('profile/profile.html.twig', array(
@@ -89,8 +117,7 @@ class ProfileController extends BaseController
     {
         $user->setActive(false);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
@@ -99,15 +126,14 @@ class ProfileController extends BaseController
     {
         $user->setActive(true);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->flush();
+        $this->em->flush();
 
         return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
 
     public function activateNewUserAction(Request $request, $newUserCode)
     {
-        $user = $this->get(UserRegistration::class)->activateUserByNewUserCode($newUserCode);
+        $user = $this->userRegistration->activateUserByNewUserCode($newUserCode);
 
         if ($user === null) {
             return $this->render('error/error_message.html.twig', array(
@@ -123,15 +149,14 @@ class ProfileController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
             $token = new UsernamePasswordToken($user, 'secured_area', $user->getRoles());
-            $this->get('security.token_storage')->setToken($token);
-            $this->get('request_stack')->getSession()->set('_security_secured_area', serialize($token));
+            $this->tokenStorage->setToken($token);
+            $this->requestStack->getSession()->set('_security_secured_area', serialize($token));
 
-            $this->get(LogService::class)->info("User $user activated with new user code");
+            $this->logService->info("User $user activated with new user code");
 
             return $this->redirectToRoute('my_page');
         }
@@ -146,20 +171,18 @@ class ProfileController extends BaseController
     {
         $response = array();
 
-        $roleManager = $this->get(RoleManager::class);
-        $roleName    = $roleManager->mapAliasToRole($request->request->get('role'));
+        $roleName    = $this->roleManager->mapAliasToRole($request->request->get('role'));
 
-        if (! $roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
+        if (! $this->roleManager->loggedInUserCanChangeRoleOfUsersWithRole($user, $roleName)) {
             throw new BadRequestHttpException();
         }
 
         try {
-            $role = $this->getDoctrine()->getRepository(Role::class)->findByRoleName($roleName);
+            $role = $this->roleRepo->findByRoleName($roleName);
             $user->setRoles(array( $role ));
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
             $response['success'] = true;
         } catch (Exception $e) {
@@ -174,13 +197,12 @@ class ProfileController extends BaseController
 
     public function downloadCertificateAction(Request $request, User $user)
     {
-        $em = $this->getDoctrine()->getManager();
         // Fetch the assistant history of the user
-        $assistantHistory = $em->getRepository(AssistantHistory::class)->findByUser($user);
+        $assistantHistory = $this->assistantHistoryRepo->findByUser($user);
         // Find the work history of the user
-        $teamMembership = $em->getRepository(TeamMembership::class)->findByUser($user);
+        $teamMembership = $this->teamMembershipRepo->findByUser($user);
         // Find the signature of the user creating the certificate
-        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($this->getUser());
+        $signature = $this->signatureRepo->findByUser($this->getUser());
         // Find department
         $department = $this->getUser()->getDepartment();
         // Find any additional comment
@@ -197,7 +219,7 @@ class ProfileController extends BaseController
             'signature'             => $signature,
             'additional_comment'    => $additional_comment,
             'department'            => $department,
-            'base_dir'              => $this->get('kernel')->getProjectDir() . '/web',
+            'base_dir'              => $this->kernel->getProjectDir() . '/web',
         ));
         $options = new Options();
         $options->setIsRemoteEnabled(true);
@@ -229,11 +251,10 @@ class ProfileController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::EDITED);
+            $this->eventDispatcher->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::EDITED);
 
             return $this->redirect($this->generateUrl('profile'));
         }
@@ -253,9 +274,8 @@ class ProfileController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
             return $this->redirect($this->generateUrl('profile'));
         }
@@ -277,11 +297,10 @@ class ProfileController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::EDITED);
+            $this->eventDispatcher->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::EDITED);
 
             return $this->redirect($this->generateUrl('specific_profile', array( 'id' => $user->getId() )));
         }
@@ -299,10 +318,9 @@ class ProfileController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->flush();
+            $this->em->flush();
 
-            $this->get('event_dispatcher')->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::COMPANY_EMAIL_EDITED);
+            $this->eventDispatcher->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::COMPANY_EMAIL_EDITED);
 
             return $this->redirectToRoute('specific_profile', [ 'id' => $user->getId() ]);
         }
