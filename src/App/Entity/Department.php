@@ -4,110 +4,71 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Repository\DepartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="department")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\DepartmentRepository")
- * @UniqueEntity(fields={"city"})
- */
+#[ORM\Table(name: "department")]
+#[ORM\Entity(repositoryClass: DepartmentRepository::class)]
+#[UniqueEntity(fields: ["city"])]
 class Department
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: "string", length: 250)]
+    #[Assert\NotBlank]
     private $name;
 
-    /**
-     * @ORM\Column(name="short_name", type="string", length=50)
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(name: "short_name", type: "string", length: 50)]
+    #[Assert\NotBlank]
     private $shortName;
 
-    /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank
-     * @Assert\Email
-     */
+    #[ORM\Column(type: "string", length: 250)]
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $email;
 
-    /**
-     * @ORM\Column(type="string", length=250, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 250, nullable: true)]
     protected $address;
 
-    /**
-     * @ORM\Column(type="string", length=250, unique=true)
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: "string", length: 250, unique: true)]
+    #[Assert\NotBlank]
     private $city;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\Length(max=255)
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\Length(max: 255)]
     private $latitude;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\Length(max=255)
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\Length(max: 255)]
     private $longitude;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: "string", nullable: true)]
     private $slackChannel;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="School", inversedBy="departments")
-     * @ORM\JoinTable(name="department_school")
-     * @ORM\JoinColumn(onDelete="cascade")
-     **/
+    #[ORM\ManyToMany(targetEntity: "School", inversedBy: "departments")]
+    #[ORM\JoinTable(name: "department_school")]
+    #[ORM\JoinColumn(onDelete: "cascade")]
     protected $schools;
 
-    /**
-     * @ORM\OneToMany(targetEntity="FieldOfStudy", mappedBy="department",
-     *     cascade={"remove"})
-     */
+    #[ORM\OneToMany(targetEntity: "FieldOfStudy", mappedBy: "department", cascade: ["remove"])]
     private $fieldOfStudy;
-
-    /**
-     * @ORM\OneToMany(targetEntity="AdmissionPeriod", mappedBy="department",
-     *     cascade={"remove"})
-     * @ORM\OrderBy({"startDate" = "DESC"})
-     **/
+    #[ORM\OneToMany(targetEntity: "AdmissionPeriod", mappedBy: "department", cascade: ["remove"])]
+    #[ORM\OrderBy(["startDate" => "DESC"])]
     private $admissionPeriods;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Team", mappedBy="department",
-     *     cascade={"remove"})
-     **/
+    #[ORM\OneToMany(targetEntity: "Team", mappedBy: "department", cascade: ["remove"])]
     private $teams;
-
-    /**
-     * @ORM\Column(name="logo_path", type="string", length=255, nullable=true)
-     * @Assert\Length(min = 1, max = 255, maxMessage="Path kan maks være 255
-     *     tegn."))
-     **/
+    #[ORM\Column(name: "logo_path", type: "string", length: 255, nullable: true)]
+    #[Assert\Length(min: 1, max: 255, maxMessage: "Path kan maks være 255 tegn.")]
     private $logoPath;
 
-    /**
-     * @ORM\Column(name="active", type="boolean", nullable=false,
-     *     options={"default" : 1})
-     */
+    #[ORM\Column(name: "active", type: "boolean", nullable: false, options: ["default" => 1])]
     private $active;
 
     /**
@@ -515,7 +476,6 @@ class Department
         $this->logoPath = $logoPath;
     }
 
-
     /**
      * @return boolean $active
      */
@@ -523,7 +483,6 @@ class Department
     {
         return $this->active;
     }
-
 
     /**
      * @param boolean $active

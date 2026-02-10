@@ -3,58 +3,49 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\ChangeLogItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * ChangeLogItem
- *
- * @ORM\Table(name="change_log_item")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ChangeLogItemRepository")
  */
+#[ORM\Table(name: "change_log_item")]
+#[ORM\Entity(repositoryClass: ChangeLogItemRepository::class)]
 class ChangeLogItem
 {
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="title", type="string",nullable=false, length=40)
-     * @Assert\Length(
-     *     max=40,
-     *     maxMessage="Tittelen kan ikke være mer enn 40 tegn"
-     * )
      */
+    #[ORM\Column(name: "title", type: "string",nullable: false, length: 40)]
+    #[Assert\Length(max: 40, maxMessage: "Tittelen kan ikke være mer enn 40 tegn")]
     private $title;
 
     /**
      * @var string
-     * @ORM\Column(name="description", type="string", length=1000, nullable=true)
-     *
      */
+    #[ORM\Column(name: "description", type: "string", length: 1000, nullable: true)]
     private $description;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="githubLink", type="string", nullable=false, length=1000)
      */
+    #[ORM\Column(name: "githubLink", type: "string", nullable: false, length: 1000)]
     private $githubLink;
 
     /**
      * @var DateTime
-     *
-     * @ORM\Column(name="date", type="datetime")
      */
+    #[ORM\Column(name: "date", type: "datetime")]
     private $date;
-
 
     /**
      * Get id.

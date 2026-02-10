@@ -3,103 +3,84 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Repository\SurveyRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="survey")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SurveyRepository")
- *
- */
+#[ORM\Table(name: "survey")]
+#[ORM\Entity(repositoryClass: SurveyRepository::class)]
 class Survey implements JsonSerializable
 {
     public static $SCHOOL_SURVEY = 0;
     public static $TEAM_SURVEY = 1;
     public static $ASSISTANT_SURVEY = 2;
 
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[Assert\Valid]
     private $semester;
 
     /**
      * @var Department
-     * @ORM\ManyToOne(targetEntity="Department")
-     * @Assert\Valid
      */
+    #[ORM\ManyToOne(targetEntity: "Department")]
+    #[Assert\Valid]
     private $department;
 
-
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $name;
-
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=false)
      */
+    #[ORM\Column(type: "boolean", nullable: false)]
     private $showCustomPopUpMessage;
-
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=true)
      */
+    #[ORM\Column(type: "text", nullable: true)]
     private $finishPageContent;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=false, options={"default" : false})
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
      */
+    #[ORM\Column(type: "boolean", nullable: false, options: ["default" => false])]
+    #[Assert\NotNull(message: "Dette feltet kan ikke være tomt.")]
     private $confidential;
 
     /**
      * @var SurveyTaken[]
-     * @ORM\OneToMany(targetEntity="App\Entity\SurveyTaken", mappedBy="survey")
-     *
      */
+    #[ORM\OneToMany(targetEntity: "App\Entity\SurveyTaken", mappedBy: "survey")]
     private $surveysTaken;
-
 
     /**
      * @var int
-     * @ORM\Column(type="integer", nullable=false, options={"default" : 0})
-     *
      */
+    #[ORM\Column(type: "integer", nullable: false, options: ["default" => 0])]
     private $targetAudience;
-
 
     /**
      * @var string
-     * @ORM\Column(type="text", nullable=false, options={"default" : "Svar på undersøkelse!"})
      */
+    #[ORM\Column(type: "text", nullable: false, options: ["default" => "Svar på undersøkelse!"])]
     private $surveyPopUpMessage;
 
     /**
      * @var SurveyQuestion[]
-     *
-     * @ORM\ManyToMany(targetEntity="SurveyQuestion", cascade={"persist"})
-     * @ORM\JoinTable(name="survey_surveys_questions",
-     *      joinColumns={@ORM\JoinColumn(name="survey_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
-     *      )
-     * @Assert\Valid
-     **/
+     */
+    #[ORM\ManyToMany(targetEntity: "SurveyQuestion", cascade: ["persist"])]
+    #[ORM\JoinTable(name: "survey_surveys_questions")]
+    #[ORM\JoinColumn(name: "survey_id", referencedColumnName: "id")]
+    #[ORM\InverseJoinColumn(name: "question_id", referencedColumnName: "id")]
+    #[Assert\Valid]
     private $surveyQuestions;
 
     private $totalAnswered;
@@ -202,7 +183,6 @@ class Survey implements JsonSerializable
         return $str;
     }
 
-
     /**
      * Get id.
      *
@@ -273,7 +253,6 @@ class Survey implements JsonSerializable
         return $surveyClone;
     }
 
-
     /**
      * @return boolean
      */
@@ -289,7 +268,6 @@ class Survey implements JsonSerializable
     {
         $this->showCustomPopUpMessage = $showCustomPopUpMessage;
     }
-
 
     /**
      * @return string
@@ -326,7 +304,6 @@ class Survey implements JsonSerializable
     {
         $this->confidential = $confidential;
     }
-
 
     /**
      * @param int $targetAudience

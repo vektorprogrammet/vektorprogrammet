@@ -2,69 +2,50 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\TeamApplicationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="team_application")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\TeamApplicationRepository")
- */
+#[ORM\Table(name: "team_application")]
+#[ORM\Entity(repositoryClass: TeamApplicationRepository::class)]
 class TeamApplication
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $name;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @Assert\Email(message="Ikke gyldig e-post.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\Email(message: "Ikke gyldig e-post.")]
     private $email;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(max=45, maxMessage="Dette feltet kan ikke inneholde mer enn 45 tegn")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\Length(max: 45, maxMessage: "Dette feltet kan ikke inneholde mer enn 45 tegn")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $fieldOfStudy;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $yearOfStudy;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "text")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $motivationText;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "text")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $biography;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="applications")
-     */
+    #[ORM\ManyToOne(targetEntity: "Team", inversedBy: "applications")]
     private $team;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $phone;
 
     /**

@@ -4,87 +4,62 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\Collection;
+use App\Entity\Repository\ArticleRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ArticleRepository")
- * @ORM\Table(name="article")
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Entity(repositoryClass: ArticleRepository::class)]
+#[ORM\Table(name: "article")]
+#[ORM\HasLifecycleCallbacks]
 class Article
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\Length(max=255)
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\Length(max: 255)]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt")]
     protected $title;
 
-    /**
-     * @ORM\Column(type="string", unique=true)
-     * @Assert\Length(max=255)
-     */
+    #[ORM\Column(type: "string", unique: true)]
+    #[Assert\Length(max: 255)]
     protected $slug;
 
-    /**
-     * @ORM\Column(type="text")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt")
-     */
+    #[ORM\Column(type: "text")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt")]
     protected $article;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     protected $imageLarge;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     protected $imageSmall;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     protected $created;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     protected $updated;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     protected $sticky;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=true)
      */
+    #[ORM\Column(type: "boolean", nullable: true)]
     private $published;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Department")
-     * @ORM\JoinTable(name="articles_departments",
-     *      joinColumns={@ORM\JoinColumn(name="article_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="department_id", referencedColumnName="id")}
-     *      )
-     **/
+    #[ORM\ManyToMany(targetEntity: "Department")]
+    #[ORM\JoinTable(name: "articles_departments")]
+    #[ORM\JoinColumn(name: "article_id", referencedColumnName: "id")]
+    #[ORM\InverseJoinColumn(name: "department_id", referencedColumnName: "id")]
     protected $departments; // Unidirectional, may change
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="author_id", referencedColumnName="id", onDelete="SET NULL")
-     */
+    #[ORM\ManyToOne(targetEntity: "User")]
+    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", onDelete: "SET NULL")]
     protected $author; // Unidirectional, may change
 
     public function __construct()
@@ -95,9 +70,7 @@ class Article
         $this->published = false;
     }
 
-    /**
-     * @ORM\PreUpdate
-     */
+    #[ORM\PreUpdate]
     public function setUpdatedValue()
     {
         $this->setUpdated(new DateTime());

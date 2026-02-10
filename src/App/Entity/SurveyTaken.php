@@ -4,59 +4,50 @@ namespace App\Entity;
 
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Repository\SurveyTakenRepository;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="survey_taken")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SurveyTakenRepository")
- */
+#[ORM\Table(name: "survey_taken")]
+#[ORM\Entity(repositoryClass: SurveyTakenRepository::class)]
 class SurveyTaken implements JsonSerializable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
-     * @ORM\JoinColumn(onDelete="SET NULL", nullable=true)
      */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User")]
+    #[ORM\JoinColumn(onDelete: "SET NULL", nullable: true)]
     protected $user;
 
-
     /**
-     * @ORM\Column(type="datetime", nullable=false)
-     *
      * @var DateTime
      */
+    #[ORM\Column(type: "datetime", nullable: false)]
     protected $time;
 
     /**
      * @var School
-     *
-     * @ORM\ManyToOne(targetEntity="School", cascade={"persist"})
-     * @Assert\NotNull(groups="schoolSpecific")
-     *
      */
+    #[ORM\ManyToOne(targetEntity: "School", cascade: ["persist"])]
+    #[Assert\NotNull(groups: ["schoolSpecific"])]
     protected $school;
 
     /**
      * @var Survey
-     * @ORM\ManyToOne(targetEntity="Survey", cascade={"persist"}, inversedBy="surveysTaken")
-     *
      */
+    #[ORM\ManyToOne(targetEntity: "Survey", cascade: ["persist"], inversedBy: "surveysTaken")]
     protected $survey;
 
     /**
      * @var SurveyAnswer[]
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyTaken", cascade={"persist", "remove"}, orphanRemoval=true)
      */
+    #[ORM\OneToMany(targetEntity: "SurveyAnswer", mappedBy: "surveyTaken", cascade: ["persist", "remove"], orphanRemoval: true)]
     protected $surveyAnswers;
 
     /**
@@ -138,7 +129,6 @@ class SurveyTaken implements JsonSerializable
         $this->survey = $survey;
     }
 
-
     /**
      * @return User
      */
@@ -154,8 +144,6 @@ class SurveyTaken implements JsonSerializable
     {
         $this->user = $user;
     }
-
-
 
     /**
      * Specify data which should be serialized to JSON.
@@ -190,7 +178,6 @@ class SurveyTaken implements JsonSerializable
         } else {
             $affiliationQuestion = array('question_id' => 0, 'answerArray' => [$this->school->getName()]);
         }
-
 
         $ret[] = $affiliationQuestion;
         foreach ($this->surveyAnswers as $a) {

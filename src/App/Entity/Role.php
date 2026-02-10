@@ -3,35 +3,25 @@
 namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Repository\RoleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="role")
- * @ORM\Entity()
- * @ORM\Entity(repositoryClass="App\Entity\Repository\RoleRepository")
- */
+#[ORM\Table(name: "role")]
+#[ORM\Entity(repositoryClass: RoleRepository::class)]
 class Role
 {
-    /**
-     * @ORM\Column(name="id", type="integer", length=11)
-     * @ORM\Id()
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(name: "id", type: "integer", length: 11)]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\Column(name="name", type="string", length=30)
-     */
+    #[ORM\Column(name: "name", type: "string", length: 30)]
     private $name;
 
-    /**
-     * @ORM\Column(name="role", type="string", length=20)
-     */
+    #[ORM\Column(name: "role", type: "string", length: 20)]
     private $role;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="User", mappedBy="roles")
-     */
+    #[ORM\ManyToMany(targetEntity: "User", mappedBy: "roles")]
     private $users;
 
     public function __construct(string $role = '')

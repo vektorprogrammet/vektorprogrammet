@@ -4,9 +4,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_CLASS)]
 class InfoMeeting extends Constraint
 {
     public $message = "Infomøtet må ha en dato for å kunne vises på nettsiden";

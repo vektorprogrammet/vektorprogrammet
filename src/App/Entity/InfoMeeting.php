@@ -3,52 +3,41 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\InfoMeetingRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
-/**
- * @ORM\Table(name="infomeeting")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\InfoMeetingRepository")
- * @CustomAssert\InfoMeeting()
- */
+#[ORM\Table(name: "infomeeting")]
+#[ORM\Entity(repositoryClass: InfoMeetingRepository::class)]
+#[CustomAssert\InfoMeeting]
 class InfoMeeting
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", nullable=true)
      */
+    #[ORM\Column(type: "boolean", nullable: true)]
     private $showOnPage;
 
-    /**
-     * @ORM\Column(type="datetime", length=250, nullable=true)
-     * @Assert\DateTime()
-     */
+    #[ORM\Column(type: "datetime", length: 250, nullable: true)]
+    #[Assert\DateTime]
     private $date;
 
-    /**
-     * @ORM\Column(type="string", length=250, nullable=true)
-     * @Assert\Length(max=250)
-     */
+    #[ORM\Column(type: "string", length: 250, nullable: true)]
+    #[Assert\Length(max: 250)]
     private $room;
 
-    /**
-     * @ORM\Column(type="string", length=250, nullable=true)
-     * @Assert\Length(max=250)
-     */
+    #[ORM\Column(type: "string", length: 250, nullable: true)]
+    #[Assert\Length(max: 250)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", length=250, nullable=true)
-     * @Assert\Length(max=250)
-     */
+    #[ORM\Column(type: "string", length: 250, nullable: true)]
+    #[Assert\Length(max: 250)]
     private $link;
 
     /**

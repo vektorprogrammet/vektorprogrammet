@@ -5,35 +5,25 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Validator\Constraints as CustomAssert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="interview_answer")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "interview_answer")]
 class InterviewAnswer
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Interview", inversedBy="interviewAnswers")
-     * @ORM\JoinColumn(name="interview_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: "Interview", inversedBy: "interviewAnswers")]
+    #[ORM\JoinColumn(name: "interview_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $interview;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="InterviewQuestion")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: "InterviewQuestion")]
+    #[ORM\JoinColumn(name: "question_id", referencedColumnName: "id")]
     protected $interviewQuestion;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     * @CustomAssert\InterviewAnswer(groups={"interview"})
-     */
+    #[ORM\Column(type: "array", nullable: true)]
+    #[CustomAssert\InterviewAnswer(groups: ["interview"])]
     protected $answer;
 
     /**

@@ -2,29 +2,22 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\UnhandledAccessRuleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\UnhandledAccessRuleRepository")
- * @ORM\Table(name="unhandled_access_rule")
- */
+#[ORM\Entity(repositoryClass: UnhandledAccessRuleRepository::class)]
+#[ORM\Table(name: "unhandled_access_rule")]
 class UnhandledAccessRule
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private $resource;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private $method;
 
     public function __construct($resource, $method)
@@ -32,7 +25,6 @@ class UnhandledAccessRule
         $this->resource = $resource;
         $this->method = $method;
     }
-
 
     /**
      * @return int

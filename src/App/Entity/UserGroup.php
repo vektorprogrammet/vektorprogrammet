@@ -6,49 +6,39 @@ use Doctrine\Common\Collections\ArrayCollection;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="usergroup")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "usergroup")]
 class UserGroup
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var string
-     * @ORM\Column(type="string", nullable = false)
      */
+    #[ORM\Column(type: "string", nullable: false)]
     private $name;
-
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: "boolean")]
     private $active;
-
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="App\Entity\User")
      */
+    #[ORM\ManyToMany(targetEntity: "App\Entity\User")]
     private $users;
-
-
 
     /**
      * @var UserGroupCollection
-     * @ORM\ManyToOne(targetEntity="App\Entity\UserGroupCollection", inversedBy="userGroups", cascade={"persist"})
-     * @ORM\JoinColumn
      */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\UserGroupCollection", inversedBy: "userGroups", cascade: ["persist"])]
+    #[ORM\JoinColumn]
     private $userGroupCollection;
-
-
 
     public function __construct()
     {

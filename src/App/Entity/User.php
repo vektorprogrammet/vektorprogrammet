@@ -7,6 +7,7 @@ use App\Validator\Constraints as CustomAssert;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use App\Entity\Repository\UserRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -16,164 +17,113 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * App\Entity\User.
- *
- * @ORM\Table(name="user")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\UserRepository")
- * @UniqueEntity(
- *      fields={"email"},
- *      message="Denne Eposten er allerede i bruk.",
- *      groups={"create_user", "edit_user"}
- * )
- *
- * @UniqueEntity(
- *      fields={"user_name"},
- *      message="Dette brukernavnet er allerede i bruk.",
- *      groups={"create_user", "username", "edit_user"}
- * )
  */
+#[ORM\Table(name: "user")]
+#[ORM\Entity(repositoryClass: UserRepository::class)]
+#[UniqueEntity(fields: ["email"], message: "Denne Eposten er allerede i bruk.", groups: ["create_user", "edit_user"])]
+#[UniqueEntity(fields: ["user_name"], message: "Dette brukernavnet er allerede i bruk.", groups: ["create_user", "username", "edit_user"])]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
     private $lastName;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
     private $firstName;
 
     /**
      * @var FieldOfStudy
-     * @ORM\ManyToOne(targetEntity="FieldOfStudy")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\NotBlank(groups={"admission", "edit_user", "create_user"}, message="Dette feltet kan ikke være tomt.")
-     * @Assert\Valid
      */
+    #[ORM\ManyToOne(targetEntity: "FieldOfStudy")]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Assert\NotBlank(groups: ["admission", "edit_user", "create_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\Valid]
     private $fieldOfStudy;
 
-    /**
-     * @ORM\Column(name="gender", type="boolean")
-     * @Assert\NotBlank(groups={"admission", "create_user"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(name: "gender", type: "boolean")]
+    #[Assert\NotBlank(groups: ["admission", "create_user"], message: "Dette feltet kan ikke være tomt.")]
     private $gender;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private $picture_path;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
     private $phone;
 
-    /**
-     * @ORM\Column(type="string", length=45, nullable=true)
-     */
+    #[ORM\Column(type: "string", length: 45, nullable: true)]
     private $accountNumber;
 
-    /**
-     * @ORM\Column(type="string", unique=true, nullable=true)
-     * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string", unique: true, nullable: true)]
+    #[Assert\NotBlank(groups: ["username", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
     private $user_name;
 
-    /**
-     * @ORM\Column(type="string", length=64, nullable=true)
-     * @Assert\NotBlank(groups={"username", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string", length: 64, nullable: true)]
+    #[Assert\NotBlank(groups: ["username", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
     private $password;
 
-    /**
-     * @ORM\Column(type="string", unique=true)
-     * @Assert\NotBlank(groups={"admission", "create_user", "edit_user"}, message="Dette feltet kan ikke være tomt.")
-     * @Assert\Email(groups={"admission", "create_user", "edit_user"}, message="Ikke gyldig e-post.")
-     */
+    #[ORM\Column(type: "string", unique: true)]
+    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\Email(groups: ["admission", "create_user", "edit_user"], message: "Ikke gyldig e-post.")]
     private $email;
 
-
-    /**
-     * @ORM\Column(type="string", unique=true, nullable=true)
-     * @Assert\Email
-     * @CustomAssert\UniqueCompanyEmail
-     * @CustomAssert\VektorEmail
-     */
+    #[ORM\Column(type: "string", unique: true, nullable: true)]
+    #[Assert\Email]
+    #[CustomAssert\UniqueCompanyEmail]
+    #[CustomAssert\VektorEmail]
     private $companyEmail;
 
-    /**
-     * @ORM\Column(name="is_active", type="boolean")
-     */
+    #[ORM\Column(name: "is_active", type: "boolean")]
     private $isActive;
 
-
-    /**
-     * @ORM\Column(type="boolean", nullable=false)
-     */
+    #[ORM\Column(type: "boolean", nullable: false)]
     private $reservedFromPopUp;
 
-
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     */
+    #[ORM\Column(type: "datetime", nullable: false)]
     private $lastPopUpTime;
 
     /**
      * @var Role[]
-     * @ORM\ManyToMany(targetEntity="Role", inversedBy="users")
-     * @ORM\JoinColumn(onDelete="cascade")
-     * @Assert\Valid
      */
+    #[ORM\ManyToMany(targetEntity: "Role", inversedBy: "users")]
+    #[ORM\JoinColumn(onDelete: "cascade")]
+    #[Assert\Valid]
     private $roles;
 
-    /**
-     * @ORM\column(type="string", nullable=true)
-     */
+    #[ORM\column(type: "string", nullable: true)]
     private $new_user_code;
 
     /**
      * @var AssistantHistory[]
-     * @ORM\OneToMany(targetEntity="AssistantHistory", mappedBy="user")
      */
+    #[ORM\OneToMany(targetEntity: "AssistantHistory", mappedBy: "user")]
     private $assistantHistories;
 
     /**
      * @var TeamMembership[]
-     * @ORM\OneToMany(targetEntity="TeamMembership", mappedBy="user")
      */
+    #[ORM\OneToMany(targetEntity: "TeamMembership", mappedBy: "user")]
     private $teamMemberships;
 
     /**
      * @var ExecutiveBoardMembership[]
-     * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="user")
      */
+    #[ORM\OneToMany(targetEntity: "ExecutiveBoardMembership", mappedBy: "user")]
     private $executiveBoardMemberships;
-
-    /**
-     * @ORM\OneToMany(targetEntity="CertificateRequest", mappedBy="user")
-     **/
+    #[ORM\OneToMany(targetEntity: "CertificateRequest", mappedBy: "user")]
     protected $certificateRequests;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Interview", mappedBy="interviewer")
-     */
+    #[ORM\OneToMany(targetEntity: "Interview", mappedBy: "interviewer")]
     private $interviews;
 
-    /**
-     * @ORM\OneToMany(targetEntity="Receipt", mappedBy="user")
-     */
+    #[ORM\OneToMany(targetEntity: "Receipt", mappedBy: "user")]
     private $receipts;
-
 
     public function __construct()
     {
@@ -588,7 +538,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     http://symfony.com/doc/current/cookbook/security/form_login_setup.html
     http://symfony.com/doc/current/cookbook/security/entity_provider.html
 
-
     */
 
     /**
@@ -789,7 +738,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
         return $activeTeamMemberships;
     }
-
 
     /**
      * @return bool

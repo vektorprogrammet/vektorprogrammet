@@ -3,74 +3,53 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\ReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ReceiptRepository")
- * @ORM\Table(name="receipt")
- */
+#[ORM\Entity(repositoryClass: ReceiptRepository::class)]
+#[ORM\Table(name: "receipt")]
 class Receipt
 {
     const STATUS_PENDING = 'pending';
     const STATUS_REFUNDED = 'refunded';
     const STATUS_REJECTED = 'rejected';
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="receipts")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: "User", inversedBy: "receipts")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $user;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: "datetime", nullable: true)]
     private $submitDate;
 
-    /**
-     * @ORM\Column(type="datetime")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "datetime")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $receiptDate;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: "datetime", nullable: true)]
     private $refundDate;
 
-    /**
-     * @ORM\Column(name="picture_path", type="string", nullable=true)
-     */
+    #[ORM\Column(name: "picture_path", type: "string", nullable: true)]
     private $picturePath;
 
-    /**
-     * @ORM\Column(type="string", length=5000)
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @Assert\Length(max="5000", maxMessage="Maks 5000 tegn")
-     */
+    #[ORM\Column(type: "string", length: 5000)]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\Length(max: "5000", maxMessage: "Maks 5000 tegn")]
     private $description;
 
-    /**
-     * @ORM\Column(type="float")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @Assert\GreaterThan(0, message="Ugyldig sum")
-     */
+    #[ORM\Column(type: "float")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\GreaterThan(0, message: "Ugyldig sum")]
     private $sum;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private $status;
 
-    /**
-     * @ORM\Column(name="visual_id", type="string", nullable=true)
-     */
+    #[ORM\Column(name: "visual_id", type: "string", nullable: true)]
     private $visualId;
 
     public function __construct()
@@ -113,7 +92,6 @@ class Receipt
     {
         $this->submitDate = $submitDate;
     }
-
 
     /**
      * @return DateTime

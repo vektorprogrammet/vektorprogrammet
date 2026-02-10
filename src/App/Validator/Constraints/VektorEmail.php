@@ -5,9 +5,7 @@ namespace App\Validator\Constraints;
 
 use Symfony\Component\Validator\Constraint;
 
-/**
- * @Annotation
- */
+#[\Attribute(\Attribute::TARGET_PROPERTY)]
 class VektorEmail extends Constraint
 {
     public $message = 'E-postadressen må slutte med "@vektorprogrammet.no"';

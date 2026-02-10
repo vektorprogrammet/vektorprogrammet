@@ -4,75 +4,59 @@ namespace App\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use App\Entity\Repository\SchoolRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SchoolRepository")
- * @ORM\Table(name="school")
- */
+#[ORM\Entity(repositoryClass: SchoolRepository::class)]
+#[ORM\Table(name: "school")]
 class School
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $name;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $contactPerson;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="Department", mappedBy="schools")
-     * @ORM\JoinColumn(onDelete="cascade")
-     **/
+    #[ORM\ManyToMany(targetEntity: "Department", mappedBy: "schools")]
+    #[ORM\JoinColumn(onDelete: "cascade")]
     protected $departments;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @Assert\Email(message="Ikke gyldig e-post.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\Email(message: "Ikke gyldig e-post.")]
     protected $email;
 
-    /**
-     * @ORM\OneToMany(targetEntity="AssistantHistory", mappedBy="school")
-     */
+    #[ORM\OneToMany(targetEntity: "AssistantHistory", mappedBy: "school")]
     private $assistantHistories;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $phone;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
+    #[ORM\Column(type: "boolean")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $international;
 
     /**
      * @var SchoolCapacity[]
-     * @ORM\OneToMany(targetEntity="SchoolCapacity", mappedBy="school")
      */
+    #[ORM\OneToMany(targetEntity: "SchoolCapacity", mappedBy: "school")]
     private $capacities;
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean", options={"default": 1})
      */
+    #[ORM\Column(type: "boolean", options: ["default" => 1])]
     private $active;
 
     public function __construct()

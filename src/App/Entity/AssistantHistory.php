@@ -2,68 +2,51 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\AssistantHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="assistant_history")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\AssistantHistoryRepository")
- */
+#[ORM\Table(name: "assistant_history")]
+#[ORM\Entity(repositoryClass: AssistantHistoryRepository::class)]
 class AssistantHistory
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="assistantHistories")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     **/
+    #[ORM\ManyToOne(targetEntity: "User", inversedBy: "assistantHistories")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $user;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     **/
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $semester;
 
     /**
      * @var Department
-     *
-     * @ORM\ManyToOne(targetEntity="Department")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\NotBlank(message="Region må velges.")
      */
+    #[ORM\ManyToOne(targetEntity: "Department")]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Assert\NotBlank(message: "Region må velges.")]
     private $department;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="School", inversedBy="assistantHistories")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     **/
+    #[ORM\ManyToOne(targetEntity: "School", inversedBy: "assistantHistories")]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $school;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $workdays;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $bolk;
 
     /**
      * @var string
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $day;
 
     public function activeInGroup($group): bool

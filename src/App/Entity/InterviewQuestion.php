@@ -7,41 +7,29 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="interview_question")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "interview_question")]
 class InterviewQuestion
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=5000)
-     * @Assert\NotBlank(message="Spørsmål: Dette feltet kan ikke være tomt.")
-     * @Assert\Length(max="5000", maxMessage="Spørsmål: Maks 5000 tegn")
-     */
+    #[ORM\Column(type: "string", length: 5000)]
+    #[Assert\NotBlank(message: "Spørsmål: Dette feltet kan ikke være tomt.")]
+    #[Assert\Length(max: "5000", maxMessage: "Spørsmål: Maks 5000 tegn")]
     protected $question;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, length=5000)
-     */
+    #[ORM\Column(type: "string", nullable: true, length: 5000)]
     protected $help;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $type;
 
-    /**
-     * @ORM\OneToMany(targetEntity="InterviewQuestionAlternative", mappedBy="interviewQuestion", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Assert\Valid
-     */
+    #[ORM\OneToMany(targetEntity: "InterviewQuestionAlternative", mappedBy: "interviewQuestion", cascade: ["persist", "remove"], orphanRemoval: true)]
+    #[Assert\Valid]
     protected $alternatives;
 
     /**

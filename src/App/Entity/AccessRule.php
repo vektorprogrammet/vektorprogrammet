@@ -2,59 +2,40 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\AccessRuleRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\AccessRuleRepository")
- * @ORM\Table(name="access_rule")
- */
+#[ORM\Entity(repositoryClass: AccessRuleRepository::class)]
+#[ORM\Table(name: "access_rule")]
 class AccessRule
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private $name;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private $resource;
 
-    /**
-     * @ORM\Column(type="string")
-     */
+    #[ORM\Column(type: "string")]
     private $method;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $isRoutingRule;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $forExecutiveBoard;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="User")
-     */
+    #[ORM\ManyToMany(targetEntity: "User")]
     private $users;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Team")
-     */
+    #[ORM\ManyToMany(targetEntity: "Team")]
     private $teams;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="Role")
-     */
+    #[ORM\ManyToMany(targetEntity: "Role")]
     private $roles;
 
     public function __construct()
@@ -63,7 +44,6 @@ class AccessRule
         $this->forExecutiveBoard = false;
         $this->method = "GET";
     }
-
 
     /**
      * @return int

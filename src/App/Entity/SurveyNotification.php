@@ -2,63 +2,55 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\SurveyNotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SurveyNotificationRepository")
- * @ORM\Table(name="survey_notification")
- * @UniqueEntity(
- *      fields={"userIdentifier"}
- * )
- */
+#[ORM\Entity(repositoryClass: SurveyNotificationRepository::class)]
+#[ORM\Table(name: "survey_notification")]
+#[UniqueEntity(fields: ["userIdentifier"])]
 class SurveyNotification
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var User
-     * @ORM\ManyToOne(targetEntity="App\Entity\User")
      */
+    #[ORM\ManyToOne(targetEntity: "App\Entity\User")]
     private $user;
 
     /**
      * @var SurveyLinkClick[]
-     * @ORM\OneToMany(targetEntity="SurveyLinkClick", mappedBy="notification")
      */
+    #[ORM\OneToMany(targetEntity: "SurveyLinkClick", mappedBy: "notification")]
     private $surveyLinkClicks;
 
     /**
      * @var SurveyNotificationCollection
-     * @ORM\ManyToOne(targetEntity="SurveyNotificationCollection", inversedBy="surveyNotification")
      */
+    #[ORM\ManyToOne(targetEntity: "SurveyNotificationCollection", inversedBy: "surveyNotifications")]
     private $surveyNotificationCollection;
-
 
     /**
      * @var DateTime
-     * @ORM\Column(name="time_notification_Sent", type="datetime", nullable=true)
      */
+    #[ORM\Column(name: "time_notification_Sent", type: "datetime", nullable: true)]
     private $timeNotificationSent;
-
 
     /**
      * @var string
-     * @ORM\Column(name="user_identifier", type="string", unique=true)
      */
+    #[ORM\Column(name: "user_identifier", type: "string", unique: true)]
     private $userIdentifier;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: "boolean")]
     private $sent;
-
 
     public function __construct()
     {
@@ -85,7 +77,6 @@ class SurveyNotification
         return $this->user;
     }
 
-
     /**
      * @param User $user
      */
@@ -93,7 +84,6 @@ class SurveyNotification
     {
         $this->user = $user;
     }
-
 
     /**
      * @param DateTime[] $surveyLinkClicks
@@ -110,8 +100,6 @@ class SurveyNotification
     {
         return $this->surveyLinkClicks;
     }
-
-
 
     /**
      * @return DateTime?

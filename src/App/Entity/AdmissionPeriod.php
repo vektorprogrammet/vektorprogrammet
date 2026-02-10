@@ -4,55 +4,50 @@ namespace App\Entity;
 
 use App\Utils\TimeUtil;
 use DateTime;
+use App\Entity\Repository\AdmissionPeriodRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * DepartmentSpecificSemester
- *
- * @ORM\Table()
- * @ORM\Entity(repositoryClass="App\Entity\Repository\AdmissionPeriodRepository")
  */
+#[ORM\Table]
+#[ORM\Entity(repositoryClass: AdmissionPeriodRepository::class)]
 class AdmissionPeriod implements PeriodInterface
 {
     /**
      * @var integer
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var Department
-     * @ORM\ManyToOne(targetEntity="Department", inversedBy="admissionPeriods")
      */
+    #[ORM\ManyToOne(targetEntity: "Department", inversedBy: "admissionPeriods")]
     private $department;
 
-    /**
-     * @ORM\Column(name="start_date", type="datetime", length=150)
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(name: "start_date", type: "datetime", length: 150)]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $startDate;
 
-    /**
-     * @ORM\Column(name="end_date", type="datetime", length=150)
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(name: "end_date", type: "datetime", length: 150)]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $endDate;
 
     /**
      * @var InfoMeeting
-     * @ORM\OneToOne(targetEntity="InfoMeeting", cascade={"remove", "persist"})
-     * @Assert\Valid
      */
+    #[ORM\OneToOne(targetEntity: "InfoMeeting", cascade: ["remove", "persist"])]
+    #[Assert\Valid]
     private $infoMeeting;
 
     /**
      * @var Semester
-     * @ORM\ManyToOne(targetEntity="Semester", inversedBy="admissionPeriods")
      */
+    #[ORM\ManyToOne(targetEntity: "Semester", inversedBy: "admissionPeriods")]
     private $semester;
 
     public function __toString()
@@ -69,7 +64,6 @@ class AdmissionPeriod implements PeriodInterface
     {
         return $this->id;
     }
-
 
     /**
      * Set department.
@@ -159,7 +153,6 @@ class AdmissionPeriod implements PeriodInterface
     {
         $this->infoMeeting = $infoMeeting;
     }
-
 
     public function isActive(): bool
     {

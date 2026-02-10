@@ -3,47 +3,35 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\AdmissionNotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\AdmissionNotificationRepository")
- * @ORM\Table(name="admission_notification")
- *
- */
+#[ORM\Entity(repositoryClass: AdmissionNotificationRepository::class)]
+#[ORM\Table(name: "admission_notification")]
 class AdmissionNotification
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $timestamp;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="AdmissionSubscriber")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: "AdmissionSubscriber")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $subscriber;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Semester")
-     */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
     private $semester;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $infoMeeting;
 
     /**
      * @var Department
-     * @ORM\ManyToOne(targetEntity="Department")
      */
+    #[ORM\ManyToOne(targetEntity: "Department")]
     private $department;
 
     public function __construct()

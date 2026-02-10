@@ -3,15 +3,15 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\FeedbackRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Feedback
- *
- * @ORM\Table(name="feedback")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\FeedbackRepository")
  */
+#[ORM\Table(name: "feedback")]
+#[ORM\Entity(repositoryClass: FeedbackRepository::class)]
 class Feedback
 {
     const TYPE_QUESTION = 'question';
@@ -19,49 +19,43 @@ class Feedback
     const TYPE_FEATURE_REQUEST = 'feature_request';
     /**
      * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
      */
+    #[ORM\Column(name: "id", type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @Assert\Length(max="55", maxMessage="Maks 55 tegn", min="5", minMessage="Minimum 5 tegn")
-     * @ORM\Column(name="title", type="string", length=55)
      */
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\Length(max: "55", maxMessage: "Maks 55 tegn", min: "5", minMessage: "Minimum 5 tegn")]
+    #[ORM\Column(name: "title", type: "string", length: 55)]
     private $title;
 
     /**
      * @var string
-     *
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     * @Assert\Length(max="500", maxMessage="Maks 500 tegn", min="10", minMessage="Minimum 10 tegn")
-     * @ORM\Column(name="description", type="string", length=500)
      */
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Assert\Length(max: "500", maxMessage: "Maks 500 tegn", min: "10", minMessage: "Minimum 10 tegn")]
+    #[ORM\Column(name: "description", type: "string", length: 500)]
     private $description;
     /**
      * @var string
-     *
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt.")
-     * @ORM\Column(name="type", type="string", length=45)
      */
+    #[Assert\NotNull(message: "Dette feltet kan ikke være tomt.")]
+    #[ORM\Column(name: "type", type: "string", length: 45)]
     private $type;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: "User")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $user;
     
     /**
      * @var DateTime
-     * @ORM\Column(name="created_at", type="datetime",columnDefinition="TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL")
-     * @ORM\Version //Somehow fixes default to CURRENT_TIMESTAMP
      */
+    #[ORM\Column(name: "created_at", type: "datetime",columnDefinition: "TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL")]
+    #[ORM\Version]
     private $created_at;
 
     /**
@@ -196,7 +190,6 @@ class Feedback
     {
         return $this->created_at;
     }
-
 
     /**
      * Get Slack message body.

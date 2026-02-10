@@ -8,51 +8,34 @@ use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="survey_question")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "survey_question")]
 class SurveyQuestion implements JsonSerializable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $question;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "boolean")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $optional;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: "string", nullable: true)]
     protected $help;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $type;
 
-    /**
-     * @ORM\OneToMany(targetEntity="SurveyQuestionAlternative", mappedBy="surveyQuestion", cascade={"persist", "remove"}, orphanRemoval=true)
-     * @Assert\Valid
-     */
+    #[ORM\OneToMany(targetEntity: "SurveyQuestionAlternative", mappedBy: "surveyQuestion", cascade: ["persist", "remove"], orphanRemoval: true)]
+    #[Assert\Valid]
     protected $alternatives;
-
-    /**
-     * @ORM\OneToMany(targetEntity="SurveyAnswer", mappedBy="surveyQuestion", cascade={"persist", "remove"})
-     **/
+    #[ORM\OneToMany(targetEntity: "SurveyAnswer", mappedBy: "surveyQuestion", cascade: ["persist", "remove"])]
     protected $answers;
 
     /**

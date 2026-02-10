@@ -3,56 +3,47 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\ExecutiveBoardMembershipRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="executive_board_membership")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ExecutiveBoardMembershipRepository")
- */
+#[ORM\Table(name: "executive_board_membership")]
+#[ORM\Entity(repositoryClass: ExecutiveBoardMembershipRepository::class)]
 class ExecutiveBoardMembership implements TeamMembershipInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="executiveBoardMemberships")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     * @Assert\Valid
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     **/
+    #[ORM\ManyToOne(targetEntity: "User", inversedBy: "executiveBoardMemberships")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $user;
 
     /**
      * @var ExecutiveBoard
-     * @ORM\ManyToOne(targetEntity="ExecutiveBoard", inversedBy="boardMemberships")
-     **/
+     */
+    #[ORM\ManyToOne(targetEntity: "ExecutiveBoard", inversedBy: "boardMemberships")]
     private $board;
-
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     * @Assert\Valid
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     **/
+    #[ORM\Column(type: "text", nullable: true)]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $positionName;
 
     /**
      * @var Semester
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @Assert\Valid
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[Assert\Valid]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $startSemester;
 
     /**
      * @var Semester
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @Assert\Valid
      */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[Assert\Valid]
     protected $endSemester;
 
     /**

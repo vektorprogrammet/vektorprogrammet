@@ -6,41 +6,28 @@ use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="survey_answer")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "survey_answer")]
 class SurveyAnswer implements JsonSerializable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="answers")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: "SurveyQuestion", inversedBy: "answers")]
+    #[ORM\JoinColumn(name: "question_id", referencedColumnName: "id")]
     protected $surveyQuestion;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     protected $answer;
 
-    /**
-     * @ORM\Column(type="array", nullable=true)
-     * @Assert\NotBlank()
-     *
-     */
+    #[ORM\Column(type: "array", nullable: true)]
+    #[Assert\NotBlank]
     private $answerArray;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SurveyTaken", inversedBy="surveyAnswers")
-     * @ORM\JoinColumn(name="survey_taken_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: "SurveyTaken", inversedBy: "surveyAnswers")]
+    #[ORM\JoinColumn(name: "survey_taken_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $surveyTaken;
 
     public function __construct()

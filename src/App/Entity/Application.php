@@ -3,145 +3,115 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\ApplicationRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as CustomAssert;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ApplicationRepository")
- * @ORM\Table(name="application")
- * @CustomAssert\ApplicationEmail(groups={"admission"})
- */
+#[ORM\Entity(repositoryClass: ApplicationRepository::class)]
+#[ORM\Table(name: "application")]
+#[CustomAssert\ApplicationEmail(groups: ["admission"])]
 class Application implements DepartmentSemesterInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var AdmissionPeriod
-     * @ORM\ManyToOne(targetEntity="AdmissionPeriod")
      */
+    #[ORM\ManyToOne(targetEntity: "AdmissionPeriod")]
     private $admissionPeriod;
 
-    /**
-     * @ORM\Column(type="string", length=20)
-     * @Assert\NotBlank(groups={"admission", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string", length: 20)]
+    #[Assert\NotBlank(groups: ["admission", "admission_existing"], message: "Dette feltet kan ikke være tomt.")]
     private $yearOfStudy;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
     private $monday;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
     private $tuesday;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
     private $wednesday;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
     private $thursday;
 
     /**
-     * @ORM\Column(type="boolean", options={"default"=true}))
      * @var bool
      */
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
     private $friday;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"=false})
-     */
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $substitute;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\NotBlank(groups: ["interview", "admission_existing"], message: "Dette feltet kan ikke være tomt.")]
     private $language;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"=false})
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
+    #[Assert\NotBlank(groups: ["interview", "admission_existing"], message: "Dette feltet kan ikke være tomt.")]
     private $doublePosition;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     */
+    #[ORM\Column(type: "string", nullable: true)]
     private $preferredGroup;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\Length(max=255, maxMessage="Dette feltet kan ikke inneholde mer enn 255 tegn.")
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\Length(max: 255, maxMessage: "Dette feltet kan ikke inneholde mer enn 255 tegn.")]
     private $preferredSchool;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="User", cascade={"persist"})
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: "User", cascade: ["persist"])]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
+    #[Assert\Valid]
     private $user;
 
-    /**
-     * @ORM\Column(type="boolean")
-     */
+    #[ORM\Column(type: "boolean")]
     private $previousParticipation;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     */
+    #[ORM\Column(type: "datetime", nullable: false)]
     private $last_edited;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=false)
-     */
+    #[ORM\Column(type: "datetime", nullable: false)]
     private $created;
 
-    /**
-     * @ORM\Column(type="array")
-     */
+    #[ORM\Column(type: "array")]
     private $heardAboutFrom;
 
-    /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotBlank(groups={"interview", "admission_existing"}, message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "boolean")]
+    #[Assert\NotBlank(groups: ["interview", "admission_existing"], message: "Dette feltet kan ikke være tomt.")]
     private $teamInterest;
 
-    /**
-     * @ORM\ManyToMany(targetEntity="App\Entity\Team", inversedBy="potentialMembers")
-     */
+    #[ORM\ManyToMany(targetEntity: "App\Entity\Team", inversedBy: "potentialMembers")]
     private $potentialTeams;
 
     /**
      * @var Interview
-     * @ORM\OneToOne(targetEntity="Interview", cascade={"persist", "remove"}, inversedBy="application")
-     * @ORM\JoinColumn(nullable=true, onDelete="SET NULL")
-     * @Assert\Valid
      */
+    #[ORM\OneToOne(targetEntity: "Interview", cascade: ["persist", "remove"], inversedBy: "application")]
+    #[ORM\JoinColumn(nullable: true, onDelete: "SET NULL")]
+    #[Assert\Valid]
     private $interview;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: "string", nullable: true)]
     private $specialNeeds;
 
     /**
@@ -287,7 +257,6 @@ class Application implements DepartmentSemesterInterface
     {
         $this->friday = $friday;
     }
-
 
     /**
      * @return string

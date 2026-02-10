@@ -2,49 +2,38 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\ExecutiveBoardRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="executive_board")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\ExecutiveBoardRepository")
- */
+#[ORM\Table(name: "executive_board")]
+#[ORM\Entity(repositoryClass: ExecutiveBoardRepository::class)]
 class ExecutiveBoard implements TeamInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string", length: 250)]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\Email(message="Ugyldig e-post")
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\Email(message: "Ugyldig e-post")]
     private $email;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, name="short_description")
-     * @Assert\Length(maxMessage="Maks 125 Tegn", max="125")
-     */
+    #[ORM\Column(type: "string", nullable: true, name: "short_description")]
+    #[Assert\Length(maxMessage: "Maks 125 Tegn", max: "125")]
     private $shortDescription;
 
     /**
      * @var ExecutiveBoardMembership[]
-     * @ORM\OneToMany(targetEntity="ExecutiveBoardMembership", mappedBy="board")
      */
+    #[ORM\OneToMany(targetEntity: "ExecutiveBoardMembership", mappedBy: "board")]
     private $boardMemberships;
 
     public function __toString()

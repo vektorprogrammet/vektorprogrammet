@@ -7,118 +7,103 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="survey_notification_collection")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "survey_notification_collection")]
 class SurveyNotificationCollection
 {
     public static $EMAIL_NOTIFICATION = 0;
     public static $SMS_NOTIFICATION = 1;
 
-
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
-
 
     /**
      * @var string
-     * @ORM\Column(type="string")
      */
+    #[ORM\Column(type: "string")]
     private $name;
 
-
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="UserGroup", cascade={"persist"})
-     * @Assert\NotNull
      */
+    #[ORM\ManyToMany(targetEntity: "UserGroup", cascade: ["persist"])]
+    #[Assert\NotNull]
     private $userGroups;
 
-
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="SurveyNotification", mappedBy="surveyNotificationCollection", cascade={"remove"})
      */
+    #[ORM\OneToMany(targetEntity: "SurveyNotification", mappedBy: "surveyNotificationCollection", cascade: ["remove"])]
     private $surveyNotifications;
-
 
     /**
      * @var Survey
-     * @ORM\ManyToOne(targetEntity="Survey")
-     * @Assert\NotBlank
      */
+    #[ORM\ManyToOne(targetEntity: "Survey")]
+    #[Assert\NotBlank]
     private $survey;
 
     /**
      * @var DateTime
-     * @ORM\Column(name="time_of_notification", type="datetime", nullable=false)
      */
+    #[ORM\Column(name: "time_of_notification", type: "datetime", nullable: false)]
     private $timeOfNotification;
 
     /**
      * @var int
-     * @ORM\Column(name="notification_type", type="integer")
      */
+    #[ORM\Column(name: "notification_type", type: "integer")]
     private $notificationType;
 
     /**
      * @var bool
-     * @ORM\Column(name="all_sent", type="boolean")
      */
+    #[ORM\Column(name: "all_sent", type: "boolean")]
     private $allSent;
 
     /**
      * @var bool
-     * @ORM\Column(type="boolean", options={"default"=false})
      */
+    #[ORM\Column(type: "boolean", options: ["default" => false])]
     private $active;
 
     /**
      * @var string
-     * @ORM\Column(name="sms_message", type="string")
-     *
      */
+    #[ORM\Column(name: "sms_message", type: "string")]
     private $smsMessage;
 
     /**
      * @var string
-     * @ORM\Column(name="email_from_name", nullable=false, type="string")
      */
+    #[ORM\Column(name: "email_from_name", nullable: false, type: "string")]
     private $emailFromName;
 
-
     /**
      * @var string
-     * @ORM\Column(name="email_subject", type="string")
      */
+    #[ORM\Column(name: "email_subject", type: "string")]
     private $emailSubject;
 
-
     /**
      * @var string
-     * @ORM\Column(name="email_message", type="text")
      */
+    #[ORM\Column(name: "email_message", type: "text")]
     private $emailMessage;
 
     /**
      * @var string
-     * @ORM\Column(name="email_end_message", type="text")
      */
+    #[ORM\Column(name: "email_end_message", type: "text")]
     private $emailEndMessage;
 
     /**
      * @var int
-     * @ORM\Column(name="email_type", type="integer")
      */
+    #[ORM\Column(name: "email_type", type: "integer")]
     private $emailType;
-
-
-
 
     public function __construct()
     {
@@ -152,9 +137,6 @@ class SurveyNotificationCollection
     {
         return $this->userGroups;
     }
-
-
-
 
     /**
      * @param UserGroup[] $userGroups
@@ -195,7 +177,6 @@ class SurveyNotificationCollection
     {
         $this->timeOfNotification = $timeOfNotification;
     }
-
 
     /**
      * @return string

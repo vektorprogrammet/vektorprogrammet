@@ -4,93 +4,66 @@ namespace App\Entity;
 
 use App\Validator\Constraints as CustomAssert;
 use DateTime;
+use App\Entity\Repository\TeamRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="team")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\TeamRepository")
- * @UniqueEntity(
- *     fields={"department", "name"},
- *     message="Et team med dette navnet finnes allerede i avdelingen.",
- * )
- */
+#[ORM\Table(name: "team")]
+#[ORM\Entity(repositoryClass: TeamRepository::class)]
+#[UniqueEntity(fields: ["department", "name"], message: "Et team med dette navnet finnes allerede i avdelingen.",)]
 class Team implements TeamInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string", length=250)
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string", length: 250)]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $name;
 
-    /**
-     * @ORM\Column(type="string", nullable=true)
-     * @Assert\Email(message="Ugyldig e-post")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være blankt.")
-     * @CustomAssert\UniqueCompanyEmail
-     * @CustomAssert\VektorEmail
-     */
+    #[ORM\Column(type: "string", nullable: true)]
+    #[Assert\Email(message: "Ugyldig e-post")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være blankt.")]
+    #[CustomAssert\UniqueCompanyEmail]
+    #[CustomAssert\VektorEmail]
     private $email;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="Department", inversedBy="teams")
-     * @Assert\NotNull(message="Avdeling kan ikke være null")
-     **/
+    #[ORM\ManyToOne(targetEntity: "Department", inversedBy: "teams")]
+    #[Assert\NotNull(message: "Avdeling kan ikke være null")]
     protected $department;
 
-    /**
-     * @ORM\Column(type="text", nullable=true)
-     */
+    #[ORM\Column(type: "text", nullable: true)]
     private $description;
 
-    /**
-     * @ORM\Column(type="string", nullable=true, name="short_description")
-     * @Assert\Length(maxMessage="Maks 125 Tegn", max="125")
-     */
+    #[ORM\Column(type: "string", nullable: true, name: "short_description")]
+    #[Assert\Length(maxMessage: "Maks 125 Tegn", max: "125")]
     private $shortDescription;
 
-    /**
-     * @ORM\Column(type="boolean", nullable=true)
-     */
+    #[ORM\Column(type: "boolean", nullable: true)]
     private $acceptApplication;
 
-    /**
-     * @ORM\Column(type="datetime", nullable=true)
-     */
+    #[ORM\Column(type: "datetime", nullable: true)]
     private $deadline;
 
     /**
      * Applications with team interest
      * @var Application[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\Application", mappedBy="potentialTeams")
      */
+    #[ORM\ManyToMany(targetEntity: "App\Entity\Application", mappedBy: "potentialTeams")]
     private $potentialMembers;
 
     /**
      * TeamInterest entities not corresponding to any Application
      * @var TeamInterest[]
-     *
-     * @ORM\ManyToMany(targetEntity="App\Entity\TeamInterest", mappedBy="potentialTeams")
      */
+    #[ORM\ManyToMany(targetEntity: "App\Entity\TeamInterest", mappedBy: "potentialTeams")]
     private $potentialApplicants;
 
-    /**
-     * @ORM\Column(type="boolean", options={"default"=true})
-     */
+    #[ORM\Column(type: "boolean", options: ["default" => true])]
     private $active;
 
-    /**
-     * @ORM\OneToMany(targetEntity="TeamApplication", mappedBy="team")
-     */
+    #[ORM\OneToMany(targetEntity: "TeamApplication", mappedBy: "team")]
     private $applications;
 
     public function isActive(): bool
@@ -106,11 +79,10 @@ class Team implements TeamInterface
         $this->active = $active;
     }
 
-
     /**
      * @var TeamMembership[]
-     * @ORM\OneToMany(targetEntity="TeamMembership", mappedBy="team")
      */
+    #[ORM\OneToMany(targetEntity: "TeamMembership", mappedBy: "team")]
     private $teamMemberships;
 
     /**
@@ -131,7 +103,6 @@ class Team implements TeamInterface
         $this->acceptApplication = $acceptApplication;
         return $this;
     }
-
 
     public function __construct()
     {

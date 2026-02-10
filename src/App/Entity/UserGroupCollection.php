@@ -5,83 +5,70 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="user_group_collection")
- * @ORM\Entity
- *
- */
+#[ORM\Entity]
+#[ORM\Table(name: "user_group_collection")]
 class UserGroupCollection
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var string
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $name;
-
 
     /**
      * @var int
-     * @ORM\Column(name="number_of_user_groups", type="integer", nullable = false)
-     * @Assert\GreaterThan(
-     *     value = 0
-     * )
      */
+    #[ORM\Column(name: "number_of_user_groups", type: "integer", nullable: false)]
+    #[Assert\GreaterThan(value: 0)]
     private $numberUserGroups;
-
-
 
     /**
      * @var ArrayCollection
-     * @ORM\OneToMany(targetEntity="UserGroup", mappedBy="userGroupCollection", cascade={"remove"})
      */
+    #[ORM\OneToMany(targetEntity: "UserGroup", mappedBy: "userGroupCollection", cascade: ["remove"])]
     private $userGroups;
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Team")
      */
+    #[ORM\ManyToMany(targetEntity: "Team")]
     private $teams;
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Semester")
      */
+    #[ORM\ManyToMany(targetEntity: "Semester")]
     private $semesters;
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="User")
      */
+    #[ORM\ManyToMany(targetEntity: "User")]
     private $users;
-
 
     /**
      * @var ArrayCollection
-     * @ORM\ManyToMany(targetEntity="Department")
      */
+    #[ORM\ManyToMany(targetEntity: "Department")]
     private $assistantsDepartments;
-
 
     /**
      * @var array
-     * @ORM\Column(name="assistant_bolk", type="array")
      */
+    #[ORM\Column(name: "assistant_bolk", type: "array")]
     private $assistantBolks;
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean")
      */
+    #[ORM\Column(type: "boolean")]
     private $deletable;
-
 
     public function __construct()
     {
@@ -156,7 +143,6 @@ class UserGroupCollection
         return $this->assistantBolks;
     }
 
-
     /**
      * @return string
      */
@@ -220,7 +206,6 @@ class UserGroupCollection
     {
         $this->numberUserGroups = $numberUserGroups;
     }
-
 
     /**
      * @return int

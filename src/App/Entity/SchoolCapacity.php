@@ -2,64 +2,47 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\SchoolCapacityRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SchoolCapacityRepository")
- * @ORM\Table(name="school_capacity")
- * @ORM\HasLifecycleCallbacks
- */
+#[ORM\Entity(repositoryClass: SchoolCapacityRepository::class)]
+#[ORM\Table(name: "school_capacity")]
+#[ORM\HasLifecycleCallbacks]
 class SchoolCapacity
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="School", inversedBy="capacities")
-     * @ORM\JoinColumn(name="school_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: "School", inversedBy: "capacities")]
+    #[ORM\JoinColumn(name: "school_id", referencedColumnName: "id")]
     protected $school;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @ORM\JoinColumn(name="semester_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[ORM\JoinColumn(name: "semester_id", referencedColumnName: "id")]
     protected $semester;
 
     /**
      * @var Department $department
-     * @ORM\ManyToOne(targetEntity="Department")
-     * @ORM\JoinColumn(name="department_id", referencedColumnName="id")
      */
+    #[ORM\ManyToOne(targetEntity: "Department")]
+    #[ORM\JoinColumn(name: "department_id", referencedColumnName: "id")]
     protected $department;
 
-    /**
-     * @ORM\Column(name="monday",type="integer")
-     */
+    #[ORM\Column(name: "monday",type: "integer")]
     protected $monday;
 
-    /**
-     * @ORM\Column(name="tuesday",type="integer")
-     */
+    #[ORM\Column(name: "tuesday",type: "integer")]
     protected $tuesday;
 
-    /**
-     * @ORM\Column(name="wednesday",type="integer")
-     */
+    #[ORM\Column(name: "wednesday",type: "integer")]
     protected $wednesday;
 
-    /**
-     * @ORM\Column(name="thursday",type="integer")
-     */
+    #[ORM\Column(name: "thursday",type: "integer")]
     protected $thursday;
 
-    /**
-     * @ORM\Column(name="friday",type="integer")
-     */
+    #[ORM\Column(name: "friday",type: "integer")]
     protected $friday;
 
     /**

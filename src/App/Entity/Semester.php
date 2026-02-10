@@ -3,41 +3,37 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\SemesterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="semester")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SemesterRepository")
- */
+#[ORM\Table(name: "semester")]
+#[ORM\Entity(repositoryClass: SemesterRepository::class)]
 class Semester implements PeriodInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var string
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $semesterTime;
 
     /**
      * @var string
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
      */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     private $year;
 
     /**
      * @var AdmissionPeriod[]
-     * @ORM\OneToMany(targetEntity="App\Entity\AdmissionPeriod", mappedBy="semester")
      */
+    #[ORM\OneToMany(targetEntity: "App\Entity\AdmissionPeriod", mappedBy: "semester")]
     private $admissionPeriods;
 
     /**
@@ -78,7 +74,6 @@ class Semester implements PeriodInterface
         $startMonth = $this->semesterTime == 'Vår' ? '01' : '08';
         return date_create($this->year.'-'.$startMonth.'-01 00:00:00');
     }
-
 
     /**
      * Get semester end date.

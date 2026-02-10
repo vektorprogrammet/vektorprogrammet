@@ -1,39 +1,30 @@
 <?php
 
-
-
 namespace App\Entity;
 
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="survey_link_click")
- *
- */
+#[ORM\Entity]
+#[ORM\Table(name: "survey_link_click")]
 class SurveyLinkClick
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
     /**
      * @var DateTime
-     * @ORM\Column(name="time_of_visit", type="datetime")
      */
+    #[ORM\Column(name: "time_of_visit", type: "datetime")]
     private $timeOfVisit;
-
 
     /**
      * @var SurveyNotification
-     * @ORM\ManyToOne(targetEntity="SurveyNotification", inversedBy="surveyLinkClicks")
      */
+    #[ORM\ManyToOne(targetEntity: "SurveyNotification", inversedBy: "surveyLinkClicks")]
     private $notification;
-
 
     public function __construct()
     {

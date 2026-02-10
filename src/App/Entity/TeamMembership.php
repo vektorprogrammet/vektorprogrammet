@@ -2,82 +2,67 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\TeamMembershipRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Table(name="team_membership")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\TeamMembershipRepository")
- */
+#[ORM\Table(name: "team_membership")]
+#[ORM\Entity(repositoryClass: TeamMembershipRepository::class)]
 class TeamMembership implements TeamMembershipInterface
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="teamMemberships")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     * @Assert\Valid
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
-     **/
+    #[ORM\ManyToOne(targetEntity: "User", inversedBy: "teamMemberships")]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
+    #[Assert\Valid]
+    #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
     protected $user;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @Assert\Valid
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
-     */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[Assert\Valid]
+    #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
     protected $startSemester;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @Assert\Valid
-     */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[Assert\Valid]
     protected $endSemester;
 
     /**
      * @var string
-     *
-     * @ORM\Column(type="string", nullable=true)
      */
+    #[ORM\Column(type: "string", nullable: true)]
     private $deletedTeamName;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      */
+    #[ORM\Column(type: "boolean")]
+    #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
     private $isTeamLeader;
 
     /**
      * @var bool
-     *
-     * @ORM\Column(type="boolean")
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
      */
+    #[ORM\Column(type: "boolean")]
+    #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
     private $isSuspended;
 
     /**
      * @var Team
-     *
-     * @ORM\ManyToOne(targetEntity="Team", inversedBy="teamMemberships")
-     * @ORM\JoinColumn(onDelete="SET NULL")
-     **/
+     */
+    #[ORM\ManyToOne(targetEntity: "Team", inversedBy: "teamMemberships")]
+    #[ORM\JoinColumn(onDelete: "SET NULL")]
     protected $team;
 
     /**
      * @var Position
-     *
-     * @ORM\ManyToOne(targetEntity="Position")
-     * @ORM\JoinColumn(name="position_id", referencedColumnName="id", onDelete="SET NULL")
-     * @Assert\Valid
-     * @Assert\NotNull(message="Dette feltet kan ikke være tomt")
-     **/
+     */
+    #[ORM\ManyToOne(targetEntity: "Position")]
+    #[ORM\JoinColumn(name: "position_id", referencedColumnName: "id", onDelete: "SET NULL")]
+    #[Assert\Valid]
+    #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
     protected $position;
 
     public function __construct()
@@ -148,7 +133,6 @@ class TeamMembership implements TeamMembershipInterface
     {
         return $this->team;
     }
-
 
     /**
      * Set position.
@@ -235,7 +219,6 @@ class TeamMembership implements TeamMembershipInterface
         return $semesterStartLaterThanTeamMembership && $semesterEndsBeforeTeamMembership;
     }
 
-
     public function isActive()
     {
         $department = $this->team->getDepartment();
@@ -243,7 +226,6 @@ class TeamMembership implements TeamMembershipInterface
 
         return $this->isActiveInSemester($activeSemester);
     }
-
 
     /**
      * @return string

@@ -2,25 +2,19 @@
 
 namespace App\Entity;
 
+use App\Entity\Repository\CertificateRequestRepository;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * @ORM\Table(name="certificate_request")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\CertificateRequestRepository")
- */
+#[ORM\Table(name: "certificate_request")]
+#[ORM\Entity(repositoryClass: CertificateRequestRepository::class)]
 class CertificateRequest
 {
-    /**
-     * @ORM\Column(type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Column(type: "integer")]
+    #[ORM\Id]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="User", inversedBy="certificateRequests")
-     * @ORM\JoinColumn(onDelete="CASCADE")
-     **/
+    #[ORM\ManyToOne(targetEntity: "User", inversedBy: "certificateRequests")]
+    #[ORM\JoinColumn(onDelete: "CASCADE")]
     protected $user;
 
     /**

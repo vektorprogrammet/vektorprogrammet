@@ -9,35 +9,34 @@ class SupportTicket
 
     /**
      * @var string $name
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $name;
 
     /**
      * @var string $email
-     * @Assert\NotBlank()
-     * @Assert\Email()
      */
+    #[Assert\NotBlank]
+    #[Assert\Email]
     private $email;
 
     /**
      * @var string $subject
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $subject;
 
     /**
      * @var string $body
-     * @Assert\NotBlank()
      */
+    #[Assert\NotBlank]
     private $body;
 
     /**
      * @var Department $department
-     *
-     * @Assert\NotNull(message="Klarte ikke sende melding til denne avdelingen. Send oss en mail isteden.")
-     * @Assert\Valid()
      */
+    #[Assert\NotNull(message: "Klarte ikke sende melding til denne avdelingen. Send oss en mail isteden.")]
+    #[Assert\Valid]
     private $department;
 
     public function getName()
@@ -79,7 +78,6 @@ class SupportTicket
     {
         $this->body = $body;
     }
-
 
     // Used for unit testing the forms
     public function fromArray($data = array())

@@ -6,29 +6,21 @@ use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="survey_question_alternative")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "survey_question_alternative")]
 class SurveyQuestionAlternative implements JsonSerializable
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $alternative;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="SurveyQuestion", inversedBy="alternatives")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: "SurveyQuestion", inversedBy: "alternatives")]
+    #[ORM\JoinColumn(name: "question_id", referencedColumnName: "id")]
     protected $surveyQuestion;
 
     /**

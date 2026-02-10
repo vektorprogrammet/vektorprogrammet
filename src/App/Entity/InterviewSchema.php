@@ -7,33 +7,23 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="interview_schema")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "interview_schema")]
 class InterviewSchema
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     protected $name;
-
-    /**
-     * @ORM\ManyToMany(targetEntity="InterviewQuestion", cascade={"persist"})
-     * @ORM\JoinTable(name="interview_schemas_questions",
-     *      joinColumns={@ORM\JoinColumn(name="schema_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="question_id", referencedColumnName="id")}
-     *      )
-     * @Assert\Valid
-     **/
+    #[ORM\ManyToMany(targetEntity: "InterviewQuestion", cascade: ["persist"])]
+    #[ORM\JoinTable(name: "interview_schemas_questions")]
+    #[ORM\JoinColumn(name: "schema_id", referencedColumnName: "id")]
+    #[ORM\InverseJoinColumn(name: "question_id", referencedColumnName: "id")]
+    #[Assert\Valid]
     protected $interviewQuestions; // Unidirectional, may turn out to be bidirectional
 
     /**

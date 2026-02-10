@@ -3,79 +3,54 @@
 namespace App\Entity;
 
 use DateTime;
+use App\Entity\Repository\SocialEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Exception;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="event")
- * @ORM\Entity(repositoryClass="App\Entity\Repository\SocialEventRepository")
- */
+#[ORM\Table(name: "event")]
+#[ORM\Entity(repositoryClass: SocialEventRepository::class)]
 class SocialEvent
 {
 
-    /**
-     * @var Department
-     *
-     * @ORM\ManyToOne(targetEntity="Department")
-     * @@ORM\JoinColumn(referencedColumnName="id")
-     */
+    #[ORM\ManyToOne(targetEntity: "Department")]
     private $department;
-
 
     /**
      * @var Semester
-     *
-     * @ORM\ManyToOne(targetEntity="Semester")
-     * @ORM\JoinColumn(referencedColumnName="id")
      */
+    #[ORM\ManyToOne(targetEntity: "Semester")]
+    #[ORM\JoinColumn(referencedColumnName: "id")]
     private $semester;
 
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     private $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank]
     private $title;
 
-    /**
-     * @ORM\Column(type="string", length=5000)
-     */
+    #[ORM\Column(type: "string", length: 5000)]
     private $description;
 
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $startTime;
 
-
-    /**
-     * @ORM\Column(type="datetime")
-     */
+    #[ORM\Column(type: "datetime")]
     private $endTime;
 
     /**
      * @var Role
-     * @ORM\ManyToOne(targetEntity="Role")
-     * @ORM\JoinColumn(referencedColumnName="id")
-     *
      */
+    #[ORM\ManyToOne(targetEntity: "Role")]
+    #[ORM\JoinColumn(referencedColumnName: "id")]
     private $role;
 
-    /**
-     * @ORM\Column(type="string", length=250, nullable=true)
-     * @Assert\Length(max=250)
-     */
+    #[ORM\Column(type: "string", length: 250, nullable: true)]
+    #[Assert\Length(max: 250)]
     private $link;
-
 
     /**
      * Constructor.
@@ -109,7 +84,6 @@ class SocialEvent
         $this->link = $link;
         return $this;
     }
-
 
     /**
      * @return string
@@ -182,7 +156,6 @@ class SocialEvent
         $this->endTime = $endTime;
         return $this;
     }
-
 
     /**
      * @return Department

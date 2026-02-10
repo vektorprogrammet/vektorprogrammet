@@ -5,29 +5,21 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-/**
- * @ORM\Entity
- * @ORM\Table(name="interview_question_alternative")
- */
+#[ORM\Entity]
+#[ORM\Table(name: "interview_question_alternative")]
 class InterviewQuestionAlternative
 {
-    /**
-     * @ORM\Id
-     * @ORM\Column(type="integer")
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
+    #[ORM\Id]
+    #[ORM\Column(type: "integer")]
+    #[ORM\GeneratedValue(strategy: "AUTO")]
     protected $id;
 
-    /**
-     * @ORM\Column(type="string")
-     * @Assert\NotBlank(message="Alternativ: Dette feltet kan ikke være tomt.")
-     */
+    #[ORM\Column(type: "string")]
+    #[Assert\NotBlank(message: "Alternativ: Dette feltet kan ikke være tomt.")]
     protected $alternative;
 
-    /**
-     * @ORM\ManyToOne(targetEntity="InterviewQuestion", inversedBy="alternatives")
-     * @ORM\JoinColumn(name="question_id", referencedColumnName="id", onDelete="CASCADE")
-     */
+    #[ORM\ManyToOne(targetEntity: "InterviewQuestion", inversedBy: "alternatives")]
+    #[ORM\JoinColumn(name: "question_id", referencedColumnName: "id", onDelete: "CASCADE")]
     protected $interviewQuestion;
 
     /**
