@@ -31,14 +31,13 @@ Symfony 6.4 / PHP 8 platform (upgraded from 3.4). Norwegian tutoring program man
 ### Skills (all from nori-workflow plugin — available in all projects)
 ```
 quick/obvious fix           -> just do it
-session start / "continue"  -> /orchestrate
+delegate task / subagent    -> /delegate
 vague/big/multi-phase       -> /plan
 "test this" / "run tests"   -> /test
 "log decisions" / insights  -> /capture
-"sync knowledge" / promote  -> /knowledge-sync (promote only)
-"review my code"            -> /review
+"review" / "evaluate"       -> /review (code + domain routing)
 "ready for PR" / "ship"     -> /pr-prep
-agent design questions      -> /agent-expert
+"consult" / agent questions -> /consult
 research agent patterns     -> /agent-researcher
 kanban board                -> /board
 ```
@@ -46,20 +45,19 @@ kanban board                -> /board
 ### Agents (from nori-workflow plugin, overridable locally in `.claude/agents/`)
 ```
 clear 2-5 file task         -> coding agent
-execute PLAN.md task        -> execute-plan agent
 run tests/lint/baseline     -> verify agent
-update state + knowledge    -> state-sync agent
 explore codebase            -> Explore (built-in)
 web research                -> web agent
+agent design review/consult -> agent-expert (subagent)
 ```
 
 ## Workflow
-- **Start**: `/orchestrate` — reads STATE.md, checks git/tests, presents status, waits for confirmation
-- **Dev**: orchestrator sequences coding agent -> verify agent -> state-sync agent per task
+- **Start**: Orchestrator reads STATE.md, checks git/tests, presents status, waits for confirmation
+- **Dev**: orchestrator sequences coding agent -> verify agent per task
 - **End** (Stop hook auto-reminds if staging has entries):
-  1. Commit work, spawn state-sync agent. Leave tests passing.
-  2. Run `/capture` to log session insights, then `/knowledge-sync` to promote staged entries.
+  1. Commit work. Leave tests passing.
+  2. Run `/capture` to log session insights.
   3. Update CLAUDE.md only if agent workflow changed.
-- Multi-step: `/plan` first, then `/orchestrate` to execute. Commit per task.
+- Multi-step: `/plan` first, then execute per wave with `/delegate`. Commit per task.
 - Context >50%: spawn fresh agent. Commit work + write status before stopping.
 - Never broad `replace_all` without verifying scope. After editing YAML, check for duplicate keys.
