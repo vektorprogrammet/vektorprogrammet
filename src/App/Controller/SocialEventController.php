@@ -12,6 +12,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SocialEventController extends BaseController
 {
@@ -28,6 +29,7 @@ class SocialEventController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/arrangementer', name: 'social_event_show', methods: ['GET'])]
     public function showAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -48,6 +50,7 @@ class SocialEventController extends BaseController
      * @param Request $request
      * @return RedirectResponse|Response
      */
+    #[Route('/kontrollpanel/arrangement/opprett', name: 'social_event_create', methods: ['GET', 'POST'])]
     public function createSocialEventAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -76,6 +79,7 @@ class SocialEventController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/arrangement/endre/{id}', name: 'social_event_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editSocialEventAction(SocialEvent $social_event, Request $request)
     {
         $form = $this->createForm(SocialEventType::class, $social_event, array(
@@ -105,6 +109,7 @@ class SocialEventController extends BaseController
      * @param SocialEvent $event
      * @return RedirectResponse
      */
+    #[Route('/kontrollpanel/arrangement/slett/{id}', name: 'social_event_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteSocialEventAction(Request $request, SocialEvent $event)
     {
         # NOTE: this function will permanently remove the event.

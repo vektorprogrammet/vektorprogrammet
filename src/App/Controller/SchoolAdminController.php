@@ -20,6 +20,7 @@ use App\Form\Type\CreateSchoolType;
 use App\Entity\AssistantHistory;
 use App\Form\Type\CreateAssistantHistoryType;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SchoolAdminController extends BaseController
 {
@@ -35,6 +36,7 @@ class SchoolAdminController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/skole/{id}', name: 'schooladmin_show_specific_school', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showSpecificSchoolAction(School $school)
     {
         // This prevents admins to see other departments' schools
@@ -54,6 +56,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin/tildel/skole/{id}', name: 'schooladmin_delegate_school_to_user', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function delegateSchoolToUserAction(Request $request, User $user)
     {
         $department = $user->getDepartment();
@@ -88,6 +91,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin/brukere/avdeling/{id}', name: 'schooladmin_show_users_of_department_superadmin', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showUsersByDepartmentSuperadminAction(Department $department)
     {
         $activeDepartments = $this->departmentRepo->findActive();
@@ -102,6 +106,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin/brukere', name: 'schooladmin_show_users_of_department', methods: ['GET'])]
     public function showUsersByDepartmentAction()
     {
         $user = $this->getUser();
@@ -123,6 +128,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin', name: 'schooladmin_show', methods: ['GET'])]
     public function showAction()
     {
         // Finds the department for the current logged in user
@@ -141,6 +147,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin/avdeling/{id}', name: 'schooladmin_filter_schools_by_department', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showSchoolsByDepartmentAction(Department $department)
     {
         // Finds the schools for the given department
@@ -155,6 +162,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin/oppdater/{id}', name: 'schooladmin_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function updateSchoolAction(Request $request, School $school)
     {
         // Create the formType
@@ -178,6 +186,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin/opprett/{id}', name: 'schooladmin_create_school_by_department', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function createSchoolForDepartmentAction(Request $request, Department $department)
     {
         $school = new School();
@@ -204,6 +213,7 @@ class SchoolAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skoleadmin/slett/{id}', name: 'schooladmin_delete_school_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteSchoolByIdAction(School $school)
     {
         try {
@@ -224,6 +234,7 @@ class SchoolAdminController extends BaseController
         return new JsonResponse($response);
     }
 
+    #[Route('/kontrollpanel/skoleadmin/historikk/slett/{id}', name: 'schooladmin_remove_user_from_school_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function removeUserFromSchoolAction(AssistantHistory $assistantHistory)
     {
         try {

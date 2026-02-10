@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 
 class StaticContentController extends BaseController
 {
@@ -28,6 +29,7 @@ class StaticContentController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
+    #[Route('/updatestaticcontent', name: 'update_static_content', methods: ['POST'])]
     public function updateAction(Request $request)
     {
         if (!$this->roleExtension->userCanEditPage()) {

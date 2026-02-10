@@ -8,6 +8,7 @@ use App\Entity\Repository\TeamRepository;
 use App\Entity\Team;
 use App\Role\Roles;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 
 class TeamController extends BaseController
 {
@@ -19,6 +20,8 @@ class TeamController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/it', name: 'team_page_it', defaults: ['id' => 9], methods: ['GET'])]
+    #[Route('/team/{id}', name: 'team_page', methods: ['GET'])]
     public function showAction(Team $team)
     {
         if (!$team->isActive() && !$this->isGranted(Roles::TEAM_MEMBER)) {
@@ -30,6 +33,7 @@ class TeamController extends BaseController
         ));
     }
 
+    #[Route('/team/{departmentCity}/{teamName}', name: 'team_page_department_team', methods: ['GET'])]
     public function showByDepartmentAndTeamAction($departmentCity, $teamName)
     {
         $teams = $this->teamRepo->findByCityAndName($departmentCity, $teamName);

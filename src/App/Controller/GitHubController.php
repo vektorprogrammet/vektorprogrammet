@@ -7,6 +7,7 @@ use App\Entity\Repository\SemesterRepository;
 use App\Service\LogService;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class GitHubController extends BaseController
@@ -21,6 +22,7 @@ class GitHubController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/webhook/github', name: 'github_webook', methods: ['POST'])]
     public function deployAction(Request $request)
     {
         // Check if request is from GitHub

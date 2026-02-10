@@ -56,7 +56,7 @@ class AccessRuleController extends BaseController
      */
     #[Route("/kontrollpanel/admin/accessrules/edit/{id}", name: "access_rules_edit", requirements: ["id" => "\d+"])]
     #[Route("/kontrollpanel/admin/accessrules/create", name: "access_rules_create", defaults: ["id" => null], requirements: ["id" => "\d+"])]
-    public function createRuleAction(Request $request, AccessRule $accessRule = null)
+    public function createRuleAction(Request $request, ?AccessRule $accessRule = null)
     {
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();
@@ -92,7 +92,7 @@ class AccessRuleController extends BaseController
      */
     #[Route("/kontrollpanel/admin/accessrules/routing/edit/{id}", name: "access_rules_edit_routing", requirements: ["id" => "\d+"])]
     #[Route("/kontrollpanel/admin/accessrules/routing/create", name: "access_rules_create_routing", defaults: ["id" => null], requirements: ["id" => "\d+"])]
-    public function createRoutingRuleAction(Request $request, AccessRule $accessRule = null)
+    public function createRoutingRuleAction(Request $request, ?AccessRule $accessRule = null)
     {
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();

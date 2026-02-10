@@ -41,7 +41,7 @@ class TeamAdminController extends BaseController
      * @return Response
      */
     #[Route("/kontrollpanel/team/avdeling/{id}", name: "teamadmin_show", defaults: ["id" => null], methods: ["GET"])]
-    public function showAction(Department $department = null)
+    public function showAction(?Department $department = null)
     {
         if ($department === null) {
             $department = $this->getUser()->getDepartment();
@@ -59,6 +59,7 @@ class TeamAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/teamadmin/oppdater/teamhistorie/{id}', name: 'teamadmin_update_team_membership', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function updateTeamMembershipAction(Request $request, TeamMembership $teamMembership)
     {
         $department = $teamMembership->getTeam()->getDepartment();
@@ -85,6 +86,7 @@ class TeamAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/teamadmin/team/nytt_medlem/{id}', name: 'teamadmin_add_user_to_team', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addUserToTeamAction(Request $request, Team $team)
     {
         // Find the department of the team
@@ -123,6 +125,7 @@ class TeamAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/teamadmin/team/{id}', name: 'teamadmin_show_specific_team', methods: ['GET'])]
     public function showSpecificTeamAction(Team $team)
     {
         // Find all TeamMembership entities based on team
@@ -160,6 +163,7 @@ class TeamAdminController extends BaseController
         return $a->getStartSemester()->getStartDate() < $b->getStartSemester()->getStartDate();
     }
 
+    #[Route('/kontrollpanel/teamadmin/update/{id}', name: 'teamadmin_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function updateTeamAction(Request $request, Team $team)
     {
         // Find the department of the team
@@ -200,6 +204,7 @@ class TeamAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/teamadmin/avdeling/{id}', name: 'teamadmin_filter_teams_by_department', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showTeamsByDepartmentAction(Department $department)
     {
         // Find teams that are connected to the department of the department ID sent in by the request
@@ -212,6 +217,7 @@ class TeamAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/teamadmin/avdeling/opprett/{id}', name: 'teamadmin_create_team_for_department', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function createTeamForDepartmentAction(Request $request, Department $department)
     {
         // Create a new Team entity
@@ -254,6 +260,7 @@ class TeamAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/teamadmin/team/slett/bruker/{id}', name: 'teamadmin_remove_user_from_team_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function removeUserFromTeamByIdAction(TeamMembership $teamMembership)
     {
         $this->em->remove($teamMembership);
@@ -264,6 +271,7 @@ class TeamAdminController extends BaseController
         return $this->redirectToRoute('teamadmin_show_specific_team', [ 'id' => $teamMembership->getTeam()->getId() ]);
     }
 
+    #[Route('/kontrollpanel/teamadmin/slett/{id}', name: 'teamadmin_delete_team_by_id', methods: ['POST'])]
     public function deleteTeamByIdAction(Team $team)
     {
         foreach ($team->getTeamMemberships() as $teamMembership) {

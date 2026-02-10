@@ -38,7 +38,7 @@ class ContactController extends BaseController
      */
     #[Route("/kontakt/avdeling/{id}", name: "contact_department", methods: ["GET", "POST"])]
     #[Route("/kontakt", name: "contact", methods: ["GET", "POST"])]
-    public function indexAction(Request $request, Department $department = null)
+    public function indexAction(Request $request, ?Department $department = null)
     {
         if ($department === null) {
             $department = $this->geoLocation

@@ -8,6 +8,7 @@ use App\Entity\Repository\SignatureRepository;
 use App\Entity\Signature;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SignatureController extends BaseController
@@ -20,6 +21,7 @@ class SignatureController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/signatures/{imageName}', name: 'signature_image_show', methods: ['GET'])]
     public function showSignatureImageAction($imageName)
     {
         $user = $this->getUser();

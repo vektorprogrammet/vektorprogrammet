@@ -8,6 +8,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Department;
 use App\Form\Type\CreateDepartmentType;
+use Symfony\Component\Routing\Attribute\Route;
 
 class DepartmentController extends BaseController
 {
@@ -19,11 +20,13 @@ class DepartmentController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/avdelingadmin', name: 'departmentadmin_show', methods: ['GET'])]
     public function showAction()
     {
         return $this->render('department_admin/index.html.twig', array());
     }
 
+    #[Route('/kontrollpanel/avdelingadmin/opprett', name: 'departmentadmin_create_department', methods: ['GET', 'POST'])]
     public function createDepartmentAction(Request $request)
     {
         $department = new Department();
@@ -46,6 +49,7 @@ class DepartmentController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/avdelingadmin/slett/{id}', name: 'departmentadmin_delete_department_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteDepartmentByIdAction(Department $department)
     {
         $this->em->remove($department);
@@ -56,6 +60,7 @@ class DepartmentController extends BaseController
         return $this->redirectToRoute("departmentadmin_show");
     }
 
+    #[Route('/kontrollpanel/avdelingadmin/update/{id}', name: 'departmentadmin_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function updateDepartmentAction(Request $request, Department $department)
     {
         $form = $this->createForm(CreateDepartmentType::class, $department);

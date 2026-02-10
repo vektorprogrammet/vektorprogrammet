@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\Type\InterviewSchemaType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -36,6 +37,7 @@ class InterviewSchemaController extends BaseController
      *
      * @return RedirectResponse|Response
      */
+    #[Route('/kontrollpanel/intervju/skjema/opprett', name: 'interview_schema_create', methods: ['GET', 'POST'])]
     public function createSchemaAction(Request $request)
     {
         $schema = new InterviewSchema();
@@ -52,6 +54,7 @@ class InterviewSchemaController extends BaseController
      *
      * @return RedirectResponse|Response
      */
+    #[Route('/kontrollpanel/intervju/skjema/{id}', name: 'interview_schema_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editSchemaAction(Request $request, InterviewSchema $schema)
     {
         $form = $this->createForm(InterviewSchemaType::class, $schema);
@@ -75,6 +78,7 @@ class InterviewSchemaController extends BaseController
      *
      * @return Response
      */
+    #[Route('/kontrollpanel/intervju/skjema', name: 'interview_schema', methods: ['GET'])]
     public function showSchemasAction()
     {
         $schemas = $this->em->getRepository(InterviewSchema::class)->findAll();
@@ -90,6 +94,7 @@ class InterviewSchemaController extends BaseController
      *
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/intervju/skjema/slett/{id}', name: 'interview_schema_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteSchemaAction(InterviewSchema $schema)
     {
         try {

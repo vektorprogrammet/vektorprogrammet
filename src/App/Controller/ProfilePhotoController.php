@@ -10,6 +10,7 @@ use App\Service\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ProfilePhotoController extends BaseController
 {
@@ -22,6 +23,7 @@ class ProfilePhotoController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/profil/rediger/profilbilde/{id}', name: 'profile_edit_photo', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showEditProfilePhotoAction(User $user)
     {
         $loggedInUser = $this->getUser();
@@ -34,6 +36,7 @@ class ProfilePhotoController extends BaseController
         ));
     }
 
+    #[Route('/profil/rediger/profilbilde/upload/{id}', name: 'profile_upload_photo', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function editProfilePhotoUploadAction(User $user, Request $request)
     {
         $loggedInUser = $this->getUser();

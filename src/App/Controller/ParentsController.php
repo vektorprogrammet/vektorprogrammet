@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SemesterRepository;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ParentsController extends BaseController
 {
@@ -14,6 +15,7 @@ class ParentsController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/foreldre', name: 'parents', methods: ['GET'])]
     public function indexAction()
     {
         return $this->render('/parents/parents.html.twig');

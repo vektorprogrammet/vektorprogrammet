@@ -12,6 +12,7 @@ use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
 use App\Service\GeoLocation;
+use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends BaseController
 {
@@ -29,6 +30,7 @@ class HomeController extends BaseController
         $this->departmentRepo = $departmentRepo;
     }
 
+    #[Route('/', name: 'home', methods: ['GET'])]
     public function showAction()
     {
         $assistantsCount = count($this->userRepo->findAssistants());
@@ -56,6 +58,7 @@ class HomeController extends BaseController
         ]);
     }
 
+    #[Route('/', name: 'home_post', methods: ['POST'])]
     public function postAction()
     {
         return $this->redirect("https://www.youtube.com/watch?v=dQw4w9WgXcQ?autoplay=1", 301);

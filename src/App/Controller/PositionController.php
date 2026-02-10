@@ -9,6 +9,7 @@ use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\CreatePositionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
 class PositionController extends BaseController
 {
@@ -21,6 +22,7 @@ class PositionController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/teamadmin/stillinger', name: 'teamadmin_show_position', methods: ['GET'])]
     public function showPositionsAction()
     {
         // Find all the positions
@@ -32,7 +34,9 @@ class PositionController extends BaseController
         ));
     }
 
-    public function editPositionAction(Request $request, Position $position = null)
+    #[Route('/kontrollpanel/teamadmin/opprett/stilling', name: 'teamadmin_create_position', methods: ['GET', 'POST'])]
+    #[Route('/kontrollpanel/teamadmin/rediger/stilling/{id}', name: 'teamadmin_edit_position', methods: ['GET', 'POST'])]
+    public function editPositionAction(Request $request, ?Position $position = null)
     {
         $isCreate = $position === null;
         if ($isCreate) {
@@ -63,6 +67,7 @@ class PositionController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/teamadmin/stilling/slett/{id}', name: 'teamadmin_remove_position', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function removePositionAction(Position $position)
     {
         $this->em->remove($position);

@@ -48,6 +48,7 @@ class ArticleAdminController extends BaseController
      *
      * @return Response
      */
+    #[Route('/kontrollpanel/artikkeladmin', name: 'articleadmin_show', methods: ['GET'])]
     public function showAction(Request $request)
     {
         $articles = $this->articleRepo->findAllArticles();
@@ -83,6 +84,7 @@ class ArticleAdminController extends BaseController
      *
      * @return RedirectResponse|Response
      */
+    #[Route('/kontrollpanel/artikkeladmin/opprett', name: 'articleadmin_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request)
     {
         $article       = new Article();
@@ -138,6 +140,7 @@ class ArticleAdminController extends BaseController
      *
      * @return RedirectResponse|Response
      */
+    #[Route('/kontrollpanel/artikkeladmin/rediger/{id}', name: 'articleadmin_edit', methods: ['GET', 'POST'])]
     public function editAction(Request $request, Article $article)
     {
         $form = $this->createForm(ArticleType::class, $article);
@@ -183,6 +186,7 @@ class ArticleAdminController extends BaseController
      *
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/artikkeladmin/sticky/{id}', name: 'articleadmin_sticky', methods: ['POST'])]
     public function stickyAction(Article $article)
     {
         try {
@@ -214,6 +218,7 @@ class ArticleAdminController extends BaseController
      *
      * @return RedirectResponse
      */
+    #[Route('/kontrollpanel/artikkeladmin/slett/{id}', name: 'articleadmin_delete', methods: ['POST'])]
     public function deleteAction(Article $article)
     {
         $this->em->remove($article);

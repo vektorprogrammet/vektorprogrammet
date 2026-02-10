@@ -10,6 +10,7 @@ use App\Form\Type\CreateAssistantHistoryType;
 use App\Service\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AssistantHistoryController extends BaseController
 {
@@ -22,6 +23,7 @@ class AssistantHistoryController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/deltakerhistorikk/slett/{id}', name: 'assistant_history_delete', methods: ['POST'])]
     public function deleteAction(AssistantHistory $assistantHistory)
     {
         if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
@@ -39,6 +41,7 @@ class AssistantHistoryController extends BaseController
         return $this->redirectToRoute('participanthistory_show');
     }
 
+    #[Route('/kontrollpanel/deltakerhistorikk/rediger/{id}', name: 'assistant_history_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function editAction(Request $request, AssistantHistory $assistantHistory)
     {
         $department = $assistantHistory->getUser()->getDepartment();

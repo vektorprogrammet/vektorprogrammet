@@ -33,6 +33,7 @@ class TeamApplicationController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/team/application/{id}', name: 'team_application_show', methods: ['GET'])]
     public function showApplicationAction(TeamApplication $application)
     {
         $user = $this->getUser();
@@ -46,6 +47,7 @@ class TeamApplicationController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/team/applications/{id}', name: 'team_application_show_all', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showAllApplicationsAction(Team $team)
     {
         $applications = $this->teamApplicationRepo->findByTeam($team);
@@ -61,6 +63,7 @@ class TeamApplicationController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/team/applications/slett/{id}', name: 'team_application_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteTeamApplicationByIdAction(TeamApplication $teamApplication)
     {
         $this->em->remove($teamApplication);
@@ -69,6 +72,7 @@ class TeamApplicationController extends BaseController
         return $this->redirectToRoute('team_application_show_all', array('id' => $teamApplication->getTeam()->getId()));
     }
 
+    #[Route('/team/application/{id}', name: 'team_application', methods: ['GET', 'POST'])]
     public function showAction(Team $team, Request $request)
     {
         if (!$team->getAcceptApplicationAndDeadline()) {

@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\RouterInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class SurveyNotifierController extends BaseController
@@ -32,7 +33,9 @@ class SurveyNotifierController extends BaseController
      * @param SurveyNotificationCollection|null $surveyNotificationCollection
      * @return Response
      */
-    public function createSurveyNotifierAction(Request $request, SurveyNotificationCollection $surveyNotificationCollection = null)
+    #[Route('/kontrollpanel/undersokelsevarsel/opprett', name: 'survey_notifier_create', methods: ['GET', 'POST'])]
+    #[Route('/kontrollpanel/undersokelsevarsel/rediger/{id}', name: 'survey_notifier_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function createSurveyNotifierAction(Request $request, ?SurveyNotificationCollection $surveyNotificationCollection = null)
     {
         $isUserGroupCollectionEmpty = empty($this->em->getRepository(UserGroupCollection::class)->findAll());
         if ($isUserGroupCollectionEmpty) {
@@ -90,6 +93,7 @@ class SurveyNotifierController extends BaseController
     }
 
 
+    #[Route('/kontrollpanel/undersokelsevarsel', name: 'survey_notifiers', methods: ['GET'])]
     public function surveyNotificationCollectionsAction()
     {
         $surveyNotificationCollections = $this->em->getRepository(SurveyNotificationCollection::class)->findAll();
@@ -100,6 +104,7 @@ class SurveyNotifierController extends BaseController
     }
 
 
+    #[Route('/kontrollpanel/undersokelsevarsel/send/{id}', name: 'survey_notifier_send', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function sendSurveyNotificationsAction(SurveyNotificationCollection $surveyNotificationCollection)
     {
         if ($surveyNotificationCollection->getTimeOfNotification() > new DateTime() || $surveyNotificationCollection->isAllSent()) {
@@ -120,6 +125,7 @@ class SurveyNotifierController extends BaseController
 
 
 
+    #[Route('/kontrollpanel/undersokelsevarsel/slett/{id}', name: 'survey_notifier_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteSurveyNotifierAction(SurveyNotificationCollection $surveyNotificationCollection)
     {
         if ($surveyNotificationCollection->isActive()) {

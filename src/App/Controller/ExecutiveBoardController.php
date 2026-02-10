@@ -30,6 +30,7 @@ class ExecutiveBoardController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/hovedstyret', name: 'executive_board_page', methods: ['GET'])]
     public function showAction()
     {
         $board = $this->executiveBoardRepo->findBoard();
@@ -39,6 +40,7 @@ class ExecutiveBoardController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/hovedstyret', name: 'executive_board_show', methods: ['GET'])]
     public function showAdminAction()
     {
         $board = $this->executiveBoardRepo->findBoard();
@@ -60,6 +62,7 @@ class ExecutiveBoardController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/hovedstyret/nytt_medlem/{id}', name: 'executive_board_add_user_to_board', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function addUserToBoardAction(Request $request, Department $department)
     {
         $board = $this->executiveBoardRepo->findBoard();
@@ -95,6 +98,7 @@ class ExecutiveBoardController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/hovedstyret/slett/bruker/{id}', name: 'executive_board_remove_user_from_board_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function removeUserFromBoardByIdAction(ExecutiveBoardMembership $member)
     {
         $this->em->remove($member);
@@ -105,6 +109,7 @@ class ExecutiveBoardController extends BaseController
         return $this->redirect($this->generateUrl('executive_board_show'));
     }
 
+    #[Route('/kontrollpanel/hovedstyret/oppdater', name: 'executive_board_update', methods: ['GET', 'POST'])]
     public function updateBoardAction(Request $request)
     {
         $board = $this->executiveBoardRepo->findBoard();

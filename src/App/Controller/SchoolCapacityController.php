@@ -13,6 +13,7 @@ use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SchoolCapacityController extends BaseController
 {
@@ -31,6 +32,7 @@ class SchoolCapacityController extends BaseController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
+    #[Route('/kontrollpanel/skole/capacity/', name: 'school_capacity_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -55,6 +57,7 @@ class SchoolCapacityController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/skole/capacity/{id}', name: 'school_capacity_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editAction(Request $request, SchoolCapacity $capacity)
     {
         $form = $this->createForm(SchoolCapacityEditType::class, $capacity);

@@ -125,6 +125,7 @@ class InterviewController extends BaseController
      *
      * @return RedirectResponse
      */
+    #[Route('/kontrollpanel/intervju/cancel/{id}', name: 'interview_cancel', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function cancelAction(Interview $interview)
     {
         $interview->setCancelled(true);
@@ -141,6 +142,7 @@ class InterviewController extends BaseController
      *
      * @return Response
      */
+    #[Route('/kontrollpanel/intervju/vis/{id}', name: 'interview_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showAction(Application $application)
     {
         if (null === $interview = $application->getInterview()) {
@@ -168,6 +170,7 @@ class InterviewController extends BaseController
      *
      * @return RedirectResponse
      */
+    #[Route('/kontrollpanel/intervju/slett/{id}', name: 'interview_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteInterviewAction(Interview $interview, Request $request)
     {
         $interview->getApplication()->setInterview(null);
@@ -188,6 +191,7 @@ class InterviewController extends BaseController
      *
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/intervju/slett/bulk', name: 'interview_delete_bulk', methods: ['POST'])]
     public function bulkDeleteInterviewAction(Request $request)
     {
         // Get the ids from the form
@@ -221,6 +225,7 @@ class InterviewController extends BaseController
      *
      * @return Response
      */
+    #[Route('/kontrollpanel/intervju/settopp/{id}', name: 'interview_schedule', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function scheduleAction(Request $request, Application $application)
     {
         if (null === $interview = $application->getInterview()) {
@@ -313,6 +318,7 @@ class InterviewController extends BaseController
      *
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/intervju/fordel/{id}', name: 'interview_assign', defaults: ['id' => null], requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function assignAction(Request $request, $id = null)
     {
         if ($id === null) {
@@ -360,6 +366,7 @@ class InterviewController extends BaseController
      *
      * @return RedirectResponse|Response
      */
+    #[Route('/kontrollpanel/intervju/fordel/bulk', name: 'interview_assign_bulk', methods: ['GET', 'POST'])]
     public function bulkAssignAction(Request $request)
     {
         // Finds all the roles above admin in the hierarchy, used to populate dropdown menu with all admins
@@ -406,6 +413,7 @@ class InterviewController extends BaseController
      *
      * @return Response
      */
+    #[Route('/intervju/aksepter/{responseCode}', name: 'interview_accept_by_response', requirements: ['responseCode' => '\w+'], methods: ['POST'])]
     public function acceptByResponseCodeAction(Interview $interview)
     {
         $interview->acceptInterview();
@@ -432,6 +440,7 @@ class InterviewController extends BaseController
      *
      * @return Response
      */
+    #[Route('/intervju/nytid/{responseCode}', name: 'interview_request_new_time_by_response', requirements: ['responseCode' => '\w+'], methods: ['GET', 'POST'])]
     public function requestNewTimeAction(Request $request, Interview $interview)
     {
         if (!$interview->isPending()) {
@@ -469,6 +478,7 @@ class InterviewController extends BaseController
      *
      * @return Response
      */
+    #[Route('/intervju/{responseCode}', name: 'interview_response', requirements: ['responseCode' => '\w+'], methods: ['GET'])]
     public function respondAction(Interview $interview)
     {
         $applicationStatus = $this->applicationManager->getApplicationStatus($interview->getApplication());
@@ -485,6 +495,7 @@ class InterviewController extends BaseController
      *
      * @return Response
      */
+    #[Route('/intervju/kanseller/tilbakemelding/{responseCode}', name: 'interview_cancel_by_response', requirements: ['responseCode' => '\w+'], methods: ['GET', 'POST'])]
     public function cancelByResponseCodeAction(Request $request, Interview $interview)
     {
         if (!$interview->isPending()) {
@@ -523,6 +534,7 @@ class InterviewController extends BaseController
      *
      * @return RedirectResponse
      */
+    #[Route('/kontrollpanel/intervju/status/{id}', name: 'interview_edit_status', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function editStatusAction(Request $request, Interview $interview)
     {
         $status = intval($request->get('status'));
@@ -539,6 +551,7 @@ class InterviewController extends BaseController
         );
     }
 
+    #[Route('/kontrollpanel/intervju/assign_co_interviewer/{id}', name: 'interview_assign_co_interviewer', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function assignCoInterviewerAction(Interview $interview)
     {
         if ($interview->getUser() === $this->getUser()) {
@@ -567,6 +580,7 @@ class InterviewController extends BaseController
         return $this->redirectToRoute('applications_show_assigned');
     }
 
+    #[Route('/kontrollpanel/intervju/admin_assign_co_interviewer/{id}', name: 'interview_admin_assign_co_interviewer', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function adminAssignCoInterviewerAction(Request $request, Interview $interview)
     {
         $semester = $interview->getApplication()->getSemester();
@@ -602,6 +616,7 @@ class InterviewController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/intervju/interview_clear_co_interviewer/{id}', name: 'interview_clear_co_interviewer', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function clearCoInterviewerAction(Interview $interview)
     {
         $interview->setCoInterviewer(null);

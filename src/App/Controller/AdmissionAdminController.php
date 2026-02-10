@@ -52,6 +52,7 @@ class AdmissionAdminController extends BaseController
      *
      * @return Response
      */
+    #[Route('/kontrollpanel/opptak', name: 'admissionadmin_show', methods: ['GET'])]
     public function showAction(Request $request)
     {
         return $this->showNewApplicationsAction($request);
@@ -62,6 +63,7 @@ class AdmissionAdminController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/opptak/nye', name: 'applications_show_new', defaults: ['department' => null, 'semester' => null], methods: ['GET'])]
     public function showNewApplicationsAction(Request $request)
     {
         $semester = $this->getSemesterOrThrow404($request);
@@ -92,6 +94,7 @@ class AdmissionAdminController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/opptak/fordelt', name: 'applications_show_assigned', methods: ['GET'])]
     public function showAssignedApplicationsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -130,6 +133,7 @@ class AdmissionAdminController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/opptak/intervjuet', name: 'applications_show_interviewed', methods: ['GET'])]
     public function showInterviewedApplicationsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -161,6 +165,7 @@ class AdmissionAdminController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/opptak/gamle', name: 'applications_show_existing', methods: ['GET'])]
     public function showExistingApplicationsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -193,6 +198,7 @@ class AdmissionAdminController extends BaseController
      *
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/opptakadmin/slett/{id}', name: 'admissionadmin_delete_application_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteApplicationByIdAction(Application $application)
     {
         $this->em->remove($application);
@@ -230,6 +236,7 @@ class AdmissionAdminController extends BaseController
      *
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/opptakadmin/slett/bulk', name: 'admissionadmin_delete_application_bulk', methods: ['POST'])]
     public function bulkDeleteApplicationAction(Request $request)
     {
         // Get the ids from the form
@@ -253,6 +260,7 @@ class AdmissionAdminController extends BaseController
         ]);
     }
 
+    #[Route('/kontrollpanel/opprettsoker', name: 'register_applicant', methods: ['GET', 'POST'])]
     public function createApplicationAction(Request $request)
     {
         $department = $this->getUser()->getDepartment();
@@ -293,6 +301,7 @@ class AdmissionAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/opptakadmin/soknad/{id}', name: 'admissionadmin_show_application', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showApplicationAction(Application $application)
     {
         if (!$application->getPreviousParticipation()) {
@@ -308,6 +317,7 @@ class AdmissionAdminController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/opptakadmin/teaminteresse', name: 'admissionadmin_team_interest', methods: ['GET'])]
     public function showTeamInterestAction(Request $request)
     {
         $user = $this->getUser();

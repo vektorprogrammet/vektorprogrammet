@@ -11,6 +11,7 @@ use App\Entity\TeamMembership;
 use App\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ParticipantHistoryController extends BaseController
 {
@@ -27,6 +28,7 @@ class ParticipantHistoryController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/deltakerhistorikk', name: 'participanthistory_show', methods: ['GET'])]
     public function showAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);

@@ -91,7 +91,7 @@ class AssistantController extends BaseController
      * @throws NonUniqueResultException
      */
     #[Route("/opptak", methods: ["GET", "POST"])]
-    public function admissionAction(Request $request, Department $department = null)
+    public function admissionAction(Request $request, ?Department $department = null)
     {
         return $this->indexAction($request, $department);
     }
@@ -103,7 +103,9 @@ class AssistantController extends BaseController
      *
      * @return Response
      */
-    public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
+    #[Route('/studenter', name: 'students', methods: ['GET'])]
+    #[Route('/assistenter/{id}', name: 'assistants', defaults: ['id' => null], requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function indexAction(Request $request, ?Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
         $admissionManager = $this->applicationAdmission;
 

@@ -10,6 +10,7 @@ use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\ChangeLogType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ChangeLogController extends BaseController
 {
@@ -22,6 +23,7 @@ class ChangeLogController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/changelog/create', name: 'changelog_create', methods: ['GET', 'POST'])]
     public function createChangeLogAction(Request $request)
     {
         $changeLogItem = new ChangeLogItem();
@@ -41,6 +43,7 @@ class ChangeLogController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/changelog/edit/{id}', name: 'changelogitem_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editChangeLogAction(Request $request, ChangeLogItem $changeLogItem)
     {
         $form = $this->createForm(ChangeLogType::class, $changeLogItem);
@@ -59,6 +62,7 @@ class ChangeLogController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/changelog/delete/{id}', name: 'changelogitem_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteChangeLogAction(ChangeLogItem $changeLogItem)
     {
         $this->em->remove($changeLogItem);
@@ -69,6 +73,7 @@ class ChangeLogController extends BaseController
         return $this->redirect($this->generateUrl('changelog_show_all'));
     }
 
+    #[Route('/kontrollpanel/changelog/show/all', name: 'changelog_show_all', methods: ['GET'])]
     public function showAction()
     {
         $changeLogItems = $this->changeLogItemRepo->findAllOrderedByDate();

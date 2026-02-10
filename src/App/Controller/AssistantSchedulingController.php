@@ -16,6 +16,7 @@ use App\Entity\Semester;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AssistantSchedulingController extends BaseController
 {
@@ -29,6 +30,7 @@ class AssistantSchedulingController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/skole/timeplan/', name: 'school_allocation', methods: ['GET'])]
     public function indexAction()
     {
         return $this->render('assistant_scheduling/index.html.twig');
@@ -39,6 +41,7 @@ class AssistantSchedulingController extends BaseController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
+    #[Route('/kontrollpanel/api/assistants', name: 'school_allocation_api_assistants', methods: ['GET'])]
     public function getAssistantsAction()
     {
         $user = $this->getUser();
@@ -106,6 +109,7 @@ class AssistantSchedulingController extends BaseController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
+    #[Route('/kontrollpanel/api/schools', name: 'school_allocation_api_schools', methods: ['GET'])]
     public function getSchoolsAction()
     {
         $user = $this->getUser();

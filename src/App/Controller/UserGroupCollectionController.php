@@ -13,6 +13,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use InvalidArgumentException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use UnexpectedValueException;
 
 class UserGroupCollectionController extends BaseController
@@ -27,7 +28,9 @@ class UserGroupCollectionController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
-    public function createUserGroupCollectionAction(Request $request, UserGroupCollection $userGroupCollection = null)
+    #[Route('/kontrollpanel/brukergruppesamling/opprett', name: 'usergroup_collection_create', methods: ['GET', 'POST'])]
+    #[Route('/kontrollpanel/brukergruppesamling/opprett/{id}', name: 'usergroup_collection_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function createUserGroupCollectionAction(Request $request, ?UserGroupCollection $userGroupCollection = null)
     {
         if ($isCreate = $userGroupCollection === null) {
             $userGroupCollection = new UserGroupCollection();
@@ -72,6 +75,7 @@ class UserGroupCollectionController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/brukergruppesamling', name: 'usergroup_collections', methods: ['GET'])]
     public function userGroupCollectionsAction()
     {
         $userGroupCollections = $this->em->getRepository(UserGroupCollection::class)->findAll();
@@ -81,6 +85,7 @@ class UserGroupCollectionController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/brukergruppesamling/slett/{id}', name: 'usergroup_collection_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteUserGroupCollectionAction(UserGroupCollection $userGroupCollection)
     {
         if (!$userGroupCollection->isDeletable()) {

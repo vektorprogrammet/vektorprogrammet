@@ -8,6 +8,7 @@ use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SemesterRepository;
 use App\Service\SbsData;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ControlPanelController extends BaseController
 {
@@ -24,6 +25,7 @@ class ControlPanelController extends BaseController
      *
      * @param Request $request
      */
+    #[Route('/kontrollpanel', name: 'control_panel', methods: ['GET'])]
     public function showAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);

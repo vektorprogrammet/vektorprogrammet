@@ -11,6 +11,7 @@ use App\Entity\Repository\UserRepository;
 use App\Entity\Semester;
 use App\Entity\User;
 use App\Service\GeoLocation;
+use Symfony\Component\Routing\Attribute\Route;
 
 class BoardAndTeamController extends BaseController
 {
@@ -24,6 +25,8 @@ class BoardAndTeamController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/styretogteam', name: 'boardandteam_show', methods: ['GET'])]
+    #[Route('/team', name: 'team')]
     public function showAction()
     {
         // Find all departments

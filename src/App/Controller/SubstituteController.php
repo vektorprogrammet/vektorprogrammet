@@ -12,6 +12,7 @@ use App\Entity\Application;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 use App\Form\Type\ModifySubstituteType;
 
 /**
@@ -34,6 +35,7 @@ class SubstituteController extends BaseController
      * @param Request $request
      * @return Response|null
      */
+    #[Route('/kontrollpanel/vikar', name: 'substitute_show', methods: ['GET'])]
     public function showAction(Request $request)
     {
         // No department specified, get the user's department and call showBySemester with
@@ -57,6 +59,7 @@ class SubstituteController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/vikar/rediger/{id}', name: 'substitute_modify', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function showModifyFormAction(Request $request, Application $application)
     {
         // Only substitutes should be modified with this form
@@ -90,6 +93,7 @@ class SubstituteController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/vikar/slett/{id}', name: 'substitute_delete', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function deleteSubstituteByIdAction(Application $application)
     {
         $application->setSubstitute(false);
@@ -104,6 +108,7 @@ class SubstituteController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/vikar/opprett/{id}', name: 'substitute_create_from_application', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function createSubstituteFromApplicationAction(Application $application)
     {
         if ($application->isSubstitute()) {

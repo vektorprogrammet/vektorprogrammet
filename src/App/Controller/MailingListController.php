@@ -10,6 +10,7 @@ use App\Form\Type\GenerateMailingListType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 
 class MailingListController extends BaseController
 {
@@ -26,6 +27,7 @@ class MailingListController extends BaseController
      *
      * @return Response
      */
+    #[Route('/kontrollpanel/epostlister', name: 'generate_mail_lists', methods: ['GET', 'POST'])]
     public function showAction(Request $request)
     {
         $form = $this->createForm(GenerateMailingListType::class);
@@ -67,6 +69,7 @@ class MailingListController extends BaseController
      * @param Request $request
      * @return Response
      */
+    #[Route('/kontrollpanel/epostlister/assistenter', name: 'generate_assistant_mail_list', methods: ['GET'])]
     public function showAssistantsAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -83,6 +86,7 @@ class MailingListController extends BaseController
      * @param Request $request
      * @return Response
      */
+    #[Route('/kontrollpanel/epostlister/teammedlemmer', name: 'generate_team_mail_list', methods: ['GET'])]
     public function showTeamAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);
@@ -99,6 +103,7 @@ class MailingListController extends BaseController
      * @param Request $request
      * @return Response
      */
+    #[Route('/kontrollpanel/epostlister/alle', name: 'generate_all_mail_list', methods: ['GET'])]
     public function showAllAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);

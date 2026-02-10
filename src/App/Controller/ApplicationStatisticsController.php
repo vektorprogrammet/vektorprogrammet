@@ -11,6 +11,7 @@ use App\Service\AssistantHistoryData;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 class ApplicationStatisticsController extends BaseController
 {
@@ -29,6 +30,7 @@ class ApplicationStatisticsController extends BaseController
      * @return Response
      * @throws NonUniqueResultException
      */
+    #[Route('/kontrollpanel/statistikk/opptak', name: 'statistics_application_show', methods: ['GET'])]
     public function showAction(Request $request)
     {
         $department = $this->getDepartmentOrThrow404($request);

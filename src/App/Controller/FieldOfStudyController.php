@@ -9,6 +9,7 @@ use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\FieldOfStudyType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FieldOfStudyController extends BaseController
@@ -22,6 +23,7 @@ class FieldOfStudyController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/linjer', name: 'show_field_of_studies', methods: ['GET'])]
     public function showAction()
     {
         $department = $this->getUser()->getFieldOfStudy()->getDepartment();
@@ -33,7 +35,9 @@ class FieldOfStudyController extends BaseController
         ));
     }
 
-    public function editAction(Request $request, FieldOfStudy $fieldOfStudy = null)
+    #[Route('/kontrollpanel/linje', name: 'create_field_of_study', methods: ['GET', 'POST'])]
+    #[Route('/kontrollpanel/linje/{id}', name: 'edit_field_of_study', methods: ['GET', 'POST'])]
+    public function editAction(Request $request, ?FieldOfStudy $fieldOfStudy = null)
     {
         $isEdit = true;
         if ($fieldOfStudy === null) {

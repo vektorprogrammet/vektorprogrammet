@@ -10,6 +10,7 @@ use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Attribute\Route;
 
 class SsoController extends BaseController
 {
@@ -22,6 +23,7 @@ class SsoController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/sso/login', name: 'sso_login', methods: ['POST'])]
     public function loginAction(Request $request)
     {
         $response = new JsonResponse();

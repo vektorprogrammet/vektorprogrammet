@@ -45,7 +45,7 @@ class SponsorsController extends BaseController
      */
     #[Route("/kontrollpanel/sponsor/create", name: "sponsor_create")]
     #[Route("/kontrollpanel/sponsor/edit/{id}", name: "sponsor_edit")]
-    public function sponsorEditAction(Sponsor $sponsor = null, Request $request)
+    public function sponsorEditAction(?Sponsor $sponsor = null, Request $request)
     {
         $isCreate = $sponsor === null;
         $oldImgPath = "";

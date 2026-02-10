@@ -10,6 +10,7 @@ use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Article;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * ArticleController is the controller responsible for articles,
@@ -45,6 +46,7 @@ class ArticleController extends BaseController
      *
      * @return Response
      */
+    #[Route('/nyheter', name: 'news', methods: ['GET'])]
     public function showAction(Request $request)
     {
         $articles = $this->articleRepo->findAllPublishedArticles();
@@ -72,6 +74,7 @@ class ArticleController extends BaseController
      *
      * @return Response
      */
+    #[Route('/nyheter/{department}', name: 'article_filter', methods: ['GET'])]
     public function showFilterAction(Request $request, $department)
     {
         $articles = $this->articleRepo->findAllArticlesByDepartments($department);
@@ -98,6 +101,8 @@ class ArticleController extends BaseController
      *
      * @return Response
      */
+    #[Route('/nyhet/{slug}', name: 'article_show', methods: ['GET'])]
+    #[Route('/artikkel/{slug}', name: 'old_article_show', methods: ['GET'])]
     public function showSpecificAction(Article $article)
     {
         if (!$article->isPublished()) {

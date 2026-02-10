@@ -60,6 +60,7 @@ class SurveyController extends BaseController
      *
      * @return Response
      */
+    #[Route('/undersokelse/{id}', name: 'survey_show', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function showAction(Request $request, Survey $survey)
     {
         $surveyTaken = $this->surveyManager->initializeSurveyTaken($survey);
@@ -110,6 +111,7 @@ class SurveyController extends BaseController
      *
      * @return RedirectResponse
      */
+    #[Route('/undersokelse/u/{id}/{userid}', name: 'survey_show_user_id', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function showIdAction(Request $request, Survey $survey, string $userid)
     {
         $notification = $this->surveyNotificationRepo->findByUserIdentifier($userid);
@@ -137,6 +139,7 @@ class SurveyController extends BaseController
     }
 
 
+    #[Route('/undersokelse/u/{id}', name: 'survey_show_user', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function showUserAction(Request $request, Survey $survey)
     {
         $user = $this->getUser();
@@ -148,7 +151,7 @@ class SurveyController extends BaseController
         return $this->showUserMainAction($request, $survey, $user);
     }
 
-    private function showUserMainAction(Request $request, Survey $survey, User $user, string $identifier = null)
+    private function showUserMainAction(Request $request, Survey $survey, User $user, ?string $identifier = null)
     {
         $surveyTaken = $this->surveyManager->initializeUserSurveyTaken($survey, $user);
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);
@@ -214,6 +217,8 @@ class SurveyController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/undersokelse/{id}', name: 'survey_show_admin', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    #[Route('/kontrollpanel/undersokelse/{id}', name: 'survey_team_show_admin', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function showAdminAction(Request $request, Survey $survey)
     {
         if ($survey->getTargetAudience() === Survey::$TEAM_SURVEY) {
@@ -249,6 +254,7 @@ class SurveyController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/undersokelse/opprett', name: 'survey_create', methods: ['GET', 'POST'])]
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
@@ -278,6 +284,7 @@ class SurveyController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/undersokelse/kopier/{id}', name: 'survey_copy', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function copySurveyAction(Request $request, Survey $survey)
     {
         $this->ensureAccess($survey);
@@ -359,6 +366,7 @@ class SurveyController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/undersokelse/endre/{id}', name: 'survey_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editSurveyAction(Request $request, Survey $survey)
     {
         $this->ensureAccess($survey);
@@ -394,6 +402,7 @@ class SurveyController extends BaseController
      *
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/undersokelse/slett/{id}', name: 'survey_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteSurveyAction(Survey $survey)
     {
         $this->ensureAccess($survey);
@@ -411,6 +420,7 @@ class SurveyController extends BaseController
      * @return Response
      * @see SurveyController::getSurveyResultAction
      */
+    #[Route('/kontrollpanel/undersokelse/resultater/{id}', name: 'survey_results', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function resultSurveyAction(Survey $survey)
     {
         $this->ensureAccess($survey);
@@ -437,6 +447,7 @@ class SurveyController extends BaseController
      * @param Survey $survey
      * @return JsonResponse
      */
+    #[Route('/kontrollpanel/api/undersokelse/resultat/{id}', name: 'survey_get_all_results', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function getSurveyResultAction(Survey $survey)
     {
         $this->ensureAccess($survey);
@@ -450,6 +461,7 @@ class SurveyController extends BaseController
      * @param Survey $survey
      * @return Response
      */
+    #[Route('/kontrollpanel/undersokelse/resultater/{id}.csv', name: 'survey_get_results_csv', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function getSurveyResultCSVAction(Survey $survey):Response
     {
         $this->ensureAccess($survey);
@@ -457,6 +469,7 @@ class SurveyController extends BaseController
         return CsvUtil::makeCsvResponse($csv_string);
     }
 
+    #[Route('/togglepopup', name: 'survey_popup_reserve', methods: ['POST'])]
     public function toggleReservedFromPopUpAction()
     {
         $user = $this->getUser();
@@ -469,6 +482,7 @@ class SurveyController extends BaseController
         return new JsonResponse();
     }
 
+    #[Route('/closepopup', name: 'survey_popup_close', methods: ['POST'])]
     public function closePopUpAction()
     {
         $user = $this->getUser();

@@ -35,6 +35,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\KernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
 class ProfileController extends BaseController
@@ -59,6 +60,7 @@ class ProfileController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/profile', name: 'profile', methods: ['GET'])]
     public function showAction()
     {
         // Get the user currently signed in
@@ -82,6 +84,7 @@ class ProfileController extends BaseController
         ));
     }
 
+    #[Route('/profile/{id}', name: 'specific_profile', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showSpecificProfileAction(User $user)
     {
         // If the user clicks their own public profile redirect them to their own profile site
@@ -113,6 +116,7 @@ class ProfileController extends BaseController
         ));
     }
 
+    #[Route('/profile/deaktiv/{id}', name: 'profile_deactivate_user', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deactivateUserAction(User $user)
     {
         $user->setActive(false);
@@ -122,6 +126,7 @@ class ProfileController extends BaseController
         return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
 
+    #[Route('/profile/aktiv/{id}', name: 'profile_activate_user', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function activateUserAction(User $user)
     {
         $user->setActive(true);
@@ -131,6 +136,7 @@ class ProfileController extends BaseController
         return $this->redirectToRoute('specific_profile', ['id' => $user->getId()]);
     }
 
+    #[Route('/bruker/aktiver/{newUserCode}', name: 'profile_activate_with_user_code', methods: ['GET', 'POST'])]
     public function activateNewUserAction(Request $request, $newUserCode)
     {
         $user = $this->userRegistration->activateUserByNewUserCode($newUserCode);
@@ -167,6 +173,7 @@ class ProfileController extends BaseController
         ));
     }
 
+    #[Route('/profile/rolle/endre/{id}', name: 'profile_change_role', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function changeRoleAction(Request $request, User $user)
     {
         $response = array();
@@ -195,6 +202,7 @@ class ProfileController extends BaseController
         return new JsonResponse($response);
     }
 
+    #[Route('/profile/attest/{id}', name: 'profile_certificate', methods: ['GET'])]
     public function downloadCertificateAction(Request $request, User $user)
     {
         // Fetch the assistant history of the user
@@ -238,6 +246,7 @@ class ProfileController extends BaseController
         return null;
     }
 
+    #[Route('/profil/rediger', name: 'profile_edit', methods: ['GET', 'POST'])]
     public function editProfileInformationAction(Request $request)
     {
         $user            = $this->getUser();
@@ -265,6 +274,7 @@ class ProfileController extends BaseController
         ));
     }
 
+    #[Route('/profil/rediger/passord/', name: 'profile_edit_password', methods: ['GET', 'POST'])]
     public function editProfilePasswordAction(Request $request)
     {
         $user = $this->getUser();
@@ -286,6 +296,7 @@ class ProfileController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/profil/rediger/{id}', name: 'profile_edit_admin', methods: ['GET', 'POST'])]
     public function editProfileInformationAdminAction(Request $request, User $user)
     {
         $form            = $this->createForm(EditUserType::class, $user, array(
@@ -311,6 +322,7 @@ class ProfileController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/bruker/vekorepost/endre/{id}', name: 'edit_user_company_email', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function editCompanyEmailAction(Request $request, User $user)
     {
         $oldCompanyEmail = $user->getCompanyEmail();

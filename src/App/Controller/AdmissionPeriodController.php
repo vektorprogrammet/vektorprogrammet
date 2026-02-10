@@ -11,6 +11,7 @@ use App\Form\Type\EditAdmissionPeriodType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\Type\CreateAdmissionPeriodType;
+use Symfony\Component\Routing\Attribute\Route;
 
 class AdmissionPeriodController extends BaseController
 {
@@ -23,6 +24,7 @@ class AdmissionPeriodController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/opptaksperiode', name: 'admission_period_admin_show', methods: ['GET'])]
     public function showAction()
     {
         // Finds the departmentId for the current logged in user
@@ -31,6 +33,7 @@ class AdmissionPeriodController extends BaseController
         return $this->showByDepartmentAction($department);
     }
 
+    #[Route('/kontrollpanel/opptaksperiode/{id}', name: 'admission_period_admin_show_by_department', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showByDepartmentAction(Department $department)
     {
         $admissionPeriods = $this->admissionPeriodRepo
@@ -45,6 +48,7 @@ class AdmissionPeriodController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/opptaksperiode/opprett/{id}', name: 'admission_period_create', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function createAdmissionPeriodAction(Request $request, Department $department)
     {
         $admissionPeriod = new AdmissionPeriod();
@@ -78,6 +82,7 @@ class AdmissionPeriodController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/opptaksperiode/update/{id}', name: 'admission_period_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function updateAdmissionPeriodAction(Request $request, AdmissionPeriod $admissionPeriod)
     {
         $form = $this->createForm(EditAdmissionPeriodType::class, $admissionPeriod);
@@ -99,6 +104,7 @@ class AdmissionPeriodController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/opptaksperiode/slett/{id}', name: 'admission_period_delete', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteAction(AdmissionPeriod $admissionPeriod)
     {
         $infoMeeting = $admissionPeriod->getInfoMeeting();

@@ -20,6 +20,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class ReceiptController extends BaseController
@@ -38,6 +39,7 @@ class ReceiptController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
+    #[Route('/kontrollpanel/utlegg', name: 'receipts_show', methods: ['GET'])]
     public function showAction()
     {
         $usersWithReceipts = $this->userRepo->findAllUsersWithReceipts();
@@ -66,6 +68,7 @@ class ReceiptController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/utlegg/{user}', name: 'receipts_show_individual', methods: ['GET'])]
     public function showIndividualAction(User $user)
     {
         $receipts = $this->receiptRepo->findByUser($user);
@@ -79,6 +82,7 @@ class ReceiptController extends BaseController
         ));
     }
 
+    #[Route('/utlegg', name: 'receipt_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request)
     {
         $receipt = new Receipt();
@@ -118,6 +122,7 @@ class ReceiptController extends BaseController
         ));
     }
 
+    #[Route('/utlegg/rediger/{receipt}', name: 'receipt_edit', requirements: ['receipt' => '\d+'], methods: ['GET', 'POST'])]
     public function editAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();
@@ -166,6 +171,7 @@ class ReceiptController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/utlegg/status/{receipt}', name: 'receipt_edit_status', requirements: ['receipt' => '\d+'], methods: ['POST'])]
     public function editStatusAction(Request $request, Receipt $receipt)
     {
         $status = $request->get('status');
@@ -197,6 +203,7 @@ class ReceiptController extends BaseController
         return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
     }
 
+    #[Route('/kontrollpanel/utlegg/rediger/{receipt}', name: 'receipt_admin_edit', requirements: ['receipt' => '\d+'], methods: ['GET', 'POST'])]
     public function adminEditAction(Request $request, Receipt $receipt)
     {
         $form = $this->createForm(ReceiptType::class, $receipt, array(
@@ -237,6 +244,7 @@ class ReceiptController extends BaseController
         ));
     }
 
+    #[Route('/utlegg/slett/{receipt}', name: 'receipt_delete', requirements: ['receipt' => '\d+'], methods: ['POST'])]
     public function deleteAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();

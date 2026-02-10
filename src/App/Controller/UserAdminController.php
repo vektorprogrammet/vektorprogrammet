@@ -14,6 +14,7 @@ use App\Role\Roles;
 use App\Service\UserRegistration;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
 
 class UserAdminController extends BaseController
 {
@@ -28,7 +29,8 @@ class UserAdminController extends BaseController
         parent::__construct($departmentRepo, $semesterRepo);
     }
 
-    public function createUserAction(Request $request, Department $department = null)
+    #[Route('/kontrollpanel/brukeradmin/opprett/{id}', name: 'useradmin_create_user', defaults: ['id' => null], requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
+    public function createUserAction(Request $request, ?Department $department = null)
     {
         if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
             $department = $this->getUser()->getDepartment();
@@ -65,6 +67,7 @@ class UserAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/brukeradmin', name: 'useradmin_show', methods: ['GET'])]
     public function showAction()
     {
         // Finds all the departments
@@ -84,6 +87,7 @@ class UserAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/brukeradmin/avdeling/{id}', name: 'useradmin_filter_users_by_department', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showUsersByDepartmentAction(Department $department)
     {
         // Finds all the departments
@@ -101,6 +105,7 @@ class UserAdminController extends BaseController
         ));
     }
 
+    #[Route('/kontrollpanel/brukeradmin/slett/{id}', name: 'useradmin_delete_user_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteUserByIdAction(User $user)
     {
         if ($user === $this->getUser()) {
@@ -116,6 +121,7 @@ class UserAdminController extends BaseController
         return $this->redirectToRoute('useradmin_filter_users_by_department', array('id' => $user->getDepartment()->getId()));
     }
 
+    #[Route('/kontrollpanel/brukeradmin/sendaktivering/{id}', name: 'send_user_activation_mail', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function sendActivationMailAction(User $user)
     {
         $this->userRegistration->sendActivationCode($user);

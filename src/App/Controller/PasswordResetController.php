@@ -15,6 +15,7 @@ use App\Form\Type\NewPasswordType;
 use App\Form\Type\PasswordResetType;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Attribute\Route;
 
 /**
  * Class PasswordResetController.
@@ -40,6 +41,7 @@ class PasswordResetController extends BaseController
      *
      * Shows the request new password page
      */
+    #[Route('/resetpassord', name: 'reset_password', methods: ['GET', 'POST'])]
     public function showAction(Request $request)
     {
         //Creates new PasswordResetType Form
@@ -84,6 +86,7 @@ class PasswordResetController extends BaseController
         return $this->render('reset_password/reset_password.html.twig', array('form' => $form->createView()));
     }
 
+    #[Route('/resetsendt', name: 'reset_password_confirmation', methods: ['GET'])]
     public function showConfirmationAction()
     {
         return $this->render('reset_password/confirmation.html.twig');
@@ -97,6 +100,7 @@ class PasswordResetController extends BaseController
      *
      * This function resets stores the new password when the user goes to the url for resetting the password
      */
+    #[Route('/resetpassord/{resetCode}', name: 'forgot_password', requirements: ['resetCode' => '\w+'], methods: ['GET', 'POST'])]
     public function resetPasswordAction($resetCode, Request $request)
     {
         $passwordManager = $this->passwordManager;

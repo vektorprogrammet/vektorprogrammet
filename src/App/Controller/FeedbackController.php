@@ -10,6 +10,7 @@ use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Service\SlackMessenger;
+use Symfony\Component\Routing\Attribute\Route;
 
 class FeedbackController extends BaseController
 {
@@ -25,6 +26,7 @@ class FeedbackController extends BaseController
     }
 
     //shows form for submitting a new feedback
+    #[Route('/kontrollpanel/feedback', name: 'feedback_admin_index', methods: ['GET', 'POST'])]
     public function indexAction(Request $request)
     {
         $feedback = new Feedback;
@@ -58,6 +60,7 @@ class FeedbackController extends BaseController
         ));
     }
     //Shows a specific feedback
+    #[Route('/kontrollpanel/feedback/show/{id}', name: 'feedback_admin_show', methods: ['GET'])]
     public function showAction(Request $request, Feedback $feedback)
     {
         return $this->render('feedback_admin/feedback_admin_show.html.twig', array(
@@ -67,6 +70,7 @@ class FeedbackController extends BaseController
     }
 
     //Lists all feedbacks
+    #[Route('/kontrollpanel/feedback/list', name: 'feedback_admin_list', methods: ['GET'])]
     public function showAllAction(Request $request)
     {
         //Gets all feedbacks sorted by created_at
@@ -84,6 +88,7 @@ class FeedbackController extends BaseController
             'title' => 'Alle tilbakemeldinger'
         ));
     }
+    #[Route('/kontrollpanel/feedback/delete/{id}', name: 'feedback_admin_delete', methods: ['POST'])]
     public function deleteAction(Feedback $feedback)
     {
         $this->em->remove($feedback);

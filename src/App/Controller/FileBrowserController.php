@@ -7,6 +7,7 @@ use App\Entity\Repository\SemesterRepository;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\Routing\Attribute\Route;
 
 class FileBrowserController extends BaseController
 {
@@ -22,6 +23,7 @@ class FileBrowserController extends BaseController
      *
      * @return Response
      */
+    #[Route('/filebrowser', name: 'file_browser', methods: ['GET'])]
     public function browseAction()
     {
         $response = $this->forward('FMElfinderBundle:ElFinder:show', array(
@@ -40,6 +42,7 @@ class FileBrowserController extends BaseController
      *
      * @return BinaryFileResponse
      */
+    #[Route('/Offentlige filer/{file_path}', name: 'public_files', requirements: ['file_path' => '.+'], methods: ['GET'])]
     public function fileStreamAction(Request $request)
     {
         $prefix = substr($request->getPathInfo(), 1); //removes leading '/'
