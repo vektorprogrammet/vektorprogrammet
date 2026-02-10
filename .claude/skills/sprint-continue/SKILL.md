@@ -1,6 +1,7 @@
 ---
 name: sprint-continue
 description: Resume a multi-session sprint. Reads planning docs, verifies tests against baseline, summarizes state, and waits for confirmation. Use at session start, "where was I", "continue", "resume", or "pick up where I left off".
+user-invocable: false
 allowed-tools: Read, Grep, Glob, Bash(*)
 ---
 

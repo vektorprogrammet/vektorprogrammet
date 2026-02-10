@@ -1,6 +1,7 @@
 ---
 name: plan-executor
 description: Execute plans in fresh contexts, git commit per task, auto-verify. Use when "execute plan", "run this", "implement phase", or references PLAN.md.
+user-invocable: false
 allowed-tools: Read, Edit, Write, Grep, Glob, Bash(*)
 argument-hint: [mode:interactive|yolo]
 ---

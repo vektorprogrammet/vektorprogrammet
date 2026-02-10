@@ -1,6 +1,7 @@
 ---
 name: fresh-context-planner
 description: Transform ideas into atomic task plans preventing context rot. Use when user says "plan project", "create roadmap", "break down", "new project", or describes feature.
+user-invocable: false
 allowed-tools: Read, Write, Grep, Glob
 ---
 

@@ -1,6 +1,7 @@
 ---
 name: verification-runner
 description: Goal-backward verification - what must be TRUE? Use when task completes, "verify", "run checks", or after changes.
+user-invocable: false
 allowed-tools: Read, Grep, Glob, Bash(*)
 ---
 

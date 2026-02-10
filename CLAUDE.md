@@ -1,96 +1,60 @@
 # Vektorprogrammet Monolith
 
-Norwegian tutoring program management platform. Symfony 6.4, PHP 8. Upgrading from 3.4 → 6.4.
+Symfony 6.4 / PHP 8 platform (upgraded from 3.4). Norwegian tutoring program management.
 
 ## Status
-- Sprints 1-7b: COMPLETE (Sf6 upgrade + test regression fixes)
-- Sprint 8-9: NEXT (DI migration, attributes, frontend)
+- Sprints 1-8: COMPLETE (Sf6 upgrade, constructor DI, PHP 8 attributes)
+- Sprint 9: IN PROGRESS (routes + deprecation fixes done, cleanup remaining)
 - Details: `.planning/STATE.md`
 
 ## Docs
-Each file covers one topic. Load only what you need to keep context small.
-
 | File | Topic |
 |------|-------|
-| `docs/overview.md` | Quick reference: commands, structure, CI, test users |
+| `docs/overview.md` | Commands, structure, CI, test users |
+| `docs/conventions.md` | Code conventions and patterns |
+| `docs/troubleshooting.md` | Error → fix lookup |
 | `docs/testing.md` | Test commands, workflow, environment |
 | `docs/testing-details.md` | File-to-test map, timing, DB internals |
 | `docs/architecture.md` | Controllers, roles, services, mailer |
-| `docs/console-commands.md` | Useful Symfony console commands |
-| `.planning/test-baseline.md` | Test counts baseline for regression tracking |
-| `.github/workflows/ci.yml` | CI config (lint + analyse + test) |
+| `docs/knowledge-workflow.md` | How insights flow from staging → docs |
+| `.planning/test-baseline.md` | Test baseline for regression tracking |
 
-**`docs/`** = for both humans and AI agents. **`.planning/`** = for AI agents only (migration state, task plans).
+`docs/` = humans + AI. `.planning/` = AI only.
 
-## Critical Gotchas
-- Tests MUST run with `dangerouslyDisableSandbox: true` (SQLite + vendor reads)
-- All 496 tests pass (0 known failures)
+## Agent Gotchas
+- Tests: `dangerouslyDisableSandbox: true` always (SQLite + vendor reads)
 - HEREDOC in git commit fails in sandbox — use plain quoted strings
+- 496 tests pass, 0 failures. Never commit if new failures appear.
+- `composer test` not raw `php bin/phpunit` (sets 256M memory)
 
-## Testing
-- Always run tests after code changes. Verify test count matches baseline before committing.
-- Track baseline in `.planning/test-baseline.md` — if failure count grows, flag immediately.
-- After large refactors, run the FULL suite and compare to baseline (not just filtered tests).
-- Never commit if new failures appear that weren't in the baseline.
+## Skills & Agents
 
-## Symfony/PHP Conventions
-- Preserve bundle shorthand references (e.g. `AppBundle:Entity:User`) — do NOT convert to FQCN unless explicitly asked.
-- Never use broad `replace_all` without verifying scope — check for variable names, method names, and unrelated matches first.
-- No broad autodiscovery in service config without verifying autowiring compatibility.
-- After editing YAML config, validate no duplicate top-level keys were introduced.
-
-## Skill Routing
-
+### Skills (main context, interactive)
 ```
-User says something
-  ├── quick/obvious fix → just do it
-  ├── concrete task (2-5 files) → /rapid-task
-  ├── multiple independent tasks → /batch-exec
-  ├── vague/big/multi-phase → /fresh-context-planner
-  ├── unknown codebase → /codebase-mapper first
-  ├── "where was I" / session start → /sprint-continue
-  ├── "ready for PR" / "ship" → /pr-prep
-  └── "verify" / after changes → /verification-runner
+quick/obvious fix           -> just do it
+session start / "continue"  -> /orchestrate
+vague/big/multi-phase       -> /plan
+"ready for PR" / "ship"     -> /pr-prep
+agent design questions      -> /agent-expert
+research agent patterns     -> /agent-researcher
 ```
 
-## Skill Composition
-
+### Agents (delegated by orchestrator)
 ```
-Skills
-├── rapid-task (single concrete task, 2-5 files)
-│   └── verification-runner
-├── batch-exec (N independent tasks in parallel)
-│   └── rapid-task[] → verification-runner[]
-├── fresh-context-planner (big/vague → atomic plan)
-│   └── plan-executor → verification-runner
-├── codebase-mapper (understand before changing)
-├── sprint-continue (resume from STATE.md + test baseline)
-├── pr-prep (last mile → merge)
-│   └── code-review, commit-commands
-└── state-tracker (persist decisions/progress, not user-invocable)
+clear 2-5 file task         -> coding agent
+execute PLAN.md task        -> execute-plan agent
+run tests/lint/baseline     -> verify agent
+update state + knowledge    -> state-sync agent
+explore codebase            -> Explore (built-in)
 ```
-
-## Planning
-- For multi-step tasks, create a written plan BEFORE starting implementation.
-- Break large changes into phases. Commit after each phase with tests passing.
-- When continuing from a previous session, read `.planning/` docs first.
-
-## Context Management
-- For large multi-file changes (50+ files), save progress to `.planning/` periodically.
-- If approaching context limits, prioritize: commit current work, write status summary, then stop.
-- Context quality degrades: 0-30% peak, 50%+ rushing, 70%+ hallucinations.
-- Spawn fresh agent when context >50% used.
-- Keep agent prompts minimal: only files + task + verification.
-
-## Conventions
-- State lives in `.planning/STATE.md`
-- Plans use XML task format in `.planning/phases/`
-- Verification reports in `.verification/`
-- No planning files for quick fixes
-- Use TaskCreate/TaskUpdate for multi-step work within a session
-- Use subagents (Task tool) for parallel independent work
 
 ## Workflow
-**Start**: read `.planning/STATE.md`, run tests against baseline, check `git status`/`git log`
-**Dev**: small commits per logical change. Run `--filter=RelevantTest` between changes. Full suite before commit.
-**End**: update STATE.md, test-baseline.md, and CLAUDE.md if decisions changed. Leave tests passing.
+- **Start**: `/orchestrate` — reads STATE.md, checks git/tests, presents status, waits for confirmation
+- **Dev**: orchestrator sequences coding agent -> verify agent -> state-sync agent per task
+- **End** (Stop hook auto-reminds if staging has entries):
+  1. Commit work, spawn state-sync agent. Leave tests passing.
+  2. Run `/knowledge-sync scan` to capture session insights, then `/knowledge-sync` to promote.
+  3. Update CLAUDE.md only if agent workflow changed.
+- Multi-step: `/plan` first, then `/orchestrate` to execute. Commit per task.
+- Context >50%: spawn fresh agent. Commit work + write status before stopping.
+- Never broad `replace_all` without verifying scope. After editing YAML, check for duplicate keys.

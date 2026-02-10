@@ -1,6 +1,7 @@
 ---
 name: batch-exec
 description: Parallel execution of independent tasks via subagents. Use when multiple unrelated changes needed, "do all of these", or list of tasks.
+user-invocable: false
 allowed-tools: Read, Edit, Write, Grep, Glob, Bash(*)
 ---
 

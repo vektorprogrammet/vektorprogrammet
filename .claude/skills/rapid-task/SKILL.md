@@ -1,6 +1,7 @@
 ---
 name: rapid-task
 description: Execute concrete task without planning docs. Read, implement, verify, commit. Use when task is clear and 2-5 files.
+user-invocable: false
 allowed-tools: Read, Edit, Write, Grep, Glob, Bash(*)
 ---
 
