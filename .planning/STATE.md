@@ -1,8 +1,8 @@
 # State: Vektorprogrammet Monolith Symfony Upgrade
 
 **Updated**: 2026-02-10
-**Phase**: Sprint 9 — IN PROGRESS (YAML routes done, PHP 8.4 deprecations done)
-**Branch**: `modernize/sprint-1-remove-dead-dependencies`
+**Phase**: Sprint 9 — IN PROGRESS (routes + deprecations done, cleanup remaining)
+**Branch**: `modernize/sprint-1-remove-dead-dependencies` (9 commits ahead of origin, not pushed)
 
 ## Progress
 
@@ -41,10 +41,23 @@
 - Remaining vendor deprecations (knp-paginator, sentry) — need package updates
 
 ### Remaining Deprecations (from test output)
-- `strlen(null)` in AssetExtension.php:49 — pass empty string or add null check
-- `${var}` string interpolation in AssistantControllerTest.php:63-69 — use `{$var}`
+- `strlen(null)` in `AssetExtension.php:49` — pass empty string or add null check
+- `${var}` string interpolation in `AssistantControllerTest.php:63-69` — use `{$var}`
 - `SponsorsController::sponsorEditAction()` optional param before required — reorder
 - Vendor: knp-paginator, sentry-symfony need upgrades for PHP 8.4
+
+### Skill/Agent System Restructure (Phase 1)
+- Created `/orchestrate` skill (session router, delegates to agents)
+- Created `/plan` skill (interactive planner with templates)
+- Created 4 agent definitions: coding, verify, state-sync, execute-plan
+- Deprecated 8 old skills (user-invocable: false)
+- Updated CLAUDE.md routing table and workflow
+- Two rounds of agent-expert review — all issues resolved (5/5 orchestration, 5/5 Anthropic alignment)
+- Commits: `c759edd6`, `857c3e39`
+
+### Session Notes
+- Last session (2026-02-10) cut short by terminal becoming unresponsive. All work was committed and valid.
+- 9 commits not yet pushed to origin. Working tree clean.
 
 ## Known Issues
 

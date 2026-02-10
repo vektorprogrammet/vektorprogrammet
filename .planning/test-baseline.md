@@ -5,6 +5,7 @@ Track test counts after each commit to catch regressions early.
 | Date | Commit | Tests | Assertions | Failures | Errors | Time | Notes |
 |------|--------|-------|------------|----------|--------|------|-------|
 | 2026-02-09 | bfd90f8a | 496 | 1150 | 0 | 0 | 3:08 | Baseline established. All green. |
+| 2026-02-10 | ae04e49d | 496 | 1150 | 0 | 0 | 3:03 | Sprint 9: routes + deprecation fixes. Still green. |
 
 ## Running Tests
 
