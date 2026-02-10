@@ -156,11 +156,11 @@ class TeamAdminController extends BaseController
      * @param TeamMembership $a
      * @param TeamMembership $b
      *
-     * @return bool
+     * @return int
      */
-    private function sortTeamMembershipsByEndDate($a, $b)
+    private function sortTeamMembershipsByEndDate($a, $b): int
     {
-        return $a->getStartSemester()->getStartDate() < $b->getStartSemester()->getStartDate();
+        return $b->getStartSemester()->getStartDate() <=> $a->getStartSemester()->getStartDate();
     }
 
     #[Route('/kontrollpanel/teamadmin/update/{id}', name: 'teamadmin_update', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
