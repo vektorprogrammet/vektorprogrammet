@@ -4,6 +4,7 @@ description: Focused implementation agent. Works on 1-5 files, returns summary.
 model: sonnet
 maxTurns: 25
 tools: [Read, Edit, Write, Glob, Grep, Bash]
+memory: project
 ---
 
 # Coding Agent

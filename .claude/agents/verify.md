@@ -4,6 +4,7 @@ description: Runs tests and lint, compares to baseline. Report only — no fixes
 model: sonnet
 maxTurns: 10
 tools: [Read, Glob, Grep, Bash]
+memory: project
 ---
 
 # Verify Agent
