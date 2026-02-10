@@ -2,12 +2,28 @@
 namespace App\Controller;
 
 use App\Entity\Feedback;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\FeedbackRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\FeedbackType;
+use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Service\SlackMessenger;
 
 class FeedbackController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private SlackMessenger $slackMessenger,
+        private PaginatorInterface $paginator,
+        private FeedbackRepository $feedbackRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     //shows form for submitting a new feedback
     public function indexAction(Request $request)
     {
@@ -24,18 +40,16 @@ class FeedbackController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             //Stores the submitted feedback
-            $em = $this->getDoctrine()->getManager();
             $feedback = $form->getData();
             $feedback->setUser($user);
-            $em->persist($feedback);
-            $em->flush();
+            $this->em->persist($feedback);
+            $this->em->flush();
 
             //Notifies on slack (NotificationChannel)
-            $messenger = $this->get(SlackMessenger::class);
-            $messenger->notify($feedback->getSlackMessageBody());
+            $this->slackMessenger->notify($feedback->getSlackMessageBody());
 
             $this->addFlash("success", "Tilbakemeldingen har blitt registrert, tusen takk!");
-            
+
             return $this->redirect($returnUri); //Makes sure the user cannot submit the same form twice (e.g. by reloading page)// Will also r
         }
 
@@ -55,14 +69,10 @@ class FeedbackController extends BaseController
     //Lists all feedbacks
     public function showAllAction(Request $request)
     {
-        $paginator  = $this->get('knp_paginator');
-
-        $repository = $this->getDoctrine()->getRepository(Feedback::class);
-
         //Gets all feedbacks sorted by created_at
-        $feedbacks = $repository->findAllSortByNewest();
+        $feedbacks = $this->feedbackRepo->findAllSortByNewest();
 
-        $pagination = $paginator->paginate(
+        $pagination = $this->paginator->paginate(
             $feedbacks,
             $request->query->get('page', 1),
             15
@@ -76,9 +86,8 @@ class FeedbackController extends BaseController
     }
     public function deleteAction(Feedback $feedback)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($feedback);
-        $em->flush();
+        $this->em->remove($feedback);
+        $this->em->flush();
 
         $this->addFlash("success", "\"". $feedback->getTitle()."\" ble slettet");
 

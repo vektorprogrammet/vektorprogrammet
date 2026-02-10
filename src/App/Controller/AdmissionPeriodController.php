@@ -4,12 +4,25 @@ namespace App\Controller;
 
 use App\Entity\Department;
 use App\Entity\AdmissionPeriod;
+use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\EditAdmissionPeriodType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Form\Type\CreateAdmissionPeriodType;
 
 class AdmissionPeriodController extends BaseController
 {
+    public function __construct(
+        private AdmissionPeriodRepository $admissionPeriodRepo,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showAction()
     {
         // Finds the departmentId for the current logged in user
@@ -20,8 +33,7 @@ class AdmissionPeriodController extends BaseController
 
     public function showByDepartmentAction(Department $department)
     {
-        $admissionPeriods = $this->getDoctrine()
-            ->getRepository(AdmissionPeriod::class)
+        $admissionPeriods = $this->admissionPeriodRepo
             ->findByDepartmentOrderedByTime($department);
 
 
@@ -53,9 +65,8 @@ class AdmissionPeriodController extends BaseController
         if ($form->isSubmitted() && $form->isValid() && !$exists) {
             $admissionPeriod->setDepartment($department);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($admissionPeriod);
-            $em->flush();
+            $this->em->persist($admissionPeriod);
+            $this->em->flush();
 
             return $this->redirectToRoute('admission_period_admin_show_by_department', array('id' => $department->getId()));
         }
@@ -75,9 +86,8 @@ class AdmissionPeriodController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($admissionPeriod);
-            $em->flush();
+            $this->em->persist($admissionPeriod);
+            $this->em->flush();
 
             return $this->redirectToRoute('admission_period_admin_show_by_department', array('id' => $admissionPeriod->getDepartment()->getId()));
         }
@@ -91,13 +101,12 @@ class AdmissionPeriodController extends BaseController
 
     public function deleteAction(AdmissionPeriod $admissionPeriod)
     {
-        $em = $this->getDoctrine()->getManager();
         $infoMeeting = $admissionPeriod->getInfoMeeting();
         if ($infoMeeting) {
-            $em->remove($infoMeeting);
+            $this->em->remove($infoMeeting);
         }
-        $em->remove($admissionPeriod);
-        $em->flush();
+        $this->em->remove($admissionPeriod);
+        $this->em->flush();
 
         return $this->redirectToRoute('admission_period_admin_show_by_department', ['id' => $admissionPeriod->getDepartment()->getId()]);
     }

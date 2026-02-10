@@ -2,6 +2,9 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Form\Type\GenerateMailingListType;
 use Symfony\Component\HttpFoundation\Request;
@@ -10,6 +13,14 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class MailingListController extends BaseController
 {
+    public function __construct(
+        private UserRepository $userRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @param Request $request
      *
@@ -60,7 +71,7 @@ class MailingListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $users = $this->getDoctrine()->getRepository(User::class)
+        $users = $this->userRepo
             ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
@@ -76,7 +87,7 @@ class MailingListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $users = $this->getDoctrine()->getRepository(User::class)
+        $users = $this->userRepo
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
 
         return $this->render('mailing_list/mailinglist_show.html.twig', array(
@@ -92,9 +103,9 @@ class MailingListController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $assistantUsers = $this->getDoctrine()->getRepository(User::class)
+        $assistantUsers = $this->userRepo
             ->findUsersWithAssistantHistoryInDepartmentAndSemester($department, $semester);
-        $teamUsers = $this->getDoctrine()->getRepository(User::class)
+        $teamUsers = $this->userRepo
             ->findUsersInDepartmentWithTeamMembershipInSemester($department, $semester);
         $users = array_unique(array_merge($assistantUsers, $teamUsers));
 

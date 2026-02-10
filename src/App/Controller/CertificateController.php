@@ -4,9 +4,15 @@ namespace App\Controller;
 
 use App\Entity\AssistantHistory;
 use App\Entity\CertificateRequest;
+use App\Entity\Repository\AssistantHistoryRepository;
+use App\Entity\Repository\CertificateRequestRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\SignatureRepository;
 use App\Entity\Signature;
 use App\Form\Type\CreateSignatureType;
 use App\Service\FileUploader;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,6 +20,18 @@ use Symfony\Component\HttpFoundation\Response;
 
 class CertificateController extends BaseController
 {
+    public function __construct(
+        private AssistantHistoryRepository $assistantHistoryRepo,
+        private SignatureRepository $signatureRepo,
+        private CertificateRequestRepository $certificateRequestRepo,
+        private FileUploader $fileUploader,
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     /**
      * @Route(
      *     "/kontrollpanel/attest/{id}",
@@ -30,11 +48,10 @@ class CertificateController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $em = $this->getDoctrine()->getManager();
 
-        $assistants = $em->getRepository(AssistantHistory::class)->findByDepartmentAndSemester($department, $semester);
+        $assistants = $this->assistantHistoryRepo->findByDepartmentAndSemester($department, $semester);
 
-        $signature = $this->getDoctrine()->getRepository(Signature::class)->findByUser($this->getUser());
+        $signature = $this->signatureRepo->findByUser($this->getUser());
         $oldPath = '';
         if ($signature === null) {
             $signature = new Signature();
@@ -49,8 +66,8 @@ class CertificateController extends BaseController
             $isImageUpload = $request->files->get('create_signature')['signature_path'] !== null;
 
             if ($isImageUpload) {
-                $signaturePath = $this->get(FileUploader::class)->uploadSignature($request);
-                $this->get(FileUploader::class)->deleteSignature($oldPath);
+                $signaturePath = $this->fileUploader->uploadSignature($request);
+                $this->fileUploader->deleteSignature($oldPath);
 
                 $signature->setSignaturePath($signaturePath);
             } else {
@@ -58,16 +75,15 @@ class CertificateController extends BaseController
             }
 
             $signature->setUser($this->getUser());
-            $manager = $this->getDoctrine()->getManager();
-            $manager->persist($signature);
-            $manager->flush();
+            $this->em->persist($signature);
+            $this->em->flush();
 
             $this->addFlash('success', 'Signatur og evt. kommentar ble lagret');
             return $this->redirect($request->headers->get('referer'));
         }
 
         // Finds all the the certificate requests
-        $certificateRequests = $this->getDoctrine()->getRepository(CertificateRequest::class)->findAll();
+        $certificateRequests = $this->certificateRequestRepo->findAll();
 
         return $this->render('certificate/index.html.twig', array(
             'certificateRequests' => $certificateRequests,

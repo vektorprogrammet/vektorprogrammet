@@ -5,6 +5,11 @@ namespace App\Controller;
 use App\Entity\AdmissionPeriod;
 use App\Entity\AdmissionSubscriber;
 use App\Entity\Application;
+use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Entity\Repository\AdmissionSubscriberRepository;
+use App\Entity\Repository\ApplicationRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Service\AdmissionStatistics;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -13,6 +18,16 @@ use Symfony\Component\HttpFoundation\Response;
 
 class StandController extends BaseController
 {
+    public function __construct(
+        private AdmissionStatistics $admissionStatistics,
+        private AdmissionSubscriberRepository $admissionSubscriberRepo,
+        private ApplicationRepository $applicationRepo,
+        private AdmissionPeriodRepository $admissionPeriodRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
 
     /**
      * @Route("/kontrollpanel/stand", name="stand")
@@ -26,23 +41,20 @@ class StandController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
 
-        $admissionStatistics = $this->get(AdmissionStatistics::class);
-
-        $subscribers = $this->getDoctrine()->getRepository(AdmissionSubscriber::class)->findFromWebByDepartment($department);
-        $subscribersInDepartmentAndSemester = $this->getDoctrine()->getRepository(AdmissionSubscriber::class)
+        $subscribers = $this->admissionSubscriberRepo->findFromWebByDepartment($department);
+        $subscribersInDepartmentAndSemester = $this->admissionSubscriberRepo
             ->findFromWebByDepartmentAndSemester($department, $semester);
-        $subData = $admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInDepartmentAndSemester, $semester);
+        $subData = $this->admissionStatistics->generateGraphDataFromSubscribersInSemester($subscribersInDepartmentAndSemester, $semester);
 
-        $applications = $this->getDoctrine()->getRepository(Application::class)->findByDepartment($department);
-        $admissionPeriod = $this->getDoctrine()->getRepository(AdmissionPeriod::class)
+        $applications = $this->applicationRepo->findByDepartment($department);
+        $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
         $applicationsInSemester = [];
         $appData = null;
         if ($admissionPeriod !== null) {
-            $applicationsInSemester = $this->getDoctrine()
-                ->getRepository(Application::class)
+            $applicationsInSemester = $this->applicationRepo
                 ->findByAdmissionPeriod($admissionPeriod);
-            $appData = $admissionStatistics->generateGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
+            $appData = $this->admissionStatistics->generateGraphDataFromApplicationsInAdmissionPeriod($applicationsInSemester, $admissionPeriod);
         }
 
 

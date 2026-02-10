@@ -3,15 +3,31 @@
 namespace App\Controller;
 
 use App\Entity\Department;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\RoleRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Form\Type\CreateUserType;
 use App\Entity\Role;
 use App\Role\Roles;
 use App\Service\UserRegistration;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class UserAdminController extends BaseController
 {
+    public function __construct(
+        private RoleRepository $roleRepo,
+        private UserRepository $userRepo,
+        private DepartmentRepository $departmentRepo,
+        private EntityManagerInterface $em,
+        private UserRegistration $userRegistration,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function createUserAction(Request $request, Department $department = null)
     {
         if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
@@ -31,14 +47,13 @@ class UserAdminController extends BaseController
 
         // The fields of the form is checked if they contain the correct information
         if ($form->isSubmitted() && $form->isValid()) {
-            $role = $this->getDoctrine()->getRepository(Role::class)->findByRoleName(Roles::ASSISTANT);
+            $role = $this->roleRepo->findByRoleName(Roles::ASSISTANT);
             $user->addRole($role);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
-            $em->flush();
+            $this->em->persist($user);
+            $this->em->flush();
 
-            $this->get(UserRegistration::class)->sendActivationCode($user);
+            $this->userRegistration->sendActivationCode($user);
 
             return $this->redirectToRoute('useradmin_show');
         }
@@ -53,13 +68,13 @@ class UserAdminController extends BaseController
     public function showAction()
     {
         // Finds all the departments
-        $activeDepartments = $this->getDoctrine()->getRepository(Department::class)->findActive();
+        $activeDepartments = $this->departmentRepo->findActive();
 
         // Finds the department for the current logged in user
         $department = $this->getUser()->getDepartment();
 
-        $activeUsers = $this->getDoctrine()->getRepository(User::class)->findAllActiveUsersByDepartment($department);
-        $inActiveUsers = $this->getDoctrine()->getRepository(User::class)->findAllInActiveUsersByDepartment($department);
+        $activeUsers = $this->userRepo->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->userRepo->findAllInActiveUsersByDepartment($department);
 
         return $this->render('user_admin/index.html.twig', array(
             'activeUsers' => $activeUsers,
@@ -72,10 +87,10 @@ class UserAdminController extends BaseController
     public function showUsersByDepartmentAction(Department $department)
     {
         // Finds all the departments
-        $activeDepartments = $this->getDoctrine()->getRepository(Department::class)->findActive();
+        $activeDepartments = $this->departmentRepo->findActive();
 
-        $activeUsers = $this->getDoctrine()->getRepository(User::class)->findAllActiveUsersByDepartment($department);
-        $inActiveUsers = $this->getDoctrine()->getRepository(User::class)->findAllInActiveUsersByDepartment($department);
+        $activeUsers = $this->userRepo->findAllActiveUsersByDepartment($department);
+        $inActiveUsers = $this->userRepo->findAllInActiveUsersByDepartment($department);
 
         // Renders the view with the variables
         return $this->render('user_admin/index.html.twig', array(
@@ -91,9 +106,8 @@ class UserAdminController extends BaseController
         if ($user === $this->getUser()) {
             $this->addFlash("error", "Du kan ikke slette deg selv.");
         } elseif ($this->isGranted(ROLES::ADMIN) || $user->getDepartment() == $this->getUser()->getDepartment()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->remove($user);
-            $em->flush();
+            $this->em->remove($user);
+            $this->em->flush();
             $this->addFlash("success", "$user har blitt slettet.");
         } else {
             throw $this->createAccessDeniedException();
@@ -104,7 +118,7 @@ class UserAdminController extends BaseController
 
     public function sendActivationMailAction(User $user)
     {
-        $this->get(UserRegistration::class)->sendActivationCode($user);
+        $this->userRegistration->sendActivationCode($user);
 
         return $this->redirectToRoute('useradmin_show');
     }

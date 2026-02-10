@@ -2,15 +2,27 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Entity\Repository\SocialEventRepository;
 use App\Entity\SocialEvent;
 use App\Form\Type\SocialEventType;
 use DateTime;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
 class SocialEventController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private SocialEventRepository $socialEventRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
 
     /**
      * @param Request $request
@@ -21,9 +33,7 @@ class SocialEventController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
 
-        $em = $this->getDoctrine()->getManager();
-        $repository = $em->getRepository(SocialEvent::class);
-        $SocialEventList = $repository->findSocialEventsBySemesterAndDepartment($semester, $department);
+        $SocialEventList = $this->socialEventRepo->findSocialEventsBySemesterAndDepartment($semester, $department);
 
 
         return $this->render("social_event/social_event_list.twig", array(
@@ -42,7 +52,6 @@ class SocialEventController extends BaseController
     {
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $em              = $this->getDoctrine()->getManager();
         $socialEvent    = new SocialEvent();
         $user            = $this->getUser();
 
@@ -54,8 +63,8 @@ class SocialEventController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($socialEvent);
-            $em->flush();
+            $this->em->persist($socialEvent);
+            $this->em->flush();
             return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
 
@@ -77,10 +86,9 @@ class SocialEventController extends BaseController
 
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
-        $em = $this->getDoctrine()->getManager();
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($social_event);
-            $em->flush();
+            $this->em->persist($social_event);
+            $this->em->flush();
             return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
         }
 
@@ -103,9 +111,8 @@ class SocialEventController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $department = $this->getDepartmentOrThrow404($request);
 
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($event);
-        $em->flush();
+        $this->em->remove($event);
+        $this->em->flush();
 
         return $this->redirectToRoute('social_event_show', ['department'=> $department->getId(), 'semester'=>$semester->getId()]);
     }

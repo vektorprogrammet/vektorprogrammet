@@ -4,11 +4,24 @@
 namespace App\Controller;
 
 use App\Entity\ChangeLogItem;
+use App\Entity\Repository\ChangeLogItemRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
 use App\Form\Type\ChangeLogType;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class ChangeLogController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        private ChangeLogItemRepository $changeLogItemRepo,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function createChangeLogAction(Request $request)
     {
         $changeLogItem = new ChangeLogItem();
@@ -16,9 +29,8 @@ class ChangeLogController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($changeLogItem);
-            $em->flush();
+            $this->em->persist($changeLogItem);
+            $this->em->flush();
 
             return $this->redirect($this->generateUrl('changelog_show_all'));
         }
@@ -35,9 +47,8 @@ class ChangeLogController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($changeLogItem);
-            $em->flush();
+            $this->em->persist($changeLogItem);
+            $this->em->flush();
 
             return $this->redirect($this->generateUrl('changelog_show_all'));
         }
@@ -50,9 +61,8 @@ class ChangeLogController extends BaseController
 
     public function deleteChangeLogAction(ChangeLogItem $changeLogItem)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($changeLogItem);
-        $em->flush();
+        $this->em->remove($changeLogItem);
+        $this->em->flush();
 
         $this->addFlash("success", "\"".$changeLogItem->getTitle()."\" ble slettet");
 
@@ -61,8 +71,7 @@ class ChangeLogController extends BaseController
 
     public function showAction()
     {
-        $em = $this->getDoctrine()->getManager();
-        $changeLogItems = $em->getRepository(ChangeLogItem::class)->findAllOrderedByDate();
+        $changeLogItems = $this->changeLogItemRepo->findAllOrderedByDate();
         $changeLogItems = array_reverse($changeLogItems);
 
         return $this->render('changelog/changelog_show_all.html.twig', array('changeLogItems' => $changeLogItems));

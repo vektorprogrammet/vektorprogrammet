@@ -2,12 +2,23 @@
 
 namespace App\Controller;
 
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Department;
 use App\Form\Type\CreateDepartmentType;
 
 class DepartmentController extends BaseController
 {
+    public function __construct(
+        private EntityManagerInterface $em,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
     public function showAction()
     {
         return $this->render('department_admin/index.html.twig', array());
@@ -22,9 +33,8 @@ class DepartmentController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($department);
-            $em->flush();
+            $this->em->persist($department);
+            $this->em->flush();
 
             $this->addFlash("success", "$department ble opprettet");
 
@@ -38,9 +48,8 @@ class DepartmentController extends BaseController
 
     public function deleteDepartmentByIdAction(Department $department)
     {
-        $em = $this->getDoctrine()->getManager();
-        $em->remove($department);
-        $em->flush();
+        $this->em->remove($department);
+        $this->em->flush();
 
         $this->addFlash("success", "Avdelingen ble slettet");
 
@@ -54,9 +63,8 @@ class DepartmentController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($department);
-            $em->flush();
+            $this->em->persist($department);
+            $this->em->flush();
 
             $this->addFlash("success", "$department ble oppdatert");
 
