@@ -80,12 +80,11 @@ Then delete the staging entry from MEMORY.md.
 
 The workflow is automated via a skill and a hook:
 
-### `/knowledge-sync` skill
+### `/knowledge-sync` skill (promote only)
 
-Two modes:
-- **`/knowledge-sync`** (promote): reads MEMORY.md staging, appends confirmed entries to target docs, clears staging. Fast, no analysis.
-- **`/knowledge-sync scan`**: analyzes the current conversation for errors, workarounds, conventions, and decisions not yet documented. Writes findings to MEMORY.md staging with `→ target:` tags.
-- **`/knowledge-sync scan promote`**: scan then immediately promote.
+- **`/knowledge-sync`**: reads MEMORY.md staging, appends confirmed entries to target docs, clears staging. Fast, no analysis.
+
+For conversation scanning, use `/capture` instead — it interactively presents findings for user confirmation and writes directly to docs.
 
 ### Stop hook
 
@@ -103,7 +102,8 @@ Two modes:
 ```
 Agent works on tasks
   → Encounters insight
-  → Writes to MEMORY.md staging (manual or via /knowledge-sync scan)
+  → /capture scans conversation, presents findings, writes to docs with user confirmation
+  → Or: writes to MEMORY.md staging for later batch promotion
 
 Agent finishes and tries to stop
   → Stop hook checks staging

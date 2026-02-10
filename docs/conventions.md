@@ -30,6 +30,12 @@ Project conventions and patterns. Keep this updated as the codebase evolves.
 - PHP-CS-Fixer for code style (`composer lint` / `composer fix`)
 - PHPStan level 1 (`composer analyse`)
 
+## Agent Design
+- User-level agents (`~/.claude/agents/`) for project-agnostic tools
+- Project-level agents (`.claude/agents/`) for project-specific workflows
+- Structural least-privilege: restrict tool list in frontmatter, don't rely on prompt instructions alone
+- Structured output format (RESULT/Findings/Sources/Confidence) for parseable agent returns
+
 ## Twig 3
 - No `for...if` — use `|filter()`
 - No blocks inside `if` — put conditional inside block

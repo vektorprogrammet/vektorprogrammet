@@ -14,7 +14,14 @@
 - Sprint 7: Symfony 5.4 → 6.4
 - Sprint 7b: Fix 15 Sf6 test regressions
 
-## Milestone 3: Cleanup (Sprints 8-9) — NEXT
+## Milestone 3: Cleanup (Sprints 8-9) — IN PROGRESS
 
-- Sprint 8: getDoctrine() → DI, annotations → attributes, remove legacy bundles
-- Sprint 9: Frontend modernization, flex, PHPUnit 10
+- Sprint 8: getDoctrine() → DI, annotations → attributes, remove legacy bundles — COMPLETE
+- Sprint 9: Route modernization, PHP 8.4 fixes, PHPStan, remaining deprecations — IN PROGRESS
+
+## Milestone 4: Backlog
+
+- Frontend modernization (Webpack Encore, asset pipeline)
+- PHPUnit 10 upgrade
+- symfony/flex adoption
+- SwiftMailer → Symfony Mailer

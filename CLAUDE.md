@@ -18,6 +18,7 @@ Symfony 6.4 / PHP 8 platform (upgraded from 3.4). Norwegian tutoring program man
 | `docs/architecture.md` | Controllers, roles, services, mailer |
 | `docs/knowledge-workflow.md` | How insights flow from staging → docs |
 | `.planning/test-baseline.md` | Test baseline for regression tracking |
+| `.planning/BOARD.md` | Work board (backlog/todo/in-progress/review/done) |
 
 `docs/` = humans + AI. `.planning/` = AI only.
 
@@ -34,10 +35,16 @@ Symfony 6.4 / PHP 8 platform (upgraded from 3.4). Norwegian tutoring program man
 quick/obvious fix           -> just do it
 session start / "continue"  -> /orchestrate
 vague/big/multi-phase       -> /plan
+"log decisions" / insights  -> /capture
+"sync knowledge" / promote  -> /knowledge-sync (promote only)
+```
+
+### User-global skills (available in all projects)
+```
 "ready for PR" / "ship"     -> /pr-prep
 agent design questions      -> /agent-expert
 research agent patterns     -> /agent-researcher
-"log decisions" / insights  -> /capture
+kanban board                -> /board
 ```
 
 ### Agents (delegated by orchestrator)

@@ -1,6 +1,6 @@
 ---
 name: knowledge-sync
-description: Promote staged insights to docs or scan conversation for new insights. Use when "sync knowledge", "promote memory", end of session, or triggered by Stop hook.
+description: Promote staged MEMORY.md insights to docs. Use when "sync knowledge", "promote memory", end of session, or triggered by Stop hook.
 allowed-tools: Read, Edit, Write, Grep, Glob
 user-invocable: true
 ---
@@ -41,40 +41,9 @@ Flush staging to public docs. Fast, no analysis.
 | Architecture insight | `docs/architecture.md` |
 | Test knowledge | `docs/testing.md` |
 
-## Mode: Scan
-
-Analyze current conversation for insights worth capturing. Heavier, uses context.
-
-### Steps
-
-1. **Review conversation** for:
-   - Errors encountered and how they were fixed
-   - Workarounds or non-obvious solutions
-   - New conventions established or discovered
-   - Decisions about patterns or architecture
-   - Gotchas that cost time
-2. **Check existing docs**: Read target docs to avoid duplicating knowledge already captured.
-3. **Write staging entries**: Add new entries to MEMORY.md staging section with `→ target:` tags.
-4. **Report**: List what was staged and suggested targets. Let user confirm before promoting.
-
-### Scan Criteria
-
-Worth staging if:
-- Took >1 attempt to solve (non-obvious)
-- Would affect future development decisions
-- Is a pattern/convention not yet documented
-- Is an error message with a non-obvious fix
-
-NOT worth staging if:
-- One-off issue unlikely to recur
-- Already documented in existing docs
-- Too project-specific to be reusable
-
 ## Arguments
 
 - No args or `promote` → promote mode
-- `scan` → scan mode
-- `scan promote` → scan then immediately promote
 
 ## Rules
 
