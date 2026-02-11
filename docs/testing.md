@@ -20,6 +20,26 @@ For the full suite, `composer test` handles memory limits, JUnit logging, and co
 
 Test results are saved to `var/test-results.xml` (sequential) and `var/test-results-parallel.xml` (parallel) via `--log-junit`.
 
+## Code Coverage
+
+```bash
+composer test:coverage    # Generate HTML coverage report
+open var/coverage/index.html  # View results (macOS)
+```
+
+**Details:**
+- Driver: phpdbg (built into PHP, no extensions needed)
+- Memory: 512M (higher than regular tests)
+- Output: `var/coverage/` (HTML report, gitignored)
+- Performance: ~2-3x slower than regular test run
+- Coverage includes: `src/` directory
+- Coverage excludes: `vendor/`, `var/`, `tests/`
+
+**Note:** If you encounter memory errors, increase the limit in `composer.json`:
+```json
+"test:coverage": "... -d memory_limit=1G ..."
+```
+
 ## Workflow
 
 ```
