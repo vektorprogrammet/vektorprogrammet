@@ -55,12 +55,7 @@ GitHub Actions (`.github/workflows/ci.yml`) runs on push to `master` and all PRs
 
 ## Test Users (dev/test fixtures)
 
-| Role | Username | Password |
-|------|----------|----------|
-| Assistent | `assistent` | `1234` |
-| Teammedlem | `teammember` | `1234` |
-| Teamleder | `teamleader` | `1234` |
-| Admin | `admin` | `1234` |
+See [testing-details.md](testing-details.md) for test credentials.
 
 ## Further Reading
 

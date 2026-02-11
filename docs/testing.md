@@ -28,21 +28,9 @@ Before commit:  --order-by=defects --stop-on-failure  fast fail
 Pre-push:       full suite (no flags)                 ~3 min
 ```
 
-## Parallel Testing (ParaTest)
+## Parallel Testing & Environment
 
-ParaTest runs tests across 4 workers using `WrapperRunner`. Each worker gets a unique `TEST_TOKEN` env var, which creates isolated SQLite DBs (`test1.db`, `test2.db`, etc.).
-
-- Use `WrapperRunner` (not default runner) — it preserves static state within a worker, fewer double-boot errors
-- `BaseWebTestCase::createClient()` has a catch-retry pattern for Sf6.4 double-boot (`LogicException`)
-- Do NOT reset static clients in `tearDown` or call `ensureKernelShutdown()` preemptively — both cause 29+ failures
-
-## Environment
-
-- **PHP 8.5**: local dev environment
-- **SQLite**: test DB at `var/data/test.db` (sequential) or `var/data/test{TOKEN}.db` (parallel)
-- **Sandbox**: tests must run with sandbox disabled
-- **Memory**: 256M limit (set by `composer test`; default 128M is insufficient)
-- **Credentials**: `assistent`/`teammember`/`teamleader`/`admin` — all password `1234`
+ParaTest runs with 4 workers, isolated SQLite DBs per worker. See [testing-details.md](testing-details.md) for ParaTest configuration, environment requirements, and test credentials.
 
 ## Known Failures
 
@@ -50,7 +38,7 @@ None. All 496 tests pass (1150 assertions).
 
 ## CI
 
-Tests run automatically in GitHub Actions on push to `master` and on all PRs. The CI workflow also runs lint (`composer lint`) and static analysis (`composer analyse`) as separate parallel jobs. See [`.github/workflows/ci.yml`](../.github/workflows/ci.yml).
+See overview.md for CI job breakdown.
 
 ## More Details
 
