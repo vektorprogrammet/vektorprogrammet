@@ -1,15 +1,49 @@
-@import "bootstrap";
-@import "node_modules/@fortawesome/fontawesome-free/scss/fontawesome";
-@import "node_modules/@fortawesome/fontawesome-free/scss/brands";
-@import "node_modules/@fortawesome/fontawesome-free/scss/regular";
-@import "node_modules/@fortawesome/fontawesome-free/scss/solid";
-@import "node_modules/@fortawesome/fontawesome-free/scss/v4-shims";
-@import "colors";
-@import "header";
-@import "mobile_nav";
-@import "footer";
-@import "./modules/page-header";
+/**
+ * Main SCSS entry point for Vite build
+ * Replaces the gulp build's scss/app.scss with corrected import paths for Vite
+ */
 
+// Import Bootstrap with custom grid configuration (from scss/bootstrap.scss and scss/_custom.scss)
+@import "scss/colors";
+
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1440px,
+  xxxl: 1600px
+);
+
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1141px,
+  xxxl: 1142px
+);
+
+// Import Bootstrap from node_modules using simplified paths (loadPaths configured in vite.config.js)
+@import "bootstrap/scss/functions";
+@import "bootstrap/scss/variables";
+@import "bootstrap/scss/bootstrap";
+
+// FontAwesome
+@import "@fortawesome/fontawesome-free/scss/fontawesome";
+@import "@fortawesome/fontawesome-free/scss/brands";
+@import "@fortawesome/fontawesome-free/scss/regular";
+@import "@fortawesome/fontawesome-free/scss/solid";
+@import "@fortawesome/fontawesome-free/scss/v4-shims";
+
+// Custom styles (from app.scss)
+@import "scss/header";
+@import "scss/mobile_nav";
+@import "scss/footer";
+@import "scss/modules/page-header";
+
+// Inline styles from app.scss that aren't in separate files
 html.noscroll, body.noscroll {
   overflow: hidden;
   height: 100%;
@@ -233,4 +267,3 @@ strong strong {
     box-shadow: none;
   }
 }
-

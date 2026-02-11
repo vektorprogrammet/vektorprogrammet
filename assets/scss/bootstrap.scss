@@ -1,5 +1,5 @@
-@import "../../../../node_modules/bootstrap/scss/functions";
-@import "../../../../node_modules/bootstrap/scss/variables";
+@import "node_modules/bootstrap/scss/functions";
+@import "node_modules/bootstrap/scss/variables";
 
 $grid-breakpoints: (
         xs: 0,
@@ -20,4 +20,4 @@ $container-max-widths: (
         xxxl: 1142px
 );
 
-@import "../../../../node_modules/bootstrap/scss/bootstrap";
+@import "node_modules/bootstrap/scss/bootstrap";

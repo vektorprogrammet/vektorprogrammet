@@ -16,6 +16,39 @@ composer fix                 # Auto-fix code style
 composer analyse             # Static analysis (PHPStan level 1)
 ```
 
+## Frontend Build (Vite)
+
+```bash
+npm run build:dev            # Build assets for development (unminified, with sourcemaps)
+npm run build:prod           # Build assets for production (minified via terser + cssnano)
+npm run watch                # Watch mode for development (rebuilds on file changes)
+```
+
+**Build Configuration**: `vite.config.js`
+
+**Entry Points**:
+- `assets/main.js` → `public/js/app.js` + `public/css/app.css`
+- `assets/control-panel.js` → `public/js/controlPanel.js` + `public/css/control_panel.css`
+
+**Output Directories**:
+- `public/js/` - JavaScript bundles (app.js, controlPanel.js, vendor.js)
+- `public/css/` - CSS bundles (app.css, control_panel.css)
+- `public/vendor/` - Third-party libraries (CKEditor, Dropzone, CropperJS, CoreUI)
+- `public/images/` - Copied from `assets/images/`
+- `public/webfonts/` - FontAwesome webfonts
+
+**Development Mode**:
+- Unminified output for easier debugging
+- Source maps enabled for JS and CSS
+- Faster builds
+
+**Production Mode**:
+- Minified JS (terser) and CSS (cssnano)
+- No source maps
+- `console.*` statements removed from JS
+
+**Migration Complete**: Gulp has been fully replaced by Vite (2026-02-11). `gulpfile.js` removed.
+
 ## Project Structure
 
 ```

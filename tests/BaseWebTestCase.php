@@ -136,5 +136,25 @@ abstract class BaseWebTestCase extends WebTestCase
         parent::tearDown();
 
         \TestDataManager::restoreDatabase();
+
+        // Clear EntityManager UnitOfWork to free entity references
+        if (self::$kernel !== null) {
+            $em = self::$kernel->getContainer()->get('doctrine')->getManager();
+            if ($em->isOpen()) {
+                $em->clear();
+            }
+        }
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        // Reset static clients after test CLASS completes
+        self::$anonymousClient = null;
+        self::$assistantClient = null;
+        self::$teamMemberClient = null;
+        self::$teamLeaderClient = null;
+        self::$adminClient = null;
+
+        parent::tearDownAfterClass();
     }
 }

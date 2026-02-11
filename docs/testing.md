@@ -22,19 +22,37 @@ Test results are saved to `var/test-results.xml` (sequential) and `var/test-resu
 
 ## Code Coverage
 
-⚠️ **Status: Needs Investigation** - Coverage runs exhaust memory even at 1G, indicating memory leaks in test suite that only manifest under coverage analysis overhead.
+⚠️ **Status: Fix in Progress** - Root cause identified, critical fixes being applied.
 
 ```bash
-# composer test:coverage    # Currently non-functional (OOM)
+# Unit tests only (working)
+phpdbg -qrr -d memory_limit=512M bin/phpunit --testsuite=unit --coverage-html var/coverage-unit
+
+# Full suite (OOM at 1G - fixes in progress)
+# composer test:coverage
 ```
 
-**Setup (configured but not working):**
-- Driver: phpdbg (built into PHP, no extensions needed)
-- Config: `phpunit.xml.dist` has `<coverage>` section
-- Output: `var/coverage/` (HTML report, gitignored)
-- Issue: Memory exhaustion at 1G+ during coverage analysis
+**Current Baseline (unit tests only):**
+- **Line Coverage**: 9.03% (1,130 / 12,511 lines)
+- **Method Coverage**: 17.73% (385 / 2,172 methods)
+- **Memory**: 148.5 MB (well under 512M limit)
+- **Note**: Low coverage expected - unit tests only cover entities/services, not controllers
 
-**TODO:** Investigate test suite memory leaks before enabling coverage.
+**Setup:**
+- Driver: phpdbg (built into PHP, no extensions needed)
+- Config: `phpunit.xml.dist` has `<coverage>` section with exclusions
+- Output: `var/coverage/` (HTML report, gitignored)
+
+**Root Cause (identified 2026-02-11):**
+- Static client caching in `BaseWebTestCase` accumulates clients across test classes
+- No EntityManager cleanup allows entity graphs to persist in UnitOfWork
+- Coverage overhead amplifies memory usage → OOM at 1G during full suite
+
+**Critical Fixes (in progress):**
+1. Add `EntityManager::clear()` in `BaseWebTestCase::tearDown()` (50-200 MB savings)
+2. Reset static clients in `tearDownAfterClass()` (500-1000 MB savings)
+
+**Expected Result:** Full suite coverage should run without OOM after fixes applied.
 
 ## Workflow
 
