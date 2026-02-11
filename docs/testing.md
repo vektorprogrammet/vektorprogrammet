@@ -28,7 +28,7 @@ Test results are saved to `var/test-results.xml` (sequential) and `var/test-resu
 # Unit tests only (working)
 phpdbg -qrr -d memory_limit=512M bin/phpunit --testsuite=unit --coverage-html var/coverage-unit
 
-# Full suite (OOM at 1G - fixes in progress)
+# Full suite (Deferred - requires >2GB per test, see troubleshooting.md)
 # composer test:coverage
 ```
 
@@ -63,6 +63,13 @@ phpdbg -qrr -d memory_limit=512M bin/phpunit --testsuite=unit --coverage-html va
 - ❌ Controller tests: OOM at 1GB (Doctrine metadata + hydration under coverage)
 - ❌ Availability tests: OOM at 1GB (full HTTP stack under coverage)
 
+**Debugging approach**: When full suite coverage fails with OOM, run each suite separately with coverage to isolate which suite(s) cause the issue:
+```bash
+phpdbg -qrr -d memory_limit=1G bin/phpunit --testsuite=unit --coverage-html var/coverage-unit
+phpdbg -qrr -d memory_limit=1G bin/phpunit --testsuite=controller --coverage-html var/coverage-controller
+phpdbg -qrr -d memory_limit=1G bin/phpunit --testsuite=availability --coverage-html var/coverage-availability
+```
+
 ## Workflow
 
 ```
@@ -78,7 +85,7 @@ ParaTest runs with 4 workers, isolated SQLite DBs per worker. See [testing-detai
 
 ## Known Failures
 
-None.
+**testShouldSendInfoMeetingNotification** (flaky near midnight) - Time-dependent test logic can fail during date boundary. Retry if fails at 23:5x or 00:0x.
 
 ## CI
 

@@ -9,7 +9,7 @@ Error → fix lookup for common issues. Organized by category.
 → Or: `rm -f var/data/test.db var/data/test.db.bk && rm -rf var/cache/test/`
 
 **"no such table: access_rule"** in test output:
-→ Harmless bootstrap noise — kernel boots before test DB exists. Ignore.
+→ AccessRule feature deleted upstream but retained in this fork. Harmless bootstrap noise — lazy-loaded AccessControlService queries at boot before test DB created. Ignore.
 
 **Stale Twig cache after entity/config changes → mass test failures**:
 → `rm -rf var/cache/tes_/` before running tests; first run compiles ~200 templates
@@ -92,6 +92,12 @@ Error → fix lookup for common issues. Organized by category.
 
 **ReceiptControllerTest::testDelete fails with redirect(null)**:
 → Pre-existing bug: `ReceiptController.php:267` passes null URL to `redirect()`. Surfaces with fresh client state.
+
+**PHPUnit code coverage OOM on controller/availability tests**:
+→ Coverage overhead on Doctrine/Symfony is ~50x: single controller test 5 MB → 512+ MB with coverage
+→ Memory leak fixes (EM clear, static client reset) work for regular tests but don't affect coverage overhead
+→ Root cause: Coverage tracking on every line of Doctrine metadata loading, entity hydration, Twig rendering
+→ Solution: Run coverage per suite (`--testsuite=unit`) to isolate. Accept unit baseline (9%) until optimization feasible.
 
 ## Annotation → Attribute Conversion
 

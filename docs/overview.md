@@ -47,7 +47,7 @@ npm run watch                # Watch mode for development (rebuilds on file chan
 - No source maps
 - `console.*` statements removed from JS
 
-**Migration Complete**: Gulp has been fully replaced by Vite (2026-02-11). `gulpfile.js` removed.
+**Vite** (Gulp fully replaced 2026-02-11)
 
 ## Project Structure
 

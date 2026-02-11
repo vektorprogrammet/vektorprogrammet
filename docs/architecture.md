@@ -29,11 +29,11 @@ ROLE_USER < ROLE_TEAM_MEMBER < ROLE_TEAM_LEADER < ROLE_ADMIN
 
 ## Mailer
 
-- Symfony Mailer (not SwiftMailer — migrated in Sprint 7)
+- Symfony Mailer (SwiftMailer removed in 2024)
 - Production: Gmail transport sets `from` header automatically
 - Dev/test: `Mailer::send()` must set explicit `from` header
 
-## Completed Migrations (Sprint 8-9)
+## Migration History (2024-2026)
 
 - `getDoctrine()` / `$this->get()` → constructor DI (all controllers)
 - Doctrine annotations → `#[ORM\...]` PHP 8 attributes (all entities)

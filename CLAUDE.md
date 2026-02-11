@@ -4,7 +4,7 @@ Symfony 6.4 / PHP 8 platform. Norwegian tutoring program management.
 
 ## Status
 - Sprints 1-8: COMPLETE (Sf6 upgrade, constructor DI, PHP 8 attributes)
-- Sprint 9: IN PROGRESS — details in `memory/STATE.md`
+- Sprint 9: COMPLETE (2026-02-11) — see MEMORY.md for final status
 
 ## Docs
 | File | Topic |
@@ -23,7 +23,7 @@ Symfony 6.4 / PHP 8 platform. Norwegian tutoring program management.
 - Never broad `replace_all` without verifying scope.
 
 ## Workflow
-- **Start**: Read STATE.md, check git/tests, present status, wait for confirmation
+- **Start**: Read MEMORY.md, active plans, check git/tests, present status, wait for confirmation
 - **Dev**: coding agent -> verify agent per task. Commit per task.
 - **End**: Commit work, `/capture` insights, update CLAUDE.md if workflow changed.
 - Context >50%: commit + write state before stopping.

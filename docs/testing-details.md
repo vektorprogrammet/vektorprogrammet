@@ -110,7 +110,7 @@ rm -f var/data/test*.db var/data/test*.db.bk && rm -rf var/cache/test/
 | SurveyPopUpControllerTest    | 4     | 5.6s  | 3%  |
 | MailingListControllerTest    | 2     | 5.1s  | 3%  |
 | ExecutiveBoardControllerTest | 6     | 4.8s  | 3%  |
-| _Unit tests (all 171)_       | 171   | <1s   | <1% |
+| _Unit tests (all 183)_       | 183   | <1s   | <1% |
 
 ## Parallel Testing (ParaTest)
 

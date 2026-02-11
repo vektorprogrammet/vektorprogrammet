@@ -29,7 +29,7 @@
 | `bin/console doctrine:mapping:describe <Entity>` | Show fields/relations for an entity |
 | `bin/console doctrine:fixtures:load` | Load test fixtures |
 
-## DI Migration (Sprint 8)
+## DI Commands (Migration Complete)
 | Command | Purpose |
 |---------|---------|
 | `bin/console debug:autowiring <type>` | Find autowirable service for a type hint |

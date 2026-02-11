@@ -287,7 +287,7 @@ composer test:availability
 # Run specific test class
 bin/phpunit --filter=HomeControllerTest
 
-# Run with coverage (WARNING: currently broken due to OOM)
+# Run with coverage (WARNING: Full suite coverage deferred (OOM >1GB). See testing.md for unit-only coverage (9%).)
 composer test:coverage
 ```
 
