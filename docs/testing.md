@@ -22,7 +22,7 @@ Test results are saved to `var/test-results.xml` (sequential) and `var/test-resu
 
 ## Code Coverage
 
-⚠️ **Status: Fix in Progress** - Root cause identified, critical fixes being applied.
+⚠️ **Status: Deferred** - Coverage overhead on Doctrine/Symfony stack exceeds practical memory limits.
 
 ```bash
 # Unit tests only (working)
@@ -48,11 +48,20 @@ phpdbg -qrr -d memory_limit=512M bin/phpunit --testsuite=unit --coverage-html va
 - No EntityManager cleanup allows entity graphs to persist in UnitOfWork
 - Coverage overhead amplifies memory usage → OOM at 1G during full suite
 
-**Critical Fixes (in progress):**
-1. Add `EntityManager::clear()` in `BaseWebTestCase::tearDown()` (50-200 MB savings)
-2. Reset static clients in `tearDownAfterClass()` (500-1000 MB savings)
+**Memory Leak Fixes (applied):**
+1. ✅ `EntityManager::clear()` in `BaseWebTestCase::tearDown()` - prevents entity accumulation
+2. ✅ Static client reset in `tearDownAfterClass()` - prevents client accumulation
 
-**Expected Result:** Full suite coverage should run without OOM after fixes applied.
+**Investigation Results (2026-02-11):**
+- Memory leak fixes work for regular test runs (496 tests at 48.5 MB)
+- Coverage overhead on Doctrine/Symfony operations is ~50x (single test: 5 MB → 512+ MB)
+- Controller/availability test coverage requires 2GB+ memory per test
+- **Decision**: Deferred - unit test coverage (9%) provides baseline until optimization feasible
+
+**Per-suite coverage results**:
+- ✅ Unit tests: 9.03% line coverage, 146 MB memory
+- ❌ Controller tests: OOM at 1GB (Doctrine metadata + hydration under coverage)
+- ❌ Availability tests: OOM at 1GB (full HTTP stack under coverage)
 
 ## Workflow
 
