@@ -22,23 +22,19 @@ Test results are saved to `var/test-results.xml` (sequential) and `var/test-resu
 
 ## Code Coverage
 
+⚠️ **Status: Needs Investigation** - Coverage runs exhaust memory even at 1G, indicating memory leaks in test suite that only manifest under coverage analysis overhead.
+
 ```bash
-composer test:coverage    # Generate HTML coverage report
-open var/coverage/index.html  # View results (macOS)
+# composer test:coverage    # Currently non-functional (OOM)
 ```
 
-**Details:**
+**Setup (configured but not working):**
 - Driver: phpdbg (built into PHP, no extensions needed)
-- Memory: 512M (higher than regular tests)
+- Config: `phpunit.xml.dist` has `<coverage>` section
 - Output: `var/coverage/` (HTML report, gitignored)
-- Performance: ~2-3x slower than regular test run
-- Coverage includes: `src/` directory
-- Coverage excludes: `vendor/`, `var/`, `tests/`
+- Issue: Memory exhaustion at 1G+ during coverage analysis
 
-**Note:** If you encounter memory errors, increase the limit in `composer.json`:
-```json
-"test:coverage": "... -d memory_limit=1G ..."
-```
+**TODO:** Investigate test suite memory leaks before enabling coverage.
 
 ## Workflow
 
