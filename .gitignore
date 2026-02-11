@@ -39,6 +39,7 @@ crashlytics-build.properties
 /config/parameters.yml
 /var/cache/*
 !var/cache/.gitkeep
+/var/coverage/
 /var/data
 !/var/data/.gitkeep
 /var/logs/*

@@ -29,4 +29,14 @@
             <directory>tests/AppBundle/Availability</directory>
         </testsuite>
     </testsuites>
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory>vendor</directory>
+            <directory>var</directory>
+            <directory>tests</directory>
+        </exclude>
+    </coverage>
 </phpunit>

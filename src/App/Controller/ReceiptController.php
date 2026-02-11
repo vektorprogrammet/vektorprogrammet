@@ -264,6 +264,14 @@ class ReceiptController extends BaseController
 
         $this->eventDispatcher->dispatch(new ReceiptEvent($receipt), ReceiptEvent::DELETED);
 
-        return $this->redirect($request->headers->get('referer'));
+        $referer = $request->headers->get('referer');
+        if ($referer !== null) {
+            return $this->redirect($referer);
+        }
+
+        // Fallback: redirect to appropriate page based on user role
+        return $isTeamLeader
+            ? $this->redirectToRoute('receipts_show')
+            : $this->redirectToRoute('receipt_create');
     }
 }

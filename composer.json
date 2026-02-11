@@ -99,6 +99,7 @@
     "scripts": {
         "test": "bash -c 'start_time=$(date +%s) && php -d memory_limit=256M bin/phpunit -c phpunit.xml.dist --log-junit var/test-results.xml; exit_code=$?; end_time=$(date +%s); echo \"Wall time: $((end_time - start_time))s\"; exit $exit_code'",
         "test:parallel": "bash -c 'start_time=$(date +%s) && php -d memory_limit=256M bin/paratest -p4 --runner=WrapperRunner -c phpunit.xml.dist --log-junit var/test-results-parallel.xml; exit_code=$?; end_time=$(date +%s); echo \"Wall time: $((end_time - start_time))s\"; exit $exit_code'",
+        "test:coverage": "bash -c 'start_time=$(date +%s) && phpdbg -qrr -d memory_limit=512M bin/phpunit -c phpunit.xml.dist --coverage-html var/coverage; exit_code=$?; end_time=$(date +%s); echo \"Wall time: $((end_time - start_time))s\"; exit $exit_code'",
         "test:unit": "@php bin/phpunit --testsuite=unit",
         "test:controller": "@php bin/phpunit --testsuite=controller",
         "test:availability": "@php bin/phpunit --testsuite=availability",

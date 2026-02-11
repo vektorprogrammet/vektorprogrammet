@@ -7,6 +7,7 @@ Quick reference for working with the codebase. Each topic links to a dedicated d
 ```bash
 composer test                # Full test suite sequential (496 tests, ~193s)
 composer test:parallel       # Full test suite parallel -p4 (496 tests, ~103s)
+composer test:coverage       # Full test suite with HTML coverage report (var/coverage/)
 composer test:unit           # Unit tests only (<1s)
 composer test:controller     # Controller tests (~110s)
 composer test:availability   # Availability smoke tests (~67s)
