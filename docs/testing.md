@@ -51,7 +51,7 @@ ParaTest runs with 4 workers, isolated SQLite DBs per worker. See [testing-detai
 
 ## Known Failures
 
-None. All 496 tests pass (1150 assertions).
+None.
 
 ## CI
 

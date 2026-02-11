@@ -25,7 +25,6 @@ Project conventions and patterns. Keep this updated as the codebase evolves.
 - `bin/phpunit --filter=TestName` for targeted runs
 - SQLite test DB — bootstrap handles create/fixture/backup automatically
 - Per-worker DB isolation via `TEST_TOKEN` env var for parallel runs
-- 496 tests, 0 failures baseline
 
 ## Tooling
 - Rector (`rector.php`) for automated PHP deprecation fixes

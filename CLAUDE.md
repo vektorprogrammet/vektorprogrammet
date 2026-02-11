@@ -19,7 +19,7 @@ Symfony 6.4 / PHP 8 platform. Norwegian tutoring program management.
 ## Agent Gotchas
 - Tests: `dangerouslyDisableSandbox: true` always (SQLite + vendor reads)
 - `composer test` not raw `php bin/phpunit` (sets 256M memory)
-- 496 tests pass, 0 failures. Never commit if new failures appear.
+- Test baseline: see MEMORY.md. Never commit if new failures appear.
 - Never broad `replace_all` without verifying scope.
 
 ## Workflow
