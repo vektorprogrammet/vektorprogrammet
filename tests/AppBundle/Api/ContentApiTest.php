@@ -284,6 +284,128 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertIsInt($stats['teamMemberCount']);
     }
 
+    // --- Frontend contract smoke tests ---
+    // These verify the exact response shapes the v2 homepage depends on.
+
+    public function testDepartmentCollectionMatchesFrontendContract(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/departments', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $departments = json_decode($client->getResponse()->getContent(), true);
+        $this->assertNotEmpty($departments);
+
+        // Frontend src/api/departments.ts expects these fields
+        $dept = $departments[0];
+        foreach (['id', 'name', 'shortName', 'email', 'address', 'city', 'latitude', 'longitude', 'active'] as $field) {
+            $this->assertArrayHasKey($field, $dept, "Department missing field: $field");
+        }
+        $this->assertIsInt($dept['id']);
+        $this->assertIsString($dept['city']);
+        $this->assertIsBool($dept['active']);
+    }
+
+    public function testDepartmentDetailTeamsMatchFrontendContract(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/departments', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $departments = json_decode($client->getResponse()->getContent(), true);
+        $this->assertNotEmpty($departments);
+        $id = $departments[0]['id'];
+
+        $client->request('GET', "/api/departments/$id", [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $this->assertResponseIsSuccessful();
+        $dept = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('teams', $dept);
+        $this->assertIsArray($dept['teams']);
+
+        if (!empty($dept['teams'])) {
+            $team = $dept['teams'][0];
+            // Frontend src/api/team.ts and kontakt.ts expect these team fields
+            foreach (['id', 'name', 'email', 'shortDescription', 'active'] as $field) {
+                $this->assertArrayHasKey($field, $team, "Department detail team missing field: $field");
+            }
+            $this->assertIsBool($team['active']);
+        }
+    }
+
+    public function testStatisticsMatchesFrontendContract(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/statistics', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $stats = json_decode($client->getResponse()->getContent(), true);
+
+        // Frontend src/api/statistics.ts expects exactly these 4 fields
+        $expected = ['assistantCount', 'teamMemberCount', 'femaleAssistantCount', 'maleAssistantCount'];
+        foreach ($expected as $field) {
+            $this->assertArrayHasKey($field, $stats, "Statistics missing field: $field");
+            $this->assertIsInt($stats[$field], "Statistics.$field should be integer");
+        }
+        $this->assertGreaterThan(0, $stats['assistantCount']);
+        $this->assertGreaterThan(0, $stats['teamMemberCount']);
+    }
+
+    public function testTeamDetailMatchesFrontendContract(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/teams', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $teams = json_decode($client->getResponse()->getContent(), true);
+        $this->assertNotEmpty($teams);
+        $id = $teams[0]['id'];
+
+        $client->request('GET', "/api/teams/$id", [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $this->assertResponseIsSuccessful();
+        $team = json_decode($client->getResponse()->getContent(), true);
+
+        // Frontend src/api/team.ts uses name, email from team detail
+        foreach (['id', 'name', 'email', 'description'] as $field) {
+            $this->assertArrayHasKey($field, $team, "Team detail missing field: $field");
+        }
+    }
+
+    public function testContactMessageAcceptsExpectedPayload(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/departments', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $departments = json_decode($client->getResponse()->getContent(), true);
+        $departmentId = $departments[0]['id'];
+
+        // Frontend src/api/contact.ts sends exactly this shape
+        $client->request('POST', '/api/contact_messages', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ], json_encode([
+            'name' => 'E2E Test',
+            'email' => 'e2e@example.com',
+            'departmentId' => $departmentId,
+            'subject' => 'Frontend contract test',
+            'message' => 'Verifying the API accepts the exact payload shape the frontend sends.',
+        ]));
+
+        $status = $client->getResponse()->getStatusCode();
+        $this->assertTrue(
+            in_array($status, [201, 204]),
+            "Contact message endpoint rejected frontend payload shape: HTTP $status"
+        );
+    }
+
     // --- StaticContent tests ---
 
     public function testGetStaticContentCollection(): void
