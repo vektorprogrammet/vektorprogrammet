@@ -28,6 +28,9 @@
         <testsuite name="availability">
             <directory>tests/AppBundle/Availability</directory>
         </testsuite>
+        <testsuite name="api">
+            <directory>tests/AppBundle/Api</directory>
+        </testsuite>
     </testsuites>
     <coverage>
         <include>

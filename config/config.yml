@@ -264,8 +264,14 @@ fos_rest:
     enabled: true
     rules:
       - { path: '^/api/party', priorities: ['json'], fallback_format: 'html' }
+      - { path: '^/api/', stop: true }
       - { path: '^/', priorities: [ 'text/html', '*/*'], fallback_format: html, prefer_extension: true }
 
   versioning: true
   view:
     view_response_listener: 'force'
+  zone:
+    - { path: '^/api/party' }
+    - { path: '^/api/account' }
+    - { path: '^/kontrollpanel' }
+    - { path: '^/(?!api/)' }

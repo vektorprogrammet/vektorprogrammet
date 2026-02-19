@@ -2,6 +2,8 @@ api_platform:
     title: 'Vektorprogrammet API'
     description: 'REST API for Vektorprogrammet'
     version: '1.0.0'
+    mapping:
+        paths: ['%kernel.project_dir%/src/App/Entity']
     defaults:
         pagination_enabled: true
         pagination_items_per_page: 30

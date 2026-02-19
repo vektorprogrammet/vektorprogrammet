@@ -5,52 +5,75 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Repository\ArticleRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
 #[ORM\Table(name: "article")]
 #[ORM\HasLifecycleCallbacks]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ],
+    order: ['created' => 'DESC'],
+    paginationItemsPerPage: 20,
+    normalizationContext: ['groups' => ['article:read']],
+)]
 class Article
 {
     #[ORM\Id]
     #[ORM\Column(type: "integer")]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['article:read'])]
     protected $id;
 
     #[ORM\Column(type: "string")]
     #[Assert\Length(max: 255)]
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt")]
+    #[Groups(['article:read'])]
     protected $title;
 
     #[ORM\Column(type: "string", unique: true)]
     #[Assert\Length(max: 255)]
+    #[Groups(['article:read'])]
     protected $slug;
 
     #[ORM\Column(type: "text")]
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt")]
+    #[Groups(['article:read'])]
     protected $article;
 
     #[ORM\Column(type: "string")]
+    #[Groups(['article:read'])]
     protected $imageLarge;
 
     #[ORM\Column(type: "string")]
+    #[Groups(['article:read'])]
     protected $imageSmall;
 
     #[ORM\Column(type: "datetime")]
+    #[Groups(['article:read'])]
     protected $created;
 
     #[ORM\Column(type: "datetime")]
+    #[Groups(['article:read'])]
     protected $updated;
 
     #[ORM\Column(type: "boolean")]
+    #[Groups(['article:read'])]
     protected $sticky;
 
     /**
      * @var bool
      */
     #[ORM\Column(type: "boolean", nullable: true)]
+    #[Groups(['article:read'])]
     private $published;
     #[ORM\ManyToMany(targetEntity: "Department")]
     #[ORM\JoinTable(name: "articles_departments")]
