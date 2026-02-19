@@ -8,6 +8,7 @@ imports:
     - { resource: services_google.yml }
     - { resource: event_subscribers.yml }
     - { resource: forms.yml }
+    - { resource: api_platform.yml }
 
 parameters:
   google_api:

@@ -1,0 +1,14 @@
+api_platform:
+    title: 'Vektorprogrammet API'
+    description: 'REST API for Vektorprogrammet'
+    version: '1.0.0'
+    defaults:
+        pagination_enabled: true
+        pagination_items_per_page: 30
+    formats:
+        jsonld: ['application/ld+json']
+        json: ['application/json']
+    docs_formats:
+        jsonopenapi: ['application/vnd.openapi+json']
+        json: ['application/json']
+        html: ['text/html']

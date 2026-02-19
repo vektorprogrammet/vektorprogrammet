@@ -20,6 +20,7 @@
         "php": ">=8.1",
         "ext-json": "*",
         "ext-openssl": "*",
+        "api-platform/core": "^3.4",
         "doctrine/dbal": "^3.0",
         "doctrine/doctrine-bundle": "^2.0",
         "doctrine/doctrine-fixtures-bundle": "^3.0.2",
@@ -34,7 +35,6 @@
         "knplabs/knp-paginator-bundle": "^6.0",
         "liip/imagine-bundle": "^2.1",
         "ramsey/uuid": "^3.7",
-
         "symfony/asset": "6.4.*",
         "symfony/cache": "6.4.*",
         "symfony/clock": "6.4.*",
