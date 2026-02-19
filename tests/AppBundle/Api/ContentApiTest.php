@@ -203,6 +203,54 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertIsArray($response);
     }
 
+    // --- Team tests ---
+
+    public function testGetTeamCollection(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/teams', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertIsArray($response);
+    }
+
+    public function testGetTeamItem(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/teams', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $teams = json_decode($client->getResponse()->getContent(), true);
+        $this->assertNotEmpty($teams);
+        $id = $teams[0]['id'];
+
+        $client->request('GET', "/api/teams/$id", [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $this->assertResponseIsSuccessful();
+        $team = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('name', $team);
+        $this->assertArrayHasKey('email', $team);
+        $this->assertArrayHasKey('description', $team);
+    }
+
+    // --- TeamMembership tests ---
+
+    public function testGetTeamMembershipCollection(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/team_memberships', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertIsArray($response);
+    }
+
     // --- StaticContent tests ---
 
     public function testGetStaticContentCollection(): void

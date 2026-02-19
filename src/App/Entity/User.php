@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -27,14 +28,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['team_member:read', 'team:detail'])]
     private $id;
 
     #[ORM\Column(type: "string")]
     #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[Groups(['team_member:read', 'team:detail'])]
     private $lastName;
 
     #[ORM\Column(type: "string")]
     #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[Groups(['team_member:read', 'team:detail'])]
     private $firstName;
 
     /**
@@ -51,6 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     private $gender;
 
     #[ORM\Column(type: "string")]
+    #[Groups(['team_member:read', 'team:detail'])]
     private $picture_path;
 
     #[ORM\Column(type: "string")]

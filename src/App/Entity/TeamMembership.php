@@ -2,22 +2,33 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Repository\TeamMembershipRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "team_membership")]
 #[ORM\Entity(repositoryClass: TeamMembershipRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+    ],
+    normalizationContext: ['groups' => ['team_member:read']],
+)]
 class TeamMembership implements TeamMembershipInterface
 {
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['team_member:read', 'team:detail'])]
     protected $id;
     #[ORM\ManyToOne(targetEntity: "User", inversedBy: "teamMemberships")]
     #[ORM\JoinColumn(onDelete: "SET NULL")]
     #[Assert\Valid]
     #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
+    #[Groups(['team_member:read', 'team:detail'])]
     protected $user;
 
     #[ORM\ManyToOne(targetEntity: "Semester")]
@@ -40,6 +51,7 @@ class TeamMembership implements TeamMembershipInterface
      */
     #[ORM\Column(type: "boolean")]
     #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
+    #[Groups(['team_member:read', 'team:detail'])]
     private $isTeamLeader;
 
     /**
@@ -63,6 +75,7 @@ class TeamMembership implements TeamMembershipInterface
     #[ORM\JoinColumn(name: "position_id", referencedColumnName: "id", onDelete: "SET NULL")]
     #[Assert\Valid]
     #[Assert\NotNull(message: "Dette feltet kan ikke være tomt")]
+    #[Groups(['team_member:read', 'team:detail'])]
     protected $position;
 
     public function __construct()

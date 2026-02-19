@@ -102,6 +102,8 @@ security:
         - { path: ^/api/departments, roles: PUBLIC_ACCESS }
         - { path: ^/api/admission_periods, roles: PUBLIC_ACCESS }
         - { path: ^/api/info_meetings, roles: PUBLIC_ACCESS }
+        - { path: ^/api/teams, roles: PUBLIC_ACCESS }
+        - { path: ^/api/team_memberships, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

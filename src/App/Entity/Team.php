@@ -2,25 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Validator\Constraints as CustomAssert;
 use DateTime;
 use App\Entity\Repository\TeamRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "team")]
 #[ORM\Entity(repositoryClass: TeamRepository::class)]
 #[UniqueEntity(fields: ["department", "name"], message: "Et team med dette navnet finnes allerede i avdelingen.",)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(normalizationContext: ['groups' => ['team:read', 'team:detail']]),
+    ],
+    normalizationContext: ['groups' => ['team:read']],
+)]
 class Team implements TeamInterface
 {
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['team:read', 'department:detail'])]
     protected $id;
 
     #[ORM\Column(type: "string", length: 250)]
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Groups(['team:read', 'department:detail'])]
     protected $name;
 
     #[ORM\Column(type: "string", nullable: true)]
@@ -28,22 +41,27 @@ class Team implements TeamInterface
     #[Assert\NotBlank(message: "Dette feltet kan ikke være blankt.")]
     #[CustomAssert\UniqueCompanyEmail]
     #[CustomAssert\VektorEmail]
+    #[Groups(['team:read', 'department:detail'])]
     private $email;
     #[ORM\ManyToOne(targetEntity: "Department", inversedBy: "teams")]
     #[Assert\NotNull(message: "Avdeling kan ikke være null")]
     protected $department;
 
     #[ORM\Column(type: "text", nullable: true)]
+    #[Groups(['team:detail'])]
     private $description;
 
     #[ORM\Column(type: "string", nullable: true, name: "short_description")]
     #[Assert\Length(maxMessage: "Maks 125 Tegn", max: "125")]
+    #[Groups(['team:read', 'department:detail'])]
     private $shortDescription;
 
     #[ORM\Column(type: "boolean", nullable: true)]
+    #[Groups(['team:detail'])]
     private $acceptApplication;
 
     #[ORM\Column(type: "datetime", nullable: true)]
+    #[Groups(['team:detail'])]
     private $deadline;
 
     /**
@@ -61,6 +79,7 @@ class Team implements TeamInterface
     private $potentialApplicants;
 
     #[ORM\Column(type: "boolean", options: ["default" => true])]
+    #[Groups(['team:read', 'department:detail'])]
     private $active;
 
     #[ORM\OneToMany(targetEntity: "TeamApplication", mappedBy: "team")]
@@ -83,6 +102,7 @@ class Team implements TeamInterface
      * @var TeamMembership[]
      */
     #[ORM\OneToMany(targetEntity: "TeamMembership", mappedBy: "team")]
+    #[Groups(['team:detail'])]
     private $teamMemberships;
 
     /**

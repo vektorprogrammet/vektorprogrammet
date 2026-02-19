@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Repository\PositionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "position")]
@@ -13,10 +14,12 @@ class Position
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['team_member:read', 'team:detail'])]
     protected $id;
 
     #[ORM\Column(type: "string")]
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Groups(['team_member:read', 'team:detail'])]
     protected $name;
 
     public function __toString()
