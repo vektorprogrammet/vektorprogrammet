@@ -48,14 +48,14 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertIsArray($response);
     }
 
-    public function testGetArticleCollectionRequiresAuth(): void
+    public function testGetArticleCollectionPublicAccess(): void
     {
         $client = static::createClient();
         $client->request('GET', '/api/articles', [], [], [
             'HTTP_ACCEPT' => 'application/json',
         ]);
 
-        $this->assertResponseStatusCodeSame(401);
+        $this->assertResponseIsSuccessful();
     }
 
     // --- ChangeLogItem tests ---
@@ -73,14 +73,14 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertIsArray($response);
     }
 
-    public function testGetChangeLogItemCollectionRequiresAuth(): void
+    public function testGetChangeLogItemCollectionPublicAccess(): void
     {
         $client = static::createClient();
         $client->request('GET', '/api/change_log_items', [], [], [
             'HTTP_ACCEPT' => 'application/json',
         ]);
 
-        $this->assertResponseStatusCodeSame(401);
+        $this->assertResponseIsSuccessful();
     }
 
     // --- Feedback tests ---
@@ -123,14 +123,14 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertIsArray($response);
     }
 
-    public function testGetSponsorCollectionRequiresAuth(): void
+    public function testGetSponsorCollectionPublicAccess(): void
     {
         $client = static::createClient();
         $client->request('GET', '/api/sponsors', [], [], [
             'HTTP_ACCEPT' => 'application/json',
         ]);
 
-        $this->assertResponseStatusCodeSame(401);
+        $this->assertResponseIsSuccessful();
     }
 
     // --- Department tests ---
@@ -299,13 +299,13 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertIsArray($response);
     }
 
-    public function testGetStaticContentCollectionRequiresAuth(): void
+    public function testGetStaticContentCollectionPublicAccess(): void
     {
         $client = static::createClient();
         $client->request('GET', '/api/static_contents', [], [], [
             'HTTP_ACCEPT' => 'application/json',
         ]);
 
-        $this->assertResponseStatusCodeSame(401);
+        $this->assertResponseIsSuccessful();
     }
 }
