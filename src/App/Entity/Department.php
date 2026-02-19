@@ -2,49 +2,68 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use App\Entity\Repository\DepartmentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "department")]
 #[ORM\Entity(repositoryClass: DepartmentRepository::class)]
 #[UniqueEntity(fields: ["city"])]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(normalizationContext: ['groups' => ['department:read', 'department:detail']]),
+    ],
+    normalizationContext: ['groups' => ['department:read']],
+)]
 class Department
 {
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['department:read'])]
     private $id;
 
     #[ORM\Column(type: "string", length: 250)]
     #[Assert\NotBlank]
+    #[Groups(['department:read'])]
     private $name;
 
     #[ORM\Column(name: "short_name", type: "string", length: 50)]
     #[Assert\NotBlank]
+    #[Groups(['department:read'])]
     private $shortName;
 
     #[ORM\Column(type: "string", length: 250)]
     #[Assert\NotBlank]
     #[Assert\Email]
+    #[Groups(['department:read'])]
     private $email;
 
     #[ORM\Column(type: "string", length: 250, nullable: true)]
+    #[Groups(['department:read'])]
     protected $address;
 
     #[ORM\Column(type: "string", length: 250, unique: true)]
     #[Assert\NotBlank]
+    #[Groups(['department:read'])]
     private $city;
 
     #[ORM\Column(type: "string", nullable: true)]
     #[Assert\Length(max: 255)]
+    #[Groups(['department:read'])]
     private $latitude;
 
     #[ORM\Column(type: "string", nullable: true)]
     #[Assert\Length(max: 255)]
+    #[Groups(['department:read'])]
     private $longitude;
 
     /**
@@ -58,17 +77,22 @@ class Department
     protected $schools;
 
     #[ORM\OneToMany(targetEntity: "FieldOfStudy", mappedBy: "department", cascade: ["remove"])]
+    #[Groups(['department:detail'])]
     private $fieldOfStudy;
     #[ORM\OneToMany(targetEntity: "AdmissionPeriod", mappedBy: "department", cascade: ["remove"])]
     #[ORM\OrderBy(["startDate" => "DESC"])]
+    #[Groups(['department:detail'])]
     private $admissionPeriods;
     #[ORM\OneToMany(targetEntity: "Team", mappedBy: "department", cascade: ["remove"])]
+    #[Groups(['department:detail'])]
     private $teams;
     #[ORM\Column(name: "logo_path", type: "string", length: 255, nullable: true)]
     #[Assert\Length(min: 1, max: 255, maxMessage: "Path kan maks være 255 tegn.")]
+    #[Groups(['department:read'])]
     private $logoPath;
 
     #[ORM\Column(name: "active", type: "boolean", nullable: false, options: ["default" => 1])]
+    #[Groups(['department:read'])]
     private $active;
 
     /**

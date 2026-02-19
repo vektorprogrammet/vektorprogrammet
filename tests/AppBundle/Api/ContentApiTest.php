@@ -133,6 +133,47 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertResponseStatusCodeSame(401);
     }
 
+    // --- Department tests ---
+
+    public function testGetDepartmentCollection(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/departments', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertIsArray($response);
+        $this->assertNotEmpty($response);
+        // Verify expected fields
+        $dept = $response[0];
+        $this->assertArrayHasKey('name', $dept);
+        $this->assertArrayHasKey('city', $dept);
+        $this->assertArrayHasKey('email', $dept);
+        $this->assertArrayHasKey('latitude', $dept);
+        $this->assertArrayHasKey('longitude', $dept);
+    }
+
+    public function testGetDepartmentItem(): void
+    {
+        $client = static::createClient();
+        // First get collection to find an ID
+        $client->request('GET', '/api/departments', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $departments = json_decode($client->getResponse()->getContent(), true);
+        $id = $departments[0]['id'];
+
+        $client->request('GET', "/api/departments/$id", [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $this->assertResponseIsSuccessful();
+        $dept = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('name', $dept);
+        $this->assertArrayHasKey('teams', $dept);
+    }
+
     // --- StaticContent tests ---
 
     public function testGetStaticContentCollection(): void

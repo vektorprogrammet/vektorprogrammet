@@ -95,6 +95,11 @@ security:
         # API access control
         - { path: ^/api/login, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/api/sponsors, roles: PUBLIC_ACCESS }
+        - { path: ^/api/articles, roles: PUBLIC_ACCESS }
+        - { path: ^/api/static_contents, roles: PUBLIC_ACCESS }
+        - { path: ^/api/change_log_items, roles: PUBLIC_ACCESS }
+        - { path: ^/api/departments, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
