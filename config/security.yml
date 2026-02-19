@@ -39,6 +39,21 @@ security:
             pattern:  ^/(_(profiler|wdt)|css|images|js)/
             security: false
             provider: chain_provider
+        api_login:
+            pattern: ^/api/login
+            stateless: true
+            provider: chain_provider
+            json_login:
+                check_path: /api/login
+                username_path: username
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: chain_provider
+            jwt: ~
         admin_area:
             pattern:    ^/admin
             http_basic: ~
@@ -72,6 +87,11 @@ security:
     # of your application based on roles, ip, host or methods
     # http://symfony.com/doc/current/cookbook/security/access_control.html
     access_control:
+        # API access control
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
         # require ROLE_TEAM_MEMBER for /admin*
 

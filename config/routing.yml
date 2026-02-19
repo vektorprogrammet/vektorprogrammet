@@ -3,6 +3,10 @@ api_platform:
     type: api_platform
     prefix: /api
 
+api_login:
+    path: /api/login
+    methods: ['POST']
+
 app:
     resource: "../src/App/Controller/"
     type:     attribute
