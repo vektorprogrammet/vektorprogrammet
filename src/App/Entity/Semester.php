@@ -5,6 +5,7 @@ namespace App\Entity;
 use DateTime;
 use App\Entity\Repository\SemesterRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: "semester")]
@@ -14,6 +15,7 @@ class Semester implements PeriodInterface
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['admission:read'])]
     private $id;
 
     /**
@@ -59,6 +61,7 @@ class Semester implements PeriodInterface
      *
      * @return string
      */
+    #[Groups(['admission:read'])]
     public function getName()
     {
         return $this->semesterTime.' '.$this->year;

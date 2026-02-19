@@ -2,10 +2,14 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use App\Utils\TimeUtil;
 use DateTime;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -13,6 +17,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Table]
 #[ORM\Entity(repositoryClass: AdmissionPeriodRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ],
+    normalizationContext: ['groups' => ['admission:read']],
+)]
 class AdmissionPeriod implements PeriodInterface
 {
     /**
@@ -21,20 +32,24 @@ class AdmissionPeriod implements PeriodInterface
     #[ORM\Column(name: "id", type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['admission:read'])]
     private $id;
 
     /**
      * @var Department
      */
     #[ORM\ManyToOne(targetEntity: "Department", inversedBy: "admissionPeriods")]
+    #[Groups(['admission:read'])]
     private $department;
 
     #[ORM\Column(name: "start_date", type: "datetime", length: 150)]
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Groups(['admission:read'])]
     private $startDate;
 
     #[ORM\Column(name: "end_date", type: "datetime", length: 150)]
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
+    #[Groups(['admission:read'])]
     private $endDate;
 
     /**
@@ -42,12 +57,14 @@ class AdmissionPeriod implements PeriodInterface
      */
     #[ORM\OneToOne(targetEntity: "InfoMeeting", cascade: ["remove", "persist"])]
     #[Assert\Valid]
+    #[Groups(['admission:read', 'department:detail'])]
     private $infoMeeting;
 
     /**
      * @var Semester
      */
     #[ORM\ManyToOne(targetEntity: "Semester", inversedBy: "admissionPeriods")]
+    #[Groups(['admission:read'])]
     private $semester;
 
     public function __toString()

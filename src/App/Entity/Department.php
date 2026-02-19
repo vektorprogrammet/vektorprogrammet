@@ -28,12 +28,12 @@ class Department
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
-    #[Groups(['department:read'])]
+    #[Groups(['department:read', 'admission:read'])]
     private $id;
 
     #[ORM\Column(type: "string", length: 250)]
     #[Assert\NotBlank]
-    #[Groups(['department:read'])]
+    #[Groups(['department:read', 'admission:read'])]
     private $name;
 
     #[ORM\Column(name: "short_name", type: "string", length: 50)]
@@ -53,7 +53,7 @@ class Department
 
     #[ORM\Column(type: "string", length: 250, unique: true)]
     #[Assert\NotBlank]
-    #[Groups(['department:read'])]
+    #[Groups(['department:read', 'admission:read'])]
     private $city;
 
     #[ORM\Column(type: "string", nullable: true)]

@@ -163,6 +163,7 @@ class ContentApiTest extends BaseWebTestCase
             'HTTP_ACCEPT' => 'application/json',
         ]);
         $departments = json_decode($client->getResponse()->getContent(), true);
+        $this->assertNotEmpty($departments, 'Expected at least one department in fixture data');
         $id = $departments[0]['id'];
 
         $client->request('GET', "/api/departments/$id", [], [], [
@@ -172,6 +173,34 @@ class ContentApiTest extends BaseWebTestCase
         $dept = json_decode($client->getResponse()->getContent(), true);
         $this->assertArrayHasKey('name', $dept);
         $this->assertArrayHasKey('teams', $dept);
+    }
+
+    // --- AdmissionPeriod tests ---
+
+    public function testGetAdmissionPeriodCollection(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/admission_periods', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertIsArray($response);
+    }
+
+    // --- InfoMeeting tests ---
+
+    public function testGetInfoMeetingCollection(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/info_meetings', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertIsArray($response);
     }
 
     // --- StaticContent tests ---
