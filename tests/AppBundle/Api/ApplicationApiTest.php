@@ -59,4 +59,49 @@ class ApplicationApiTest extends BaseWebTestCase
 
         $this->assertResponseStatusCodeSame(422);
     }
+
+    // --- ContactMessage tests ---
+
+    public function testSubmitContactMessage(): void
+    {
+        $client = static::createClient();
+
+        $client->request('GET', '/api/departments', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+        $departments = json_decode($client->getResponse()->getContent(), true);
+        $departmentId = $departments[0]['id'];
+
+        $client->request('POST', '/api/contact_messages', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ], json_encode([
+            'name' => 'Test Person',
+            'email' => 'test@example.com',
+            'departmentId' => $departmentId,
+            'subject' => 'Test inquiry',
+            'message' => 'This is a test message from the API.',
+        ]));
+
+        $status = $client->getResponse()->getStatusCode();
+        $this->assertTrue(
+            in_array($status, [201, 204]),
+            "Expected 201 or 204, got $status: " . $client->getResponse()->getContent()
+        );
+    }
+
+    public function testSubmitContactMessageValidation(): void
+    {
+        $client = static::createClient();
+
+        $client->request('POST', '/api/contact_messages', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ], json_encode([
+            'name' => '',
+            'email' => 'not-valid',
+        ]));
+
+        $this->assertResponseStatusCodeSame(422);
+    }
 }
