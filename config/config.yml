@@ -9,6 +9,7 @@ imports:
     - { resource: event_subscribers.yml }
     - { resource: forms.yml }
     - { resource: api_platform.yml }
+    - { resource: lexik_jwt_authentication.yml }
 
 parameters:
   google_api:

@@ -37,6 +37,7 @@ crashlytics-build.properties
 /var/bootstrap.php.cache
 /var/SymfonyRequirements.php
 /config/parameters.yml
+/config/jwt/*.pem
 /var/cache/*
 !var/cache/.gitkeep
 /var/coverage/

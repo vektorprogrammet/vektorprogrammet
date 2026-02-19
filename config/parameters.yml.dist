@@ -61,6 +61,9 @@ parameters:
 
     log_channel: '#website_logs'
 
+    # JWT authentication
+    jwt_passphrase: 'your_jwt_passphrase_here'
+
     # Webhook from GitHub to automatically deploy on push to master
 
 twig:
