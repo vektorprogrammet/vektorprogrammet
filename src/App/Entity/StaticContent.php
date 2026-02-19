@@ -3,13 +3,24 @@
 namespace App\Entity;
 
 use App\Entity\Repository\StaticContentRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 /**
  * StaticContent.
  */
 #[ORM\Table(name: "static_content")]
 #[ORM\Entity(repositoryClass: StaticContentRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ],
+    normalizationContext: ['groups' => ['static_content:read']],
+)]
 class StaticContent
 {
     /**
@@ -18,18 +29,21 @@ class StaticContent
     #[ORM\Column(name: "id", type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['static_content:read'])]
     private $id;
 
     /**
      * @var string
      */
     #[ORM\Column(name: "html_id", type: "string", length: 50)]
+    #[Groups(['static_content:read'])]
     private $htmlId;
 
     /**
      * @var string
      */
     #[ORM\Column(name: "html", type: "text")]
+    #[Groups(['static_content:read'])]
     private $html;
 
     /**

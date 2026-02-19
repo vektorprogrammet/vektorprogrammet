@@ -2,24 +2,38 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ORM\Table(name: "sponsor")]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ],
+    normalizationContext: ['groups' => ['sponsor:read']],
+)]
 class Sponsor
 {
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['sponsor:read'])]
     protected $id;
 
     #[ORM\Column(type: "string", length: 50, nullable: true)]
     #[Assert\NotBlank(message: "Feletet kan ikke være tomt.")]
+    #[Groups(['sponsor:read'])]
     protected $name;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     #[Assert\NotBlank(message: "Feletet kan ikke være tomt.")]
+    #[Groups(['sponsor:read'])]
     protected $url;
 
     /**
@@ -27,9 +41,11 @@ class Sponsor
      */
     #[ORM\Column(type: "string", length: 255, nullable: true)]
     #[Assert\NotBlank(message: "Feletet kan ikke være tomt.")]
+    #[Groups(['sponsor:read'])]
     protected $size;
 
     #[ORM\Column(type: "string", length: 255, nullable: true)]
+    #[Groups(['sponsor:read'])]
     protected $logoImagePath;
 
     /**

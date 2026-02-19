@@ -4,7 +4,11 @@ namespace App\Entity;
 
 use DateTime;
 use App\Entity\Repository\FeedbackRepository;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -12,6 +16,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Table(name: "feedback")]
 #[ORM\Entity(repositoryClass: FeedbackRepository::class)]
+#[ApiResource(
+    operations: [
+        new GetCollection(),
+        new Get(),
+    ],
+    normalizationContext: ['groups' => ['feedback:read']],
+)]
 class Feedback
 {
     const TYPE_QUESTION = 'question';
@@ -23,6 +34,7 @@ class Feedback
     #[ORM\Column(name: "id", type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[Groups(['feedback:read'])]
     private $id;
 
     /**
@@ -31,6 +43,7 @@ class Feedback
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     #[Assert\Length(max: "55", maxMessage: "Maks 55 tegn", min: "5", minMessage: "Minimum 5 tegn")]
     #[ORM\Column(name: "title", type: "string", length: 55)]
+    #[Groups(['feedback:read'])]
     private $title;
 
     /**
@@ -39,23 +52,26 @@ class Feedback
     #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt.")]
     #[Assert\Length(max: "500", maxMessage: "Maks 500 tegn", min: "10", minMessage: "Minimum 10 tegn")]
     #[ORM\Column(name: "description", type: "string", length: 500)]
+    #[Groups(['feedback:read'])]
     private $description;
     /**
      * @var string
      */
     #[Assert\NotNull(message: "Dette feltet kan ikke være tomt.")]
     #[ORM\Column(name: "type", type: "string", length: 45)]
+    #[Groups(['feedback:read'])]
     private $type;
 
     #[ORM\ManyToOne(targetEntity: "User")]
     #[ORM\JoinColumn(onDelete: "CASCADE")]
     private $user;
-    
+
     /**
      * @var DateTime
      */
     #[ORM\Column(name: "created_at", type: "datetime",columnDefinition: "TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL")]
     #[ORM\Version]
+    #[Groups(['feedback:read'])]
     private $created_at;
 
     /**
