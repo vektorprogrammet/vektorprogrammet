@@ -28,7 +28,7 @@ class Department
     #[ORM\Column(type: "integer")]
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: "AUTO")]
-    #[Groups(['department:read', 'admission:read'])]
+    #[Groups(['department:read', 'admission:read', 'field_of_study:read'])]
     private $id;
 
     #[ORM\Column(type: "string", length: 250)]
@@ -53,7 +53,7 @@ class Department
 
     #[ORM\Column(type: "string", length: 250, unique: true)]
     #[Assert\NotBlank]
-    #[Groups(['department:read', 'admission:read'])]
+    #[Groups(['department:read', 'admission:read', 'field_of_study:read'])]
     private $city;
 
     #[ORM\Column(type: "string", nullable: true)]

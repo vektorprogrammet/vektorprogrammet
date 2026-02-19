@@ -251,6 +251,39 @@ class ContentApiTest extends BaseWebTestCase
         $this->assertIsArray($response);
     }
 
+    // --- FieldOfStudy tests ---
+
+    public function testGetFieldOfStudyCollection(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/field_of_studies', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $response = json_decode($client->getResponse()->getContent(), true);
+        $this->assertIsArray($response);
+    }
+
+    // --- Statistics tests ---
+
+    public function testGetStatistics(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/statistics', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $stats = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('assistantCount', $stats);
+        $this->assertArrayHasKey('teamMemberCount', $stats);
+        $this->assertArrayHasKey('femaleAssistantCount', $stats);
+        $this->assertArrayHasKey('maleAssistantCount', $stats);
+        $this->assertIsInt($stats['assistantCount']);
+        $this->assertIsInt($stats['teamMemberCount']);
+    }
+
     // --- StaticContent tests ---
 
     public function testGetStaticContentCollection(): void

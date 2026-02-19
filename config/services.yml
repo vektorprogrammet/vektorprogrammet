@@ -8,7 +8,7 @@ services:
             App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
 
     App\:
-        resource: "../src/App/{Command,Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,Twig,Validator}"
+        resource: "../src/App/{Command,Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,State,Twig,Validator}"
 
     App\Entity\Repository\:
         resource: "../src/App/Entity/Repository/"

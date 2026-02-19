@@ -104,6 +104,8 @@ security:
         - { path: ^/api/info_meetings, roles: PUBLIC_ACCESS }
         - { path: ^/api/teams, roles: PUBLIC_ACCESS }
         - { path: ^/api/team_memberships, roles: PUBLIC_ACCESS }
+        - { path: ^/api/field_of_studies, roles: PUBLIC_ACCESS }
+        - { path: ^/api/statistics, roles: PUBLIC_ACCESS }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }
