@@ -5,8 +5,8 @@ Quick reference for working with the codebase. Each topic links to a dedicated d
 ## Composer Scripts
 
 ```bash
-composer test                # Full test suite sequential (496 tests, ~193s)
-composer test:parallel       # Full test suite parallel -p4 (496 tests, ~103s)
+composer test                # Full test suite sequential (519 tests, ~229s)
+composer test:parallel       # Full test suite parallel -p4 (519 tests, ~103s)
 composer test:coverage       # Full test suite with HTML coverage report (var/coverage/)
 composer test:unit           # Unit tests only (<1s)
 composer test:controller     # Controller tests (~110s)
@@ -49,12 +49,31 @@ npm run watch                # Watch mode for development (rebuilds on file chan
 
 **Vite** (Gulp fully replaced 2026-02-11)
 
+## API (API Platform)
+
+JSON API at `/api/*` for the v2 React homepage. JWT auth for protected endpoints, PUBLIC_ACCESS for homepage data.
+
+**Read-only endpoints** (public): departments, teams, team_memberships, admission_periods, info_meetings, field_of_studies, statistics, articles, sponsors, static_contents, change_log_items
+
+**Write endpoints** (public): `POST /api/applications`, `POST /api/contact_messages`
+
+**Auth-required**: feedback
+
+**Custom resources** (DTOs + state processors/providers):
+- `Statistics` — custom provider aggregating user/assistant counts
+- `ApplicationInput` — DTO → creates User + Application, dispatches event
+- `ContactMessageInput` — DTO → sends email to department
+
+More: [architecture.md](architecture.md#api-platform)
+
 ## Project Structure
 
 ```
 src/App/
   Controller/     # ~61 controllers (constructor DI, #[Route] attributes)
   Entity/         # Doctrine entities (PHP 8 #[ORM\...] attributes)
+  ApiResource/    # API Platform DTOs (Statistics, ApplicationInput, ContactMessageInput)
+  State/          # API Platform state providers/processors
   Service/        # Business logic services
   Role/           # Role hierarchy
   EventSubscriber/# Kernel event subscribers
@@ -63,6 +82,7 @@ src/App/
 templates/        # Twig templates
 config/           # Symfony config (YAML for services/packages, routes via attributes)
 tests/AppBundle/  # PHPUnit tests
+  Api/            # API endpoint tests (contract + functional)
 docs/             # Developer documentation (modular, single-topic files)
 ```
 

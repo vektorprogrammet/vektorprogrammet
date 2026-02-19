@@ -5,6 +5,8 @@ Symfony 6.4 / PHP 8 platform. Norwegian tutoring program management.
 ## Status
 - Sprints 1-8: COMPLETE (Sf6 upgrade, constructor DI, PHP 8 attributes)
 - Sprint 9: COMPLETE (2026-02-11) — see MEMORY.md for final status
+- API Platform Phase 1-2: COMPLETE (2026-02-19) — API Platform 3.4 + JWT auth, 11 read endpoints + 2 write endpoints
+- v2 Frontend Integration: COMPLETE (2026-02-19) — homepage wired to real API (statistics, teams, kontakt, contact form)
 
 ## Docs
 | File | Topic |
@@ -14,7 +16,12 @@ Symfony 6.4 / PHP 8 platform. Norwegian tutoring program management.
 | `docs/troubleshooting.md` | Error → fix lookup |
 | `docs/testing.md` | Test commands, workflow, environment |
 | `docs/testing-details.md` | File-to-test map, timing, DB internals |
-| `docs/architecture.md` | Controllers, roles, services, mailer |
+| `docs/architecture.md` | Controllers, roles, services, mailer, API Platform |
+| `docs/plans/2026-02-19-frontend-migration-design.md` | Frontend migration strategy (API + SPA) |
+| `docs/plans/2026-02-19-api-platform-phase1.md` | API Platform Phase 1 plan |
+| `docs/plans/2026-02-19-homepage-api-phase2.md` | Homepage API Phase 2 plan |
+
+component boundaries in `varp.yaml`
 
 ## Agent Gotchas
 - Tests: `dangerouslyDisableSandbox: true` always (SQLite + vendor reads)

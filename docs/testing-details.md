@@ -9,6 +9,9 @@ Extended reference. Quick commands: [`docs/testing.md`](testing.md)
 | `unit`         | 183   | <1s   | Entity unit tests, services, SMS, form types, utils                    |
 | `controller`   | 131   | ~110s | Functional tests per controller (login, submit forms, check responses) |
 | `availability` | 182   | ~67s  | Smoke test hitting every URL with different auth levels                |
+| `api`*         | 23    | ~52s  | API Platform endpoint + contract tests (ContentApiTest, ApplicationApiTest) |
+
+*API tests are in `tests/AppBundle/Api/` and run as part of the default suite (no separate testsuite config).
 
 ## File → Test Mapping
 

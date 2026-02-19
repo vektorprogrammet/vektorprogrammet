@@ -33,6 +33,27 @@ ROLE_USER < ROLE_TEAM_MEMBER < ROLE_TEAM_LEADER < ROLE_ADMIN
 - Production: Gmail transport sets `from` header automatically
 - Dev/test: `Mailer::send()` must set explicit `from` header
 
+## API Platform
+
+JSON API at `/api/*` for the v2 React homepage. Coexists with legacy FOS REST endpoints at `/api/party/*`.
+
+**Configuration**: `config/api_platform.yml` maps entities (`src/App/Entity/`) and DTOs (`src/App/ApiResource/`).
+
+**Serialization pattern**:
+- Collection views: `normalizationContext: ['groups' => ['entity:read']]`
+- Detail views: `entity:read` + `entity:detail` groups (adds relations)
+- Cross-entity embedding via shared groups (e.g. `department:detail` on Team.$id)
+- Back-references omit groups to prevent circular serialization
+
+**Custom resources** (DTOs in `src/App/ApiResource/`, processors/providers in `src/App/State/`):
+- `Statistics` + `StatisticsProvider` — aggregates counts from UserRepository + AssistantHistoryRepository
+- `ApplicationInput` + `ApplicationProcessor` — creates User + Application, dispatches `ApplicationCreatedEvent`
+- `ContactMessageInput` + `ContactMessageProcessor` — sends email via `App\Mailer\MailerInterface`
+
+**Auth**: JWT via `LexikJWTAuthenticationBundle`. Homepage endpoints use PUBLIC_ACCESS. Legacy `/api/party/*` uses session auth via dedicated `api_party` firewall.
+
+**FOS REST coexistence**: `format_listener` scoped to `^/api/party` (not `^/api`), `stop: true` rule for `^/api/`, `zone` config restricts FOS REST to legacy routes. Without this, FOS REST intercepts API Platform responses.
+
 ## Migration History (2024-2026)
 
 - `getDoctrine()` / `$this->get()` → constructor DI (all controllers)

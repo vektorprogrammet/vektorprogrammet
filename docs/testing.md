@@ -4,8 +4,8 @@
 
 ```bash
 # Via composer scripts (recommended)
-composer test                # Full suite sequential (496 tests, ~193s)
-composer test:parallel       # Full suite parallel -p4 (496 tests, ~103s)
+composer test                # Full suite sequential (519 tests, ~229s)
+composer test:parallel       # Full suite parallel -p4 (519 tests, ~103s)
 composer test:coverage       # Full suite with HTML coverage report (output: var/coverage/)
 composer test:unit           # 183 tests, <1s
 composer test:controller     # 131 tests, ~110s
