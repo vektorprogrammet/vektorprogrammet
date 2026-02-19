@@ -38,6 +38,7 @@ crashlytics-build.properties
 /var/SymfonyRequirements.php
 /config/parameters.yml
 /config/jwt/*.pem
+/openapi.json
 /var/cache/*
 !var/cache/.gitkeep
 /var/coverage/
