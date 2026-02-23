@@ -5,9 +5,6 @@ namespace App\Entity;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use App\Entity\Repository\ArticleRepository;
-use ApiPlatform\Doctrine\Orm\Filter\BooleanFilter;
-use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
-use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
@@ -28,8 +25,6 @@ use Symfony\Component\Validator\Constraints as Assert;
     paginationItemsPerPage: 20,
     normalizationContext: ['groups' => ['article:read']],
 )]
-#[ApiFilter(BooleanFilter::class, properties: ['published', 'sticky'])]
-#[ApiFilter(SearchFilter::class, properties: ['slug' => 'exact'])]
 class Article
 {
     #[ORM\Id]
