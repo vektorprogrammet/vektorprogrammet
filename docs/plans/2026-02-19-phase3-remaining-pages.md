@@ -48,11 +48,15 @@
 | `parent-assistants-info` | /foreldre | `foreldre.ts` |
 | `parent-course` | /foreldre | `foreldre.ts` |
 
+**API response format:** With `Accept: application/json`, API Platform returns a plain JSON array (not hydra-wrapped). The existing `apiFetch<T>` helper handles this correctly — see `sponsor.ts` for the pattern.
+
 **Important:** The API returns raw HTML strings (with HTML entities like `&aring;`). The v2 components currently use plain text props. Two options:
 - Parse HTML to extract text (strip tags) — simpler, matches current component interfaces
 - Render HTML directly with `dangerouslySetInnerHTML` — preserves formatting but changes component contracts
 
 Recommended: Use `dangerouslySetInnerHTML` since the content is trusted (admin-edited, same-origin DB). This preserves the rich formatting (lists, bold, links) that plain text would lose.
+
+**Route pattern verified:** Currently `_home.foreldre.tsx`, `_home.om-oss.tsx`, and `_home.assistenter.tsx` call their API functions **synchronously inline** (no loader). Converting to async requires adding `export async function loader()` + `useLoaderData<typeof loader>()` — matching the existing `_home.team.tsx` pattern exactly.
 
 ---
 

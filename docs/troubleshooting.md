@@ -99,6 +99,21 @@ Error → fix lookup for common issues. Organized by category.
 → Root cause: Coverage tracking on every line of Doctrine metadata loading, entity hydration, Twig rendering
 → Solution: Run coverage per suite (`--testsuite=unit`) to isolate. Accept unit baseline (9%) until optimization feasible.
 
+## API Platform + FOS REST
+
+**API Platform returns FOS REST serialization errors / wrong format**:
+→ FOS REST `format_listener` and `view_response_listener: 'force'` intercept API Platform responses
+→ Fix: Scope FOS REST format_listener to `^/api/party` (not `^/api`), add `stop: true` rule for `^/api/`, and configure `zone` to restrict FOS REST to legacy routes only
+→ See `config/config.yml` lines 263-277
+
+**Existing `/api/party/*` endpoints return 401 after adding JWT firewall**:
+→ The `^/api` JWT firewall catches party routes that use session auth
+→ Fix: Add `api_party` firewall (session-based) BEFORE the `api` firewall in `config/security.yml`
+
+**API Platform entity returns circular reference error**:
+→ Doctrine relations (ManyToOne, ManyToMany) cause infinite serialization loops
+→ Fix: Add `normalizationContext: ['groups' => ['entity:read']]` to `#[ApiResource]`, then `#[Groups(['entity:read'])]` only on scalar properties. Omit groups on relation properties.
+
 ## Annotation → Attribute Conversion
 
 **Bare @ORM\Entity dropped → entities not recognized**:
