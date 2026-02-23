@@ -109,6 +109,7 @@ security:
         - { path: ^/api/applications, roles: PUBLIC_ACCESS }
         - { path: ^/api/contact_messages, roles: PUBLIC_ACCESS }
         - { path: ^/api/admission_subscribers, roles: PUBLIC_ACCESS }
+        - { path: ^/api/password_resets, roles: PUBLIC_ACCESS }
         - { path: ^/api/me, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 
