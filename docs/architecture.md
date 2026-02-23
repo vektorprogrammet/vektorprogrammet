@@ -49,8 +49,10 @@ JSON API at `/api/*` for the v2 React homepage. Coexists with legacy FOS REST en
 - `Statistics` + `StatisticsProvider` — aggregates counts from UserRepository + AssistantHistoryRepository
 - `ApplicationInput` + `ApplicationProcessor` — creates User + Application, dispatches `ApplicationCreatedEvent`
 - `ContactMessageInput` + `ContactMessageProcessor` — sends email via `App\Mailer\MailerInterface`
+- `AdmissionSubscriberInput` + `AdmissionSubscriberProcessor` — creates AdmissionSubscriber entity (idempotent on email+department)
+- `ProfileResource` + `ProfileProvider` + `ProfileProcessor` — authenticated user profile (GET/PUT `/api/me`), first auth-required endpoint
 
-**Auth**: JWT via `LexikJWTAuthenticationBundle`. Homepage endpoints use PUBLIC_ACCESS. Legacy `/api/party/*` uses session auth via dedicated `api_party` firewall.
+**Auth**: JWT via `LexikJWTAuthenticationBundle`. Homepage endpoints use PUBLIC_ACCESS. Auth-required endpoints use `security: "is_granted('ROLE_USER')"`. Legacy `/api/party/*` uses session auth via dedicated `api_party` firewall.
 
 **FOS REST coexistence**: `format_listener` scoped to `^/api/party` (not `^/api`), `stop: true` rule for `^/api/`, `zone` config restricts FOS REST to legacy routes. Without this, FOS REST intercepts API Platform responses.
 
