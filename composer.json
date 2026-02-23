@@ -78,7 +78,6 @@
         "symfony/var-dumper": "6.4.*",
         "symfony/var-exporter": "6.4.*",
         "symfony/yaml": "6.4.*",
-        "twig/extra-bundle": "^3.0",
         "twig/twig": "^3.0"
     },
     "require-dev": {

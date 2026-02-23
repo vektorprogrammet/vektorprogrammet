@@ -249,7 +249,7 @@ export default defineConfig(({ mode }) => {
 
     // Optimization
     optimizeDeps: {
-      include: ['jquery', 'bootstrap', 'popper.js', 'moment', '@coreui/coreui', 'axios'],
+      include: ['jquery', 'bootstrap', 'popper.js', 'moment', '@coreui/coreui'],
     },
   };
 });
