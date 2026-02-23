@@ -51,6 +51,8 @@ JSON API at `/api/*` for the v2 React homepage. Coexists with legacy FOS REST en
 - `ContactMessageInput` + `ContactMessageProcessor` — sends email via `App\Mailer\MailerInterface`
 - `AdmissionSubscriberInput` + `AdmissionSubscriberProcessor` — creates AdmissionSubscriber entity (idempotent on email+department)
 - `ProfileResource` + `ProfileProvider` + `ProfileProcessor` — authenticated user profile (GET/PUT `/api/me`), first auth-required endpoint
+- `PasswordResetRequest` + `PasswordResetRequestProcessor` — request password reset (POST `/api/password_resets`), sends email
+- `PasswordResetExecute` + `PasswordResetExecuteProcessor` — execute password reset (POST `/api/password_resets/{code}`)
 
 **Auth**: JWT via `LexikJWTAuthenticationBundle`. Homepage endpoints use PUBLIC_ACCESS. Auth-required endpoints use `security: "is_granted('ROLE_USER')"`. Legacy `/api/party/*` uses session auth via dedicated `api_party` firewall.
 

@@ -9,6 +9,7 @@ Symfony 6.4 / PHP 8 platform. Norwegian tutoring program management.
 - v2 Frontend Integration: COMPLETE (2026-02-19) — homepage wired to real API (statistics, teams, kontakt, contact form)
 - Admission Flow Migration: COMPLETE (2026-02-23) — backend subscriber endpoint + v2 admission page wired to API
 - Auth Profile API: COMPLETE (2026-02-23) — GET/PUT /api/me (first auth-required endpoint)
+- Password Reset API: COMPLETE (2026-02-23) — POST /api/password_resets + /api/password_resets/{code}
 
 ## Docs
 | File | Topic |
