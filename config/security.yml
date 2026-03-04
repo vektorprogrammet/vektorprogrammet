@@ -106,10 +106,13 @@ security:
         - { path: ^/api/team_memberships, roles: PUBLIC_ACCESS }
         - { path: ^/api/field_of_studies, roles: PUBLIC_ACCESS }
         - { path: ^/api/statistics, roles: PUBLIC_ACCESS }
+        - { path: ^/api/applications/existing, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api/applications, roles: PUBLIC_ACCESS }
         - { path: ^/api/contact_messages, roles: PUBLIC_ACCESS }
         - { path: ^/api/admission_subscribers, roles: PUBLIC_ACCESS }
         - { path: ^/api/password_resets, roles: PUBLIC_ACCESS }
+        - { path: ^/api/team_applications, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, roles: PUBLIC_ACCESS }
         - { path: ^/api/me, roles: IS_AUTHENTICATED_FULLY }
         - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
 

@@ -2,132 +2,143 @@
 
 namespace App\Entity;
 
-use App\Role\Roles;
-use App\Validator\Constraints as CustomAssert;
-use DateTime;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\Common\Collections\ArrayCollection;
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Get;
 use App\Entity\Repository\UserRepository;
+use App\Role\Roles;
+use App\State\PublicUserProfileProvider;
+use App\Validator\Constraints as CustomAssert;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\EquatableInterface;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * App\Entity\User.
  */
-#[ORM\Table(name: "user")]
+#[ORM\Table(name: 'user')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: ["email"], message: "Denne Eposten er allerede i bruk.", groups: ["create_user", "edit_user"])]
-#[UniqueEntity(fields: ["user_name"], message: "Dette brukernavnet er allerede i bruk.", groups: ["create_user", "username", "edit_user"])]
+#[UniqueEntity(fields: ['email'], message: 'Denne Eposten er allerede i bruk.', groups: ['create_user', 'edit_user'])]
+#[UniqueEntity(fields: ['user_name'], message: 'Dette brukernavnet er allerede i bruk.', groups: ['create_user', 'username', 'edit_user'])]
+#[ApiResource(
+    operations: [
+        new Get(
+            uriTemplate: '/users/{id}',
+            provider: PublicUserProfileProvider::class,
+            normalizationContext: ['groups' => ['user:public']],
+        ),
+    ],
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface, EquatableInterface
 {
-    #[ORM\Column(type: "integer")]
+    #[ORM\Column(type: 'integer')]
     #[ORM\Id]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
-    #[Groups(['team_member:read', 'team:detail'])]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
+    #[Groups(['team_member:read', 'team:detail', 'user:public'])]
     private $id;
 
-    #[ORM\Column(type: "string")]
-    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
-    #[Groups(['team_member:read', 'team:detail'])]
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(groups: ['admission', 'create_user', 'edit_user'], message: 'Dette feltet kan ikke være tomt.')]
+    #[Groups(['team_member:read', 'team:detail', 'user:public'])]
     private $lastName;
 
-    #[ORM\Column(type: "string")]
-    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
-    #[Groups(['team_member:read', 'team:detail'])]
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(groups: ['admission', 'create_user', 'edit_user'], message: 'Dette feltet kan ikke være tomt.')]
+    #[Groups(['team_member:read', 'team:detail', 'user:public'])]
     private $firstName;
 
     /**
      * @var FieldOfStudy
      */
-    #[ORM\ManyToOne(targetEntity: "FieldOfStudy")]
-    #[ORM\JoinColumn(onDelete: "SET NULL")]
-    #[Assert\NotBlank(groups: ["admission", "edit_user", "create_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[ORM\ManyToOne(targetEntity: 'FieldOfStudy')]
+    #[ORM\JoinColumn(onDelete: 'SET NULL')]
+    #[Assert\NotBlank(groups: ['admission', 'edit_user', 'create_user'], message: 'Dette feltet kan ikke være tomt.')]
     #[Assert\Valid]
     private $fieldOfStudy;
 
-    #[ORM\Column(name: "gender", type: "boolean")]
-    #[Assert\NotBlank(groups: ["admission", "create_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[ORM\Column(name: 'gender', type: 'boolean')]
+    #[Assert\NotBlank(groups: ['admission', 'create_user'], message: 'Dette feltet kan ikke være tomt.')]
     private $gender;
 
-    #[ORM\Column(type: "string")]
-    #[Groups(['team_member:read', 'team:detail'])]
+    #[ORM\Column(type: 'string')]
+    #[Groups(['team_member:read', 'team:detail', 'user:public'])]
     private $picture_path;
 
-    #[ORM\Column(type: "string")]
-    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[ORM\Column(type: 'string')]
+    #[Assert\NotBlank(groups: ['admission', 'create_user', 'edit_user'], message: 'Dette feltet kan ikke være tomt.')]
     private $phone;
 
-    #[ORM\Column(type: "string", length: 45, nullable: true)]
+    #[ORM\Column(type: 'string', length: 45, nullable: true)]
     private $accountNumber;
 
-    #[ORM\Column(type: "string", unique: true, nullable: true)]
-    #[Assert\NotBlank(groups: ["username", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[ORM\Column(type: 'string', unique: true, nullable: true)]
+    #[Assert\NotBlank(groups: ['username', 'edit_user'], message: 'Dette feltet kan ikke være tomt.')]
     private $user_name;
 
-    #[ORM\Column(type: "string", length: 64, nullable: true)]
-    #[Assert\NotBlank(groups: ["username", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
+    #[ORM\Column(type: 'string', length: 64, nullable: true)]
+    #[Assert\NotBlank(groups: ['username', 'edit_user'], message: 'Dette feltet kan ikke være tomt.')]
     private $password;
 
-    #[ORM\Column(type: "string", unique: true)]
-    #[Assert\NotBlank(groups: ["admission", "create_user", "edit_user"], message: "Dette feltet kan ikke være tomt.")]
-    #[Assert\Email(groups: ["admission", "create_user", "edit_user"], message: "Ikke gyldig e-post.")]
+    #[ORM\Column(type: 'string', unique: true)]
+    #[Assert\NotBlank(groups: ['admission', 'create_user', 'edit_user'], message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\Email(groups: ['admission', 'create_user', 'edit_user'], message: 'Ikke gyldig e-post.')]
     private $email;
 
-    #[ORM\Column(type: "string", unique: true, nullable: true)]
+    #[ORM\Column(type: 'string', unique: true, nullable: true)]
     #[Assert\Email]
     #[CustomAssert\UniqueCompanyEmail]
     #[CustomAssert\VektorEmail]
     private $companyEmail;
 
-    #[ORM\Column(name: "is_active", type: "boolean")]
+    #[ORM\Column(name: 'is_active', type: 'boolean')]
     private $isActive;
 
-    #[ORM\Column(type: "boolean", nullable: false)]
+    #[ORM\Column(type: 'boolean', nullable: false)]
     private $reservedFromPopUp;
 
-    #[ORM\Column(type: "datetime", nullable: false)]
+    #[ORM\Column(type: 'datetime', nullable: false)]
     private $lastPopUpTime;
 
     /**
      * @var Role[]
      */
-    #[ORM\ManyToMany(targetEntity: "Role", inversedBy: "users")]
-    #[ORM\JoinColumn(onDelete: "cascade")]
+    #[ORM\ManyToMany(targetEntity: 'Role', inversedBy: 'users')]
+    #[ORM\JoinColumn(onDelete: 'cascade')]
     #[Assert\Valid]
     private $roles;
 
-    #[ORM\column(type: "string", nullable: true)]
+    #[ORM\column(type: 'string', nullable: true)]
     private $new_user_code;
 
     /**
      * @var AssistantHistory[]
      */
-    #[ORM\OneToMany(targetEntity: "AssistantHistory", mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: 'AssistantHistory', mappedBy: 'user')]
     private $assistantHistories;
 
     /**
      * @var TeamMembership[]
      */
-    #[ORM\OneToMany(targetEntity: "TeamMembership", mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: 'TeamMembership', mappedBy: 'user')]
     private $teamMemberships;
 
     /**
      * @var ExecutiveBoardMembership[]
      */
-    #[ORM\OneToMany(targetEntity: "ExecutiveBoardMembership", mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: 'ExecutiveBoardMembership', mappedBy: 'user')]
     private $executiveBoardMemberships;
-    #[ORM\OneToMany(targetEntity: "CertificateRequest", mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: 'CertificateRequest', mappedBy: 'user')]
     protected $certificateRequests;
 
-    #[ORM\OneToMany(targetEntity: "Interview", mappedBy: "interviewer")]
+    #[ORM\OneToMany(targetEntity: 'Interview', mappedBy: 'interviewer')]
     private $interviews;
 
-    #[ORM\OneToMany(targetEntity: "Receipt", mappedBy: "user")]
+    #[ORM\OneToMany(targetEntity: 'Receipt', mappedBy: 'user')]
     private $receipts;
 
     public function __construct()
@@ -139,7 +150,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $this->picture_path = 'images/defaultProfile.png';
         $this->receipts = new ArrayCollection();
         $this->reservedFromPopUp = false;
-        $this->lastPopUpTime = new DateTime("2000-01-01");
+        $this->lastPopUpTime = new \DateTime('2000-01-01');
     }
 
     public function getId()
@@ -147,9 +158,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->id;
     }
 
-    /**
-     * @return Department
-     */
     public function getDepartment(): Department
     {
         return $this->getFieldOfStudy()->getDepartment();
@@ -195,12 +203,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     public function setPassword($password)
     {
-        $this->password = password_hash($password, PASSWORD_BCRYPT, array('cost' => 12));
+        $this->password = password_hash($password, PASSWORD_BCRYPT, ['cost' => 12]);
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getPassword(): ?string
     {
         return $this->password;
@@ -306,6 +311,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
      *
      * @return string
      */
+    #[Groups(['team_member:read', 'team:detail', 'user:public'])]
     public function getPicturePath()
     {
         return $this->picture_path;
@@ -378,8 +384,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     /**
      * Set fieldOfStudy.
      *
-     * @param FieldOfStudy $fieldOfStudy
-     *
      * @return User
      */
     public function setFieldOfStudy(?FieldOfStudy $fieldOfStudy = null)
@@ -402,8 +406,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     /**
      * Add roles.
      *
-     * @param Role $roles
-     *
      * @return User
      */
     public function addRole(Role $roles)
@@ -415,8 +417,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     /**
      * Remove roles.
-     *
-     * @param Role $roles
      */
     public function removeRole(Role $roles)
     {
@@ -471,6 +471,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
                 return true;
             }
         }
+
         return false;
     }
 
@@ -490,8 +491,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     /**
      * Add certificateRequests.
      *
-     * @param CertificateRequest $certificateRequests
-     *
      * @return User
      */
     public function addCertificateRequest(CertificateRequest $certificateRequests)
@@ -503,8 +502,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     /**
      * Remove certificateRequests.
-     *
-     * @param CertificateRequest $certificateRequests
      */
     public function removeCertificateRequest(CertificateRequest $certificateRequests)
     {
@@ -522,7 +519,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     }
 
     // Used for unit testing
-    public function fromArray($data = array())
+    public function fromArray($data = [])
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
@@ -545,9 +542,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
 
     */
 
-    /**
-     * {@inheritdoc}
-     */
     public function eraseCredentials(): void
     {
     }
@@ -588,9 +582,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->isActive;
     }
 
-    /**
-     * {@inheritdoc}
-     */
     public function getSalt(): ?string
     {
         return null;
@@ -634,6 +625,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     public function hasPendingReceipts()
     {
         $numberOfPendingReceipts = $this->getNumberOfPendingReceipts();
+
         return $numberOfPendingReceipts !== 0;
     }
 
@@ -645,9 +637,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         $num = 0;
         foreach ($this->receipts as $receipt) {
             if ($receipt->getStatus() === Receipt::STATUS_PENDING) {
-                $num++;
+                ++$num;
             }
         }
+
         return $num;
     }
 
@@ -724,6 +717,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
                 }
             }
         }
+
         return $activeExecutiveBoardMemberships;
     }
 
@@ -744,32 +738,23 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $activeTeamMemberships;
     }
 
-    /**
-     * @return bool
-     */
-    public function getReservedFromPopUp() : bool
+    public function getReservedFromPopUp(): bool
     {
         return $this->reservedFromPopUp;
     }
 
-    /**
-     * @param bool $reservedFromPopUp
-     */
     public function setReservedFromPopUp(bool $reservedFromPopUp): void
     {
         $this->reservedFromPopUp = $reservedFromPopUp;
     }
 
-    /**
-     * @return DateTime
-     */
-    public function getLastPopUpTime() : DateTime
+    public function getLastPopUpTime(): \DateTime
     {
         return $this->lastPopUpTime;
     }
 
     /**
-     * @param DateTime $lastPopUpTime
+     * @param \DateTime $lastPopUpTime
      */
     public function setLastPopUpTime($lastPopUpTime): void
     {
