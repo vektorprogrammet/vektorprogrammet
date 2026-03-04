@@ -2,7 +2,8 @@
 # Auto-format PHP files after Edit/Write tool use
 # Triggered as PostToolUse hook — non-blocking, best-effort
 
-FILE_PATH=$(echo "$CLAUDE_HOOK_EVENT_DATA" | jq -r '.tool_input.file_path // ""')
+DATA=$(cat)
+FILE_PATH=$(echo "$DATA" | jq -r '.tool_input.file_path // ""')
 
 # Only run for .php files
 [[ "$FILE_PATH" != *.php ]] && exit 0
