@@ -276,5 +276,18 @@ tests:
     - docs/testing-details.md
     - .claude/rules/testing.md
 
+infrastructure:
+  path:
+    - ./Dockerfile
+    - ./deploy.sh
+    - ./docker-compose.yml
+    - ./composer.json
+    - ./composer.lock
+    - ./package.json
+    - ./package-lock.json
+  docs:
+    - docs/local-setup.md
+    - docs/overview.md
+
 docs:
   path: ./docs
