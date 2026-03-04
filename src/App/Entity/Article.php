@@ -2,24 +2,40 @@
 
 namespace App\Entity;
 
-use DateTime;
-use Doctrine\Common\Collections\Collection;
-use App\Entity\Repository\ArticleRepository;
 use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
-use Doctrine\ORM\Mapping as ORM;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
+use App\Entity\Repository\ArticleRepository;
+use App\State\ArticleProcessor;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ArticleRepository::class)]
-#[ORM\Table(name: "article")]
+#[ORM\Table(name: 'article')]
 #[ORM\HasLifecycleCallbacks]
 #[ApiResource(
     operations: [
         new GetCollection(),
         new Get(),
+        new Post(
+            security: "is_granted('ROLE_ADMIN')",
+            processor: ArticleProcessor::class,
+            denormalizationContext: ['groups' => ['article:write']],
+        ),
+        new Put(
+            security: "is_granted('ROLE_ADMIN')",
+            processor: ArticleProcessor::class,
+            denormalizationContext: ['groups' => ['article:write']],
+        ),
+        new Delete(
+            security: "is_granted('ROLE_ADMIN')",
+        ),
     ],
     order: ['created' => 'DESC'],
     paginationItemsPerPage: 20,
@@ -28,75 +44,78 @@ use Symfony\Component\Validator\Constraints as Assert;
 class Article
 {
     #[ORM\Id]
-    #[ORM\Column(type: "integer")]
-    #[ORM\GeneratedValue(strategy: "AUTO")]
+    #[ORM\Column(type: 'integer')]
+    #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[Groups(['article:read'])]
     protected $id;
 
-    #[ORM\Column(type: "string")]
+    #[ORM\Column(type: 'string')]
     #[Assert\Length(max: 255)]
-    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt")]
-    #[Groups(['article:read'])]
+    #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt')]
+    #[Groups(['article:read', 'article:write'])]
     protected $title;
 
-    #[ORM\Column(type: "string", unique: true)]
+    #[ORM\Column(type: 'string', unique: true)]
     #[Assert\Length(max: 255)]
     #[Groups(['article:read'])]
     protected $slug;
 
-    #[ORM\Column(type: "text")]
-    #[Assert\NotBlank(message: "Dette feltet kan ikke være tomt")]
-    #[Groups(['article:read'])]
+    #[ORM\Column(type: 'text')]
+    #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt')]
+    #[Groups(['article:read', 'article:write'])]
     protected $article;
 
-    #[ORM\Column(type: "string")]
-    #[Groups(['article:read'])]
+    #[ORM\Column(type: 'string')]
+    #[Groups(['article:read', 'article:write'])]
     protected $imageLarge;
 
-    #[ORM\Column(type: "string")]
-    #[Groups(['article:read'])]
+    #[ORM\Column(type: 'string')]
+    #[Groups(['article:read', 'article:write'])]
     protected $imageSmall;
 
-    #[ORM\Column(type: "datetime")]
+    #[ORM\Column(type: 'datetime')]
     #[Groups(['article:read'])]
     protected $created;
 
-    #[ORM\Column(type: "datetime")]
+    #[ORM\Column(type: 'datetime')]
     #[Groups(['article:read'])]
     protected $updated;
 
-    #[ORM\Column(type: "boolean")]
-    #[Groups(['article:read'])]
+    #[ORM\Column(type: 'boolean')]
+    #[Groups(['article:read', 'article:write'])]
     protected $sticky;
 
     /**
      * @var bool
      */
-    #[ORM\Column(type: "boolean", nullable: true)]
-    #[Groups(['article:read'])]
+    #[ORM\Column(type: 'boolean', nullable: true)]
+    #[Groups(['article:read', 'article:write'])]
     private $published;
-    #[ORM\ManyToMany(targetEntity: "Department")]
-    #[ORM\JoinTable(name: "articles_departments")]
-    #[ORM\JoinColumn(name: "article_id", referencedColumnName: "id")]
-    #[ORM\InverseJoinColumn(name: "department_id", referencedColumnName: "id")]
+    #[ORM\ManyToMany(targetEntity: 'Department')]
+    #[ORM\JoinTable(name: 'articles_departments')]
+    #[ORM\JoinColumn(name: 'article_id', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'department_id', referencedColumnName: 'id')]
     protected $departments; // Unidirectional, may change
 
-    #[ORM\ManyToOne(targetEntity: "User")]
-    #[ORM\JoinColumn(name: "author_id", referencedColumnName: "id", onDelete: "SET NULL")]
+    #[ORM\ManyToOne(targetEntity: 'User')]
+    #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     protected $author; // Unidirectional, may change
 
     public function __construct()
     {
         $this->departments = new ArrayCollection();
-        $this->setCreated(new DateTime());
-        $this->setUpdated(new DateTime());
+        $this->setCreated(new \DateTime());
+        $this->setUpdated(new \DateTime());
         $this->published = false;
+        $this->sticky = false;
+        $this->imageLarge = '';
+        $this->imageSmall = '';
     }
 
     #[ORM\PreUpdate]
     public function setUpdatedValue()
     {
-        $this->setUpdated(new DateTime());
+        $this->setUpdated(new \DateTime());
     }
 
     /**
@@ -119,6 +138,7 @@ class Article
     public function setTitle($title)
     {
         $this->title = $title;
+
         return $this;
     }
 
@@ -142,6 +162,7 @@ class Article
     public function setSlug($slug)
     {
         $this->slug = $slug;
+
         return $this;
     }
 
@@ -230,7 +251,7 @@ class Article
     /**
      * Set created.
      *
-     * @param DateTime $created
+     * @param \DateTime $created
      *
      * @return Article
      */
@@ -244,7 +265,7 @@ class Article
     /**
      * Get created.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getCreated()
     {
@@ -254,7 +275,7 @@ class Article
     /**
      * Set updated.
      *
-     * @param DateTime $updated
+     * @param \DateTime $updated
      *
      * @return Article
      */
@@ -268,7 +289,7 @@ class Article
     /**
      * Get updated.
      *
-     * @return DateTime
+     * @return \DateTime
      */
     public function getUpdated()
     {
@@ -277,8 +298,6 @@ class Article
 
     /**
      * Add departments.
-     *
-     * @param Department $departments
      *
      * @return Article
      */
@@ -291,8 +310,6 @@ class Article
 
     /**
      * Remove departments.
-     *
-     * @param Department $departments
      */
     public function removeDepartment(Department $departments)
     {
@@ -311,8 +328,6 @@ class Article
 
     /**
      * Set author.
-     *
-     * @param User $author
      *
      * @return Article
      */
@@ -357,17 +372,11 @@ class Article
         return $this->sticky;
     }
 
-    /**
-     * @return bool
-     */
     public function isPublished(): bool
     {
         return $this->published;
     }
 
-    /**
-     * @param bool $published
-     */
     public function setPublished(bool $published): void
     {
         $this->published = $published;
