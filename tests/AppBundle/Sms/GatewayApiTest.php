@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Sms;
+namespace Tests\App\Sms;
 
-use AppBundle\Service\LogService;
-use AppBundle\Sms\GatewayAPI;
-use AppBundle\Sms\Sms;
+use App\Service\LogService;
+use App\Sms\GatewayAPI;
+use App\Sms\Sms;
 use PHPUnit\Framework\TestCase;
 
 class GatewayApiTest extends TestCase
@@ -14,7 +14,7 @@ class GatewayApiTest extends TestCase
      */
     private $gatewayApi;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $loggerMock = $this->createMock(LogService::class);
         $this->gatewayApi = new GatewayAPI([

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
 use Tests\BaseWebTestCase;
 
@@ -29,7 +29,7 @@ class InterviewControllerTest extends BaseWebTestCase
 
         $form['application[interview][interviewAnswers][0][answer]'] = 'Test answer';
         $form['application[interview][interviewAnswers][1][answer]'] = 'Test answer';
-        $form['application[applicationPractical][teamInterest]'] = $teamInterest;
+        $form['application[applicationPractical][teamInterest]'] = $teamInterest ? '1' : '0';
 
         $form['application[interview][interviewScore][explanatoryPower]']->select(5);
         $form['application[interview][interviewScore][roleModel]']->select(4);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
 use Tests\BaseWebTestCase;
 
@@ -30,7 +30,7 @@ class ExistingUserAdmissionControllerTest extends BaseWebTestCase
         $submitButton = $crawler->selectButton('Søk');
         $form = $submitButton->form();
 
-        $form['application[applicationPractical][yearOfStudy]'] = 3;
+        $form['application[applicationPractical][yearOfStudy]'] = '3. klasse';
         $form['application[applicationPractical][days][monday]']->tick();
         $form['application[applicationPractical][days][tuesday]']->untick();
         $form['application[applicationPractical][days][wednesday]']->tick();

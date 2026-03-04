@@ -1,0 +1,14 @@
+includes:
+    - phpstan-baseline.neon
+    - vendor/phpstan/phpstan-symfony/extension.neon
+    - vendor/phpstan/phpstan-doctrine/extension.neon
+
+parameters:
+    level: 1
+    paths:
+        - src/
+    excludePaths:
+        - var/
+        - src/App/AutoMapper/
+    symfony:
+        containerXmlPath: var/cache/dev/KernelDevDebugContainer.xml

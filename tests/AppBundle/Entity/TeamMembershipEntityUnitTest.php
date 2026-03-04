@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\TeamMembership;
-use AppBundle\Entity\User;
-use AppBundle\Entity\Team;
-use AppBundle\Entity\Position;
+use App\Entity\TeamMembership;
+use App\Entity\User;
+use App\Entity\Team;
+use App\Entity\Position;
 use PHPUnit\Framework\TestCase;
 
 class TeamMembershipEntityUnitTest extends TestCase

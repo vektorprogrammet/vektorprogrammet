@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
 use Tests\BaseWebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class PasswordResetControllerTest extends BaseWebTestCase
 {
@@ -19,13 +19,14 @@ class PasswordResetControllerTest extends BaseWebTestCase
      */
     private function loginSuccessful($password)
     {
-        $crawler = $this->anonymousGoTo('/login');
+        $client = $this->createAnonymousClient();
+        $client->getCookieJar()->clear();
+        $crawler = $client->request('GET', '/login');
 
         $form = $crawler->selectButton('Logg inn')->form();
         $form['_username'] = self::username;
         $form['_password'] = $password;
         $form['_remember_me'] = false;
-        $client = $this->createAnonymousClient();
         $client->submit($form);
 
         $crawler = $client->request('GET', '/');
@@ -54,10 +55,11 @@ class PasswordResetControllerTest extends BaseWebTestCase
 
         // Assert email sent
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-        $message = $mailCollector->getMessages()[0];
-        $body = $message->getBody();
+        $mailCollector = $client->getProfile()->getCollector('mailer');
+        $messages = $mailCollector->getEvents()->getMessages();
+        $this->assertCount(1, $messages);
+        $message = $messages[0];
+        $body = $message->getHtmlBody() ?? $message->getTextBody();
 
         // Get reset link from email
         $start = strpos($body, '/resetpassord/');
@@ -67,12 +69,12 @@ class PasswordResetControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @param $client Client with profiler enabled
+     * @param $client KernelBrowser with profiler enabled
      */
-    private function assertNoEmailSent(Client $client)
+    private function assertNoEmailSent(KernelBrowser $client)
     {
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-        $this->assertEquals(0, $mailCollector->getMessageCount());
+        $mailCollector = $client->getProfile()->getCollector('mailer');
+        $this->assertCount(0, $mailCollector->getEvents()->getMessages());
     }
 
     public function testResetPasswordAction()

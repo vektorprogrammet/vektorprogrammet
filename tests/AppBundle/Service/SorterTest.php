@@ -1,12 +1,12 @@
 <?php
 
-namespace Tests\AppBundle\Service;
+namespace Tests\App\Service;
 
-use AppBundle\Service\Sorter;
+use App\Service\Sorter;
 use DateTime;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
-use AppBundle\Entity\Receipt;
-use AppBundle\Entity\User;
+use App\Entity\Receipt;
+use App\Entity\User;
 
 class SorterTest extends KernelTestCase
 {
@@ -19,7 +19,7 @@ class SorterTest extends KernelTestCase
     /** @var  Receipt[] */
     private $mockReceipts;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         $kernel = $this->createKernel();
         $kernel->boot();

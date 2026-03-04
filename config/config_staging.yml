@@ -1,0 +1,14 @@
+imports:
+    - { resource: config_prod.yml }
+
+parameters:
+    google_api:
+        client_id: '%google_api_client_id%'
+        client_secret: '%google_api_client_secret%'
+        refresh_token: '%google_api_refresh_token%'
+        disabled: true
+
+ewz_recaptcha:
+    enabled: false
+    public_key:  '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'

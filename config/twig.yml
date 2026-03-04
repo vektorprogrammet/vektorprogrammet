@@ -1,0 +1,13 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        tags:
+            - { name: twig.extension }
+
+    App\Twig\Extension\:
+        resource: "../src/App/Twig/Extension"
+
+    App\Twig\Extension\AssetExtension:
+        arguments:
+            $rootDir: '%kernel.project_dir%'

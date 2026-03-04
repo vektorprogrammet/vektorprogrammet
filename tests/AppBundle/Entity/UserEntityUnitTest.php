@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\User;
-use AppBundle\Entity\Role;
-use AppBundle\Entity\FieldOfStudy;
+use App\Entity\User;
+use App\Entity\Role;
+use App\Entity\FieldOfStudy;
 use PHPUnit\Framework\TestCase;
 
 class UserEntityUnitTest extends TestCase
@@ -149,20 +149,16 @@ class UserEntityUnitTest extends TestCase
         // New dummy entity
         $role1 = new Role();
         $role1->setName('role1');
+        $role1->setRole('ROLE_TEST');
 
         // Use the addRole method
         $user->addRole($role1);
 
-        // Roles is stored in an array
+        // getRoles() returns string[] of role identifiers
         $roles = $user->getRoles();
 
-        // Loop through the array and check for matches
-        foreach ($roles as $role) {
-            if ($role1 === $role) {
-                // Assert the result
-                $this->assertEquals($role1, $role);
-            }
-        }
+        // Assert that the role string is present in the array
+        $this->assertContains('ROLE_TEST', $roles);
     }
 
     // Check whether the setNewUserCode function is working correctly

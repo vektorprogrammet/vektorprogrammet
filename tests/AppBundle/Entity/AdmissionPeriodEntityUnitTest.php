@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
 
-use AppBundle\Entity\AdmissionPeriod;
-use AppBundle\Entity\InfoMeeting;
-use AppBundle\Entity\Department;
+use App\Entity\AdmissionPeriod;
+use App\Entity\InfoMeeting;
+use App\Entity\Department;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

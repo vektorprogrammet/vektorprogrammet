@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\SupportTicket;
+use App\Entity\SupportTicket;
 use PHPUnit\Framework\TestCase;
 
 class ContactEntityUnitTest extends TestCase

@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\Role;
-use AppBundle\Entity\User;
+use App\Entity\Role;
+use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class RoleEntityUnitTest extends TestCase

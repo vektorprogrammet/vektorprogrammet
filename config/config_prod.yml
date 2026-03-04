@@ -1,0 +1,35 @@
+imports:
+    - { resource: config.yml }
+
+parameters:
+    google_api:
+        client_id: '%google_api_client_id%'
+        client_secret: '%google_api_client_secret%'
+        refresh_token: '%google_api_refresh_token%'
+        disabled: false
+
+#framework:
+#    validation:
+#        cache: apc
+
+#doctrine:
+#    orm:
+#        metadata_cache_driver: apc
+#        result_cache_driver: apc
+#        query_cache_driver: apc
+
+monolog:
+    handlers:
+        main:
+            type:         fingers_crossed
+            action_level: critical
+            handler:      streamed
+        streamed:
+            type:  stream
+            path:  '%kernel.logs_dir%/%kernel.environment%.log'
+            level: debug
+
+ewz_recaptcha:
+    enabled: true
+    public_key:  '%recaptcha_public_key%'
+    private_key: '%recaptcha_private_key%'

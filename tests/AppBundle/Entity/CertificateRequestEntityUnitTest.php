@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\User;
-use AppBundle\Entity\CertificateRequest;
+use App\Entity\User;
+use App\Entity\CertificateRequest;
 use PHPUnit\Framework\TestCase;
 
 class CertificateRequestEntityUnitTest extends TestCase

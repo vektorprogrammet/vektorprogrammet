@@ -1,125 +1,92 @@
 <img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/master/app/Resources/assets/images/vektor_stor.png" alt="alt text" width="400" height="auto">
 
-![Build Status](https://travis-ci.com/vektorprogrammet/vektorprogrammet.svg?branch=master)
+# Vektorprogrammet
 
+Management platform for Vektorprogrammet, a Norwegian student organization that provides free tutoring in STEM subjects to middle and high school students.
 
+## Tech Stack
 
-# Set up development environment
-## Requirements:
-- [PHP](http://php.net/downloads.php) version 7.4
-- [Node](https://nodejs.org/en/) version 14
+- **PHP** >= 8.1
+- **Symfony** 6.4 (LTS)
+- **Doctrine ORM** 2.x with SQLite (dev/test) or MySQL (prod)
+- **Twig** 3.x
+- **Node** 14 (frontend build)
+
+## Setup
+
+> **New to the project?** See [`docs/local-setup.md`](docs/local-setup.md) for a complete step-by-step guide with troubleshooting.
+
+### Requirements
+
+- PHP 8.1+ with extensions: `pdo_sqlite`, `gd`, `mbstring`, `curl`, `xml`
+- [Composer](https://getcomposer.org/)
+- [Node.js](https://nodejs.org/) 14+
 - [Git](https://git-scm.com/)
 
-##### Required PHP-dependencies:
-* ext-pdo_sqlite
-* ext-gd2
-* ext-mbstring
-* ext-curl
-* ext-xml
+### Install
 
-#### How to install the php-dependencies
-
-Please find the file `php.ini`. (On Linux it is located at `/etc/php/version/cli/php.ini`).
-
-Uncomment all lines with the required PHP-dependencies.
-
-Example for dependency `mbstring`:
-
-`;extension=mbstring`       ---> `extension=mbstring`
-
-
-To install the PHP-dependencies on Ubuntu 
-(Example with Ubuntu as operating system and a php-version of 7.4)
-```
-sudo apt-get install php7.4-mbstring
-sudo apt-get install php7.4-sqlite (php7.4-mysql for prod)
-sudo apt-get install php7.4-gd
-sudo apt-get install php7.4-curl
-sudo apt-get install php7.4-xml
+```bash
+git clone https://github.com/vektorprogrammet/vektor-backend.git
+cd vektor-backend
+composer install
+npm install
+npm run build:dev
 ```
 
-Alternatively install Composer dependency manager from [here](https://getcomposer.org/).
-Then run `composer install`.
+### Database Setup
 
+```bash
+php bin/console doctrine:schema:create --env=dev
+php bin/console doctrine:fixtures:load --env=dev -n
+```
 
+### Start Server
 
+```bash
+php -S localhost:8000 -t public
+```
 
-## Setup:
+Or with the Symfony CLI: `symfony server:start`
 
-### Clone files:
-`git clone https://github.com/vektorprogrammet/vektorprogrammet.git`
+## Development
 
-#### UNIX:
-`npm run setup`
-#### Windows:
-`npm run setup:win`
+```bash
+composer test      # Run full test suite
+composer lint      # Check code style
+composer fix       # Auto-fix code style
+composer analyse   # Static analysis
+```
 
-### Start server on http://localhost:8000
-`npm start`
+See [`docs/overview.md`](docs/overview.md) for all commands, project structure, architecture, CI, and test users.
 
+## Documentation
 
-### Build static files
-When adding new images or other non-code files, you can run:
+Documentation is split into modular single-topic files to stay focused and reduce noise.
 
-`npm run build`
+| File | Audience | Topic |
+|------|----------|-------|
+| `README.md` | Everyone | Setup and entry point |
+| [`docs/local-setup.md`](docs/local-setup.md) | New developers | Complete local setup guide with troubleshooting |
+| [`docs/overview.md`](docs/overview.md) | Developers | Quick reference: commands, structure, CI, test users |
+| [`docs/conventions.md`](docs/conventions.md) | Developers | Code conventions and patterns |
+| [`docs/troubleshooting.md`](docs/troubleshooting.md) | Developers | Error → fix lookup |
+| [`docs/knowledge-workflow.md`](docs/knowledge-workflow.md) | Everyone | How project knowledge is captured |
+| [`docs/testing.md`](docs/testing.md) | Developers | Test commands, workflow, environment |
+| [`docs/testing-details.md`](docs/testing-details.md) | Developers | File-to-test map, timing, DB internals |
+| [`docs/architecture.md`](docs/architecture.md) | Developers | Controllers, roles, services, mailer |
+| [`docs/console-commands.md`](docs/console-commands.md) | Developers | Useful Symfony console commands |
+| `CLAUDE.md` | AI agents | Agent workflow and skills |
 
-so that the files are put in the correct places. (this is automatically
-done when doing `npm start`)
+**Principles**: each doc covers one topic. `README.md` is the entry point; `docs/` has everything else.
 
-## Users
-| Position     | Username   | Password |        Role        |
-| :----------: | :--------: |:--------:|:------------------:|
-| Assistent    | assistent  |   1234   |      ROLE_USER     |
-| Teammedlem   | teammember |   1234   |  ROLE_TEAM_MEMBER  |
-| Teamleder    | teamleader |   1234   |  ROLE_TEAM_LEADER  |
-| Admin        | admin      |   1234   |      ROLE_ADMIN    |
+## npm Scripts
 
+Some npm scripts in `package.json` work as shortcuts:
 
-## Code style
-Code style should follow a certain set of rules. Make sure your code 
-adheres to these rules before opening a PR. 
-
-### Fix style
-##### UNIX/LINUX:
-`npm run -s cs`
-##### Windows:
-`npm run -s cs:win`
-
-## Testing
-Tests should be run before opening a PR.
-##### UNIX/LINUX:
-`npm run test`
-
-##### Windows:
-`npm run test:win`
-
-#### File specific test: 
-
-`npm run test "tests/PATH_TO_TEST" `
-
-or *(without needing the exact path)*
-
-`npm run test -- --filter "NAME_OF_FILE" `
-
-
-
-## Database
-
-### Add new entities to the database and reload fixtures
-`npm run db:update`
-
-### Reload database
-`npm run db:reload`
-
-## Docker:
-Build docker image:
-`npm run docker:build`
-
-Set up docker image:
-`npm run docker:setup`
-
-Run commands in docker image
-`npm run docker:run  -- <CMD>`
-
-e.g.
-`npm run docker:run -- npm run db:update`
+```bash
+npm run test          # runs PHPUnit
+npm run build:dev     # builds frontend assets (development mode)
+npm run build:prod    # builds frontend assets (production mode, minified)
+npm run watch         # watch mode for frontend development
+npm run db:reload     # reloads dev database with fixtures
+```

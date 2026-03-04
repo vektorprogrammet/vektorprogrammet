@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\InterviewQuestion;
-use AppBundle\Entity\InterviewSchema;
+use App\Entity\InterviewQuestion;
+use App\Entity\InterviewSchema;
 use PHPUnit\Framework\TestCase;
 
 class InterviewSchemaEntityUnitTest extends TestCase

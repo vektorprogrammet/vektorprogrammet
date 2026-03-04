@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
 use Tests\BaseWebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Finder\Finder;
-use AppBundle\Entity\Receipt;
+use App\Entity\Receipt;
 
 class ReceiptControllerTest extends BaseWebTestCase
 {
@@ -14,7 +14,7 @@ class ReceiptControllerTest extends BaseWebTestCase
      */
     private $imagePaths;
 
-    public function setUp()
+    protected function setUp(): void
     {
         // Keep track of all the initial files in the image folder
         $this->imagePaths = array();
@@ -41,7 +41,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $file = tempnam(sys_get_temp_dir(), 'rec');
         imagepng(imagecreatetruecolor(1, 1), $file);
 
-        $photo = new UploadedFile($file, 'receipt.png', null, null, null, true);
+        $photo = new UploadedFile($file, 'receipt.png', null, null, true);
 
         $crawler = $client->request('GET', '/utlegg');
         $form = $crawler->selectButton('Be om refusjon')->form();
@@ -94,7 +94,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $file = tempnam(sys_get_temp_dir(), 'rec');
         imagepng(imagecreatetruecolor(1, 1), $file);
 
-        $photo = new UploadedFile($file, 'receipt.png', null, null, null, true);
+        $photo = new UploadedFile($file, 'receipt.png', null, null, true);
 
         $crawler = $client->request('GET', '/kontrollpanel/utlegg/rediger/2');
         $form = $crawler->selectButton('Lagre')->form();
@@ -206,7 +206,7 @@ class ReceiptControllerTest extends BaseWebTestCase
         $this->assertEquals(302, $client->getResponse()->getStatusCode());
     }
 
-    protected function tearDown()
+    protected function tearDown(): void
     {
         parent::tearDown();
 

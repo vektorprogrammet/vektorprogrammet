@@ -1,0 +1,114 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\AdmissionSubscriber;
+use App\Entity\Department;
+use App\Entity\Repository\AdmissionSubscriberRepository;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Form\Type\AdmissionSubscriberType;
+use App\Service\AdmissionNotifier;
+use Doctrine\ORM\EntityManagerInterface;
+use InvalidArgumentException;
+use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\HttpFoundation\JsonResponse;
+use Symfony\Component\HttpFoundation\RedirectResponse;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
+
+class AdmissionSubscriberController extends BaseController
+{
+    public function __construct(
+        private DepartmentRepository $departmentRepo,
+        private AdmissionSubscriberRepository $admissionSubscriberRepo,
+        private EntityManagerInterface $em,
+        private AdmissionNotifier $admissionNotifier,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
+    /**
+     * @param Request $request
+     * @param Department $department
+     *
+     * @return Response
+     */
+    #[Route("/interesseliste/{shortName}", name: "interest_list", requirements: ["shortName" => "\w+"])]
+    #[Route("/interesseliste/{id}", name: "interest_list_by_id", requirements: ["id" => "\d+"])]
+    public function subscribePageAction(Request $request, Department $department)
+    {
+        $subscriber = new AdmissionSubscriber();
+        $subscriber->setDepartment($department);
+
+        $form = $this->createForm(AdmissionSubscriberType::class, $subscriber);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                $this->admissionNotifier->createSubscription($department, $subscriber->getEmail(), $subscriber->getInfoMeeting());
+                $this->addFlash('success', $subscriber->getEmail().' har blitt meldt på interesselisten. Du vil få en e-post når opptaket starter');
+            } catch (InvalidArgumentException $e) {
+                $this->addFlash('danger', 'Kunne ikke melde '.$subscriber->getEmail().' på interesselisten. Vennligst prøv igjen.');
+            }
+
+            return $this->redirectToRoute('interest_list', ['shortName' => $department->getShortName()]);
+        }
+
+        return $this->render('admission_subscriber/subscribe_page.html.twig', [
+            'department' => $department,
+            'form' => $form->createView()
+        ]);
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     */
+    #[Route("/opptak/notification", name: "admission_subscribe")]
+    public function subscribeAction(Request $request)
+    {
+        $email = $request->request->get('email');
+        $departmentId = $request->request->get('department');
+        $infoMeeting = filter_var($request->request->get('infoMeeting'), FILTER_VALIDATE_BOOLEAN);
+        if (!$email || !$departmentId) {
+            return new JsonResponse("Email or department missing", 400);
+        }
+        $department = $this->departmentRepo->find($departmentId);
+        if (!$department) {
+            return new JsonResponse("Invalid department", 400);
+        }
+
+        try {
+            $this->admissionNotifier->createSubscription($department, $email, $infoMeeting);
+        } catch (InvalidArgumentException $e) {
+            return new JsonResponse($e->getMessage(), 400);
+        }
+
+        return new JsonResponse(null, 201);
+    }
+
+    /**
+     * @param string $code
+     *
+     * @return RedirectResponse
+     */
+    #[Route("/opptak/notification/unsubscribe/{code}", name: "admission_unsubscribe")]
+    public function unsubscribeAction($code)
+    {
+        $subscriber = $this->admissionSubscriberRepo->findByUnsubscribeCode($code);
+        $this->addFlash('title', 'Opptaksvarsel - Avmelding');
+        if (!$subscriber) {
+            $this->addFlash('message', "Du vil ikke lengre motta varsler om opptak");
+        } else {
+            $email = $subscriber->getEmail();
+            $this->addFlash('message', "Du vil ikke lengre motta varsler om opptak på $email");
+            $this->em->remove($subscriber);
+            $this->em->flush();
+        }
+
+        return $this->redirectToRoute('confirmation');
+    }
+}

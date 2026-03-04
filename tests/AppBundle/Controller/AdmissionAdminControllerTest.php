@@ -1,10 +1,10 @@
 <?php
 
-namespace Tests\AppBundle\Controller;
+namespace Tests\App\Controller;
 
-use AppBundle\Entity\Interview;
+use App\Entity\Interview;
 use Tests\BaseWebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class AdmissionAdminControllerTest extends BaseWebTestCase
 {
@@ -155,8 +155,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         $crawler = $this->goTo('/kontrollpanel/intervju/settopp/6', $client);
 
         // At this point we are about to send the email
-        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
         $form = $crawler->selectButton('Send invitasjon på sms og e-post')->form();
+        $form['scheduleInterview[datetime]'] = '10.08.2015 15:00';
         $client->enableProfiler();
         $client->submit($form);
 
@@ -192,8 +192,8 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
         }
 
         if ($wantEmail) {
-            $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-            $this->assertEquals(1, $mailCollector->getMessageCount());
+            $mailCollector = $client->getProfile()->getCollector('mailer');
+            $this->assertCount(1, $mailCollector->getEvents()->getMessages());
         }
 
         $client->followRedirect();
@@ -207,16 +207,17 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @param Client $client
+     * @param KernelBrowser $client
      *
      * @return string
      */
-    private function getResponseCodeFromEmail(Client $client)
+    private function getResponseCodeFromEmail(KernelBrowser $client)
     {
-        $mailCollector = $client->getProfile()->getCollector('swiftmailer');
-        $this->assertEquals(1, $mailCollector->getMessageCount());
-        $message = $mailCollector->getMessages()[0];
-        $body = $message->getBody();
+        $mailCollector = $client->getProfile()->getCollector('mailer');
+        $messages = $mailCollector->getEvents()->getMessages();
+        $this->assertCount(1, $messages);
+        $message = $messages[0];
+        $body = $message->getHtmlBody() ?? $message->getTextBody();
         $start = strpos($body, 'intervju/') + 9;
         $messageStartingWithCode = substr($body, $start);
         $end = strpos($messageStartingWithCode, '"');
@@ -225,12 +226,12 @@ class AdmissionAdminControllerTest extends BaseWebTestCase
     }
 
     /**
-     * @param Client $client
+     * @param KernelBrowser $client
      * @param string $response_code
      *
-     * @return Client
+     * @return KernelBrowser
      */
-    private function helperTestCancelConfirm(Client $client, string $response_code)
+    private function helperTestCancelConfirm(KernelBrowser $client, string $response_code)
     {
         $crawler = $this->goTo('/intervju/kanseller/tilbakemelding/'.$response_code, $client);
         $form = $crawler->selectButton('Kanseller')->form();

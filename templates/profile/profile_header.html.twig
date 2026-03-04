@@ -1,0 +1,10 @@
+<div class="card">
+    <div class="card-body">
+        <h1 class="text-dark-blue card-title"> {{ user.firstName }} {{ user.lastName }} </h1>
+        <h6>
+            {% for r in user.roleEntities %}
+                {{ r.name | replace({'Bruker': user.isActiveAssistant ? 'Assistent': 'Bruker'}) }}
+            {% endfor %}
+        </h6>
+    </div>
+</div>

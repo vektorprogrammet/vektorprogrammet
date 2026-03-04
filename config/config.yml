@@ -1,0 +1,277 @@
+imports:
+    - { resource: parameters.yml }
+    - { resource: security.yml }
+    - { resource: services.yml }
+    - { resource: twig.yml }
+    - { resource: validators.yml }
+    - { resource: image_filters.yml }
+    - { resource: services_google.yml }
+    - { resource: event_subscribers.yml }
+    - { resource: forms.yml }
+    - { resource: api_platform.yml }
+    - { resource: lexik_jwt_authentication.yml }
+
+parameters:
+  google_api:
+    client_id: '%google_api_client_id%'
+    client_secret: '%google_api_client_secret%'
+    refresh_token: '%google_api_refresh_token%'
+    disabled: true
+
+  container.dumper.inline_class_loader: true
+
+  slack.notification_channel: '#notifications'
+  slack.log_channel: '%log_channel%'
+  slack.disable_delivery: '%slack_disabled%'
+
+  gateway_sms:
+    api_token: '%gateway_api_token%'
+    disable_delivery: '%sms_disable%'
+    max_length: 1200
+    country_code: '47'
+
+  admission_notifier_limit: 100
+
+  # File upload parameters
+  public_uploads: "Offentlige filer"
+  private_uploads: "../Private filer"
+
+  # Profile photos
+  profile_photos: 'images/Profile photos'
+
+  # Logo images
+  logo_images: 'images/Logo images'
+
+  # Signature images
+  signature_images: '../signatures'
+
+  # Receipt images
+  receipt_images: 'images/receipts'
+
+  # Article images
+  article_images: 'images/article_images'
+
+  # Newsletter images
+  newsletter_images: 'images/newsletter_images'
+
+  # Team images
+  team_images: 'images/team_images'
+
+framework:
+    #esi:             ~
+    translator:      { fallbacks: ["%locale%"] }
+    secret:          "%secret%"
+    form:            ~
+    csrf_protection: ~
+    validation:      { enable_attributes: true }
+    default_locale:  "%locale%"
+    trusted_hosts:   ~
+    session:
+        # handler_id set to null will use default session handler from php.ini
+        handler_id:  ~
+        name: "%session.name%"
+    fragments:       ~
+    http_method_override: true
+    serializer: { enable_attributes: true }
+    mailer:
+        dsn: 'null://null'
+
+# Twig Configuration
+twig:
+    debug:            "%kernel.debug%"
+    strict_variables: "%kernel.debug%"
+    globals:
+       filebrowser_window_width: 1200 #The initial width of window when opened
+       filebrowser_window_height: 800
+    form_themes:
+        - 'form/bootstrap_4_layout.html.twig'
+
+# Doctrine Configuration
+doctrine:
+    dbal:
+        driver:   "%database_driver%"
+        host:     "%database_host%"
+        port:     "%database_port%"
+        dbname:   "%database_name%"
+        user:     "%database_user%"
+        password: "%database_password%"
+        path:     "%database_path%"
+        charset: utf8mb4
+        default_table_options:
+            charset: utf8mb4
+            collate: utf8mb4_unicode_ci
+        # if using pdo_sqlite as your database driver:
+        #   1. add the path in parameters.yml
+        #     e.g. database_path: "%kernel.root_dir%/data/data.db3"
+        #   2. Uncomment database_path in parameters.yml.dist
+        #   3. Uncomment next line:
+        #     path:     "%database_path%"
+        mapping_types:
+           enum: string
+    orm:
+        auto_generate_proxy_classes: "%kernel.debug%"
+        naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
+        auto_mapping: true
+        mappings:
+            App:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Entity'
+                prefix: 'App\Entity'
+                alias: App
+
+doctrine_migrations:
+    migrations_paths:
+        'App\Migrations': '%kernel.project_dir%/migrations'
+
+
+fos_ck_editor:
+    base_path: "vendor/ckeditor/"
+    js_path: "vendor/ckeditor/ckeditor.js"
+    default_config: default
+    configs:
+        default:
+            filebrowserBrowseRoute: elfinder
+            filebrowserBrowseRouteParameters:
+                instance: default
+            extraPlugins: "justify"
+        basic_config:
+            toolbar: basic
+        standard_config:
+            toolbar: standard
+
+fm_elfinder:
+    instances:
+        default:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: false
+            connector:
+                debug: false
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: '%public_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        admin_access:
+            locale: '%locale%'
+            editor: simple
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    private:
+                        driver: LocalFileSystem
+                        path: '%private_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+                    public:
+                        driver: LocalFileSystem
+                        path: '%public_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        ck_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%public_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+                    private:
+                        driver: LocalFileSystem
+                        path: '%private_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        article_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%article_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        article_form:
+            locale: '%locale%'
+            editor: form
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: '%article_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        newsletter_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%newsletter_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        team_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%team_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+
+knp_paginator:
+    template:
+        pagination: '@KnpPaginator/Pagination/twitter_bootstrap_v4_pagination.html.twig'
+
+ewz_recaptcha:
+    enabled: false
+    public_key: ''
+    private_key: ''
+
+
+fos_rest:
+  param_fetcher_listener: true
+  body_listener: true
+  routing_loader: false
+  format_listener:
+    enabled: true
+    rules:
+      - { path: '^/api/party', priorities: ['json'], fallback_format: 'html' }
+      - { path: '^/api/', stop: true }
+      - { path: '^/', priorities: [ 'text/html', '*/*'], fallback_format: html, prefer_extension: true }
+
+  versioning: true
+  view:
+    view_response_listener: 'force'
+  zone:
+    - { path: '^/api/party' }
+    - { path: '^/api/account' }
+    - { path: '^/kontrollpanel' }
+    - { path: '^/(?!api/)' }

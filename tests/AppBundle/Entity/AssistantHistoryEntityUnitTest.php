@@ -1,11 +1,11 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\AssistantHistory;
-use AppBundle\Entity\User;
-use AppBundle\Entity\Semester;
-use AppBundle\Entity\School;
+use App\Entity\AssistantHistory;
+use App\Entity\User;
+use App\Entity\Semester;
+use App\Entity\School;
 use PHPUnit\Framework\TestCase;
 
 class AssistantHistoryEntityUnitTest extends TestCase

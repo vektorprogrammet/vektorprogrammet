@@ -1,0 +1,37 @@
+imports:
+    - { resource: config_dev.yml }
+
+parameters:
+    slack.disable_delivery: true
+    google_api:
+        client_id: 'test_client_id'
+        client_secret: 'test_client_secret'
+        refresh_token: 'test_refresh_token'
+        disabled: true
+
+framework:
+    test: ~
+    session:
+        storage_factory_id: session.storage.factory.mock_file
+    profiler:
+        collect: false
+
+web_profiler:
+    toolbar: false
+    intercept_redirects: false
+
+doctrine:
+    dbal:
+        default_connection: default
+
+        connections:
+            default:
+                driver:  pdo_sqlite
+                host: localhost
+                port: null
+                user:    test
+                password: null
+                path:    "%kernel.project_dir%/var/data/test%env(default::TEST_TOKEN)%.db"
+                dbname: "%kernel.project_dir%/var/data/test%env(default::TEST_TOKEN)%.db"
+                #memory: true
+                charset: utf8

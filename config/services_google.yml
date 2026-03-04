@@ -1,0 +1,21 @@
+services:
+    App\Google\GoogleService:
+        abstract: true
+        arguments: ['%google_api%', '@App\Service\LogService']
+
+    App\Google\Gmail:
+        parent: App\Google\GoogleService
+        calls:
+            - [setDefaultEmail, ['%default_from_email%']]
+
+    App\Google\GoogleUsers:
+        parent: App\Google\GoogleService
+
+    App\Google\GoogleGroups:
+        parent: App\Google\GoogleService
+
+    App\Google\GoogleDrive:
+        parent: App\Google\GoogleService
+
+    App\Google\GoogleAPI:
+        arguments: ['%google_api%', '@App\Google\GoogleUsers', '@App\Google\GoogleGroups']

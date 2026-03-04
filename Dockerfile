@@ -1,39 +1,38 @@
-FROM debian:buster-slim
+FROM php:8.1-cli
 
-SHELL ["/bin/bash", "-c"] 
+# System dependencies
+RUN apt-get update && apt-get install -y \
+    git unzip curl libpng-dev libjpeg-dev libfreetype6-dev \
+    libxml2-dev libzip-dev libsqlite3-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mbstring xml zip pdo_sqlite pdo_mysql \
+    && rm -rf /var/lib/apt/lists/*
 
-# nvm environment variables
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 14.21.3
+# Composer
+COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 
-RUN apt-get update \
-    && apt-get -y install curl git gnupg unzip wget python2 build-essential \
-        lsb-release apt-transport-https ca-certificates \
-    #
-    # Set up php-repo for apt
-    && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list \
-    #
-    # Install php
-    && apt-get update \
-    && apt-get -y install php7.4 php7.4-mbstring php7.4-sqlite \
-                php7.4-gd php7.4-curl php7.4-xml php7.4-zip \
-    #
-    # Install NodeJS
-    && mkdir $NVM_DIR \
-    # https://github.com/creationix/nvm#install-script
-    && curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.5/install.sh | bash \
-    && source $NVM_DIR/nvm.sh \
-    && nvm install $NODE_VERSION \
-    && nvm alias default $NODE_VERSION \
-    && nvm use default
-
-# add node and npm to path so the commands are available
-ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+# Node.js 18 via NodeSource
+RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
 
+# PHP deps
+COPY composer.json composer.lock ./
+RUN composer install --no-dev --optimize-autoloader --no-scripts
+
+# Node deps + build
+COPY package.json package-lock.json ./
+RUN npm ci
+COPY vite.config.js assets/ ./assets/
+RUN npm run build:prod
+
+# App source
+COPY . .
+RUN composer run-script post-install-cmd --no-interaction 2>/dev/null || true \
+    && php bin/console cache:clear --env=prod --no-debug
+
 EXPOSE 8000
 
-CMD ["npm", "run", "start"]
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "public"]

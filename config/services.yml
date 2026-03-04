@@ -1,0 +1,81 @@
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+        bind:
+            App\Mailer\MailerInterface: '@App\Mailer\Mailer'
+            App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
+
+    App\:
+        resource: "../src/App/{Command,Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,State,Twig,Validator}"
+
+    App\Entity\Repository\:
+        resource: "../src/App/Entity/Repository/"
+
+    App\DataFixtures\ORM\:
+        resource: '../src/App/DataFixtures/ORM'
+        tags: ['doctrine.fixture.orm']
+
+    App\Role\ReversedRoleHierarchy:
+        arguments:
+            $hierarchy: '%security.role_hierarchy.roles%'
+
+    App\Service\AdmissionNotifier:
+        arguments:
+            $sendLimit: '%admission_notifier_limit%'
+
+    App\Sms\SlackSms:
+        autowire: true
+
+    App\Sms\SmsSender:
+        arguments:
+            $env: '%kernel.environment%'
+
+    App\Sms\GatewayAPI:
+        arguments:
+            $smsOptions: '%gateway_sms%'
+
+    App\Service\LogService:
+        arguments:
+            $env: '%kernel.environment%'
+            $monoLogger: '@logger'
+
+    App\Mailer\Mailer:
+        arguments:
+            $env: '%kernel.environment%'
+
+    App\Service\SurveyNotifier:
+        arguments:
+            $fromEmail: '%default_survey_email%'
+
+    App\Service\GeoLocation:
+        arguments:
+            $ipinfoToken: '%ipinfo_token%'
+            $ignoredAsns: '%geo_ignored_asns%'
+    App\Service\EmailSender:
+        arguments:
+            $defaultEmail: '%default_from_email%'
+            $economyEmail: '%economy_email%'
+
+    App\Service\SlackMessenger:
+        arguments:
+            $endpoint: '%slack_endpoint%'
+            $notificationChannel: '%slack.notification_channel%'
+            $logChannel: '%slack.log_channel%'
+            $disableDelivery: '%slack.disable_delivery%'
+            $logger: '@logger'
+
+    App\Service\FileUploader:
+        arguments:
+            $signatureFolder: '%signature_images%'
+            $logoFolder: '%logo_images%'
+            $receiptFolder: '%receipt_images%'
+            $profilePhotoFolder: '%profile_photos%'
+            $articleFolder: '%article_images%'
+            $sponsorFolder: '%logo_images%'
+
+    get_set_method_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        public: false
+        tags: [serializer.normalizer]

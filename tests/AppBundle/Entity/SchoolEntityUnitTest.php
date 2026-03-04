@@ -1,9 +1,9 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\School;
-use AppBundle\Entity\Department;
+use App\Entity\School;
+use App\Entity\Department;
 use PHPUnit\Framework\TestCase;
 
 class SchoolEntityUnitTest extends TestCase

@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Util;
+namespace Tests\App\Util;
 
-use AppBundle\Utils\TimeUtil;
+use App\Utils\TimeUtil;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

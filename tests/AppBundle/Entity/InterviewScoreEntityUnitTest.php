@@ -1,8 +1,8 @@
 <?php
 
-namespace Tests\AppBundle\Entity;
+namespace Tests\App\Entity;
 
-use AppBundle\Entity\InterviewScore;
+use App\Entity\InterviewScore;
 use PHPUnit\Framework\TestCase;
 
 class InterviewScoreEntityUnitTest extends TestCase

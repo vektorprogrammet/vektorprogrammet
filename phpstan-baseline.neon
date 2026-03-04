@@ -1,0 +1,19 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Access to an undefined property App\\AssistantScheduling\\Assistant\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/AssistantScheduling/Assistant.php
+
+		-
+			message: '#^Instantiated class Symfony\\Component\\Security\\Core\\Exception\\UsernameNotFoundException not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Entity/Repository/UserRepository.php
+
+		-
+			message: '#^Access to an undefined property App\\Entity\\UserGroupCollection\:\:\$numberTotalUsers\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Entity/UserGroupCollection.php
