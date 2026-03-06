@@ -1,7 +1,11 @@
 [build]
+builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
+preDeployCommand = "/railway-boot.sh"
+startCommand = "php -S 0.0.0.0:${PORT:-8000} -t public"
 healthcheckPath = "/"
+healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 3

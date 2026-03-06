@@ -39,7 +39,8 @@ RUN bun run build:prod
 COPY . .
 RUN composer dump-autoload $([ "$APP_ENV" = "prod" ] && echo "--no-dev") --optimize
 COPY docker/entrypoint.sh /entrypoint.sh
-RUN chmod +x /entrypoint.sh
+COPY docker/railway-boot.sh /railway-boot.sh
+RUN chmod +x /entrypoint.sh /railway-boot.sh
 
 EXPOSE 8000
 
