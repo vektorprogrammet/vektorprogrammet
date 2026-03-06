@@ -1,0 +1,16 @@
+<div class="card text-center">
+    <div class="card-body">
+        <h2 class="text-dark-blue">Vektorassistent</h2>
+        <p>Du har fått tildelt stilling som vektorassistent</p>
+
+        {% for assistant_history in active_assistant_histories %}
+            <div class="my-4">
+                Skole: <strong>{{ assistant_history.school }}</strong> <br>
+                Bolk: <strong>{{ assistant_history.bolk }}</strong> <br>
+                Dag: <strong>{{ assistant_history.day }}</strong>
+            </div>
+        {% endfor %}
+        <p><a href="{{ path('my_partners') }}">Finn dine vektorpartnere</a></p>
+    </div>
+</div>
+

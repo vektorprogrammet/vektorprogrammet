@@ -1,0 +1,57 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      APP_ENV: staging
+      APP_SECRET: staging-secret-change-in-production
+      DATABASE_DRIVER: pdo_mysql
+      DATABASE_HOST: mysql
+      DATABASE_PORT: "3306"
+      DATABASE_NAME: vektor
+      DATABASE_USER: vektor
+      DATABASE_PASSWORD: vektor
+      JWT_PASSPHRASE: staging-jwt-passphrase
+      SLACK_DISABLED: "true"
+      SMS_DISABLE: "true"
+      DEFAULT_FROM_EMAIL: noreply@staging.vektorprogrammet.no
+      ECONOMY_EMAIL: noreply@staging.vektorprogrammet.no
+      DEFAULT_SURVEY_EMAIL: noreply@staging.vektorprogrammet.no
+      SLACK_ENDPOINT: https://hooks.slack.com/services/disabled
+      LOG_CHANNEL: "#staging"
+      GATEWAY_API_TOKEN: disabled
+      GOOGLE_API_CLIENT_ID: disabled
+      GOOGLE_API_CLIENT_SECRET: disabled
+      GOOGLE_API_REFRESH_TOKEN: disabled
+      RECAPTCHA_PUBLIC_KEY: ""
+      RECAPTCHA_PRIVATE_KEY: ""
+      IPINFO_TOKEN: ""
+      GEO_IGNORED_ASNS: "[]"
+      MAILER_DSN: "null://null"
+    depends_on:
+      mysql:
+        condition: service_healthy
+    volumes:
+      - jwt_keys:/app/config/jwt
+
+  mysql:
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: vektor
+      MYSQL_USER: vektor
+      MYSQL_PASSWORD: vektor
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3307:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+volumes:
+  mysql_data:
+  jwt_keys:

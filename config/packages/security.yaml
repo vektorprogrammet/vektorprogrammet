@@ -1,0 +1,174 @@
+security:
+    password_hashers:
+        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
+            algorithm: bcrypt
+            cost: 12
+
+    role_hierarchy:
+        ROLE_TEAM_MEMBER: ROLE_USER
+        ROLE_TEAM_LEADER: [ROLE_USER, ROLE_TEAM_MEMBER, ROLE_ALLOWED_TO_SWITCH]
+        ROLE_ADMIN: [ROLE_USER, ROLE_TEAM_MEMBER, ROLE_TEAM_LEADER, ROLE_ALLOWED_TO_SWITCH]
+
+    providers:
+        chain_provider:
+            chain:
+                providers: [db_username, db_email, db_company_email]
+        db_username:
+            entity:
+                class: App\Entity\User
+                property: user_name
+        db_email:
+            entity:
+                class: App\Entity\User
+                property: email
+        db_company_email:
+            entity:
+                class: App\Entity\User
+                property: companyEmail
+
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+            provider: chain_provider
+        api_login:
+            pattern: ^/api/login
+            stateless: true
+            provider: chain_provider
+            json_login:
+                check_path: /api/login
+                username_path: username
+                password_path: password
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
+        api:
+            pattern: ^/api
+            stateless: true
+            provider: chain_provider
+            jwt: ~
+        admin_area:
+            pattern: ^/admin
+            http_basic: ~
+            provider: chain_provider
+            user_checker: App\Security\UserChecker
+        secured_area:
+            lazy: true
+            http_basic: ~
+            provider: chain_provider
+            user_checker: App\Security\UserChecker
+            entry_point: form_login
+            form_login:
+                login_path: /login
+                check_path: /login_check
+                always_use_default_target_path: false
+                default_target_path: /login/redirect
+                require_previous_session: false
+            remember_me:
+                secret: '%env(APP_SECRET)%'
+                name: '%remember_me.name%'
+                lifetime: 31536000
+                path: /
+            logout:
+                path: /logout
+                target: /
+            login_throttling:
+                max_attempts: 5
+                interval: '15 minutes'
+
+    access_control:
+        - { path: ^/api/login, roles: PUBLIC_ACCESS }
+        - { path: ^/api/docs, roles: PUBLIC_ACCESS }
+        - { path: ^/api/sponsors, roles: PUBLIC_ACCESS }
+        - { path: ^/api/articles, roles: PUBLIC_ACCESS }
+        - { path: ^/api/static_contents, roles: PUBLIC_ACCESS }
+        - { path: ^/api/change_log_items, roles: PUBLIC_ACCESS }
+        - { path: ^/api/departments, roles: PUBLIC_ACCESS }
+        - { path: ^/api/admission_periods, roles: PUBLIC_ACCESS }
+        - { path: ^/api/info_meetings, roles: PUBLIC_ACCESS }
+        - { path: ^/api/teams, roles: PUBLIC_ACCESS }
+        - { path: ^/api/team_memberships, roles: PUBLIC_ACCESS }
+        - { path: ^/api/field_of_studies, roles: PUBLIC_ACCESS }
+        - { path: ^/api/statistics, roles: PUBLIC_ACCESS }
+        - { path: ^/api/applications/existing, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api/applications, roles: PUBLIC_ACCESS }
+        - { path: ^/api/contact_messages, roles: PUBLIC_ACCESS }
+        - { path: ^/api/admission_subscribers, roles: PUBLIC_ACCESS }
+        - { path: ^/api/password_resets, roles: PUBLIC_ACCESS }
+        - { path: ^/api/team_applications, roles: PUBLIC_ACCESS }
+        - { path: ^/api/users, roles: PUBLIC_ACCESS }
+        - { path: ^/api/interview-responses, roles: PUBLIC_ACCESS }
+        - { path: ^/api/surveys, roles: PUBLIC_ACCESS }
+        - { path: ^/api/me, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/api, roles: IS_AUTHENTICATED_FULLY }
+        - { path: ^/kontrollpanel/admin, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/semesteradmin, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/avdelingadmin/opprett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/avdelingadmin/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/skoleadmin/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/intervju/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/opptakadmin/slett, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/bruker/vekorepost/endre, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/hovedstyret/slett/bruker, roles: ROLE_ADMIN }
+        - { path: ^/kontrollpanel/avdelingadmin/update, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/opprett/, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/deltakerhistorikk/slett, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/semesteradmin/update, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/semesteradmin/avdeling/, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/avdeling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/oppdater, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/brukere/avdeling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skoleadmin/historikk/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/skole/timeplan, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/intervju/fordel, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/stillinger, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/rediger/stilling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/opprett/stilling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/stilling/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/oppdater/teamhistorie, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/team/nytt_medlem, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/avdeling/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/update, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/team/avdeling/, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/teamadmin/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/linje, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/linjer, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/nyhetsbrev/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/nyhetsbrev/send, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/nyhetsbrev/abonnenter, roles: ROLE_TEAM_LEADER }
+        - { path: ^/updatestaticcontent, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/aktiv, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/deaktiv, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/rolle/endre, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/profil/rediger, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/opptakadmin/teaminteresse, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/vikar/rediger, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/vikar/slett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/vikar/opprett, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/hovedstyret, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/hovedstyret/nytt_medlem, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/hovedstyret/oppdater, roles: ROLE_TEAM_LEADER }
+        - { path: ^/signatures, roles: ROLE_TEAM_MEMBER }
+        - { path: ^/kontrollpanel/attest, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/attest, roles: ROLE_TEAM_LEADER }
+        - { path: ^/profile/edit, roles: ROLE_TEAM_MEMBER }
+        - { path: ^/efconnect, role: ROLE_TEAM_MEMBER }
+        - { path: ^/elfinder, role: ROLE_TEAM_MEMBER }
+        - { path: ^/kontrollpanel, role: ROLE_TEAM_MEMBER }
+        - { path: ^/profil/rediger, roles: ROLE_USER }
+        - { path: ^/profil/partnere, roles: ROLE_USER }
+        - { path: ^/profile$, roles: ROLE_USER }
+        - { path: ^/utlegg, roles: ROLE_USER }
+        - { path: ^/api/myreceipts, roles: ROLE_USER }
+        - { path: ^/min-side, roles: ROLE_USER }
+        - { path: ^/eksisterendeopptak, roles: ROLE_USER, method: POST }

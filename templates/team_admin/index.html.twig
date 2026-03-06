@@ -1,0 +1,56 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Team {{ department }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Team
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        <div class="btn-group">
+            {% include "common/department_dropdown.html.twig" with {'pathForDepartment': 'teamadmin_show', 'departmentParameterName': 'id', 'currentDepartment': department} %}
+            <a href="{{ path('teamadmin_show_position') }}" class="btn btn-outline-secondary text-secondary">Stillinger</a>
+            <a class="btn text-success"
+               href="{{ path('teamadmin_create_team_for_department', { 'id': department.id }) }}"><i
+                        class="fa fa-plus text-success"></i> Nytt team</a>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+	
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center my-3">Team {{ department }}</h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab"
+                       aria-controls="home" aria-selected="true">Aktive team</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab"
+                       aria-controls="home" aria-selected="true">Inaktive team</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade table-responsive show active p-0" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% include 'team_admin/team_table.html.twig' with {'teams': active_teams} %}
+                </div>
+                <div class="tab-pane fade table-responsive p-0" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% include 'team_admin/team_table.html.twig' with {'teams': inactive_teams} %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

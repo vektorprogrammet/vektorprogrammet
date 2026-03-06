@@ -1,0 +1,157 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block javascripts %}
+
+    <script>
+
+        $(document).ready(function () {
+
+            {# -------------------------------------------- #}
+
+
+            $("#assistantSearch").keyup(function () {
+
+                _this = this;
+
+                $.each($("#assistantTable tbody").find("tr"), function () {
+
+                    if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+                        $(this).hide();
+                    }
+                    else {
+                        $(this).show();
+                    }
+                });
+
+            });
+
+        });
+
+    </script>
+
+    <script src="{{ asset_with_version('js/csvGenerator.js') }}"></script>
+
+{% endblock %}
+
+{% block title %}
+    Deltakerhistorikk
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Assistenter</li>
+{% endblock %}
+
+
+{% block breadcrumb_menu %}
+        {% if is_granted_team_leader() %}
+            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'participanthistory_show' } %}
+        {% else %}
+            {% include "common/semester_dropdown.html.twig" with { 'pathForSemester': 'participanthistory_show' } %}
+        {% endif %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <h2>Assistenter {{ department }} - {{ semester }}</h2>
+        </div>
+        <div class="col-12 col-lg-6 text-right">
+            <button class="btn btn-outline-secondary csv_download_button" data-table-id="assistantTable"><i
+                        class="fa fa-download"></i> Last ned CSV
+            </button>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+            <div class="card">
+                <div class="card-header">
+                    <div class="form-row">
+                        <div class="col d-flex align-items-center">
+                            <span>
+                                <i class="fa fa-align-justify"></i> Assistenter ({{ assistantHistories|length }})
+                            </span>
+                        </div>
+                        <div class="col">
+                            <input class="form-control" type="text" id="assistantSearch" placeholder="Søk..."/>
+                        </div>
+                    </div>
+                </div>
+                <div class="table-responsive">
+                    <table id="assistantTable" class="table table-striped w-100">
+
+                        <thead>
+
+                        <tr>
+                            <th></th>
+                            <th> Navn</th>
+                            <th> Skole</th>
+                            <th> E-post</th>
+                            <th> Semester</th>
+                            <th> Avdeling</th>
+                            <th> Bolk</th>
+                            <th> Dag</th>
+                        </tr>
+
+                        </thead>
+
+                        <tbody>
+                        {% for ah in assistantHistories %}
+                            <tr>
+                                <td class="table-menu">
+                                    <div class="dropdown">
+                                        <div class="clickable px-2" id="options-{{ ah.id }}" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </div>
+                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ ah.id }}">
+                                            <div class="dropdown-header mb-2"><strong>{{ ah.user }}</strong></div>
+                                            <a class="dropdown-item text-primary"
+                                               href="{{ path('assistant_history_edit',  {id: ah.id}) }}"><i
+                                                        class="fa fa-pencil text-primary"></i> Endre
+                                            </a>
+                                            {% if is_granted_admin() or (is_granted_team_leader() and app.user.department == department) %}
+                                                <form
+                                                        action="{{ path('assistant_history_delete', {id: ah.id}) }}"
+                                                        method="POST"
+                                                        onsubmit="return confirm('Er du sikker på at du vil slette {{ ah.user }} fra {{ ah.school.name }} {{ ah.semester.name }}?')"
+                                                >
+                                                    <button type="submit"
+                                                            class="dropdown-item text-danger">
+                                                        <i class="fa fa-trash text-danger"></i>
+                                                        Slett
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href='{{ path('specific_profile', { 'id': ah.user.id }) }}'>{{ ah.user }}</a>
+                                </td>
+                                <td>
+
+                                    {% if ah.school is not null %}
+                                        {{ ah.school.name }}
+                                    {% else %}
+                                        Skolen er slettet.
+                                    {% endif %}
+
+                                </td>
+                                <td> {{ ah.user.email }}</td>
+                                <td> {{ ah.semester.name }}</td>
+                                <td> {{ ah.department.shortname }}</td>
+                                <td> {{ ah.bolk }}</td>
+                                <td> {{ ah.day }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

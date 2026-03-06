@@ -1,0 +1,83 @@
+{% extends "base.html.twig" %}
+
+{% block title %}Søknadsskjema - {{ department.city }}{% endblock %}
+
+{% block header %}{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2 col-xl-6 offset-xl-3 text-center mt-3 mt-md-5">
+                <img src="{{ asset_with_version('images/vektor.png') }}" alt="Vektorprogrammet">
+                <div class="page-header mb-5">
+                    <h1>Søknadsskjema {{ department.city }}</h1>
+                    <p>Søk som Vektorassistent i {{ department.city }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12">
+                {{ form_start(form) }}
+                <div class="row">
+                    <div class="col-12 col-md-10 offset-md-1">
+                        {{ form_errors(form) }}
+                    </div>
+                    <div class="col-12 col-md-10 offset-md-1">
+                        <div class="row">
+                            <div class="form-group col-12 col-sm-6">
+                                {{ form_row(form.user.firstName, { 'attr': {'tabindex': '1', 'autocomplete': 'nope'}}) }}
+                            </div>
+                            <div class="form-group col-12 col-sm-6">
+                                {{ form_row(form.user.lastName, { 'attr': {'tabindex': '2', 'autocomplete': 'nope'}}) }}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="form-group col-12 col-sm-6">
+                                {{ form_row(form.user.email, { 'attr': {'tabindex': '3', 'autocomplete': 'nope'}}) }}
+                            </div>
+
+                            <div class="form-group col-12 col-sm-6">
+                                {{ form_row(form.user.phone, { 'attr': {'tabindex': '4', 'autocomplete': 'nope'}}) }}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-md-8 offset-md-2">
+                        <div class="row">
+                            <div class="form-group col-12 col-sm-4">
+                                <div>
+                                    {{ form_row(form.user.gender, { 'attr': {'tabindex': '5', 'autocomplete': 'nope'}}) }}
+                                </div>
+                            </div>
+                            <div class="form-group col-12 col-sm-4">
+                                {{ form_row(form.user.fieldOfStudy, { 'attr': {'tabindex': '6', 'autocomplete': 'nope'}}) }}
+                            </div>
+                            <div class="form-group col-12 col-sm-4">
+                                <div>
+                                    {{ form_row(form.yearOfStudy, { 'attr': {'tabindex': '7', 'autocomplete': 'nope'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="text-center mx-auto">
+                        <button type="submit" tabindex="8" class="btn btn-lg btn-primary my-5">Søk nå!</button>
+                    </div>
+                </div>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block footer %}{% endblock %}
+
+{% block javascripts %}
+    <script>
+        setTimeout(function() {
+            $('.alert').slideUp();
+        }, 7000)
+    </script>
+{% endblock %}
+

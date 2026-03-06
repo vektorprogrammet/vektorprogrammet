@@ -1,0 +1,3 @@
+doctrine:
+    dbal:
+        path: '%kernel.project_dir%/var/data/dev.db'

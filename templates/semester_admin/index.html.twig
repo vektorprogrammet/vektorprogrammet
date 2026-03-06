@@ -1,0 +1,47 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Semester
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Semester
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+            <a class="btn text-success btn-sm" href="{{ path('semester_create') }}">
+                <i class="fa fa-plus"></i> Semester
+            </a>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fa fa-align-justify"></i> Semester
+                </div>
+                <div class="table-responsive">
+                    <table class="table">
+
+                        <thead>
+                        <tr>
+                            <th> Navn</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for s in semesters %}
+                            <tr class="text-nowrap">
+                                <td>{{ s }}</td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

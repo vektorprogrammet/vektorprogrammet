@@ -1,0 +1,36 @@
+{% set large_sponsors = get_sponsors_by_size('large') %}
+{% set medium_sponsors = get_sponsors_by_size('medium') %}
+{% set small_sponsors = get_sponsors_by_size('small') %}
+
+<div class="row text-center">
+    {% if large_sponsors is not empty %}
+        <div class="col-12">
+            <h2>Hovedsponsorer</h2>
+        </div>
+        {% for sponsor in large_sponsors %}
+            <div class="col-12 col-sm-6 sponsor-column {% if (((large_sponsors|length) % 2) == 1) %} offset-sm-3{% endif %}">
+                <a href="{{ sponsor.url }}">
+                    <img class="img-fluid sponsor-img-large"
+                         src="{{ asset_with_version(sponsor.logoImagePath) }}">
+                </a>
+            </div>
+        {% endfor %}
+        <hr>
+    {% endif %}
+</div>
+
+<div class="row text-center">
+    {% if medium_sponsors is not empty or small_sponsors is not empty %}
+        <div class="col-12">
+            <h3>Sponsorer og samarbeidspartnere</h3>
+        </div>
+    {% endif %}
+    {% for sponsor in medium_sponsors | merge(small_sponsors) %}
+        <div class="col-6 col-md-4 sponsor-column">
+            <a href="{{ sponsor.url }}">
+                <img class="img-fluid sponsor-img-{{ sponsor.size }}"
+                     src="{{ asset_with_version(sponsor.logoImagePath) }}">
+            </a>
+        </div>
+    {% endfor %}
+</div>

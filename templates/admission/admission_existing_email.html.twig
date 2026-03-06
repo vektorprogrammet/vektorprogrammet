@@ -1,0 +1,36 @@
+{% set user = application.user %}
+<p>Hei, {{ user.firstName }}.</p>
+<p>Takk for at du vil fortsette som vektorassistent!</p>
+
+<br>
+
+<p>Siden du har vært vektorassistent før trenger du ikke å møte på intervju igjen. Vi kontakter deg på denne e-postadressen noen dager etter søknadsfristen med informasjon om hvilken skole du har blitt plassert på.</p>
+
+<br>
+
+<p>Her er søknaden vi har mottatt, om noe skulle være feil kan du sende inn søknaden på nytt eller ta kontakt med oss:</p>
+<ul style="list-style-type: none">
+    <li><b>Navn:</b> {{ user.firstName }} {{ user.lastName }}</li>
+    <li><b>E-post:</b> {{ user.email }}</li>
+    <li><b>Telefon:</b> {{ user.phone }}</li>
+    <li><b>Linje:</b> {{ user.fieldOfStudy.name }} ({{ user.fieldOfStudy.shortName }})</li>
+    <li><b>År:</b> {{ application.yearOfStudy }}</li>
+    <li><b>Kjønn:</b> {{ user.gender == 1 ? 'Dame' : 'Mann' }}</li>
+    <li><b>Dobbel stilling:</b> {{ application.doublePosition ? 'Ja' : 'Nei' }}</li>
+    <li><b>Ønsket bolk:</b> {{ application.preferredGroup ? application.preferredGroup : 'Ingen' }}</li>
+    <li><b>Ønsket undervisningsspråk:</b> {{ application.language }}</li>
+</ul>
+
+Dager som passer:
+<ul style="list-style-type: none">
+    {% if application.monday %} <li><b>Mandag</b></li>{% endif %}
+    {% if application.tuesday %}<li><b>Tirsdag</b></li>{% endif %}
+    {% if application.wednesday %}<li><b>Onsdag</b></li>{% endif %}
+    {% if application.thursday %}<li><b>Torsdag</b></li>{% endif %}
+    {% if application.friday %}<li><b>Fredag</b></li>{% endif %}
+</ul>
+
+<p>Søknaden ble mottatt den {{ "now" | date("j. F Y") }} klokken {{ "now" | date("H:i") }} på <a href="https://vektorprogrammet.no">vektorprogrammet.no</a>.</p>
+
+<p>Mvh. Vektorprogrammet</p>
+<p>{{ user.department.email }}</p>

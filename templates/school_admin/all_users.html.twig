@@ -1,0 +1,97 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block javascripts %}
+
+    <script>
+
+      $(document).ready(function () {
+
+        $('#search').keyup(function () {
+
+          _this = this;
+
+          $.each($('#table tbody').find('tr'), function () {
+
+            if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+              $(this).hide();
+            }
+            else {
+              $(this).show();
+            }
+          });
+
+        });
+
+      });
+
+
+    </script>
+
+{% endblock %}
+
+{% block title %}
+    Tildel skole
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        {% if is_granted_team_leader() %}
+            <a href="{{ path('schooladmin_filter_schools_by_department', {'id': department.id}) }}">
+        {% else %}
+            <a href="{{ path('schooladmin_show') }}">
+        {% endif %}
+                Skoler
+            </a>
+    </li>
+    <li class="breadcrumb-item active">Tildel skole</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% include 'common/department_dropdown.html.twig' with {
+        'pathForDepartment': 'schooladmin_show_users_of_department_superadmin',
+        'departmentParameterName': 'id',
+        'currentDepartment': department
+    } %}
+{% endblock %}
+
+
+{% block body %}
+    <h2 class="text-center my-5"> Tildel skole {{ department }}</h2>
+    <input class="form-control" type="text" id="search" placeholder="Søk..."/>
+
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Brukere i {{ department }}</div>
+        <div class="table-responsive">
+
+            <table id="table" class="table">
+
+                <thead>
+                <tr>
+                    <th> Fornavn</th>
+                    <th> Etternavn</th>
+                    <th> E-post</th>
+                    <th> Telefon</th>
+                    <th></th>
+
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for u in users %}
+                    <tr>
+                        <td><a href="{{ path('specific_profile', { 'id': u.id }) }}"> {{ u.firstName }} </a></td>
+                        <td> {{ u.lastName }} </td>
+                        <td> {{ u.email }} </td>
+                        <td> {{ u.phone }} </td>
+
+                        <td><a href="{{ path('schooladmin_delegate_school_to_user', { 'id': u.id }) }}"
+                               class="button tiny">Tildel skole</a></td>
+
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,79 @@
+<div class="table-responsive">
+    <table class="table w-100" id="activeReceiptsTable">
+        <thead class="thead-light">
+
+        <tr>
+            <th> Id</th>
+            <th> Utleggsdato</th>
+            <th> Beskrivelse</th>
+            <th> Sum</th>
+            <th> Kvittering</th>
+            <th>Status</th>
+            <th></th>
+        </tr>
+
+        </thead>
+
+        <tbody>
+        {% for receipt in receipts %}
+            <tr>
+                <td> {{ receipt.visualId }}</td>
+                <td> {{ receipt.receiptDate|date('d.m.Y') }}</td>
+                <td> {{ receipt.description }} </td>
+                <td> {{ receipt.sum|number_format(2, ',', ' ') }} kr</td>
+                <td>
+                    <button class="btn btn-link btn-text-link" data-toggle="modal" data-target="#receipt-{{ receipt.id }}">Vis kvittering</button>
+
+                    <div id="receipt-{{ receipt.id }}" class="modal" tabindex="-1" role="dialog">
+                        <div class="modal-dialog modal-lg" role="document">
+                            <div class="modal-content">
+                                <div class="modal-body">
+                                    <div class="text-center">
+                                        {{ include('widgets/receipt_viewer.html.twig') }}
+                                        <br>
+                                        <button type="button" class="btn btn-secondary mt-3" data-dismiss="modal"><i class="fa fa-close"></i> Lukk</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </td>
+                {% if receipt.status == 'pending' %}
+                    <td class="text-warning "><span>Til behandling...</span></td>
+                {% elseif receipt.status == 'refunded' %}
+                    <td class="text-success ">Refundert</td>
+                {% elseif receipt.status == 'rejected' %}
+                    <td class="text-danger ">Refusjon avvist</td>
+                {% endif %}
+
+                {% if receipt.status == 'pending' %}
+                    <td>
+                        <form method="POST"
+                              onsubmit="return confirm('Vil du virkelig slette dette utlegget?')"
+                              action="{{ path('receipt_delete', { 'receipt': receipt.id }) }}">
+
+                            <div class="btn-group">
+                                <a href="{{ path('receipt_edit', { 'receipt': receipt.id }) }}">
+                                    <button type="button" class="btn btn-link py-0 text-primary table-action">
+                                        <i class="fa fa-pencil"></i>
+                                        <span class="action-label">Rediger</span>
+                                    </button>
+                                </a>
+                                <button type="submit"
+                                        class="btn btn-link py-0 text-danger delete table-action">
+                                    <i class="fa fa-trash"></i>
+                                    <span class="action-label">Slett</span>
+                                </button>
+                            </div>
+                        </form>
+                    </td>
+                {% else %}
+                    <td></td>
+                {% endif %}
+            </tr>
+        {% endfor %}
+        </tbody>
+
+    </table>
+</div>

@@ -1,0 +1,13 @@
+Hei {{ interview.interviewer.firstName }}
+
+{{ interview.coInterviewer.getFullName() }} har meldt seg på som medintervjuer på et av dine intervjuer.
+
+{% if interview.scheduled %}
+Dato: {{ interview.scheduled | date("d.m.Y H:i")}}
+{% endif %}
+{% if interview.room %}
+Rom: {{ interview.room }}
+{% endif %}
+
+Mvh
+Vektorbot

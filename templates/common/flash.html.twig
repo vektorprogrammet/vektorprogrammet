@@ -1,0 +1,41 @@
+{% for flashMessage in app.session.flashbag.get('success') %}
+    <div class="flash-message">
+        <div data-alert class="alert alert-success text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('info') %}
+    <div class="flash-message">
+        <div data-alert class="alert alert-info text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('warning') %}
+    <div class="flash-message">
+        <div data-alert class="alert alert-warning text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+{% endfor %}
+{% for flashMessage in app.session.flashbag.get('danger') %}
+    <div class="flash-message">
+        <div data-alert class="alert alert-danger text-center">
+            {{ flashMessage }}
+            <a href="#" class="close">&times;</a>
+        </div>
+    </div>
+{% endfor %}
+{% block javascripts -%}
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        $('.close').click(function () {
+          $(this).closest('.flash-message').remove();
+        });
+      });
+    </script>
+{% endblock %}

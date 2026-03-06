@@ -1,0 +1,58 @@
+{% set u = application.user %}
+
+<table class="table table-bordered table-light">
+    <tbody>
+    <tr>
+        <th>
+            <div class="table-icon"><i class="fa fa-user-o"></i></div>
+            Navn
+        </th>
+        <td><a href="{{ path('specific_profile', {'id': u.id}) }}">{{ u }}</a></td>
+    </tr>
+    <tr>
+        <th>
+            <div class="table-icon"><i class="fa fa-mobile-alt"></i></div>
+            Tlf
+        </th>
+        <td><a href="tel:{{ u.phone }}">{{ u.phone }}</a></td>
+    </tr>
+    <tr>
+        <th>
+            <div class="table-icon"><i class="fa fa-envelope-o"></i></div>
+            E-post
+        </th>
+        <td><a href="mailto:{{ u.email }}">{{ u.email }}</a></td>
+    </tr>
+    <tr>
+        <th>
+            <div class="table-icon"><i class="fa fa-bars"></i></div>
+            Linje
+        </th>
+        <td> {{ u.fieldOfStudy }} </td>
+    </tr>
+    <tr>
+        <th>
+            <div class="table-icon"><i class="fa fa-clock-o"></i></div>
+            År
+        </th>
+        <td> {{ application.yearOfStudy }} </td>
+    </tr>
+    <tr>
+        <th>
+            <div class="table-icon"><i class="fa fa-user-edit"></i></div>
+            Intervjuet av
+        </th>
+        <td>
+            <a href="{{ path('specific_profile', {'id': application.interview.interviewer.id}) }}">
+                {{ application.interview.interviewer }}
+            </a>
+            {% if application.interview.coInterviewer %}
+                &nbsp;og&nbsp;
+                <a href="{{ path('specific_profile', {'id': application.interview.coInterviewer.id}) }}">
+                    {{ application.interview.coInterviewer }}
+                </a>
+            {% endif %}
+        </td>
+    </tr>
+    </tbody>
+</table>

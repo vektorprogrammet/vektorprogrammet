@@ -1,0 +1,252 @@
+{% extends "adminBase.html.twig" %}
+
+{% block title %}
+    Stand
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/stand.css') }}">
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Stand</li>
+{% endblock %}
+
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        {% include 'common/department_semester_dropdowns.html.twig' with { 'path': 'stand' } %}
+    {% else %}
+        {% include 'common/semester_dropdown.html.twig' with { 'pathForSemester': 'stand' } %}
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="contianer-fluid">
+    <div class="row">
+        <div class="col-12">
+            <h1>Prosedyre for stand</h1>
+            <p><b>Husk:</b> Det er ditt ansvar å finne noen å bytte med dersom du ikke har mulighet til å stå på stand. <br>
+            Viktig å møte <b>tidsnok!</b></p>
+        </div>
+        <div class="col-lg-6">
+            <div class="accordion" id="accordionExample">
+                <div class="card">
+                    <div class="card-header" id="headingOne">
+                        <h2 class="mb-0">
+                            <div class = "dropdown">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="collapse" data-target="#collapseOne">Før stand
+                                    <span class="caret"></span></button>
+                            </div>
+                        </h2>
+                    </div>
+
+                    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordionExample">
+                        <div class="card-body">
+                            Før stand:
+                            <ul>
+                                <li>Sjekk at det er nok kaffe, kaffefilter, kopper og drops i standboksen. Hvis ikke; fyll på.</li>
+                                <li>Ha på vektor t-skjorte (og eventuelt vektorhettegenser).</li>
+                                <li>Ta med:
+                                    <ul>
+                                        <li>PC <b>som er ladet</b></li>
+                                        <li>Boksen med stand i (skal inneholde plakater, kaffetrakter, flyers, drops osv.)</li>
+                                        <li>Tørkepapir</li>
+                                    </ul>
+                                </li>
+                                <li>Begynn å lage kaffe med en gang, og kjøp inn kaffe om nødvendig.
+                                    <ul>
+                                        <li>Dosering: 6 skjeer kaffepulver.</li>
+                                    </ul>
+                                </li>
+                                <li><b>NB!</b> Hvis det skal stekes vafler på stand må man starte tidlig. Det trengs vaffeljern, vaffelmiks, smør, visp, øse og bolle til dette.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header" id="headingTwo">
+                        <div class = "dropdown">
+                            <button type="button" class="btn btn-info dropdown-toggle" data-toggle="collapse" data-target="#collapseTwo">På stand
+                                <span class="caret"></span></button>
+                        </div>
+                    </div>
+                    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>Mens du står på stand:</p>
+                            <ul>
+                                <li>Kok kaffe underveis. Viktig å ha mye kaffe klart til pauser i forelesninger.</li>
+                                <li>Stå foran stand, vær utadvendt!</li>
+                                <li>Hold standen ren.</li>
+                                <li>Informer om infomøte og søknadsfrist.</li>
+                                <li>Sett frem PC med
+                                    <a href="{{ path('interest_list', {shortName: department.shortName}) }}">
+                                        påmeldingskjema</a> for {{ department }}.</li>
+                                <br>
+                                <li>Forslag til ting å snakke om:
+                                    <ul>
+                                        <li>“Har du hørt om Vektorprogrammet?”</li>
+                                        <li>“Er det noe du kan tenke deg å være med på?”</li>
+                                        <li>“Vi har infomøte da og da”</li>
+                                    </ul>
+                                    <br>
+                                    <li>Viktig å få frem at dette er et frivillig, ulønnet verv.</li>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="card-header" id="headingThree">
+                        <h2 class="mb-0">
+                            <div class = "dropdown">
+                                <button type="button" class="btn btn-info dropdown-toggle" data-toggle="collapse" data-target="#collapseThree">Etter stand
+                                    <span class="caret"></span></button>
+                            </div>
+                        </h2>
+                    </div>
+                    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordionExample">
+                        <div class="card-body">
+                            <p>Etter stand: </p>
+                            <ul>
+                                <li>Nedrigging av stand: </li>
+                                    <ul>
+                                        <li>Høyttaleren og bamsen skal ikke ligge i boksen.</li>
+                                        <li>Vær forsiktig med utstyr, ikke krøll plakater.</li>
+                                        <li>Skyll kaffekanner og sett dem i vann til dagen etter. Skyll også kaffetrakteren.</li>
+                                        <li>(ev. vaske vaffeljern)</li>
+                                    </ul>
+                                </li>
+                                <li>Etterfyll med kaffe og drops hvis nødvendig.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+        </div>
+
+        <div class="col-lg-6">
+            <img class="hero-image img-fluid"
+                 src="{{ asset_with_version('/images/stand_image.jpg') }}">
+            <p><b>Eksempel på hvordan standen skal se ut.</b></p>
+            <br>
+        </div>
+    </div>
+    <hr>
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-0">Søknader</h3>
+            <p class="text-faded">
+                Totalt antall søknader: <strong>{{ applications|length }}</strong><br>
+                Antall søknader {{ semester.name }}: <strong>{{ applications_in_semester|length }}</strong><br>
+                {% if department.activeAdmission %}
+                    <a href="{{ path('application_stand_form', {shortName: department.shortName}) }}">
+                        Søknadsskjema for {{ department }}
+                    </a>
+                {% endif %}
+            </p>
+        </div>
+        <div class="col-12">
+            <h4 class="text-center">Søknader {{ semester.name }} - {{ department }}</h4>
+            <canvas id="applicationsChart" width="400" height="125"></canvas>
+        </div>
+        <hr>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-0">Interesseliste</h3>
+            <p class="text-faded">
+                Totalt antall påmeldte: <strong>{{ subscribers|length }}</strong><br>
+                Antall påmeldte {{ semester.name }}: <strong>{{ subscribers_in_semester|length }}</strong><br>
+                <a href="{{ path('interest_list', {shortName: department.shortName}) }}">
+                    Påmeldingsside for {{ department }}
+                </a>
+            </p>
+        </div>
+        <div class="col-12">
+            <h4 class="text-center">Påmeldte {{ semester.name }} - {{ department }}</h4>
+            <canvas id="admissionSubscribersChart" width="400" height="125"></canvas>
+        </div>
+        <hr>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <h3 class="mb-0">Interesseliste for team</h3>
+            <p class="text-faded">
+                Her går det ann å legge inn navn og epost og huke av på de teamene man er interessert i.<br>
+                <a href="{{ path('team_interest_form', {id: department.id}) }}">
+                    Påmeldingsside for {{ department }}
+                </a>
+                {% if is_granted_team_leader() %}
+                    <br>En oversikt over påmeldte finnes under
+                    <a href="{{ path('admissionadmin_team_interest') }}">
+                        Diverse <i class="fa fa-long-arrow-right"></i> Teaminteresse
+                    </a>.
+                {% endif %}
+            </p>
+        </div>
+        <hr>
+    </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.min.js"></script>
+    <script>
+      var subCtx = document.getElementById('admissionSubscribersChart').getContext('2d');
+      new Chart(subCtx, {
+        type: 'line',
+        data: {
+          labels: [{% for date, subCount in subData %}'{{ date|date('d.M') }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+          datasets: [{
+            label: 'Antall påmeldte',
+            data: [{% for subCount in subData %}{{ subCount }}{% if not loop.last %}, {% endif %}{% endfor %}],
+            backgroundColor: 'rgba(0, 0, 0, 0)',
+            borderColor: 'rgba(0,134,179,1)',
+            borderWidth: 1,
+          }],
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                beginAtZero: true,
+              },
+            }],
+          },
+        },
+      });
+
+      var appCtx = document.getElementById('applicationsChart').getContext('2d');
+      new Chart(appCtx, {
+          type: 'line',
+          data: {
+              labels: [{% for date, appCount in appData %}'{{ date|date('d.M') }}'{% if not loop.last %}, {% endif %}{% endfor %}],
+              datasets: [{
+                  label: 'Antall påmeldte',
+                  data: [{% for appCount in appData %}{{ appCount }}{% if not loop.last %}, {% endif %}{% endfor %}],
+                  backgroundColor: 'rgba(0, 0, 0, 0)',
+                  borderColor: 'rgba(0,134,179,1)',
+                  borderWidth: 1,
+              }],
+          },
+          options: {
+              scales: {
+                  yAxes: [{
+                      ticks: {
+                          beginAtZero: true,
+                      },
+                  }],
+              },
+          },
+      });
+    </script>
+{% endblock %}

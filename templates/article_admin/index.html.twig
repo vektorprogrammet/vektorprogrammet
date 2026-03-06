@@ -1,0 +1,88 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Artikler
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Artikler</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a href="{{ path('articleadmin_create') }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Ny Artikkel
+    </a>
+{% endblock %}
+
+{% block body %}
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> Artikler ({{ articles|length }})</div>
+                <div class="table-responsive">
+                    <table class="table" id="article-table">
+                        <thead>
+                        <tr>
+                            <th></th>
+                            <th>Tittel</th>
+                            <th>Sist Oppdatert</th>
+                            <th>Skrevet Av</th>
+                            <th>Status</th>
+                        </tr>
+                        </thead>
+
+                        <tbody>
+                        {% for a in pagination %}
+                            <tr id="{{ a.id }}">
+                                <td class="table-menu">
+                                    <div class="dropdown">
+                                        <div class="clickable px-2" id="options-{{ a.id }}" data-toggle="dropdown"
+                                             aria-haspopup="true" aria-expanded="false">
+                                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                                        </div>
+                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ a.id }}">
+                                            <div class="dropdown-header mb-2"><strong>Artikkel</strong></div>
+                                            <a href="{{ path('articleadmin_edit', { 'id': a.id }) }}"
+                                               class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                            </a>
+                                            {% if is_granted_team_leader() %}
+                                                <form method="POST"
+                                                      onsubmit="return confirm('Vil du virkelig slette artikkel {{ a.title }}?')"
+                                                      action="{{ path('articleadmin_delete', { id: a.id }) }}">
+                                                    <button type="submit"
+                                                            class="dropdown-item">
+                                                        <i class="fa fa-trash text-danger"></i> Slett
+                                                    </button>
+                                                </form>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="{{ path(a.published ? 'article_show' : 'article_show_draft', {'slug': a.slug}) }}">{{ a.title|safe_html }}</a>
+                                </td>
+                                <td>{{ a.updated|date("d.m.y - G:i") }}</td>
+                                <td><a href="{{ path('specific_profile', {'id': a.author.id}) }}">{{ a.author }}</a></td>
+                                <td>
+                                    {% if a.published %}
+                                        <span class="badge badge-success">Publisert</span>
+                                    {% else %}
+                                        <span class="badge badge-warning">Kladd</span>
+                                    {% endif %}
+                                    {% if a.sticky %}
+                                        <span class="badge badge-primary">Sticky</span>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    <div class="mt-4">
+                        {{ knp_pagination_render(pagination) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

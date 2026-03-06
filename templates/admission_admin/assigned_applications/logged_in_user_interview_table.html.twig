@@ -1,0 +1,5 @@
+{% if yourApplications|length > 0 %}
+    {% set title = 'Dine intervjuer | Antall: ' ~ yourApplications|length %}
+    {% include 'admission_admin/assigned_table.html.twig' with {'applicants': yourApplications, 'title': title} %}
+    <hr>
+{% endif %}

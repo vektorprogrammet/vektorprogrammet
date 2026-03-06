@@ -1,0 +1,6 @@
+{
+  "precommit": {
+    "quality": "STAGED=$(git diff --cached --name-only --diff-filter=d -- '*.php'); ([ -z \"$STAGED\" ] || echo \"$STAGED\" | xargs bin/php-cs-fixer fix --dry-run --diff --config=.php-cs-fixer.dist.php --path-mode=intersection) && ([ ! -f var/data/test.db ] && echo 'Skipping unit tests (no test DB)' || composer test:unit)",
+    "main": "master"
+  }
+}

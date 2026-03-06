@@ -1,0 +1,40 @@
+{% if assistantHistory is not empty %}
+    <div class="card mt-3">
+        <div class="card-body">
+            <div class="card-title">
+                <h3 class="text-dark-blue">Assistenthistorikk</h3>
+            </div>
+            <div class="table-responsive">
+                <table class="table">
+                    <thead class="thead-light">
+                    <tr>
+                        <th>Skole</th>
+                        <th>Semester</th>
+                    </tr>
+                    </thead>
+                    {% for ah in assistantHistory %}
+                        {% if ah.semester is not null and ah.school is not null %}
+                            <tr>
+                                <td>
+                                    {% if ah.school is null %}
+                                        skolen har blitt slettet
+                                    {% else %}
+                                        {{ ah.getSchool.getName }}
+                                    {% endif %}
+                                </td>
+                                <td>
+                                    {% if ah.semester is null %}
+                                        semesteret har blitt slettet
+                                    {% else %}
+                                        {{ ah.getSemester.getName }}
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endif %}
+
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+{% endif %}

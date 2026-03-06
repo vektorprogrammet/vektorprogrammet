@@ -1,0 +1,39 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Opprett opptaksperiode
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('admission_period_admin_show', {'id': department.id}) }}">Opptaksperioder</a>
+    </li>
+    <li class="breadcrumb-item active">Opprett</li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-industry"></i>Opprett opptaksperiode {{ department }}</div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_widget(form) }}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% include 'common/datetime_picker.html.twig' with {
+        inputIds: [
+                form.startDate.vars.id,
+                form.endDate.vars.id
+        ],
+        step: 1,
+    }%}
+{% endblock %}

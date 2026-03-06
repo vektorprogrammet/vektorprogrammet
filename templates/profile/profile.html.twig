@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Profil | {{ user.firstName }} {{ user.lastName }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/profile.css') }}">
+{% endblock %}
+
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-3 mt-md-5">
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="d-block d-md-none mb-3">
+                    {% include 'profile/profile_header.html.twig' %}
+                </div>
+                {% include 'profile/profile_user_links.html.twig' %}
+
+                {% if is_granted_team_leader() %}
+                    <div class="card mt-3">
+                        <div class="card-body">
+                            <div class="card-title">
+                                <h3> Brukerstatus </h3>
+                            </div>
+                            <p class="mb-0"> Brukeren er {{ user.isActive ? 'aktiv' : 'inaktiv' }} </p>
+                            {% if is_granted_admin() %}
+                                <form
+                                        method="POST"
+                                        action="{{ path(user.isActive ? 'profile_deactivate_user' : 'profile_activate_user', {id: user.id}) }}"
+                                        onsubmit="return confirm('Er du sikker?');">
+                                    <button class="btn btn-link p-0">{{ user.isActive ? 'Deaktiver' : 'Aktiver' }}</button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+
+                {% include 'profile/contact_info.html.twig' %}
+            </div>
+
+            <div class="col-12 col-md-6 col-lg-8">
+                <div class="d-none d-md-block">
+                    {% include 'profile/profile_header.html.twig' %}
+                </div>
+
+                {% include 'profile/executive_board_history.html.twig' %}
+
+                {% include 'profile/assistant_history.html.twig' %}
+
+                {% include 'profile/team_history.html.twig' %}
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

@@ -1,0 +1,110 @@
+{% extends "adminBase.html.twig" %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('survey_notifiers') }}">Varselutsendelser</a>
+    </li>
+    <li class="breadcrumb-item active">{{ isCreate ? 'Lag varselutsendelse' : surveyNotificationCollection.name }}</li>
+{% endblock %}
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> {{ isCreate ? 'Lag påminnelse til undersøkelse' : surveyNotificationCollection.name }}</div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.name) }}
+                            {{ form_row(form.survey) }}
+                            {{ form_row(form.notificationType) }}
+                            {{ form_row(form.timeOfNotification) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-info-circle"></i></div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <p>MERK: Undersøkelser blir ikke sendt til personer som allerede har svart på undersøkelsen. Men om det ikke er tilfellet kan samme undersøkelse sendes som varsel i andre undersøkelsevarsler</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="card">
+                <div class="card-header"><i class="fas fa-users"></i> Brukergrupper</div>
+                <div class="card-body">
+                    {% if isUserGroupCollectionEmpty %} <strong class="text-danger">Brukergruppesamling må lages </strong>{% endif %}
+                    {{ form_row(form.usergroups) }}
+
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-12 col-lg-6">
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-at"></i> Epost</div>
+                    <div class="card-body">
+                        <br>
+                        {{ form_row(form.emailFromName) }}
+                        <br>
+                        {{ form_row(form.emailSubject) }}
+                        <br>
+
+                        {{ form_row(form.emailType) }}
+                        <br>
+                        <strong> Selvskrevet e-post melding: </strong>
+                        <br>
+                        Hei, {Fornavn} <br>
+                        {{ form_row(form.emailMessage) }}
+                        {undersøkelselenke} <br><br>
+                        {{ form_row(form.emailEndMessage) }}
+
+                    </div>
+                </div>
+
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-mobile-alt"></i>SMS</div>
+                    <div class="card-body">
+                        Merk: En lenke vil ikke sendes ut med SMSen
+                        <br>
+                        <br>
+                        <strong>SMS som skal sendes:</strong>
+                        <br>
+                        Hei, {Fornavn} <br>
+                        {{ form_row(form.smsMessage) }}
+                    </div>
+                </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-12">
+            <div class="card">
+                <div class="card-body">
+                    {{ form_widget(form.preview, {'attr': {'class': 'btn btn-outline-secondary ignore-auto-disable', 'formtarget': '_blank'}}) }}
+                    <button class="btn btn-primary ignore-auto-disable">Lagre</button>
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    {{ form_end(form) }}
+
+{% endblock %}
+{% block javascripts %}
+    {% include 'common/datetime_picker.html.twig' with {
+        inputIds: [form.timeOfNotification.vars.id]
+    } %}
+{% endblock %}

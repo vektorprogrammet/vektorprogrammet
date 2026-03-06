@@ -1,0 +1,20 @@
+<div class="col-12 col-md-6 col-xxxl-4">
+    <div class="card">
+        <div class="card-header">
+            Send en melding til IT-teamet!
+        </div>
+        <div class="card-body">
+            <ul>
+                <li>Har du et spørsmål til IT-teamet?</li>
+                <li>Får du opp en feilmelding når du prøver å gjøre noe?</li>
+                <li>Har du en god ide til en ny funksjonalitet?</li>
+            </ul>
+            <strong>IT-teamet vil gjerne høre fra deg.</strong>
+            <br><br>
+            {{ form_start(form, {'action': path('feedback_admin_index')}) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+            {% include 'common/flash.html.twig' %}
+        </div>
+    </div>
+</div>

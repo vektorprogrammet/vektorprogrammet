@@ -1,0 +1,40 @@
+{% extends 'admission_admin/layout.html.twig' %}
+{% block applications %}
+
+    {% include 'admission_admin/assigned_applications/interview_distribution.html.twig' %}
+    {% include 'admission_admin/assigned_applications/logged_in_user_interview_table.html.twig' %}
+    {% include 'admission_admin/assigned_applications/all_interviews_table.html.twig' %}
+    <br>
+    {% include 'admission_admin/assigned_applications/cancelled_interviews_table.html.twig' %}
+    <br>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Intervjufordeling
+    </li>
+{% endblock %}
+
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        function setSliders(listId, buttonId) {
+            var $list = $('#' + listId);
+            var $button = $('#' + buttonId);
+            $list.attr('expanded', 'false');
+            $button.on('click', function () {
+                $list.slideToggle(400);
+                if ($list.attr('expanded') == 'false') {
+                    $button.html($button.html().replace("Vis", "Skjul").replace("down", "up"));
+                    $list.attr('expanded', 'true');
+                } else {
+                    $button.html($button.html().replace("Skjul", "Vis").replace("up", "down"));
+                    $list.attr('expanded', 'false');
+                }
+            });
+        }
+        setSliders('allApplicantsList', 'allApplicantsButton');
+        setSliders('cancelledApplicationsList', 'cancelledApplicationsButton');
+    </script>
+{% endblock %}

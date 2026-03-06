@@ -1,0 +1,16 @@
+{% block field_help %}
+    {% if help|default %}
+        <p class="question-help">{{ help }}</p>
+    {% endif %}
+{% endblock %}
+
+{% block form_row %}
+    {% apply spaceless %}
+        <div class="form-group">
+            {{ form_label(form, label|default(null), {'label_attr': {'class': valid ? 'question-label': 'question-label error'}}) }}
+            {{ block('field_help') }}
+            {{ form_errors(form) }}
+            {{ form_widget(form) }}
+        </div>
+    {% endapply %}
+{% endblock form_row %}

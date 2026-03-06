@@ -1,0 +1,130 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Utlegg{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/my_receipts.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+            <section class="content">
+                <div class="page-header mb-5">
+                    <h1>Utlegg</h1>
+                    <p>
+                        Her kan du registrere utlegg du har gjort for vektorprogrammet som du ønsker å få refundert. For
+                        å få refusjon
+                        må du laste opp en kvittering som bekrefter utlegget ditt.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-center">Hva kan jeg få refundert?</h3>
+                    <p>
+                        {% if is_granted_team_member() %}
+                            Du kan typisk få refusjon for bussbilletter til og fra skole, kaffeposer til stand, kake til arrangementer og lignende. Det er ellers
+                            lurt å høre med en leder om du kan få utlegget ditt refundert før du legger ut.
+                        {% else %}
+                            Vi refunderer gjerne bussbilletter o.l. til og fra skolene. Hvis du har tenkt til å legge ut for noe annet kan det være lurt å
+                            høre med en leder om du kan få det refundert først.
+                        {% endif %}
+                        Om du har spørsmål kan du kontakte økonomiteamet på <a
+                                href="mailto:okonomi@vektorprogrammet.no">okonomi@vektorprogrammet.no</a>.
+                    </p>
+                </div>
+            </section>
+
+            <br>
+
+            <section class="mt-5">
+                <h3 class="text-center">Mine utlegg</h3>
+
+                <button id="newReceiptLink" class="btn btn-link btn-text-link text-success"><i class="fa fa-plus"></i>&nbsp;<span>Nytt utlegg</span>
+                </button>
+
+                <div id="receipt-form">
+                    <h3 class="mt-3"> Registrer nytt utlegg </h3>
+                    {% include 'receipt/create_receipt.html.twig' with {'form': form, 'receipt': receipt} %}
+                </div>
+            </section>
+            <br>
+            <hr>
+            <br>
+            <section>
+                {% if receipts %}
+                    <div class="table">
+                        {% include 'receipt/my_receipts_table.html.twig' with {'receipts': receipts} %}
+                    </div>
+                {% endif %}
+            </section>
+        </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      function toggleReceiptForm() {
+        var receiptForm = $('#receipt-form');
+        if (receiptForm.css('display') === 'none') {
+          $(this).removeClass('text-success').addClass('text-primary');
+          $(this).find('i').removeClass('fa-plus').addClass('fa-minus');
+          $(this).find('span').text('Skjul skjemaet');
+        } else {
+          $(this).removeClass('text-primary').addClass('text-success');
+          $(this).find('i').removeClass('fa-minus').addClass('fa-plus');
+          $(this).find('span').text('Nytt utlegg');
+        }
+        $(this).blur();
+        receiptForm.slideToggle();
+      }
+      $('#newReceiptLink').on('click', toggleReceiptForm);
+
+      {% if not form.vars.valid %}
+        toggleReceiptForm();
+      {% endif %}
+    </script>
+    <script>
+      function readURL(input) {
+
+        if (input.files && input.files[0]) {
+          var reader = new FileReader();
+
+          reader.onload = function (e) {
+              if (e.target.result.startsWith("data:application/pdf")){
+                  $('#receipt_pdf').removeClass('d-none');
+                  $('#receipt_pdf').find('object').attr('data', e.target.result);
+                  $('#receipt_pdf').find('embed').attr('src', e.target.result);
+                  $('#receipt_pdf').find('a').attr('href', e.target.result);
+
+                  $('#receipt_picture').addClass('d-none');
+
+              } else {
+                $('#receipt_pdf').addClass('d-none');
+
+                $('#receipt_picture').removeClass('d-none');
+                $('#receipt_picture').attr('src', e.target.result);
+              }
+          };
+
+          reader.readAsDataURL(input.files[0]);
+        }
+      }
+
+      $('#receipt_picturePath').change(function () {
+        if (this.value === '') {
+          $('#receipt_picture').parent().addClass('d-none');
+        } else {
+          $('#receipt_picture').parent().removeClass('d-none');
+          readURL(this);
+        }
+      });
+
+    </script>
+
+    <script>
+      setTimeout(function () {
+        $('.alert-box').fadeOut(800);
+      }, 1500);
+    </script>
+
+    <script src="{{ asset_with_version('js/bankAccountNumberValidation.js') }}"></script>
+    <script src="{{ asset_with_version('js/button_deactivator.js') }}"></script>
+{% endblock %}

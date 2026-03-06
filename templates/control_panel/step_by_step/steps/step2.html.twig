@@ -1,0 +1,8 @@
+{% set hoursLeft = data.admissionTimeLeft %}
+{% if hoursLeft < 24 %}
+    <p>{{ hoursLeft }} {{ hoursLeft == 1 ? 'time' : 'timer' }} igjen</p>
+{% else %}
+    {% set daysLeft = hoursLeft // 24 %}
+    <p>{{ daysLeft }} {{ daysLeft == 1 ? 'dag' : 'dager' }} igjen</p>
+{% endif %}
+<p><a href="{{ path('admissionadmin_show') }}">{{ data.totalApplicationsCount }} søkere</a></p>

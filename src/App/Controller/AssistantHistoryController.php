@@ -1,0 +1,64 @@
+<?php
+
+namespace App\Controller;
+
+use App\Entity\AssistantHistory;
+use App\Entity\Repository\DepartmentRepository;
+use App\Entity\Repository\SemesterRepository;
+use App\Form\Type\CreateAssistantHistoryType;
+use App\Role\Roles;
+use App\Service\LogService;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Attribute\Route;
+
+class AssistantHistoryController extends BaseController
+{
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+        private readonly LogService $logService,
+        DepartmentRepository $departmentRepo,
+        SemesterRepository $semesterRepo,
+    ) {
+        parent::__construct($departmentRepo, $semesterRepo);
+    }
+
+    #[Route('/kontrollpanel/deltakerhistorikk/slett/{id}', name: 'assistant_history_delete', methods: ['POST'])]
+    public function deleteAction(AssistantHistory $assistantHistory)
+    {
+        if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
+            $this->createAccessDeniedException();
+        }
+
+        $this->em->remove($assistantHistory);
+        $this->em->flush();
+
+        $this->logService->info(
+            "{$this->getUser()} deleted {$assistantHistory->getUser()}'s assistant history on ".
+            "{$assistantHistory->getSchool()->getName()} {$assistantHistory->getSemester()->getName()}"
+        );
+
+        return $this->redirectToRoute('participanthistory_show');
+    }
+
+    #[Route('/kontrollpanel/deltakerhistorikk/rediger/{id}', name: 'assistant_history_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
+    public function editAction(Request $request, AssistantHistory $assistantHistory)
+    {
+        $department = $assistantHistory->getUser()->getDepartment();
+        $form = $this->createForm(CreateAssistantHistoryType::class, $assistantHistory, [
+            'department' => $department,
+        ]);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $this->em->persist($assistantHistory);
+            $this->em->flush();
+
+            return $this->redirectToRoute('participanthistory_show');
+        }
+
+        return $this->render('participant_history/participant_history_edit.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+}

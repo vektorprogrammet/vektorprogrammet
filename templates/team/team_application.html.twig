@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/team.css') }}">
+{% endblock %}
+
+{% block body %}
+    <header class="my-5 row content">
+        <div class="col-md-12">
+            <h1 class="text-center header-title text-dark-blue">Søk {{ team.name }}</h1>
+            <p class="text-center tiny-title">{{ team.department.city}}</p>
+        </div>
+    </header>
+    <section class="row content">
+        {{ form_start(form) }}
+        <div class="col-12">
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+            {{ form_row(form.phone) }}
+            {{ form_row(form.yearOfStudy) }}
+            {{ form_row(form.fieldOfStudy) }}
+            {{ form_row(form.biography) }}
+            {{ form_row(form.motivationText) }}
+            <button class="btn btn-success btn-block p-4 mt-5 text-uppercase medium-bold">Send</button>
+            <br>
+            <br>
+        </div>
+        {{ form_end(form) }}
+    </section>
+
+{% endblock %}

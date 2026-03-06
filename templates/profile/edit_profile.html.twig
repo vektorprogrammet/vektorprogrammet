@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Rediger profil | {{ user.firstName }} {{ user.lastName }}
+{% endblock %}
+
+{% block body %}
+    <div class="container">
+        <div class="row mt-3">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title">
+                            {% if app.user == user %}
+                                <h1 class="text-dark-blue"> Rediger din profil </h1>
+                            {% else %}
+                                <h1 class="text-dark-blue"> Rediger profil </h1>
+                                <p>
+                                    Rediger profilen til {{ user }}
+                                </p>
+                            {% endif %}
+                        </div>
+
+
+                        {{ form_start(form) }}
+                        {{ form_rest(form) }}
+                        <button class="btn btn-lg btn-primary mt-3">Lagre</button>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset_with_version('js/bankAccountNumberValidation.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,105 @@
+fm_elfinder:
+    instances:
+        default:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: false
+            connector:
+                debug: false
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: '%public_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        admin_access:
+            locale: '%locale%'
+            editor: simple
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    private:
+                        driver: LocalFileSystem
+                        path: '%private_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+                    public:
+                        driver: LocalFileSystem
+                        path: '%public_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        ck_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%public_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+                    private:
+                        driver: LocalFileSystem
+                        path: '%private_uploads%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        article_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%article_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        article_form:
+            locale: '%locale%'
+            editor: form
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    uploads:
+                        driver: LocalFileSystem
+                        path: '%article_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        newsletter_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%newsletter_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M
+        team_editor:
+            locale: '%locale%'
+            editor: ckeditor
+            fullscreen: true
+            connector:
+                debug: false
+                roots:
+                    public:
+                        driver: LocalFileSystem
+                        path: '%team_images%'
+                        upload_allow: ['image/png', 'image/jpg', 'image/jpeg', 'application/pdf']
+                        upload_deny: ['all']
+                        upload_max_size: 5M

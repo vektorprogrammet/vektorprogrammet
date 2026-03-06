@@ -1,0 +1,300 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block javascripts %}
+
+    <script src="{{ asset_with_version('js/stupidtable.js') }}"></script>
+
+    <script>
+
+        /**
+         * This object organizes the javascript used by this twig and the twigs extending it
+         *
+         * The onReady function is called when the document is ready.
+         */
+        var AppAdmin = {
+
+            // The html table containing the applications
+            appTable: $(".application-table"),
+            distributionTable: $("#interview-distribution-table"),
+
+            onReady: function () {
+                // Add sort functionality to the table containing the applications
+                AppAdmin.appTable.stupidtable();
+                AppAdmin.distributionTable.stupidtable();
+
+                // Add arrows after sorting the table
+                AppAdmin.appTable.on("aftertablesort", AppAdmin.addSortArrows);
+                AppAdmin.distributionTable.on("aftertablesort", AppAdmin.addSortArrows);
+
+                // Bind assign interview functionality to each assign button
+                AppAdmin.appTable.find(".assign").on("click", AppAdmin.getAssignForm);
+
+                $("#bulkAction").on("click", AppAdmin.bulkAction);
+
+                $("#bulkAllCheck, .bulkCheck").on("change", AppAdmin.toggleSelectAll);
+
+                // Bind the bulk action submit button
+                //$("form[name='bulk']").submit(AppAdmin.onBulkSubmit);
+            },
+
+            addSortArrows: function (event, data) {
+                var th = $(this).find("th");
+                th.find(".arrow").remove();
+                var dir = $.fn.stupidtable.dir;
+
+                var arrow = data.direction === dir.ASC ? "asc" : "desc";
+                th.eq(data.column).append('<span class="arrow"> <i class="fa fa-sort-' + arrow + '"></i></span>');
+            },
+
+            getAssignForm: function (event) {
+                event.preventDefault();
+                var applicationId = $(this).closest('tr').attr('id');
+                var url = '{{ path('interview_assign') }}/'+applicationId;
+                var modal = $("#assignModal");
+
+                $.ajax({
+                    type: 'GET',
+                    url: url,
+                    cache: false,
+                    success: function (response) {
+                        modal.html(response.form);
+                        modal.find("form").data("app-id", applicationId);
+                        modal.find("form").submit(AppAdmin.onAssignFormSubmit);
+                        modal.modal();
+                    }
+                });
+            },
+
+            onAssignFormSubmit: function (event) {
+                event.preventDefault();
+                var formdata = $(this).serialize();
+                var applicationId = $(this).data("app-id");
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('interview_assign') }}/"+applicationId,
+                    data: formdata,
+                    success: function (respone) {
+                      window.location.reload();
+                        // AppAdmin.appTable.find("tr#" + applicationId).find(".assign").addClass("success");
+                    }
+                });
+
+                //Close the modal
+                $("#assignModal").modal('hide');
+            },
+
+            bulkAction: function (event) {
+                event.preventDefault();
+                var bulkSelect = $("#bulkSelect");
+                var n = $(".bulkCheck:checked").length;
+
+                // If no checkbox is checked: do nothing
+                if (n < 1) {
+                    return;
+                }
+
+                switch (bulkSelect.val()) {
+                    case "assign":
+                        $.ajax({
+                            type: 'GET',
+                            url: '{{ path('interview_assign_bulk') }}',
+                            cache: false,
+                            success: function (response) {
+                                var modal = $("#assignModal");
+                                modal.html(response.form);
+                                modal.find("form").submit(AppAdmin.onBulkAssignFormSubmit);
+                                modal.modal();
+                            }
+                        });
+                        break;
+                    case "deleteApplication":
+                        var modal = $("#bulkModal");
+                        var acceptBtn = $('<button class="btn btn-primary">Slett</button>');
+                        var cancelBtn = $('<button class="btn btn-secondary">Avbryt</button>');
+
+                        modal.find(".modalMessage").html("Vil du virkelig slette søknadene?");
+                        modal.find(".modal-footer").empty().append(cancelBtn).append(acceptBtn);
+
+                        acceptBtn.on("click", AppAdmin.bulkDeleteApplications);
+                        cancelBtn.on("click", function (event) {
+                            event.preventDefault();
+                            modal.modal('hide');
+                        });
+
+                        modal.modal();
+                        break;
+                    case "deleteInterview":
+                        var modal = $("#bulkModal");
+                        var acceptBtn = $('<li><a href="#" class="button tiny">Slett</a></li>');
+                        var cancelBtn = $('<li><a href="#" class="button tiny">Avbryt</a></li>');
+
+                        modal.find(".modalMessage").html("Vil du virkelig slette intervjuene?");
+                        modal.find(".modalButtons").empty().append(acceptBtn).append(cancelBtn);
+
+                        acceptBtn.on("click", AppAdmin.bulkDeleteInterviews);
+                        cancelBtn.on("click", function (event) {
+                            event.preventDefault();
+                            modal.modal('hide');
+                        });
+
+                        modal.modal();
+                        break;
+                }
+            },
+
+            bulkDeleteApplications: function (event) {
+                event.preventDefault();
+                var formdata = $("#bulk").serialize();
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('admissionadmin_delete_application_bulk') }}',
+                    data: formdata,
+                    success: function (response) {
+                        if (response.success) {
+                            window.location.reload();
+                            $(".bulkCheck:checked").closest("tr").remove();
+                        } else {
+                            alert(response.cause);
+                        }
+
+                    }
+                });
+
+                //Close the modal
+                $("#assignModal").modal('hide');
+            },
+
+            bulkDeleteInterviews: function (event) {
+                event.preventDefault();
+                var formdata = $("#bulk").serialize();
+
+                $.ajax({
+                    type: 'POST',
+                    url: '{{ path('interview_delete_bulk') }}',
+                    data: formdata,
+                    success: function (response) {
+                        if (response.success) {
+                            $(".bulkCheck:checked").closest("tr").remove();
+                        } else {
+                            alert(response.cause);
+                        }
+
+                    }
+                });
+
+                //Close the modal
+                $("#assignModal").modal('hide');
+            },
+
+            onBulkAssignFormSubmit: function (event) {
+                event.preventDefault();
+                // Serializes both the bulk checkbox form and the assign form (both have name=application)
+                var formdata = $("form[name='interview']").serialize();
+
+                $.ajax({
+                    type: "POST",
+                    url: "{{ path('interview_assign_bulk') }}",
+                    data: formdata,
+                    success: function (response) {
+                      window.location.reload();
+                        $(".bulkCheck:checked").closest("tr").find(".assign").addClass("success");
+                    }
+                });
+
+                //Close the modal
+                $("#assignModal").modal('hide');
+            },
+
+            toggleSelectAll: function () {
+                if (this.checked) {
+                    if ($(this).attr("id") == "bulkAllCheck") {
+                        $(".bulkCheck").prop("checked", true);
+                    }
+                } else {
+                    if ($(this).attr("id") == "bulkAllCheck") {
+                        $(".bulkCheck").prop("checked", false);
+                    } else {
+                        $('#bulkAllCheck').prop("checked", false);
+                    }
+                }
+            },
+        };
+
+        $(document).ready(AppAdmin.onReady);
+
+    </script>
+
+{% endblock %}
+
+{% block title %}
+    Opptak
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">
+        Opptak
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <div class="btn-group">
+        {% if is_granted_team_leader() %}
+            {% include "common/department_semester_dropdowns.html.twig" with { 'path': 'applications_show_new' } %}
+        {% else %}
+            <ul class="inline-list">
+                {% include 'common/semester_dropdown.html.twig' with { 'pathForSemester': 'applications_show_new' } %}
+            </ul>
+        {% endif %}
+        </div>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center my-3">Opptak {{ semester.name }}</h2>
+                <ul class="nav nav-tabs justify-content-center mt-4 mb-5">
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "new" ? 'active' : '' }}" href="{{ path('applications_show_new', {'department': department.id, 'semester': semester.id}) }}">Nye Søkere</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "existing" ? 'active' : '' }}" href="{{ path('applications_show_existing', {'department': department.id, 'semester': semester.id}) }}">Tidligere Assistenter</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "assigned" ? 'active' : '' }}" href="{{ path('applications_show_assigned', {'department': department.id, 'semester': semester.id}) }}">Intervjufordeling</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link {{ status == "interviewed" ? 'active' : '' }}" href="{{ path('applications_show_interviewed', {'department': department.id, 'semester': semester.id}) }}">Intervjuer</a>
+                    </li>
+                </ul>
+        </div>
+    </div>
+
+<div class="row">
+    <div class="col-12">
+        {#Contains an application table, depends on interview status #}
+        {% block applications %}{% endblock %}
+    </div>
+</div>
+
+    {# The assign interview modal #}
+    <div id="assignModal" class="modal fade" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+         role="dialog">
+    </div>
+
+    {# The bulk modal, used by the various bulk actions #}
+    <div id="bulkModal" class="modal fade" data-reveal aria-labelledby="assignFormModal" aria-hidden="true"
+         role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2 class="modalMessage"></h2>
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

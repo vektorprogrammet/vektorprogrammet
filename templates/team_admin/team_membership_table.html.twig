@@ -1,0 +1,57 @@
+<table class="table">
+
+    <thead>
+    <tr>
+        <th></th>
+        <th>Navn</th>
+        <th>Stilling</th>
+        <th>Start</th>
+    </tr>
+    </thead>
+
+    <tbody>
+    {% for tm in teamMemberships %}
+
+        <tr>
+            <td class="table-menu">
+                {% if is_granted_team_leader() %}
+                    <div class="dropdown">
+                        <div class="clickable px-2" id="options-{{ tm.id }}" data-toggle="dropdown"
+                             aria-haspopup="true" aria-expanded="false">
+                            <i class="fa fa-ellipsis-v text-secondary"></i>
+                        </div>
+                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ tm.id }}">
+                            <div class="dropdown-header mb-2"><strong>{{ tm.user }}</strong></div>
+                            <a href="{{ path('teamadmin_update_team_membership', { 'id': tm.id }) }}"
+                               class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                            </a>
+                            {% if is_granted_admin() %}
+                                <form method="POST"
+                                      onsubmit="return confirm('Vil du virkelig slette medlemskapet til {{ tm.user }}?')"
+                                      action="{{ path('teamadmin_remove_user_from_team_by_id', { id: tm.id }) }}">
+                                    <button type="submit"
+                                            class="dropdown-item">
+                                        <i class="fa fa-trash text-danger"></i> Slett
+                                    </button>
+                                </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endif %}
+            </td>
+            <td><a href='{{ path('specific_profile', { 'id': tm.user.id }) }}'> {{ tm.user }} </a></td>
+            <td>
+
+                {% if tm.position is not null %}
+                    {{ tm.position.name }}
+                {% else %}
+                    Stilling er fjernet.
+                {% endif %}
+
+            </td>
+            <td> {{ tm.startSemester.name }} </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+
+</table>

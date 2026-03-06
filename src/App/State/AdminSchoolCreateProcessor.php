@@ -1,0 +1,47 @@
+<?php
+
+namespace App\State;
+
+use ApiPlatform\Metadata\Operation;
+use ApiPlatform\State\ProcessorInterface;
+use App\Entity\Department;
+use App\Entity\School;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
+
+class AdminSchoolCreateProcessor implements ProcessorInterface
+{
+    public function __construct(
+        private readonly EntityManagerInterface $em,
+    ) {
+    }
+
+    public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): array
+    {
+        if ($data->departmentId === null) {
+            throw new UnprocessableEntityHttpException('departmentId is required.');
+        }
+
+        $department = $this->em->getRepository(Department::class)->find($data->departmentId);
+        if ($department === null) {
+            throw new UnprocessableEntityHttpException('Department not found.');
+        }
+
+        $school = new School();
+        $school->setName($data->name);
+        $school->setContactPerson($data->contactPerson);
+        $school->setEmail($data->email);
+        $school->setPhone($data->phone);
+        $school->setInternational($data->international);
+        $school->setActive($data->active);
+
+        // Link school and department (ManyToMany, owning side is Department)
+        $school->addDepartment($department);
+        $department->addSchool($school);
+
+        $this->em->persist($school);
+        $this->em->flush();
+
+        return ['id' => $school->getId()];
+    }
+}

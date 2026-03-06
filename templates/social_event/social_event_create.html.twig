@@ -1,0 +1,87 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Nytt Arrangement
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.min.css">
+{% endblock %}
+
+{% block breadcrumb %}
+
+    {% if event.id %}
+        <li class="breadcrumb-item">
+            <a href="{{ path('social_event_show') }}">Arrangementer</a>
+        </li>
+        <li class="breadcrumb-item active">Endre {{ event.title }}</li>
+    {% else %}
+        <li class="breadcrumb-item">
+            <a href="{{ path('social_event_show') }}">Arrangementer</a>
+        </li>
+        <li class="breadcrumb-item active">Nytt arrangement</li>
+    {% endif %}
+
+{% endblock %}
+
+
+{% block body %}
+    {{ form_start(form) }}
+
+    <div class="row">
+        <div class="col-12 col-xl-10 col-xxl-8 col-xxxl-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-comment-o"></i> Arrangement</div>
+                <div class="card-body">
+                    {{ form_row(form.title) }}
+                    {{ form_row(form.description ) }}
+                    {{ form_row(form.link) }}
+
+                    {{ form_row(form.startTime) }}
+                    {{ form_row(form.endTime) }}
+
+                    {{ form_row(form.semester) }}
+
+                    {% if is_granted_team_leader() %}
+                    {{ form_row(form.department) }}
+                    {% endif %}
+
+                    {{ form_row(form.role) }}
+                    <div class="help_text m-2 text-sm-left text-faded">
+                        Teammedlem = kun teammedlem <br>
+                        Bruker = alle brukere, dvs teammedlem og assistenter
+                    </div>
+
+                    <div class="m-2">
+                        {{ form_widget(form.save, {'attr': {'class': 'btn btn-success'}}) }}
+                        <a href="{{ path('social_event_show', {'department': department.id, 'semester': semester.id}) }}">
+                            <button type="button" class=" btn btn-primary">Avbryt</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="hide">
+                {{ form_rest(form) }}
+            </div>
+        </div>
+    </div>
+    {{ form_end(form) }}
+{% endblock %}
+
+
+{% block javascripts %}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.16/jquery.datetimepicker.full.min.js"></script>
+    <script>
+        const options = {
+            format: 'd.m.Y H:i',
+            lang: 'no',
+            step: 15,
+            dayOfWeekStart: 1,
+            minDateTime: new Date()
+        };
+
+        jQuery('#{{ form.startTime.vars.id }}').datetimepicker(options);
+        jQuery('#{{ form.endTime.vars.id }}').datetimepicker(options);
+    </script>
+{% endblock %}

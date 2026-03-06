@@ -1,0 +1,178 @@
+parameters:
+    locale: 'no'
+    session.name: VPSESSID
+    remember_me.name: VPREMEMBER
+
+    google_api:
+        client_id: '%env(GOOGLE_API_CLIENT_ID)%'
+        client_secret: '%env(GOOGLE_API_CLIENT_SECRET)%'
+        refresh_token: '%env(GOOGLE_API_REFRESH_TOKEN)%'
+        disabled: true
+
+    container.dumper.inline_class_loader: true
+
+    slack.notification_channel: '#notifications'
+    slack.log_channel: '%env(LOG_CHANNEL)%'
+    slack.disable_delivery: '%env(bool:SLACK_DISABLED)%'
+
+    gateway_sms:
+        api_token: '%env(GATEWAY_API_TOKEN)%'
+        disable_delivery: '%env(bool:SMS_DISABLE)%'
+        max_length: 1200
+        country_code: '47'
+
+    admission_notifier_limit: 100
+
+    public_uploads: "Offentlige filer"
+    private_uploads: "../Private filer"
+    profile_photos: 'images/Profile photos'
+    logo_images: 'images/Logo images'
+    signature_images: '../signatures'
+    receipt_images: 'images/receipts'
+    article_images: 'images/article_images'
+    newsletter_images: 'images/newsletter_images'
+    team_images: 'images/team_images'
+
+services:
+    _defaults:
+        autowire: true
+        autoconfigure: true
+        public: true
+        bind:
+            App\Mailer\MailerInterface: '@App\Mailer\Mailer'
+            App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
+
+    App\:
+        resource: "../src/App/{Command,Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,State,Twig,Validator}"
+
+    App\Entity\Repository\:
+        resource: "../src/App/Entity/Repository/"
+
+    App\DataFixtures\ORM\:
+        resource: '../src/App/DataFixtures/ORM'
+        tags: ['doctrine.fixture.orm']
+
+    App\Role\ReversedRoleHierarchy:
+        arguments:
+            $hierarchy: '%security.role_hierarchy.roles%'
+
+    App\Service\AdmissionNotifier:
+        arguments:
+            $sendLimit: '%admission_notifier_limit%'
+
+    App\Sms\SlackSms:
+        autowire: true
+
+    App\Sms\SmsSender:
+        arguments:
+            $env: '%kernel.environment%'
+
+    App\Sms\GatewayAPI:
+        arguments:
+            $smsOptions: '%gateway_sms%'
+
+    App\Service\LogService:
+        arguments:
+            $env: '%kernel.environment%'
+            $monoLogger: '@logger'
+
+    App\Mailer\Mailer:
+        arguments:
+            $env: '%kernel.environment%'
+
+    App\Service\SurveyNotifier:
+        arguments:
+            $fromEmail: '%env(DEFAULT_SURVEY_EMAIL)%'
+
+    App\Service\GeoLocation:
+        arguments:
+            $ipinfoToken: '%env(IPINFO_TOKEN)%'
+            $ignoredAsns: '%env(json:GEO_IGNORED_ASNS)%'
+
+    App\Service\EmailSender:
+        arguments:
+            $defaultEmail: '%env(DEFAULT_FROM_EMAIL)%'
+            $economyEmail: '%env(ECONOMY_EMAIL)%'
+
+    App\Service\SlackMessenger:
+        arguments:
+            $endpoint: '%env(SLACK_ENDPOINT)%'
+            $notificationChannel: '%slack.notification_channel%'
+            $logChannel: '%slack.log_channel%'
+            $disableDelivery: '%slack.disable_delivery%'
+            $logger: '@logger'
+
+    App\Service\FileUploader:
+        arguments:
+            $signatureFolder: '%signature_images%'
+            $logoFolder: '%logo_images%'
+            $receiptFolder: '%receipt_images%'
+            $profilePhotoFolder: '%profile_photos%'
+            $articleFolder: '%article_images%'
+            $sponsorFolder: '%logo_images%'
+
+    get_set_method_normalizer:
+        class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
+        public: false
+        tags: [serializer.normalizer]
+
+    # Event subscribers (from event_subscribers.yml)
+    App\EventSubscriber\:
+        resource: "../src/App/EventSubscriber"
+        tags:
+            - { name: kernel.event_subscriber }
+        bind:
+            App\Mailer\MailerInterface: '@App\Mailer\Mailer'
+            App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
+            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            $env: '%kernel.environment%'
+
+    App\EventSubscriber\DbSubscriber:
+        arguments:
+            $env: '%kernel.environment%'
+        tags:
+            - { name: doctrine.event_subscriber }
+
+    # Form extensions (from forms.yml)
+    app.form.extension.help:
+        class: App\Form\Extension\FieldTypeHelpExtension
+        tags:
+            - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
+
+    # Validator constraint validators (from validators.yml)
+    App\Validator\Constraints\:
+        resource: "../src/App/Validator/Constraints"
+        tags:
+            - { name: validator.constraint_validator }
+
+    # Twig extensions (from twig.yml)
+    App\Twig\Extension\:
+        resource: "../src/App/Twig/Extension"
+        tags:
+            - { name: twig.extension }
+
+    App\Twig\Extension\AssetExtension:
+        arguments:
+            $rootDir: '%kernel.project_dir%'
+
+    # Google services (from services_google.yml)
+    App\Google\GoogleService:
+        abstract: true
+        arguments: ['%google_api%', '@App\Service\LogService']
+
+    App\Google\Gmail:
+        parent: App\Google\GoogleService
+        calls:
+            - [setDefaultEmail, ['%env(DEFAULT_FROM_EMAIL)%']]
+
+    App\Google\GoogleUsers:
+        parent: App\Google\GoogleService
+
+    App\Google\GoogleGroups:
+        parent: App\Google\GoogleService
+
+    App\Google\GoogleDrive:
+        parent: App\Google\GoogleService
+
+    App\Google\GoogleAPI:
+        arguments: ['%google_api%', '@App\Google\GoogleUsers', '@App\Google\GoogleGroups']

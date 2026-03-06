@@ -1,50 +1,81 @@
-# Dependencies
-node_modules
-.pnp
-.pnp.js
+/bootstrap/compiled.php
+.env.local
+.env.*.local
+.env.*.php
+.env.php
 
-# Build outputs
-dist
-build
-*.tsbuildinfo
 
-# Environment variables
-.env
-.env*.local
+### PhpStorm ###
+# Covers JetBrains IDEs: IntelliJ, RubyMine, PhpStorm, AppCode, PyCharm
+.idea/
 
-# IDEs and editors
-.vscode/*
-!.vscode/settings.json
-!.vscode/tasks.json
-!.vscode/launch.json
-!.vscode/extensions.json
-.idea
-*.swp
-*.swo
-*~
-.DS_Store
+*.iml
 
-# Logs
-logs
-*.log
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-lerna-debug.log*
-.pnpm-debug.log*
+## File-based project format:
+*.ipr
+*.iws
 
-# Turbo
-.turbo
+## Plugin-specific files:
 
-# Better-T-Stack
-.alchemy
+# IntelliJ
+/out/
+/.idea/
 
-# Testing
-coverage
-.nyc_output
+# mpeltonen/sbt-idea plugin
+.idea_modules/
+npm-debug.log
 
-# Misc
-*.tgz
-.cache
-tmp
-temp
+# JIRA plugin
+atlassian-ide-plugin.xml
+
+# Crashlytics plugin (for Android Studio and IntelliJ)
+com_crashlytics_export_strings.xml
+crashlytics.properties
+crashlytics-build.properties
+
+### Symfony ###
+/app/bootstrap.php.cache
+/var/bootstrap.php.cache
+/var/SymfonyRequirements.php
+/config/jwt/*.pem
+/openapi.json
+/var/cache/*
+!var/cache/.gitkeep
+/var/coverage/
+/var/data
+!/var/data/.gitkeep
+/var/logs/*
+!var/logs/.gitkeep
+/phpunit.xml
+/bin/
+/composer.phar
+/vendor/
+/signatures/
+/public/assets/
+/public/bundles/
+/public/images/
+/public/fonts/
+/public/webfonts/
+/public/files/
+/public/js/
+/public/vendor/
+/public/css
+/public/static
+/public/media/
+!/public/media/.gitkeep
+
+#npm
+/node_modules/
+
+.php_cs.cache
+.php-cs-fixer.cache
+.phpunit.result.cache
+
+var/coverage-controller-partial
+var/coverage-unit
+
+.claude/worktrees
+
+# Test-generated artifacts
+/images/Profile photos/
+var/test-results-parallel.xml

@@ -1,0 +1,29 @@
+api_platform:
+    resource: .
+    type: api_platform
+    prefix: /api
+
+api_login:
+    path: /api/login
+    methods: ['POST']
+
+app:
+    resource: "../src/App/Controller/"
+    type: attribute
+
+_liip_imagine:
+    resource: "@LiipImagineBundle/Resources/config/routing.yaml"
+
+elfinder:
+    path: /kontrollpanel/elfinder/{instance}/{homeFolder}
+    defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::showAction, instance: default, homeFolder: '' }
+    methods: [GET]
+
+ef_connect:
+    path: /efconnect/{instance}/{homeFolder}
+    defaults: { _controller: FM\ElfinderBundle\Controller\ElFinderController::loadAction, instance: default, homeFolder: '' }
+    methods: [GET, POST]
+
+logout:
+    path: /logout
+    methods: [GET]

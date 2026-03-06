@@ -1,0 +1,9 @@
+twig:
+    debug: '%kernel.debug%'
+    strict_variables: '%kernel.debug%'
+    globals:
+        filebrowser_window_width: 1200
+        filebrowser_window_height: 800
+        googleAnalyticsId: ~
+    form_themes:
+        - 'form/bootstrap_4_layout.html.twig'

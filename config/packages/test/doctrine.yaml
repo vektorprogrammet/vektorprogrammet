@@ -1,0 +1,17 @@
+doctrine:
+    dbal:
+        default_connection: default
+        connections:
+            default:
+                driver: pdo_sqlite
+                host: ~
+                port: ~
+                user: ~
+                password: ~
+                dbname: ~
+                path: ':memory:'
+                charset: utf8
+                use_savepoints: true
+
+dama_doctrine_test:
+    enable_static_connection: true

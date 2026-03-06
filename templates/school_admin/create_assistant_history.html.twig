@@ -1,0 +1,26 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Opprett assistent historie
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('schooladmin_show_users_of_department_superadmin', {'id': user.department.id}) }}">Tildel skole</a>
+    </li>
+    <li class="breadcrumb-item active">{{ user }}</li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header">
+            Opprett assistentstilling for {{ user }}
+        </div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

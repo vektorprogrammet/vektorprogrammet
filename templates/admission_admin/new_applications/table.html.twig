@@ -1,0 +1,54 @@
+<form id="bulk" name="interview">
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Nye søkere ({{ applications|length }})</div>
+        <div class="table-responsive">
+
+
+            <table class="application-table table table-striped w-100">
+                <thead>
+                <tr>
+                    {% if is_granted_team_leader() %}
+                        <th><input type="checkbox" id="bulkAllCheck"></th>
+                    {% endif %}
+                    {# data-sort is used to sort the tables with stupidtable.js #}
+                    <th data-sort="string">Søker</th>
+                    <th data-sort="int">Tlf</th>
+                    <th data-sort="string">E-post</th>
+                    <th data-sort="string">Linje</th>
+                    <th data-sort="int">År</th>
+                    <th data-sort="string">Fordelt til</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                {% for application in applications %}
+                    <tr id="{{ application.id }}">
+                        {% if is_granted_team_leader() %}
+                            <td><input type="checkbox" class="bulkCheck" name="application[id][]"
+                                       value="{{ application.id }}">
+                            </td>
+                        {% endif %}
+                        <td>
+                            <a href="{{ path('specific_profile', {id: application.user.id}) }}">{{ application.user }}</a>
+                        </td>
+                        <td>{{ application.user.phone }}</td>
+                        <td>{{ application.user.email }}</td>
+                        <td>{{ application.user.fieldOfStudy }}</td>
+                        <td>{{ application.yearOfStudy }}</td>
+                        <td>
+                            {% if application.interview and application.interview.interviewer %}
+                                <a href="{{ path('specific_profile', {'id': application.interview.interviewer.id}) }}">
+                                    {{ application.interview.interviewer }}
+                                </a>
+                            {% else %}
+                                <span class="text-warning">&lt;Mangler intervjuer&gt;</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</form>

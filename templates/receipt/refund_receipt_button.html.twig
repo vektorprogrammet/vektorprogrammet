@@ -1,0 +1,9 @@
+<form method="POST"
+      onsubmit="return confirm('Marker utlegget som refundert og send en bekreftelsesmail til {{ receipt.user }}?')"
+      action="{{ path('receipts_refund', { 'receipt': receipt.id }) }}">
+    <button type="submit"
+            class="button tiny">
+        <i class="fa fa-check-square"></i>
+        Refunder
+    </button>
+</form>

@@ -1,0 +1,42 @@
+<div class="step-by-step">
+    {% set step = data.step %}
+    {% include 'control_panel/step_by_step/progressbar.html.twig' %}
+    <div class="row step-spacing"></div>
+    <div class="row">
+        {% include 'control_panel/step_by_step/step_box1.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box2.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box3.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box4.html.twig' %}
+        {% include 'control_panel/step_by_step/step_box5.html.twig' %}
+    </div>
+</div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        $(function () {
+            var step = {{ data.stepProgress }};
+            if (step < 0) {
+                return;
+            }
+            if (step > 0) {
+                step -= 1;
+            }
+            var round_step = Math.floor(step);
+            var percentage = (step - round_step) * 100;
+            for (var i = 0; i <= 5; i++) {
+                if (i > round_step) {
+                    $("#step-progressbar-" + i + " > .line-container > .line > .fill").width("0");
+                }
+                else if (i < round_step) {
+                    $("#step-progressbar-" + i + " > .line-container > .line > .fill").width("100%");
+                }
+                else {
+                    $("#step-progressbar-" + i + " > .line-container > .line > .fill").width(percentage + "%");
+                }
+                if (i <= round_step) {
+                    $("#step-progressbar-" + i + " > .ring-container > .outer-ring").addClass("fill");
+                }
+            }
+        });
+    });
+</script>

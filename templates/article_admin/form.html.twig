@@ -1,0 +1,250 @@
+{% extends 'adminBase.html.twig' %}
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/modules/dropzone.css') }}">
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/admin/article.css') }}">
+    <link rel="stylesheet" href="{{ asset_with_version('vendor/cropperjs/cropper.min.css') }}">
+{% endblock %}
+
+{% block title %}
+    Ny artikkel
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('articleadmin_show') }}">Artikler</a>
+    </li>
+    <li class="breadcrumb-item active">{{ title }}</li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-file"></i> {{ title }}</div>
+        <div class="card-body">
+            <div id="app" style="display: none">
+                <div class="row">
+                    <div class="col-12 col-md-5">
+                        <h3>Lite bilde</h3>
+                        <span v-if="smallPhotoSrc" @click="smallPhotoSrc = ''" class="text-link">Rediger</span>
+                        <form v-show="!smallPhotoSrc" action="/" id="dropsmall" class="dropzone" method="POST">
+                        </form>
+                        <div v-show="smallPhotoSrc" class="crop-area">
+                            <img id="imgsmall" :src="smallPhotoSrc"/>
+                        </div>
+
+                    </div>
+                    <div class="col-12 col-md-7">
+                        <h3>Stort bilde</h3>
+                        <span v-if="largePhotoSrc" @click="largePhotoSrc = ''" class="text-link">Rediger</span>
+                        <form v-show="!largePhotoSrc" action="/" id="droplarge" class="dropzone" method="POST">
+                        </form>
+                        <div v-show="largePhotoSrc" class="crop-area">
+                            <img id="imglarge" :src="largePhotoSrc">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <br>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            {{ form_row(form.title) }}
+            {{ form_row(form.article) }}
+
+            <hr>
+            <h5>Publisering</h5>
+            <div class="row">
+                <div class="col-8">
+                            <span class="has-tip"
+                                  title="Hvilke regioner artikkelen er knyttet til. Velges ingen er artikkelen knyttet til alle.">
+                                Regioner
+                            </span>
+                    {{ form_errors(form.departments) }}
+                    {{ form_widget(form.departments) }}
+                </div>
+                <div class="col-4">
+                    <div class="right">
+                                <span class="has-tip"
+                                      title="Artikkelen fryses på forsiden i nyhetskarusellen.">
+                                    Sticky
+                                </span><br>
+                        {{ form_errors(form.sticky) }}
+                        {{ form_widget(form.sticky) }}
+                    </div>
+                </div>
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-6 col-md-2 offset-md-8 offset-lg-9">
+                    {{ form_row(form.published) }}
+                </div>
+                <div class="col-6 col-md-2 col-lg-1">
+                    <br>
+                    <button id="submitBtn" class="btn btn-primary right">Lagre</button>
+                </div>
+            </div>
+    {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/dropzone/dist/min/dropzone.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset_with_version('vendor/cropperjs/cropper.min.js') }}"></script>
+    <script>
+      var dropzoneOptions = {
+        maxFilesize: 5,
+        maxFiles: 1,
+        init: function () {
+          this.on('maxfilesexceeded', function (file) {
+            this.removeAllFiles();
+            this.addFile(file);
+          });
+        },
+        autoProcessQueue: false,
+        paramName: 'img',
+        dictDefaultMessage: 'Slipp bildet her<br>(eller trykk for &aring velge)',
+        createImageThumbnails: false,
+        acceptedFiles: 'image/*',
+      };
+      new Vue({
+        el: '#app',
+        data: {
+          smallPhotoSrc: '{{ asset_with_version(article.imageSmall) }}',
+          largePhotoSrc: '{{ asset_with_version(article.imageLarge) }}',
+          largeCropper: null,
+          smallCropper: null,
+        },
+        delimiters: ['${', '}'],
+        mounted() {
+          Dropzone.options.dropsmall = {
+            ...dropzoneOptions,
+            accept: function (file, done) {
+              this.showSmallCrop(file);
+              done();
+            }.bind(this),
+          };
+
+          Dropzone.options.droplarge = {
+            ...dropzoneOptions,
+            accept: function (file, done) {
+              this.showLargeCrop(file);
+              done();
+            }.bind(this),
+          };
+
+          var form = $("[name='{{ form.vars.name }}']");
+          form.submit(function (e) {
+            e.preventDefault();
+            setTimeout(function () {
+              this.upload();
+            }.bind(this), 100);
+          }.bind(this));
+          $('#app').show();
+        },
+        methods: {
+          showSmallCrop(file) {
+            var id = '#imgsmall';
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              this.smallPhotoSrc = e.target.result;
+              setTimeout(function () {
+                if (this.smallCropper) {
+                  return;
+                }
+                this.smallCropper = new Cropper(document.querySelector(id), {
+                  aspectRatio: 1.8,
+                  viewMode: 1,
+                });
+              }.bind(this), 100);
+            }.bind(this);
+
+            reader.readAsDataURL(file);
+          },
+          showLargeCrop(file) {
+            var id = '#imglarge';
+            var reader = new FileReader();
+
+            reader.onload = function (e) {
+              this.largePhotoSrc = e.target.result;
+              setTimeout(function () {
+                if (this.largeCropper) {
+                  return;
+                }
+                this.largeCropper = new Cropper(document.querySelector(id), {
+                  aspectRatio: 2.6,
+                  viewMode: 1,
+                });
+              }.bind(this), 100);
+            }.bind(this);
+
+            reader.readAsDataURL(file);
+          },
+          upload() {
+            if (!this.smallPhotoSrc || !this.largePhotoSrc) {
+              return alert('Du må velge bilder');
+            }
+
+            var form = document.querySelector('form[name="{{ form.vars.name }}"]');
+            var formData = new FormData(form);
+
+            var newSmallPhoto = this.smallCropper && this.smallCropper.getCroppedCanvas() !== null;
+            var newLargePhoto = this.largeCropper && this.largeCropper.getCroppedCanvas() !== null;
+
+            if (newSmallPhoto && newLargePhoto) {
+              this.uploadSmallAndLargeImages(formData);
+            } else if (newSmallPhoto) {
+              this.uploadSmallImageOnly(formData);
+            } else if (newLargePhoto) {
+              this.uploadLargeImageOnly(formData);
+            } else {
+              this.submit(formData);
+            }
+          },
+          uploadSmallAndLargeImages(formData) {
+            this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
+              this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
+                formData.append('imglarge', largeBlob);
+                formData.append('imgsmall', smallBlob);
+                this.submit(formData);
+              }.bind(this), 'image/jpeg');
+            }.bind(this), 'image/jpeg');
+          },
+          uploadSmallImageOnly(formData) {
+            this.smallCropper.getCroppedCanvas().toBlob(function (smallBlob) {
+              formData.append('imgsmall', smallBlob);
+              return this.submit(formData);
+            }.bind(this), 'image/jpeg');
+          },
+          uploadLargeImageOnly(formData) {
+            this.largeCropper.getCroppedCanvas().toBlob(function (largeBlob) {
+              formData.append('imglarge', largeBlob);
+              return this.submit(formData);
+            }.bind(this), 'image/jpeg');
+          },
+          submit(formData) {
+            $('#submitBtn').attr('disabled', true);
+            $.ajax('{% if (article.id) %}{{ path('articleadmin_edit', {'id': article.id}) }}{% else %}{{ path('articleadmin_create') }}{% endif %}', {
+              method: 'POST',
+              data: formData,
+              processData: false,
+              contentType: false,
+              success: function () {
+                window.location = '{{ path('articleadmin_show') }}';
+              },
+              error: function () {
+                $('#submitBtn').removeAttr('disabled');
+                alert('Noe gikk galt under opplasting av artikkelen. Har du fylt ut alle feltene?');
+              }.bind(this),
+            });
+          },
+        },
+      });
+    </script>
+{% endblock %}

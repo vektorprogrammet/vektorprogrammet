@@ -1,0 +1,51 @@
+<footer class="main-footer">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-sm-6 col-md-4 footer-column">
+                <div class="org-info footer-content">
+                    <h5>Om oss</h5>
+                    <ul>
+                        <li class="">
+                        {% apply spaceless %}
+                            <i class="fa fa-facebook-square"></i>
+                            <a href="https://www.facebook.com/vektorprogrammet/" target="_blank">Trondheim</a>&nbsp;
+                            <a href="https://www.facebook.com/vektorprogrammetNMBU/" target="_blank">Ås</a>&nbsp;
+                            <a href="https://www.facebook.com/VektorprogrammetBergen/" target="_blank">Bergen</a>&nbsp;
+                        {% endapply %}
+                        </li>
+                        <li class=""><i class="fa fa-envelope"></i><a
+                                href="mailto:hovedstyret@vektorprogrammet.no">hovedstyret@vektorprogrammet.no</a></li>
+                        <li class=""><i class="fa fa-folder-open"></i>OrgNr: 998744814</li>
+                        <li class=""><i class="fa fa-map-marker"></i>Sem Sælands vei 1,
+                            <br><i class="fa"></i>7034 Trondheim
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 footer-column">
+                <div class="footer-content">
+                    <h5>Sitemap</h5>
+                    <ul>
+                        <li><a href="{{ path('assistants') }}">Assistenter</a></li>
+                        <li><a href="{{ path('team') }}">Team</a></li>
+                        <li><a href="{{ path('teachers') }}">For skoler</a></li>
+                        <li><a href="{{ path('parents') }}">For foreldre</a></li>
+                        <li><a href="{{ path('about_new') }}">Om oss</a></li>
+                        <li><a href="{{ path('contact') }}">Kontakt</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-sm-6 col-md-4 footer-column">
+                <div class="footer-content">
+                    <h5>Sponsorer og samarbeidspartnere</h5>
+                    <ul>
+                        {% for sponsor in get_sponsors() %}
+                        <li><a href="{{ sponsor.url }}" target="_blank"> {{ sponsor.name }} </a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p class="footer-promo text-center">Nettsiden driftes av Vektorprogrammets <a href="/it">IT-team</a>.</p>
+</footer>

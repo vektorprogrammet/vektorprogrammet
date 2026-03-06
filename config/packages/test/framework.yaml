@@ -1,0 +1,19 @@
+framework:
+    test: ~
+    session:
+        storage_factory_id: session.storage.factory.mock_file
+    profiler:
+        collect: false
+    rate_limiter:
+        password_reset:
+            policy: 'fixed_window'
+            limit: 1000
+            interval: '1 hour'
+        contact_form:
+            policy: 'fixed_window'
+            limit: 1000
+            interval: '1 hour'
+        application:
+            policy: 'fixed_window'
+            limit: 1000
+            interval: '1 hour'

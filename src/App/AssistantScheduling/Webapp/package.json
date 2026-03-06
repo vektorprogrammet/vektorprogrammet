@@ -1,0 +1,40 @@
+{
+  "name": "schoolallocation",
+  "description": "School Allocation Web App",
+  "version": "1.0.1",
+  "author": "Vektorprogrammet",
+  "private": true,
+  "scripts": {
+    "dev": "webpack serve --mode development --env development",
+    "build": "webpack --mode production --env production --progress",
+    "build:dev": "webpack --mode production --env development --progress"
+  },
+  "dependencies": {
+    "vue": "^2.6.12",
+    "vue-resource": "^1.5.2",
+    "vuetify": "^2.4.6",
+    "vuex": "^3.6.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.13.10",
+    "@babel/preset-env": "^7.13.10",
+    "babel": "^6.23.0",
+    "babel-core": "^6.26.3",
+    "babel-loader": "^8.2.2",
+    "babel-preset-latest": "^6.24.1",
+    "cross-env": "^7.0.3",
+    "css-loader": "^5.1.1",
+    "deepmerge": "^4.2.2",
+    "file-loader": "^6.2.0",
+    "node-sass": "^4.14.1",
+    "sass": "^1.32.8",
+    "sass-loader": "^11.0.1",
+    "stylus": "^0.54.8",
+    "stylus-loader": "^5.0.0",
+    "vue-loader": "^15.9.6",
+    "vue-template-compiler": "^2.6.12",
+    "webpack": "^5.24.4",
+    "webpack-cli": "^4.5.0",
+    "webpack-dev-server": "^3.11.2"
+  }
+}

@@ -1,0 +1,21 @@
+{% if app.user.accountNumber %}
+    <div id="accountNumberInfo">
+        Ditt kontonummer er <span class="text-bold">{{ app.user.accountNumber }}</span> <span id="changeAccountNumber" class="btn btn-text btn-text-link text-primary">Endre</span>
+    </div>
+    <div class="row" id="accountNumberForm">
+        <div class="col-12">
+            {{ form_row(form.user) }}
+        </div>
+    </div>
+{% else %}
+    {{ form_row(form.user) }}
+{% endif %}
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        $('#changeAccountNumber').click(function() {
+            $('#accountNumberForm').show();
+            $('#accountNumberInfo').hide();
+        });
+    });
+</script>

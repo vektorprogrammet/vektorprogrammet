@@ -1,0 +1,6 @@
+security:
+    firewalls:
+        api_login:
+            login_throttling: false
+        secured_area:
+            login_throttling: false

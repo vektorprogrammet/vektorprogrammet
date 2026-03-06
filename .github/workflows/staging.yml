@@ -1,0 +1,26 @@
+name: Deploy Staging
+
+on:
+  push:
+    branches:
+      - staging
+
+jobs:
+  deploy:
+    name: Deploy to staging
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@v1
+        with:
+          host: ${{ secrets.STAGING_HOST }}
+          username: ${{ secrets.STAGING_USER }}
+          key: ${{ secrets.STAGING_SSH_KEY }}
+          script: |
+            cd /opt/staging/vektorprogrammet
+            git fetch origin staging
+            git checkout staging
+            git pull origin staging
+            docker compose down
+            docker compose up --build -d
+            echo "Staging deployed at $(date)"

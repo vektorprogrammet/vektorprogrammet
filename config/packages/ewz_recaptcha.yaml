@@ -1,0 +1,4 @@
+ewz_recaptcha:
+    enabled: false
+    public_key: ''
+    private_key: ''

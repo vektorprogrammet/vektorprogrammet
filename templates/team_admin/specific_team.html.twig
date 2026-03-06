@@ -1,0 +1,59 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Team: {{ team.name }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show', {'id': team.department.id}) }}">Team</a>
+    </li>
+    <li class="breadcrumb-item active">
+        {{ team.name }}
+    </li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <div class="btn-group">
+        {% if is_granted_team_leader() or isUserInTeam %}
+            <a href="{{ path('team_application_show_all', { 'id': team.id }) }}"
+               class="btn btn-outline-secondary">Se søkere{% if team.applications|length %} ({{ team.applications|length }}){% endif %}</a>
+        {% endif %}
+        {% if is_granted_team_leader() %}
+            <a href="{{ path('teamadmin_add_user_to_team', { 'id': team.id }) }}"
+               class="btn text-success"><i class="fa fa-plus"></i> Legg til teammedlem</a>
+        {% endif %}
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center my-3">{{ team.name }}</h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab"
+                       aria-controls="home" aria-selected="true">Aktive medlemmer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab"
+                       aria-controls="home" aria-selected="true">Inaktive medlemmer</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show table-responsive active p-0" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : activeTeamMemberships} %}
+                </div>
+                <div class="tab-pane fade table-responsive p-0" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% include 'team_admin/team_membership_table.html.twig' with {'teamMemberships' : inActiveTeamMemberships} %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

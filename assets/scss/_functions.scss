@@ -1,0 +1,3 @@
+@function color($c) {
+  @return unquote("rgb(#{$c})");
+}

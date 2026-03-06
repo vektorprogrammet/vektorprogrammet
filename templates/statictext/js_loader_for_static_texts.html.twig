@@ -1,0 +1,18 @@
+{#
+    This template loads all the neccessary javascript code needed on pages that contains static text that
+    must be editable wit ckeditor.
+
+    See Vektorprogrammet\app\Resources\views\about\about_vektor.html.twig for a small example on how to use it
+#}
+
+{% if is_granted_admin() %}
+    <script> var dump_file = "{{ path('update_static_content') }}" </script>
+    <script src="{{ asset_with_version('vendor/ckeditor/ckeditor.js') }}"></script>
+    <script src="{{ asset_with_version('vendor/ckeditor/adapters/jquery.js') }}"></script>
+    <script src="{{ asset_with_version('js/ckeditor/createCkeditorInstances.js') }}"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            createCkeditorInstances();
+        });
+    </script>
+{% endif %}

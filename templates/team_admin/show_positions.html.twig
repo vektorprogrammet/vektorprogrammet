@@ -1,0 +1,74 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Stillinger
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show') }}">Team</a>
+    </li>
+    <li class="breadcrumb-item active">Stillinger</li>
+{% endblock %}
+
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        <a href="{{ path('teamadmin_create_position') }}" class="btn btn-outline-success text-success">
+            <i class="fa fa-plus text-success"></i> Opprett stilling
+        </a>
+    {% endif %}
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Stillinger</div>
+        <div class="card-body">
+
+            <table class="table" id="table">
+
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Navn</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for p in positions %}
+                    <tr>
+                        <td class="table-menu">
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ p.name }}</strong></div>
+                                    <a href="{{ path('teamadmin_edit_position', { 'id': p.id }) }}"
+                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                    </a>
+                                    {% if is_granted_admin() %}
+                                        <form method="POST"
+                                              onsubmit="return confirm('Vil du virkelig slette stilling {{ p.name }}?')"
+                                              action="{{ path('teamadmin_remove_position', { id: p.id }) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item">
+                                                <i class="fa fa-trash text-danger"></i> Slett
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td> {{ p.name }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+
+            </table>
+
+        </div>
+    </div>
+
+{% endblock %}

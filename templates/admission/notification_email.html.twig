@@ -1,0 +1,52 @@
+<h1>Velkommen til et nytt semester med Vektorprogrammet!</h1>
+
+<p>Dette er en automatisk påminnelse om at opptaket for vektorassistenter har startet i {{ department.city }}.</p>
+<p><strong>For å søke må du fylle inn skjemaet på <a
+            href=3D"https://vektorprogrammet.no{{ path('admission_show_by_city_case_insensitive', {'city': department}) }}">https://vektorprogrammet.no{{ path('admission_show_by_city_case_insensitive', {'city': department}) }}</a>.</strong>
+</p>
+<p>
+    Dersom du har vært assistent tidligere kan du søke <a href=3D"https://vektorprogrammet.no{{ path('admission_existing_user') }}">her</a> (krever
+    innlogging). Da vil du ikke bli kalt inn til intervju og blir tatt opp som assistent umiddelbart.</p>
+
+<p>Påmeldingsfristen er <strong>{{ department.currentAdmissionPeriod.endDate|date('d.m.Y') }} kl. {{ department.currentAdmissionPeriod.endDate|date('H:i') }}.</strong></p>
+
+{% if infoMeeting and infoMeeting.showOnPage %}
+    <br>
+    <p>Vi har infomøte den {{ infoMeeting.date|date('d.m.Y') }} kl. {{ infoMeeting.date|date('H:i') }}
+    {% if infoMeeting.room %}
+        i rom {{ infoMeeting.room }}
+    {% endif %}!</p>
+    {% if infoMeeting.link %}
+        <p>Link til arrangement: <a href=3D"{{ infoMeeting.link }}">{{ infoMeeting.link }}</a></p>
+    {% endif %}
+{% endif %}
+
+<br>
+<p>Kort oppsummert vil man som vektorassistent bli sendt ut til en ungdomsskole sammen med en annen vektorassistent, for
+    å kunne bidra i matematikkundervisningen. Dette vil foregå 4 eller 8 ganger i semesteret over en henholdsvis 4-
+    eller 8 ukers periode. Vi har som mål at studentene skal sitte igjen mer motivert for videre studier etter å ha vært
+    vektorassistent, samt få prøvd ut læreryrket. I tillegg vil du få muligheten til å delta på mange sosiale
+    arrangementer, alt fra fest og grilling til spillkveld. Mer info om Vektorprogrammet finner du på vår hjemmeside
+    <a href=3D"https://vektorprogrammet.no{{ path('home') }}">https://vektorprogrammet.no{{ path('home') }}</a></p>
+
+<br>
+<p>Dersom du har noen spørsmål om opptak, om hva Vektorprogrammet er, eller noe som er uklart så er det bare å ta
+    kontakt. <br>Vi vil stå på stand i de første ukene i semesteret, så kom gjerne inn på stand, send en epost til
+    <a href=3D"mailto:{{ department.email }}">{{ department.email }}</a> eller ta kontakt med oss via våre nettsider <a
+            href=3D"https://vektorprogrammet.no{{ path('contact_department', {'id': department.id}) }}">her</a>.</p>
+
+<br>
+
+<br>
+<p>Vi ser fram til å bli kjent med deg og lykke til med det nye semesteret! </p>
+
+<br>
+<a href=3D"https://vektorprogrammet.no{{ path('home') }}">
+    <img src=3D"https://vektorprogrammet.no/images/vektor.png" alt=3D"https://vektorprogrammet.no{{ path('home') }}">
+</a><
+<br>
+<br>
+
+<small>Du mottar denne e-posten fordi du har bedt om å få en påminnelse om opptak på <a href=3D"https://vektorprogrammet.no{{ path('assistants') }}">https://vektorprogrammet.no{{ path('assistants') }}</a>. Hvis du
+    ikke ønsker å motta automatiske påminnelser i fremtiden kan du melde deg av
+    <a href=3D"https://vektorprogrammet.no{{ path('admission_unsubscribe', {'code': subscriber.unsubscribeCode}) }}">her</a>.</small>

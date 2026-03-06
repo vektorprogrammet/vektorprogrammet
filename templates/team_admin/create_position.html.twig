@@ -1,0 +1,28 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    {{ isCreate ? 'Opprett stilling' : 'Rediger ' ~ position.name}}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show') }}">Team</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show_position') }}">Stillinger</a>
+    </li>
+    <li class="breadcrumb-item active">{{ isCreate ? 'Opprett stilling' : position.name }}</li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> {{ isCreate ? 'Opprett stilling' : 'Rediger ' ~ position.name}}</div>
+        <div class="card-body">
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}

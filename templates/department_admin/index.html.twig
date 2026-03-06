@@ -1,0 +1,73 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Avdeling
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Avdelinger</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if is_granted_admin() %}
+        <a href="{{ path('departmentadmin_create_department') }}" class="btn btn-outline-success text-success">
+            <i class="fa fa-plus"></i> Opprett avdeling
+        </a>
+    {% endif %}
+{% endblock %}
+
+
+	
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> Avdelinger</div>
+        <div class="table-responsive">
+            <table class="table" id="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th> Navn</th>
+                    <th> Forkortet navn</th>
+                    <th> E-post</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                {% for d in get_departments() %}
+                    <tr>
+                        <td class="table-menu">
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ d }}</strong></div>
+                                    <a href="{{ path('departmentadmin_update', { 'id': d.id }) }}"
+                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                    </a>
+                                    {% if is_granted_admin() %}
+                                        <form method="POST"
+                                              onsubmit="return confirm('Vil du virkelig slette avdeling {{ d }}?')"
+                                              action="{{ path('departmentadmin_delete_department_by_id', { id: d.id }) }}">
+                                            <button type="submit"
+                                                    class="dropdown-item">
+                                                <i class="fa fa-trash text-danger"></i> Slett
+                                            </button>
+                                        </form>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </td>
+                        <td><a
+                                    href="{{ path('admission_show_by_city_case_insensitive', { 'city': d} ) }}">  {{ d }} </a>
+                        </td>
+                        <td> {{ d.shortname }} </td>
+                        <td> {{ d.email }} </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

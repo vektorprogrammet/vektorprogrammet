@@ -1,0 +1,10 @@
+{% set hoursLeft = data.timeToAdmissionStart %}
+{% if hoursLeft < 24 %}
+    <p>{{ hoursLeft }} {{ hoursLeft == 1 ? 'time' : 'timer' }} til opptaket starter!</p>
+{% else %}
+    {% set daysLeft = hoursLeft // 24 %}
+    <p>{{ daysLeft }} {{ daysLeft == 1 ? 'dag' : 'dager' }} til opptaket starter!</p>
+{% endif %}
+{% if is_granted_team_leader() %}
+    <p><a href="{{ path('admissionadmin_show') }}">Endre opptakstid</a></p>
+{% endif %}

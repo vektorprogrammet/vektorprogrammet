@@ -1,0 +1,11 @@
+vendor/
+node_modules/
+var/
+.git/
+.claude/
+memory/
+docs/
+tests/
+*.md
+.varp/
+config/jwt/*.pem

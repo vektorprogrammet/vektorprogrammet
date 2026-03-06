@@ -1,0 +1,29 @@
+framework:
+    translator: { fallbacks: ['%locale%'] }
+    secret: '%env(APP_SECRET)%'
+    form: ~
+    csrf_protection: ~
+    validation: { enable_attributes: true }
+    default_locale: '%locale%'
+    trusted_hosts: ~
+    session:
+        handler_id: ~
+        name: '%session.name%'
+    fragments: ~
+    http_method_override: true
+    serializer: { enable_attributes: true }
+    mailer:
+        dsn: 'null://null'
+    rate_limiter:
+        password_reset:
+            policy: 'fixed_window'
+            limit: 3
+            interval: '1 hour'
+        contact_form:
+            policy: 'fixed_window'
+            limit: 5
+            interval: '1 hour'
+        application:
+            policy: 'fixed_window'
+            limit: 5
+            interval: '1 hour'

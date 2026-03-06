@@ -1,0 +1,57 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block javascripts %}
+    <script>
+        $("#search").keyup(function () {
+            _this = this;
+            $.each($("#table tbody").find("tr"), function () {
+                if ($(this).text().toLowerCase().indexOf($(_this).val().toLowerCase()) == -1) {
+                    $(this).hide();
+                }
+                else {
+                    $(this).show();
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block title %}
+    {{ school }}
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item"><a href="{{ path("schooladmin_show") }}">Skoler</a></li>
+    <li class="breadcrumb-item active">{{ school }}</li>
+{% endblock %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center my-3">Assistenter på {{ school }} </h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab" aria-controls="home" aria-selected="true">Aktive assistenter</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab" aria-controls="home" aria-selected="true">Tidligere assistenter</a>
+                </li>
+                <li class="nav-item ml-auto">
+                    <input class="form-control" id="search" placeholder="Søk..."/>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active p-0" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: activeAssistantHistories} %}
+                </div>
+                <div class="tab-pane fade p-0" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    {% include 'school_admin/assistant_history_table.html.twig' with {assistantHistories: inactiveAssistantHistories} %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

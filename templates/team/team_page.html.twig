@@ -1,0 +1,74 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ team.name }} - Vektorprogrammet
+{% endblock %}
+
+{% block facebookDescription %}
+    {{ team.shortDescription }}
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/team.css') }}">
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+      $('.custom_html table').addClass('table table-bordered');
+      $('.custom_html img')
+        .addClass('img-fluid')
+        .css('height', 'auto')
+        .css('margin-left', '0')
+        .css('margin-right', '0');
+    </script>
+{% endblock %}
+
+{% block body %}
+    <div class="container individual-team-page">
+            <header class="page-header">
+                <div class="col-md-12">
+                    <h1>{{ team.name }}</h1>
+                    <p class="team-email text-center"><a href="mailto:{{ team.email }}">{{ team.email }}</a></p>
+                    <p class="text-center">{{ team.shortDescription }}<!-- Remove spooky spaces
+                    -->{% if team.acceptApplicationAndDeadline %}<!-- Remove spooky spaces
+                        -->&nbsp;<a class="medium-bold discreet-link"
+                                    href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a></p>
+                    {% endif %}
+                </div>
+            </header>
+            <section class="team-members">
+                {% for user in team.activeUsers | team_position_sort(team) %}
+                    <div class="team-member mx-2 my-3 mx-sm-4">
+                        <a href="{{ path('specific_profile', { 'id': user.id }) }}"><img
+                                    class="img-fluid rounded-circle mb-2 mb-sm-4 profile-photo"
+                                    src="{{ asset(user.picturePath | imagine_filter('profile_img_small')) }}"
+                                    alt="{{ user }}"></a>
+
+                        <h5 class="m-0">
+                            <a href="{{ path('specific_profile', { 'id': user.id }) }}">{{ user }}</a>
+                        </h5>
+
+                        <p class="position m-0">
+                            {% for membership in user.activeMemberships %}
+                                {{ membership.positionName }}{% if not loop.last %},{% endif %}
+                            {% endfor %}
+                        </p>
+                    </div>
+                {% endfor %}
+            </section>
+            <section class="custom_html row content">
+                {{ team.description|safe_html }}
+            </section>
+            {% if team.acceptApplicationAndDeadline %}
+                <section class="row content">
+                    {% if team.deadline is not null %}
+                        <p class="text-center">Søknadsfrist: <strong>{{ team.deadline|date("d.m") }} kl. {{ team.deadline|date("H:i") }}</strong></p>
+                    {% endif %}
+                    <div class="col-12 col-sm-8 offset-sm-2">
+                        <a class="btn btn-success btn-block apply-button p-4 text-uppercase medium-bold"
+                           href="{{ path('team_application', {'id': team.id}) }}">Søk {{ team }}!</a>
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+{% endblock %}

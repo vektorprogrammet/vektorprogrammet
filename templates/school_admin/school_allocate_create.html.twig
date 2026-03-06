@@ -1,0 +1,12 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-4">
+            <h3>Opprett kapasitet for skole</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

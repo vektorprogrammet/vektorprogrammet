@@ -1,0 +1,351 @@
+<div class="sidebar">
+    <nav class="sidebar-nav ps ps--active-y">
+        <ul class="nav">
+            <li><span class="navbar-toggler sidebar-toggler d-flex d-lg-none align-items-center float-right p-3"
+                      data-toggle="sidebar-show">
+                        <span class="fa fa-bars mr-2"></span> <small>lukk</small>
+                    </span></li>
+            <li class="text-center mt-2">
+                <a class="text-muted" href="{{ path('home') }}"><i class="fa fa-chevron-left"></i> Tilbake til forsiden</a>
+            </li>
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle text-center mt-2" data-toggle="dropdown" href="#" role="button"
+                   aria-haspopup="true" aria-expanded="false">
+                    <img class="img-avatar profile-photo" width="75"
+                         src="{{ asset(app.user.picturePath | imagine_filter('profile_img_small')) }}"
+                         alt="{{ app.user }}">
+                    <div class="mt-2">{{ app.user }}</div>
+                </a>
+                <ul class="nav-dropdown-items">
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('my_page') }}">
+                            <i class="fa fa-file nav-icon"></i> Min side</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('profile') }}">
+                            <i class="fa fa-user nav-icon"></i> Min profil</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('receipt_create') }}">
+                            <i class="fa fa-usd nav-icon"></i> Mine utlegg</a>
+                    </li>
+                    {% if app.user.isActiveAssistant() %}
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ path('my_partners') }}">
+                                <i class="fa fa-users nav-icon"></i> Mine vektorpartnere</a>
+                        </li>
+                    {% endif %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ path('logout') }}">
+                            <i class="fa fa-lock nav-icon"></i> Logg ut</a>
+                    </li>
+                </ul>
+                <hr class="my-1">
+            </li>
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'control_panel',
+                icon: 'tachometer',
+                name: 'Kontrollpanel'
+            } %}
+
+            <li class="nav-title">Opptak</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'admission_period_admin_show',
+                icon: 'clock-o',
+                name: 'Opptaksperioder',
+                activeRoutes: ['admission_period_admin_show', 'admission_period_create', 'admission_period_update']
+            } %}
+            <li class="nav-item nav-dropdown">
+                <a class="nav-link nav-dropdown-toggle" href="#">
+                    <i class="fa fa-users nav-icon"></i> Opptak</a>
+                <ul class="nav-dropdown-items">
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'admissionadmin_show',
+                        icon: 'users',
+                        name: 'Nye søkere',
+                        activeRoutes: ['applications_show_new']
+                    } %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'applications_show_existing',
+                        icon: 'users',
+                        name: 'Tidligere assistenter',
+                    } %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'applications_show_assigned',
+                        icon: 'comments-o',
+                        name: 'Intervjufordeling',
+                        activeRoutes: [
+                            'interview_schedule'
+                        ]
+                    } %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'applications_show_interviewed',
+                        icon: 'comments-o',
+                        name: 'Intervjuer',
+                        activeRoutes: [
+                            'interview_show'
+                        ]
+                    } %}
+                </ul>
+                {% if is_granted_team_leader() %}
+                    {% include 'base/admin/nav_link.html.twig' with {
+                        route: 'interview_schema',
+                        icon: 'comments-o',
+                        name: 'Intervjuskjema',
+                    } %}
+                {% endif %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'stand',
+                    icon: 'bullhorn',
+                    name: 'Stand',
+                } %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'statistics_application_show',
+                    icon: 'bar-chart',
+                    name: 'Opptaksstatistikk',
+                } %}
+
+            <li class="nav-title">Assistenter</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'participanthistory_show',
+                icon: 'users',
+                name: 'Assistenter',
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'substitute_show',
+                icon: 'user-secret',
+                name: 'Vikarer',
+                activeRoutes: ['substitute_show']
+            } %}
+
+            {% if is_granted_team_leader() %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'school_allocation',
+                    icon: 'calendar',
+                    name: 'Timeplan',
+                } %}
+
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'certificate_show',
+                    icon: 'sticky-note-o',
+                    name: 'Attester',
+                } %}
+            {% endif %}
+
+            <li class="nav-title">Team</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'teamadmin_show',
+                icon: 'smile-o',
+                name: 'Team',
+                activeRoutes: [
+                    'teamadmin_show_position',
+                    'teamadmin_create_team_for_department',
+                    'teamadmin_update',
+                    'teamadmin_show_specific_team',
+                    'team_application_show_all',
+                    'teamadmin_add_user_to_team',
+                    'teamadmin_update_team_membership'
+                ]
+            } %}
+
+            {% if is_granted_team_leader() %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'executive_board_show',
+                    icon: 'diamond',
+                    name: 'Hovedstyret',
+                    activeRoutes: [
+                        'executive_board_update',
+                        'executive_board_add_user_to_board',
+                        'edit_executive_board_membership'
+                    ]
+                } %}
+
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'admissionadmin_team_interest',
+                    icon: 'star',
+                    name: 'Teaminteresse',
+                } %}
+            {% endif %}
+
+
+            <li class="nav-title">Brukere</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'useradmin_show',
+                icon: 'users',
+                name: 'Brukere',
+                activeRoutes: [
+                    'useradmin_filter_users_by_department',
+                    'useradmin_create_user',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'generate_mail_lists',
+                icon: 'list',
+                name: 'Epostlister',
+            } %}
+
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'usergroup_collections',
+                icon: 'user-tag',
+                name: 'Brukergruppesamling',
+                activeRoutes: [
+                    'usergroup_collection_create',
+                    'usergroup_collection_edit',
+                    'usergroup_collection_delete',
+                ]
+            } %}
+
+
+            <li class="nav-title">Økonomi</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'sponsors_show',
+                icon: 'money',
+                name: 'Sponsorer',
+                activeRoutes: [
+                    'sponsor_edit',
+                    'sponsor_create',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'receipts_show',
+                icon: 'usd',
+                name: 'Utlegg',
+                activeRoutes: [
+                    'receipts_show_individual',
+                    'receipt_admin_edit',
+                ]
+            } %}
+
+
+            <li class="nav-title">Annet</li>
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'social_event_show',
+                icon: 'calendar-plus',
+                name: 'Arrangementer',
+                activeRoutes: [
+                    'social_event_create',
+                    'social_event_edit',
+                    'social_event_delete',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'surveys',
+                icon: 'comment-o',
+                name: 'Undersøkelser',
+                activeRoutes: [
+                    'survey_create',
+                    'survey_edit',
+                    'survey_copy',
+                    'survey_results',
+                ]
+            } %}
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'survey_notifiers',
+                icon: 'bell',
+                name: 'Undersøkelsevarsler',
+                activeRoutes: [
+                    'survey_notifier_create',
+                    'survey_notifier_edit',
+                    'survey_notifier_delete',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'articleadmin_show',
+                icon: 'file',
+                name: 'Artikler',
+                activeRoutes: [
+                    'articleadmin_create',
+                    'articleadmin_edit',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'departmentadmin_show',
+                icon: 'industry',
+                name: 'Avdelinger',
+                activeRoutes: [
+                    'departmentadmin_create_department',
+                    'departmentadmin_update',
+                ]
+            } %}
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'schooladmin_show',
+                icon: 'school',
+                name: 'Skoler',
+                activeRoutes: [
+                    'schooladmin_filter_schools_by_department',
+                    'schooladmin_create_school_by_department',
+                    'schooladmin_show_users_of_department_superadmin',
+                    'schooladmin_delegate_school_to_user',
+                    'schooladmin_show_specific_school',
+                    'schooladmin_show_users_of_department',
+                ]
+            } %}
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'changelog_show_all',
+                icon: 'list-ul',
+                name: 'Changelog',
+                activeRoutes: [
+                    'changelog_create',
+                    'changelogitem_edit',
+                    'changelogitem_delete',
+                    'changelog_show_all',
+                ]
+            } %}
+
+            {% if is_granted_team_leader() %}
+                {% include 'base/admin/nav_link.html.twig' with {
+                    route: 'show_field_of_studies',
+                    icon: 'bars',
+                    name: 'Linjer',
+                    activeRoutes: [
+                        'create_field_of_study',
+                        'edit_field_of_study',
+                    ]
+                } %}
+            {% endif %}
+
+            {% include 'base/admin/nav_link.html.twig' with {
+                route: 'feedback_admin_index',
+                icon: 'thumbs-up',
+                name: 'Feedback',
+                activeRoutes: [
+                    'feedback_admin_list',
+                    'feedback_admin_show'
+                ]
+            } %}
+
+	    <li class="nav-item">
+	    	<a class="nav-link" href="https://vektorprogrammet.slab.com/">
+		    <i class="fa nav-icon"><img src="{{ absolute_url(asset('images/slab.svg')) }}" alt="https://vektorprogrammet.slab.com/"></i>
+		    Slab
+		</a>
+	    </li>
+	    
+	    {% if is_granted_admin() %}
+	        <li class="nav-title">Admin</li>
+		{% include 'base/admin/nav_link.html.twig' with {
+                    route: 'access_rules_show',
+                    icon: 'shield-alt',
+                    name: 'Access Control',
+                    activeRoutes: [
+                        'access_rules_create',
+                    ]
+                } %}
+            {% endif %}
+
+            <li class="nav-item mt-auto">
+                <div class="p-4">
+                    <a href="{{ path('home') }}">
+                        <img class="img-fluid mx-4" src="{{ asset_with_version('images/vektor-logo-grey-notext.svg') }}" alt="Vektor logo">
+                        <p class="text-center my-2 text-secondary"><i class="fa fa-chevron-left"></i> Tilbake til
+                            forsiden</p>
+                    </a>
+                </div>
+            </li>
+        </ul>
+    </nav>
+</div>

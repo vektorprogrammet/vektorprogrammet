@@ -1,0 +1,81 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Rediger opptak {{ semesterName }} – {{ department }}
+{% endblock %}
+
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('admission_period_admin_show', {'id': department.id }) }}">Opptaksperioder</a>
+    </li>
+    <li class="breadcrumb-item active">{{ department }}</li>
+{% endblock %}
+
+
+{% block body %}
+    {{ form_start(form) }}
+    <div class="row">
+
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-industry"></i> Rediger opptaksperiode {{ semesterName }}
+                    – {{ department }}</div>
+                <div class="card-body">
+                    <h3>Opptak start / slutt</h3>
+                    {{ form_row(form.startDate) }}
+                    {{ form_row(form.endDate) }}
+                    <button type="submit" class="btn btn-primary mt-4">Lagre</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-info-circle"></i> Infomøte (valgfri)</div>
+                <div class="card-body">
+                    {{ form_errors(form) }}
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.infoMeeting.showOnPage) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.infoMeeting.date) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.infoMeeting.room) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.infoMeeting.description) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            {{ form_row(form.infoMeeting.link) }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    {{ form_end(form) }}
+
+{% endblock %}
+
+{% block javascripts %}
+    {% include 'common/datetime_picker.html.twig' with {
+        inputIds:[
+            form.startDate.vars.id,
+            form.endDate.vars.id,
+            form.infoMeeting.date.vars.id
+        ],
+        step: 1
+    } %}
+{% endblock %}

@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Om Vektorprogrammet
+{% endblock %}
+
+{% block stylesheets %}
+    <link rel="stylesheet" href="{{ asset_with_version('css/pages/about_us_page.css') }}">
+{% endblock %}
+
+{% block body %}
+    <div class="container-fluid">
+        <div class="about-us-page content">
+            <header class="page-header row">
+                <div class="col-12">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-header'} %}
+                </div>
+            </header>
+            <section class="row">
+                <div class="col-md-7">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-motivate-children'} %}
+                </div>
+                <div class="col-md-4 offset-md-1">
+                    <img class="img-fluid" src="{{ asset_with_version('images/tormedmer.jpg') }}">
+                </div>
+            </section>
+            <section class="row">
+                <div class="col-sm-12 col-md-6 order-2 order-md-1  d-none d-md-block">
+                    <img class="img-fluid" src="{{ asset_with_version('images/membersV18.JPG') }}">
+                </div>
+                <div class="col-sm-12 col-md-6 order-md-2">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-motivate-students'} %}
+                </div>
+            </section>
+            <section class="row">
+                <div class="col-12">
+                    {% include 'statictext/static_content.html.twig' with {'id': 'about-try-teaching'} %}
+                </div>
+                <div class="col-12  d-none d-md-block">
+                    <img src="{{ asset_with_version('images/nett.jpg') }}" class="img-fluid">
+                </div>
+            </section>
+            <div id="FAQ" class="faq card px-2 px-sm-4 py-4">
+                <div class="card-body p-1 p-sm-3">
+                {% include 'statictext/static_content.html.twig' with {'id': 'about-faq'} %}
+                    <br>
+                    Noe du lurer på? <b><a href="{{ path('contact') }}">Ta kontakt med oss!</a></b>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+{% if not is_edit_mode() %}
+    <script src="{{ asset_with_version('/js/faqCollapse.js') }}"></script>
+{% endif %}
+{% endblock %}

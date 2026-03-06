@@ -1,0 +1,48 @@
+@import "../colors";
+
+.surveypage{
+  width : 700px;
+  max-width: 100%;
+}
+
+
+.question-help{
+  font-size: 14px;
+  color: $color-devil;
+}
+
+textarea{
+  width : 1px
+}
+
+.form-check{
+  margin-left : 10px;
+  margin-top : 5px;
+}
+
+
+button{
+  margin-top: 15px;
+  background-color : $dark-blue;
+  color : #fff0ff;
+
+
+  &:hover{
+    color : #fff0ff;
+    background-color : darken($dark-blue, 3);
+  }
+}
+
+img{
+  width : 150px;
+  margin-bottom: -12px;
+}
+
+.main-footer{
+  margin-top: 65vh;
+}
+
+.card-body{
+  word-wrap: break-word;
+}
+

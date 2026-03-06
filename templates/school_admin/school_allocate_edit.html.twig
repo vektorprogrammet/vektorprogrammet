@@ -1,0 +1,13 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block body %}
+    <div class="row">
+        <div class="col-lg-4">
+            <h3>Oppdater kapasitet til {{ capacity.school }}</h3>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <button class="button" type="submit">Oppdater</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

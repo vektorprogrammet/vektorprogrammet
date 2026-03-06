@@ -1,0 +1,14 @@
+fos_ck_editor:
+    base_path: "vendor/ckeditor/"
+    js_path: "vendor/ckeditor/ckeditor.js"
+    default_config: default
+    configs:
+        default:
+            filebrowserBrowseRoute: elfinder
+            filebrowserBrowseRouteParameters:
+                instance: default
+            extraPlugins: "justify"
+        basic_config:
+            toolbar: basic
+        standard_config:
+            toolbar: standard

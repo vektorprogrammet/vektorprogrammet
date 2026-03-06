@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Vektorprogrammet - Error 403- no access
+{% endblock %}
+
+{% block body %}
+    <div class="page-header page-header-thin text-center container">
+        <h1>Oops, du har ikke tilgang!</h1>
+        <img class="img-fluid my-5" src="{{ asset_with_version('images/403.gif') }}" alt="404 image">
+        <h4>Du har ikke adgang til denne siden.</h4>
+        <h6 class="text-devil"> Hvis du mener du burde hatt tilgang, ta kontakt med IT-teamet på <a href="mailto:it@vektorprogrammet">it@vektorprogrammet.no</a> .</h6>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        ga('send', {
+            hitType: 'event',
+            eventCategory: 'Error',
+            eventAction: '403',
+            eventLabel: '{{ app.request.pathInfo }}'
+        });
+    </script>
+{% endblock %}

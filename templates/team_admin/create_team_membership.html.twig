@@ -1,0 +1,51 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Opprett arbeidshistorie
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show', {'id': team.department.id}) }}">Team</a>
+    </li>
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show_specific_team', {'id': team.id}) }}">{{ team.name }}</a>
+    </li>
+    <li class="breadcrumb-item active">
+        {% if teamMembership is defined %}
+            {{ teamMembership.user }}
+        {% else %}
+            Legg til medlem
+        {% endif %}
+    </li>
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-6">
+            <div class="card">
+                <div class="card-header"><i class="fa fa-align-justify"></i> {% if teamMembership is defined %}
+                        Oppdater medlem - {{ teamMembership.user }}
+                    {% else %}
+                        Legg til medlem - {{ team.name }}
+                    {% endif %}</div>
+                <div class="card-body">
+                    {{ form_start(form) }}
+                    {{ form_row(form.user) }}
+                    {{ form_row(form.isTeamLeader) }}
+                    {{ form_row(form.position) }}
+                    {{ form_row(form.startSemester) }}
+                    {{ form_row(form.endSemester) }}
+                    {% if teamMembership is defined %}
+                        {{ form_row(form.save, {'label': 'Oppdater'}) }}
+                    {% else %}
+                        {{ form_row(form.save) }}
+                    {% endif %}
+                    {{ form_end(form) }}
+                </div>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}

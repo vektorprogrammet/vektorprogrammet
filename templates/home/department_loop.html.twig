@@ -1,0 +1,3 @@
+{% for d in departments %}
+    <li><a href="{{ path('admission_show_by_city_case_insensitive', { 'city': d }) }}"> {{ d }}    </a></li>
+{% endfor %}

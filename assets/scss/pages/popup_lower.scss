@@ -1,0 +1,283 @@
+@import "../colors";
+
+
+// Colors
+$cBar: $dark-blue;
+$form-bkg: #e0e0e0;
+$white: #fff;
+$black: #252525;
+
+.popup {
+  z-index: 1020;
+  word-break: keep-all;
+  width: 100%;
+  position: fixed;
+  overflow: hidden;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+
+
+  .popup-container {
+    height: 80px;
+  }
+
+  img {
+    margin: 0 auto;
+  }
+
+  p {
+    display: inline;
+  }
+
+  #popup-dismisstext{
+    color: #7fa8b7;
+  }
+
+  .popup-never{
+    color: #7fa8b7;
+  }
+
+  #icon {
+    display: inline-block;
+  }
+
+  .popup-close {
+    display: inline-block;
+    padding: 5px 10px;
+    background: $black;
+    color: white;
+    cursor: pointer;
+    border-radius: 50%;
+    position: absolute;
+    top: 15px;
+    right: 15px;
+  }
+
+  .cta {
+    background: $cBar;
+    color: $white;
+    padding: 15px;
+    position: fixed;
+    cursor: pointer;
+    bottom: 0;
+    width: 100%;
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .cta.popupAttentionUp {
+    -webkit-animation: popupAttentionUp 0.5s infinite; /* Safari 4+ */
+    -moz-animation: popupAttentionUp 0.5s infinite; /* Fx 5+ */
+    -o-animation: popupAttentionUp 0.5s infinite; /* Opera 12+ */
+    animation: popupAttentionUp 0.5s infinite; /* IE 10+, Fx 29+ */
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+
+  }
+
+  @keyframes popupAttentionUp {
+    0% {
+      padding: 15px;
+      background: $cBar;
+    }
+    8% {
+      padding: 15px;
+      background: $cBar;
+    }
+    32% {
+      padding: 25px 15px;
+      background: lighten($cBar, 8%);
+    }
+    58% {
+      padding: 10px;
+      background: $cBar;
+    }
+    74% {
+      padding: 15px;
+      background: $cBar;
+    }
+    90% {
+      padding: 12px;
+      background: $cBar;
+    }
+    100% {
+      padding: 15px;
+      background: $cBar;
+    }
+  }
+
+  .cta.popupAttentionDown {
+    -webkit-animation: popupAttentionDown 0.5s infinite; /* Safari 4+ */
+    -moz-animation: popupAttentionDown 0.5s infinite; /* Fx 5+ */
+    -o-animation: popupAttentionDown 0.5s infinite; /* Opera 12+ */
+    animation: popupAttentionDown 0.5s infinite; /* IE 10+, Fx 29+ */
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+
+  }
+
+  @keyframes popupAttentionDown {
+    0% {
+      padding: 15px;
+      background: $cBar;
+    }
+    8% {
+      padding: 15px;
+      background: $cBar;
+    }
+    32% {
+      padding: 5px 15px;
+      background: darken($cBar, 8%);
+    }
+    58% {
+      padding: 20px;
+      background: $cBar;
+    }
+    74% {
+      padding: 15px;
+      background: $cBar;
+    }
+    90% {
+      padding: 17px;
+      background: $cBar;
+    }
+    100% {
+      padding: 15px;
+      background: $cBar;
+    }
+  }
+
+  .cta.transitionIn {
+    -webkit-animation: transitionIn 0.5s infinite; /* Safari 4+ */
+    -moz-animation: transitionIn 0.5s infinite; /* Fx 5+ */
+    -o-animation: transitionIn 0.5s infinite; /* Opera 12+ */
+    animation: transitionIn 0.5s infinite; /* IE 10+, Fx 29+ */
+    animation-duration: 0.5s;
+    animation-iteration-count: 1;
+
+  }
+
+  @keyframes transitionIn {
+    0% {
+      padding: 0px;
+      background: $cBar;
+    }
+    16% {
+      padding: 5px;
+      background: $cBar;
+    }
+    32% {
+      padding: 15px 15px;
+      background: $cBar;
+    }
+    64% {
+      padding: 15px;
+      background: $cBar;
+    }
+    90% {
+      padding: 17px;
+      background: $cBar;
+    }
+    100% {
+      padding: 15px;
+      background: $cBar;
+    }
+  }
+
+  .cta.transitionOut {
+    -webkit-animation: transitionOut 0.5s infinite; /* Safari 4+ */
+    -moz-animation: transitionOut 0.5s infinite; /* Fx 5+ */
+    -o-animation: transitionOut 0.5s infinite; /* Opera 12+ */
+    animation: transitionOut 0.5s infinite; /* IE 10+, Fx 29+ */
+    animation-duration: 0.3s;
+    animation-iteration-count: 1;
+
+  }
+
+  @keyframes transitionOut {
+    100% {
+      padding: 0px;
+      background: $cBar;
+    }
+    90% {
+      padding: 5px;
+      background: $cBar;
+    }
+    64% {
+      padding: 15px 15px;
+      background: $cBar;
+    }
+    32% {
+      padding: 15px;
+      background: $cBar;
+    }
+    16% {
+      padding: 17px;
+      background: $cBar;
+    }
+    0% {
+      padding: 15px;
+      background: $cBar;
+    }
+  }
+
+  a:hover{
+    color: #fff;
+    text-decoration: underline;
+  }
+  a {
+    color: #fff;
+  }
+
+  span {
+    display: contents;
+  }
+
+  @media (max-width: 600px) {
+    #mobilenone {
+      display: none;
+    }
+
+    span {
+      display: block;
+    }
+
+  }
+
+  #mobilethinnone {
+    display: inline;
+  }
+
+  #mobilethinshow {
+    display: none;
+  }
+  @media (max-width: 450px) {
+    #mobilethinnone {
+      display: none;
+    }
+
+    #mobilethinshow {
+      .popup {
+        word-break: keep-all;
+        width: 100%;
+        position: fixed;
+        overflow: hidden;
+        bottom:0;
+        left: 0;
+        transition: all 0.0.5s ease;
+        visibility: hidden;
+
+        .popup-container {
+          height: 80px;
+        }
+      }
+
+      display: inline;
+    }
+
+  }
+
+}

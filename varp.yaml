@@ -1,0 +1,293 @@
+varp: 0.1.0
+
+# === Business Domains ===
+
+admission:
+  path:
+    - ./src/App/Controller/AdmissionAdminController.php
+    - ./src/App/Controller/AdmissionPeriodController.php
+    - ./src/App/Controller/AdmissionSubscriberController.php
+    - ./src/App/Controller/ExistingUserAdmissionController.php
+    - ./src/App/Controller/ApplicationStatisticsController.php
+    - ./src/App/Controller/InterviewController.php
+    - ./src/App/Controller/InterviewSchemaController.php
+    - ./src/App/Entity/Application.php
+    - ./src/App/Entity/AdmissionNotification.php
+    - ./src/App/Entity/AdmissionPeriod.php
+    - ./src/App/Entity/AdmissionSubscriber.php
+    - ./src/App/Entity/Interview.php
+    - ./src/App/Entity/InterviewSchema.php
+    - ./src/App/Entity/InterviewQuestion.php
+    - ./src/App/Entity/InterviewQuestionAlternative.php
+    - ./src/App/Entity/InterviewAnswer.php
+    - ./src/App/Entity/InterviewScore.php
+    - ./src/App/Entity/InterviewDistribution.php
+    - ./src/App/Service/ApplicationManager.php
+    - ./src/App/Service/ApplicationData.php
+    - ./src/App/Service/AdmissionNotifier.php
+    - ./src/App/Service/AdmissionStatistics.php
+    - ./src/App/Service/ApplicationAdmission.php
+    - ./src/App/Service/InterviewManager.php
+    - ./src/App/Service/InterviewNotificationManager.php
+    - ./src/App/Service/InterviewCounter.php
+  deps: [user, school, messaging, security]
+
+survey:
+  path:
+    - ./src/App/Controller/SurveyController.php
+    - ./src/App/Controller/SurveyPopupController.php
+    - ./src/App/Controller/SurveyNotifierController.php
+    - ./src/App/Entity/Survey.php
+    - ./src/App/Entity/SurveyQuestion.php
+    - ./src/App/Entity/SurveyQuestionAlternative.php
+    - ./src/App/Entity/SurveyAnswer.php
+    - ./src/App/Entity/SurveyTaken.php
+    - ./src/App/Entity/SurveyNotification.php
+    - ./src/App/Entity/SurveyNotificationCollection.php
+    - ./src/App/Entity/SurveyLinkClick.php
+    - ./src/App/Service/SurveyManager.php
+    - ./src/App/Service/SurveyNotifier.php
+  deps: [user, messaging, security]
+
+assistant:
+  path:
+    - ./src/App/Controller/AssistantController.php
+    - ./src/App/Controller/AssistantHistoryController.php
+    - ./src/App/Controller/AssistantSchedulingController.php
+    - ./src/App/Controller/SubstituteController.php
+    - ./src/App/Entity/AssistantHistory.php
+    - ./src/App/Service/AssistantHistoryData.php
+    - ./src/App/AssistantScheduling/Assistant.php
+    - ./src/App/AssistantScheduling/School.php
+  deps: [user, school, security]
+
+assistant-scheduling-webapp:
+  path: ./src/App/AssistantScheduling/Webapp
+  deps: [assistant]
+
+team:
+  path:
+    - ./src/App/Controller/TeamController.php
+    - ./src/App/Controller/TeamAdminController.php
+    - ./src/App/Controller/TeamApplicationController.php
+    - ./src/App/Controller/TeamInterestController.php
+    - ./src/App/Controller/BoardAndTeamController.php
+    - ./src/App/Entity/Team.php
+    - ./src/App/Entity/TeamMembership.php
+    - ./src/App/Entity/TeamMembershipInterface.php
+    - ./src/App/Entity/TeamInterface.php
+    - ./src/App/Entity/TeamApplication.php
+    - ./src/App/Entity/TeamInterest.php
+    - ./src/App/Service/TeamMembershipService.php
+  deps: [user, organization, security]
+
+user:
+  path:
+    - ./src/App/Controller/UserController.php
+    - ./src/App/Controller/UserAdminController.php
+    - ./src/App/Controller/ProfileController.php
+    - ./src/App/Controller/ProfilePhotoController.php
+    - ./src/App/Controller/PasswordResetController.php
+    - ./src/App/Controller/ConfirmationController.php
+    - ./src/App/Entity/User.php
+    - ./src/App/Entity/PasswordReset.php
+    - ./src/App/Service/UserService.php
+    - ./src/App/Service/UserRegistration.php
+    - ./src/App/Service/PasswordManager.php
+    - ./src/App/Service/LoginManager.php
+    - ./src/App/DataTransferObject/UserDto.php
+  deps: [security, messaging]
+
+school:
+  path:
+    - ./src/App/Controller/SchoolAdminController.php
+    - ./src/App/Controller/SchoolCapacityController.php
+    - ./src/App/Controller/TeacherController.php
+    - ./src/App/Entity/School.php
+    - ./src/App/Entity/SchoolCapacity.php
+  deps: [organization, security]
+
+organization:
+  path:
+    - ./src/App/Controller/DepartmentController.php
+    - ./src/App/Controller/SemesterController.php
+    - ./src/App/Controller/FieldOfStudyController.php
+    - ./src/App/Controller/PositionController.php
+    - ./src/App/Controller/ExecutiveBoardController.php
+    - ./src/App/Controller/UserGroupCollectionController.php
+    - ./src/App/Entity/Department.php
+    - ./src/App/Entity/DepartmentSemesterInterface.php
+    - ./src/App/Entity/Semester.php
+    - ./src/App/Entity/PeriodInterface.php
+    - ./src/App/Entity/FieldOfStudy.php
+    - ./src/App/Entity/Position.php
+    - ./src/App/Entity/ExecutiveBoard.php
+    - ./src/App/Entity/ExecutiveBoardMembership.php
+    - ./src/App/Entity/UserGroup.php
+    - ./src/App/Entity/UserGroupCollection.php
+    - ./src/App/Service/UserGroupCollectionManager.php
+  deps: [user, security]
+
+content:
+  path:
+    - ./src/App/Controller/ArticleController.php
+    - ./src/App/Controller/ArticleAdminController.php
+    - ./src/App/Controller/StaticContentController.php
+    - ./src/App/Controller/AboutVektorController.php
+    - ./src/App/Controller/ParentsController.php
+    - ./src/App/Controller/ChangeLogController.php
+    - ./src/App/Controller/ContactController.php
+    - ./src/App/Controller/FeedbackController.php
+    - ./src/App/Controller/SponsorsController.php
+    - ./src/App/Entity/Article.php
+    - ./src/App/Entity/StaticContent.php
+    - ./src/App/Entity/ChangeLogItem.php
+    - ./src/App/Entity/Feedback.php
+    - ./src/App/Entity/Sponsor.php
+  deps: [user, security]
+
+finance:
+  path:
+    - ./src/App/Controller/ReceiptController.php
+    - ./src/App/Controller/CertificateController.php
+    - ./src/App/Controller/SignatureController.php
+    - ./src/App/Entity/Receipt.php
+    - ./src/App/Entity/CertificateRequest.php
+    - ./src/App/Entity/Signature.php
+  deps: [user, security]
+
+events:
+  path:
+    - ./src/App/Controller/SocialEventController.php
+    - ./src/App/Controller/MailingListController.php
+    - ./src/App/Controller/ParticipantHistoryController.php
+    - ./src/App/Controller/StandController.php
+    - ./src/App/Entity/SocialEvent.php
+    - ./src/App/Entity/InfoMeeting.php
+    - ./src/App/Entity/SupportTicket.php
+  deps: [user, organization, security]
+
+# === API Layer ===
+
+api:
+  path:
+    - ./src/App/ApiResource
+    - ./src/App/State
+  deps: [user, admission, content, organization, messaging, security]
+  docs:
+    - docs/architecture.md
+    - docs/conventions.md
+    - .claude/rules/php.md
+
+# === Infrastructure ===
+
+security:
+  path:
+    - ./src/App/Controller/SecurityController.php
+    - ./src/App/Controller/SsoController.php
+    - ./src/App/Controller/AccessRuleController.php
+    - ./src/App/Entity/Role.php
+    - ./src/App/Entity/AccessRule.php
+    - ./src/App/Entity/UnhandledAccessRule.php
+    - ./src/App/Security/UserChecker.php
+    - ./src/App/Role/Roles.php
+    - ./src/App/Role/ReversedRoleHierarchy.php
+    - ./src/App/Service/AccessControlService.php
+    - ./src/App/Service/RoleManager.php
+  docs:
+    - docs/architecture.md
+
+messaging:
+  path:
+    - ./src/App/Mailer/Mailer.php
+    - ./src/App/Mailer/MailerInterface.php
+    - ./src/App/Service/EmailSender.php
+    - ./src/App/Service/SlackMailer.php
+    - ./src/App/Service/SlackMessenger.php
+    - ./src/App/Sms/Sms.php
+    - ./src/App/Sms/SmsSender.php
+    - ./src/App/Sms/SmsSenderInterface.php
+    - ./src/App/Sms/SlackSms.php
+    - ./src/App/Sms/GatewayAPI.php
+    - ./src/App/Google/GoogleAPI.php
+    - ./src/App/Google/Gmail.php
+    - ./src/App/Google/GoogleService.php
+    - ./src/App/Google/GoogleUsers.php
+    - ./src/App/Google/GoogleGroups.php
+    - ./src/App/Google/GoogleDrive.php
+
+core:
+  path:
+    - ./src/App/Controller/BaseController.php
+    - ./src/App/Controller/HomeController.php
+    - ./src/App/Controller/ControlPanelController.php
+    - ./src/App/Controller/FrontEndController.php
+    - ./src/App/Controller/WidgetController.php
+    - ./src/App/Controller/GitHubController.php
+    - ./src/App/Controller/FileBrowserController.php
+    - ./src/App/Service/FilterService.php
+    - ./src/App/Service/Sorter.php
+    - ./src/App/Service/LogService.php
+    - ./src/App/Service/BetaRedirecter.php
+    - ./src/App/Service/ContentModeManager.php
+    - ./src/App/Service/GeoLocation.php
+    - ./src/App/Service/SlugMaker.php
+    - ./src/App/Service/CompanyEmailMaker.php
+    - ./src/App/Service/SbsData.php
+    - ./src/App/Service/FileUploader.php
+    - ./src/App/AutoMapper
+    - ./src/App/DataFixtures
+    - ./src/App/Twig
+    - ./src/App/Utils
+    - ./src/App/Validator
+    - ./src/App/Event
+    - ./src/App/EventSubscriber
+    - ./src/App/Model
+    - ./src/App/Type
+    - ./src/App/Form
+  deps: [security]
+  docs:
+    - docs/architecture.md
+    - docs/conventions.md
+
+# === Frontend & Meta ===
+
+frontend:
+  path: ./assets
+  docs:
+    - docs/overview.md
+
+templates:
+  path: ./templates
+  deps: [core]
+  docs:
+    - .claude/rules/twig.md
+
+config:
+  path: ./config
+  docs:
+    - docs/architecture.md
+    - .claude/rules/php.md
+
+tests:
+  path: ./tests
+  docs:
+    - docs/testing.md
+    - docs/testing-details.md
+    - .claude/rules/testing.md
+
+infrastructure:
+  path:
+    - ./Dockerfile
+    - ./deploy.sh
+    - ./docker-compose.yml
+    - ./composer.json
+    - ./composer.lock
+    - ./package.json
+    - ./package-lock.json
+  docs:
+    - docs/local-setup.md
+    - docs/overview.md
+
+docs:
+  path: ./docs

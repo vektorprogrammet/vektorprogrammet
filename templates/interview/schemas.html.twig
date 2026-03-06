@@ -1,0 +1,56 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Intervjuskjemaer
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">Intervjuskjema</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    <a href="{{ path('interview_schema_create') }}" class="btn btn-outline-success text-success">
+        <i class="fa fa-plus"></i> Nytt intervjuskjema
+    </a>
+{% endblock %}
+
+
+{% block body %}
+
+    <div class="card">
+        <div class="card-header">
+            <i class="fa fa-comments-o"></i> Intervjuskjemaer
+        </div>
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                <tr>
+                    <th></th>
+                    <th>Skjema</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for schema in schemas %}
+                    <tr>
+                        <td class="table-menu">
+                            <div class="dropdown">
+                                <div class="clickable px-2" id="options-{{ loop.index }}" data-toggle="dropdown"
+                                     aria-haspopup="true" aria-expanded="false">
+                                    <i class="fa fa-ellipsis-v text-secondary"></i>
+                                </div>
+                                <div class="dropdown-menu pt-0" aria-labelledby="options-{{ loop.index }}">
+                                    <div class="dropdown-header mb-2"><strong>{{ schema.name }}</strong></div>
+                                    <a href="{{ path('interview_schema_edit', {'id': schema.id }) }}"
+                                       class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
+                                    </a>
+                                </div>
+                            </div>
+                        </td>
+                        <td>{{ schema.name }}</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+{% endblock %}

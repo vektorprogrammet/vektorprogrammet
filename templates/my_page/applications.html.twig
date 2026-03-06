@@ -1,0 +1,21 @@
+<div class="card text-center">
+    <div class="card-body">
+        <h2 class="text-dark-blue">Søknad vektorassistent {{ application.semester.name|lower }}</h2>
+        <br>
+        <p>Status: <span class="text-italic"><strong>{{ application_status.text }}</strong></span></p>
+        <p>Forventet handling: <span class="text-italic"><strong>{{ application_status.nextAction }}</strong></span>
+        </p>
+        <br>
+        {% for application_step in application_status.applicationProcess %}
+            <p class="
+            {% if application_status.step > loop.index0 %}
+                text-line-through text-success textDisabled
+            {% elseif application_status.step == loop.index0 %}
+                text-bold
+            {% else %}
+                textDisabled
+            {% endif %}">{{ loop.index }}. {{ application_step }}
+            </p>
+        {% endfor %}
+    </div>
+</div>

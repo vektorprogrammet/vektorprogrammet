@@ -1,0 +1,69 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    Opprett team
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item">
+        <a href="{{ path('teamadmin_show', {'id': team.department.id}) }}">Team</a>
+    </li>
+    {% if isUpdate %}
+        <li class="breadcrumb-item active">{{ team.name }} - {{ team.department }}</li>
+    {% else %}
+        <li class="breadcrumb-item active">Opprett team - {{ team.department }}</li>
+    {% endif %}
+{% endblock %}
+
+
+{% block body %}
+    <div class="card">
+        <div class="card-header"><i class="fa fa-align-justify"></i> {{ isUpdate ? 'Oppdater ' ~ team.name : 'Opprett team' }} - {{ department }}</div>
+        <div class="card-body">
+            {% if isUpdate is not defined %}
+                {% set isUpdate = false %}
+            {% endif %}
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+            {{ form_row(form.name) }}
+            {{ form_row(form.email) }}
+
+            {{ form_row(form.shortDescription) }}
+            {{ form_row(form.acceptApplication) }}
+            {{ form_row(form.deadline) }}
+            {{ form_row(form.active) }}
+            {{ form_row(form.description) }}
+            <br>
+            {{ form_widget(form.preview, {'attr': {'class': 'btn btn-secondary ignore-auto-disable', 'formtarget': '_blank'}}) }}
+            <button class="btn btn-primary">Lagre</button>
+            {{ form_end(form) }}
+        </div>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    {% include 'common/datetime_picker.html.twig' with{
+        inputIds: [form.deadline.vars.id],
+        step: 1,
+    } %}
+
+    <script type="text/javascript">
+        let acceptApplication = document.getElementById('createTeam_acceptApplication');
+        let deadline = document.getElementById('createTeam_deadline');
+        !acceptApplication.checked ? deadline.parentNode.classList.add('hide') : '';
+        acceptApplication.addEventListener('click', e => {
+            let children = deadline.childNodes;
+            if(!e.target.checked){
+                deadline.parentNode.classList.add('hide');
+                children[0].selectedIndex = 0;
+                children[1].selectedIndex = 0;
+                children[2].selectedIndex = 0;
+                children[3].selectedIndex = 0;
+                children[5].selectedIndex = 0;
+            } else {
+                deadline.parentNode.classList.remove('hide');
+            }
+        })
+    </script>
+{% endblock %}

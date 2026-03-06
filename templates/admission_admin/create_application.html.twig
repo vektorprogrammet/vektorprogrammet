@@ -1,0 +1,110 @@
+{% extends 'adminBase.html.twig' %}
+
+
+{% block title %}
+    Registrer Søker
+{% endblock %}
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+            {% for flashMessage in app.session.flashbag.get('admission-notice') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <h4 class="alert-heading">Søknad registrert!</h4>
+                    <p>En bekreftelsesmail med videre informasjon har blitt sendt til assistenten</p>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12 col-md-12 col-lg-12">
+
+            <h1 class="text-center"> Registrer søker {{ department.shortname }} {{ semester.name }} </h1>
+
+            <br>
+
+            {{ form_start(form) }}
+            {{ form_errors(form) }}
+
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4 offset-lg-2">
+
+                    <div>
+                        {{ form_label(form.user.firstName) }}
+                        {{ form_errors(form.user.firstName) }}
+                        {{ form_widget(form.user.firstName, { 'attr': {'tabindex': '1'}}) }}
+                    </div>
+
+                    <div>
+                        {{ form_label(form.user.email) }}
+                        {{ form_errors(form.user.email) }}
+                        {{ form_widget(form.user.email, { 'attr': {'tabindex': '3'}}) }}
+                    </div>
+
+                </div>
+
+                <div class="col-12 col-md-6 col-lg-4  end">
+
+                    <div>
+                        {{ form_label(form.user.lastName) }}
+                        {{ form_errors(form.user.lastName) }}
+                        {{ form_widget(form.user.lastName, { 'attr': {'tabindex': '2'}}) }}
+                    </div>
+
+                    <div>
+                        {{ form_label(form.user.phone) }}
+                        {{ form_errors(form.user.phone) }}
+                        {{ form_widget(form.user.phone, { 'attr': {'tabindex': '4'}}) }}
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-6 col-md-4 col-lg-1 offset-lg-2">
+
+                    <div>
+                        {{ form_label(form.user.fieldOfStudy) }}
+                        {{ form_errors(form.user.fieldOfStudy) }}
+                        {{ form_widget(form.user.fieldOfStudy, { 'attr': {'tabindex': '5'}}) }}
+                    </div>
+
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-1 ">
+
+                    <div>
+                        {{ form_label(form.yearOfStudy) }}
+                        {{ form_errors(form.yearOfStudy) }}
+                        {{ form_widget(form.yearOfStudy, { 'attr': {'tabindex': '6'}}) }}
+                    </div>
+
+                </div>
+
+                <div class="col-6 col-md-4 col-lg-2 ">
+
+                    <div>
+                        {{ form_label(form.user.gender) }}
+                        {{ form_errors(form.user.gender) }}
+                        {{ form_widget(form.user.gender, { 'attr': {'tabindex': '7'}}) }}
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-12 col-md-6 col-lg-4 text-center offset-lg-4">
+                    <button class="btn btn-success mt-3" tabindex="9">Registrer</button>
+                </div>
+            </div>
+
+            {{ form_end(form) }}
+
+        </div>
+    </div>
+{% endblock %}

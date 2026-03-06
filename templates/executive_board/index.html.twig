@@ -1,0 +1,68 @@
+{% extends 'adminBase.html.twig' %}
+
+{% block title %}
+    {{ board_name }}
+{% endblock %}
+
+{% block javascripts %}
+    <script src="{{ asset_with_version('js/csvGenerator.js') }}"></script>
+{% endblock %}
+
+{% block breadcrumb %}
+    <li class="breadcrumb-item active">{{ board_name }}</li>
+{% endblock %}
+
+{% block breadcrumb_menu %}
+    {% if is_granted_team_leader() %}
+        <div class="btn-group">
+            <a href="{{ path('executive_board_update') }}" class="btn btn-outline-secondary">
+                <i class="fa fa-pencil"></i> Rediger {{ board_name }}
+            </a>
+            <div class="dropdown">
+                <button class="btn btn-outline-success text-success" id="dropdownToggle" data-toggle="dropdown" aria-haspopup="true"   aria-expanded="false">
+                    <i class="fa fa-user-plus"></i> Legg til nytt medlem
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownToggle">
+                    {% for d in get_active_departments() %}
+                        <a class="dropdown-item" href="{{ path('executive_board_add_user_to_board', { 'id': d.id }) }}">{{ d }}</a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+
+
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            <h2 class="text-center my-3">{{ board_name }}</h2>
+            <ul class="nav nav-tabs mt-4">
+                <li class="nav-item">
+                    <a class="nav-link active" id="active-tab" data-toggle="tab" href="#active" role="tab"
+                       aria-controls="home" aria-selected="true">Aktive medlemmer</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" id="inactive-tab" data-toggle="tab" href="#inactive" role="tab"
+                       aria-controls="home" aria-selected="true">Inaktive medlemmer</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade table-responsive show active p-0" id="active" role="tabpanel" aria-labelledby="active-tab">
+                    <button class="btn btn-outline-secondary csv_download_button m-3" data-table-id="activeMemberTable"><i class="fa fa-download"></i> Last ned CSV</button>
+                    {%  include('executive_board/member_table.html.twig') with {'members': active_members, 'table_id': 'activeMemberTable'} %}
+                </div>
+                <div class="tab-pane fade table-responsive p-0" id="inactive" role="tabpanel" aria-labelledby="inactive-tab">
+                    <button class="btn btn-outline-secondary csv_download_button m-3" data-table-id="inactiveMemberTable"><i class="fa fa-download"></i> Last ned CSV</button>
+                    {%  include('executive_board/member_table.html.twig') with {'members': inactive_members, 'table_id': 'inactiveMemberTable'} %}
+                </div>
+            </div>
+
+        </div>
+    </div>
+{% endblock %}

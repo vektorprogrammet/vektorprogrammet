@@ -1,0 +1,89 @@
+@import "../colors";
+img {
+  max-width: 100%;
+}
+.news-carousel {
+  display: none;
+}
+
+.news-carousel-text {
+
+  // Small screens
+  @media only screen {
+    text-align: center;
+  }
+
+  // Medium screens and over
+  @media only screen and (min-width: 40.063em) {
+    text-align: inherit;
+  }
+
+}
+
+.article-box {
+  margin-bottom: 20px;
+}
+
+.article-heading {
+  font-family: "Londrina Solid", sans-serif;
+
+  // Medium screens
+  @media only screen and (min-width: 40.063em) {
+    font-size: 35px;
+  }
+
+  // Large screens
+  @media only screen and (min-width: 64.063em) {
+    font-size: 55px;
+  }
+
+  line-height: 1.1;
+}
+
+.department-filter {
+  a, p {
+    font-weight: bold;
+  }
+}
+
+.department-filter-active {
+  border-bottom: 2px solid $vektor-blue;
+}
+
+article {
+  h1, h2, h3, h4, h5, h6 {
+    font-weight: bold;
+  }
+
+  .byline {
+    color: $vektor-blue;
+  }
+
+  .for-department {
+    color: $vektor-blue;
+    font-weight: bold;
+    margin-bottom: 0;
+  }
+}
+
+// Admission & Contact
+// - - - - - - - - - - - - - - - - - - - - - - - - -
+
+.admissioncontainer {
+  background-color: $vektor-blue;
+  color: #fff;
+  width: 100%;
+
+  h1, h3, h4, label {
+    color: #fff;
+  }
+  .team-link {
+    margin-bottom: 10px
+  }
+}
+
+.vektor-box {
+  padding: 1rem;
+  border: 3px solid #6fceee;
+  margin-bottom: 1rem;
+}
