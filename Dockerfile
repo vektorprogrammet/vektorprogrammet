@@ -21,9 +21,12 @@ ENV PATH="/root/.bun/bin:$PATH"
 
 WORKDIR /app
 
-# PHP deps (--no-dev: fixtures bundle is in require, not require-dev)
+# PHP deps (fixtures bundle is in require, not require-dev)
+ARG APP_ENV=prod
 COPY composer.json composer.lock ./
-RUN COMPOSER_PROCESS_TIMEOUT=600 composer install --no-dev --no-autoloader --no-scripts
+RUN COMPOSER_PROCESS_TIMEOUT=600 composer install \
+    $([ "$APP_ENV" = "prod" ] && echo "--no-dev") \
+    --no-autoloader --no-scripts
 
 # Node deps + build
 COPY package.json package-lock.json ./
@@ -34,7 +37,7 @@ RUN bun run build:prod
 
 # App source
 COPY . .
-RUN composer dump-autoload --no-dev --optimize
+RUN composer dump-autoload $([ "$APP_ENV" = "prod" ] && echo "--no-dev") --optimize
 COPY docker/entrypoint.sh /entrypoint.sh
 RUN chmod +x /entrypoint.sh
 

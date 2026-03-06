@@ -1,6 +1,9 @@
 services:
   app:
-    build: .
+    build:
+      context: .
+      args:
+        APP_ENV: staging
     ports:
       - "8000:8000"
     environment:
