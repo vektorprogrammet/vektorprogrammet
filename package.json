@@ -6,6 +6,7 @@
     "dev": "php -S 0.0.0.0:8000 -t public",
     "test": "echo 'Run: php -d memory_limit=512M bin/phpunit'",
     "lint": "echo 'Run: composer lint (requires vendor/)'",
-    "fix": "echo 'Run: composer fix (requires vendor/)'"
+    "fix": "echo 'Run: composer fix (requires vendor/)'",
+    "api:spec": "php bin/console api:openapi:export --output=../../packages/sdk/openapi.json"
   }
 }
