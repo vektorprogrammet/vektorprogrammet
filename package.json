@@ -3,6 +3,7 @@
   "private": true,
   "scripts": {
     "build": "echo 'Run: composer dump-autoload --optimize'",
+    "build:prod": "vite build --mode production",
     "dev": "php -S 0.0.0.0:8000 -t public",
     "test": "echo 'Run: php -d memory_limit=512M bin/phpunit'",
     "lint": "echo 'Run: composer lint (requires vendor/)'",
