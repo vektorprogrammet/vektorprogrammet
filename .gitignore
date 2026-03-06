@@ -47,7 +47,9 @@ crashlytics-build.properties
 /var/logs/*
 !var/logs/.gitkeep
 /phpunit.xml
-/bin/
+/bin/*
+!/bin/console
+!/bin/phpunit
 /composer.phar
 /vendor/
 /signatures/
