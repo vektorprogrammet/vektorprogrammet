@@ -1,12 +1,6 @@
 doctrine:
     dbal:
-        driver: '%env(DATABASE_DRIVER)%'
-        host: '%env(DATABASE_HOST)%'
-        port: '%env(DATABASE_PORT)%'
-        dbname: '%env(DATABASE_NAME)%'
-        user: '%env(DATABASE_USER)%'
-        password: '%env(DATABASE_PASSWORD)%'
-        path: ~
+        url: '%env(DATABASE_URL)%'
         charset: utf8mb4
         default_table_options:
             charset: utf8mb4

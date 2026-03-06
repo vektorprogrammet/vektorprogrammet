@@ -9,12 +9,7 @@ services:
     environment:
       APP_ENV: staging
       APP_SECRET: staging-secret-change-in-production
-      DATABASE_DRIVER: pdo_mysql
-      DATABASE_HOST: mysql
-      DATABASE_PORT: "3306"
-      DATABASE_NAME: vektor
-      DATABASE_USER: vektor
-      DATABASE_PASSWORD: vektor
+      DATABASE_URL: mysql://vektor:vektor@mysql:3306/vektor
       JWT_PASSPHRASE: staging-jwt-passphrase
       SLACK_DISABLED: "true"
       SMS_DISABLE: "true"
