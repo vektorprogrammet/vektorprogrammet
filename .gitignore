@@ -34,18 +34,9 @@ crashlytics.properties
 crashlytics-build.properties
 
 ### Symfony ###
-/app/bootstrap.php.cache
-/var/bootstrap.php.cache
-/var/SymfonyRequirements.php
+/var/
 /config/jwt/*.pem
 /openapi.json
-/var/cache/*
-!var/cache/.gitkeep
-/var/coverage/
-/var/data
-!/var/data/.gitkeep
-/var/logs/*
-!var/logs/.gitkeep
 /phpunit.xml
 /bin/*
 !/bin/console
@@ -61,23 +52,16 @@ crashlytics-build.properties
 /public/files/
 /public/js/
 /public/vendor/
-/public/css
-/public/static
+/public/css/
+/public/static/
 /public/media/
 !/public/media/.gitkeep
-
-#npm
-/node_modules/
 
 .php_cs.cache
 .php-cs-fixer.cache
 .phpunit.result.cache
 
-var/coverage-controller-partial
-var/coverage-unit
-
 .claude/worktrees
 
 # Test-generated artifacts
 /images/Profile photos/
-var/test-results-parallel.xml
