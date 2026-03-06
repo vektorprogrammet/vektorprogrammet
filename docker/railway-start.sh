@@ -1,7 +1,9 @@
 #!/bin/bash
-set -e
+set -ex
 
 echo "=== Railway Start ==="
+echo "APP_ENV=$APP_ENV"
+echo "PORT=${PORT:-8000}"
 
 # Generate JWT keys if missing
 if [ ! -f config/jwt/private.pem ]; then
@@ -12,7 +14,7 @@ if [ ! -f config/jwt/private.pem ]; then
 fi
 
 # Clear and warm cache
-php bin/console cache:clear --env="$APP_ENV" --no-debug
+php bin/console cache:clear --env="$APP_ENV" --no-debug || echo "cache:clear failed, continuing..."
 
 PORT="${PORT:-8000}"
 echo "Starting PHP server on 0.0.0.0:$PORT..."
