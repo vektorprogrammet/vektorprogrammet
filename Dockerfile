@@ -40,8 +40,9 @@ COPY . .
 RUN composer dump-autoload $([ "$APP_ENV" = "prod" ] && echo "--no-dev") --optimize
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY docker/railway-boot.sh /railway-boot.sh
-RUN chmod +x /entrypoint.sh /railway-boot.sh
+COPY docker/railway-start.sh /railway-start.sh
+RUN chmod +x /entrypoint.sh /railway-boot.sh /railway-start.sh
 
 EXPOSE 8000
 
-ENTRYPOINT ["/entrypoint.sh"]
+CMD ["/entrypoint.sh"]
