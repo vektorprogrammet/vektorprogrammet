@@ -22,7 +22,8 @@ if [ "${SKIP_FIXTURES:-0}" != "1" ]; then
     done
 
     # Check if schema exists by counting tables
-    TABLE_COUNT=$(php bin/console doctrine:query:sql "SELECT COUNT(*) as cnt FROM information_schema.tables WHERE table_schema = '$DATABASE_NAME'" --env="$APP_ENV" 2>/dev/null | grep -o '[0-9]*' | tail -1 || echo "0")
+    DB_NAME=$(php -r "echo parse_url(getenv('DATABASE_URL') ?: '', PHP_URL_PATH) ? ltrim(parse_url(getenv('DATABASE_URL'), PHP_URL_PATH), '/') : 'railway';")
+    TABLE_COUNT=$(php bin/console doctrine:query:sql "SELECT COUNT(*) as cnt FROM information_schema.tables WHERE table_schema = '$DB_NAME'" --env="$APP_ENV" 2>/dev/null | grep -o '[0-9]*' | tail -1 || echo "0")
 
     if [ "$TABLE_COUNT" -lt "5" ]; then
         echo "Creating schema..."
@@ -35,5 +36,6 @@ if [ "${SKIP_FIXTURES:-0}" != "1" ]; then
     fi
 fi
 
-echo "Starting PHP server on 0.0.0.0:8000..."
-exec php -S 0.0.0.0:8000 -t public
+PORT="${PORT:-8000}"
+echo "Starting PHP server on 0.0.0.0:$PORT..."
+exec php -S 0.0.0.0:"$PORT" -t public
