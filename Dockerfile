@@ -31,7 +31,7 @@ RUN COMPOSER_PROCESS_TIMEOUT=600 composer install \
 # Node deps + build
 COPY package.json ./
 RUN bun install
-COPY vite.config.js ./
+COPY vite.config.mjs ./
 COPY assets/ ./assets/
 RUN bun run build:prod
 
