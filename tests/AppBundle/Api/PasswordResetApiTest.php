@@ -83,4 +83,41 @@ class PasswordResetApiTest extends BaseWebTestCase
 
         $this->assertResponseStatusCodeSame(422);
     }
+
+    public function testRequestPasswordResetReuseSameLinkReturnsSuccess(): void
+    {
+        $client = static::createClient();
+
+        $client->request('POST', '/api/password_resets', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ], json_encode([
+            'email' => 'admin@gmail.com',
+        ]));
+
+        $this->assertResponseStatusCodeSame(204);
+
+        $client->request('POST', '/api/password_resets', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ], json_encode([
+            'email' => 'admin@gmail.com',
+        ]));
+
+        $this->assertResponseStatusCodeSame(204);
+    }
+
+    public function testRequestPasswordResetWithInactiveUserReturnsSuccessToPreventEnumeration(): void
+    {
+        $client = static::createClient();
+        $client->request('POST', '/api/password_resets', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ], json_encode([
+            'email' => 'inactive@mail.com',
+        ]));
+
+        // Inactive users get 204 (same as valid/nonexistent) to prevent user enumeration
+        $this->assertResponseStatusCodeSame(204);
+    }
 }
