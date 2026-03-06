@@ -29,7 +29,7 @@ RUN COMPOSER_PROCESS_TIMEOUT=600 composer install \
     --no-autoloader --no-scripts
 
 # Node deps + build
-COPY package.json package-lock.json ./
+COPY package.json ./
 RUN bun install
 COPY vite.config.js ./
 COPY assets/ ./assets/
