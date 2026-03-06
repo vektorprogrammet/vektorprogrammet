@@ -19,5 +19,5 @@ PORT="${PORT:-8080}"
 sed "s/{{PORT}}/$PORT/g" /docker/nginx.template.conf > /tmp/nginx.conf
 
 echo "Starting php-fpm + nginx on port $PORT..."
-php-fpm -y /docker/php-fpm.conf &
+php-fpm -R -y /docker/php-fpm.conf &
 exec nginx -c /tmp/nginx.conf
