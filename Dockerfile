@@ -27,7 +27,7 @@ RUN COMPOSER_PROCESS_TIMEOUT=600 composer install --no-dev --no-autoloader --no-
 
 # Node deps + build
 COPY package.json package-lock.json ./
-RUN bun install --frozen-lockfile
+RUN bun install
 COPY vite.config.js ./
 COPY assets/ ./assets/
 RUN bun run build:prod
