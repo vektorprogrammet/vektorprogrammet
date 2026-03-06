@@ -34,6 +34,8 @@ class ProfileProvider implements ProviderInterface
         $profile->phone = $user->getPhone();
         $profile->gender = $user->getGender();
 
+        $profile->role = $user->getRoles()[0] ?? 'ROLE_USER';
+
         $fos = $user->getFieldOfStudy();
         if ($fos) {
             $profile->fieldOfStudy = [

@@ -45,4 +45,6 @@ class ProfileResource
     public ?int $gender = null;
 
     public ?array $fieldOfStudy = null;
+
+    public string $role = 'ROLE_USER';
 }
