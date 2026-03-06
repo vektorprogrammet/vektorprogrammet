@@ -47,4 +47,6 @@ class ProfileResource
     public ?array $fieldOfStudy = null;
 
     public string $role = 'ROLE_USER';
+
+    public ?string $profilePhoto = null;
 }
