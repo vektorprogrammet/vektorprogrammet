@@ -6,16 +6,15 @@ use Symfony\Component\HttpFoundation\Request;
 
 require dirname(__DIR__).'/vendor/autoload.php';
 
-// Populate $_SERVER from real env vars (PHP built-in server doesn't do this)
-$_SERVER['APP_ENV'] = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? getenv('APP_ENV') ?: 'dev';
-$_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? getenv('APP_DEBUG') ?: ($_SERVER['APP_ENV'] === 'dev' ? '1' : '0');
-
-// Load .env file if it exists (overrides above defaults with file values)
+// Load .env file if it exists
 $envFile = dirname(__DIR__).'/.env';
 if (is_file($envFile)) {
     (new Dotenv())->usePutenv()->bootEnv($envFile);
 } elseif (is_file($envFile.'.test')) {
     (new Dotenv())->usePutenv()->loadEnv($envFile.'.test', 'APP_ENV', 'dev');
+} else {
+    $_SERVER['APP_ENV'] = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'dev';
+    $_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? '1';
 }
 
 if ($_SERVER['APP_DEBUG']) {

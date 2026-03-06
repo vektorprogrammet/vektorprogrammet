@@ -14,8 +14,8 @@ fi
 # Clear cache
 php bin/console cache:clear --env="$APP_ENV" --no-debug
 
-# DB setup (skip if SKIP_FIXTURES=1 or RAILWAY_ENVIRONMENT is set — Railway uses preDeployCommand instead)
-if [ "${SKIP_FIXTURES:-0}" != "1" ] && [ -z "${RAILWAY_ENVIRONMENT:-}" ]; then
+# DB setup for local docker-compose
+if [ "${SKIP_FIXTURES:-0}" != "1" ]; then
     echo "Waiting for MySQL..."
     until php bin/console doctrine:database:create --if-not-exists --env="$APP_ENV" 2>/dev/null; do
         sleep 2
@@ -30,11 +30,13 @@ if [ "${SKIP_FIXTURES:-0}" != "1" ] && [ -z "${RAILWAY_ENVIRONMENT:-}" ]; then
         echo "Loading fixtures..."
         php bin/console doctrine:fixtures:load --env="$APP_ENV" -n
         echo "Fixtures loaded."
-    else
-        echo "Schema already exists ($TABLE_COUNT tables). Skipping fixtures."
     fi
 fi
 
+# Process nginx config template
 PORT="${PORT:-8000}"
-echo "Starting PHP server on 0.0.0.0:$PORT..."
-exec php -S 0.0.0.0:"$PORT" -t public
+sed "s/{{PORT}}/$PORT/g" /docker/nginx.template.conf > /tmp/nginx.conf
+
+echo "Starting php-fpm + nginx on port $PORT..."
+php-fpm -y /docker/php-fpm.conf &
+exec nginx -c /tmp/nginx.conf

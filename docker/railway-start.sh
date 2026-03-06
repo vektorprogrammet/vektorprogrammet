@@ -1,9 +1,7 @@
 #!/bin/bash
-set -ex
+set -e
 
 echo "=== Railway Start ==="
-echo "APP_ENV=$APP_ENV"
-echo "PORT=${PORT:-8000}"
 
 # Generate JWT keys if missing
 if [ ! -f config/jwt/private.pem ]; then
@@ -14,8 +12,12 @@ if [ ! -f config/jwt/private.pem ]; then
 fi
 
 # Clear and warm cache
-php bin/console cache:clear --env="$APP_ENV" --no-debug || echo "cache:clear failed, continuing..."
+php bin/console cache:clear --env="$APP_ENV" --no-debug
 
-PORT="${PORT:-8000}"
-echo "Starting PHP server on 0.0.0.0:$PORT..."
-exec php -S 0.0.0.0:"$PORT" -t public
+# Process nginx config template — replace {{PORT}} with Railway's $PORT
+PORT="${PORT:-8080}"
+sed "s/{{PORT}}/$PORT/g" /docker/nginx.template.conf > /tmp/nginx.conf
+
+echo "Starting php-fpm + nginx on port $PORT..."
+php-fpm -y /docker/php-fpm.conf &
+exec nginx -c /tmp/nginx.conf

@@ -1,9 +1,9 @@
-FROM php:8.4-cli-alpine
+FROM php:8.4-fpm-alpine
 
 # System dependencies
 RUN apk add --no-cache \
     git unzip curl libpng libjpeg-turbo freetype \
-    libxml2 libzip sqlite-libs oniguruma mysql-client bash openssl \
+    libxml2 libzip sqlite-libs oniguruma mysql-client bash openssl nginx \
     # Build deps (removed after compile)
     && apk add --no-cache --virtual .build-deps \
     libpng-dev libjpeg-turbo-dev freetype-dev \
@@ -38,6 +38,10 @@ RUN bun run build:prod
 # App source
 COPY . .
 RUN composer dump-autoload $([ "$APP_ENV" = "prod" ] && echo "--no-dev") --optimize
+
+# Docker config files
+COPY docker/nginx.template.conf /docker/nginx.template.conf
+COPY docker/php-fpm.conf /docker/php-fpm.conf
 COPY docker/entrypoint.sh /entrypoint.sh
 COPY docker/railway-boot.sh /railway-boot.sh
 COPY docker/railway-start.sh /railway-start.sh
