@@ -3,8 +3,8 @@ builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
 
 [deploy]
-preDeployCommand = "/railway-boot.sh"
-startCommand = "/railway-start.sh"
+preDeployCommand = "/bin/bash /railway-boot.sh"
+startCommand = "/bin/bash /railway-start.sh"
 healthcheckPath = "/"
 healthcheckTimeout = 300
 restartPolicyType = "ON_FAILURE"
