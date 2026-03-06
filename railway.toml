@@ -1,6 +1,7 @@
 [build]
 builder = "DOCKERFILE"
 dockerfilePath = "Dockerfile"
+watchPatterns = ["apps/server/**"]
 
 [deploy]
 preDeployCommand = "/bin/bash /railway-boot.sh"
