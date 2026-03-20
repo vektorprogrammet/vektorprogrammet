@@ -10,7 +10,7 @@ doctrine:
     orm:
         auto_generate_proxy_classes: '%kernel.debug%'
         naming_strategy: doctrine.orm.naming_strategy.underscore_number_aware
-        auto_mapping: true
+        auto_mapping: false
         mappings:
             App:
                 is_bundle: false
@@ -18,3 +18,57 @@ doctrine:
                 dir: '%kernel.project_dir%/src/App/Entity'
                 prefix: 'App\Entity'
                 alias: App
+            Admission:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Admission/Infrastructure/Entity'
+                prefix: 'App\Admission\Infrastructure\Entity'
+                alias: Admission
+            Interview:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Interview/Infrastructure/Entity'
+                prefix: 'App\Interview\Infrastructure\Entity'
+                alias: Interview
+            Organization:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Organization/Infrastructure/Entity'
+                prefix: 'App\Organization\Infrastructure\Entity'
+                alias: Organization
+            Survey:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Survey/Infrastructure/Entity'
+                prefix: 'App\Survey\Infrastructure\Entity'
+                alias: Survey
+            Identity:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Identity/Infrastructure/Entity'
+                prefix: 'App\Identity\Infrastructure\Entity'
+                alias: Identity
+            Scheduling:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Scheduling/Infrastructure/Entity'
+                prefix: 'App\Scheduling\Infrastructure\Entity'
+                alias: Scheduling
+            Operations:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Operations/Infrastructure/Entity'
+                prefix: 'App\Operations\Infrastructure\Entity'
+                alias: Operations
+            Content:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Content/Infrastructure/Entity'
+                prefix: 'App\Content\Infrastructure\Entity'
+                alias: Content
+            Shared:
+                is_bundle: false
+                type: attribute
+                dir: '%kernel.project_dir%/src/App/Shared/Entity'
+                prefix: 'App\Shared\Entity'
+                alias: Shared

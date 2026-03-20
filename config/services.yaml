@@ -45,6 +45,87 @@ services:
     App\:
         resource: "../src/App/{Command,Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,State,Twig,Validator}"
 
+    # Bounded context autodiscovery
+    App\Admission\:
+        resource: '../src/App/Admission/'
+        exclude: '../src/App/Admission/Domain/{ValueObjects,Events}/'
+
+    App\Interview\:
+        resource: '../src/App/Interview/'
+        exclude: '../src/App/Interview/Domain/{ValueObjects,Events}/'
+
+    App\Organization\:
+        resource: '../src/App/Organization/'
+        exclude: '../src/App/Organization/Domain/{ValueObjects,Events}/'
+
+    App\Survey\:
+        resource: '../src/App/Survey/'
+        exclude: '../src/App/Survey/Domain/{ValueObjects,Events}/'
+
+    App\Identity\:
+        resource: '../src/App/Identity/'
+        exclude: '../src/App/Identity/Domain/{ValueObjects,Events}/'
+
+    App\Scheduling\:
+        resource: '../src/App/Scheduling/'
+        exclude: '../src/App/Scheduling/Domain/{ValueObjects,Events}/'
+
+    App\Operations\:
+        resource: '../src/App/Operations/'
+        exclude: '../src/App/Operations/Domain/{ValueObjects,Events}/'
+
+    App\Content\:
+        resource: '../src/App/Content/'
+        exclude: '../src/App/Content/Domain/{ValueObjects,Events}/'
+
+    App\Shared\:
+        resource: '../src/App/Shared/'
+
+    App\Support\:
+        resource: '../src/App/Support/'
+
+    # Per-context subscriber blocks with scoped bindings
+    App\Admission\Infrastructure\Subscriber\:
+        resource: '../src/App/Admission/Infrastructure/Subscriber/'
+        bind:
+            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            $env: '%kernel.environment%'
+
+    App\Interview\Infrastructure\Subscriber\:
+        resource: '../src/App/Interview/Infrastructure/Subscriber/'
+        bind:
+            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            $env: '%kernel.environment%'
+
+    App\Organization\Infrastructure\Subscriber\:
+        resource: '../src/App/Organization/Infrastructure/Subscriber/'
+        bind:
+            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            $env: '%kernel.environment%'
+
+    App\Content\Infrastructure\Subscriber\:
+        resource: '../src/App/Content/Infrastructure/Subscriber/'
+        bind:
+            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            $env: '%kernel.environment%'
+
+    App\Operations\Infrastructure\Subscriber\:
+        resource: '../src/App/Operations/Infrastructure/Subscriber/'
+        bind:
+            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            $env: '%kernel.environment%'
+
+    App\Identity\Infrastructure\Subscriber\:
+        resource: '../src/App/Identity/Infrastructure/Subscriber/'
+        bind:
+            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            $env: '%kernel.environment%'
+
+    # Support DataFixtures
+    App\Support\DataFixtures\ORM\:
+        resource: '../src/App/Support/DataFixtures/ORM'
+        tags: ['doctrine.fixture.orm']
+
     App\Entity\Repository\:
         resource: "../src/App/Entity/Repository/"
 

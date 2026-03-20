@@ -3,7 +3,28 @@ api_platform:
     description: 'REST API for Vektorprogrammet'
     version: '1.0.0'
     mapping:
-        paths: ['%kernel.project_dir%/src/App/Entity', '%kernel.project_dir%/src/App/ApiResource']
+        paths:
+            - '%kernel.project_dir%/src/App/Entity'
+            - '%kernel.project_dir%/src/App/ApiResource'
+            - '%kernel.project_dir%/src/App/Admission/Api/Resource'
+            - '%kernel.project_dir%/src/App/Admission/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Interview/Api/Resource'
+            - '%kernel.project_dir%/src/App/Interview/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Organization/Api/Resource'
+            - '%kernel.project_dir%/src/App/Organization/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Survey/Api/Resource'
+            - '%kernel.project_dir%/src/App/Survey/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Identity/Api/Resource'
+            - '%kernel.project_dir%/src/App/Identity/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Scheduling/Api/Resource'
+            - '%kernel.project_dir%/src/App/Scheduling/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Operations/Api/Resource'
+            - '%kernel.project_dir%/src/App/Operations/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Content/Api/Resource'
+            - '%kernel.project_dir%/src/App/Content/Infrastructure/Entity'
+            - '%kernel.project_dir%/src/App/Shared/Api/Resource'
+            - '%kernel.project_dir%/src/App/Shared/Entity'
+            - '%kernel.project_dir%/src/App/Support/Api/Resource'
     defaults:
         pagination_enabled: true
         pagination_items_per_page: 30
