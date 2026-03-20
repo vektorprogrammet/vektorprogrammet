@@ -22,7 +22,7 @@ class ReceiptStatistics
     public function totalPayoutIn(string $year)
     {
         return array_reduce($this->receipts, function (int $carry, Receipt $receipt) use ($year) {
-            if (!$receipt->getRefundDate() || $receipt->getRefundDate()->format('Y') !== $year) {
+            if ($receipt->getRefundDate() === null || $receipt->getRefundDate()->format('Y') !== $year) {
                 return $carry;
             }
 
@@ -37,7 +37,7 @@ class ReceiptStatistics
     {
         $receipts = array_filter($this->receipts, fn (Receipt $receipt) => $receipt->getRefundDate() !== null && $receipt->getRefundDate() > $this->refundDateImplementationDate);
 
-        if (empty($receipts)) {
+        if ($receipts === []) {
             return 0;
         }
 

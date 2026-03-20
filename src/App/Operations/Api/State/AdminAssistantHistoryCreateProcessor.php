@@ -38,7 +38,7 @@ class AdminAssistantHistoryCreateProcessor implements ProcessorInterface
         // Department-scoping: non-team-leaders can only delegate within their own department
         $currentUser = $this->security->getUser();
         if ($currentUser instanceof User && !$this->security->isGranted('ROLE_ADMIN')) {
-            $currentDept = $currentUser->getFieldOfStudy()?->getDepartment();
+            $currentDept = $currentUser->getFieldOfStudy()->getDepartment();
             if ($currentDept !== null) {
                 $schoolBelongsToDept = $school->getDepartments()->exists(
                     fn ($key, $dept) => $dept->getId() === $currentDept->getId()
@@ -49,12 +49,12 @@ class AdminAssistantHistoryCreateProcessor implements ProcessorInterface
             }
         }
 
-        $user = $data->userId ? $this->em->getRepository(User::class)->find($data->userId) : null;
+        $user = $data->userId !== null ? $this->em->getRepository(User::class)->find($data->userId) : null;
         if ($user === null) {
             throw new UnprocessableEntityHttpException('User not found.');
         }
 
-        $semester = $data->semesterId ? $this->em->getRepository(Semester::class)->find($data->semesterId) : null;
+        $semester = $data->semesterId !== null ? $this->em->getRepository(Semester::class)->find($data->semesterId) : null;
         if ($semester === null) {
             throw new UnprocessableEntityHttpException('Semester not found.');
         }

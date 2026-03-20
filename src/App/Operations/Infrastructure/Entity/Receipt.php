@@ -38,7 +38,7 @@ class Receipt implements \Stringable
 
     #[ORM\Column(type: 'string', length: 5000)]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
-    #[Assert\Length(max: '5000', maxMessage: 'Maks 5000 tegn')]
+    #[Assert\Length(max: 5000, maxMessage: 'Maks 5000 tegn')]
     private $description;
 
     #[ORM\Column(type: 'float')]
@@ -57,7 +57,7 @@ class Receipt implements \Stringable
         $this->status = self::STATUS_PENDING;
         $this->submitDate = new \DateTime();
         $this->receiptDate = new \DateTime();
-        $currentTimeInMilliseconds = round(microtime(true) * 1000);
+        $currentTimeInMilliseconds = (int) round(microtime(true) * 1000);
         $this->visualId = dechex($currentTimeInMilliseconds);
     }
 
@@ -126,9 +126,9 @@ class Receipt implements \Stringable
     }
 
     /**
-     * @param string $picturePath
+     * @param string|null $picturePath
      */
-    public function setPicturePath($picturePath)
+    public function setPicturePath(?string $picturePath): void
     {
         $this->picturePath = $picturePath;
     }
@@ -197,9 +197,9 @@ class Receipt implements \Stringable
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
-    public function getRefundDate()
+    public function getRefundDate(): ?\DateTime
     {
         return $this->refundDate;
     }

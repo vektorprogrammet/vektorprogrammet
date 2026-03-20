@@ -18,7 +18,7 @@ class AdminCertificateProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminCertificateResource
     {
         $id = $uriVariables['id'] ?? null;
-        $assistantHistory = $id ? $this->assistantHistoryRepo->find($id) : null;
+        $assistantHistory = $id !== null ? $this->assistantHistoryRepo->find($id) : null;
 
         if ($assistantHistory === null) {
             throw new NotFoundHttpException('Assistant history not found.');

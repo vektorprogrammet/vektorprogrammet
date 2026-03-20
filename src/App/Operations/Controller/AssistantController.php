@@ -6,7 +6,6 @@ use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
-use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Organization\Infrastructure\Repository\TeamRepository;
@@ -31,7 +30,6 @@ class AssistantController extends BaseController
         private readonly DepartmentRepository $departmentRepo,
         private readonly AdmissionPeriodRepository $admissionPeriodRepo,
         private readonly TeamRepository $teamRepo,
-        private readonly ApplicationRepository $applicationRepo,
         private readonly ApplicationAdmission $applicationAdmission,
         private readonly GeoLocation $geoLocation,
         private readonly FilterService $filterService,
@@ -138,7 +136,7 @@ class AssistantController extends BaseController
                 $admissionPeriod = $this->admissionPeriodRepo->findOneWithActiveAdmissionByDepartment($department);
 
                 // If no active admission period is found
-                if (!$admissionPeriod) {
+                if ($admissionPeriod === null) {
                     $this->addFlash('danger', $department.' sitt opptak er dessverre stengt.');
 
                     return $this->redirectToRoute('assistants');
