@@ -4,6 +4,7 @@ namespace App\Admission\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
@@ -29,7 +30,9 @@ class AdmissionPeriodController extends BaseController
     public function showAction()
     {
         // Finds the departmentId for the current logged in user
-        $department = $this->getUser()->getDepartment();
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $department = $currentUser->getDepartment();
 
         return $this->showByDepartmentAction($department);
     }
@@ -106,7 +109,7 @@ class AdmissionPeriodController extends BaseController
     public function deleteAction(AdmissionPeriod $admissionPeriod)
     {
         $infoMeeting = $admissionPeriod->getInfoMeeting();
-        if ($infoMeeting) {
+        if ($infoMeeting !== null) {
             $this->em->remove($infoMeeting);
         }
         $this->em->remove($admissionPeriod);

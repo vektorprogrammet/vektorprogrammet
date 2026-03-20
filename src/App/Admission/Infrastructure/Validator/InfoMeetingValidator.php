@@ -11,14 +11,16 @@ class InfoMeetingValidator extends ConstraintValidator
     /**
      * Checks if the info meeting is valid.
      *
-     * @param InfoMeeting $infoMeeting The info meeting that should be validated
-     * @param Constraint  $constraint  The constraint for the validation
+     * @param mixed      $infoMeeting The info meeting that should be validated
+     * @param Constraint $constraint  The constraint for the validation
      */
-    public function validate($infoMeeting, Constraint $constraint)
+    public function validate(mixed $infoMeeting, Constraint $constraint): void
     {
-        if (!$infoMeeting) {
+        if (!$infoMeeting instanceof InfoMeeting) {
             return;
         }
+
+        assert($constraint instanceof \App\Admission\Infrastructure\Validator\InfoMeeting);
 
         if ($infoMeeting->isShowOnPage() && $infoMeeting->getDate() === null) {
             $this->context->buildViolation($constraint->message)->addViolation();

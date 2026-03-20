@@ -70,7 +70,9 @@ class AdmissionAdminController extends BaseController
         $admissionPeriod = $this->admissionPeriodRepo
                 ->findOneByDepartmentAndSemester($department, $semester);
 
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 
@@ -98,7 +100,9 @@ class AdmissionAdminController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 
@@ -112,7 +116,7 @@ class AdmissionAdminController extends BaseController
             $interviewDistributions = $this->interviewDistributionFactory
                 ->createInterviewDistributions($applications, $admissionPeriod);
             $cancelledApplications = $this->applicationRepo->findCancelledApplicants($admissionPeriod);
-            $applicationsAssignedToUser = $this->applicationRepo->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
+            $applicationsAssignedToUser = $this->applicationRepo->findAssignedByUserAndAdmissionPeriod($currentUser, $admissionPeriod);
         }
 
         return $this->render('admission_admin/assigned_applications_table.html.twig', [
@@ -136,7 +140,9 @@ class AdmissionAdminController extends BaseController
         $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 
@@ -146,7 +152,7 @@ class AdmissionAdminController extends BaseController
                 ->findInterviewedApplicants($admissionPeriod);
         }
 
-        $interviews = array_filter(array_map(fn ($app) => $app->getInterview(), $applications));
+        $interviews = array_filter(array_map(fn ($app) => $app->getInterview(), $applications), fn ($i) => $i !== null);
 
         return $this->render('admission_admin/interviewed_applications_table.html.twig', [
             'status' => 'interviewed',
@@ -170,7 +176,9 @@ class AdmissionAdminController extends BaseController
         $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
 
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $this->getUser()->getDepartment() !== $department) {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
         $applications = [];
@@ -231,7 +239,9 @@ class AdmissionAdminController extends BaseController
     public function bulkDeleteApplicationAction(Request $request)
     {
         // Get the ids from the form
-        $applicationIds = array_map(intval(...), $request->request->get('application')['id']);
+        /** @var array<string, mixed> $applicationData */
+        $applicationData = $request->request->all('application');
+        $applicationIds = array_map(intval(...), $applicationData['id']);
 
         // Delete the applications
         foreach ($applicationIds as $id) {
@@ -254,7 +264,9 @@ class AdmissionAdminController extends BaseController
     #[Route('/kontrollpanel/opprettsoker', name: 'register_applicant', methods: ['GET', 'POST'])]
     public function createApplicationAction(Request $request)
     {
-        $department = $this->getUser()->getDepartment();
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $department = $currentUser->getDepartment();
         $currentSemester = $this->getCurrentSemester();
         $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $currentSemester);
@@ -310,13 +322,14 @@ class AdmissionAdminController extends BaseController
     #[Route('/kontrollpanel/opptakadmin/teaminteresse', name: 'admissionadmin_team_interest', methods: ['GET'])]
     public function showTeamInterestAction(Request $request)
     {
-        $user = $this->getUser();
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
         $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
 
-        if (!$this->isGranted(Roles::ADMIN) && $user->getDepartment() !== $department) {
+        if (!$this->isGranted(Roles::ADMIN) && $currentUser->getDepartment() !== $department) {
             throw $this->createAccessDeniedException();
         }
 

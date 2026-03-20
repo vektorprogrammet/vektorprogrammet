@@ -53,10 +53,10 @@ class ApplicationDetailProvider implements ProviderInterface
         $resource->substitute = $application->isSubstitute();
 
         $interview = $application->getInterview();
-        $resource->interviewScheduled = $interview?->getScheduled()?->format(\DateTimeInterface::ATOM);
+        $resource->interviewScheduled = $interview?->getScheduled()->format(\DateTimeInterface::ATOM);
         $resource->interviewStatus = $interview?->getInterviewStatusAsString();
 
-        $resource->created = $application->getCreated()?->format(\DateTimeInterface::ATOM);
+        $resource->created = $application->getCreated()->format(\DateTimeInterface::ATOM);
 
         return $resource;
     }

@@ -1,258 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Admission/Api/State/AdminApplicationCreateProcessor.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between App\\Identity\\Infrastructure\\Entity\\User and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/App/Admission/Api/State/AdminApplicationCreateProcessor.php
-
-		-
-			message: '#^Only booleans are allowed in a ternary operator condition, App\\Identity\\Infrastructure\\Entity\\User\|null given\.$#'
-			identifier: ternary.condNotBoolean
-			count: 1
-			path: src/App/Admission/Api/State/AdminApplicationListProvider.php
-
-		-
-			message: '#^Property App\\Admission\\Api\\Resource\\AdminSubstituteResource\:\:\$yearOfStudy \(int\|null\) does not accept string\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/App/Admission/Api/State/AdminSubstituteListProvider.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type App\\Organization\\Infrastructure\\Entity\\FieldOfStudy\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/App/Admission/Api/State/AdmissionStatisticsProvider.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: src/App/Admission/Api/State/AdmissionSubscriberProcessor.php
-
-		-
-			message: '#^Property App\\Admission\\Api\\State\\AdmissionSubscriberProcessor\:\:\$em is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/App/Admission/Api/State/AdmissionSubscriberProcessor.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/App/Admission/Api/State/AdmissionSubscriberProcessor.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/App/Admission/Api/State/ApplicationDetailProvider.php
-
-		-
-			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Admission/Api/State/ApplicationProcessor.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between App\\Organization\\Infrastructure\\Entity\\FieldOfStudy and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/App/Admission/Api/State/ExistingUserApplicationProcessor.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: src/App/Admission/Controller/AdmissionAdminController.php
-
-		-
-			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Semester\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Admission/Controller/AdmissionAdminController.php
-
-		-
-			message: '#^Offset ''id'' does not exist on bool\|float\|int\|string\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: src/App/Admission/Controller/AdmissionAdminController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findAssignedByUserAndAdmissionPeriod\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Admission/Controller/AdmissionAdminController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Admission/Controller/AdmissionPeriodController.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: src/App/Admission/Controller/AdmissionPeriodController.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Admission/Controller/AdmissionSubscriberController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 2
-			path: src/App/Admission/Controller/ExistingUserAdmissionController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\ApplicationAdmission\:\:createApplicationForExistingAssistant\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Admission/Controller/ExistingUserAdmissionController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\ApplicationAdmission\:\:renderErrorPage\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Admission/Controller/ExistingUserAdmissionController.php
-
-		-
-			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Semester\.$#'
-			identifier: class.notFound
-			count: 3
-			path: src/App/Admission/Controller/SubstituteController.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
-
-		-
-			message: '#^Property App\\Admission\\Infrastructure\\AdmissionNotifier\:\:\$validator is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
-
-		-
-			message: '#^Unreachable statement \- code above always terminates\.$#'
-			identifier: deadCode.unreachable
-			count: 1
-			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between App\\Organization\\Infrastructure\\Entity\\FieldOfStudy and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/App/Admission/Infrastructure/ApplicationAdmission.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between DateTime and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/App/Admission/Infrastructure/Entity/AdmissionPeriod.php
-
-		-
-			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getDepartment\(\) has invalid return type App\\Shared\\Contracts\\Department\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Admission/Infrastructure/Entity/Application.php
-
-		-
-			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getDepartment\(\) should return App\\Shared\\Contracts\\Department but returns App\\Organization\\Infrastructure\\Entity\\Department\.$#'
-			identifier: return.type
-			count: 1
-			path: src/App/Admission/Infrastructure/Entity/Application.php
-
-		-
-			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getSemester\(\) has invalid return type App\\Shared\\Contracts\\Semester\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Admission/Infrastructure/Entity/Application.php
-
-		-
-			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getSemester\(\) should return App\\Shared\\Contracts\\Semester but returns App\\Shared\\Entity\\Semester\.$#'
-			identifier: return.type
-			count: 1
-			path: src/App/Admission/Infrastructure/Entity/Application.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(User\)\: Unexpected token "\\n     ", expected variable at offset 22 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: src/App/Admission/Infrastructure/Entity/Application.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between null and null will always evaluate to false\.$#'
-			identifier: notIdentical.alwaysFalse
-			count: 4
-			path: src/App/Admission/Infrastructure/Repository/ApplicationRepository.php
-
-		-
-			message: '#^Call to method getEmail\(\) on an unknown class App\\Shared\\Contracts\\Department\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Admission/Infrastructure/Subscriber/ApplicationSubscriber.php
-
-		-
-			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/App/Admission/Infrastructure/Validator/ApplicationEmailValidator.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Admission/Infrastructure/Validator/ApplicationEmailValidator.php
-
-		-
-			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 1
-			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between DateTime and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
-
-		-
-			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
-			identifier: booleanNot.exprNotBoolean
-			count: 2
-			path: src/App/Content/Controller/ArticleAdminController.php
-
-		-
-			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
-			identifier: if.condNotBoolean
-			count: 2
-			path: src/App/Content/Controller/ArticleAdminController.php
-
-		-
 			message: '#^Parameter \#1 \$author of method App\\Content\\Infrastructure\\Entity\\Article\:\:setAuthor\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -637,12 +385,6 @@ parameters:
 			path: src/App/Identity/Infrastructure/RoleManager.php
 
 		-
-			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/App/Identity/Infrastructure/RoleManager.php
-
-		-
 			message: '#^Parameter \#1 \$newUserCode of method App\\Identity\\Infrastructure\\Entity\\User\:\:setNewUserCode\(\) expects string, null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -799,18 +541,6 @@ parameters:
 			path: src/App/Interview/Controller/InterviewController.php
 
 		-
-			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Department\.$#'
-			identifier: class.notFound
-			count: 2
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
-			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Semester\.$#'
-			identifier: class.notFound
-			count: 3
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
 			message: '#^Offset ''id'' does not exist on bool\|float\|int\|string\.$#'
 			identifier: offsetAccess.notFound
 			count: 1
@@ -823,26 +553,14 @@ parameters:
 			path: src/App/Interview/Controller/InterviewController.php
 
 		-
-			message: '#^Parameter \#1 \$department of method App\\Identity\\Infrastructure\\Repository\\UserRepository\:\:findUsersInDepartmentWithTeamMembershipInSemester\(\) expects App\\Organization\\Infrastructure\\Entity\\Department, App\\Shared\\Contracts\\Department given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
 			message: '#^Parameter \#1 \$interview of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setInterview\(\) expects App\\Interview\\Infrastructure\\Entity\\Interview, null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/App/Interview/Controller/InterviewController.php
 
 		-
-			message: '#^Parameter \#2 \$semester of method App\\Identity\\Infrastructure\\Repository\\UserRepository\:\:findUsersInDepartmentWithTeamMembershipInSemester\(\) expects App\\Shared\\Entity\\Semester, App\\Shared\\Contracts\\Semester given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
-			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod\|null given\.$#'
-			identifier: booleanNot.exprNotBoolean
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: src/App/Interview/Infrastructure/Command/SendListOfScheduledInterviewsCommand.php
 
@@ -915,30 +633,6 @@ parameters:
 		-
 			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
 			identifier: method.notFound
-			count: 1
-			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
-
-		-
-			message: '#^Parameter \#1 \$department of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendApplicationCountNotification\(\) expects App\\Organization\\Infrastructure\\Entity\\Department, App\\Shared\\Contracts\\Department given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
-
-		-
-			message: '#^Parameter \#1 \$department of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendInterviewsCompletedNotification\(\) expects App\\Organization\\Infrastructure\\Entity\\Department, App\\Shared\\Contracts\\Department given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
-
-		-
-			message: '#^Parameter \#2 \$semester of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendApplicationCountNotification\(\) expects App\\Shared\\Entity\\Semester, App\\Shared\\Contracts\\Semester given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
-
-		-
-			message: '#^Parameter \#2 \$semester of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendInterviewsCompletedNotification\(\) expects App\\Shared\\Entity\\Semester, App\\Shared\\Contracts\\Semester given\.$#'
-			identifier: argument.type
 			count: 1
 			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
 
@@ -1555,18 +1249,6 @@ parameters:
 			path: src/App/Scheduling/Infrastructure/Entity/School.php
 
 		-
-			message: '#^Method App\\Shared\\Contracts\\DepartmentSemesterInterface\:\:getDepartment\(\) has invalid return type App\\Shared\\Contracts\\Department\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Shared/Contracts/DepartmentSemesterInterface.php
-
-		-
-			message: '#^Method App\\Shared\\Contracts\\DepartmentSemesterInterface\:\:getSemester\(\) has invalid return type App\\Shared\\Contracts\\Semester\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Shared/Contracts/DepartmentSemesterInterface.php
-
-		-
 			message: '#^Method App\\Shared\\Contracts\\TeamInterface\:\:getActiveUsers\(\) has invalid return type App\\Shared\\Contracts\\User\.$#'
 			identifier: class.notFound
 			count: 1
@@ -1577,6 +1259,126 @@ parameters:
 			identifier: assign.propertyType
 			count: 1
 			path: src/App/Shared/Entity/Semester.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Support/Controller/BaseController.php
+
+		-
+			message: '#^Call to an undefined method Psr\\Container\\ContainerInterface\:\:getParameter\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Support/Controller/FileBrowserController.php
+
+		-
+			message: '#^Binary operation "\-" between 32 and string results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/App/Support/Controller/GitHubController.php
+
+		-
+			message: '#^Parameter \#1 \$year of method DateTime\:\:setDate\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/App/Support/DataFixtures/ORM/LoadAdmissionPeriodData.php
+
+		-
+			message: '#^Parameter \#1 \$friday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setFriday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$monday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setMonday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$thursday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setThursday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$tuesday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setTuesday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$wednesday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setWednesday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$yearOfStudy of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setYearOfStudy\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 10
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$workdays of method App\\Operations\\Infrastructure\\Entity\\AssistantHistory\:\:setWorkdays\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 4
+			path: src/App/Support/DataFixtures/ORM/LoadAssistantHistoryData.php
+
+		-
+			message: '#^Property App\\Support\\DataFixtures\\ORM\\LoadInfoMeetingData\:\:\$container is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadInfoMeetingData.php
+
+		-
+			message: '#^Parameter \#1 \$year of method App\\Shared\\Entity\\Semester\:\:setYear\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/App/Support/DataFixtures/ORM/LoadSemesterData.php
+
+		-
+			message: '#^Property App\\Support\\DataFixtures\\ORM\\LoadUserData\:\:\$container is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadUserData.php
+
+		-
+			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Support/EventSubscriber/ExceptionSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between Google\\Service\\Directory\\Group and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between Google\\Service\\Directory\\User and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/FilterService.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\FileUploader\:\:uploadArticleImage\(\) should return string but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Support/Infrastructure/FileUploader.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between array\<string\> and null will always evaluate to true\.$#'

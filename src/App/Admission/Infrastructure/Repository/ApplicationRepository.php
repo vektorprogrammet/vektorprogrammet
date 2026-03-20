@@ -111,8 +111,8 @@ class ApplicationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param null $department
-     * @param null $admissionPeriod
+     * @param Department|null     $department
+     * @param AdmissionPeriod|null $admissionPeriod
      *
      * @return Application[]
      */
@@ -200,8 +200,8 @@ class ApplicationRepository extends ServiceEntityRepository
     /**
      * Finds all applications without an interview, or without a conducted interview.
      *
-     * @param null $department
-     * @param null $admissionPeriod
+     * @param Department|null      $department
+     * @param AdmissionPeriod|null $admissionPeriod
      *
      * @return Application[]
      */

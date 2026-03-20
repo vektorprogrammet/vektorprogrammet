@@ -104,7 +104,7 @@ class AdmissionStatistics
         $populatedAppData = $this->populateApplicationDataWithApplications($appData, $applications);
         $dates = array_keys($populatedAppData);
         foreach ($populatedAppData as $date => $count) {
-            $index = array_search($date, $dates);
+            $index = array_search($date, $dates, true);
             if ($index === false || $index === 0) {
                 continue;
             }

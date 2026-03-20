@@ -16,14 +16,16 @@ class ApplicationEmailValidator extends ConstraintValidator
     /**
      * Checks if the passed value is valid.
      *
-     * @param Application $application The value that should be validated
-     * @param Constraint  $constraint  The constraint for the validation
+     * @param mixed      $application The value that should be validated
+     * @param Constraint $constraint  The constraint for the validation
      */
-    public function validate($application, Constraint $constraint)
+    public function validate(mixed $application, Constraint $constraint): void
     {
-        if (!$application) {
+        if (!$application instanceof Application) {
             return;
         }
+
+        assert($constraint instanceof \App\Admission\Infrastructure\Validator\ApplicationEmail);
 
         $user = $application->getUser();
         $hasAlreadyApplied = $this->admissionManager->userHasAlreadyApplied($user);

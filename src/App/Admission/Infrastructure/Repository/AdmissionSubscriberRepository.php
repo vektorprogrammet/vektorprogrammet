@@ -82,7 +82,7 @@ class AdmissionSubscriberRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return AdmissionSubscriber
+     * @return AdmissionSubscriber|null
      */
     public function findByEmailAndDepartment(string $email, Department $department)
     {
@@ -98,7 +98,7 @@ class AdmissionSubscriberRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return AdmissionSubscriber
+     * @return AdmissionSubscriber|null
      */
     public function findByUnsubscribeCode(string $code)
     {

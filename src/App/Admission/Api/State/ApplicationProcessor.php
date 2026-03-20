@@ -44,17 +44,17 @@ class ApplicationProcessor implements ProcessorInterface
         }
 
         $department = $this->departmentRepo->find($data->departmentId);
-        if (!$department) {
+        if ($department === null) {
             throw new UnprocessableEntityHttpException('Department not found.');
         }
 
         $admissionPeriod = $this->admissionPeriodRepo->findOneWithActiveAdmissionByDepartment($department);
-        if (!$admissionPeriod) {
+        if ($admissionPeriod === null) {
             throw new UnprocessableEntityHttpException('No active admission period for this department.');
         }
 
         $fieldOfStudy = $this->fieldOfStudyRepo->find($data->fieldOfStudyId);
-        if (!$fieldOfStudy) {
+        if ($fieldOfStudy === null) {
             throw new UnprocessableEntityHttpException('Field of study not found.');
         }
 
@@ -66,7 +66,7 @@ class ApplicationProcessor implements ProcessorInterface
             $user->setFirstName($data->firstName);
             $user->setLastName($data->lastName);
             $user->setPhone($data->phone);
-            $user->setGender($data->gender);
+            $user->setGender((string) $data->gender);
             $user->setFieldOfStudy($fieldOfStudy);
 
             $role = $this->roleRepo->findByRoleName(Roles::ASSISTANT);

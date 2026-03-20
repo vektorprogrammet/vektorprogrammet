@@ -3,6 +3,7 @@
 namespace App\Admission\Controller;
 
 use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Organization\Infrastructure\Repository\TeamRepository;
@@ -40,12 +41,14 @@ class ExistingUserAdmissionController extends BaseController
     #[Route('/eksisterendeopptak', name: 'admission_existing_user', methods: ['GET', 'POST'])]
     public function showAction(Request $request)
     {
+        /** @var User|null $user */
         $user = $this->getUser();
         $admissionManager = $this->applicationAdmission;
         if ($res = $admissionManager->renderErrorPage($user)) {
             return $res;
         }
 
+        /** @var User $user */
         $department = $user->getDepartment();
         $teams = $this->teamRepo->findActiveByDepartment($department);
 

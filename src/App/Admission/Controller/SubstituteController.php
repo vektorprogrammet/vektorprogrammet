@@ -103,7 +103,7 @@ class SubstituteController extends BaseController
         // Redirect to substitute page, set semester to that of the deleted substitute
         return $this->redirectToRoute('substitute_show', [
             'semester' => $application->getSemester()->getId(),
-            'department' => $application->getAdmissionPeriod()->getDepartment()->getid(),
+            'department' => $application->getAdmissionPeriod()->getDepartment()->getId(),
         ]);
     }
 

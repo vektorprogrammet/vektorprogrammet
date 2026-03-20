@@ -37,7 +37,7 @@ class AdminApplicationListProvider implements ProviderInterface
         $user = $this->security->getUser();
 
         // Resolve department
-        $department = $departmentId
+        $department = $departmentId !== null
             ? $this->departmentRepo->find((int) $departmentId)
             : $user->getDepartment();
 
@@ -46,7 +46,7 @@ class AdminApplicationListProvider implements ProviderInterface
         }
 
         // Resolve semester
-        $semester = $semesterId
+        $semester = $semesterId !== null
             ? $this->semesterRepo->find((int) $semesterId)
             : $this->semesterRepo->findOrCreateCurrentSemester();
 
@@ -98,7 +98,7 @@ class AdminApplicationListProvider implements ProviderInterface
             'userEmail' => $user->getEmail(),
             'interviewStatus' => $interview?->getInterviewStatusAsString(),
             'interviewScheduled' => $interview?->getScheduled()?->format('c'),
-            'interviewer' => $interviewer ? $interviewer->getFirstName().' '.$interviewer->getLastName() : null,
+            'interviewer' => $interviewer !== null ? $interviewer->getFirstName().' '.$interviewer->getLastName() : null,
             'previousParticipation' => $app->getPreviousParticipation(),
         ];
     }

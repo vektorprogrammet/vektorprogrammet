@@ -77,7 +77,7 @@ class AdminSubstituteListProvider implements ProviderInterface
             $resource->id = $application->getId();
             $resource->name = $application->getUser()->getFullName();
             $resource->email = $application->getUser()->getEmail();
-            $resource->yearOfStudy = $application->getYearOfStudy();
+            $resource->yearOfStudy = (int) $application->getYearOfStudy();
             $resource->language = $application->getLanguage();
             $resource->monday = $application->isMonday();
             $resource->tuesday = $application->isTuesday();

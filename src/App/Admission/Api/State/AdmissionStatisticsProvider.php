@@ -38,7 +38,7 @@ class AdmissionStatisticsProvider implements ProviderInterface
         $departmentId = $request?->query->get('department');
         $department = $departmentId !== null
             ? $this->departmentRepo->find((int) $departmentId)
-            : $user->getFieldOfStudy()?->getDepartment();
+            : $user->getFieldOfStudy()->getDepartment();
 
         // Resolve semester: from query param or current semester
         $semesterId = $request?->query->get('semester');
@@ -56,9 +56,9 @@ class AdmissionStatisticsProvider implements ProviderInterface
             : null;
 
         if ($admissionPeriod !== null) {
-            $resource->applicationCount = (int) $this->applicationRepo->numOfApplications($admissionPeriod);
-            $resource->maleApplications = (int) $this->applicationRepo->numOfGender($admissionPeriod, 0);
-            $resource->femaleApplications = (int) $this->applicationRepo->numOfGender($admissionPeriod, 1);
+            $resource->applicationCount = $this->applicationRepo->numOfApplications($admissionPeriod);
+            $resource->maleApplications = $this->applicationRepo->numOfGender($admissionPeriod, 0);
+            $resource->femaleApplications = $this->applicationRepo->numOfGender($admissionPeriod, 1);
         }
 
         // Assistant history statistics

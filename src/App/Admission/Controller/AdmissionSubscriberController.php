@@ -95,7 +95,7 @@ class AdmissionSubscriberController extends BaseController
     {
         $subscriber = $this->admissionSubscriberRepo->findByUnsubscribeCode($code);
         $this->addFlash('title', 'Opptaksvarsel - Avmelding');
-        if (!$subscriber) {
+        if ($subscriber === null) {
             $this->addFlash('message', 'Du vil ikke lengre motta varsler om opptak');
         } else {
             $email = $subscriber->getEmail();

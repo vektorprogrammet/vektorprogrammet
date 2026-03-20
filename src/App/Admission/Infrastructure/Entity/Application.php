@@ -7,7 +7,9 @@ use App\Admission\Infrastructure\Validator as CustomAssert;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Contracts\DepartmentSemesterInterface;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -257,7 +259,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @param User
+     * @param User $user
      */
     public function setUser($user)
     {
@@ -454,12 +456,14 @@ class Application implements DepartmentSemesterInterface
         $this->potentialTeams = $potentialTeams;
     }
 
-    public function getSemester()
+    /** @phpstan-ignore method.childReturnType */
+    public function getSemester(): Semester
     {
         return $this->admissionPeriod->getSemester();
     }
 
-    public function getDepartment()
+    /** @phpstan-ignore method.childReturnType */
+    public function getDepartment(): Department
     {
         return $this->admissionPeriod->getDepartment();
     }

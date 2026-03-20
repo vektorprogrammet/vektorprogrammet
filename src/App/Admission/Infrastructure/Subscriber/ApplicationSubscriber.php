@@ -21,7 +21,10 @@ class ApplicationSubscriber implements EventSubscriberInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
+    /**
+     * @return array<string, list<array{0: string, 1?: int}|int|string>|string>
+     */
+    public static function getSubscribedEvents(): array
     {
         return [
             ApplicationCreatedEvent::NAME => [
@@ -48,7 +51,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
         $application = $event->getApplication();
         $user = $application->getUser();
         $newUserCode = null;
-        if (!$user->getPassword()) {
+        if ($user->getPassword() === null) {
             $newUserCode = $this->userRegistrationService->setNewUserCode($user);
         }
 
