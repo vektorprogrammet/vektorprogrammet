@@ -11,7 +11,7 @@ use App\Interview\Api\State\InterviewBulkAssignProcessor;
         new Post(
             uriTemplate: '/admin/interviews/bulk-assign',
             processor: InterviewBulkAssignProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
             output: false,
             status: 204,
         ),

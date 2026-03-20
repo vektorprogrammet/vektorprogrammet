@@ -13,7 +13,7 @@ use App\Interview\Api\State\InterviewDeleteProvider;
             uriTemplate: '/admin/interviews/{id}',
             provider: InterviewDeleteProvider::class,
             processor: InterviewDeleteProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_ADMIN')",
             output: false,
             status: 204,
         ),
