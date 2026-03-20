@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
@@ -31,7 +33,7 @@ class AssistantHistoryController extends BaseController
         $currentUser = $this->getUser();
         assert($currentUser instanceof User);
         if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $currentUser->getDepartment()) {
-            $this->createAccessDeniedException();
+            throw $this->createAccessDeniedException();
         }
 
         $this->em->remove($assistantHistory);
