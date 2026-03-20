@@ -1,6 +1,60 @@
 parameters:
 	ignoreErrors:
 		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminChangelogDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminChangelogEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminSocialEventDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminSocialEventEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminStaticContentEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/ArticleProcessor.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$response does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 2
+			path: src/App/Content/Controller/ArticleAdminController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: src/App/Content/Controller/ArticleAdminController.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: src/App/Content/Controller/ArticleAdminController.php
+
+		-
 			message: '#^Parameter \#1 \$author of method App\\Content\\Infrastructure\\Entity\\Article\:\:setAuthor\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -31,10 +85,40 @@ parameters:
 			path: src/App/Content/Controller/ContactController.php
 
 		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Content/Controller/FeedbackController.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Content/Controller/SponsorsController.php
+
+		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: src/App/Content/Controller/StaticContentController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Content\\Infrastructure\\Entity\\StaticContent given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Controller/StaticContentController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Controller/StaticContentController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Content/Controller/WidgetController.php
 
 		-
 			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findAssignedByUserAndAdmissionPeriod\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
@@ -67,6 +151,12 @@ parameters:
 			path: src/App/Content/Infrastructure/Entity/Feedback.php
 
 		-
+			message: '#^Variable method call on \$this\(App\\Content\\Infrastructure\\Entity\\SupportTicket\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Content/Infrastructure/Entity/SupportTicket.php
+
+		-
 			message: '#^Call to function is_null\(\) with null will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
 			count: 3
@@ -85,10 +175,34 @@ parameters:
 			path: src/App/Content/Infrastructure/Subscriber/SupportTicketSubscriber.php
 
 		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Infrastructure/Subscriber/SupportTicketSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Content\\Infrastructure\\Subscriber\\SupportTicketSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Content/Infrastructure/Subscriber/SupportTicketSubscriber.php
+
+		-
 			message: '#^Negated boolean expression is always false\.$#'
 			identifier: booleanNot.alwaysFalse
 			count: 1
 			path: src/App/Content/Twig/StaticContentExtension.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Content\\Infrastructure\\Entity\\StaticContent given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Twig/StaticContentExtension.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserActivationProvider.php
 
 		-
 			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int given\.$#'
@@ -109,6 +223,30 @@ parameters:
 			path: src/App/Identity/Api/State/AdminUserDeleteProcessor.php
 
 		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserListProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/ProfilePhotoProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/ProfilePhotoProcessor.php
+
+		-
 			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int\|null given\.$#'
 			identifier: argument.type
 			count: 1
@@ -117,6 +255,12 @@ parameters:
 		-
 			message: '#^If condition is always true\.$#'
 			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Identity/Api/State/ProfileProvider.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Organization\\Infrastructure\\Entity\\FieldOfStudy given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
 			path: src/App/Identity/Api/State/ProfileProvider.php
 
@@ -135,6 +279,12 @@ parameters:
 		-
 			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
 			identifier: method.notFound
+			count: 2
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
 			count: 2
 			path: src/App/Identity/Controller/ProfileController.php
 
@@ -181,15 +331,45 @@ parameters:
 			path: src/App/Identity/Controller/ProfileController.php
 
 		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Controller/ProfilePhotoController.php
+
+		-
+			message: '#^Only booleans are allowed in an elseif condition, App\\Admission\\Infrastructure\\Entity\\Application\|null given\.$#'
+			identifier: elseif.condNotBoolean
+			count: 1
+			path: src/App/Identity/Controller/SecurityController.php
+
+		-
 			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findActiveByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/App/Identity/Controller/SecurityController.php
 
 		-
+			message: '#^Call to method App\\Identity\\Infrastructure\\Entity\\User\:\:getUserName\(\) with incorrect case\: getUsername$#'
+			identifier: method.nameCase
+			count: 1
+			path: src/App/Identity/Controller/SsoController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: src/App/Identity/Controller/SsoController.php
+
+		-
 			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
 			identifier: method.notFound
 			count: 3
+			path: src/App/Identity/Controller/UserAdminController.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
 			path: src/App/Identity/Controller/UserAdminController.php
 
 		-
@@ -205,10 +385,34 @@ parameters:
 			path: src/App/Identity/Controller/UserController.php
 
 		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Identity/Controller/UserController.php
+
+		-
 			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findByUserInAdmissionPeriod\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/App/Identity/Controller/UserController.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 3
+			path: src/App/Identity/Domain/Rules/RoleHierarchy.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 3
+			path: src/App/Identity/Domain/Rules/RoleHierarchy.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Identity/Domain/Rules/RoleHierarchy.php
 
 		-
 			message: '#^Call to function is_countable\(\) with array\<App\\Identity\\Infrastructure\\Entity\\Role\> will always evaluate to true\.$#'
@@ -235,10 +439,28 @@ parameters:
 			path: src/App/Identity/Infrastructure/AccessControlService.php
 
 		-
+			message: '#^Casting to \*NEVER\* something that''s already \*NEVER\*\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 6
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
 			message: '#^Instanceof between App\\Identity\\Infrastructure\\Entity\\Role and App\\Identity\\Infrastructure\\Entity\\Role will always evaluate to true\.$#'
 			identifier: instanceof.alwaysTrue
 			count: 1
 			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: src/App/Identity/Infrastructure/CompanyEmailMaker.php
 
 		-
 			message: '#^Call to function is_countable\(\) with array\<App\\Identity\\Infrastructure\\Entity\\Role\> will always evaluate to true\.$#'
@@ -259,6 +481,12 @@ parameters:
 			path: src/App/Identity/Infrastructure/Entity/AccessRule.php
 
 		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: src/App/Identity/Infrastructure/Entity/AccessRule.php
+
+		-
 			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getPassword\(\)\.$#'
 			identifier: method.notFound
 			count: 1
@@ -267,12 +495,6 @@ parameters:
 		-
 			message: '#^Call to function is_array\(\) with array\<App\\Identity\\Infrastructure\\Entity\\Role\> will always evaluate to true\.$#'
 			identifier: function.alreadyNarrowedType
-			count: 2
-			path: src/App/Identity/Infrastructure/Entity/User.php
-
-		-
-			message: '#^Call to method getTeam\(\) on an unknown class App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\.$#'
-			identifier: class.notFound
 			count: 2
 			path: src/App/Identity/Infrastructure/Entity/User.php
 
@@ -289,15 +511,15 @@ parameters:
 			path: src/App/Identity/Infrastructure/Entity/User.php
 
 		-
-			message: '#^Method App\\Identity\\Infrastructure\\Entity\\User\:\:getActiveMemberships\(\) has invalid return type App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\.$#'
-			identifier: class.notFound
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
 			count: 1
 			path: src/App/Identity/Infrastructure/Entity/User.php
 
 		-
-			message: '#^Method App\\Identity\\Infrastructure\\Entity\\User\:\:getActiveMemberships\(\) should return array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\> but returns array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\|App\\Organization\\Infrastructure\\Entity\\TeamMembership\>\.$#'
-			identifier: return.type
-			count: 1
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
 			path: src/App/Identity/Infrastructure/Entity/User.php
 
 		-
@@ -307,13 +529,7 @@ parameters:
 			path: src/App/Identity/Infrastructure/Entity/User.php
 
 		-
-			message: '#^Parameter \$memberships of method App\\Identity\\Infrastructure\\Entity\\User\:\:setMemberships\(\) has invalid type App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Identity/Infrastructure/Entity/User.php
-
-		-
-			message: '#^Property App\\Identity\\Infrastructure\\Entity\\User\:\:\$executiveBoardMemberships \(array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\>\) does not accept list\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\>\.$#'
+			message: '#^Property App\\Identity\\Infrastructure\\Entity\\User\:\:\$executiveBoardMemberships \(array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\>\) does not accept list\<App\\Shared\\Contracts\\TeamMembershipInterface\>\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: src/App/Identity/Infrastructure/Entity/User.php
@@ -325,7 +541,7 @@ parameters:
 			path: src/App/Identity/Infrastructure/Entity/User.php
 
 		-
-			message: '#^Property App\\Identity\\Infrastructure\\Entity\\User\:\:\$teamMemberships \(array\<App\\Organization\\Infrastructure\\Entity\\TeamMembership\>\) does not accept list\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\>\.$#'
+			message: '#^Property App\\Identity\\Infrastructure\\Entity\\User\:\:\$teamMemberships \(array\<App\\Organization\\Infrastructure\\Entity\\TeamMembership\>\) does not accept list\<App\\Shared\\Contracts\\TeamMembershipInterface\>\.$#'
 			identifier: assign.propertyType
 			count: 1
 			path: src/App/Identity/Infrastructure/Entity/User.php
@@ -333,6 +549,12 @@ parameters:
 		-
 			message: '#^Unreachable statement \- code above always terminates\.$#'
 			identifier: deadCode.unreachable
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Identity\\Infrastructure\\Entity\\User\)\.$#'
+			identifier: method.dynamicName
 			count: 1
 			path: src/App/Identity/Infrastructure/Entity/User.php
 
@@ -379,10 +601,40 @@ parameters:
 			path: src/App/Identity/Infrastructure/Repository/UserRepository.php
 
 		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
 			message: '#^Only booleans are allowed in &&, string\|null given on the right side\.$#'
 			identifier: booleanAnd.rightNotBoolean
 			count: 1
 			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Identity\\Infrastructure\\Subscriber\\AccessControlSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Identity/Infrastructure/Subscriber/AccessControlSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Identity\\Infrastructure\\Subscriber\\UserSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Identity/Infrastructure/Subscriber/UserSubscriber.php
 
 		-
 			message: '#^Parameter \#1 \$newUserCode of method App\\Identity\\Infrastructure\\Entity\\User\:\:setNewUserCode\(\) expects string, null given\.$#'
@@ -403,8 +655,44 @@ parameters:
 			path: src/App/Identity/Infrastructure/UserRegistration.php
 
 		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Identity\\Infrastructure\\Entity\\User\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, App\\Identity\\Infrastructure\\Entity\\User\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
 			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
 			identifier: property.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Validator/UniqueCompanyEmailValidator.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Identity/Infrastructure/Validator/UniqueCompanyEmailValidator.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: src/App/Identity/Infrastructure/Validator/UniqueCompanyEmailValidator.php
 
@@ -415,238 +703,10 @@ parameters:
 			path: src/App/Identity/Infrastructure/Validator/VektorEmailValidator.php
 
 		-
-			message: '#^Property App\\Interview\\Api\\Resource\\InterviewConductInput\:\:\$interviewScore \(array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\}\) does not accept default value of type array\{\}\.$#'
-			identifier: property.defaultValue
-			count: 1
-			path: src/App/Interview/Api/Resource/InterviewConductInput.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 2
-			path: src/App/Interview/Api/State/AdminInterviewListProvider.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/App/Interview/Api/State/AdminInterviewListProvider.php
-
-		-
-			message: '#^Offset ''question'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/AdminInterviewSchemaCreateProcessor.php
-
-		-
-			message: '#^Offset ''type'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/AdminInterviewSchemaCreateProcessor.php
-
-		-
-			message: '#^Offset ''question'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/AdminInterviewSchemaEditProcessor.php
-
-		-
-			message: '#^Offset ''type'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/AdminInterviewSchemaEditProcessor.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Interview/Api/State/InterviewAcceptProcessor.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Interview/Api/State/InterviewCancelProcessor.php
-
-		-
-			message: '#^Offset ''explanatoryPower'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/InterviewConductProcessor.php
-
-		-
-			message: '#^Offset ''questionId'' on array\{questionId\: int, answer\: mixed\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/InterviewConductProcessor.php
-
-		-
-			message: '#^Offset ''roleModel'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/InterviewConductProcessor.php
-
-		-
-			message: '#^Offset ''suitability'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/InterviewConductProcessor.php
-
-		-
-			message: '#^Offset ''suitableAssistant'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
-			identifier: nullCoalesce.offset
-			count: 1
-			path: src/App/Interview/Api/State/InterviewConductProcessor.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between int and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/App/Interview/Api/State/InterviewConductProcessor.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Interview/Api/State/InterviewNewTimeProcessor.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Interview/Api/State/InterviewResponseProvider.php
-
-		-
-			message: '#^Ternary operator condition is always true\.$#'
-			identifier: ternary.alwaysTrue
-			count: 1
-			path: src/App/Interview/Api/State/InterviewResponseProvider.php
-
-		-
-			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/App/Interview/Api/State/InterviewResponseProvider.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Form\\FormInterface\:\:isClicked\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
-			message: '#^Offset ''id'' does not exist on bool\|float\|int\|string\.$#'
-			identifier: offsetAccess.notFound
-			count: 1
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
-			message: '#^Parameter \#1 \$coInterviewer of method App\\Interview\\Infrastructure\\Entity\\Interview\:\:setCoInterviewer\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
-			message: '#^Parameter \#1 \$interview of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setInterview\(\) expects App\\Interview\\Infrastructure\\Entity\\Interview, null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Controller/InterviewController.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Interview/Infrastructure/Command/SendListOfScheduledInterviewsCommand.php
-
-		-
-			message: '#^PHPDoc tag @param has invalid value \(string mapLink\)\: Unexpected token "mapLink", expected variable at offset 25 on line 2$#'
-			identifier: phpDoc.parseError
-			count: 1
-			path: src/App/Interview/Infrastructure/Entity/Interview.php
-
-		-
-			message: '#^Property App\\Interview\\Infrastructure\\Entity\\Interview\:\:\$application is never written, only read\.$#'
-			identifier: property.onlyRead
-			count: 1
-			path: src/App/Interview/Infrastructure/Entity/Interview.php
-
-		-
-			message: '#^Right side of && is always true\.$#'
-			identifier: booleanAnd.rightAlwaysTrue
-			count: 1
-			path: src/App/Interview/Infrastructure/Entity/Interview.php
-
-		-
-			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Infrastructure/Entity/InterviewQuestion.php
-
-		-
-			message: '#^Call to function is_array\(\) with Doctrine\\Common\\Collections\\Collection will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: src/App/Interview/Infrastructure/InterviewManager.php
-
-		-
-			message: '#^Call to function is_null\(\) with App\\Identity\\Infrastructure\\Entity\\User will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 2
-			path: src/App/Interview/Infrastructure/InterviewManager.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: src/App/Interview/Infrastructure/InterviewManager.php
-
-		-
-			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\Interview\|null given\.$#'
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
 			identifier: booleanNot.exprNotBoolean
 			count: 1
-			path: src/App/Interview/Infrastructure/InterviewManager.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interview\\Infrastructure\\Entity\\Interview\:\:isCoInterviewer\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Infrastructure/InterviewManager.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Interview\\Infrastructure\\Entity\\Interview\:\:isInterviewer\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Interview/Infrastructure/InterviewManager.php
-
-		-
-			message: '#^If condition is always true\.$#'
-			identifier: if.alwaysTrue
-			count: 1
-			path: src/App/Interview/Infrastructure/Repository/InterviewRepository.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
-
-		-
-			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/App/Interview/Infrastructure/Validator/InterviewAnswerValidator.php
-
-		-
-			message: '#^Instanceof between App\\Interview\\Infrastructure\\Entity\\InterviewAnswer and App\\Interview\\Infrastructure\\Entity\\InterviewAnswer will always evaluate to true\.$#'
-			identifier: instanceof.alwaysTrue
-			count: 1
-			path: src/App/Interview/Infrastructure/Validator/InterviewAnswerValidator.php
+			path: src/App/Identity/Infrastructure/Validator/VektorEmailValidator.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between App\\Organization\\Infrastructure\\Entity\\Department and null will always evaluate to true\.$#'
@@ -655,94 +715,10 @@ parameters:
 			path: src/App/Operations/Api/State/AdminAssistantHistoryCreateProcessor.php
 
 		-
-			message: '#^Using nullsafe method call on non\-nullable type App\\Organization\\Infrastructure\\Entity\\FieldOfStudy\. Use \-\> instead\.$#'
-			identifier: nullsafe.neverNull
-			count: 1
-			path: src/App/Operations/Api/State/AdminAssistantHistoryCreateProcessor.php
-
-		-
-			message: '#^Property App\\Operations\\Controller\\AssistantController\:\:\$applicationRepo is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/App/Operations/Controller/AssistantController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Operations/Controller/AssistantHistoryController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Entity\\Signature\:\:setUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Controller/CertificateController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\SignatureRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Controller/CertificateController.php
-
-		-
 			message: '#^Strict comparison using \=\=\= between App\\Operations\\Infrastructure\\Entity\\Signature and null will always evaluate to false\.$#'
 			identifier: identical.alwaysFalse
 			count: 1
 			path: src/App/Operations/Controller/CertificateController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Operations/Controller/ParticipantHistoryController.php
-
-		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Operations/Controller/ReceiptController.php
-
-		-
-			message: '#^Parameter \#1 \$picturePath of method App\\Operations\\Infrastructure\\Entity\\Receipt\:\:setPicturePath\(\) expects string, null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Controller/ReceiptController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Identity\\Infrastructure\\RoleManager\:\:userIsGranted\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Controller/ReceiptController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Entity\\Receipt\:\:setUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Controller/ReceiptController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\ReceiptRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Controller/ReceiptController.php
-
-		-
-			message: '#^Result of && is always false\.$#'
-			identifier: booleanAnd.alwaysFalse
-			count: 1
-			path: src/App/Operations/Controller/ReceiptController.php
-
-		-
-			message: '#^Call to an undefined method Psr\\Container\\ContainerInterface\:\:getParameter\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Operations/Controller/SignatureController.php
-
-		-
-			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\SignatureRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Controller/SignatureController.php
 
 		-
 			message: '#^Strict comparison using \=\=\= between App\\Operations\\Infrastructure\\Entity\\Signature and null will always evaluate to false\.$#'
@@ -751,274 +727,130 @@ parameters:
 			path: src/App/Operations/Controller/SignatureController.php
 
 		-
-			message: '#^Negated boolean expression is always false\.$#'
-			identifier: booleanNot.alwaysFalse
-			count: 1
-			path: src/App/Operations/Domain/Rules/ReceiptStatistics.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between DateTime and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/App/Operations/Domain/Rules/ReceiptStatistics.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Operations/Infrastructure/AssistantHistoryData.php
-
-		-
-			message: '#^Parameter \#1 \$num of function dechex expects int, float given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Infrastructure/Entity/Receipt.php
-
-		-
-			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Operations/Infrastructure/Entity/Receipt.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
-
-		-
 			message: '#^Result of && is always false\.$#'
 			identifier: booleanAnd.alwaysFalse
 			count: 1
 			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 1
-			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
-			identifier: method.notFound
-			count: 6
-			path: src/App/Operations/Infrastructure/Subscriber/ReceiptSubscriber.php
-
-		-
-			message: '#^Result of && is always true\.$#'
-			identifier: booleanAnd.alwaysTrue
-			count: 1
-			path: src/App/Scheduling/Api/State/AdminSchedulingAssistantProvider.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between App\\Interview\\Infrastructure\\Entity\\Interview and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/App/Scheduling/Api/State/AdminSchedulingAssistantProvider.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between App\\Interview\\Infrastructure\\Entity\\InterviewScore and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/App/Scheduling/Api/State/AdminSchedulingAssistantProvider.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Scheduling/Controller/AssistantSchedulingController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFieldOfStudy\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Scheduling/Controller/AssistantSchedulingController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 3
-			path: src/App/Scheduling/Controller/SchoolAdminController.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFieldOfStudy\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Scheduling/Controller/SchoolAdminController.php
-
-		-
-			message: '#^Access to an undefined property App\\Scheduling\\Domain\\Rules\\Assistant\:\:\$id\.$#'
-			identifier: property.notFound
-			count: 1
-			path: src/App/Scheduling/Domain/Rules/Assistant.php
-
-		-
-			message: '#^Call to function is_null\(\) with string will always evaluate to false\.$#'
-			identifier: function.impossibleType
-			count: 1
-			path: src/App/Scheduling/Domain/Rules/Assistant.php
-
-		-
-			message: '#^Property App\\Scheduling\\Domain\\Rules\\Assistant\:\:\$group \(int\) does not accept null\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/App/Scheduling/Domain/Rules/Assistant.php
-
-		-
-			message: '#^Property App\\Scheduling\\Domain\\Rules\\Assistant\:\:\$preferredGroup \(int\) does not accept null\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/App/Scheduling/Domain/Rules/Assistant.php
-
-		-
-			message: '#^Property App\\Scheduling\\Infrastructure\\Entity\\School\:\:\$assistantHistories is never written, only read\.$#'
-			identifier: property.onlyRead
-			count: 1
-			path: src/App/Scheduling/Infrastructure/Entity/School.php
-
-		-
-			message: '#^Property App\\Scheduling\\Infrastructure\\Entity\\School\:\:\$capacities is never written, only read\.$#'
-			identifier: property.onlyRead
-			count: 1
-			path: src/App/Scheduling/Infrastructure/Entity/School.php
-
-		-
-			message: '#^Method App\\Shared\\Contracts\\TeamInterface\:\:getActiveUsers\(\) has invalid return type App\\Shared\\Contracts\\User\.$#'
-			identifier: class.notFound
-			count: 1
-			path: src/App/Shared/Contracts/TeamInterface.php
-
-		-
-			message: '#^Property App\\Shared\\Entity\\Semester\:\:\$admissionPeriods \(array\<App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod\>\) does not accept App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod\.$#'
-			identifier: assign.propertyType
-			count: 1
-			path: src/App/Shared/Entity/Semester.php
-
-		-
-			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
-			identifier: method.notFound
-			count: 1
-			path: src/App/Support/Controller/BaseController.php
-
-		-
-			message: '#^Call to an undefined method Psr\\Container\\ContainerInterface\:\:getParameter\(\)\.$#'
-			identifier: method.notFound
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
 			count: 1
 			path: src/App/Support/Controller/FileBrowserController.php
 
 		-
-			message: '#^Binary operation "\-" between 32 and string results in an error\.$#'
-			identifier: binaryOp.invalid
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
 			count: 1
 			path: src/App/Support/Controller/GitHubController.php
 
 		-
-			message: '#^Parameter \#1 \$year of method DateTime\:\:setDate\(\) expects int, string given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/App/Support/DataFixtures/ORM/LoadAdmissionPeriodData.php
-
-		-
-			message: '#^Parameter \#1 \$friday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setFriday\(\) expects bool, string given\.$#'
+			message: '#^Parameter \#1 \$potentialMembers of method App\\Organization\\Infrastructure\\Entity\\Team\:\:setPotentialMembers\(\) expects Doctrine\\Common\\Collections\\Collection\<int, App\\Admission\\Infrastructure\\Entity\\Application\>, array\{App\\Admission\\Infrastructure\\Entity\\Application, App\\Admission\\Infrastructure\\Entity\\Application\} given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
 
 		-
-			message: '#^Parameter \#1 \$monday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setMonday\(\) expects bool, string given\.$#'
+			message: '#^Parameter \#1 \$potentialMembers of method App\\Organization\\Infrastructure\\Entity\\Team\:\:setPotentialMembers\(\) expects Doctrine\\Common\\Collections\\Collection\<int, App\\Admission\\Infrastructure\\Entity\\Application\>, array\{App\\Admission\\Infrastructure\\Entity\\Application\} given\.$#'
 			identifier: argument.type
 			count: 1
 			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
 
 		-
-			message: '#^Parameter \#1 \$thursday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setThursday\(\) expects bool, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
-
-		-
-			message: '#^Parameter \#1 \$tuesday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setTuesday\(\) expects bool, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
-
-		-
-			message: '#^Parameter \#1 \$wednesday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setWednesday\(\) expects bool, string given\.$#'
-			identifier: argument.type
-			count: 1
-			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
-
-		-
-			message: '#^Parameter \#1 \$yearOfStudy of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setYearOfStudy\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 10
-			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
-
-		-
-			message: '#^Parameter \#1 \$workdays of method App\\Operations\\Infrastructure\\Entity\\AssistantHistory\:\:setWorkdays\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 4
-			path: src/App/Support/DataFixtures/ORM/LoadAssistantHistoryData.php
-
-		-
-			message: '#^Property App\\Support\\DataFixtures\\ORM\\LoadInfoMeetingData\:\:\$container is never read, only written\.$#'
-			identifier: property.onlyWritten
-			count: 1
-			path: src/App/Support/DataFixtures/ORM/LoadInfoMeetingData.php
-
-		-
-			message: '#^Parameter \#1 \$year of method App\\Shared\\Entity\\Semester\:\:setYear\(\) expects string, int given\.$#'
-			identifier: argument.type
-			count: 3
-			path: src/App/Support/DataFixtures/ORM/LoadSemesterData.php
-
-		-
-			message: '#^Property App\\Support\\DataFixtures\\ORM\\LoadUserData\:\:\$container is never read, only written\.$#'
-			identifier: property.onlyWritten
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
 			count: 1
 			path: src/App/Support/DataFixtures/ORM/LoadUserData.php
 
 		-
-			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
 			count: 1
-			path: src/App/Support/EventSubscriber/ExceptionSubscriber.php
+			path: src/App/Support/EventSubscriber/DbSubscriber.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between Google\\Service\\Directory\\Group and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/EventSubscriber/DbSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Support\\EventSubscriber\\DbSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string\>\) of method Doctrine\\Common\\EventSubscriber\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Support/EventSubscriber/DbSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Support\\EventSubscriber\\GSuiteSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
 			count: 1
 			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between Google\\Service\\Directory\\User and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
-			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+			path: src/App/Support/Infrastructure/BetaRedirecter.php
 
 		-
-			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
-
-		-
-			message: '#^Strict comparison using \!\=\= between App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod and null will always evaluate to true\.$#'
-			identifier: notIdentical.alwaysTrue
-			count: 1
-			path: src/App/Support/FilterService.php
-
-		-
-			message: '#^Method App\\Support\\Infrastructure\\FileUploader\:\:uploadArticleImage\(\) should return string but returns null\.$#'
-			identifier: return.type
-			count: 1
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
 			path: src/App/Support/Infrastructure/FileUploader.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Only booleans are allowed in \|\|, string\|null given on the right side\.$#'
+			identifier: booleanOr.rightNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, resource\|string\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 4
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
 
 		-
 			message: '#^Strict comparison using \!\=\= between array\<string\> and null will always evaluate to true\.$#'
@@ -1027,79 +859,55 @@ parameters:
 			path: src/App/Support/Infrastructure/Google/GoogleAPI.php
 
 		-
-			message: '#^If condition is always false\.$#'
-			identifier: if.alwaysFalse
+			message: '#^Only booleans are allowed in an if condition, array given\.$#'
+			identifier: if.condNotBoolean
 			count: 1
-			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
+			path: src/App/Support/Infrastructure/Google/GoogleService.php
 
 		-
-			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleGroups\:\:createGroup\(\) should return Google\\Service\\Directory\\Group but returns null\.$#'
-			identifier: return.type
-			count: 2
-			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
-
-		-
-			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleGroups\:\:getGroup\(\) should return Google\\Service\\Directory\\Group but returns null\.$#'
-			identifier: return.type
-			count: 2
-			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
-
-		-
-			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleGroups\:\:updateGroup\(\) should return Google\\Service\\Directory\\Group but returns null\.$#'
-			identifier: return.type
-			count: 2
-			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
-
-		-
-			message: '#^If condition is always false\.$#'
-			identifier: if.alwaysFalse
-			count: 1
-			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
-
-		-
-			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleUsers\:\:createUser\(\) should return Google\\Service\\Directory\\User but returns null\.$#'
-			identifier: return.type
-			count: 2
-			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
-
-		-
-			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleUsers\:\:getUser\(\) should return Google\\Service\\Directory\\User but returns null\.$#'
-			identifier: return.type
-			count: 2
-			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
-
-		-
-			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleUsers\:\:updateUser\(\) should return Google\\Service\\Directory\\User but returns null\.$#'
-			identifier: return.type
-			count: 2
-			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
-
-		-
-			message: '#^Parameter \#1 \$level of method Monolog\\Logger\:\:log\(\) expects ''alert''\|''critical''\|''debug''\|''emergency''\|''error''\|''info''\|''notice''\|''warning''\|Monolog\\Level, 200 given\.$#'
-			identifier: argument.type
-			count: 1
+			message: '#^Only booleans are allowed in a ternary operator condition, Symfony\\Component\\HttpFoundation\\Request\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 3
 			path: src/App/Support/Infrastructure/LogService.php
 
 		-
-			message: '#^Parameter \#1 \$teamMemberships of method App\\Support\\Sorter\:\:sortTeamMembershipsByPosition\(\) expects array\<App\\Shared\\Contracts\\TeamMembershipInterface\>, array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\> given\.$#'
-			identifier: argument.type
-			count: 2
-			path: src/App/Support/Sorter.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\> and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
-			count: 3
-			path: src/App/Support/Sorter.php
-
-		-
-			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
-			identifier: identical.alwaysFalse
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
 			count: 1
-			path: src/App/Support/Twig/AssetExtension.php
+			path: src/App/Support/Infrastructure/Mailer/Mailer.php
 
 		-
-			message: '#^Call to function is_object\(\) with Symfony\\Component\\Security\\Core\\User\\UserInterface will always evaluate to true\.$#'
-			identifier: function.alreadyNarrowedType
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMailer.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, string given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMailer.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMailer.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMessenger.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 7
+			path: src/App/Support/Sorter.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
 			count: 1
 			path: src/App/Support/Twig/RoleExtension.php
