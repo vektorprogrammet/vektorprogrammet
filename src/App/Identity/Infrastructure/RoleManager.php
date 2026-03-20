@@ -2,65 +2,41 @@
 
 namespace App\Identity\Infrastructure;
 
-use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
-use App\Identity\Infrastructure\Entity\Role;
-use App\Shared\Entity\Semester;
-use App\Identity\Infrastructure\Entity\User;
-use App\Support\Infrastructure\Google\GoogleUsers;
 use App\Identity\Domain\Roles;
+use App\Identity\Domain\Rules\RoleHierarchy;
+use App\Identity\Infrastructure\Entity\Role;
+use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
+use App\Shared\Entity\Semester;
+use App\Support\Infrastructure\Google\GoogleUsers;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 
 class RoleManager
 {
-    private $roles = [];
-    private $aliases = [];
-
     public function __construct(
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly EntityManagerInterface $em,
         private readonly LoggerInterface $logger,
         private readonly GoogleUsers $googleUserService,
+        private readonly RoleHierarchy $roleHierarchy,
     ) {
-        $this->roles = [
-            Roles::ASSISTANT,
-            Roles::TEAM_MEMBER,
-            Roles::TEAM_LEADER,
-            Roles::ADMIN,
-        ];
-        $this->aliases = [
-            Roles::ALIAS_ASSISTANT,
-            Roles::ALIAS_TEAM_MEMBER,
-            Roles::ALIAS_TEAM_LEADER,
-            Roles::ALIAS_ADMIN,
-        ];
     }
 
     public function isValidRole(string $role): bool
     {
-        return in_array($role, $this->roles) || in_array($role, $this->aliases);
+        return $this->roleHierarchy->isValidRole($role);
     }
 
     public function canChangeToRole(string $role): bool
     {
-        return
-            $role !== Roles::ADMIN
-            && $role !== Roles::ALIAS_ADMIN
-            && $this->isValidRole($role)
-        ;
+        return $this->roleHierarchy->canChangeToRole($role);
     }
 
     public function mapAliasToRole(string $alias): string
     {
-        if (in_array($alias, $this->roles)) {
-            return $alias;
-        }
-
-        if (in_array($alias, $this->aliases)) {
-            return $this->roles[array_search($alias, $this->aliases)];
-        }
-        throw new \InvalidArgumentException('Invalid alias: '.$alias);
+        return $this->roleHierarchy->mapAliasToRole($alias);
     }
 
     public function loggedInUserCanCreateUserWithRole(string $role): bool
@@ -93,23 +69,7 @@ class RoleManager
 
     public function userIsGranted(User $user, string $role): bool
     {
-        $roles = [
-            Roles::ASSISTANT,
-            Roles::TEAM_MEMBER,
-            Roles::TEAM_LEADER,
-            Roles::ADMIN,
-        ];
-
-        if (empty($user->getRoles())) {
-            return false;
-        }
-
-        $userRole = $user->getRoles()[0];
-
-        $userAccessLevel = array_search($userRole, $roles);
-        $roleAccessLevel = array_search($role, $roles);
-
-        return $userAccessLevel >= $roleAccessLevel;
+        return $this->roleHierarchy->userIsGranted($user, $role);
     }
 
     /**
