@@ -2,6 +2,8 @@
 
 Project conventions and patterns. Keep this updated as the codebase evolves.
 
+> **For agents:** Invoke the `php-conventions` skill before writing or modifying PHP code. It contains the full reference for all patterns below.
+
 ## Guiding Principles
 
 **Functional Core, Imperative Shell (FCIS):** Pure business rules in `Domain/`,
