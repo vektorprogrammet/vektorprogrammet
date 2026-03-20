@@ -35,6 +35,7 @@ security:
             pattern: ^/api/login
             stateless: true
             provider: chain_provider
+            user_checker: App\Identity\Infrastructure\UserChecker
             json_login:
                 check_path: /api/login
                 username_path: username
@@ -48,6 +49,7 @@ security:
             pattern: ^/api
             stateless: true
             provider: chain_provider
+            user_checker: App\Identity\Infrastructure\UserChecker
             jwt: ~
         admin_area:
             pattern: ^/admin
