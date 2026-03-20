@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\Feedback;
+use App\Content\Infrastructure\Entity\Feedback;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\Article;
+use App\Content\Infrastructure\Entity\Article;
 use App\Entity\Department;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;

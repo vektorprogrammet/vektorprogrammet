@@ -4,7 +4,7 @@ namespace App\Support\DataFixtures\ORM;
 
 use App\Entity\Department;
 use App\Shared\Entity\Semester;
-use App\Entity\SocialEvent;
+use App\Content\Infrastructure\Entity\SocialEvent;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

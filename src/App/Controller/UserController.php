@@ -9,7 +9,7 @@ use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Service\ApplicationManager;
-use App\Service\ContentModeManager;
+use App\Content\Infrastructure\ContentModeManager;
 use App\Support\Twig\RoleExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

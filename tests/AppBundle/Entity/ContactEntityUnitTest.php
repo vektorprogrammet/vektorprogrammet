@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\SupportTicket;
+use App\Content\Infrastructure\Entity\SupportTicket;
 use PHPUnit\Framework\TestCase;
 
 class ContactEntityUnitTest extends TestCase

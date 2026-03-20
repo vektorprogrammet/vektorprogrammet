@@ -2,7 +2,7 @@
 
 namespace App\Support\Twig;
 
-use App\Service\ContentModeManager;
+use App\Content\Infrastructure\ContentModeManager;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

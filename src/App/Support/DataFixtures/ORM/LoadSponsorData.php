@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\Sponsor;
+use App\Content\Infrastructure\Entity\Sponsor;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

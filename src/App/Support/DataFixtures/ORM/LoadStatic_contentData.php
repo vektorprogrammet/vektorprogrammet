@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\StaticContent;
+use App\Content\Infrastructure\Entity\StaticContent;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 

@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Feedback;
+use App\Content\Infrastructure\Entity\Feedback;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 

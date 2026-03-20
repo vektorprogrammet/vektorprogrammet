@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\StaticContent;
+use App\Content\Infrastructure\Entity\StaticContent;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 

@@ -22,17 +22,17 @@
 
         <div class="row">
             {% if admissionPeriod and admissionPeriod.hasActiveAdmission %}
-                {{ render(controller("App\\Controller\\WidgetController::applicationGraphAction")) }}
+                {{ render(controller("App\\Content\\Controller\\WidgetController::applicationGraphAction")) }}
             {% endif %}
 
-            {{ render(controller("App\\Controller\\WidgetController::availableSurveysAction")) }}
-            {{ render(controller("App\\Controller\\WidgetController::interviewsAction")) }}
-            {{ render(controller("App\\Controller\\WidgetController::receiptsAction")) }}
-            {{ render(controller("App\\Controller\\WidgetController::changelogAction")) }}
-            {{ render(controller("App\\Controller\\WidgetController::feedbackAction",{'request': app.request})) }}
+            {{ render(controller("App\\Content\\Controller\\WidgetController::availableSurveysAction")) }}
+            {{ render(controller("App\\Content\\Controller\\WidgetController::interviewsAction")) }}
+            {{ render(controller("App\\Content\\Controller\\WidgetController::receiptsAction")) }}
+            {{ render(controller("App\\Content\\Controller\\WidgetController::changelogAction")) }}
+            {{ render(controller("App\\Content\\Controller\\WidgetController::feedbackAction",{'request': app.request})) }}
 
             {% if not admissionPeriod or not admissionPeriod.hasActiveAdmission %}
-                {{ render(controller("App\\Controller\\WidgetController::applicationGraphAction")) }}
+                {{ render(controller("App\\Content\\Controller\\WidgetController::applicationGraphAction")) }}
             {% endif %}
         </div>
     </div>

@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\ChangeLogItem;
+use App\Content\Infrastructure\Entity\ChangeLogItem;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 

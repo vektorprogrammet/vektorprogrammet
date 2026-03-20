@@ -107,7 +107,6 @@ services:
         resource: '../src/App/Content/Infrastructure/Subscriber/'
         bind:
             Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
-            $env: '%kernel.environment%'
 
     App\Operations\Infrastructure\Subscriber\:
         resource: '../src/App/Operations/Infrastructure/Subscriber/'

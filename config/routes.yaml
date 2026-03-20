@@ -11,6 +11,14 @@ app:
     resource: "../src/App/Controller/"
     type: attribute
 
+content:
+    resource: "../src/App/Content/Controller/"
+    type: attribute
+
+support:
+    resource: "../src/App/Support/Controller/"
+    type: attribute
+
 shared:
     resource: "../src/App/Shared/Controller/"
     type: attribute

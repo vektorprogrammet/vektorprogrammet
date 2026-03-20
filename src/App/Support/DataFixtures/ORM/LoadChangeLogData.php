@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\ChangeLogItem;
+use App\Content\Infrastructure\Entity\ChangeLogItem;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
