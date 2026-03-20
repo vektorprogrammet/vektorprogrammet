@@ -1,27 +1,29 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Interview\Domain\Rules;
 
+use App\Interview\Domain\ValueObjects\Suitability;
 use App\Interview\Infrastructure\Entity\Interview;
 
 class InterviewCounter
 {
-    public const YES = 'Ja';
-    public const MAYBE = 'Kanskje';
-    public const NO = 'Nei';
-
     /**
      * @param Interview[] $interviews
      *
      * @return int
      */
-    public function count(array $interviews, string $suitable)
+    public function count(array $interviews, Suitability $suitable)
     {
         $count = 0;
 
         foreach ($interviews as $interview) {
-            $suitableAssistant = $interview->getInterviewScore()->getSuitableAssistant();
-            if ($suitableAssistant === $suitable) {
+            $score = $interview->getInterviewScore();
+            if ($score === null) {
+                continue;
+            }
+            if ($score->getSuitableAssistant() === $suitable->value) {
                 ++$count;
             }
         }

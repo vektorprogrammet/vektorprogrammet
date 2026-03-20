@@ -7,14 +7,14 @@ use App\Identity\Infrastructure\Entity\User;
 
 class RoleHierarchy
 {
-    private array $roles = [
+    private const ROLES = [
         Roles::ASSISTANT,
         Roles::TEAM_MEMBER,
         Roles::TEAM_LEADER,
         Roles::ADMIN,
     ];
 
-    private array $aliases = [
+    private const ALIASES = [
         Roles::ALIAS_ASSISTANT,
         Roles::ALIAS_TEAM_MEMBER,
         Roles::ALIAS_TEAM_LEADER,
@@ -23,7 +23,7 @@ class RoleHierarchy
 
     public function isValidRole(string $role): bool
     {
-        return in_array($role, $this->roles, true) || in_array($role, $this->aliases, true);
+        return in_array($role, self::ROLES, true) || in_array($role, self::ALIASES, true);
     }
 
     public function canChangeToRole(string $role): bool
@@ -37,16 +37,16 @@ class RoleHierarchy
 
     public function mapAliasToRole(string $alias): string
     {
-        if (in_array($alias, $this->roles, true)) {
+        if (in_array($alias, self::ROLES, true)) {
             return $alias;
         }
 
-        $index = array_search($alias, $this->aliases, true);
+        $index = array_search($alias, self::ALIASES, true);
         if ($index === false) {
             throw new \InvalidArgumentException('Invalid alias: '.$alias);
         }
 
-        return $this->roles[$index];
+        return self::ROLES[$index];
     }
 
     public function userIsGranted(User $user, string $role): bool
@@ -57,8 +57,8 @@ class RoleHierarchy
         }
 
         $userRole = $userRoles[0];
-        $userAccessLevel = array_search($userRole, $this->roles, true);
-        $roleAccessLevel = array_search($role, $this->roles, true);
+        $userAccessLevel = array_search($userRole, self::ROLES, true);
+        $roleAccessLevel = array_search($role, self::ROLES, true);
 
         if ($userAccessLevel === false || $roleAccessLevel === false) {
             return false;
