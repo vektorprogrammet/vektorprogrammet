@@ -3,6 +3,7 @@
 namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
@@ -32,7 +33,9 @@ class ParticipantHistoryController extends BaseController
         $department = $this->getDepartmentOrThrow404($request);
         $semester = $this->getSemesterOrThrow404($request);
 
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $this->getUser()->getDepartment()) {
+        $currentUser = $this->getUser();
+        assert($currentUser instanceof User);
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $currentUser->getDepartment()) {
             throw $this->createAccessDeniedException();
         }
 

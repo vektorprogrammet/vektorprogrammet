@@ -62,7 +62,7 @@ class ReceiptEditProcessor implements ProcessorInterface
 
         // Handle file upload if present
         $request = $this->requestStack->getCurrentRequest();
-        if ($request && $request->files->count() > 0) {
+        if ($request !== null && $request->files->count() > 0) {
             $oldPath = $receipt->getPicturePath();
             if ($oldPath) {
                 $this->fileUploader->deleteReceipt($oldPath);

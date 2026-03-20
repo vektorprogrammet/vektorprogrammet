@@ -3,6 +3,7 @@
 namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Operations\Infrastructure\Repository\SignatureRepository;
@@ -25,6 +26,7 @@ class SignatureController extends BaseController
     public function showSignatureImageAction($imageName)
     {
         $user = $this->getUser();
+        assert($user instanceof User);
 
         $signature = $this->signatureRepo->findByUser($user);
         if ($signature === null) {
@@ -38,6 +40,6 @@ class SignatureController extends BaseController
             throw new AccessDeniedException();
         }
 
-        return new BinaryFileResponse($this->container->getParameter('signature_images').'/'.$signatureFileName);
+        return new BinaryFileResponse($this->getParameter('signature_images').'/'.$signatureFileName);
     }
 }

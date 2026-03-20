@@ -3,6 +3,7 @@
 namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
@@ -27,7 +28,9 @@ class AssistantHistoryController extends BaseController
     #[Route('/kontrollpanel/deltakerhistorikk/slett/{id}', name: 'assistant_history_delete', methods: ['POST'])]
     public function deleteAction(AssistantHistory $assistantHistory)
     {
-        if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $this->getUser()->getDepartment()) {
+        $currentUser = $this->getUser();
+        assert($currentUser instanceof User);
+        if (!$this->isGranted(Roles::ADMIN) && $assistantHistory->getUser()->getDepartment() !== $currentUser->getDepartment()) {
             $this->createAccessDeniedException();
         }
 

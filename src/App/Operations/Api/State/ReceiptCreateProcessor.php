@@ -51,7 +51,7 @@ class ReceiptCreateProcessor implements ProcessorInterface
 
         // Handle file upload if present
         $request = $this->requestStack->getCurrentRequest();
-        if ($request && $request->files->count() > 0) {
+        if ($request !== null && $request->files->count() > 0) {
             $path = $this->fileUploader->uploadReceipt($request);
             $receipt->setPicturePath($path);
         }

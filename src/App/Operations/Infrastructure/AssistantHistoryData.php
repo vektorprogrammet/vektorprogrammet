@@ -3,6 +3,7 @@
 namespace App\Operations\Infrastructure;
 
 use App\Support\Infrastructure\GeoLocation;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
@@ -20,10 +21,10 @@ class AssistantHistoryData
         $this->assistantHistoryRepository = $em->getRepository(AssistantHistory::class);
         $user = $ts->getToken()->getUser();
         $departments = $em->getRepository(Department::class)->findAll();
-        if ($user == 'anon.') {
-            $this->department = $geoLocation->findNearestDepartment($departments);
+        if ($user instanceof User) {
+            $this->department = $user->getDepartment();
         } else {
-            $this->department = $ts->getToken()->getUser()->getDepartment();
+            $this->department = $geoLocation->findNearestDepartment($departments);
         }
         $this->semester = $em->getRepository(Semester::class)->findOrCreateCurrentSemester();
     }

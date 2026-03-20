@@ -214,10 +214,11 @@ class AssistantHistory implements \Stringable
     }
 
     // Used for unit testing
-    public function fromArray($data = [])
+    public function fromArray($data = []): void
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
+            /** @phpstan-ignore method.dynamicName */
             $this->$method($value);
         }
     }

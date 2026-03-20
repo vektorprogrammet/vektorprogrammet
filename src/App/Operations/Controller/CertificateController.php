@@ -3,6 +3,7 @@
 namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Operations\Infrastructure\Repository\CertificateRequestRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
@@ -42,7 +43,9 @@ class CertificateController extends BaseController
 
         $assistants = $this->assistantHistoryRepo->findByDepartmentAndSemester($department, $semester);
 
-        $signature = $this->signatureRepo->findByUser($this->getUser());
+        $currentUser = $this->getUser();
+        assert($currentUser instanceof User);
+        $signature = $this->signatureRepo->findByUser($currentUser);
         $oldPath = '';
         if ($signature === null) {
             $signature = new Signature();
@@ -65,7 +68,7 @@ class CertificateController extends BaseController
                 $signature->setSignaturePath($oldPath);
             }
 
-            $signature->setUser($this->getUser());
+            $signature->setUser($currentUser);
             $this->em->persist($signature);
             $this->em->flush();
 

@@ -19,7 +19,7 @@ class AdminAssistantHistoryDeleteProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminAssistantHistoryDeleteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $assistantHistory = $id ? $this->em->getRepository(AssistantHistory::class)->find($id) : null;
+        $assistantHistory = $id !== null ? $this->em->getRepository(AssistantHistory::class)->find($id) : null;
 
         if ($assistantHistory === null) {
             throw new NotFoundHttpException('Assistant history not found.');

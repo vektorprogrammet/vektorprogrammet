@@ -23,9 +23,9 @@ class AdminReceiptStatusProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
     {
         $id = $uriVariables['id'] ?? null;
-        $receipt = $id ? $this->receiptRepository->find($id) : null;
+        $receipt = $id !== null ? $this->receiptRepository->find($id) : null;
 
-        if (!$receipt) {
+        if ($receipt === null) {
             throw new NotFoundHttpException('Receipt not found.');
         }
 

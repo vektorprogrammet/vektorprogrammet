@@ -3,12 +3,12 @@
 namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\Receipt;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Identity\Infrastructure\Repository\UserRepository;
-use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Domain\Events\ReceiptEvent;
 use App\Operations\Form\ReceiptType;
 use App\Identity\Domain\Roles;
@@ -85,10 +85,13 @@ class ReceiptController extends BaseController
     #[Route('/utlegg', name: 'receipt_create', methods: ['GET', 'POST'])]
     public function createAction(Request $request)
     {
-        $receipt = new Receipt();
-        $receipt->setUser($this->getUser());
+        $currentUser = $this->getUser();
+        assert($currentUser instanceof User);
 
-        $receipts = $this->receiptRepo->findByUser($this->getUser());
+        $receipt = new Receipt();
+        $receipt->setUser($currentUser);
+
+        $receipts = $this->receiptRepo->findByUser($currentUser);
 
         $this->sorter->sortReceiptsBySubmitTime($receipts);
         $this->sorter->sortReceiptsByStatus($receipts);
@@ -126,6 +129,7 @@ class ReceiptController extends BaseController
     public function editAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();
+        assert($user instanceof User);
 
         $userCanEditReceipt = $user === $receipt->getUser() && $receipt->getStatus() === Receipt::STATUS_PENDING;
 
@@ -186,7 +190,7 @@ class ReceiptController extends BaseController
         }
 
         $receipt->setStatus($status);
-        if ($status === Receipt::STATUS_REFUNDED && !$receipt->getRefundDate()) {
+        if ($status === Receipt::STATUS_REFUNDED && $receipt->getRefundDate() === null) {
             $receipt->setRefundDate(new \DateTime());
         }
 
@@ -248,6 +252,7 @@ class ReceiptController extends BaseController
     public function deleteAction(Request $request, Receipt $receipt)
     {
         $user = $this->getUser();
+        assert($user instanceof User);
         $isTeamLeader = $this->roleManager->userIsGranted($user, Roles::TEAM_LEADER);
 
         $userCanDeleteReceipt = $isTeamLeader || ($user === $receipt->getUser() && $receipt->getStatus() === Receipt::STATUS_PENDING);
