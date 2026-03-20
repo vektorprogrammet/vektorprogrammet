@@ -4,7 +4,6 @@ namespace App\Survey\Infrastructure\Entity;
 
 use App\Organization\Infrastructure\Entity\UserGroup;
 use DateTime;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -27,17 +26,17 @@ class SurveyNotificationCollection
     private $name;
 
     /**
-     * @var ArrayCollection
+     * @var UserGroup[]
      */
     #[ORM\ManyToMany(targetEntity: UserGroup::class, cascade: ['persist'])]
     #[Assert\NotNull]
-    private $userGroups;
+    private array $userGroups;
 
     /**
-     * @var ArrayCollection
+     * @var SurveyNotification[]
      */
     #[ORM\OneToMany(targetEntity: SurveyNotification::class, mappedBy: 'surveyNotificationCollection', cascade: ['remove'])]
-    private $surveyNotifications;
+    private array $surveyNotifications;
 
     /**
      * @var Survey
@@ -132,9 +131,9 @@ class SurveyNotificationCollection
     }
 
     /**
-     * @return ArrayCollection
+     * @return UserGroup[]
      */
-    public function getUserGroups()
+    public function getUserGroups(): array
     {
         return $this->userGroups;
     }
@@ -148,7 +147,7 @@ class SurveyNotificationCollection
     }
 
     /**
-     * @return Survey?
+     * @return Survey|null
      */
     public function getSurvey(): ?Survey
     {
@@ -161,7 +160,7 @@ class SurveyNotificationCollection
     }
 
     /**
-     * @return DateTime?
+     * @return \DateTime|null
      */
     public function getTimeOfNotification(): ?\DateTime
     {
@@ -186,7 +185,7 @@ class SurveyNotificationCollection
     /**
      * @return SurveyNotification[]
      */
-    public function getSurveyNotifications()
+    public function getSurveyNotifications(): array
     {
         return $this->surveyNotifications;
     }

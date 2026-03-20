@@ -28,7 +28,7 @@ class SurveyNotification
      * @var SurveyLinkClick[]
      */
     #[ORM\OneToMany(targetEntity: SurveyLinkClick::class, mappedBy: 'notification')]
-    private $surveyLinkClicks;
+    private array $surveyLinkClicks;
 
     /**
      * @var SurveyNotificationCollection
@@ -82,7 +82,7 @@ class SurveyNotification
     }
 
     /**
-     * @param \DateTime[] $surveyLinkClicks
+     * @param SurveyLinkClick[] $surveyLinkClicks
      */
     public function setSurveyLinkClicks(array $surveyLinkClicks): void
     {
@@ -90,7 +90,7 @@ class SurveyNotification
     }
 
     /**
-     * @return \DateTime[]
+     * @return SurveyLinkClick[]
      */
     public function getSurveyLinkClicks()
     {
@@ -98,7 +98,7 @@ class SurveyNotification
     }
 
     /**
-     * @return DateTime?
+     * @return \DateTime|null
      */
     public function getTimeNotificationSent(): ?\DateTime
     {

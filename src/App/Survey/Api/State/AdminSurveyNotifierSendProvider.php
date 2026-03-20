@@ -19,7 +19,7 @@ class AdminSurveyNotifierSendProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminSurveyNotifierSendResource
     {
         $id = $uriVariables['id'] ?? null;
-        $collection = $id ? $this->em->getRepository(SurveyNotificationCollection::class)->find($id) : null;
+        $collection = $id !== null ? $this->em->getRepository(SurveyNotificationCollection::class)->find($id) : null;
 
         if ($collection === null) {
             throw new NotFoundHttpException('SurveyNotificationCollection not found.');

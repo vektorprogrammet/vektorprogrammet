@@ -39,12 +39,12 @@ class SurveyRespondProcessor implements ProcessorInterface
         if ($audience === Survey::$SCHOOL_SURVEY) {
             $this->handleSchoolSurvey($survey, $data);
         } elseif ($audience === Survey::$ASSISTANT_SURVEY) {
-            if (!$user) {
+            if ($user === null) {
                 throw new UnauthorizedHttpException('Bearer', 'Authentication required');
             }
             $this->handleAssistantSurvey($survey, $user, $data);
         } elseif ($audience === Survey::$TEAM_SURVEY) {
-            if (!$user) {
+            if ($user === null) {
                 throw new UnauthorizedHttpException('Bearer', 'Authentication required');
             }
             $this->handleTeamSurvey($survey, $user, $data);
@@ -63,7 +63,7 @@ class SurveyRespondProcessor implements ProcessorInterface
     private function handleAssistantSurvey(Survey $survey, mixed $user, mixed $data): void
     {
         $assistantHistories = $this->assistantHistoryRepo->findMostRecentByUser($user);
-        if (empty($assistantHistories)) {
+        if ($assistantHistories === []) {
             throw new BadRequestHttpException('No assistant history found');
         }
 
@@ -116,10 +116,7 @@ class SurveyRespondProcessor implements ProcessorInterface
         // Index input answers by questionId for fast lookup
         $answerMap = [];
         foreach ($answers as $answerData) {
-            $qid = $answerData['questionId'] ?? null;
-            if ($qid !== null) {
-                $answerMap[$qid] = $answerData['answer'] ?? null;
-            }
+            $answerMap[$answerData['questionId']] = $answerData['answer'];
         }
 
         foreach ($surveyTaken->getSurveyAnswers() as $surveyAnswer) {

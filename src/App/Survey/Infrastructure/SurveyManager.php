@@ -53,7 +53,7 @@ class SurveyManager
         $countAnswer = [];
         foreach ($allTakenSurveys as $takenSurvey) {
             foreach ($takenSurvey->getSurveyAnswers() as $answer) {
-                if ((!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()) {
+                if ((!($answer->getSurveyQuestion()->getType() === 'radio' || $answer->getSurveyQuestion()->getType() === 'list')) || $answer->getSurveyQuestion()->getOptional()) {
                     continue;
                 }
                 if (!isset($countAnswer[$answer->getSurveyQuestion()->getId()])) {
@@ -67,10 +67,10 @@ class SurveyManager
         }
 
         foreach ($surveyTaken->getSurveyAnswers() as $answer) {
-            if ((!($answer->getSurveyQuestion()->getType() == 'radio' || $answer->getSurveyQuestion()->getType() == 'list')) || $answer->getSurveyQuestion()->getOptional()) {
+            if ((!($answer->getSurveyQuestion()->getType() === 'radio' || $answer->getSurveyQuestion()->getType() === 'list')) || $answer->getSurveyQuestion()->getOptional()) {
                 continue;
             }
-            $answer->setAnswer(array_keys($countAnswer[$answer->getSurveyQuestion()->getId()], max($countAnswer[$answer->getSurveyQuestion()->getId()]))[0]);
+            $answer->setAnswer(array_keys($countAnswer[$answer->getSurveyQuestion()->getId()], max($countAnswer[$answer->getSurveyQuestion()->getId()]), true)[0]);
         }
 
         $surveyTaken->setSchool(end($allTakenSurveys)->getSchool());
@@ -90,10 +90,10 @@ class SurveyManager
             }
         } else {
             foreach ($surveysTaken as $surveyTaken) {
-                if (is_null($surveyTaken->getSchool())) {
+                if ($surveyTaken->getSchool() === null) {
                     continue;
                 }
-                if (!in_array($surveyTaken->getSchool()->getName(), $userAffiliation)) {
+                if (!in_array($surveyTaken->getSchool()->getName(), $userAffiliation, true)) {
                     $userAffiliation[] = $surveyTaken->getSchool()->getName();
                 }
             }
@@ -116,7 +116,7 @@ class SurveyManager
 
         // Get all text questions
         foreach ($survey->getSurveyQuestions() as $question) {
-            if ($question->getType() == 'text') {
+            if ($question->getType() === 'text') {
                 $textQuestionArray[] = $question;
             }
         }
@@ -127,10 +127,9 @@ class SurveyManager
             $textQAarray[$questionText] = [];
             foreach ($textQuestion->getAnswers() as $answer) {
                 $noTeamMemberships = $answer->getSurveyTaken()->getUser() === null
-                    || empty($answer->getSurveyTaken()->getUser()->getTeamMemberships());
+                    || count($answer->getSurveyTaken()->getUser()->getTeamMemberships()) === 0;
 
-                if ($answer->getSurveyTaken() === null
-                    || $answer->getSurveyTaken()->getSurvey() !== $survey
+                if ($answer->getSurveyTaken()->getSurvey() !== $survey
                     || $noTeamMemberships) {
                     continue;
                 }
@@ -168,12 +167,12 @@ class SurveyManager
 
         foreach ($teamMemberships as $teamMembership) {
             $teamName = $teamMembership->getTeam()->getName();
-            if (!in_array($teamName, $userAffiliation)) {
+            if (!in_array($teamName, $userAffiliation, true)) {
                 $userAffiliation[] = $teamName;
             }
         }
 
-        if (empty($teamMemberships)) {
+        if (count($teamMemberships) === 0) {
             $userAffiliation[] = 'Ikke teammedlem';
         }
 
@@ -242,7 +241,7 @@ class SurveyManager
 
             foreach ($answers as $answer) {
                 $question = $answer->getSurveyQuestion();
-                $stored_as_text = $question->getType() != 'check';
+                $stored_as_text = $question->getType() !== 'check';
                 if ($stored_as_text) {
                     $csv_row[$question->getId()] = $answer->getAnswer();
                 } else {

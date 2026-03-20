@@ -15,7 +15,7 @@ class SurveyNotificationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return SurveyNotification?
+     * @return SurveyNotification|null
      *
      * @throws NonUniqueResultException
      */

@@ -36,7 +36,7 @@ class AdminSurveyListProvider implements ProviderInterface
         $user = $this->security->getUser();
 
         // Resolve department
-        $department = $departmentId
+        $department = $departmentId !== null
             ? $this->departmentRepo->find((int) $departmentId)
             : $user->getDepartment();
 
@@ -48,7 +48,7 @@ class AdminSurveyListProvider implements ProviderInterface
         }
 
         // Resolve semester
-        $semester = $semesterId
+        $semester = $semesterId !== null
             ? $this->semesterRepo->find((int) $semesterId)
             : $this->semesterRepo->findOrCreateCurrentSemester();
 

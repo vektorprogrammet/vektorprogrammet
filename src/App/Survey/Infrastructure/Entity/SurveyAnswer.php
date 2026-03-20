@@ -78,9 +78,9 @@ class SurveyAnswer implements \JsonSerializable
     /**
      * Get answer.
      *
-     * @return string
+     * @return string|null
      */
-    public function getAnswer()
+    public function getAnswer(): ?string
     {
         return $this->answer;
     }

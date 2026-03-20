@@ -54,7 +54,7 @@ class SurveyNotifier
 
         $users = $this->findUsers($surveyNotificationCollection);
         foreach ($users as $user) {
-            $isSurveyTakenByUser = !empty($this->em->getRepository(SurveyTaken::class)->findAllBySurveyAndUser($survey, $user));
+            $isSurveyTakenByUser = $this->em->getRepository(SurveyTaken::class)->findAllBySurveyAndUser($survey, $user) !== [];
             if ($isSurveyTakenByUser) {
                 continue;
             }
@@ -146,7 +146,7 @@ class SurveyNotifier
 
             if ($emailType === 1) {
                 $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
-                if (empty($assistantHistory)) {
+                if ($assistantHistory === []) {
                     continue;
                 }
                 $assistantHistory = $assistantHistory[0];
@@ -166,7 +166,7 @@ class SurveyNotifier
                 );
             } elseif ($emailType === 2) {
                 $assistantHistory = $this->em->getRepository(AssistantHistory::class)->findMostRecentByUser($user);
-                if (empty($assistantHistory)) {
+                if ($assistantHistory === []) {
                     continue;
                 }
                 $assistantHistory = $assistantHistory[0];
@@ -218,7 +218,7 @@ class SurveyNotifier
     {
         if ($surveyNotificationCollection->isAllSent()) {
             return true;
-        } elseif (empty($surveyNotificationCollection->getSurveyNotifications())) {
+        } elseif ($surveyNotificationCollection->getSurveyNotifications() === []) {
             return false;
         }
 
