@@ -2,6 +2,8 @@
 
 namespace App\Shared\Contracts;
 
+use App\Identity\Infrastructure\Entity\User;
+
 interface TeamInterface
 {
     /**

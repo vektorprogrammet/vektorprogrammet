@@ -51,7 +51,7 @@ class SbsData extends ApplicationData
 
         // Step 3 Interviewing
         // No interviews are assigned yet
-        if ($assignedInterviewsCount == 0 && $interviewedAssistantsCount == 0) {
+        if ($assignedInterviewsCount === 0 && $interviewedAssistantsCount === 0) {
             return 3;
         } // There are interviews left to conduct
         elseif ($assignedInterviewsCount > 0) {
@@ -60,7 +60,7 @@ class SbsData extends ApplicationData
 
         // Step 4 Distribute to schools
         // All interviews are conducted, but no one has been accepted yet
-        if ($totalAssistantsCount == 0) {
+        if ($totalAssistantsCount === 0) {
             return 4;
         }
 

@@ -15,7 +15,7 @@ class Assistant implements \JsonSerializable
      */
     private $email;
     /**
-     * @var string
+     * @var string|null
      */
     private $assignedSchool; // Name of school
     /**
@@ -27,11 +27,11 @@ class Assistant implements \JsonSerializable
      */
     private $availability; // An associative array. Key = weekday, Value = {0, 1, 2}. 0 is bad, 1 is ok, 2 is good. "Monday" => 2.
     /**
-     * @var int
+     * @var int|null
      */
     private $group;
     /**
-     * @var int
+     * @var int|null
      */
     private $preferredGroup;
     /**
@@ -84,14 +84,6 @@ class Assistant implements \JsonSerializable
     public function getId()
     {
         return $this->application->getId();
-    }
-
-    /**
-     * @param int $id
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
     }
 
     /**
@@ -277,7 +269,7 @@ class Assistant implements \JsonSerializable
     public function assignToSchool(School $school, $group, $day)
     {
         $this->setAssignedSchool($school->getName());
-        if ($this->group == 1 && $group == 2 || $this->group == 2 && $group == 1) {
+        if ($this->group === 1 && $group === 2 || $this->group === 2 && $group === 1) {
             $this->group = 3;
         } else {
             $this->setGroup($group);

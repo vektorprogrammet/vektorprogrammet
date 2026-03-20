@@ -39,9 +39,11 @@ class SchoolAdminController extends BaseController
     #[Route('/kontrollpanel/skole/{id}', name: 'schooladmin_show_specific_school', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function showSpecificSchoolAction(School $school)
     {
+        $currentUser = $this->getUser();
+        assert($currentUser instanceof User);
         // This prevents admins to see other departments' schools
         if (!$this->isGranted(Roles::TEAM_LEADER)
-            && !$school->belongsToDepartment($this->getUser()->getDepartment())
+            && !$school->belongsToDepartment($currentUser->getDepartment())
         ) {
             throw $this->createAccessDeniedException();
         }
@@ -61,8 +63,10 @@ class SchoolAdminController extends BaseController
     {
         $department = $user->getDepartment();
 
+        $currentUser = $this->getUser();
+        assert($currentUser instanceof User);
         // Deny access if not super admin and trying to delegate user in other department
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $this->getUser()->getDepartment()) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $department !== $currentUser->getDepartment()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -110,6 +114,7 @@ class SchoolAdminController extends BaseController
     public function showUsersByDepartmentAction()
     {
         $user = $this->getUser();
+        assert($user instanceof User);
 
         // Finds all the departments
         $activeDepartments = $this->departmentRepo->findActive();
@@ -131,8 +136,10 @@ class SchoolAdminController extends BaseController
     #[Route('/kontrollpanel/skoleadmin', name: 'schooladmin_show', methods: ['GET'])]
     public function showAction()
     {
+        $currentUser = $this->getUser();
+        assert($currentUser instanceof User);
         // Finds the department for the current logged in user
-        $department = $this->getUser()->getDepartment();
+        $department = $currentUser->getDepartment();
 
         // Find schools that are connected to the department of the user
         $activeSchools = $this->schoolRepo->findActiveSchoolsByDepartment($department);
@@ -216,6 +223,7 @@ class SchoolAdminController extends BaseController
     #[Route('/kontrollpanel/skoleadmin/slett/{id}', name: 'schooladmin_delete_school_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteSchoolByIdAction(School $school)
     {
+        $response = [];
         try {
             // This deletes the given school
             $this->em->remove($school);
@@ -238,6 +246,7 @@ class SchoolAdminController extends BaseController
     #[Route('/kontrollpanel/skoleadmin/historikk/slett/{id}', name: 'schooladmin_remove_user_from_school_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function removeUserFromSchoolAction(AssistantHistory $assistantHistory)
     {
+        $response = [];
         try {
             // This deletes the assistant history
             $this->em->remove($assistantHistory);

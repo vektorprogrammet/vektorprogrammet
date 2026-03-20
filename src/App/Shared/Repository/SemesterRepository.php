@@ -34,7 +34,7 @@ class SemesterRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Semester
+     * @return Semester|null
      *
      * @throws NonUniqueResultException
      */
@@ -63,7 +63,7 @@ class SemesterRepository extends ServiceEntityRepository
     public function findOrCreateCurrentSemester()
     {
         $semester = $this->findCurrentSemester();
-        if ($semester == null) {
+        if ($semester === null) {
             // Create a new semester
             $now = new \DateTime();
             $semester = SemesterUtil::timeToSemester($now);

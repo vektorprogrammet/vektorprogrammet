@@ -19,7 +19,7 @@ class AdminSemesterDeleteProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminSemesterDeleteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $semester = $id ? $this->em->getRepository(Semester::class)->find($id) : null;
+        $semester = $id !== null ? $this->em->getRepository(Semester::class)->find($id) : null;
 
         if ($semester === null) {
             throw new NotFoundHttpException('Semester not found.');

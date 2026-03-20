@@ -49,9 +49,6 @@ class School implements \Stringable
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     private $international;
 
-    /**
-     * @var SchoolCapacity[]
-     */
     #[ORM\OneToMany(targetEntity: SchoolCapacity::class, mappedBy: 'school')]
     private $capacities;
 
@@ -64,6 +61,8 @@ class School implements \Stringable
     public function __construct()
     {
         $this->departments = new ArrayCollection();
+        $this->assistantHistories = new ArrayCollection();
+        $this->capacities = new ArrayCollection();
         $this->international = false;
         $this->active = true;
     }
@@ -214,6 +213,7 @@ class School implements \Stringable
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
+            // @phpstan-ignore method.dynamicName
             $this->$method($value);
         }
     }

@@ -4,7 +4,7 @@ namespace App\Shared\Contracts;
 
 interface PeriodInterface
 {
-    public function getStartDate(): ?\Datetime;
+    public function getStartDate(): ?\DateTime;
 
-    public function getEndDate(): ?\Datetime;
+    public function getEndDate(): ?\DateTime;
 }

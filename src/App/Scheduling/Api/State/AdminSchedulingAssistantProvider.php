@@ -81,10 +81,8 @@ class AdminSchedulingAssistantProvider implements ProviderInterface
                 $resource->score = 20;
             } else {
                 $interview = $application->getInterview();
-                if ($interview !== null && $interview->getInterviewScore() !== null) {
-                    $resource->score = $interview->getScore();
-                    $resource->suitability = $interview->getInterviewScore()->getSuitableAssistant();
-                }
+                $resource->score = $interview->getScore();
+                $resource->suitability = $interview->getInterviewScore()->getSuitableAssistant();
             }
 
             $resource->language = $application->getLanguage();

@@ -19,7 +19,7 @@ class AdminSchoolEditProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminSchoolWriteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $school = $id ? $this->em->getRepository(School::class)->find($id) : null;
+        $school = $id !== null ? $this->em->getRepository(School::class)->find($id) : null;
 
         if ($school === null) {
             throw new NotFoundHttpException('School not found.');

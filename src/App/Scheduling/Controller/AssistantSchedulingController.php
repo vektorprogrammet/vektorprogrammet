@@ -11,6 +11,7 @@ use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Scheduling\Infrastructure\Repository\SchoolCapacityRepository;
 use App\Shared\Repository\SemesterRepository;
+use App\Identity\Infrastructure\Entity\User;
 use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -45,6 +46,7 @@ class AssistantSchedulingController extends BaseController
     public function getAssistantsAction()
     {
         $user = $this->getUser();
+        assert($user instanceof User);
 
         $currentSemester = $this->getCurrentSemester();
 
@@ -116,6 +118,7 @@ class AssistantSchedulingController extends BaseController
     public function getSchoolsAction()
     {
         $user = $this->getUser();
+        assert($user instanceof User);
         $department = $user->getFieldOfStudy()->getDepartment();
         $currentSemester = $this->getCurrentSemester();
         $allCurrentSchoolCapacities = $this->schoolCapacityRepo->findByDepartmentAndSemester($department, $currentSemester);

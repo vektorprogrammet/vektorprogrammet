@@ -33,9 +33,6 @@ class Semester implements PeriodInterface, \Stringable
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     private $year;
 
-    /**
-     * @var AdmissionPeriod[]
-     */
     #[ORM\OneToMany(targetEntity: AdmissionPeriod::class, mappedBy: 'semester')]
     private $admissionPeriods;
 
@@ -70,7 +67,7 @@ class Semester implements PeriodInterface, \Stringable
      */
     public function getStartDate(): \DateTime
     {
-        $startMonth = $this->semesterTime == 'Vår' ? '01' : '08';
+        $startMonth = $this->semesterTime === 'Vår' ? '01' : '08';
 
         return date_create($this->year.'-'.$startMonth.'-01 00:00:00');
     }
@@ -80,7 +77,7 @@ class Semester implements PeriodInterface, \Stringable
      */
     public function getEndDate(): \DateTime
     {
-        $endMonth = $this->semesterTime == 'Vår' ? '07' : '12';
+        $endMonth = $this->semesterTime === 'Vår' ? '07' : '12';
 
         return date_create($this->year.'-'.$endMonth.'-31 23:59:59');
     }
@@ -90,6 +87,7 @@ class Semester implements PeriodInterface, \Stringable
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
+            // @phpstan-ignore method.dynamicName
             $this->$method($value);
         }
     }
