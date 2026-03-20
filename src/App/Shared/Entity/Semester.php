@@ -10,6 +10,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'semester')]
+#[ORM\UniqueConstraint(name: 'unique_year_semester_time', columns: ['year', 'semester_time'])]
 #[ORM\Entity(repositoryClass: SemesterRepository::class)]
 class Semester implements PeriodInterface, \Stringable
 {
