@@ -1,0 +1,412 @@
+deptrac:
+  paths:
+    - src/App
+
+  # Baseline: violations that existed when deptrac was introduced (2026-03-20).
+  # These are genuine architectural issues to fix eventually but are not regressions.
+  # To regenerate: bin/deptrac analyse --no-progress --formatter=baseline --output=deptrac-baseline.yaml
+  skip_violations:
+    App\Interview\Domain\Events\InterviewConductedEvent:
+      - App\Admission\Infrastructure\Entity\Application
+    App\Scheduling\Domain\Rules\Assistant:
+      - App\Admission\Infrastructure\Entity\Application
+
+  # Strategy: enforce cross-context Domain isolation.
+  # Each bounded context is split into Domain and Shell (Infrastructure/Api/Controller/Form).
+  # Shell can import anywhere. Domain can only import within its own context + Shared.
+  # Domain→same-context-Infrastructure is an allowed exception (Domain/Rules type-hint entities).
+
+  layers:
+    # ── Admission ──────────────────────────────────────────────────────────────
+    - name: AdmissionDomain
+      collectors:
+        - type: directory
+          value: src/App/Admission/Domain/.*
+
+    - name: AdmissionShell
+      collectors:
+        - type: directory
+          value: src/App/Admission/Infrastructure/.*
+        - type: directory
+          value: src/App/Admission/Api/.*
+        - type: directory
+          value: src/App/Admission/Controller/.*
+        - type: directory
+          value: src/App/Admission/Form/.*
+
+    # ── Content ────────────────────────────────────────────────────────────────
+    - name: ContentDomain
+      collectors:
+        - type: directory
+          value: src/App/Content/Domain/.*
+
+    - name: ContentShell
+      collectors:
+        - type: directory
+          value: src/App/Content/Infrastructure/.*
+        - type: directory
+          value: src/App/Content/Api/.*
+        - type: directory
+          value: src/App/Content/Controller/.*
+        - type: directory
+          value: src/App/Content/Form/.*
+        - type: directory
+          value: src/App/Content/Twig/.*
+
+    # ── Identity ───────────────────────────────────────────────────────────────
+    - name: IdentityDomain
+      collectors:
+        - type: directory
+          value: src/App/Identity/Domain/.*
+
+    - name: IdentityShell
+      collectors:
+        - type: directory
+          value: src/App/Identity/Infrastructure/.*
+        - type: directory
+          value: src/App/Identity/Api/.*
+        - type: directory
+          value: src/App/Identity/Controller/.*
+        - type: directory
+          value: src/App/Identity/Form/.*
+
+    # ── Interview ──────────────────────────────────────────────────────────────
+    - name: InterviewDomain
+      collectors:
+        - type: directory
+          value: src/App/Interview/Domain/.*
+
+    - name: InterviewShell
+      collectors:
+        - type: directory
+          value: src/App/Interview/Infrastructure/.*
+        - type: directory
+          value: src/App/Interview/Api/.*
+        - type: directory
+          value: src/App/Interview/Controller/.*
+        - type: directory
+          value: src/App/Interview/Form/.*
+
+    # ── Operations ─────────────────────────────────────────────────────────────
+    - name: OperationsDomain
+      collectors:
+        - type: directory
+          value: src/App/Operations/Domain/.*
+
+    - name: OperationsShell
+      collectors:
+        - type: directory
+          value: src/App/Operations/Infrastructure/.*
+        - type: directory
+          value: src/App/Operations/Api/.*
+        - type: directory
+          value: src/App/Operations/Controller/.*
+        - type: directory
+          value: src/App/Operations/Form/.*
+
+    # ── Organization ───────────────────────────────────────────────────────────
+    - name: OrganizationDomain
+      collectors:
+        - type: directory
+          value: src/App/Organization/Domain/.*
+
+    - name: OrganizationShell
+      collectors:
+        - type: directory
+          value: src/App/Organization/Infrastructure/.*
+        - type: directory
+          value: src/App/Organization/Api/.*
+        - type: directory
+          value: src/App/Organization/Controller/.*
+        - type: directory
+          value: src/App/Organization/Form/.*
+        - type: directory
+          value: src/App/Organization/Twig/.*
+
+    # ── Scheduling ─────────────────────────────────────────────────────────────
+    - name: SchedulingDomain
+      collectors:
+        - type: directory
+          value: src/App/Scheduling/Domain/.*
+
+    - name: SchedulingShell
+      collectors:
+        - type: directory
+          value: src/App/Scheduling/Infrastructure/.*
+        - type: directory
+          value: src/App/Scheduling/Api/.*
+        - type: directory
+          value: src/App/Scheduling/Controller/.*
+        - type: directory
+          value: src/App/Scheduling/Form/.*
+
+    # ── Survey ─────────────────────────────────────────────────────────────────
+    - name: SurveyDomain
+      collectors:
+        - type: directory
+          value: src/App/Survey/Domain/.*
+
+    - name: SurveyShell
+      collectors:
+        - type: directory
+          value: src/App/Survey/Infrastructure/.*
+        - type: directory
+          value: src/App/Survey/Api/.*
+        - type: directory
+          value: src/App/Survey/Controller/.*
+        - type: directory
+          value: src/App/Survey/Form/.*
+
+    # ── Shared ─────────────────────────────────────────────────────────────────
+    # Shared is the one context all Domain layers are allowed to import from.
+    - name: Shared
+      collectors:
+        - type: directory
+          value: src/App/Shared/.*
+
+    # ── Support ────────────────────────────────────────────────────────────────
+    - name: Support
+      collectors:
+        - type: directory
+          value: src/App/Support/.*
+
+  ruleset:
+    # Shell layers can import freely across the codebase (Doctrine cross-context
+    # references are unavoidable and allowed by architecture).
+    AdmissionShell:
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    ContentShell:
+      - ContentDomain
+      - ContentShell
+      - AdmissionDomain
+      - AdmissionShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    IdentityShell:
+      - IdentityDomain
+      - IdentityShell
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    InterviewShell:
+      - InterviewDomain
+      - InterviewShell
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    OperationsShell:
+      - OperationsDomain
+      - OperationsShell
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    OrganizationShell:
+      - OrganizationDomain
+      - OrganizationShell
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    SchedulingShell:
+      - SchedulingDomain
+      - SchedulingShell
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    SurveyShell:
+      - SurveyDomain
+      - SurveyShell
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - Shared
+      - Support
+
+    Support:
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    # Shared contains cross-cutting entities (Semester), interfaces (TeamMembershipInterface),
+    # and legacy controllers — all of which may reference other contexts' Infrastructure.
+    Shared:
+      - AdmissionDomain
+      - AdmissionShell
+      - ContentDomain
+      - ContentShell
+      - IdentityDomain
+      - IdentityShell
+      - InterviewDomain
+      - InterviewShell
+      - OperationsDomain
+      - OperationsShell
+      - OrganizationDomain
+      - OrganizationShell
+      - SchedulingDomain
+      - SchedulingShell
+      - SurveyDomain
+      - SurveyShell
+      - Shared
+      - Support
+
+    # ── Domain layers: the core rules ─────────────────────────────────────────
+    # Domain may only import from its own context's Shell (same-context entity
+    # type-hints — the documented exception) and from Shared.
+    # Domain must NOT import from any other context's Domain or Shell.
+    AdmissionDomain:
+      - AdmissionShell
+      - Shared
+
+    ContentDomain:
+      - ContentShell
+      - Shared
+
+    IdentityDomain:
+      - IdentityShell
+      - Shared
+
+    InterviewDomain:
+      - InterviewShell
+      - Shared
+
+    OperationsDomain:
+      - OperationsShell
+      - Shared
+
+    OrganizationDomain:
+      - OrganizationShell
+      - Shared
+
+    SchedulingDomain:
+      - SchedulingShell
+      - Shared
+
+    SurveyDomain:
+      - SurveyShell
+      - Shared
