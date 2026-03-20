@@ -19,9 +19,9 @@ class InterviewDeleteProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
     {
         $id = $uriVariables['id'] ?? null;
-        $interview = $id ? $this->interviewRepository->find($id) : null;
+        $interview = $id !== null ? $this->interviewRepository->find($id) : null;
 
-        if (!$interview) {
+        if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
         }
 

@@ -22,7 +22,7 @@ class InterviewAcceptProcessor implements ProcessorInterface
         $responseCode = $uriVariables['responseCode'] ?? '';
         $interview = $this->interviewRepository->findByResponseCode($responseCode);
 
-        if (!$interview) {
+        if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
         }
 

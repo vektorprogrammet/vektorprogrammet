@@ -111,11 +111,11 @@ class AdminInterviewListProvider implements ProviderInterface
         $resource->interviews[] = [
             'id' => $interviewId,
             'applicantName' => $applicant->getFirstName().' '.$applicant->getLastName(),
-            'interviewerName' => $interviewer ? $interviewer->getFirstName().' '.$interviewer->getLastName() : null,
-            'scheduled' => $interview->getScheduled()?->format(\DateTimeInterface::ATOM),
+            'interviewerName' => $interviewer !== null ? $interviewer->getFirstName().' '.$interviewer->getLastName() : null,
+            'scheduled' => $interview->getScheduled() !== null ? $interview->getScheduled()->format(\DateTimeInterface::ATOM) : null,
             'status' => $interview->getInterviewStatusAsString(),
             'interviewed' => $interview->getInterviewed(),
-            'coInterviewer' => $coInterviewer ? $coInterviewer->getFirstName().' '.$coInterviewer->getLastName() : null,
+            'coInterviewer' => $coInterviewer !== null ? $coInterviewer->getFirstName().' '.$coInterviewer->getLastName() : null,
         ];
     }
 }

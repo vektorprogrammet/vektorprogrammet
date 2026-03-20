@@ -2,6 +2,9 @@
 
 namespace App\Shared\Contracts;
 
+use App\Organization\Infrastructure\Entity\Department;
+use App\Shared\Entity\Semester;
+
 /**
  * Entity having both department and semester.
  */

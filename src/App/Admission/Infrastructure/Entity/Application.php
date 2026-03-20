@@ -349,7 +349,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @return Interview
+     * @return Interview|null
      */
     public function getInterview()
     {
@@ -357,7 +357,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @param Interview $interview
+     * @param Interview|null $interview
      */
     public function setInterview($interview)
     {

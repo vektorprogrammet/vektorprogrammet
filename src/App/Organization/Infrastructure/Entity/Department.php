@@ -109,7 +109,7 @@ class Department implements \Stringable
     }
 
     /**
-     * @return AdmissionPeriod
+     * @return AdmissionPeriod|null
      */
     public function getCurrentAdmissionPeriod()
     {

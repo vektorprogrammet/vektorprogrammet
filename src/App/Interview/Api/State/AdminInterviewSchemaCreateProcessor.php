@@ -27,8 +27,8 @@ class AdminInterviewSchemaCreateProcessor implements ProcessorInterface
         if ($data->questions !== null) {
             foreach ($data->questions as $questionData) {
                 $question = new InterviewQuestion();
-                $question->setQuestion($questionData['question'] ?? '');
-                $question->setType($questionData['type'] ?? 'text');
+                $question->setQuestion($questionData['question']);
+                $question->setType($questionData['type']);
                 if (isset($questionData['helpText'])) {
                     $question->setHelp($questionData['helpText']);
                 }

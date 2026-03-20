@@ -65,7 +65,7 @@ class InterviewSchemaController extends BaseController
         return $this->render('interview/schema.html.twig', [
             'form' => $form->createView(),
             'schema' => $schema,
-            'isCreate' => !$schema->getId(),
+            'isCreate' => $schema->getId() === null,
         ]);
     }
 
@@ -96,10 +96,9 @@ class InterviewSchemaController extends BaseController
                 $this->em->remove($schema);
                 $this->em->flush();
 
-                $response['success'] = true;
+                $response = ['success' => true];
             } else {
-                $response['success'] = false;
-                $response['cause'] = 'Ikke tilstrekkelig rettigheter';
+                $response = ['success' => false, 'cause' => 'Ikke tilstrekkelig rettigheter'];
             }
         } catch (\Exception $e) {
             $response = ['success' => false,

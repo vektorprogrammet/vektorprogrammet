@@ -27,7 +27,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     /**
      * Returns an array of event names this subscriber wants to listen to.
      *
-     * @return array The event names to listen to
+     * @return array<string, list<array{0: string, 1?: int}|string>|string>
      */
     public static function getSubscribedEvents()
     {
@@ -71,7 +71,9 @@ class InterviewSubscriber implements EventSubscriberInterface
         $user = $event->getApplication()->getUser();
         $message = "Intervjuet med $user ble lagret. En kvittering med et sammendrag av praktisk informasjon fra intervjuet blir sendt til {$user->getEmail()}.";
 
-        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
+        /** @var \Symfony\Component\HttpFoundation\Session\Session $session */
+        $session = $this->requestStack->getSession();
+        $session->getFlashBag()->add('success', $message);
     }
 
     public function logEvent(InterviewConductedEvent $event)
@@ -121,7 +123,7 @@ class InterviewSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $campus = empty($data['campus']) ? '' : ("\nCampus: ".$data['campus']);
+        $campus = ($data['campus'] === null || $data['campus'] === '') ? '' : ("\nCampus: ".$data['campus']);
 
         $message =
             $data['message'].

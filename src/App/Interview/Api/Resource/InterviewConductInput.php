@@ -23,6 +23,6 @@ class InterviewConductInput
     /** @var array<array{questionId: int, answer: mixed}> */
     public array $answers = [];
 
-    /** @var array{explanatoryPower: int, roleModel: int, suitability: int, suitableAssistant: string} */
+    /** @var array{explanatoryPower: int, roleModel: int, suitability: int, suitableAssistant: string}|array{} */
     public array $interviewScore = [];
 }

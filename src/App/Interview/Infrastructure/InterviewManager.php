@@ -41,6 +41,7 @@ class InterviewManager
     public function loggedInUserCanSeeInterview(Interview $interview): bool
     {
         $user = $this->tokenStorage->getToken()->getUser();
+        /** @var User|null $user */
 
         return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER)
                || $interview->isInterviewer($user)
@@ -52,15 +53,12 @@ class InterviewManager
      */
     public function initializeInterviewAnswers(Interview $interview)
     {
-        $existingAnswers = $interview->getInterviewAnswers();
-        if (!is_array($existingAnswers)) {
-            $existingAnswers = $existingAnswers->toArray();
-        }
+        $existingAnswers = $interview->getInterviewAnswers()->toArray();
 
         $existingQuestions = array_map(fn (InterviewAnswer $interviewAnswer) => $interviewAnswer->getInterviewQuestion(), $existingAnswers);
 
         foreach ($interview->getInterviewSchema()->getInterviewQuestions() as $interviewQuestion) {
-            $interviewAlreadyHasQuestion = array_search($interviewQuestion, $existingQuestions) !== false;
+            $interviewAlreadyHasQuestion = array_search($interviewQuestion, $existingQuestions, true) !== false;
             if ($interviewAlreadyHasQuestion) {
                 continue;
             }
@@ -78,7 +76,7 @@ class InterviewManager
     public function assignInterviewerToApplication(User $interviewer, Application $application)
     {
         $interview = $application->getInterview();
-        if (!$interview) {
+        if ($interview === null) {
             $interview = new Interview();
             $application->setInterview($interview);
         }
@@ -117,7 +115,7 @@ class InterviewManager
         $user = $interview->getUser();
         $interviewers = [];
         $interviewers[] = $interview->getInterviewer();
-        if (!is_null($interview->getCoInterviewer())) {
+        if ($interview->getCoInterviewer() !== null) {
             $interviewers[] = $interview->getCoInterviewer();
         }
 
@@ -144,7 +142,7 @@ class InterviewManager
 
         $interviewers = [];
         $interviewers[] = $interview->getInterviewer();
-        if (!is_null($interview->getCoInterviewer())) {
+        if ($interview->getCoInterviewer() !== null) {
             $interviewers[] = $interview->getCoInterviewer();
         }
 
@@ -267,7 +265,7 @@ class InterviewManager
         $room = null;
         $campus = null;
         $mapLink = null;
-        if ($previousScheduledInterview) {
+        if ($previousScheduledInterview !== null) {
             $room = $previousScheduledInterview->getRoom();
             $campus = $previousScheduledInterview->getCampus();
             $mapLink = $previousScheduledInterview->getMapLink();
@@ -280,9 +278,9 @@ Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
 
         return [
             'datetime' => $interview->getScheduled(),
-            'room' => $interview->getRoom() ?: $room,
-            'campus' => $interview->getCampus() ?: $campus,
-            'mapLink' => $interview->getMapLink() ?: $mapLink,
+            'room' => $interview->getRoom() ?? $room,
+            'campus' => $interview->getCampus() ?? $campus,
+            'mapLink' => $interview->getMapLink() ?? $mapLink,
             'message' => $message,
             'from' => $interview->getInterviewer()->getEmail(),
             'to' => $interview->getUser()->getEmail(),

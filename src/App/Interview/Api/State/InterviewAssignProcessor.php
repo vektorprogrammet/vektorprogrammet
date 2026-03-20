@@ -25,22 +25,23 @@ class InterviewAssignProcessor implements ProcessorInterface
         assert($data instanceof InterviewAssignInput);
 
         $application = $this->em->getRepository(Application::class)->find($data->applicationId);
-        if (!$application) {
+        if ($application === null) {
             throw new NotFoundHttpException('Application not found.');
         }
 
         $interviewer = $this->em->getRepository(User::class)->find($data->interviewerId);
-        if (!$interviewer) {
+        if ($interviewer === null) {
             throw new NotFoundHttpException('Interviewer not found.');
         }
 
         $schema = $this->em->getRepository(InterviewSchema::class)->find($data->interviewSchemaId);
-        if (!$schema) {
+        if ($schema === null) {
             throw new NotFoundHttpException('Interview schema not found.');
         }
 
         $this->interviewManager->assignInterviewerToApplication($interviewer, $application);
 
+        /** @var \App\Interview\Infrastructure\Entity\Interview $interview */
         $interview = $application->getInterview();
         $interview->setInterviewSchema($schema);
 

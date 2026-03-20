@@ -2,7 +2,7 @@
 
 namespace App\Interview\Infrastructure\Validator;
 
-use App\Interview\Infrastructure\Entity\InterviewAnswer;
+use App\Interview\Infrastructure\Entity\InterviewAnswer as InterviewAnswerEntity;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -16,11 +16,10 @@ class InterviewAnswerValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        /**
-         * @var InterviewAnswer $interviewAnswer
-         */
+        \assert($constraint instanceof \App\Interview\Infrastructure\Validator\InterviewAnswer);
+
         $interviewAnswer = $this->context->getObject();
-        if (!$interviewAnswer instanceof InterviewAnswer) {
+        if (!$interviewAnswer instanceof InterviewAnswerEntity) {
             return;
         }
 
@@ -28,7 +27,7 @@ class InterviewAnswerValidator extends ConstraintValidator
         if ($questionType === 'check') {
             return;
         }
-        if (empty($value)) {
+        if ($value === null || $value === '' || $value === []) {
             $this->context->buildViolation($constraint->message)
                           ->addViolation();
         }
