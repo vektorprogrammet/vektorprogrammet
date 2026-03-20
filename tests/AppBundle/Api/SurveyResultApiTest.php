@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\Api;
 
 use App\Entity\Department;
-use App\Entity\Survey;
-use App\Entity\SurveyTaken;
+use App\Survey\Infrastructure\Entity\Survey;
+use App\Survey\Infrastructure\Entity\SurveyTaken;
 use App\Entity\User;
 use Tests\BaseWebTestCase;
 

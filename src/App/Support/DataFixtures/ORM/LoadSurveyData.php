@@ -4,9 +4,9 @@ namespace App\Support\DataFixtures\ORM;
 
 use App\Entity\Department;
 use App\Shared\Entity\Semester;
-use App\Entity\Survey;
-use App\Entity\SurveyQuestion;
-use App\Entity\SurveyQuestionAlternative;
+use App\Survey\Infrastructure\Entity\Survey;
+use App\Survey\Infrastructure\Entity\SurveyQuestion;
+use App\Survey\Infrastructure\Entity\SurveyQuestionAlternative;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

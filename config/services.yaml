@@ -155,7 +155,7 @@ services:
         arguments:
             $env: '%kernel.environment%'
 
-    App\Service\SurveyNotifier:
+    App\Survey\Infrastructure\SurveyNotifier:
         arguments:
             $fromEmail: '%env(DEFAULT_SURVEY_EMAIL)%'
 

@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Survey;
+use App\Survey\Infrastructure\Entity\Survey;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 
@@ -361,13 +361,13 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
         $survey->setName('Replace Test Survey');
         $survey->setSemester($semester);
         $survey->setDepartment($department);
-        $q1 = new \App\Entity\SurveyQuestion();
+        $q1 = new \App\Survey\Infrastructure\Entity\SurveyQuestion();
         $q1->setQuestion('Old Q1');
         $q1->setType('text');
         $q1->setOptional(false);
         $em->persist($q1);
         $survey->addSurveyQuestion($q1);
-        $q2 = new \App\Entity\SurveyQuestion();
+        $q2 = new \App\Survey\Infrastructure\Entity\SurveyQuestion();
         $q2->setQuestion('Old Q2');
         $q2->setType('text');
         $q2->setOptional(false);

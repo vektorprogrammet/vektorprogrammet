@@ -11,7 +11,7 @@ use App\Content\Infrastructure\Repository\ChangeLogItemRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\SurveyRepository;
+use App\Survey\Infrastructure\Repository\SurveyRepository;
 use App\Entity\Repository\UserRepository;
 use App\Content\Form\FeedbackType;
 use App\Service\AdmissionStatistics;
