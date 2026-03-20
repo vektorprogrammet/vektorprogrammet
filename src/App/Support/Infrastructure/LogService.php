@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Infrastructure;
 
 use App\Identity\Infrastructure\UserService;
@@ -69,7 +71,7 @@ class LogService implements LoggerInterface
 
     public function log($level, \Stringable|string $message, array $context = []): void
     {
-        $this->monoLogger->log(200, $message, $context);
+        $this->monoLogger->log('info', $message, $context);
         $this->slackMessenger->log('', $this->createAttachmentData($level, $message, $context));
     }
 

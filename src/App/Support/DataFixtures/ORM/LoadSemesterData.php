@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\DataFixtures\ORM;
 
 use App\Shared\Entity\Semester;
@@ -22,22 +24,22 @@ class LoadSemesterData extends AbstractFixture implements OrderedFixtureInterfac
 
         $previousSemester = new Semester();
         $previousSemester->setSemesterTime($isSpring ? 'Høst' : 'Vår');
-        $previousSemester->setYear($isSpring ? $now->format('Y') - 1 : $now->format('Y'));
+        $previousSemester->setYear($isSpring ? (string) ($now->format('Y') - 1) : $now->format('Y'));
         $manager->persist($previousSemester);
 
         $semester1 = new Semester();
         $semester1->setSemesterTime('Vår');
-        $semester1->setYear(2013);
+        $semester1->setYear('2013');
         $manager->persist($semester1);
 
         $semester2 = new Semester();
         $semester2->setSemesterTime('Vår');
-        $semester2->setYear(2015);
+        $semester2->setYear('2015');
         $manager->persist($semester2);
 
         $semester3 = new Semester();
         $semester3->setSemesterTime('Høst');
-        $semester3->setYear(2015);
+        $semester3->setYear('2015');
         $manager->persist($semester3);
 
         $manager->flush();

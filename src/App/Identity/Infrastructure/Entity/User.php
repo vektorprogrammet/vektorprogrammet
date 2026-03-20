@@ -687,7 +687,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCompanyEmail()
     {

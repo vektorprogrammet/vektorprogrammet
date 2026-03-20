@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Infrastructure\Google;
 
 use App\Organization\Infrastructure\Entity\Team;
@@ -8,11 +10,11 @@ use App\Identity\Infrastructure\Entity\User;
 class GoogleGroups extends GoogleService
 {
     /**
-     * @param null $maxResults
+     * @param int|null $maxResults
      *
      * @return \Google_Service_Directory_Group[]
      */
-    public function getGroups($maxResults = null)
+    public function getGroups(?int $maxResults = null)
     {
         if ($this->disabled) {
             return [];
@@ -25,7 +27,7 @@ class GoogleGroups extends GoogleService
             'customer' => 'my_customer',
         ];
 
-        if ($maxResults) {
+        if ($maxResults !== null) {
             $optParams['maxResults'] = $maxResults;
         }
         try {
@@ -40,7 +42,7 @@ class GoogleGroups extends GoogleService
     }
 
     /**
-     * @return \Google_Service_Directory_Group
+     * @return \Google_Service_Directory_Group|null
      */
     public function getGroup(string $teamEmail)
     {
@@ -60,7 +62,7 @@ class GoogleGroups extends GoogleService
     }
 
     /**
-     * @return \Google_Service_Directory_Group
+     * @return \Google_Service_Directory_Group|null
      */
     public function createGroup(Team $team)
     {
@@ -86,7 +88,7 @@ class GoogleGroups extends GoogleService
     }
 
     /**
-     * @return \Google_Service_Directory_Group
+     * @return \Google_Service_Directory_Group|null
      */
     public function updateGroup(string $groupEmail, Team $team)
     {

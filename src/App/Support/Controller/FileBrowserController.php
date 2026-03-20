@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Controller;
 
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
@@ -61,7 +63,7 @@ class FileBrowserController extends BaseController
     public function showPublicFilesAction($folder)
     {
         // Read the public folder from paramters.yml
-        $publicFolder = $this->container->getParameter('public_uploads');
+        $publicFolder = $this->getParameter('public_uploads');
         // Create the path that should be scanned
         if ($folder == 'all') {
             $path = $publicFolder;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\DataFixtures\ORM;
 
 use App\Operations\Infrastructure\Entity\AssistantHistory;
@@ -20,7 +22,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah1->setSchool($this->getReference('school-1', School::class));
         $ah1->setSemester($this->getReference('semester-current', Semester::class));
         $ah1->setDepartment($this->getReference('dep-1', Department::class));
-        $ah1->setWorkdays(4);
+        $ah1->setWorkdays('4');
         $ah1->setBolk('Bolk 2');
         $ah1->setDay('Onsdag');
         $manager->persist($ah1);
@@ -30,7 +32,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah2->setSchool($this->getReference('school-2', School::class));
         $ah2->setSemester($this->getReference('semester-current', Semester::class));
         $ah2->setDepartment($this->getReference('dep-1', Department::class));
-        $ah2->setWorkdays(8);
+        $ah2->setWorkdays('8');
         $ah2->setBolk('Bolk 1, Bolk 2');
         $ah2->setDay('Mandag');
         $manager->persist($ah2);
@@ -40,7 +42,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah3->setSchool($this->getReference('school-1', School::class));
         $ah3->setSemester($this->getReference('semester-1', Semester::class));
         $ah3->setDepartment($this->getReference('dep-1', Department::class));
-        $ah3->setWorkdays(4);
+        $ah3->setWorkdays('4');
         $ah3->setBolk('Bolk 1');
         $ah3->setDay('Fredag');
         $manager->persist($ah3);
@@ -50,7 +52,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $ah4->setSchool($this->getReference('school-3', School::class));
         $ah4->setSemester($this->getReference('semester-2', Semester::class));
         $ah4->setDepartment($this->getReference('dep-2', Department::class));
-        $ah4->setWorkdays(4);
+        $ah4->setWorkdays('4');
         $ah4->setBolk('Bolk 1');
         $ah4->setDay('Fredag');
         $manager->persist($ah4);

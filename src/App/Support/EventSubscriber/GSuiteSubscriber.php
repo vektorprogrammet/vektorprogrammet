@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\EventSubscriber;
 
 use App\Organization\Domain\Events\TeamEvent;
@@ -67,7 +69,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
             return;
         }
 
-        if (!$companyEmail) {
+        if ($companyEmail === null) {
             $emailsInUse = $this->googleAPI->getAllEmailsInUse();
             $this->emailMaker->setCompanyEmailFor($user, $emailsInUse);
         }
@@ -86,7 +88,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
 
         $alreadyInGroup = $this->groupService->userIsInGroup($user, $team);
 
-        if (!$alreadyInGroup && $user->getCompanyEmail()) {
+        if (!$alreadyInGroup && $user->getCompanyEmail() !== null) {
             $this->groupService->addUserToGroup($user, $team);
             $this->logger->info("$user added to G Suite group *$department - $team*");
         }
@@ -109,7 +111,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
             $shouldBeInGroup = false;
         }
 
-        if (!$shouldBeInGroup && $user->getCompanyEmail()) {
+        if (!$shouldBeInGroup && $user->getCompanyEmail() !== null) {
             $this->groupService->removeUserFromGroup($user, $team);
             $this->logger->info("$user removed from G Suite group *$department - $team*");
         }

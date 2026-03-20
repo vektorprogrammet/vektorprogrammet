@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\EventSubscriber;
 
 use Psr\Log\LoggerInterface;
@@ -68,6 +70,6 @@ class ExceptionSubscriber implements EventSubscriberInterface
     {
         $exceptionCode = $exception->getStatusCode();
 
-        return is_int($exceptionCode) && $exceptionCode < 200 || $exceptionCode >= 500;
+        return $exceptionCode < 200 || $exceptionCode >= 500;
     }
 }

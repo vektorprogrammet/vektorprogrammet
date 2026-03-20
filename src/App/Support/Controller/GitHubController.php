@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Controller;
 
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
@@ -92,7 +94,7 @@ class GitHubController extends BaseController
         [$subnet, $bits] = explode('/', (string) $range);
         $ip = ip2long($ip);
         $subnet = ip2long($subnet);
-        $mask = -1 << (32 - $bits);
+        $mask = -1 << (32 - (int) $bits);
         $subnet &= $mask;
 
         return ($ip & $mask) == $subnet;

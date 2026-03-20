@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 /**
  * Created by IntelliJ IDEA.
  * User: sigtot
@@ -51,8 +53,8 @@ class LoadAdmissionPeriodData extends AbstractFixture implements OrderedFixtureI
         $ap->setDepartment($this->getReference('dep-1', Department::class));
         $ap->setStartDate(new \DateTime());
         $ap->setEndDate(new \DateTime());
-        $ap->getStartDate()->setDate($ap->getSemester()->getYear(), $isSpring ? $aug : $jan, 1);
-        $ap->getEndDate()->setDate($ap->getSemester()->getYear(), $isSpring ? $aug : $jan, 5);
+        $ap->getStartDate()->setDate((int) $ap->getSemester()->getYear(), $isSpring ? $aug : $jan, 1);
+        $ap->getEndDate()->setDate((int) $ap->getSemester()->getYear(), $isSpring ? $aug : $jan, 5);
         $manager->persist($ap);
         $this->addReference('admission-period-previous', $ap);
 
