@@ -15,9 +15,9 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateGraphDataFromSubscribersInSemester($subscribers, Semester $semester)
+    public function generateGraphDataFromSubscribersInSemester($subscribers, Semester $semester, \DateTimeInterface $now = new \DateTime())
     {
-        $subData = $this->initializeDataArray($semester);
+        $subData = $this->initializeDataArray($semester, 0, $now);
 
         return $this->populateSubscriberDataWithSubscribers($subData, $subscribers);
     }
@@ -27,12 +27,12 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
+    public function generateGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod, \DateTimeInterface $now = new \DateTime())
     {
         $endDate = $admissionPeriod->getEndDate();
-        $extraDays = $this->calculatePaddingDays($endDate);
+        $extraDays = $this->calculatePaddingDays($endDate, $now);
 
-        $appData = $this->initializeDataArray($admissionPeriod, $extraDays);
+        $appData = $this->initializeDataArray($admissionPeriod, $extraDays, $now);
 
         return $this->populateApplicationDataWithApplications($appData, $applications);
     }
@@ -42,21 +42,20 @@ class AdmissionStatistics
      *
      * @return array
      */
-    public function generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod)
+    public function generateCumulativeGraphDataFromApplicationsInAdmissionPeriod($applications, AdmissionPeriod $admissionPeriod, \DateTimeInterface $now = new \DateTime())
     {
         $endDate = $admissionPeriod->getEndDate();
-        $extraDays = $this->calculatePaddingDays($endDate);
+        $extraDays = $this->calculatePaddingDays($endDate, $now);
 
-        $appData = $this->initializeDataArray($admissionPeriod, $extraDays);
+        $appData = $this->initializeDataArray($admissionPeriod, $extraDays, $now);
 
         return $this->populateCumulativeApplicationDataWithApplications($appData, $applications);
     }
 
-    private function initializeDataArray(PeriodInterface $admissionPeriod, int $extraDays = 0)
+    private function initializeDataArray(PeriodInterface $admissionPeriod, int $extraDays = 0, \DateTimeInterface $now = new \DateTime())
     {
         $subData = [];
 
-        $now = new \DateTime();
         $days = $admissionPeriod->getStartDate()->diff($now)->days;
         if ($now > $admissionPeriod->getEndDate()) {
             $days = $admissionPeriod->getStartDate()->diff($admissionPeriod->getEndDate())->days;
@@ -140,13 +139,11 @@ class AdmissionStatistics
      *
      * @return int
      */
-    private function calculatePaddingDays($endDate)
+    private function calculatePaddingDays($endDate, \DateTimeInterface $now = new \DateTime())
     {
-        $today = new \DateTime();
-
-        if ($today > $endDate) {
+        if ($now > $endDate) {
             // Add extra padding to chart, maximum 6 days
-            $extraDays = $endDate->diff($today)->format('%d');
+            $extraDays = $endDate->diff($now)->format('%d');
             $extraDays += 2;
             if ($extraDays > 6) {
                 $extraDays = 6;
