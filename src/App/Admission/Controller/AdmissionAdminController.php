@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Admission\Controller;
 
 use App\Admission\Domain\Events\ApplicationCreatedEvent;
@@ -11,6 +13,7 @@ use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Interview\Domain\Rules\InterviewCounter;
+use App\Interview\Domain\ValueObjects\Suitability;
 use App\Interview\Infrastructure\InterviewDistributionFactory;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamInterest;
@@ -159,9 +162,9 @@ class AdmissionAdminController extends BaseController
             'applications' => $applications,
             'department' => $department,
             'semester' => $semester,
-            'yes' => $this->interviewCounter->count($interviews, InterviewCounter::YES),
-            'no' => $this->interviewCounter->count($interviews, InterviewCounter::NO),
-            'maybe' => $this->interviewCounter->count($interviews, InterviewCounter::MAYBE),
+            'yes' => $this->interviewCounter->count($interviews, Suitability::Yes),
+            'no' => $this->interviewCounter->count($interviews, Suitability::No),
+            'maybe' => $this->interviewCounter->count($interviews, Suitability::Maybe),
         ]);
     }
 
