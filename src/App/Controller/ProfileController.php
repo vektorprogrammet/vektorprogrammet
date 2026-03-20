@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ExecutiveBoardMembershipRepository;
@@ -17,7 +18,7 @@ use App\Form\Type\EditUserType;
 use App\Form\Type\NewUserType;
 use App\Form\Type\UserCompanyEmailType;
 use App\Role\Roles;
-use App\Service\LogService;
+use App\Support\Infrastructure\LogService;
 use App\Service\RoleManager;
 use App\Service\UserRegistration;
 use Doctrine\ORM\EntityManagerInterface;

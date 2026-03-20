@@ -2,7 +2,7 @@
 
 namespace Tests\App\Util;
 
-use App\Utils\TimeUtil;
+use App\Support\Utils\TimeUtil;
 use PHPUnit\Framework\TestCase;
 
 class TimeUtilTest extends TestCase

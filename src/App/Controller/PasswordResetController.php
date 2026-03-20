@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\PasswordResetRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\NewPasswordType;
 use App\Form\Type\PasswordResetType;
-use App\Service\LogService;
+use App\Support\Infrastructure\LogService;
 use App\Service\PasswordManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;

@@ -6,7 +6,7 @@ use App\Entity\ExecutiveBoardMembership;
 use App\Entity\Role;
 use App\Shared\Entity\Semester;
 use App\Entity\User;
-use App\Google\GoogleUsers;
+use App\Support\Infrastructure\Google\GoogleUsers;
 use App\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;

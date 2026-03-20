@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Support\Infrastructure\LogService;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 

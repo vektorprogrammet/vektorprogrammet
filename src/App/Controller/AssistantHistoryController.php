@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\AssistantHistory;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\CreateAssistantHistoryType;
 use App\Role\Roles;
-use App\Service\LogService;
+use App\Support\Infrastructure\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;

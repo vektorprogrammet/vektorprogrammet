@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Support\Infrastructure\GeoLocation;
 use App\Entity\AssistantHistory;
 use App\Entity\Department;
 use App\Shared\Entity\Semester;

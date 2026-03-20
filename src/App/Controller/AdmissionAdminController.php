@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Application;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;

@@ -3,7 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Event\TeamMembershipEvent;
-use App\Mailer\MailerInterface;
+use App\Support\Infrastructure\Mailer\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;

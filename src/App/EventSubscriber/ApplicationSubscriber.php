@@ -3,7 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Event\ApplicationCreatedEvent;
-use App\Mailer\MailerInterface;
+use App\Support\Infrastructure\Mailer\MailerInterface;
 use App\Service\AdmissionNotifier;
 use App\Service\UserRegistration;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

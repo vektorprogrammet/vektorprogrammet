@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\AdmissionSubscriber;
 use App\Entity\Department;
 use App\Entity\Repository\AdmissionSubscriberRepository;

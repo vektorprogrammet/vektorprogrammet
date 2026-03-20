@@ -4,7 +4,7 @@ namespace App\Validator\Constraints;
 
 use App\Entity\Team;
 use App\Entity\User;
-use App\Google\GoogleAPI;
+use App\Support\Infrastructure\Google\GoogleAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;

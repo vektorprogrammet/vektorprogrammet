@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\AssistantScheduling\Assistant;
 use App\AssistantScheduling\School;
 use App\Entity\Application;

@@ -4,8 +4,8 @@ namespace App\Twig\Extension;
 
 use App\Shared\Contracts\TeamInterface;
 use App\Entity\User;
-use App\Service\FilterService;
-use App\Service\Sorter;
+use App\Support\FilterService;
+use App\Support\Sorter;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFilter;
 

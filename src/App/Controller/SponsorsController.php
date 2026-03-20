@@ -2,11 +2,12 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Sponsor;
 use App\Form\Type\SponsorType;
-use App\Service\FileUploader;
+use App\Support\Infrastructure\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

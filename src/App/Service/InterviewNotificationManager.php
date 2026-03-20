@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Support\Infrastructure\Slack\SlackMessenger;
 use App\Entity\Department;
 use App\Shared\Entity\Semester;
 use Symfony\Component\Routing\Router;

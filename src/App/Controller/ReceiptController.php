@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Receipt;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ReceiptRepository;
@@ -11,9 +12,9 @@ use App\Entity\User;
 use App\Event\ReceiptEvent;
 use App\Form\Type\ReceiptType;
 use App\Role\Roles;
-use App\Service\FileUploader;
+use App\Support\Infrastructure\FileUploader;
 use App\Service\RoleManager;
-use App\Service\Sorter;
+use App\Support\Sorter;
 use App\Utils\ReceiptStatistics;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

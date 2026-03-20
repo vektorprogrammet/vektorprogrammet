@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Application;
 use App\Entity\Department;
 use App\Entity\Repository\AdmissionPeriodRepository;
@@ -12,8 +13,8 @@ use App\Entity\Repository\TeamRepository;
 use App\Event\ApplicationCreatedEvent;
 use App\Form\Type\ApplicationType;
 use App\Service\ApplicationAdmission;
-use App\Service\FilterService;
-use App\Service\GeoLocation;
+use App\Support\FilterService;
+use App\Support\Infrastructure\GeoLocation;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

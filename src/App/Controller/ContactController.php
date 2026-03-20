@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Department;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ExecutiveBoardRepository;
@@ -9,8 +10,8 @@ use App\Shared\Repository\SemesterRepository;
 use App\Entity\SupportTicket;
 use App\Event\SupportTicketCreatedEvent;
 use App\Form\Type\SupportTicketType;
-use App\Service\GeoLocation;
-use App\Service\LogService;
+use App\Support\Infrastructure\GeoLocation;
+use App\Support\Infrastructure\LogService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

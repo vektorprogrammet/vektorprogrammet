@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\AssistantHistoryRepository;
@@ -9,7 +10,7 @@ use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Service\ApplicationManager;
 use App\Service\ContentModeManager;
-use App\Twig\Extension\RoleExtension;
+use App\Support\Twig\RoleExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

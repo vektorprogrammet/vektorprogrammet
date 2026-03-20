@@ -2,9 +2,9 @@
 
 namespace Tests\App\Sms;
 
-use App\Service\LogService;
-use App\Sms\GatewayAPI;
-use App\Sms\Sms;
+use App\Support\Infrastructure\LogService;
+use App\Support\Infrastructure\Sms\GatewayAPI;
+use App\Support\Infrastructure\Sms\Sms;
 use PHPUnit\Framework\TestCase;
 
 class GatewayApiTest extends TestCase

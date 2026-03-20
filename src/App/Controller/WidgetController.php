@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Feedback;
 use App\Entity\Receipt;
 use App\Entity\Repository\AdmissionPeriodRepository;
@@ -14,7 +15,7 @@ use App\Entity\Repository\SurveyRepository;
 use App\Entity\Repository\UserRepository;
 use App\Form\Type\FeedbackType;
 use App\Service\AdmissionStatistics;
-use App\Service\Sorter;
+use App\Support\Sorter;
 use App\Utils\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

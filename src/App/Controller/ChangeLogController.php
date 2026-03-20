@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\ChangeLogItem;
 use App\Entity\Repository\ChangeLogItemRepository;
 use App\Entity\Repository\DepartmentRepository;

@@ -5,7 +5,7 @@ namespace App\Service;
 use App\Entity\AdmissionSubscriber;
 use App\Entity\Receipt;
 use App\Entity\SupportTicket;
-use App\Mailer\MailerInterface;
+use App\Support\Infrastructure\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;

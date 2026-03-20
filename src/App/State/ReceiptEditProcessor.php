@@ -8,7 +8,7 @@ use App\ApiResource\ReceiptWriteResource;
 use App\Entity\Receipt;
 use App\Entity\User;
 use App\Event\ReceiptEvent;
-use App\Service\FileUploader;
+use App\Support\Infrastructure\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;

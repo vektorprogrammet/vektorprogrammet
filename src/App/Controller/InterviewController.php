@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Application;
 use App\Entity\Interview;
 use App\Entity\InterviewSchema;

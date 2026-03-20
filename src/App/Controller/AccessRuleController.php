@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\AccessRule;
 use App\Entity\Repository\AccessRuleRepository;
 use App\Entity\Repository\DepartmentRepository;

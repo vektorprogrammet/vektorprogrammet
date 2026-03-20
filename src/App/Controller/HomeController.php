@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Repository\ArticleRepository;
 use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
-use App\Service\GeoLocation;
+use App\Support\Infrastructure\GeoLocation;
 use Symfony\Component\Routing\Attribute\Route;
 
 class HomeController extends BaseController

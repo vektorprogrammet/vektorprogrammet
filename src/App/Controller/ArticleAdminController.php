@@ -2,13 +2,14 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Article;
 use App\Entity\Repository\ArticleRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\ArticleType;
-use App\Service\FileUploader;
-use App\Service\LogService;
+use App\Support\Infrastructure\FileUploader;
+use App\Support\Infrastructure\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

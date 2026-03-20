@@ -7,7 +7,7 @@ use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Shared\Contracts\PeriodInterface;
-use App\Utils\TimeUtil;
+use App\Support\Utils\TimeUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;

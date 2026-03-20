@@ -11,8 +11,8 @@ use App\Shared\Entity\Semester;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\User;
-use App\Service\FilterService;
-use App\Service\Sorter;
+use App\Support\FilterService;
+use App\Support\Sorter;
 use App\Twig\Extension\TeamPositionSortExtension;
 use PHPUnit\Framework\TestCase;
 

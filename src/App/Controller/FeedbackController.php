@@ -2,12 +2,13 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Feedback;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\FeedbackRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\FeedbackType;
-use App\Service\SlackMessenger;
+use App\Support\Infrastructure\Slack\SlackMessenger;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;

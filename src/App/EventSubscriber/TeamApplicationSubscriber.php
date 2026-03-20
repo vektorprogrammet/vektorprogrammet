@@ -3,7 +3,7 @@
 namespace App\EventSubscriber;
 
 use App\Event\TeamApplicationCreatedEvent;
-use App\Mailer\MailerInterface;
+use App\Support\Infrastructure\Mailer\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Mime\Address;

@@ -3,8 +3,8 @@
 namespace Tests\App\Service;
 
 use App\Entity\Department;
-use App\Service\GeoLocation;
-use App\Service\LogService;
+use App\Support\Infrastructure\GeoLocation;
+use App\Support\Infrastructure\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\ObjectRepository;
 use PHPUnit\Framework\TestCase;

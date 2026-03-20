@@ -39,11 +39,11 @@ services:
         autoconfigure: true
         public: true
         bind:
-            App\Mailer\MailerInterface: '@App\Mailer\Mailer'
-            App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
+            App\Support\Infrastructure\Mailer\MailerInterface: '@App\Support\Infrastructure\Mailer\Mailer'
+            App\Support\Infrastructure\Sms\SmsSenderInterface: '@App\Support\Infrastructure\Sms\SmsSender'
 
     App\:
-        resource: "../src/App/{Command,Controller,EventSubscriber,Form,Google,Mailer,Role,Security,Service,Sms,State,Twig,Validator}"
+        resource: "../src/App/{Command,Controller,EventSubscriber,Form,Role,Security,Service,State,Twig,Validator}"
 
     # Bounded context autodiscovery
     App\Admission\:
@@ -88,37 +88,37 @@ services:
     App\Admission\Infrastructure\Subscriber\:
         resource: '../src/App/Admission/Infrastructure/Subscriber/'
         bind:
-            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
             $env: '%kernel.environment%'
 
     App\Interview\Infrastructure\Subscriber\:
         resource: '../src/App/Interview/Infrastructure/Subscriber/'
         bind:
-            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
             $env: '%kernel.environment%'
 
     App\Organization\Infrastructure\Subscriber\:
         resource: '../src/App/Organization/Infrastructure/Subscriber/'
         bind:
-            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
             $env: '%kernel.environment%'
 
     App\Content\Infrastructure\Subscriber\:
         resource: '../src/App/Content/Infrastructure/Subscriber/'
         bind:
-            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
             $env: '%kernel.environment%'
 
     App\Operations\Infrastructure\Subscriber\:
         resource: '../src/App/Operations/Infrastructure/Subscriber/'
         bind:
-            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
             $env: '%kernel.environment%'
 
     App\Identity\Infrastructure\Subscriber\:
         resource: '../src/App/Identity/Infrastructure/Subscriber/'
         bind:
-            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
             $env: '%kernel.environment%'
 
     # Support DataFixtures
@@ -129,10 +129,6 @@ services:
     App\Entity\Repository\:
         resource: "../src/App/Entity/Repository/"
 
-    App\DataFixtures\ORM\:
-        resource: '../src/App/DataFixtures/ORM'
-        tags: ['doctrine.fixture.orm']
-
     App\Role\ReversedRoleHierarchy:
         arguments:
             $hierarchy: '%security.role_hierarchy.roles%'
@@ -141,23 +137,23 @@ services:
         arguments:
             $sendLimit: '%admission_notifier_limit%'
 
-    App\Sms\SlackSms:
+    App\Support\Infrastructure\Sms\SlackSms:
         autowire: true
 
-    App\Sms\SmsSender:
+    App\Support\Infrastructure\Sms\SmsSender:
         arguments:
             $env: '%kernel.environment%'
 
-    App\Sms\GatewayAPI:
+    App\Support\Infrastructure\Sms\GatewayAPI:
         arguments:
             $smsOptions: '%gateway_sms%'
 
-    App\Service\LogService:
+    App\Support\Infrastructure\LogService:
         arguments:
             $env: '%kernel.environment%'
             $monoLogger: '@logger'
 
-    App\Mailer\Mailer:
+    App\Support\Infrastructure\Mailer\Mailer:
         arguments:
             $env: '%kernel.environment%'
 
@@ -165,7 +161,7 @@ services:
         arguments:
             $fromEmail: '%env(DEFAULT_SURVEY_EMAIL)%'
 
-    App\Service\GeoLocation:
+    App\Support\Infrastructure\GeoLocation:
         arguments:
             $ipinfoToken: '%env(IPINFO_TOKEN)%'
             $ignoredAsns: '%env(json:GEO_IGNORED_ASNS)%'
@@ -175,7 +171,7 @@ services:
             $defaultEmail: '%env(DEFAULT_FROM_EMAIL)%'
             $economyEmail: '%env(ECONOMY_EMAIL)%'
 
-    App\Service\SlackMessenger:
+    App\Support\Infrastructure\Slack\SlackMessenger:
         arguments:
             $endpoint: '%env(SLACK_ENDPOINT)%'
             $notificationChannel: '%slack.notification_channel%'
@@ -183,7 +179,7 @@ services:
             $disableDelivery: '%slack.disable_delivery%'
             $logger: '@logger'
 
-    App\Service\FileUploader:
+    App\Support\Infrastructure\FileUploader:
         arguments:
             $signatureFolder: '%signature_images%'
             $logoFolder: '%logo_images%'
@@ -203,12 +199,21 @@ services:
         tags:
             - { name: kernel.event_subscriber }
         bind:
-            App\Mailer\MailerInterface: '@App\Mailer\Mailer'
-            App\Sms\SmsSenderInterface: '@App\Sms\SmsSender'
-            Psr\Log\LoggerInterface: '@App\Service\LogService'
+            App\Support\Infrastructure\Mailer\MailerInterface: '@App\Support\Infrastructure\Mailer\Mailer'
+            App\Support\Infrastructure\Sms\SmsSenderInterface: '@App\Support\Infrastructure\Sms\SmsSender'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
+
+    App\Support\EventSubscriber\:
+        resource: "../src/App/Support/EventSubscriber"
+        tags:
+            - { name: kernel.event_subscriber }
+        bind:
+            App\Support\Infrastructure\Mailer\MailerInterface: '@App\Support\Infrastructure\Mailer\Mailer'
+            App\Support\Infrastructure\Sms\SmsSenderInterface: '@App\Support\Infrastructure\Sms\SmsSender'
+            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
             $env: '%kernel.environment%'
 
-    App\EventSubscriber\DbSubscriber:
+    App\Support\EventSubscriber\DbSubscriber:
         arguments:
             $env: '%kernel.environment%'
         tags:
@@ -216,7 +221,7 @@ services:
 
     # Form extensions (from forms.yml)
     app.form.extension.help:
-        class: App\Form\Extension\FieldTypeHelpExtension
+        class: App\Support\Form\FieldTypeHelpExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
 
@@ -232,28 +237,33 @@ services:
         tags:
             - { name: twig.extension }
 
-    App\Twig\Extension\AssetExtension:
+    App\Support\Twig\:
+        resource: "../src/App/Support/Twig"
+        tags:
+            - { name: twig.extension }
+
+    App\Support\Twig\AssetExtension:
         arguments:
             $rootDir: '%kernel.project_dir%'
 
     # Google services (from services_google.yml)
-    App\Google\GoogleService:
+    App\Support\Infrastructure\Google\GoogleService:
         abstract: true
-        arguments: ['%google_api%', '@App\Service\LogService']
+        arguments: ['%google_api%', '@App\Support\Infrastructure\LogService']
 
-    App\Google\Gmail:
-        parent: App\Google\GoogleService
+    App\Support\Infrastructure\Google\Gmail:
+        parent: App\Support\Infrastructure\Google\GoogleService
         calls:
             - [setDefaultEmail, ['%env(DEFAULT_FROM_EMAIL)%']]
 
-    App\Google\GoogleUsers:
-        parent: App\Google\GoogleService
+    App\Support\Infrastructure\Google\GoogleUsers:
+        parent: App\Support\Infrastructure\Google\GoogleService
 
-    App\Google\GoogleGroups:
-        parent: App\Google\GoogleService
+    App\Support\Infrastructure\Google\GoogleGroups:
+        parent: App\Support\Infrastructure\Google\GoogleService
 
-    App\Google\GoogleDrive:
-        parent: App\Google\GoogleService
+    App\Support\Infrastructure\Google\GoogleDrive:
+        parent: App\Support\Infrastructure\Google\GoogleService
 
-    App\Google\GoogleAPI:
-        arguments: ['%google_api%', '@App\Google\GoogleUsers', '@App\Google\GoogleGroups']
+    App\Support\Infrastructure\Google\GoogleAPI:
+        arguments: ['%google_api%', '@App\Support\Infrastructure\Google\GoogleUsers', '@App\Support\Infrastructure\Google\GoogleGroups']

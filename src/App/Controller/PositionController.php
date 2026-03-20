@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Support\Controller\BaseController;
 use App\Entity\Position;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\PositionRepository;

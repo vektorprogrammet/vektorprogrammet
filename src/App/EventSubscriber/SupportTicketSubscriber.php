@@ -4,7 +4,7 @@ namespace App\EventSubscriber;
 
 use App\Event\SupportTicketCreatedEvent;
 use App\Service\EmailSender;
-use App\Service\SlackMessenger;
+use App\Support\Infrastructure\Slack\SlackMessenger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

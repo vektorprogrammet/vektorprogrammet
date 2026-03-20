@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\Role;
 use App\Entity\User;
-use App\Mailer\MailerInterface;
+use App\Support\Infrastructure\Mailer\MailerInterface;
 use App\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mime\Address;

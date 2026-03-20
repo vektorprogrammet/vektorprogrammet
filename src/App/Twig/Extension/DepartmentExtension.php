@@ -3,7 +3,7 @@
 namespace App\Twig\Extension;
 
 use App\Entity\Department;
-use App\Service\GeoLocation;
+use App\Support\Infrastructure\GeoLocation;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
