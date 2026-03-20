@@ -14,7 +14,7 @@ class PasswordResetType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => \App\Entity\PasswordReset::class,
+            'data_class' => \App\Identity\Infrastructure\Entity\PasswordReset::class,
         ]);
     }
 

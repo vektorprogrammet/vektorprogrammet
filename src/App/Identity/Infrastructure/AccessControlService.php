@@ -208,7 +208,7 @@ class AccessControlService
     {
         $userRoleStrings = $user->getRoles();
         foreach ($rule->getRoles() as $roleInRule) {
-            $roleString = $roleInRule instanceof \App\Entity\Role ? $roleInRule->getRole() : (string) $roleInRule;
+            $roleString = $roleInRule instanceof \App\Identity\Infrastructure\Entity\Role ? $roleInRule->getRole() : (string) $roleInRule;
             if (in_array($roleString, $userRoleStrings, true)) {
                 return true;
             }
