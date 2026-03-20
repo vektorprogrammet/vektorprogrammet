@@ -227,7 +227,7 @@ class TeamMembership implements TeamMembershipInterface, \Stringable
         $department = $this->team->getDepartment();
         $activeSemester = $department->getCurrentOrLatestAdmissionPeriod()->getSemester();
 
-        return $this->isActiveInSemester($activeSemester);
+        return $this->isActiveInSemester($activeSemester) && !$this->isSuspended;
     }
 
     public function getTeamName(): string

@@ -11,7 +11,7 @@ use App\Identity\Api\State\AdminUserListProvider;
         new Get(
             uriTemplate: '/admin/users',
             provider: AdminUserListProvider::class,
-            security: "is_granted('ROLE_TEAM_LEADER')",
+            security: "is_granted('ROLE_TEAM_MEMBER')",
         ),
     ],
 )]

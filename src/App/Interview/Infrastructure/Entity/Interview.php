@@ -370,7 +370,7 @@ class Interview
      */
     public function isInterviewer(?User $user = null)
     {
-        return $user && $user->getId() == $this->getInterviewer()->getId();
+        return $user && $this->getInterviewer() !== null && $user->getId() == $this->getInterviewer()->getId();
     }
 
     /**

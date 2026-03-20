@@ -11,7 +11,7 @@ use App\Operations\Api\State\AdminReceiptDashboardProvider;
         new Get(
             uriTemplate: '/admin/receipts',
             provider: AdminReceiptDashboardProvider::class,
-            security: "is_granted('ROLE_TEAM_LEADER')",
+            security: "is_granted('ROLE_TEAM_MEMBER')",
         ),
     ],
 )]
