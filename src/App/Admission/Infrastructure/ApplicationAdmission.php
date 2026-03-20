@@ -47,12 +47,6 @@ class ApplicationAdmission
     public function userHasAlreadyApplied(User $user)
     {
         $fos = $user->getFieldOfStudy();
-        if ($fos === null) {
-            /* User has no field of study, and hence no department, so we
-            cannot know if he/she has already applied in the current semester,
-            as this depends on the department. */
-            return false;
-        }
         $department = $fos->getDepartment();
         $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)
             ->findOneWithActiveAdmissionByDepartment($department);

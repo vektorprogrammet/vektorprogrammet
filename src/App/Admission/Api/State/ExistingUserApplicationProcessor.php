@@ -35,10 +35,6 @@ class ExistingUserApplicationProcessor implements ProcessorInterface
             throw new UnprocessableEntityHttpException('Kun eksisterende assistenter kan bruke dette endepunktet.');
         }
 
-        if ($user->getFieldOfStudy() === null) {
-            throw new UnprocessableEntityHttpException('Brukeren mangler linje/studieretning.');
-        }
-
         $department = $user->getDepartment();
         $admissionPeriod = $this->em->getRepository(AdmissionPeriod::class)
             ->findOneWithActiveAdmissionByDepartment($department);

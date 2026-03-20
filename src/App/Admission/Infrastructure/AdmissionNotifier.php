@@ -31,7 +31,7 @@ class AdmissionNotifier
     public function createSubscription(Department $department, string $email, bool $infoMeeting = false, bool $fromApplication = false)
     {
         $alreadySubscribed = $this->em->getRepository(AdmissionSubscriber::class)->findByEmailAndDepartment($email, $department);
-        if ($alreadySubscribed) {
+        if ($alreadySubscribed !== null) {
             return;
         }
 
@@ -43,7 +43,11 @@ class AdmissionNotifier
 
         $errors = $this->validator->validate($subscriber);
         if (count($errors) > 0) {
-            throw new \InvalidArgumentException((string) $errors);
+            $messages = [];
+            foreach ($errors as $error) {
+                $messages[] = $error->getMessage();
+            }
+            throw new \InvalidArgumentException(implode(', ', $messages));
         }
 
         $this->em->persist($subscriber);
@@ -69,8 +73,8 @@ class AdmissionNotifier
                     if ($notificationsSent >= $this->sendLimit) {
                         break;
                     }
-                    $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
-                    $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails) !== false;
+                    $hasApplied = array_search($subscriber->getEmail(), $applicationEmails, true) !== false;
+                    $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails, true) !== false;
                     $subscribedMoreThanOneYearAgo = $subscriber->getTimestamp()->diff(new \DateTime())->y >= 1;
                     if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo) {
                         continue;
@@ -125,8 +129,8 @@ class AdmissionNotifier
                     if ($notificationsSent >= $this->sendLimit) {
                         break;
                     }
-                    $hasApplied = array_search($subscriber->getEmail(), $applicationEmails) !== false;
-                    $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails) !== false;
+                    $hasApplied = array_search($subscriber->getEmail(), $applicationEmails, true) !== false;
+                    $alreadyNotified = array_search($subscriber->getEmail(), $notificationEmails, true) !== false;
                     $subscribedMoreThanOneYearAgo = $subscriber->getTimestamp()->diff(new \DateTime())->y >= 1;
                     if ($hasApplied || $alreadyNotified || $subscribedMoreThanOneYearAgo || !$subscriber->getInfoMeeting()) {
                         continue;

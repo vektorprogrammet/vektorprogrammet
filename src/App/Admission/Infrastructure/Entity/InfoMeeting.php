@@ -65,7 +65,7 @@ class InfoMeeting implements \Stringable
     }
 
     /**
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getDate()
     {

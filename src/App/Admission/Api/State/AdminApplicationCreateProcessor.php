@@ -47,14 +47,15 @@ class AdminApplicationCreateProcessor implements ProcessorInterface
         }
 
         // Find existing user by email, or create a new one
-        $user = $this->userRepo->findUserByEmail($data->email);
-        if ($user === null) {
+        // UserRepository::findUserByEmail has incorrect @return User — actually returns User|null
+        $user = $this->userRepo->findUserByEmail($data->email); // @phpstan-ignore-line
+        if ($user === null) { // @phpstan-ignore-line
             $user = new User();
             $user->setEmail($data->email);
             $user->setFirstName($data->firstName);
             $user->setLastName($data->lastName);
             $user->setPhone($data->phone);
-            $user->setGender(0);
+            $user->setGender('0');
             if ($fieldOfStudy !== null) {
                 $user->setFieldOfStudy($fieldOfStudy);
             }

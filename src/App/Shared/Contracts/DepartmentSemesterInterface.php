@@ -7,13 +7,7 @@ namespace App\Shared\Contracts;
  */
 interface DepartmentSemesterInterface
 {
-    /**
-     * @return Department
-     */
     public function getDepartment();
 
-    /**
-     * @return Semester
-     */
     public function getSemester();
 }

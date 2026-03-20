@@ -19,7 +19,7 @@ class AdminApplicationDeleteProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminApplicationDeleteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $application = $id ? $this->em->getRepository(Application::class)->find($id) : null;
+        $application = $id !== null ? $this->em->getRepository(Application::class)->find($id) : null;
 
         if ($application === null) {
             throw new NotFoundHttpException('Application not found.');

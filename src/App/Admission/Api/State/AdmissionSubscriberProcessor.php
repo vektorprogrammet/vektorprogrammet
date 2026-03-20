@@ -25,13 +25,13 @@ class AdmissionSubscriberProcessor implements ProcessorInterface
         assert($data instanceof AdmissionSubscriberInput);
 
         $department = $this->departmentRepo->find($data->departmentId);
-        if (!$department) {
+        if ($department === null) {
             throw new UnprocessableEntityHttpException('Department not found.');
         }
 
         // Silently ignore duplicate email+department combos
         $existing = $this->subscriberRepo->findByEmailAndDepartment($data->email, $department);
-        if ($existing) {
+        if ($existing !== null) {
             return;
         }
 

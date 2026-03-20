@@ -71,7 +71,7 @@ class AdmissionPeriod implements PeriodInterface, \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->semester->getName().' - '.$this->getDepartment();
+        return $this->semester->getName().' - '.$this->getDepartment();
     }
 
     /**
@@ -151,7 +151,7 @@ class AdmissionPeriod implements PeriodInterface, \Stringable
     }
 
     /**
-     * @return InfoMeeting
+     * @return InfoMeeting|null
      */
     public function getInfoMeeting()
     {

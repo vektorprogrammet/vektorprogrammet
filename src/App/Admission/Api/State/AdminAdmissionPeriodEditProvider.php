@@ -19,7 +19,7 @@ class AdminAdmissionPeriodEditProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminAdmissionPeriodWriteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $admissionPeriod = $id ? $this->em->getRepository(AdmissionPeriod::class)->find($id) : null;
+        $admissionPeriod = $id !== null ? $this->em->getRepository(AdmissionPeriod::class)->find($id) : null;
 
         if ($admissionPeriod === null) {
             throw new NotFoundHttpException('Admission period not found.');
