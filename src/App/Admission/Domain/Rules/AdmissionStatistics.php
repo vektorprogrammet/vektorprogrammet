@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Admission\Infrastructure;
+namespace App\Admission\Domain\Rules;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\AdmissionSubscriber;

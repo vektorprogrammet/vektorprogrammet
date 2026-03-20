@@ -2,20 +2,21 @@
 
 namespace App\Admission\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Admission\Domain\Events\ApplicationCreatedEvent;
+use App\Admission\Form\ApplicationType;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
+use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Interview\Domain\Rules\InterviewCounter;
+use App\Interview\Infrastructure\InterviewDistributionFactory;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamInterest;
-use App\Identity\Infrastructure\Entity\User;
-use App\Admission\Domain\Events\ApplicationCreatedEvent;
-use App\Admission\Form\ApplicationType;
-use App\Identity\Domain\Roles;
-use App\Interview\Infrastructure\InterviewCounter;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -36,6 +37,7 @@ class AdmissionAdminController extends BaseController
         private readonly ApplicationRepository $applicationRepo,
         private readonly UserRepository $userRepo,
         private readonly InterviewCounter $interviewCounter,
+        private readonly InterviewDistributionFactory $interviewDistributionFactory,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly EntityManagerInterface $em,
         DepartmentRepository $departmentRepo,
@@ -107,7 +109,7 @@ class AdmissionAdminController extends BaseController
 
         if ($admissionPeriod !== null) {
             $applications = $this->applicationRepo->findAssignedApplicants($admissionPeriod);
-            $interviewDistributions = $this->interviewCounter
+            $interviewDistributions = $this->interviewDistributionFactory
                 ->createInterviewDistributions($applications, $admissionPeriod);
             $cancelledApplications = $this->applicationRepo->findCancelledApplicants($admissionPeriod);
             $applicationsAssignedToUser = $this->applicationRepo->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
@@ -144,14 +146,16 @@ class AdmissionAdminController extends BaseController
                 ->findInterviewedApplicants($admissionPeriod);
         }
 
+        $interviews = array_filter(array_map(fn ($app) => $app->getInterview(), $applications));
+
         return $this->render('admission_admin/interviewed_applications_table.html.twig', [
             'status' => 'interviewed',
             'applications' => $applications,
             'department' => $department,
             'semester' => $semester,
-            'yes' => $this->interviewCounter->count($applications, InterviewCounter::YES),
-            'no' => $this->interviewCounter->count($applications, InterviewCounter::NO),
-            'maybe' => $this->interviewCounter->count($applications, InterviewCounter::MAYBE),
+            'yes' => $this->interviewCounter->count($interviews, InterviewCounter::YES),
+            'no' => $this->interviewCounter->count($interviews, InterviewCounter::NO),
+            'maybe' => $this->interviewCounter->count($interviews, InterviewCounter::MAYBE),
         ]);
     }
 
