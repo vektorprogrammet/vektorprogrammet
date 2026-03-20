@@ -24,6 +24,19 @@ App\Support\Infrastructure\Mailer\Mailer
 no `use Symfony\*`, no `use ApiPlatform\*`. If you need a framework import,
 the class belongs in Infrastructure or Api, not Domain.
 
+Domain/Rules may **read** same-context Infrastructure entities (type hints,
+getters). Domain/Rules must **never construct or mutate** entities — that's
+a factory/service concern for Infrastructure.
+
+Domain never imports across contexts. When Domain logic depends on values
+from another context's enum/constants, define local `private const` mirrors:
+```php
+// In Admission/Domain/Rules/ApplicationStatusRule.php
+// Mirror of InterviewStatusType constants (Interview context)
+private const INTERVIEW_PENDING = 0;
+private const INTERVIEW_ACCEPTED = 1;
+```
+
 **Infrastructure layer** (`{Context}\Infrastructure\`): Framework-coupled.
 May import from other contexts' Infrastructure (Doctrine requires this for
 cross-context entity relations).
@@ -37,6 +50,27 @@ attributes, never short string names:
 // Wrong — breaks when entities are in different namespaces:
 #[ORM\ManyToOne(targetEntity: 'User')]
 ```
+
+## Doctrine Entity Properties
+
+Do NOT add native PHP type declarations to entity collection properties.
+Doctrine hydrates via reflection — typed properties break when Doctrine
+assigns `PersistentCollection` to `array` or vice versa.
+
+```php
+// Correct — untyped with PHPDoc:
+/** @var Collection<int, TeamMembership> */
+#[ORM\OneToMany(targetEntity: TeamMembership::class, mappedBy: 'team')]
+private $teamMemberships;
+
+// Wrong — breaks Doctrine hydration:
+private Collection $teamMemberships;
+private array $teamMemberships = [];
+```
+
+Keep `is_countable()` guards on `count()` calls for entity collections —
+entities constructed outside Doctrine (tests, fixtures) may have null
+collections.
 
 ## Dependency Injection
 

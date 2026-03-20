@@ -9,7 +9,9 @@ Symfony 6.4 / PHP 8.5. Norwegian university tutoring program: applications, inte
 | `composer test` | Full suite (1001 tests, ~280s). OOMs at ~640+ tests — use `php -d memory_limit=512M bin/phpunit` if needed. |
 | `composer test:parallel` | ParaTest 4 workers (~67s) |
 | `composer test:unit` | Unit tests only (<1s) |
-| `composer analyse` | PHPStan level 1 |
+| `composer analyse` | PHPStan level 5 + strict rules (124 violations baselined) |
+| `composer deptrac` | deptrac — DDD architecture boundary enforcement |
+| `composer syntax` | php-parallel-lint — fast parse error check |
 | `composer lint` / `composer fix` | PHP-CS-Fixer check / apply |
 
 **Always clear cache before running tests** after namespace or config changes:
