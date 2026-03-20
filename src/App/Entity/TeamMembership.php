@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Repository\TeamMembershipRepository;

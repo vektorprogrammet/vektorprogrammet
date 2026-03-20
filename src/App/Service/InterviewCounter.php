@@ -2,8 +2,8 @@
 
 namespace App\Service;
 
-use App\Entity\AdmissionPeriod;
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\InterviewDistribution;
 
 class InterviewCounter

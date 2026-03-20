@@ -5,7 +5,7 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\InterviewAssignInput;
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\InterviewSchema;
 use App\Entity\User;
 use App\Service\InterviewManager;

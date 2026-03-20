@@ -2,7 +2,7 @@
 
 namespace App\Support\EventSubscriber;
 
-use App\Entity\AdmissionNotification;
+use App\Admission\Infrastructure\Entity\AdmissionNotification;
 use App\Entity\InterviewAnswer;
 use App\Entity\InterviewQuestion;
 use App\Entity\InterviewQuestionAlternative;

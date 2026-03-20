@@ -2,7 +2,7 @@
 
 namespace Tests\App\Extension;
 
-use App\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Entity\Department;
 use App\Entity\ExecutiveBoard;
 use App\Entity\ExecutiveBoardMembership;

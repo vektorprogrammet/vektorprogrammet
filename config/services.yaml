@@ -87,9 +87,6 @@ services:
     # Per-context subscriber blocks with scoped bindings
     App\Admission\Infrastructure\Subscriber\:
         resource: '../src/App/Admission/Infrastructure/Subscriber/'
-        bind:
-            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
-            $env: '%kernel.environment%'
 
     App\Interview\Infrastructure\Subscriber\:
         resource: '../src/App/Interview/Infrastructure/Subscriber/'
@@ -131,7 +128,7 @@ services:
         arguments:
             $hierarchy: '%security.role_hierarchy.roles%'
 
-    App\Service\AdmissionNotifier:
+    App\Admission\Infrastructure\AdmissionNotifier:
         arguments:
             $sendLimit: '%admission_notifier_limit%'
 
@@ -164,7 +161,7 @@ services:
             $ipinfoToken: '%env(IPINFO_TOKEN)%'
             $ignoredAsns: '%env(json:GEO_IGNORED_ASNS)%'
 
-    App\Service\EmailSender:
+    App\Admission\Infrastructure\EmailSender:
         arguments:
             $defaultEmail: '%env(DEFAULT_FROM_EMAIL)%'
             $economyEmail: '%env(ECONOMY_EMAIL)%'

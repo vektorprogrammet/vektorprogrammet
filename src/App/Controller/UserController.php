@@ -3,12 +3,12 @@
 namespace App\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Repository\AdmissionPeriodRepository;
-use App\Entity\Repository\ApplicationRepository;
+use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
+use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Service\ApplicationManager;
+use App\Admission\Infrastructure\ApplicationManager;
 use App\Content\Infrastructure\ContentModeManager;
 use App\Support\Twig\RoleExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;

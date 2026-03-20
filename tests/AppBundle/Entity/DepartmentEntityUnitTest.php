@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Entity\Department;
 use App\Entity\FieldOfStudy;
 use App\Scheduling\Infrastructure\Entity\School;

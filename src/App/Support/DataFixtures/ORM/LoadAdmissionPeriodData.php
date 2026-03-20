@@ -9,7 +9,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Entity\Department;
 use App\Shared\Entity\Semester;
 use Doctrine\Common\DataFixtures\AbstractFixture;

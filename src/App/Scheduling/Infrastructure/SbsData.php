@@ -2,8 +2,8 @@
 
 namespace App\Scheduling\Infrastructure;
 
-use App\Entity\AdmissionPeriod;
-use App\Service\ApplicationData;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\ApplicationData;
 
 class SbsData extends ApplicationData
 {

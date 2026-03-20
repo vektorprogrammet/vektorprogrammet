@@ -2,8 +2,8 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\AdmissionPeriod;
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\Interview;
 use App\Entity\InterviewAnswer;
 use App\Entity\InterviewSchema;

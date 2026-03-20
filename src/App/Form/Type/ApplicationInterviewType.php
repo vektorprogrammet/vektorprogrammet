@@ -2,6 +2,7 @@
 
 namespace App\Form\Type;
 
+use App\Admission\Form\ApplicationPracticalType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -14,7 +15,7 @@ class ApplicationInterviewType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder->add('applicationPractical', ApplicationPracticalType::class, [
-            'data_class' => \App\Entity\Application::class,
+            'data_class' => \App\Admission\Infrastructure\Entity\Application::class,
             'teams' => $options['teams'],
         ]);
 
@@ -52,7 +53,7 @@ class ApplicationInterviewType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => \App\Entity\Application::class,
+            'data_class' => \App\Admission\Infrastructure\Entity\Application::class,
             'teams' => null,
         ]);
     }

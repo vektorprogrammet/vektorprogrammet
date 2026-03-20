@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\Application;
 use Tests\BaseWebTestCase;
 
 class ApplicationDetailApiTest extends BaseWebTestCase

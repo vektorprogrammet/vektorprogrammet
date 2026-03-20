@@ -2,7 +2,7 @@
 
 namespace App\Entity\Repository;
 
-use App\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Entity\Interview;
 use App\Shared\Entity\Semester;
 use App\Entity\User;
@@ -47,7 +47,7 @@ class InterviewRepository extends ServiceEntityRepository
         $interviews = $this->getEntityManager()->createQuery('
 		SELECT interview
 		FROM App\Entity\Interview interview
-		JOIN App\Entity\Application app
+		JOIN App\Admission\Infrastructure\Entity\Application app
 		WITH interview.application = app
 		JOIN App\Entity\ApplicationStatistic appStat
 		WITH app.statistic = appStat
@@ -68,7 +68,7 @@ class InterviewRepository extends ServiceEntityRepository
         $query = $this->getEntityManager()->createQuery('
         SELECT COUNT(i)
         FROM App\Entity\Interview i
-        JOIN App\Entity\Application a
+        JOIN App\Admission\Infrastructure\Entity\Application a
         WITH a.interview = i
         WHERE i.interviewer = ?1
         AND a.semester = ?2

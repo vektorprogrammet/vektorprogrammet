@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\Application;
 use App\Type\InterviewStatusType;
 
 class InterviewDistribution implements \Stringable

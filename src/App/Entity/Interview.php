@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\Repository\InterviewRepository;
 use App\Type\InterviewStatusType;
 use Doctrine\Common\Collections\ArrayCollection;

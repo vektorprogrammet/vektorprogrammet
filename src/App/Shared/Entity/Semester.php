@@ -2,7 +2,7 @@
 
 namespace App\Shared\Entity;
 
-use App\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Shared\Contracts\PeriodInterface;
 use App\Shared\Repository\SemesterRepository;
 use Doctrine\ORM\Mapping as ORM;

@@ -2,7 +2,7 @@
 
 namespace App\Event;
 
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\Application;
 use Symfony\Contracts\EventDispatcher\Event;
 
 class InterviewConductedEvent extends Event

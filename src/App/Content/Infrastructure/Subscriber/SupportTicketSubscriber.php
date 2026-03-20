@@ -3,7 +3,7 @@
 namespace App\Content\Infrastructure\Subscriber;
 
 use App\Content\Domain\Events\SupportTicketCreatedEvent;
-use App\Service\EmailSender;
+use App\Admission\Infrastructure\EmailSender;
 use App\Support\Infrastructure\Slack\SlackMessenger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

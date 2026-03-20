@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\Application;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 
@@ -43,7 +43,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
         $fos = $em->getRepository(\App\Entity\FieldOfStudy::class)->findAll()[0];
-        $ap = $em->getRepository(\App\Entity\AdmissionPeriod::class)->findAll()[0];
+        $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $payload = [
             'firstName' => 'NewApplicant',
@@ -95,7 +95,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
         $fos = $em->getRepository(\App\Entity\FieldOfStudy::class)->findAll()[0];
-        $ap = $em->getRepository(\App\Entity\AdmissionPeriod::class)->findAll()[0];
+        $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $payload = [
             'firstName' => 'Test',
@@ -126,7 +126,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $existingUser = $em->getRepository(\App\Entity\User::class)->findOneBy(['user_name' => 'admin']);
         $existingEmail = $existingUser->getEmail();
         $fos = $em->getRepository(\App\Entity\FieldOfStudy::class)->findAll()[0];
-        $ap = $em->getRepository(\App\Entity\AdmissionPeriod::class)->findAll()[0];
+        $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $payload = [
             'firstName' => 'Admin',
@@ -187,7 +187,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $ap = $em->getRepository(\App\Entity\AdmissionPeriod::class)->findAll()[0];
+        $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $payload = [
             'firstName' => 'Test',
@@ -241,7 +241,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $container = static::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
-        $admissionPeriod = $em->getRepository(\App\Entity\AdmissionPeriod::class)->findAll()[0];
+        $admissionPeriod = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
         $application = new Application();
         $application->setAdmissionPeriod($admissionPeriod);
         $application->setYearOfStudy('1. klasse');
@@ -311,7 +311,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $container = static::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
-        $admissionPeriod = $em->getRepository(\App\Entity\AdmissionPeriod::class)->findAll()[0];
+        $admissionPeriod = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $app1 = new Application();
         $app1->setAdmissionPeriod($admissionPeriod);
@@ -352,7 +352,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $container = static::getContainer();
         $em = $container->get(EntityManagerInterface::class);
 
-        $admissionPeriod = $em->getRepository(\App\Entity\AdmissionPeriod::class)->findAll()[0];
+        $admissionPeriod = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $app = new Application();
         $app->setAdmissionPeriod($admissionPeriod);

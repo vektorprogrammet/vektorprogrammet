@@ -2,7 +2,7 @@
 
 namespace App\Scheduling\Domain\Rules;
 
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\Application;
 
 class Assistant implements \JsonSerializable
 {

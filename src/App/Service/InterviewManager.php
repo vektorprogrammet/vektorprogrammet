@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\Interview;
 use App\Entity\InterviewAnswer;
 use App\Entity\User;

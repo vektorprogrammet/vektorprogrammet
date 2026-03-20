@@ -2,6 +2,7 @@
 
 namespace App\Entity\Repository;
 
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Entity\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;

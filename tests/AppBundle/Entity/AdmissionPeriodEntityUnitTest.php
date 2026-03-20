@@ -2,9 +2,9 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Entity\Department;
-use App\Entity\InfoMeeting;
+use App\Admission\Infrastructure\Entity\InfoMeeting;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

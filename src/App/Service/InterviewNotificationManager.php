@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Admission\Infrastructure\ApplicationData;
 use App\Support\Infrastructure\Slack\SlackMessenger;
 use App\Entity\Department;
 use App\Shared\Entity\Semester;

@@ -3,10 +3,10 @@
 namespace App\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Application;
+use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\Interview;
 use App\Entity\InterviewSchema;
-use App\Entity\Repository\ApplicationRepository;
+use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\TeamRepository;
@@ -22,7 +22,7 @@ use App\Form\Type\CreateInterviewType;
 use App\Form\Type\ScheduleInterviewType;
 use App\Role\ReversedRoleHierarchy;
 use App\Role\Roles;
-use App\Service\ApplicationManager;
+use App\Admission\Infrastructure\ApplicationManager;
 use App\Service\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
