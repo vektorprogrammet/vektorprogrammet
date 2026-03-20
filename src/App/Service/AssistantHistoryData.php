@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\AssistantHistory;
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

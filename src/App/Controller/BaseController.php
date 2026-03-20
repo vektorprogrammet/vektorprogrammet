@@ -4,8 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Department;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
-use App\Entity\Semester;
+use App\Shared\Repository\SemesterRepository;
+use App\Shared\Entity\Semester;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

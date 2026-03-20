@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\Survey;
 use App\Entity\SurveyAnswer;
 use App\Entity\SurveyTaken;

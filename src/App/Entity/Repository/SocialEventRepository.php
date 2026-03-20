@@ -3,7 +3,7 @@
 namespace App\Entity\Repository;
 
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\SocialEvent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

@@ -32,7 +32,7 @@ class FieldOfStudy implements \Stringable
     #[Groups(['field_of_study:read', 'department:detail'])]
     private $shortName;
 
-    #[ORM\ManyToOne(targetEntity: 'Department', inversedBy: 'fieldOfStudy')]
+    #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: 'fieldOfStudy')]
     #[Groups(['field_of_study:read'])]
     private $department;
 

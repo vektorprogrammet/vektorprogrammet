@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\UserGroupCollection;
 use App\Form\Type\UserGroupCollectionType;
 use App\Service\UserGroupCollectionManager;

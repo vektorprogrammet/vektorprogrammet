@@ -5,6 +5,7 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Shared\Entity\Semester;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'user_group_collection')]
@@ -32,31 +33,31 @@ class UserGroupCollection implements \Stringable
     /**
      * @var ArrayCollection
      */
-    #[ORM\OneToMany(targetEntity: 'UserGroup', mappedBy: 'userGroupCollection', cascade: ['remove'])]
+    #[ORM\OneToMany(targetEntity: UserGroup::class, mappedBy: 'userGroupCollection', cascade: ['remove'])]
     private $userGroups;
 
     /**
      * @var ArrayCollection
      */
-    #[ORM\ManyToMany(targetEntity: 'Team')]
+    #[ORM\ManyToMany(targetEntity: Team::class)]
     private $teams;
 
     /**
      * @var ArrayCollection
      */
-    #[ORM\ManyToMany(targetEntity: 'Semester')]
+    #[ORM\ManyToMany(targetEntity: Semester::class)]
     private $semesters;
 
     /**
      * @var ArrayCollection
      */
-    #[ORM\ManyToMany(targetEntity: 'User')]
+    #[ORM\ManyToMany(targetEntity: User::class)]
     private $users;
 
     /**
      * @var ArrayCollection
      */
-    #[ORM\ManyToMany(targetEntity: 'Department')]
+    #[ORM\ManyToMany(targetEntity: Department::class)]
     private $assistantsDepartments;
 
     /**

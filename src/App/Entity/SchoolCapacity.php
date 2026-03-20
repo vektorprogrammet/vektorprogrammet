@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Repository\SchoolCapacityRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Shared\Entity\Semester;
 
 #[ORM\Entity(repositoryClass: SchoolCapacityRepository::class)]
 #[ORM\Table(name: 'school_capacity')]
@@ -15,18 +16,18 @@ class SchoolCapacity
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    #[ORM\ManyToOne(targetEntity: 'School', inversedBy: 'capacities')]
+    #[ORM\ManyToOne(targetEntity: School::class, inversedBy: 'capacities')]
     #[ORM\JoinColumn(name: 'school_id', referencedColumnName: 'id')]
     protected $school;
 
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[ORM\JoinColumn(name: 'semester_id', referencedColumnName: 'id')]
     protected $semester;
 
     /**
      * @var Department $department
      */
-    #[ORM\ManyToOne(targetEntity: 'Department')]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     #[ORM\JoinColumn(name: 'department_id', referencedColumnName: 'id')]
     protected $department;
 

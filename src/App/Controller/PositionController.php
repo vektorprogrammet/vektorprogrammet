@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Position;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\PositionRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\CreatePositionType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

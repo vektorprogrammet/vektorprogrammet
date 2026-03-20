@@ -2,7 +2,7 @@
 
 namespace App\Entity\Repository;
 
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\Survey;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

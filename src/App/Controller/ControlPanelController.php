@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Service\SbsData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;

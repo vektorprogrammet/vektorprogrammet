@@ -24,7 +24,7 @@ class School implements \Stringable
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     protected $contactPerson;
-    #[ORM\ManyToMany(targetEntity: 'Department', mappedBy: 'schools')]
+    #[ORM\ManyToMany(targetEntity: Department::class, mappedBy: 'schools')]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     protected $departments;
 
@@ -33,7 +33,7 @@ class School implements \Stringable
     #[Assert\Email(message: 'Ikke gyldig e-post.')]
     protected $email;
 
-    #[ORM\OneToMany(targetEntity: 'AssistantHistory', mappedBy: 'school')]
+    #[ORM\OneToMany(targetEntity: AssistantHistory::class, mappedBy: 'school')]
     private $assistantHistories;
 
     #[ORM\Column(type: 'string')]
@@ -50,7 +50,7 @@ class School implements \Stringable
     /**
      * @var SchoolCapacity[]
      */
-    #[ORM\OneToMany(targetEntity: 'SchoolCapacity', mappedBy: 'school')]
+    #[ORM\OneToMany(targetEntity: SchoolCapacity::class, mappedBy: 'school')]
     private $capacities;
 
     /**

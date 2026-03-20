@@ -7,7 +7,7 @@ use App\Entity\Department;
 use App\Entity\ExecutiveBoard;
 use App\Entity\ExecutiveBoardMembership;
 use App\Entity\Position;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\User;

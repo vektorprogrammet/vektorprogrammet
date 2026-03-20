@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Entity;
+namespace App\Shared\Contracts;
 
 /**
  * Entity having both department and semester.

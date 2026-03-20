@@ -7,7 +7,7 @@ use App\Entity\ExecutiveBoardMembership;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ExecutiveBoardMembershipRepository;
 use App\Entity\Repository\ExecutiveBoardRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\CreateExecutiveBoardMembershipType;
 use App\Form\Type\CreateExecutiveBoardType;
 use App\Service\RoleManager;

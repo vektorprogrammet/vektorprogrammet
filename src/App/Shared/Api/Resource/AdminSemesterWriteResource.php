@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ApiResource;
+namespace App\Shared\Api\Resource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
-use App\State\AdminSemesterCreateProcessor;
+use App\Shared\Api\State\AdminSemesterCreateProcessor;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(

@@ -8,7 +8,7 @@ use App\ApiResource\DashboardResource;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\AssistantHistoryRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\User;
 use App\Service\ApplicationManager;
 use Symfony\Bundle\SecurityBundle\Security;

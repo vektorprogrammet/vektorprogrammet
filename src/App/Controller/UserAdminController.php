@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Department;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\RoleRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Form\Type\CreateUserType;

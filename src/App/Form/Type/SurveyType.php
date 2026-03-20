@@ -2,8 +2,8 @@
 
 namespace App\Form\Type;
 
-use App\Entity\Repository\SemesterRepository;
-use App\Entity\Semester;
+use App\Shared\Repository\SemesterRepository;
+use App\Shared\Entity\Semester;
 use App\Entity\Survey;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

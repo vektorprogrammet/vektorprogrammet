@@ -1,11 +1,11 @@
 <?php
 
-namespace App\State;
+namespace App\Shared\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\Repository\SemesterRepository;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
+use App\Shared\Repository\SemesterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 

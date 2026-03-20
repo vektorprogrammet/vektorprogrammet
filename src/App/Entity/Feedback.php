@@ -61,7 +61,7 @@ class Feedback
     #[Groups(['feedback:read'])]
     private $type;
 
-    #[ORM\ManyToOne(targetEntity: 'User')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $user;
 

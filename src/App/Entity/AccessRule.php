@@ -29,13 +29,13 @@ class AccessRule implements \Stringable
     #[ORM\Column(type: 'boolean')]
     private $forExecutiveBoard;
 
-    #[ORM\ManyToMany(targetEntity: 'User')]
+    #[ORM\ManyToMany(targetEntity: User::class)]
     private $users;
 
-    #[ORM\ManyToMany(targetEntity: 'Team')]
+    #[ORM\ManyToMany(targetEntity: Team::class)]
     private $teams;
 
-    #[ORM\ManyToMany(targetEntity: 'Role')]
+    #[ORM\ManyToMany(targetEntity: Role::class)]
     private $roles;
 
     public function __construct()

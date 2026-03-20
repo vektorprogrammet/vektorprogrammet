@@ -5,8 +5,8 @@ namespace App\Service;
 use App\Entity\AdmissionPeriod;
 use App\Entity\AdmissionSubscriber;
 use App\Entity\Application;
-use App\Entity\PeriodInterface;
-use App\Entity\Semester;
+use App\Shared\Contracts\PeriodInterface;
+use App\Shared\Entity\Semester;
 
 class AdmissionStatistics
 {

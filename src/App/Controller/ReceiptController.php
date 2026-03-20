@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Receipt;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ReceiptRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Event\ReceiptEvent;

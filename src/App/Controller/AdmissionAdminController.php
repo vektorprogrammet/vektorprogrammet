@@ -6,7 +6,7 @@ use App\Entity\Application;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\Team;
 use App\Entity\TeamInterest;

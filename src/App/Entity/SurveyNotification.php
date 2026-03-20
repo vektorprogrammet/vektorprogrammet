@@ -26,13 +26,13 @@ class SurveyNotification
     /**
      * @var SurveyLinkClick[]
      */
-    #[ORM\OneToMany(targetEntity: 'SurveyLinkClick', mappedBy: 'notification')]
+    #[ORM\OneToMany(targetEntity: SurveyLinkClick::class, mappedBy: 'notification')]
     private $surveyLinkClicks;
 
     /**
      * @var SurveyNotificationCollection
      */
-    #[ORM\ManyToOne(targetEntity: 'SurveyNotificationCollection', inversedBy: 'surveyNotifications')]
+    #[ORM\ManyToOne(targetEntity: SurveyNotificationCollection::class, inversedBy: 'surveyNotifications')]
     private $surveyNotificationCollection;
 
     /**

@@ -1,8 +1,10 @@
 <?php
 
-namespace App\Entity;
+namespace App\Shared\Entity;
 
-use App\Entity\Repository\SemesterRepository;
+use App\Entity\AdmissionPeriod;
+use App\Shared\Contracts\PeriodInterface;
+use App\Shared\Repository\SemesterRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;

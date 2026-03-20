@@ -42,7 +42,7 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $semester = $em->getRepository(\App\Entity\Semester::class)->findAll()[0];
+        $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
 
         $payload = [
             'name' => 'API Test Survey',
@@ -67,7 +67,7 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $semester = $em->getRepository(\App\Entity\Semester::class)->findAll()[0];
+        $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
 
         $payload = [
             'name' => 'Survey With Questions',
@@ -95,7 +95,7 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $semester = $em->getRepository(\App\Entity\Semester::class)->findAll()[0];
+        $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
 
         $payload = [
             'name' => '',
@@ -245,7 +245,7 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
 
         // Create a fresh survey to delete (avoid fixture dependencies)
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $semester = $em->getRepository(\App\Entity\Semester::class)->findAll()[0];
+        $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
         $department = $em->getRepository(\App\Entity\Department::class)->findAll()[0];
 
         $survey = new Survey();
@@ -353,7 +353,7 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $semester = $em->getRepository(\App\Entity\Semester::class)->findAll()[0];
+        $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
         $department = $em->getRepository(\App\Entity\Department::class)->findAll()[0];
 
         // Create a survey with 2 questions

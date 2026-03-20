@@ -22,7 +22,7 @@ class SurveyLinkClick
     /**
      * @var SurveyNotification
      */
-    #[ORM\ManyToOne(targetEntity: 'SurveyNotification', inversedBy: 'surveyLinkClicks')]
+    #[ORM\ManyToOne(targetEntity: SurveyNotification::class, inversedBy: 'surveyLinkClicks')]
     private $notification;
 
     public function __construct()

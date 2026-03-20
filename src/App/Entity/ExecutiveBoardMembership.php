@@ -3,8 +3,10 @@
 namespace App\Entity;
 
 use App\Entity\Repository\ExecutiveBoardMembershipRepository;
+use App\Shared\Contracts\TeamMembershipInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'executive_board_membership')]
 #[ORM\Entity(repositoryClass: ExecutiveBoardMembershipRepository::class)]
@@ -14,7 +16,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface, \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
-    #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'executiveBoardMemberships')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'executiveBoardMemberships')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
@@ -23,7 +25,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface, \Stringable
     /**
      * @var ExecutiveBoard
      */
-    #[ORM\ManyToOne(targetEntity: 'ExecutiveBoard', inversedBy: 'boardMemberships')]
+    #[ORM\ManyToOne(targetEntity: ExecutiveBoard::class, inversedBy: 'boardMemberships')]
     private $board;
     #[ORM\Column(type: 'text', nullable: true)]
     #[Assert\Valid]
@@ -33,7 +35,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface, \Stringable
     /**
      * @var Semester
      */
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[Assert\Valid]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     protected $startSemester;
@@ -41,7 +43,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface, \Stringable
     /**
      * @var Semester
      */
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[Assert\Valid]
     protected $endSemester;
 

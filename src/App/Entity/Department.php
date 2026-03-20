@@ -70,19 +70,19 @@ class Department implements \Stringable
      */
     #[ORM\Column(type: 'string', nullable: true)]
     private $slackChannel;
-    #[ORM\ManyToMany(targetEntity: 'School', inversedBy: 'departments')]
+    #[ORM\ManyToMany(targetEntity: School::class, inversedBy: 'departments')]
     #[ORM\JoinTable(name: 'department_school')]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     protected $schools;
 
-    #[ORM\OneToMany(targetEntity: 'FieldOfStudy', mappedBy: 'department', cascade: ['remove'])]
+    #[ORM\OneToMany(targetEntity: FieldOfStudy::class, mappedBy: 'department', cascade: ['remove'])]
     #[Groups(['department:detail'])]
     private $fieldOfStudy;
-    #[ORM\OneToMany(targetEntity: 'AdmissionPeriod', mappedBy: 'department', cascade: ['remove'])]
+    #[ORM\OneToMany(targetEntity: AdmissionPeriod::class, mappedBy: 'department', cascade: ['remove'])]
     #[ORM\OrderBy(['startDate' => 'DESC'])]
     #[Groups(['department:detail'])]
     private $admissionPeriods;
-    #[ORM\OneToMany(targetEntity: 'Team', mappedBy: 'department', cascade: ['remove'])]
+    #[ORM\OneToMany(targetEntity: Team::class, mappedBy: 'department', cascade: ['remove'])]
     #[Groups(['department:detail'])]
     private $teams;
     #[ORM\Column(name: 'logo_path', type: 'string', length: 255, nullable: true)]

@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\SignatureRepository;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

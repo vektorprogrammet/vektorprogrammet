@@ -2,7 +2,7 @@
 
 namespace App\EventSubscriber;
 
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Event\AssistantHistoryCreatedEvent;
 use App\Service\UserRegistration;
 use Doctrine\ORM\EntityManagerInterface;

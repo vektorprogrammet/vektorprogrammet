@@ -4,7 +4,7 @@ namespace App\Entity\Repository;
 
 use App\Entity\AdmissionSubscriber;
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;

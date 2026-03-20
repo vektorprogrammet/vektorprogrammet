@@ -9,7 +9,7 @@ use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\ChangeLogItemRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ReceiptRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\SurveyRepository;
 use App\Entity\Repository\UserRepository;
 use App\Form\Type\FeedbackType;

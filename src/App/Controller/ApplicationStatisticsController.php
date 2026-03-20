@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Service\ApplicationData;
 use App\Service\AssistantHistoryData;
 use Doctrine\ORM\NonUniqueResultException;

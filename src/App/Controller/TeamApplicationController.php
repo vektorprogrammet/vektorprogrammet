@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\TeamApplicationRepository;
 use App\Entity\Repository\TeamMembershipRepository;
 use App\Entity\Team;

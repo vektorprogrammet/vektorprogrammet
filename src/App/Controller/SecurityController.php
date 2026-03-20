@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Role\Roles;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;

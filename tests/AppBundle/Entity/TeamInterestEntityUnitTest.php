@@ -3,7 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\Team;
 use App\Entity\TeamInterest;
 use PHPUnit\Framework\TestCase;

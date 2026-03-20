@@ -7,7 +7,7 @@ use App\Entity\Department;
 use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SchoolRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\School;
 use App\Entity\User;

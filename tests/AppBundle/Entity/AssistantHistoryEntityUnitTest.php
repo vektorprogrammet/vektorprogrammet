@@ -4,7 +4,7 @@ namespace Tests\App\Entity;
 
 use App\Entity\AssistantHistory;
 use App\Entity\School;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 

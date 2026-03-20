@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Repository\ExecutiveBoardRepository;
+use App\Shared\Contracts\TeamInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -33,7 +34,7 @@ class ExecutiveBoard implements TeamInterface, \Stringable
     /**
      * @var ExecutiveBoardMembership[]
      */
-    #[ORM\OneToMany(targetEntity: 'ExecutiveBoardMembership', mappedBy: 'board')]
+    #[ORM\OneToMany(targetEntity: ExecutiveBoardMembership::class, mappedBy: 'board')]
     private $boardMemberships;
 
     public function __toString(): string

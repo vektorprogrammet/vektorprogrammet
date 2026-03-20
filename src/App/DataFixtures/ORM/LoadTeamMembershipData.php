@@ -3,7 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Position;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\User;

@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use PHPUnit\Framework\TestCase;
 
 class SemesterEntityUnitTest extends TestCase

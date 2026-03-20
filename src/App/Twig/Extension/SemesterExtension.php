@@ -2,7 +2,7 @@
 
 namespace App\Twig\Extension;
 
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

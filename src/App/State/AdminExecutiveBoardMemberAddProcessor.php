@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\ExecutiveBoardMembership;
 use App\Entity\Repository\ExecutiveBoardRepository;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use App\Service\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;

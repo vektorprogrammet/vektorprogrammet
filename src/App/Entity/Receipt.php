@@ -18,7 +18,7 @@ class Receipt implements \Stringable
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'receipts')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'receipts')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $user;
 

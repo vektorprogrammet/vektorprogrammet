@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\CertificateRequestRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\SignatureRepository;
 use App\Entity\Signature;
 use App\Form\Type\CreateSignatureType;

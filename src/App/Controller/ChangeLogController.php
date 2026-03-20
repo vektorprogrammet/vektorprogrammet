@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\ChangeLogItem;
 use App\Entity\Repository\ChangeLogItemRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\ChangeLogType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

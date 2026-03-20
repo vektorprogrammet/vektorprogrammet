@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\InterviewSchema;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\InterviewSchemaType;
 use App\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;

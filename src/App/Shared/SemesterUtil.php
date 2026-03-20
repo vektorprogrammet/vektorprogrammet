@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Utils;
+namespace App\Shared;
 
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 
 class SemesterUtil
 {

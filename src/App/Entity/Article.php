@@ -91,13 +91,13 @@ class Article
     #[ORM\Column(type: 'boolean', nullable: true)]
     #[Groups(['article:read', 'article:write'])]
     private $published;
-    #[ORM\ManyToMany(targetEntity: 'Department')]
+    #[ORM\ManyToMany(targetEntity: Department::class)]
     #[ORM\JoinTable(name: 'articles_departments')]
     #[ORM\JoinColumn(name: 'article_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'department_id', referencedColumnName: 'id')]
     protected $departments; // Unidirectional, may change
 
-    #[ORM\ManyToOne(targetEntity: 'User')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(name: 'author_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     protected $author; // Unidirectional, may change
 

@@ -6,7 +6,7 @@ use App\Entity\AdmissionPeriod;
 use App\Entity\Department;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\CreateAdmissionPeriodType;
 use App\Form\Type\EditAdmissionPeriodType;
 use Doctrine\ORM\EntityManagerInterface;

@@ -6,7 +6,7 @@ use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\AdmissionSubscriberRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Service\AdmissionStatistics;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;

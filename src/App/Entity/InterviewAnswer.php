@@ -14,11 +14,11 @@ class InterviewAnswer implements \Stringable
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    #[ORM\ManyToOne(targetEntity: 'Interview', inversedBy: 'interviewAnswers')]
+    #[ORM\ManyToOne(targetEntity: Interview::class, inversedBy: 'interviewAnswers')]
     #[ORM\JoinColumn(name: 'interview_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected $interview;
 
-    #[ORM\ManyToOne(targetEntity: 'InterviewQuestion')]
+    #[ORM\ManyToOne(targetEntity: InterviewQuestion::class)]
     #[ORM\JoinColumn(name: 'question_id', referencedColumnName: 'id')]
     protected $interviewQuestion;
 

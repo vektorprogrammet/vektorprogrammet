@@ -7,7 +7,7 @@ use App\Entity\Interview;
 use App\Entity\InterviewSchema;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\TeamRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\Team;

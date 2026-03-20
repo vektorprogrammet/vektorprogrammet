@@ -5,18 +5,19 @@ namespace App\Entity;
 use App\Entity\Repository\SocialEventRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'event')]
 #[ORM\Entity(repositoryClass: SocialEventRepository::class)]
 class SocialEvent
 {
-    #[ORM\ManyToOne(targetEntity: 'Department')]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     private $department;
 
     /**
      * @var Semester
      */
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[ORM\JoinColumn(referencedColumnName: 'id')]
     private $semester;
 
@@ -41,7 +42,7 @@ class SocialEvent
     /**
      * @var Role
      */
-    #[ORM\ManyToOne(targetEntity: 'Role')]
+    #[ORM\ManyToOne(targetEntity: Role::class)]
     #[ORM\JoinColumn(referencedColumnName: 'id')]
     private $role;
 

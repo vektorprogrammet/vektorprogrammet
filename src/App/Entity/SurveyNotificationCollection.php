@@ -28,20 +28,20 @@ class SurveyNotificationCollection
     /**
      * @var ArrayCollection
      */
-    #[ORM\ManyToMany(targetEntity: 'UserGroup', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: UserGroup::class, cascade: ['persist'])]
     #[Assert\NotNull]
     private $userGroups;
 
     /**
      * @var ArrayCollection
      */
-    #[ORM\OneToMany(targetEntity: 'SurveyNotification', mappedBy: 'surveyNotificationCollection', cascade: ['remove'])]
+    #[ORM\OneToMany(targetEntity: SurveyNotification::class, mappedBy: 'surveyNotificationCollection', cascade: ['remove'])]
     private $surveyNotifications;
 
     /**
      * @var Survey
      */
-    #[ORM\ManyToOne(targetEntity: 'Survey')]
+    #[ORM\ManyToOne(targetEntity: Survey::class)]
     #[Assert\NotBlank]
     private $survey;
 

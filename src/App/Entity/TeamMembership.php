@@ -5,9 +5,11 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Repository\TeamMembershipRepository;
+use App\Shared\Contracts\TeamMembershipInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'team_membership')]
 #[ORM\Entity(repositoryClass: TeamMembershipRepository::class)]
@@ -24,19 +26,19 @@ class TeamMembership implements TeamMembershipInterface, \Stringable
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     #[Groups(['team_member:read', 'team:detail'])]
     protected $id;
-    #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'teamMemberships')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'teamMemberships')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Assert\Valid]
     #[Assert\NotNull(message: 'Dette feltet kan ikke være tomt')]
     #[Groups(['team_member:read', 'team:detail'])]
     protected $user;
 
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[Assert\Valid]
     #[Assert\NotNull(message: 'Dette feltet kan ikke være tomt')]
     protected $startSemester;
 
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[Assert\Valid]
     protected $endSemester;
 
@@ -64,14 +66,14 @@ class TeamMembership implements TeamMembershipInterface, \Stringable
     /**
      * @var Team
      */
-    #[ORM\ManyToOne(targetEntity: 'Team', inversedBy: 'teamMemberships')]
+    #[ORM\ManyToOne(targetEntity: Team::class, inversedBy: 'teamMemberships')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     protected $team;
 
     /**
      * @var Position
      */
-    #[ORM\ManyToOne(targetEntity: 'Position')]
+    #[ORM\ManyToOne(targetEntity: Position::class)]
     #[ORM\JoinColumn(name: 'position_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     #[Assert\Valid]
     #[Assert\NotNull(message: 'Dette feltet kan ikke være tomt')]

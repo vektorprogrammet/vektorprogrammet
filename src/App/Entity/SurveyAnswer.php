@@ -15,7 +15,7 @@ class SurveyAnswer implements \JsonSerializable
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     protected $id;
 
-    #[ORM\ManyToOne(targetEntity: 'SurveyQuestion', inversedBy: 'answers')]
+    #[ORM\ManyToOne(targetEntity: SurveyQuestion::class, inversedBy: 'answers')]
     #[ORM\JoinColumn(name: 'question_id', referencedColumnName: 'id')]
     protected $surveyQuestion;
 
@@ -26,7 +26,7 @@ class SurveyAnswer implements \JsonSerializable
     #[Assert\NotBlank]
     private $answerArray;
 
-    #[ORM\ManyToOne(targetEntity: 'SurveyTaken', inversedBy: 'surveyAnswers')]
+    #[ORM\ManyToOne(targetEntity: SurveyTaken::class, inversedBy: 'surveyAnswers')]
     #[ORM\JoinColumn(name: 'survey_taken_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected $surveyTaken;
 

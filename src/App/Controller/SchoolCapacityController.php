@@ -3,7 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\SchoolCapacity;
 use App\Form\Type\SchoolCapacityEditType;
 use App\Form\Type\SchoolCapacityType;

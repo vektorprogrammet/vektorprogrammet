@@ -5,7 +5,7 @@ namespace Tests\AppBundle\Api;
 use App\Entity\AssistantHistory;
 use App\Entity\Department;
 use App\Entity\School;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;

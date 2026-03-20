@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Feedback;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\FeedbackRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\FeedbackType;
 use App\Service\SlackMessenger;
 use Doctrine\ORM\EntityManagerInterface;

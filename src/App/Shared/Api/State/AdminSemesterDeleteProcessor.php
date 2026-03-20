@@ -1,10 +1,10 @@
 <?php
 
-namespace App\State;
+namespace App\Shared\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 
 class AdminSemesterDeleteProcessor implements ProcessorInterface

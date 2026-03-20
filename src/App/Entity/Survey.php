@@ -7,6 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'survey')]
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
@@ -21,14 +22,14 @@ class Survey implements \JsonSerializable, \Stringable
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
 
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[Assert\Valid]
     private $semester;
 
     /**
      * @var Department
      */
-    #[ORM\ManyToOne(targetEntity: 'Department')]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     #[Assert\Valid]
     private $department;
 
@@ -76,7 +77,7 @@ class Survey implements \JsonSerializable, \Stringable
     /**
      * @var SurveyQuestion[]
      */
-    #[ORM\ManyToMany(targetEntity: 'SurveyQuestion', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: SurveyQuestion::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'survey_surveys_questions')]
     #[ORM\JoinColumn(name: 'survey_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'question_id', referencedColumnName: 'id')]

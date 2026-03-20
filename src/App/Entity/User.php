@@ -55,7 +55,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     /**
      * @var FieldOfStudy
      */
-    #[ORM\ManyToOne(targetEntity: 'FieldOfStudy')]
+    #[ORM\ManyToOne(targetEntity: FieldOfStudy::class)]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Assert\NotBlank(groups: ['admission', 'edit_user', 'create_user'], message: 'Dette feltet kan ikke være tomt.')]
     #[Assert\Valid]
@@ -107,7 +107,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     /**
      * @var Role[]
      */
-    #[ORM\ManyToMany(targetEntity: 'Role', inversedBy: 'users')]
+    #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
     #[ORM\JoinColumn(onDelete: 'cascade')]
     #[Assert\Valid]
     private $roles;
@@ -118,27 +118,27 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     /**
      * @var AssistantHistory[]
      */
-    #[ORM\OneToMany(targetEntity: 'AssistantHistory', mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: AssistantHistory::class, mappedBy: 'user')]
     private $assistantHistories;
 
     /**
      * @var TeamMembership[]
      */
-    #[ORM\OneToMany(targetEntity: 'TeamMembership', mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: TeamMembership::class, mappedBy: 'user')]
     private $teamMemberships;
 
     /**
      * @var ExecutiveBoardMembership[]
      */
-    #[ORM\OneToMany(targetEntity: 'ExecutiveBoardMembership', mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: ExecutiveBoardMembership::class, mappedBy: 'user')]
     private $executiveBoardMemberships;
-    #[ORM\OneToMany(targetEntity: 'CertificateRequest', mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: CertificateRequest::class, mappedBy: 'user')]
     protected $certificateRequests;
 
-    #[ORM\OneToMany(targetEntity: 'Interview', mappedBy: 'interviewer')]
+    #[ORM\OneToMany(targetEntity: Interview::class, mappedBy: 'interviewer')]
     private $interviews;
 
-    #[ORM\OneToMany(targetEntity: 'Receipt', mappedBy: 'user')]
+    #[ORM\OneToMany(targetEntity: Receipt::class, mappedBy: 'user')]
     private $receipts;
 
     public function __construct()

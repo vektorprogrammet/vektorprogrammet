@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\PasswordResetRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\NewPasswordType;
 use App\Form\Type\PasswordResetType;
 use App\Service\LogService;

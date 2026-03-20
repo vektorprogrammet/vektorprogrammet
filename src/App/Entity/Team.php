@@ -6,6 +6,8 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Repository\TeamRepository;
+use App\Shared\Contracts\DepartmentSemesterInterface;
+use App\Shared\Contracts\TeamInterface;
 use App\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -42,7 +44,7 @@ class Team implements TeamInterface, \Stringable
     #[CustomAssert\VektorEmail]
     #[Groups(['team:read', 'department:detail'])]
     private $email;
-    #[ORM\ManyToOne(targetEntity: 'Department', inversedBy: 'teams')]
+    #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: 'teams')]
     #[Assert\NotNull(message: 'Avdeling kan ikke være null')]
     protected $department;
 
@@ -83,7 +85,7 @@ class Team implements TeamInterface, \Stringable
     #[Groups(['team:read', 'department:detail'])]
     private $active;
 
-    #[ORM\OneToMany(targetEntity: 'TeamApplication', mappedBy: 'team')]
+    #[ORM\OneToMany(targetEntity: TeamApplication::class, mappedBy: 'team')]
     private $applications;
 
     public function isActive(): bool
@@ -99,7 +101,7 @@ class Team implements TeamInterface, \Stringable
     /**
      * @var TeamMembership[]
      */
-    #[ORM\OneToMany(targetEntity: 'TeamMembership', mappedBy: 'team')]
+    #[ORM\OneToMany(targetEntity: TeamMembership::class, mappedBy: 'team')]
     #[Groups(['team:detail'])]
     private $teamMemberships;
 

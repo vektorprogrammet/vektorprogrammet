@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\AccessRule;
 use App\Entity\Repository\AccessRuleRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UnhandledAccessRuleRepository;
 use App\Form\Type\AccessRuleType;
 use App\Form\Type\RoutingAccessRuleType;

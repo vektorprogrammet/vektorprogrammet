@@ -33,20 +33,20 @@ class SurveyTaken implements \JsonSerializable
     /**
      * @var School
      */
-    #[ORM\ManyToOne(targetEntity: 'School', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: School::class, cascade: ['persist'])]
     #[Assert\NotNull(groups: ['schoolSpecific'])]
     protected $school;
 
     /**
      * @var Survey
      */
-    #[ORM\ManyToOne(targetEntity: 'Survey', cascade: ['persist'], inversedBy: 'surveysTaken')]
+    #[ORM\ManyToOne(targetEntity: Survey::class, cascade: ['persist'], inversedBy: 'surveysTaken')]
     protected $survey;
 
     /**
      * @var SurveyAnswer[]
      */
-    #[ORM\OneToMany(targetEntity: 'SurveyAnswer', mappedBy: 'surveyTaken', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: SurveyAnswer::class, mappedBy: 'surveyTaken', cascade: ['persist', 'remove'], orphanRemoval: true)]
     protected $surveyAnswers;
 
     /**

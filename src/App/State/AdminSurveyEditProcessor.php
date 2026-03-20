@@ -5,7 +5,7 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\AdminSurveyWriteResource;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\SurveyRepository;
 use App\Entity\SurveyQuestion;
 use App\Entity\SurveyQuestionAlternative;

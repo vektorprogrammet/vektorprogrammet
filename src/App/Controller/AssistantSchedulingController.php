@@ -9,7 +9,7 @@ use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SchoolCapacityRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\SchoolCapacity;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

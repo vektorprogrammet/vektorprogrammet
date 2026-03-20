@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\AssistantHistory;
 use App\Entity\School;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use App\Event\AssistantHistoryCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;

@@ -18,7 +18,7 @@ class InterviewQuestionAlternative
     #[Assert\NotBlank(message: 'Alternativ: Dette feltet kan ikke være tomt.')]
     protected $alternative;
 
-    #[ORM\ManyToOne(targetEntity: 'InterviewQuestion', inversedBy: 'alternatives')]
+    #[ORM\ManyToOne(targetEntity: InterviewQuestion::class, inversedBy: 'alternatives')]
     #[ORM\JoinColumn(name: 'question_id', referencedColumnName: 'id', onDelete: 'CASCADE')]
     protected $interviewQuestion;
 

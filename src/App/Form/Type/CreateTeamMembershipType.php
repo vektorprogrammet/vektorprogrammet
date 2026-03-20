@@ -4,9 +4,9 @@ namespace App\Form\Type;
 
 use App\Entity\Position;
 use App\Entity\Repository\PositionRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

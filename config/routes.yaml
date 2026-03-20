@@ -11,6 +11,10 @@ app:
     resource: "../src/App/Controller/"
     type: attribute
 
+shared:
+    resource: "../src/App/Shared/Controller/"
+    type: attribute
+
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 

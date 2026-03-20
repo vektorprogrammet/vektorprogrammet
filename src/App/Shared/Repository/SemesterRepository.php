@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Repository;
+namespace App\Shared\Repository;
 
-use App\Entity\Semester;
-use App\Utils\SemesterUtil;
+use App\Shared\Entity\Semester;
+use App\Shared\SemesterUtil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\ORMException;

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Entity\Repository\TeamInterestRepository;
+use App\Shared\Contracts\DepartmentSemesterInterface;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 

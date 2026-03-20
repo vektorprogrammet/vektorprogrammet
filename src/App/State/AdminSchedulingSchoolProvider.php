@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\ApiResource\AdminSchedulingSchoolResource;
 use App\Entity\Repository\SchoolCapacityRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 

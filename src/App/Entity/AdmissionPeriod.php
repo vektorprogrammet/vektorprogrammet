@@ -6,10 +6,12 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Entity\Repository\AdmissionPeriodRepository;
+use App\Shared\Contracts\PeriodInterface;
 use App\Utils\TimeUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Shared\Entity\Semester;
 
 /**
  * DepartmentSpecificSemester.
@@ -37,7 +39,7 @@ class AdmissionPeriod implements PeriodInterface, \Stringable
     /**
      * @var Department
      */
-    #[ORM\ManyToOne(targetEntity: 'Department', inversedBy: 'admissionPeriods')]
+    #[ORM\ManyToOne(targetEntity: Department::class, inversedBy: 'admissionPeriods')]
     #[Groups(['admission:read'])]
     private $department;
 
@@ -54,7 +56,7 @@ class AdmissionPeriod implements PeriodInterface, \Stringable
     /**
      * @var InfoMeeting
      */
-    #[ORM\OneToOne(targetEntity: 'InfoMeeting', cascade: ['remove', 'persist'])]
+    #[ORM\OneToOne(targetEntity: InfoMeeting::class, cascade: ['remove', 'persist'])]
     #[Assert\Valid]
     #[Groups(['admission:read', 'department:detail'])]
     private $infoMeeting;
@@ -62,7 +64,7 @@ class AdmissionPeriod implements PeriodInterface, \Stringable
     /**
      * @var Semester
      */
-    #[ORM\ManyToOne(targetEntity: 'Semester', inversedBy: 'admissionPeriods')]
+    #[ORM\ManyToOne(targetEntity: Semester::class, inversedBy: 'admissionPeriods')]
     #[Groups(['admission:read'])]
     private $semester;
 

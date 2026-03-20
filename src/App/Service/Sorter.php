@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Receipt;
-use App\Entity\TeamMembershipInterface;
+use App\Shared\Contracts\TeamMembershipInterface;
 use App\Entity\User;
 
 class Sorter

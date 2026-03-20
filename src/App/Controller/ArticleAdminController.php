@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Article;
 use App\Entity\Repository\ArticleRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\ArticleType;
 use App\Service\FileUploader;
 use App\Service\LogService;

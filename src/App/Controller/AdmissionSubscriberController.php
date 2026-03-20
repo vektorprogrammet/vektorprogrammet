@@ -6,7 +6,7 @@ use App\Entity\AdmissionSubscriber;
 use App\Entity\Department;
 use App\Entity\Repository\AdmissionSubscriberRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\AdmissionSubscriberType;
 use App\Service\AdmissionNotifier;
 use Doctrine\ORM\EntityManagerInterface;

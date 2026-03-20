@@ -5,7 +5,7 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Position;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\TeamMembership;
 use App\Event\TeamMembershipEvent;
 use Doctrine\ORM\EntityManagerInterface;

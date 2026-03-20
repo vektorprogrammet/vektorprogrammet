@@ -4,7 +4,7 @@ namespace App\DataFixtures\ORM;
 
 use App\Entity\ExecutiveBoard;
 use App\Entity\ExecutiveBoardMembership;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

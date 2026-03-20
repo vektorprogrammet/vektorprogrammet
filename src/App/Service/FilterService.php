@@ -3,8 +3,8 @@
 namespace App\Service;
 
 use App\Entity\Department;
-use App\Entity\TeamInterface;
-use App\Entity\TeamMembershipInterface;
+use App\Shared\Contracts\TeamInterface;
+use App\Shared\Contracts\TeamMembershipInterface;
 
 class FilterService
 {

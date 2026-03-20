@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Api;
 
 use App\Entity\ExecutiveBoard;
 use App\Entity\ExecutiveBoardMembership;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;

@@ -19,7 +19,7 @@ class InterviewSchema implements \Stringable
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     protected $name;
-    #[ORM\ManyToMany(targetEntity: 'InterviewQuestion', cascade: ['persist'])]
+    #[ORM\ManyToMany(targetEntity: InterviewQuestion::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'interview_schemas_questions')]
     #[ORM\JoinColumn(name: 'schema_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'question_id', referencedColumnName: 'id')]

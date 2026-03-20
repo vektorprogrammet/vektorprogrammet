@@ -6,7 +6,7 @@ use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Service\ApplicationManager;
 use App\Service\ContentModeManager;
 use App\Twig\Extension\RoleExtension;

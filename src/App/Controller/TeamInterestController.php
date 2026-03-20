@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\Department;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\TeamInterest;
 use App\Event\TeamInterestCreatedEvent;
 use App\Form\Type\TeamInterestType;

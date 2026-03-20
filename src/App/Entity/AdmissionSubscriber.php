@@ -28,7 +28,7 @@ class AdmissionSubscriber implements \Stringable
     /**
      * @var Department
      */
-    #[ORM\ManyToOne(targetEntity: 'Department')]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     private $department;
 
     #[ORM\Column(type: 'string')]

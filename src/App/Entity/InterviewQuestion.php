@@ -28,7 +28,7 @@ class InterviewQuestion
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     protected $type;
 
-    #[ORM\OneToMany(targetEntity: 'InterviewQuestionAlternative', mappedBy: 'interviewQuestion', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: InterviewQuestionAlternative::class, mappedBy: 'interviewQuestion', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     protected $alternatives;
 

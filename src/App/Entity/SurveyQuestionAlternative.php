@@ -19,7 +19,7 @@ class SurveyQuestionAlternative implements \JsonSerializable
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     protected $alternative;
 
-    #[ORM\ManyToOne(targetEntity: 'SurveyQuestion', inversedBy: 'alternatives')]
+    #[ORM\ManyToOne(targetEntity: SurveyQuestion::class, inversedBy: 'alternatives')]
     #[ORM\JoinColumn(name: 'question_id', referencedColumnName: 'id')]
     protected $surveyQuestion;
 

@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Api;
 
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\SocialEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;

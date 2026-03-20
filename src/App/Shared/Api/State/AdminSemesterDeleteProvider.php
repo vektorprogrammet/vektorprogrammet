@@ -1,11 +1,11 @@
 <?php
 
-namespace App\State;
+namespace App\Shared\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\ApiResource\AdminSemesterDeleteResource;
-use App\Entity\Semester;
+use App\Shared\Api\Resource\AdminSemesterDeleteResource;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

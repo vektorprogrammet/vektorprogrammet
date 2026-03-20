@@ -6,7 +6,7 @@ use App\Entity\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ExecutiveBoardMembershipRepository;
 use App\Entity\Repository\RoleRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\SignatureRepository;
 use App\Entity\Repository\TeamMembershipRepository;
 use App\Entity\Signature;

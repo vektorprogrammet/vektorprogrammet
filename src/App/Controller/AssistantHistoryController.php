@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Entity\AssistantHistory;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\CreateAssistantHistoryType;
 use App\Role\Roles;
 use App\Service\LogService;

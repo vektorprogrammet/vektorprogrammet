@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;
 

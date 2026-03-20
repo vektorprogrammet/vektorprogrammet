@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use App\Entity\Repository\AdmissionNotificationRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Shared\Entity\Semester;
 
 #[ORM\Entity(repositoryClass: AdmissionNotificationRepository::class)]
 #[ORM\Table(name: 'admission_notification')]
@@ -17,11 +18,11 @@ class AdmissionNotification
     #[ORM\Column(type: 'datetime')]
     private $timestamp;
 
-    #[ORM\ManyToOne(targetEntity: 'AdmissionSubscriber')]
+    #[ORM\ManyToOne(targetEntity: AdmissionSubscriber::class)]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $subscriber;
 
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     private $semester;
 
     #[ORM\Column(type: 'boolean')]
@@ -30,7 +31,7 @@ class AdmissionNotification
     /**
      * @var Department
      */
-    #[ORM\ManyToOne(targetEntity: 'Department')]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     private $department;
 
     public function __construct()

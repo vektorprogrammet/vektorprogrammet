@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Entity\Repository\AssistantHistoryRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'assistant_history')]
 #[ORM\Entity(repositoryClass: AssistantHistoryRepository::class)]
@@ -14,10 +15,10 @@ class AssistantHistory implements \Stringable
     #[ORM\Id]
     #[ORM\GeneratedValue(strategy: 'AUTO')]
     private $id;
-    #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'assistantHistories')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'assistantHistories')]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $user;
-    #[ORM\ManyToOne(targetEntity: 'Semester')]
+    #[ORM\ManyToOne(targetEntity: Semester::class)]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     private $semester;
@@ -25,11 +26,11 @@ class AssistantHistory implements \Stringable
     /**
      * @var Department
      */
-    #[ORM\ManyToOne(targetEntity: 'Department')]
+    #[ORM\ManyToOne(targetEntity: Department::class)]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Assert\NotBlank(message: 'Region må velges.')]
     private $department;
-    #[ORM\ManyToOne(targetEntity: 'School', inversedBy: 'assistantHistories')]
+    #[ORM\ManyToOne(targetEntity: School::class, inversedBy: 'assistantHistories')]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     private $school;

@@ -5,7 +5,7 @@ namespace App\DataFixtures\ORM;
 use App\Entity\AssistantHistory;
 use App\Entity\Department;
 use App\Entity\School;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

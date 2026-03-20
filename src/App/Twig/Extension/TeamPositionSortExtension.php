@@ -2,7 +2,7 @@
 
 namespace App\Twig\Extension;
 
-use App\Entity\TeamInterface;
+use App\Shared\Contracts\TeamInterface;
 use App\Entity\User;
 use App\Service\FilterService;
 use App\Service\Sorter;

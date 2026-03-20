@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\ExecutiveBoardMembership;
 use App\Entity\Role;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use App\Google\GoogleUsers;
 use App\Role\Roles;

@@ -3,7 +3,7 @@
 namespace App\DataFixtures\ORM;
 
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\Survey;
 use App\Entity\SurveyQuestion;
 use App\Entity\SurveyQuestionAlternative;

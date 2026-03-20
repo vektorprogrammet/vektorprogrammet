@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\FieldOfStudy;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\FieldOfStudyRepository;
-use App\Entity\Repository\SemesterRepository;
+use App\Shared\Repository\SemesterRepository;
 use App\Form\Type\FieldOfStudyType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

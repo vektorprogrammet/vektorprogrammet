@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Repository\ApplicationRepository;
+use App\Shared\Contracts\DepartmentSemesterInterface;
 use App\Validator\Constraints as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -20,7 +21,7 @@ class Application implements DepartmentSemesterInterface
     /**
      * @var AdmissionPeriod
      */
-    #[ORM\ManyToOne(targetEntity: 'AdmissionPeriod')]
+    #[ORM\ManyToOne(targetEntity: AdmissionPeriod::class)]
     private $admissionPeriod;
 
     #[ORM\Column(type: 'string', length: 20)]
@@ -75,7 +76,7 @@ class Application implements DepartmentSemesterInterface
     #[Assert\Length(max: 255, maxMessage: 'Dette feltet kan ikke inneholde mer enn 255 tegn.')]
     private $preferredSchool;
 
-    #[ORM\ManyToOne(targetEntity: 'User', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     #[Assert\Valid]
     private $user;
@@ -102,7 +103,7 @@ class Application implements DepartmentSemesterInterface
     /**
      * @var Interview
      */
-    #[ORM\OneToOne(targetEntity: 'Interview', cascade: ['persist', 'remove'], inversedBy: 'application')]
+    #[ORM\OneToOne(targetEntity: Interview::class, cascade: ['persist', 'remove'], inversedBy: 'application')]
     #[ORM\JoinColumn(nullable: true, onDelete: 'SET NULL')]
     #[Assert\Valid]
     private $interview;

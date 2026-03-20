@@ -110,7 +110,7 @@ school:
 organization:
   path:
     - ./src/App/Controller/DepartmentController.php
-    - ./src/App/Controller/SemesterController.php
+    - ./src/App/Shared/Controller/SemesterController.php
     - ./src/App/Controller/FieldOfStudyController.php
     - ./src/App/Controller/PositionController.php
     - ./src/App/Controller/ExecutiveBoardController.php

@@ -18,7 +18,7 @@ class Role implements \Stringable
     #[ORM\Column(name: 'name', type: 'string', length: 30)]
     private $name;
 
-    #[ORM\ManyToMany(targetEntity: 'User', mappedBy: 'roles')]
+    #[ORM\ManyToMany(targetEntity: User::class, mappedBy: 'roles')]
     private $users;
 
     public function __construct(#[ORM\Column(name: 'role', type: 'string', length: 20)]

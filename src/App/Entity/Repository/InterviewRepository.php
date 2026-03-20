@@ -4,7 +4,7 @@ namespace App\Entity\Repository;
 
 use App\Entity\AdmissionPeriod;
 use App\Entity\Interview;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\User;
 use App\Type\InterviewStatusType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;

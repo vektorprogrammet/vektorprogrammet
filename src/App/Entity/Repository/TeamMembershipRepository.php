@@ -3,11 +3,11 @@
 namespace App\Entity\Repository;
 
 use App\Entity\Department;
-use App\Entity\Semester;
+use App\Shared\Entity\Semester;
 use App\Entity\Team;
 use App\Entity\TeamMembership;
 use App\Entity\User;
-use App\Utils\SemesterUtil;
+use App\Shared\SemesterUtil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

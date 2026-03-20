@@ -32,10 +32,10 @@ class SurveyQuestion implements \JsonSerializable
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
     protected $type;
 
-    #[ORM\OneToMany(targetEntity: 'SurveyQuestionAlternative', mappedBy: 'surveyQuestion', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(targetEntity: SurveyQuestionAlternative::class, mappedBy: 'surveyQuestion', cascade: ['persist', 'remove'], orphanRemoval: true)]
     #[Assert\Valid]
     protected $alternatives;
-    #[ORM\OneToMany(targetEntity: 'SurveyAnswer', mappedBy: 'surveyQuestion', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: SurveyAnswer::class, mappedBy: 'surveyQuestion', cascade: ['persist', 'remove'])]
     protected $answers;
 
     /**

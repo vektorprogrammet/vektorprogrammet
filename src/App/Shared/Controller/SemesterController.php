@@ -1,11 +1,12 @@
 <?php
 
-namespace App\Controller;
+namespace App\Shared\Controller;
 
+use App\Controller\BaseController;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SemesterRepository;
-use App\Entity\Semester;
-use App\Form\Type\CreateSemesterType;
+use App\Shared\Entity\Semester;
+use App\Shared\Form\CreateSemesterType;
+use App\Shared\Repository\SemesterRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;

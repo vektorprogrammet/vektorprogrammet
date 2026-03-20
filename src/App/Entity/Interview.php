@@ -41,26 +41,26 @@ class Interview
     #[ORM\Column(type: 'datetime', nullable: true)]
     private $conducted;
 
-    #[ORM\ManyToOne(targetEntity: 'InterviewSchema')]
+    #[ORM\ManyToOne(targetEntity: InterviewSchema::class)]
     #[ORM\JoinColumn(name: 'schema_id', referencedColumnName: 'id')]
     private $interviewSchema; // Bidirectional, may turn out to be unidirectional
 
-    #[ORM\ManyToOne(targetEntity: 'User', inversedBy: 'interviews')]
+    #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'interviews')]
     #[ORM\JoinColumn(name: 'interviewer_id', referencedColumnName: 'id', onDelete: 'SET NULL')]
     private $interviewer; // Unidirectional, may turn out to be bidirectional
 
-    #[ORM\ManyToOne(targetEntity: 'User')]
+    #[ORM\ManyToOne(targetEntity: User::class)]
     #[ORM\JoinColumn(onDelete: 'SET NULL')]
     private $coInterviewer;
 
-    #[ORM\OneToMany(targetEntity: 'InterviewAnswer', mappedBy: 'interview', cascade: ['persist', 'remove'])]
+    #[ORM\OneToMany(targetEntity: InterviewAnswer::class, mappedBy: 'interview', cascade: ['persist', 'remove'])]
     #[Assert\Valid]
     private $interviewAnswers;
 
     /**
      * @var InterviewScore
      */
-    #[ORM\OneToOne(targetEntity: 'InterviewScore', cascade: ['persist', 'remove'])]
+    #[ORM\OneToOne(targetEntity: InterviewScore::class, cascade: ['persist', 'remove'])]
     #[ORM\JoinColumn(name: 'interview_score_id', referencedColumnName: 'id')]
     #[Assert\Valid]
     private $interviewScore;
@@ -71,11 +71,11 @@ class Interview
     #[ORM\Column(type: 'integer', nullable: false)]
     private $interviewStatus;
 
-    #[ORM\ManyToOne(targetEntity: 'User', cascade: ['persist'])]
+    #[ORM\ManyToOne(targetEntity: User::class, cascade: ['persist'])]
     #[ORM\JoinColumn(onDelete: 'CASCADE')]
     private $user;
 
-    #[ORM\OneToOne(targetEntity: 'Application', mappedBy: 'interview')]
+    #[ORM\OneToOne(targetEntity: Application::class, mappedBy: 'interview')]
     private $application;
 
     /**
