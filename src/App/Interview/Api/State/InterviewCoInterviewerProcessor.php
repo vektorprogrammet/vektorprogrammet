@@ -26,9 +26,9 @@ class InterviewCoInterviewerProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
     {
         $id = $uriVariables['id'] ?? null;
-        $interview = $id ? $this->interviewRepository->find($id) : null;
+        $interview = $id !== null ? $this->interviewRepository->find($id) : null;
 
-        if (!$interview) {
+        if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
         }
 
@@ -36,7 +36,7 @@ class InterviewCoInterviewerProcessor implements ProcessorInterface
             // Admin-assign path: intentionally skips interviewer/conducted checks,
             // matching the original adminAssignCoInterviewerAction controller behavior.
             $user = $this->em->getRepository(User::class)->find($data->userId);
-            if (!$user) {
+            if ($user === null) {
                 throw new NotFoundHttpException('User not found.');
             }
             $interview->setCoInterviewer($user);

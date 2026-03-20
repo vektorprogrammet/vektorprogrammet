@@ -27,7 +27,7 @@ class InterviewConductProcessor implements ProcessorInterface
         assert($data instanceof InterviewConductInput);
 
         $interview = $this->em->getRepository(Interview::class)->find($uriVariables['id'] ?? 0);
-        if (!$interview) {
+        if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
         }
 
@@ -36,12 +36,8 @@ class InterviewConductProcessor implements ProcessorInterface
 
         // Map answers from input to interview answers
         foreach ($data->answers as $answerData) {
-            $questionId = $answerData['questionId'] ?? null;
+            $questionId = $answerData['questionId'];
             $answerValue = $answerData['answer'] ?? null;
-
-            if ($questionId === null) {
-                continue;
-            }
 
             foreach ($interview->getInterviewAnswers() as $interviewAnswer) {
                 if ($interviewAnswer->getInterviewQuestion()->getId() === $questionId) {
@@ -52,18 +48,18 @@ class InterviewConductProcessor implements ProcessorInterface
         }
 
         // Handle interview score
-        if (!empty($data->interviewScore)) {
+        if ($data->interviewScore !== []) {
             $score = $interview->getInterviewScore();
-            if (!$score) {
+            if ($score === null) {
                 $score = new InterviewScore();
                 $interview->setInterviewScore($score);
                 $this->em->persist($score);
             }
 
-            $score->setExplanatoryPower($data->interviewScore['explanatoryPower'] ?? 0);
-            $score->setRoleModel($data->interviewScore['roleModel'] ?? 0);
-            $score->setSuitability($data->interviewScore['suitability'] ?? 0);
-            $score->setSuitableAssistant($data->interviewScore['suitableAssistant'] ?? '');
+            $score->setExplanatoryPower($data->interviewScore['explanatoryPower']);
+            $score->setRoleModel($data->interviewScore['roleModel']);
+            $score->setSuitability($data->interviewScore['suitability']);
+            $score->setSuitableAssistant($data->interviewScore['suitableAssistant']);
         }
 
         $interview->setInterviewed(true);

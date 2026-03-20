@@ -25,11 +25,11 @@ class InterviewScheduleProcessor implements ProcessorInterface
         assert($data instanceof InterviewScheduleInput);
 
         $interview = $this->em->getRepository(Interview::class)->find($uriVariables['id'] ?? 0);
-        if (!$interview) {
+        if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
         }
 
-        if (empty($data->datetime)) {
+        if ($data->datetime === '') {
             throw new UnprocessableEntityHttpException('datetime is required.');
         }
 

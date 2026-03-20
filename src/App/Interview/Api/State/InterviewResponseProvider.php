@@ -21,7 +21,7 @@ class InterviewResponseProvider implements ProviderInterface
         $responseCode = $uriVariables['responseCode'] ?? '';
         $interview = $this->interviewRepository->findByResponseCode($responseCode);
 
-        if (!$interview) {
+        if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
         }
 
@@ -32,12 +32,14 @@ class InterviewResponseProvider implements ProviderInterface
     {
         $resource = new InterviewResponseResource();
         $resource->id = $interview->getId();
-        $resource->scheduled = $interview->getScheduled()?->format(\DateTimeInterface::ATOM);
+        $scheduled = $interview->getScheduled();
+        $resource->scheduled = $scheduled !== null ? $scheduled->format(\DateTimeInterface::ATOM) : null;
         $resource->room = $interview->getRoom();
         $resource->campus = $interview->getCampus();
         $resource->mapLink = $interview->getMapLink();
-        $resource->interviewerName = $interview->getInterviewer()
-            ? $interview->getInterviewer()->getFirstName().' '.$interview->getInterviewer()->getLastName()
+        $interviewer = $interview->getInterviewer();
+        $resource->interviewerName = $interviewer !== null
+            ? $interviewer->getFirstName().' '.$interviewer->getLastName()
             : null;
         // interviewerPhone intentionally omitted — not shown in legacy template, avoid exposing staff PII
         $resource->status = $interview->getInterviewStatusAsString();

@@ -115,7 +115,7 @@ class InterviewAnswer implements \Stringable
 
         $answerString = '';
         foreach ($this->answer as $a) {
-            if (!empty($answerString)) {
+            if ($answerString !== '') {
                 $answerString .= ', ';
             }
             $answerString .= $a;

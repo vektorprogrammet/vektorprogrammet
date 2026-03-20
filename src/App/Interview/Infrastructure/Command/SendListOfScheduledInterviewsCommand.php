@@ -29,7 +29,7 @@ class SendListOfScheduledInterviewsCommand extends Command
         $departments = $this->em->getRepository(Department::class)->findActive();
         foreach ($departments as $department) {
             $admissionPeriod = $department->getCurrentAdmissionPeriod();
-            if (!$admissionPeriod) {
+            if ($admissionPeriod === null) {
                 continue;
             }
 

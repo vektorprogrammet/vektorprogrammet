@@ -24,7 +24,7 @@ class InterviewNewTimeProcessor implements ProcessorInterface
         $responseCode = $uriVariables['responseCode'] ?? '';
         $interview = $this->interviewRepository->findByResponseCode($responseCode);
 
-        if (!$interview) {
+        if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
         }
 
@@ -32,7 +32,7 @@ class InterviewNewTimeProcessor implements ProcessorInterface
             throw new UnprocessableEntityHttpException('Interview is not in pending state.');
         }
 
-        if (empty($data->newTimeMessage)) {
+        if ($data->newTimeMessage === null || $data->newTimeMessage === '') {
             throw new UnprocessableEntityHttpException('A message is required when requesting a new time.');
         }
 

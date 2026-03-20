@@ -24,7 +24,7 @@ class AdminInterviewSchemaEditProcessor implements ProcessorInterface
         \assert($data instanceof AdminInterviewSchemaWriteResource);
 
         $id = $uriVariables['id'] ?? null;
-        $schema = $id ? $this->em->getRepository(InterviewSchema::class)->find($id) : null;
+        $schema = $id !== null ? $this->em->getRepository(InterviewSchema::class)->find($id) : null;
 
         if ($schema === null) {
             throw new NotFoundHttpException('Interview schema not found.');
@@ -43,8 +43,8 @@ class AdminInterviewSchemaEditProcessor implements ProcessorInterface
             // Add new questions
             foreach ($data->questions as $questionData) {
                 $question = new InterviewQuestion();
-                $question->setQuestion($questionData['question'] ?? '');
-                $question->setType($questionData['type'] ?? 'text');
+                $question->setQuestion($questionData['question']);
+                $question->setType($questionData['type']);
                 if (isset($questionData['helpText'])) {
                     $question->setHelp($questionData['helpText']);
                 }

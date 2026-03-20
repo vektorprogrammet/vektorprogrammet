@@ -19,7 +19,7 @@ class AdminInterviewSchemaDeleteProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminInterviewSchemaDeleteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $schema = $id ? $this->em->getRepository(InterviewSchema::class)->find($id) : null;
+        $schema = $id !== null ? $this->em->getRepository(InterviewSchema::class)->find($id) : null;
 
         if ($schema === null) {
             throw new NotFoundHttpException('Interview schema not found.');

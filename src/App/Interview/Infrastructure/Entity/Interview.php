@@ -78,6 +78,7 @@ class Interview
     private $user;
 
     #[ORM\OneToOne(targetEntity: Application::class, mappedBy: 'interview')]
+    /** @phpstan-ignore property.onlyRead (Doctrine manages this inverse side via mappedBy) */
     private $application;
 
     /**
@@ -155,7 +156,7 @@ class Interview
     /**
      * Get coInterviewer.
      *
-     * @return User
+     * @return User|null
      */
     public function getCoInterviewer()
     {
@@ -169,7 +170,7 @@ class Interview
      */
     public function isCoInterviewer(?User $user = null)
     {
-        return $user && $this->getCoInterviewer() && $user->getId() == $this->getCoInterviewer()->getId();
+        return $user !== null && $this->getCoInterviewer() !== null && $user->getId() === $this->getCoInterviewer()->getId();
     }
 
     /**
@@ -199,7 +200,7 @@ class Interview
     /**
      * Get interviewer.
      *
-     * @return User
+     * @return User|null
      */
     public function getInterviewer()
     {
@@ -251,7 +252,7 @@ class Interview
     /**
      * Get interviewScore.
      *
-     * @return InterviewScore
+     * @return InterviewScore|null
      */
     public function getInterviewScore()
     {
@@ -312,7 +313,7 @@ class Interview
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getRoom()
     {
@@ -320,7 +321,7 @@ class Interview
     }
 
     /**
-     * @param string $room
+     * @param string|null $room
      */
     public function setRoom($room)
     {
@@ -328,7 +329,7 @@ class Interview
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getCampus()
     {
@@ -348,7 +349,7 @@ class Interview
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getMapLink()
     {
@@ -356,7 +357,7 @@ class Interview
     }
 
     /**
-     * @param string mapLink
+     * @param string|null $mapLink
      */
     public function setMapLink($mapLink)
     {
@@ -370,7 +371,7 @@ class Interview
      */
     public function isInterviewer(?User $user = null)
     {
-        return $user && $user->getId() == $this->getInterviewer()->getId();
+        return $user !== null && $this->getInterviewer() !== null && $user->getId() === $this->getInterviewer()->getId();
     }
 
     /**
@@ -391,7 +392,7 @@ class Interview
     /**
      * Get scheduled.
      *
-     * @return \DateTime
+     * @return \DateTime|null
      */
     public function getScheduled()
     {
@@ -518,7 +519,7 @@ class Interview
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getResponseCode()
     {

@@ -37,7 +37,7 @@ class InterviewSchema implements \Stringable
     /**
      * Get id.
      *
-     * @return int
+     * @return int|null
      */
     public function getId()
     {

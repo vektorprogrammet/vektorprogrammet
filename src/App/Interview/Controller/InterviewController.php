@@ -31,6 +31,7 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**
@@ -63,7 +64,9 @@ class InterviewController extends BaseController
         if ($application->getInterview() === null) {
             throw $this->createNotFoundException();
         }
-        $department = $this->getUser()->getDepartment();
+        /** @var \App\Identity\Infrastructure\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+        $department = $currentUser->getDepartment();
         $teams = $this->teamRepo->findActiveByDepartment($department);
 
         if ($this->getUser() === $application->getUser()) {
@@ -91,7 +94,9 @@ class InterviewController extends BaseController
 
             $this->em->persist($interview);
             $this->em->flush();
-            if ($isNewInterview && $form->get('saveAndSend')->isClicked()) {
+            $saveAndSend = $form->get('saveAndSend');
+            \assert($saveAndSend instanceof \Symfony\Component\Form\ClickableInterface);
+            if ($isNewInterview && $saveAndSend->isClicked()) {
                 $interview->setInterviewed(true);
                 $interview->setConducted(new \DateTime());
                 $this->em->persist($interview);
@@ -179,7 +184,7 @@ class InterviewController extends BaseController
     public function bulkDeleteInterviewAction(Request $request)
     {
         // Get the ids from the form
-        $applicationIds = $request->request->get('application')['id'];
+        $applicationIds = $request->request->all('application')['id'] ?? [];
 
         // Get the application objects
         $applications = $this->applicationRepo->findBy(['id' => $applicationIds]);
@@ -187,7 +192,7 @@ class InterviewController extends BaseController
         // Delete the interviews
         foreach ($applications as $application) {
             $interview = $application->getInterview();
-            if ($interview) {
+            if ($interview !== null) {
                 $this->em->remove($interview);
             }
             $application->setInterview(null);
@@ -225,17 +230,17 @@ class InterviewController extends BaseController
         $form->handleRequest($request);
 
         $data = $form->getData();
-        $mapLink = $data['mapLink'];
+        $mapLink = (string) ($data['mapLink'] ?? '');
         if ($form->isSubmitted()) {
-            if ($mapLink && !str_starts_with((string) $mapLink, 'http')) {
+            if ($mapLink !== '' && !str_starts_with($mapLink, 'http')) {
                 $mapLink = 'http://'.$mapLink;
             }
         }
-        $invalidMapLink = $form->isSubmitted() && !empty($mapLink) && !$this->validateLink($mapLink);
+        $invalidMapLink = $form->isSubmitted() && $mapLink !== '' && !$this->validateLink($mapLink);
         if ($invalidMapLink) {
             $this->addFlash('danger', 'Kartlinken er ikke gyldig');
         } elseif ($form->isSubmitted() && $form->isValid()) {
-            if (!$interview->getResponseCode()) {
+            if ($interview->getResponseCode() === null || $interview->getResponseCode() === '') {
                 $interview->generateAndSetResponseCode();
             }
 
@@ -244,10 +249,12 @@ class InterviewController extends BaseController
             $interview->setRoom($data['room']);
             $interview->setCampus($data['campus']);
 
-            $interview->setMapLink($mapLink);
+            $interview->setMapLink($mapLink !== '' ? $mapLink : null);
             $interview->resetStatus();
 
-            if ($form->get('preview')->isClicked()) {
+            $previewButton = $form->get('preview');
+            \assert($previewButton instanceof \Symfony\Component\Form\ClickableInterface);
+            if ($previewButton->isClicked()) {
                 return $this->render('interview/preview.html.twig', [
                     'interview' => $interview,
                     'data' => $data,
@@ -258,7 +265,9 @@ class InterviewController extends BaseController
             $this->em->flush();
 
             // Send email if the send button was clicked
-            if ($form->get('saveAndSend')->isClicked()) {
+            $saveAndSendButton = $form->get('saveAndSend');
+            \assert($saveAndSendButton instanceof \Symfony\Component\Form\ClickableInterface);
+            if ($saveAndSendButton->isClicked()) {
                 $this->eventDispatcher->dispatch(new InterviewEvent($interview, $data), InterviewEvent::SCHEDULE);
             }
 
@@ -272,9 +281,9 @@ class InterviewController extends BaseController
         ]);
     }
 
-    private function validateLink($link)
+    private function validateLink(string $link): bool
     {
-        if (empty($link)) {
+        if ($link === '') {
             return false;
         }
 
@@ -517,7 +526,10 @@ class InterviewController extends BaseController
     #[Route('/kontrollpanel/intervju/assign_co_interviewer/{id}', name: 'interview_assign_co_interviewer', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function assignCoInterviewerAction(Interview $interview)
     {
-        if ($interview->getUser() === $this->getUser()) {
+        /** @var \App\Identity\Infrastructure\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+
+        if ($interview->getUser() === $currentUser) {
             return $this->render('error/control_panel_error.html.twig', [
                 'error' => 'Kan ikke legge til deg selv som medintervjuer på ditt eget intervju',
             ]);
@@ -529,13 +541,13 @@ class InterviewController extends BaseController
             ]);
         }
 
-        if ($this->getUser() === $interview->getInterviewer()) {
+        if ($currentUser === $interview->getInterviewer()) {
             return $this->render('error/control_panel_error.html.twig', [
                 'error' => 'Kan ikke legge til deg selv som medintervjuer når du allerede er intervjuer',
             ]);
         }
 
-        $interview->setCoInterviewer($this->getUser());
+        $interview->setCoInterviewer($currentUser);
         $this->em->persist($interview);
         $this->em->flush();
         $this->eventDispatcher->dispatch(new InterviewEvent($interview), InterviewEvent::COASSIGN);

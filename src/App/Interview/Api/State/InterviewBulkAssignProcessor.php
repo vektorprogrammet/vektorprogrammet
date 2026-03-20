@@ -26,22 +26,23 @@ class InterviewBulkAssignProcessor implements ProcessorInterface
 
         foreach ($data->assignments as $assignment) {
             $application = $this->em->getRepository(Application::class)->find($assignment['applicationId']);
-            if (!$application) {
+            if ($application === null) {
                 throw new NotFoundHttpException('Application not found: '.$assignment['applicationId']);
             }
 
             $interviewer = $this->em->getRepository(User::class)->find($assignment['interviewerId']);
-            if (!$interviewer) {
+            if ($interviewer === null) {
                 throw new NotFoundHttpException('Interviewer not found: '.$assignment['interviewerId']);
             }
 
             $schema = $this->em->getRepository(InterviewSchema::class)->find($assignment['interviewSchemaId']);
-            if (!$schema) {
+            if ($schema === null) {
                 throw new NotFoundHttpException('Interview schema not found: '.$assignment['interviewSchemaId']);
             }
 
             $this->interviewManager->assignInterviewerToApplication($interviewer, $application);
 
+            /** @var \App\Interview\Infrastructure\Entity\Interview $interview */
             $interview = $application->getInterview();
             $interview->setInterviewSchema($schema);
 

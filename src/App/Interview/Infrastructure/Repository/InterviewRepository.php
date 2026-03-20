@@ -24,7 +24,7 @@ class InterviewRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Interview
+     * @return Interview|null
      */
     public function findLastScheduledByUserInAdmissionPeriod(User $user, AdmissionPeriod $admissionPeriod)
     {
@@ -39,7 +39,7 @@ class InterviewRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
 
-        return !empty($result) ? $result[0] : null;
+        return $result !== [] ? $result[0] : null;
     }
 
     public function findAllInterviewedInterviewsBySemester($semester)
@@ -95,7 +95,7 @@ class InterviewRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return Interview
+     * @return Interview|null
      */
     public function findByResponseCode(string $responseCode)
     {
@@ -147,7 +147,7 @@ class InterviewRepository extends ServiceEntityRepository
         $interviewers = [];
         foreach ($interviews as $interview) {
             $interviewers[] = $interview->getInterviewer();
-            if ($interview->getCoInterviewer()) {
+            if ($interview->getCoInterviewer() !== null) {
                 $interviewers[] = $interview->getCoInterviewer();
             }
         }
