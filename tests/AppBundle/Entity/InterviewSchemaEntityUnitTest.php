@@ -2,8 +2,8 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\InterviewQuestion;
-use App\Entity\InterviewSchema;
+use App\Interview\Infrastructure\Entity\InterviewQuestion;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
 use PHPUnit\Framework\TestCase;
 
 class InterviewSchemaEntityUnitTest extends TestCase

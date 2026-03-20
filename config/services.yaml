@@ -52,7 +52,7 @@ services:
 
     App\Interview\:
         resource: '../src/App/Interview/'
-        exclude: '../src/App/Interview/Domain/{ValueObjects,Events}/'
+        exclude: '../src/App/Interview/{Domain/{ValueObjects,Events},Infrastructure/Entity}/'
 
     App\Organization\:
         resource: '../src/App/Organization/'
@@ -92,7 +92,6 @@ services:
         resource: '../src/App/Interview/Infrastructure/Subscriber/'
         bind:
             Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
-            $env: '%kernel.environment%'
 
     App\Organization\Infrastructure\Subscriber\:
         resource: '../src/App/Organization/Infrastructure/Subscriber/'
@@ -195,7 +194,6 @@ services:
             - { name: kernel.event_subscriber }
         bind:
             App\Support\Infrastructure\Mailer\MailerInterface: '@App\Support\Infrastructure\Mailer\Mailer'
-            App\Support\Infrastructure\Sms\SmsSenderInterface: '@App\Support\Infrastructure\Sms\SmsSender'
             Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
 
     App\Support\EventSubscriber\:

@@ -3,10 +3,10 @@
 namespace App\Support\EventSubscriber;
 
 use App\Admission\Infrastructure\Entity\AdmissionNotification;
-use App\Entity\InterviewAnswer;
-use App\Entity\InterviewQuestion;
-use App\Entity\InterviewQuestionAlternative;
-use App\Entity\InterviewScore;
+use App\Interview\Infrastructure\Entity\InterviewAnswer;
+use App\Interview\Infrastructure\Entity\InterviewQuestion;
+use App\Interview\Infrastructure\Entity\InterviewQuestionAlternative;
+use App\Interview\Infrastructure\Entity\InterviewScore;
 use App\Entity\PasswordReset;
 use App\Entity\Role;
 use App\Survey\Infrastructure\Entity\SurveyAnswer;

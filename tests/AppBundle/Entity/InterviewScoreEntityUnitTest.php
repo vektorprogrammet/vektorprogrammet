@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\InterviewScore;
+use App\Interview\Infrastructure\Entity\InterviewScore;
 use PHPUnit\Framework\TestCase;
 
 class InterviewScoreEntityUnitTest extends TestCase

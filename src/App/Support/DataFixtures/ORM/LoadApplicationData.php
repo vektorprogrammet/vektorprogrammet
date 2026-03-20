@@ -4,13 +4,13 @@ namespace App\Support\DataFixtures\ORM;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Entity\Interview;
-use App\Entity\InterviewAnswer;
-use App\Entity\InterviewSchema;
-use App\Entity\InterviewScore;
+use App\Interview\Infrastructure\Entity\Interview;
+use App\Interview\Infrastructure\Entity\InterviewAnswer;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
+use App\Interview\Infrastructure\Entity\InterviewScore;
 use App\Entity\Team;
 use App\Entity\User;
-use App\Type\InterviewStatusType;
+use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

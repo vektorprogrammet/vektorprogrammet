@@ -6,7 +6,7 @@ use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\Department;
 use App\Entity\User;
-use App\Type\InterviewStatusType;
+use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;

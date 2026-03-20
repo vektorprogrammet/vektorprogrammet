@@ -5,6 +5,7 @@ namespace App\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use App\Entity\Repository\UserRepository;
+use App\Interview\Infrastructure\Entity\Interview;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Operations\Infrastructure\Entity\CertificateRequest;
 use App\Operations\Infrastructure\Entity\Receipt;

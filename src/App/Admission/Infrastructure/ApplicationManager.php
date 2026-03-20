@@ -4,7 +4,7 @@ namespace App\Admission\Infrastructure;
 
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Domain\ValueObjects\ApplicationStatus;
-use App\Type\InterviewStatusType;
+use App\Interview\Domain\ValueObjects\InterviewStatusType;
 
 class ApplicationManager
 {

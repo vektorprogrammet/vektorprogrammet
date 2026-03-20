@@ -2,8 +2,8 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\InterviewQuestion;
-use App\Entity\InterviewSchema;
+use App\Interview\Infrastructure\Entity\InterviewQuestion;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

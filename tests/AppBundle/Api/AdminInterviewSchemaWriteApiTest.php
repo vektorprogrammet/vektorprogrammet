@@ -2,8 +2,8 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Interview;
-use App\Entity\InterviewSchema;
+use App\Interview\Infrastructure\Entity\Interview;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 
@@ -197,12 +197,12 @@ class AdminInterviewSchemaWriteApiTest extends BaseWebTestCase
         // Create a schema with 2 questions
         $schema = new InterviewSchema();
         $schema->setName('Replace Test Schema');
-        $q1 = new \App\Entity\InterviewQuestion();
+        $q1 = new \App\Interview\Infrastructure\Entity\InterviewQuestion();
         $q1->setQuestion('Old Q1');
         $q1->setType('text');
         $em->persist($q1);
         $schema->addInterviewQuestion($q1);
-        $q2 = new \App\Entity\InterviewQuestion();
+        $q2 = new \App\Interview\Infrastructure\Entity\InterviewQuestion();
         $q2->setQuestion('Old Q2');
         $q2->setType('text');
         $em->persist($q2);

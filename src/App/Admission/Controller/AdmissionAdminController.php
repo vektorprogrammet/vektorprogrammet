@@ -15,7 +15,7 @@ use App\Entity\User;
 use App\Admission\Domain\Events\ApplicationCreatedEvent;
 use App\Admission\Form\ApplicationType;
 use App\Role\Roles;
-use App\Service\InterviewCounter;
+use App\Interview\Infrastructure\InterviewCounter;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

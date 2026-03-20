@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller;
 
-use App\Entity\Interview;
+use App\Interview\Infrastructure\Entity\Interview;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Tests\BaseWebTestCase;
 

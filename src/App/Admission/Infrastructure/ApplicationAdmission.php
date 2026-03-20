@@ -5,7 +5,7 @@ namespace App\Admission\Infrastructure;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Entity\Department;
-use App\Entity\Interview;
+use App\Interview\Infrastructure\Entity\Interview;
 use App\Entity\Role;
 use App\Entity\User;
 use App\Role\Roles;

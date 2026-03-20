@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Api;
 
 use App\Admission\Infrastructure\Entity\Application;
-use App\Entity\Interview;
+use App\Interview\Infrastructure\Entity\Interview;
 use App\Entity\User;
 use Tests\BaseWebTestCase;
 

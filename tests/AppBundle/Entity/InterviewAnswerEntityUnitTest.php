@@ -2,9 +2,9 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Interview;
-use App\Entity\InterviewAnswer;
-use App\Entity\InterviewQuestion;
+use App\Interview\Infrastructure\Entity\Interview;
+use App\Interview\Infrastructure\Entity\InterviewAnswer;
+use App\Interview\Infrastructure\Entity\InterviewQuestion;
 use PHPUnit\Framework\TestCase;
 
 class InterviewAnswerEntityUnitTest extends TestCase
