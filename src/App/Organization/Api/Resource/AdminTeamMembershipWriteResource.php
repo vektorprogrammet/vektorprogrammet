@@ -15,7 +15,7 @@ use App\Organization\Api\State\AdminTeamMembershipEditProvider;
             uriTemplate: '/admin/team-memberships/{id}',
             provider: AdminTeamMembershipEditProvider::class,
             processor: AdminTeamMembershipEditProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
         ),
     ],
 )]

@@ -17,14 +17,14 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             uriTemplate: '/admin/teams',
             processor: AdminTeamCreateProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
             status: 201,
         ),
         new Put(
             uriTemplate: '/admin/teams/{id}',
             provider: AdminTeamEditProvider::class,
             processor: AdminTeamEditProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
         ),
     ],
 )]

@@ -15,7 +15,7 @@ use App\Organization\Api\State\AdminExecutiveBoardMemberDeleteProvider;
             uriTemplate: '/admin/executive-board/members/{id}',
             provider: AdminExecutiveBoardMemberDeleteProvider::class,
             processor: AdminExecutiveBoardMemberDeleteProcessor::class,
-            security: "is_granted('ROLE_TEAM_LEADER')",
+            security: "is_granted('ROLE_ADMIN')",
             output: false,
             status: 204,
         ),

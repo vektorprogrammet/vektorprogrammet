@@ -15,7 +15,7 @@ use App\Organization\Api\State\AdminTeamMembershipDeleteProvider;
             uriTemplate: '/admin/team-memberships/{id}',
             provider: AdminTeamMembershipDeleteProvider::class,
             processor: AdminTeamMembershipDeleteProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
             output: false,
             status: 204,
         ),
