@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Service;
+namespace App\Scheduling\Infrastructure;
 
 use App\Entity\AdmissionPeriod;
+use App\Service\ApplicationData;
 
 class SbsData extends ApplicationData
 {

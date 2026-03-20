@@ -3,7 +3,7 @@
 namespace App\Operations\Form;
 
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

@@ -1,20 +1,20 @@
 <?php
 
-namespace App\Controller;
+namespace App\Scheduling\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Entity\Department;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SchoolRepository;
+use App\Scheduling\Infrastructure\Repository\SchoolRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use App\Entity\User;
 use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
 use App\Operations\Form\CreateAssistantHistoryType;
-use App\Form\Type\CreateSchoolType;
+use App\Scheduling\Form\CreateSchoolType;
 use App\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

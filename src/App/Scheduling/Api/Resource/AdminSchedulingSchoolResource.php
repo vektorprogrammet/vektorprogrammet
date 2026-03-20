@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ApiResource;
+namespace App\Scheduling\Api\Resource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use App\State\AdminSchedulingSchoolProvider;
+use App\Scheduling\Api\State\AdminSchedulingSchoolProvider;
 
 #[ApiResource(
     operations: [

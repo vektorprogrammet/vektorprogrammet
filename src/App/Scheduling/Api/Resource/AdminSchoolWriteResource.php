@@ -1,13 +1,13 @@
 <?php
 
-namespace App\ApiResource;
+namespace App\Scheduling\Api\Resource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
-use App\State\AdminSchoolCreateProcessor;
-use App\State\AdminSchoolEditProcessor;
-use App\State\AdminSchoolEditProvider;
+use App\Scheduling\Api\State\AdminSchoolCreateProcessor;
+use App\Scheduling\Api\State\AdminSchoolEditProcessor;
+use App\Scheduling\Api\State\AdminSchoolEditProvider;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ApiResource(

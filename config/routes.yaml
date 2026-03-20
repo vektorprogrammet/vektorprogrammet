@@ -27,6 +27,10 @@ operations:
     resource: "../src/App/Operations/Controller/"
     type: attribute
 
+scheduling:
+    resource: "../src/App/Scheduling/Controller/"
+    type: attribute
+
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 

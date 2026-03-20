@@ -1,11 +1,11 @@
 <?php
 
-namespace App\ApiResource;
+namespace App\Scheduling\Api\Resource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
-use App\State\AdminSchoolDeleteProcessor;
-use App\State\AdminSchoolDeleteProvider;
+use App\Scheduling\Api\State\AdminSchoolDeleteProcessor;
+use App\Scheduling\Api\State\AdminSchoolDeleteProvider;
 
 #[ApiResource(
     operations: [

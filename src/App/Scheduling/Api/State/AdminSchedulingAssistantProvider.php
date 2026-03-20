@@ -1,10 +1,10 @@
 <?php
 
-namespace App\State;
+namespace App\Scheduling\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\ApiResource\AdminSchedulingAssistantResource;
+use App\Scheduling\Api\Resource\AdminSchedulingAssistantResource;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Shared\Repository\SemesterRepository;

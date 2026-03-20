@@ -1,6 +1,6 @@
 <?php
 
-namespace App\AssistantScheduling;
+namespace App\Scheduling\Domain\Rules;
 
 use App\Entity\Application;
 

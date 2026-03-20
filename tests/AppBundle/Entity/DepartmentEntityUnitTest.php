@@ -5,7 +5,7 @@ namespace Tests\App\Entity;
 use App\Entity\AdmissionPeriod;
 use App\Entity\Department;
 use App\Entity\FieldOfStudy;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use App\Entity\Team;
 use PHPUnit\Framework\TestCase;
 

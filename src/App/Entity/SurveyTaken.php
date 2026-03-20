@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Repository\SurveyTakenRepository;
+use App\Scheduling\Infrastructure\Entity\School;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;

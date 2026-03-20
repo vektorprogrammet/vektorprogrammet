@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Entity\Repository;
+namespace App\Scheduling\Infrastructure\Repository;
 
 use App\Entity\Department;
-use App\Entity\SchoolCapacity;
+use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use App\Shared\Entity\Semester;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
@@ -30,7 +30,7 @@ class SchoolCapacityRepository extends ServiceEntityRepository
     {
         $schoolCapacities = $this->getEntityManager()->createQuery('
 		SELECT sc
-		FROM App\Entity\SchoolCapacity sc
+		FROM App\Scheduling\Infrastructure\Entity\SchoolCapacity sc
 		WHERE sc.school = :school
 		AND sc.semester = :semester
 		')

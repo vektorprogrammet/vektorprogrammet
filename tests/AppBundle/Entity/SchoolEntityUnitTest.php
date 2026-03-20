@@ -3,7 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Entity\Department;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use PHPUnit\Framework\TestCase;
 
 class SchoolEntityUnitTest extends TestCase

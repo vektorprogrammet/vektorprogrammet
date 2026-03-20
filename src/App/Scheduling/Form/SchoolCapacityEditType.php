@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Type;
+namespace App\Scheduling\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;
@@ -23,7 +23,7 @@ class SchoolCapacityEditType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => \App\Entity\SchoolCapacity::class,
+            'data_class' => \App\Scheduling\Infrastructure\Entity\SchoolCapacity::class,
         ]);
     }
 

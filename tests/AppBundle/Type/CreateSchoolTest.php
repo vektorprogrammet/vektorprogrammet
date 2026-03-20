@@ -2,8 +2,8 @@
 
 namespace Tests\App\Type;
 
-use App\Entity\School;
-use App\Form\Type\CreateSchoolType;
+use App\Scheduling\Infrastructure\Entity\School;
+use App\Scheduling\Form\CreateSchoolType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class CreateSchoolTest extends TypeTestCase

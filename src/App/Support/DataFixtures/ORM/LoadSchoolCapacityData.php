@@ -3,8 +3,8 @@
 namespace App\Support\DataFixtures\ORM;
 
 use App\Entity\Department;
-use App\Entity\School;
-use App\Entity\SchoolCapacity;
+use App\Scheduling\Infrastructure\Entity\School;
+use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use App\Shared\Entity\Semester;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;

@@ -1,17 +1,17 @@
 <?php
 
-namespace App\Controller;
+namespace App\Scheduling\Controller;
 
 use App\Support\Controller\BaseController;
-use App\AssistantScheduling\Assistant;
-use App\AssistantScheduling\School;
+use App\Scheduling\Domain\Rules\Assistant;
+use App\Scheduling\Domain\Rules\School;
 use App\Entity\Application;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\SchoolCapacityRepository;
+use App\Scheduling\Infrastructure\Repository\SchoolCapacityRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\SchoolCapacity;
+use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;

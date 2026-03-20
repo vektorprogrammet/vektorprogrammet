@@ -3,7 +3,7 @@
 namespace App\Operations\Infrastructure\Entity;
 
 use App\Entity\Department;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use App\Entity\User;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Shared\Entity\Semester;

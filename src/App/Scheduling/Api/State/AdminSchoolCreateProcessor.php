@@ -1,11 +1,11 @@
 <?php
 
-namespace App\State;
+namespace App\Scheduling\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Entity\Department;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 

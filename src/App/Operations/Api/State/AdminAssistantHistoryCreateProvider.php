@@ -5,7 +5,7 @@ namespace App\Operations\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Operations\Api\Resource\AdminAssistantHistoryWriteResource;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 

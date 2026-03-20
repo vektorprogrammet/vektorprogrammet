@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Entity\Repository;
+namespace App\Scheduling\Infrastructure\Repository;
 
 use App\Entity\Department;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
+use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
@@ -45,7 +46,7 @@ class SchoolRepository extends ServiceEntityRepository
         $qb = $this->_em->createQueryBuilder();
         $exclude = $qb
             ->select('IDENTITY(capacity.school)')
-            ->from(\App\Entity\SchoolCapacity::class, 'capacity')
+            ->from(SchoolCapacity::class, 'capacity')
             ->where('capacity.semester = :semester');
 
         return $this->getSchoolsByDepartmentQueryBuilder($department)

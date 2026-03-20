@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Scheduling\Infrastructure\Entity;
 
-use App\Entity\Repository\SchoolRepository;
+use App\Entity\Department;
+use App\Scheduling\Infrastructure\Repository\SchoolRepository;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

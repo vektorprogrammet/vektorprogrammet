@@ -3,7 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Operations\Infrastructure\Entity\AssistantHistory;
-use App\Entity\School;
+use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;

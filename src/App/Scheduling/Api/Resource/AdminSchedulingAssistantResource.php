@@ -1,10 +1,10 @@
 <?php
 
-namespace App\ApiResource;
+namespace App\Scheduling\Api\Resource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
-use App\State\AdminSchedulingAssistantProvider;
+use App\Scheduling\Api\State\AdminSchedulingAssistantProvider;
 
 #[ApiResource(
     operations: [

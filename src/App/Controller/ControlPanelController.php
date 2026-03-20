@@ -6,7 +6,7 @@ use App\Support\Controller\BaseController;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Service\SbsData;
+use App\Scheduling\Infrastructure\SbsData;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 

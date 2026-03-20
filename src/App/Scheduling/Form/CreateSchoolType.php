@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Form\Type;
+namespace App\Scheduling\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -52,7 +52,7 @@ class CreateSchoolType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => \App\Entity\School::class,
+            'data_class' => \App\Scheduling\Infrastructure\Entity\School::class,
         ]);
     }
 

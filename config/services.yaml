@@ -68,7 +68,7 @@ services:
 
     App\Scheduling\:
         resource: '../src/App/Scheduling/'
-        exclude: '../src/App/Scheduling/Domain/{ValueObjects,Events}/'
+        exclude: '../src/App/Scheduling/Domain/{ValueObjects,Events,Rules}/'
 
     App\Operations\:
         resource: '../src/App/Operations/'

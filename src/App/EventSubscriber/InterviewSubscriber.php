@@ -7,7 +7,7 @@ use App\Event\InterviewEvent;
 use App\Support\Infrastructure\Mailer\MailerInterface;
 use App\Service\InterviewManager;
 use App\Service\InterviewNotificationManager;
-use App\Service\SbsData;
+use App\Scheduling\Infrastructure\SbsData;
 use App\Support\Infrastructure\Sms\Sms;
 use App\Support\Infrastructure\Sms\SmsSenderInterface;
 use Psr\Log\LoggerInterface;

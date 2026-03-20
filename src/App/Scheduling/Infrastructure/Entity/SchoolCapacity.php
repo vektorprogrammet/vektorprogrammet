@@ -1,8 +1,9 @@
 <?php
 
-namespace App\Entity;
+namespace App\Scheduling\Infrastructure\Entity;
 
-use App\Entity\Repository\SchoolCapacityRepository;
+use App\Entity\Department;
+use App\Scheduling\Infrastructure\Repository\SchoolCapacityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Entity\Semester;
 
