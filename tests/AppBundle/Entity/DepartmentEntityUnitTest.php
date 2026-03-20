@@ -253,4 +253,11 @@ class DepartmentEntityUnitTest extends TestCase
 
         $this->assertEquals($fakePath, $department->getLogoPath());
     }
+
+    public function testGetLatestAdmissionPeriodReturnsNullWhenNoPeriods()
+    {
+        $department = new Department();
+
+        $this->assertNull($department->getLatestAdmissionPeriod());
+    }
 }

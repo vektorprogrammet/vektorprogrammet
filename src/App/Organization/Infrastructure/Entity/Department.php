@@ -128,12 +128,16 @@ class Department implements \Stringable
     }
 
     /**
-     * @return AdmissionPeriod
+     * @return AdmissionPeriod|null
      */
     public function getLatestAdmissionPeriod()
     {
         /** @var AdmissionPeriod[] $admissionPeriods */
         $admissionPeriods = $this->getAdmissionPeriods()->toArray();
+
+        if (empty($admissionPeriods)) {
+            return null;
+        }
 
         $latestAdmissionPeriod = current($admissionPeriods);
 
