@@ -5,7 +5,7 @@ namespace App\Support\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Support\Api\Resource\Statistics;
-use App\Entity\Repository\AssistantHistoryRepository;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\UserRepository;
 
 class StatisticsProvider implements ProviderInterface

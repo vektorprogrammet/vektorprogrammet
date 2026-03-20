@@ -72,7 +72,7 @@ services:
 
     App\Operations\:
         resource: '../src/App/Operations/'
-        exclude: '../src/App/Operations/Domain/{ValueObjects,Events}/'
+        exclude: '../src/App/Operations/Domain/{ValueObjects,Events,Rules}/'
 
     App\Content\:
         resource: '../src/App/Content/'
@@ -112,7 +112,6 @@ services:
         resource: '../src/App/Operations/Infrastructure/Subscriber/'
         bind:
             Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
-            $env: '%kernel.environment%'
 
     App\Identity\Infrastructure\Subscriber\:
         resource: '../src/App/Identity/Infrastructure/Subscriber/'

@@ -4,7 +4,7 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\Repository\AssistantHistoryRepository;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\SurveyTakenRepository;
 use App\Entity\Survey;
 use App\Service\SurveyManager;

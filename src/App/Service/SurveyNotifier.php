@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\AssistantHistory;
+use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Entity\SurveyNotification;
 use App\Entity\SurveyNotificationCollection;
 use App\Entity\SurveyTaken;

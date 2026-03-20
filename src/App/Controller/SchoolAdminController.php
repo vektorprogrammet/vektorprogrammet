@@ -3,17 +3,17 @@
 namespace App\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\AssistantHistory;
+use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Entity\Department;
-use App\Entity\Repository\AssistantHistoryRepository;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\SchoolRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\School;
 use App\Entity\User;
-use App\Event\AssistantHistoryCreatedEvent;
-use App\Form\Type\CreateAssistantHistoryType;
+use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
+use App\Operations\Form\CreateAssistantHistoryType;
 use App\Form\Type\CreateSchoolType;
 use App\Role\Roles;
 use Doctrine\ORM\EntityManagerInterface;

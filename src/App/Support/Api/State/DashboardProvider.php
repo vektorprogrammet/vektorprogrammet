@@ -7,7 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Support\Api\Resource\DashboardResource;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
-use App\Entity\Repository\AssistantHistoryRepository;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\User;
 use App\Service\ApplicationManager;

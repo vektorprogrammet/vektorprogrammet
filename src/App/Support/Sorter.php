@@ -2,7 +2,7 @@
 
 namespace App\Support;
 
-use App\Entity\Receipt;
+use App\Operations\Infrastructure\Entity\Receipt;
 use App\Shared\Contracts\TeamMembershipInterface;
 use App\Entity\User;
 

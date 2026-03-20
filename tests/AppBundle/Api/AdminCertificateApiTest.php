@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\AssistantHistory;
+use App\Operations\Infrastructure\Entity\AssistantHistory;
 use Tests\BaseWebTestCase;
 
 class AdminCertificateApiTest extends BaseWebTestCase

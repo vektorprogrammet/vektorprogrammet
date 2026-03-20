@@ -3,7 +3,7 @@
 namespace App\Service;
 
 use App\Entity\AdmissionSubscriber;
-use App\Entity\Receipt;
+use App\Operations\Infrastructure\Entity\Receipt;
 use App\Content\Infrastructure\Entity\SupportTicket;
 use App\Support\Infrastructure\Mailer\MailerInterface;
 use Symfony\Component\Mime\Address;

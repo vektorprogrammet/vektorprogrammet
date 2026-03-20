@@ -4,7 +4,7 @@ namespace App\Service;
 
 use App\Entity\AdmissionPeriod;
 use App\Entity\Application;
-use App\Entity\AssistantHistory;
+use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Entity\Department;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;

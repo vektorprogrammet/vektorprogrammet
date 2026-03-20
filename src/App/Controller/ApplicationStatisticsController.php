@@ -7,7 +7,7 @@ use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Service\ApplicationData;
-use App\Service\AssistantHistoryData;
+use App\Operations\Infrastructure\AssistantHistoryData;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

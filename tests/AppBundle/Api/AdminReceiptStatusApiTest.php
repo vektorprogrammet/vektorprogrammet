@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Receipt;
+use App\Operations\Infrastructure\Entity\Receipt;
 use Tests\BaseWebTestCase;
 
 class AdminReceiptStatusApiTest extends BaseWebTestCase

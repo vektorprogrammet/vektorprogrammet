@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Receipt;
+use App\Operations\Infrastructure\Entity\Receipt;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 

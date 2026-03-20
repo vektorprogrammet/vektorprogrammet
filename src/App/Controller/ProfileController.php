@@ -3,14 +3,14 @@
 namespace App\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Repository\AssistantHistoryRepository;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Entity\Repository\ExecutiveBoardMembershipRepository;
 use App\Entity\Repository\RoleRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\SignatureRepository;
+use App\Operations\Infrastructure\Repository\SignatureRepository;
 use App\Entity\Repository\TeamMembershipRepository;
-use App\Entity\Signature;
+use App\Operations\Infrastructure\Entity\Signature;
 use App\Entity\User;
 use App\Event\UserEvent;
 use App\Form\Type\EditUserPasswordType;

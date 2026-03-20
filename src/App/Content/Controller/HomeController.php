@@ -4,7 +4,7 @@ namespace App\Content\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Content\Infrastructure\Repository\ArticleRepository;
-use App\Entity\Repository\AssistantHistoryRepository;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Entity\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;

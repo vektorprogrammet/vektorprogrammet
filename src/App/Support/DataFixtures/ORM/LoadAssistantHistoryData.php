@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\AssistantHistory;
+use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Entity\Department;
 use App\Entity\School;
 use App\Shared\Entity\Semester;

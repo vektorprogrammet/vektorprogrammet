@@ -4,19 +4,19 @@ namespace App\Content\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Content\Infrastructure\Entity\Feedback;
-use App\Entity\Receipt;
+use App\Operations\Infrastructure\Entity\Receipt;
 use App\Entity\Repository\AdmissionPeriodRepository;
 use App\Entity\Repository\ApplicationRepository;
 use App\Content\Infrastructure\Repository\ChangeLogItemRepository;
 use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\ReceiptRepository;
+use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\SurveyRepository;
 use App\Entity\Repository\UserRepository;
 use App\Content\Form\FeedbackType;
 use App\Service\AdmissionStatistics;
 use App\Support\Sorter;
-use App\Utils\ReceiptStatistics;
+use App\Operations\Domain\Rules\ReceiptStatistics;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 

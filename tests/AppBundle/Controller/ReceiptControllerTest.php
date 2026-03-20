@@ -2,7 +2,7 @@
 
 namespace Tests\App\Controller;
 
-use App\Entity\Receipt;
+use App\Operations\Infrastructure\Entity\Receipt;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Tests\BaseWebTestCase;

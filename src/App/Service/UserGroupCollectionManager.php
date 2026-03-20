@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\AssistantHistory;
+use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Entity\TeamMembership;
 use App\Entity\UserGroup;
 use App\Entity\UserGroupCollection;
