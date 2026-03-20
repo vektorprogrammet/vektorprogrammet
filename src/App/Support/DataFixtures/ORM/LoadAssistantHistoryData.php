@@ -6,7 +6,7 @@ use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

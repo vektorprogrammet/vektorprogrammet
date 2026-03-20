@@ -5,7 +5,7 @@ namespace App\Interview\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Interview\Infrastructure\Repository\InterviewRepository;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Domain\Events\InterviewEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;

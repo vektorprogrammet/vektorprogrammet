@@ -3,7 +3,7 @@
 namespace App\Organization\Infrastructure\Subscriber;
 
 use App\Organization\Domain\Events\TeamMembershipEvent;
-use App\Service\RoleManager;
+use App\Identity\Infrastructure\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -7,7 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Interview\Api\Resource\InterviewAssignInput;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Interview\Infrastructure\Entity\InterviewSchema;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;

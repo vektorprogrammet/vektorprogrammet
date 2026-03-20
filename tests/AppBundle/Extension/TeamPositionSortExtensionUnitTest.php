@@ -10,7 +10,7 @@ use App\Organization\Infrastructure\Entity\Position;
 use App\Shared\Entity\Semester;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamMembership;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Support\FilterService;
 use App\Support\Sorter;
 use App\Organization\Twig\TeamPositionSortExtension;

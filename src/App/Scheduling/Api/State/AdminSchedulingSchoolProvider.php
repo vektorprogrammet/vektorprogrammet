@@ -7,7 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Scheduling\Api\Resource\AdminSchedulingSchoolResource;
 use App\Scheduling\Infrastructure\Repository\SchoolCapacityRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class AdminSchedulingSchoolProvider implements ProviderInterface

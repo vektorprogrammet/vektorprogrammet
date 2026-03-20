@@ -123,7 +123,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         // Use admin's email -- an existing user
         $container = static::getContainer();
         $em = $container->get(EntityManagerInterface::class);
-        $existingUser = $em->getRepository(\App\Entity\User::class)->findOneBy(['user_name' => 'admin']);
+        $existingUser = $em->getRepository(\App\Identity\Infrastructure\Entity\User::class)->findOneBy(['user_name' => 'admin']);
         $existingEmail = $existingUser->getEmail();
         $fos = $em->getRepository(\App\Organization\Infrastructure\Entity\FieldOfStudy::class)->findAll()[0];
         $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];

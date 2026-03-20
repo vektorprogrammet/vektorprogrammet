@@ -2,7 +2,7 @@
 
 namespace App\Support\Infrastructure;
 
-use App\Service\UserService;
+use App\Identity\Infrastructure\UserService;
 use App\Support\Infrastructure\Slack\SlackMessenger;
 use Monolog\Logger;
 use Psr\Log\LoggerInterface;

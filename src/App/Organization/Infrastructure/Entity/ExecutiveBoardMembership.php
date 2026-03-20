@@ -2,7 +2,7 @@
 
 namespace App\Organization\Infrastructure\Entity;
 
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardMembershipRepository;
 use App\Shared\Contracts\TeamMembershipInterface;
 use Doctrine\ORM\Mapping as ORM;

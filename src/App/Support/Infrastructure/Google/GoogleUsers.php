@@ -2,7 +2,7 @@
 
 namespace App\Support\Infrastructure\Google;
 
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 
 class GoogleUsers extends GoogleService
 {

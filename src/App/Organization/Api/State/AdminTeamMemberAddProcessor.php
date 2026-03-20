@@ -8,7 +8,7 @@ use App\Organization\Infrastructure\Entity\Position;
 use App\Shared\Entity\Semester;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamMembership;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Domain\Events\TeamMembershipEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;

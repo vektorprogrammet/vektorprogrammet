@@ -6,7 +6,7 @@ use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

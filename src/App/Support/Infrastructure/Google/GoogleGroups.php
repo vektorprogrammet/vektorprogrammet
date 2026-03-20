@@ -3,7 +3,7 @@
 namespace App\Support\Infrastructure\Google;
 
 use App\Organization\Infrastructure\Entity\Team;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 
 class GoogleGroups extends GoogleService
 {

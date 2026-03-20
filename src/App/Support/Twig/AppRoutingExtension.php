@@ -2,7 +2,7 @@
 
 namespace App\Support\Twig;
 
-use App\Service\AccessControlService;
+use App\Identity\Infrastructure\AccessControlService;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;

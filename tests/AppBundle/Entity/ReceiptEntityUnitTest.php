@@ -3,7 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Operations\Infrastructure\Entity\Receipt;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class ReceiptEntityUnitTest extends TestCase

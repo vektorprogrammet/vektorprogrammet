@@ -11,7 +11,7 @@ use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamApplication;
 use App\Organization\Domain\Events\TeamApplicationCreatedEvent;
 use App\Organization\Form\TeamApplicationType;
-use App\Role\Roles;
+use App\Identity\Domain\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\Request;

@@ -5,7 +5,7 @@ namespace App\Admission\Infrastructure\Repository;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Organization\Infrastructure\Entity\Department;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;

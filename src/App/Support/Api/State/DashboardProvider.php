@@ -9,7 +9,7 @@ use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Admission\Infrastructure\ApplicationManager;
 use Symfony\Bundle\SecurityBundle\Security;
 

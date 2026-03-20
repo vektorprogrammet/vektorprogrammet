@@ -4,7 +4,7 @@ namespace App\Operations\Infrastructure\Entity;
 
 use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Entity\School;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;

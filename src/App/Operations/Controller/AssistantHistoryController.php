@@ -7,7 +7,7 @@ use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Operations\Form\CreateAssistantHistoryType;
-use App\Role\Roles;
+use App\Identity\Domain\Roles;
 use App\Support\Infrastructure\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;

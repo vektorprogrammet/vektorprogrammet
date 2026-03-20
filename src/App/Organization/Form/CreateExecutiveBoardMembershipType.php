@@ -3,9 +3,9 @@
 namespace App\Organization\Form;
 
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\UserRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Shared\Entity\Semester;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

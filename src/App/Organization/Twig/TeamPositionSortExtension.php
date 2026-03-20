@@ -3,7 +3,7 @@
 namespace App\Organization\Twig;
 
 use App\Shared\Contracts\TeamInterface;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Support\FilterService;
 use App\Support\Sorter;
 use Twig\Extension\AbstractExtension;

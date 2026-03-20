@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Content\Api\Resource\PartnersResource;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class PartnersProvider implements ProviderInterface

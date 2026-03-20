@@ -3,7 +3,7 @@
 namespace App\Organization\Infrastructure\Repository;
 
 use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

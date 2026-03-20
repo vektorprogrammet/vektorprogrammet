@@ -4,7 +4,7 @@ namespace App\Content\Form;
 
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Role;
+use App\Identity\Infrastructure\Entity\Role;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

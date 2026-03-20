@@ -3,7 +3,7 @@
 namespace App\Operations\Infrastructure\Repository;
 
 use App\Operations\Infrastructure\Entity\Receipt;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

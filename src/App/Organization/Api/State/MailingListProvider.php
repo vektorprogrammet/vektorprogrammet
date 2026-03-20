@@ -7,8 +7,8 @@ use ApiPlatform\State\ProviderInterface;
 use App\Organization\Api\Resource\MailingListResource;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\UserRepository;
-use App\Entity\User;
+use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 

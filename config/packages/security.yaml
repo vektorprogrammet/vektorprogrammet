@@ -15,15 +15,15 @@ security:
                 providers: [db_username, db_email, db_company_email]
         db_username:
             entity:
-                class: App\Entity\User
+                class: App\Identity\Infrastructure\Entity\User
                 property: user_name
         db_email:
             entity:
-                class: App\Entity\User
+                class: App\Identity\Infrastructure\Entity\User
                 property: email
         db_company_email:
             entity:
-                class: App\Entity\User
+                class: App\Identity\Infrastructure\Entity\User
                 property: companyEmail
 
     firewalls:
@@ -53,12 +53,12 @@ security:
             pattern: ^/admin
             http_basic: ~
             provider: chain_provider
-            user_checker: App\Security\UserChecker
+            user_checker: App\Identity\Infrastructure\UserChecker
         secured_area:
             lazy: true
             http_basic: ~
             provider: chain_provider
-            user_checker: App\Security\UserChecker
+            user_checker: App\Identity\Infrastructure\UserChecker
             entry_point: form_login
             form_login:
                 login_path: /login

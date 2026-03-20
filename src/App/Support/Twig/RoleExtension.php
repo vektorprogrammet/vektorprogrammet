@@ -2,9 +2,9 @@
 
 namespace App\Support\Twig;
 
-use App\Entity\User;
-use App\Role\Roles;
-use App\Service\RoleManager;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\RoleManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;
 use Twig\Extension\AbstractExtension;

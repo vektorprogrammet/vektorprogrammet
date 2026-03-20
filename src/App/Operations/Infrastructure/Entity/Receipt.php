@@ -2,7 +2,7 @@
 
 namespace App\Operations\Infrastructure\Entity;
 
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;

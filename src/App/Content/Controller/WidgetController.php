@@ -12,7 +12,7 @@ use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
-use App\Entity\Repository\UserRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Content\Form\FeedbackType;
 use App\Admission\Infrastructure\AdmissionStatistics;
 use App\Support\Sorter;

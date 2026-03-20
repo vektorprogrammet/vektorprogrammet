@@ -46,7 +46,7 @@ class UserDataForSubstituteType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => \App\Entity\User::class,
+            'data_class' => \App\Identity\Infrastructure\Entity\User::class,
             'department' => null,
         ]);
     }

@@ -4,7 +4,7 @@ namespace App\Survey\Infrastructure\Repository;
 
 use App\Survey\Infrastructure\Entity\Survey;
 use App\Survey\Infrastructure\Entity\SurveyTaken;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -6,7 +6,7 @@ use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Shared\SemesterUtil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;

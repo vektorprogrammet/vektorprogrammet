@@ -38,7 +38,7 @@ class AdminSurveyCreateProcessor implements ProcessorInterface
         }
 
         $user = $this->security->getUser();
-        if (!$user instanceof \App\Entity\User) {
+        if (!$user instanceof \App\Identity\Infrastructure\Entity\User) {
             throw new AccessDeniedHttpException('Authentication required.');
         }
 

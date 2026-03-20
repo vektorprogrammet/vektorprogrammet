@@ -7,7 +7,7 @@ use App\Content\Infrastructure\Repository\ArticleRepository;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\UserRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Support\Infrastructure\GeoLocation;
 use Symfony\Component\Routing\Attribute\Route;
 

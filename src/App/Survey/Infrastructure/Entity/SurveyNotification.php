@@ -2,7 +2,7 @@
 
 namespace App\Survey\Infrastructure\Entity;
 
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Survey\Infrastructure\Repository\SurveyNotificationRepository;
 use DateTime;
 use Doctrine\ORM\Mapping as ORM;

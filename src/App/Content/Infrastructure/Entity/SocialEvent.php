@@ -4,7 +4,7 @@ namespace App\Content\Infrastructure\Entity;
 
 use App\Content\Infrastructure\Repository\SocialEventRepository;
 use App\Organization\Infrastructure\Entity\Department;
-use App\Entity\Role;
+use App\Identity\Infrastructure\Entity\Role;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;

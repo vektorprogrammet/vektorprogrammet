@@ -7,7 +7,7 @@ use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Interview\Form\InterviewSchemaType;
-use App\Role\Roles;
+use App\Identity\Domain\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

@@ -10,7 +10,7 @@ use App\Shared\Repository\SemesterRepository;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
 use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
 use App\Survey\Infrastructure\Entity\Survey;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 

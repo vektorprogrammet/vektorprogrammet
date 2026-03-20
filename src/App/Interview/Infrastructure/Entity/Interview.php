@@ -3,7 +3,7 @@
 namespace App\Interview\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Entity\Application;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Infrastructure\Repository\InterviewRepository;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use Doctrine\Common\Collections\ArrayCollection;

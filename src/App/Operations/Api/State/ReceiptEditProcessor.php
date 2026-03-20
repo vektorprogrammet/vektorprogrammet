@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Operations\Api\Resource\ReceiptWriteResource;
 use App\Operations\Infrastructure\Entity\Receipt;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Domain\Events\ReceiptEvent;
 use App\Support\Infrastructure\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;

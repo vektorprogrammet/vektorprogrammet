@@ -64,7 +64,9 @@ services:
 
     App\Identity\:
         resource: '../src/App/Identity/'
-        exclude: '../src/App/Identity/Domain/{ValueObjects,Events}/'
+        exclude:
+            - '../src/App/Identity/Domain/{ValueObjects,Events}/'
+            - '../src/App/Identity/Infrastructure/UserMap.php'
 
     App\Scheduling\:
         resource: '../src/App/Scheduling/'
@@ -113,17 +115,13 @@ services:
         resource: '../src/App/Identity/Infrastructure/Subscriber/'
         bind:
             Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
-            $env: '%kernel.environment%'
 
     # Support DataFixtures
     App\Support\DataFixtures\ORM\:
         resource: '../src/App/Support/DataFixtures/ORM'
         tags: ['doctrine.fixture.orm']
 
-    App\Entity\Repository\:
-        resource: "../src/App/Entity/Repository/"
-
-    App\Role\ReversedRoleHierarchy:
+    App\Identity\Infrastructure\ReversedRoleHierarchy:
         arguments:
             $hierarchy: '%security.role_hierarchy.roles%'
 

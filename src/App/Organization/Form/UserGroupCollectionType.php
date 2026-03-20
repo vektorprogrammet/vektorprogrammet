@@ -5,7 +5,7 @@ namespace App\Organization\Form;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use App\Organization\Infrastructure\Entity\Team;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\UserGroupCollection;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

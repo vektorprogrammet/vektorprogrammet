@@ -7,7 +7,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\State\ProcessorInterface;
 use App\Content\Infrastructure\Entity\Article;
 use App\Content\Infrastructure\Repository\ArticleRepository;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\String\Slugger\SluggerInterface;

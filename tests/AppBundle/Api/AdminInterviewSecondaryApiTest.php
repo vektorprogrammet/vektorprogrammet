@@ -4,7 +4,7 @@ namespace Tests\AppBundle\Api;
 
 use App\Admission\Infrastructure\Entity\Application;
 use App\Interview\Infrastructure\Entity\Interview;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Tests\BaseWebTestCase;
 
 class AdminInterviewSecondaryApiTest extends BaseWebTestCase

@@ -5,7 +5,7 @@ namespace App\Organization\Controller;
 use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\UserRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Organization\Form\GenerateMailingListType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

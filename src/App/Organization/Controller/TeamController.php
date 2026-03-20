@@ -7,7 +7,7 @@ use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Organization\Infrastructure\Repository\TeamRepository;
 use App\Organization\Infrastructure\Entity\Team;
-use App\Role\Roles;
+use App\Identity\Domain\Roles;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 

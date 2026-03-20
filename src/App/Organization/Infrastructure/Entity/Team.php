@@ -9,7 +9,7 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Organization\Infrastructure\Repository\TeamRepository;
 use App\Shared\Contracts\DepartmentSemesterInterface;
 use App\Shared\Contracts\TeamInterface;
-use App\Validator\Constraints as CustomAssert;
+use App\Identity\Infrastructure\Validator as CustomAssert;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;

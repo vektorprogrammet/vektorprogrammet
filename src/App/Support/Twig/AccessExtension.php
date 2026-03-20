@@ -2,7 +2,7 @@
 
 namespace App\Support\Twig;
 
-use App\Service\AccessControlService;
+use App\Identity\Infrastructure\AccessControlService;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 

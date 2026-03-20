@@ -58,8 +58,12 @@
 - When moving entities to a new namespace, check for **unqualified class references** that relied on same-namespace resolution (e.g., `User::class` in Interview entities that was resolved via `App\Entity` namespace)
 - After moving entities, update `targetEntity:` references in **other** entities that point to the moved class (e.g., `User#interviews` → needs `use App\Interview\Infrastructure\Entity\Interview`)
 - Non-Doctrine classes in `Infrastructure/Entity/` (like InterviewDistribution) must be excluded from service autodiscovery — they have constructor args that aren't services
-- When moving subscribers out of `App\EventSubscriber\`, check if unused bindings remain (SmsSenderInterface, $env) — Symfony will error on unused bindings
+- When moving subscribers out of `App\EventSubscriber\`, check if unused bindings remain (SmsSenderInterface, $env, MailerInterface) — Symfony will error on unused bindings. Also check the **destination** subscriber block has all needed bindings.
 - DQL strings contain inline FQCNs (e.g., `FROM App\Entity\Interview i`) — must be updated alongside `use` statements
+- Twig `controller()` calls contain inline FQCNs (e.g., `controller('App\\Controller\\FooController::action')`) — must be updated despite the "don't update Twig FQCN references" rule (that applies to `path()` route names, not controller class refs)
+- `services.yaml` Twig extension blocks (`App\Twig\Extension\:`) must be updated when extensions move to a bounded context (e.g., `App\Organization\Twig\:`)
+- For high-impact entities like Department (referenced by every context), update `use` statements in the **remaining** `App\Entity\*` files (User, AccessRule) that use unqualified class names that previously resolved via same-namespace
+- `rm -rf var/cache/*` can fail with "Directory not empty" on macOS — use `find var/cache -type f -delete && find var/cache -type d -empty -delete` instead
 
 ## Entity Gotchas
 

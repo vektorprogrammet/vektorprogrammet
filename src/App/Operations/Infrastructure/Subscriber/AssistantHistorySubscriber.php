@@ -4,7 +4,7 @@ namespace App\Operations\Infrastructure\Subscriber;
 
 use App\Shared\Entity\Semester;
 use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
-use App\Service\UserRegistration;
+use App\Identity\Infrastructure\UserRegistration;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;

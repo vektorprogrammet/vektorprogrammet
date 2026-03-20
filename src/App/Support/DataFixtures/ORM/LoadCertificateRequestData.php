@@ -3,7 +3,7 @@
 namespace App\Support\DataFixtures\ORM;
 
 use App\Operations\Infrastructure\Entity\CertificateRequest;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

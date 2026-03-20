@@ -7,7 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;

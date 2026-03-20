@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Admission\Api\Resource\ExistingUserApplicationInput;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Admission\Domain\Events\ApplicationCreatedEvent;
 use App\Admission\Infrastructure\ApplicationAdmission;
 use Doctrine\ORM\EntityManagerInterface;

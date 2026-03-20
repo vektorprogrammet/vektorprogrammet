@@ -4,7 +4,7 @@ namespace App\Support;
 
 use App\Operations\Infrastructure\Entity\Receipt;
 use App\Shared\Contracts\TeamMembershipInterface;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 
 class Sorter
 {

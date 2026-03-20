@@ -3,7 +3,7 @@
 namespace App\Survey\Infrastructure\Entity;
 
 use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Scheduling\Infrastructure\Entity\School;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;

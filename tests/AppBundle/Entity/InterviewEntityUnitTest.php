@@ -6,7 +6,7 @@ use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\Entity\InterviewAnswer;
 use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Interview\Infrastructure\Entity\InterviewScore;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class InterviewEntityUnitTest extends TestCase

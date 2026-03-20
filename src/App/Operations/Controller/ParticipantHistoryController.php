@@ -7,7 +7,7 @@ use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Organization\Infrastructure\Repository\TeamMembershipRepository;
-use App\Role\Roles;
+use App\Identity\Domain\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

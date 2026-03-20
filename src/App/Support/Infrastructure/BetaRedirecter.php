@@ -2,9 +2,9 @@
 
 namespace App\Support\Infrastructure;
 
-use App\Service\RoleManager;
-use App\Entity\User;
-use App\Role\Roles;
+use App\Identity\Infrastructure\RoleManager;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Domain\Roles;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;

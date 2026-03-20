@@ -261,7 +261,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
         $team->setDepartment($department);
         $em->persist($team);
 
-        $user = $em->getRepository(\App\Entity\User::class)->findOneBy(['user_name' => 'admin']);
+        $user = $em->getRepository(\App\Identity\Infrastructure\Entity\User::class)->findOneBy(['user_name' => 'admin']);
         $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
         $position = $em->getRepository(\App\Organization\Infrastructure\Entity\Position::class)->findOneBy(['name' => 'Medlem']);
 

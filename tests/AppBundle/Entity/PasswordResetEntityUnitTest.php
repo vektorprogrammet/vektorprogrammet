@@ -2,8 +2,8 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\PasswordReset;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\PasswordReset;
+use App\Identity\Infrastructure\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class PasswordResetEntityUnitTest extends TestCase

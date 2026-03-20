@@ -11,7 +11,7 @@ use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Organization\Form\CreateExecutiveBoardMembershipType;
 use App\Organization\Form\CreateExecutiveBoardType;
-use App\Service\RoleManager;
+use App\Identity\Infrastructure\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

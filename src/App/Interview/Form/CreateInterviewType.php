@@ -3,7 +3,7 @@
 namespace App\Interview\Form;
 
 use App\Interview\Infrastructure\Entity\InterviewSchema;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

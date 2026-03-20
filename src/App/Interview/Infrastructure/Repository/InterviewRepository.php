@@ -5,7 +5,7 @@ namespace App\Interview\Infrastructure\Repository;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Shared\Entity\Semester;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

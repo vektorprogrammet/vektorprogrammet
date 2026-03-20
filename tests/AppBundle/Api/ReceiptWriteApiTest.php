@@ -344,7 +344,7 @@ class ReceiptWriteApiTest extends BaseWebTestCase
     private function getFixtureReceiptId(string $username): int
     {
         $em = static::getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository(\App\Entity\User::class)->findOneBy(['user_name' => $username]);
+        $user = $em->getRepository(\App\Identity\Infrastructure\Entity\User::class)->findOneBy(['user_name' => $username]);
         $this->assertNotNull($user, "Fixture user '$username' not found");
 
         $receipt = $em->getRepository(Receipt::class)->findOneBy([
@@ -363,7 +363,7 @@ class ReceiptWriteApiTest extends BaseWebTestCase
     private function createRefundedReceipt(string $username): int
     {
         $em = static::getContainer()->get('doctrine')->getManager();
-        $user = $em->getRepository(\App\Entity\User::class)->findOneBy(['user_name' => $username]);
+        $user = $em->getRepository(\App\Identity\Infrastructure\Entity\User::class)->findOneBy(['user_name' => $username]);
         $this->assertNotNull($user, "Fixture user '$username' not found");
 
         $receipt = new Receipt();

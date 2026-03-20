@@ -2,7 +2,7 @@
 
 namespace App\Shared\Contracts;
 
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Shared\Entity\Semester;
 
 interface TeamMembershipInterface

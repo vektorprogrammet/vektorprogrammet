@@ -5,7 +5,7 @@ namespace App\Organization\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
-use App\Service\RoleManager;
+use App\Identity\Infrastructure\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 

@@ -47,6 +47,10 @@ organization:
     resource: "../src/App/Organization/Controller/"
     type: attribute
 
+identity:
+    resource: "../src/App/Identity/Controller/"
+    type: attribute
+
 _liip_imagine:
     resource: "@LiipImagineBundle/Resources/config/routing.yaml"
 

@@ -11,7 +11,7 @@ use ApiPlatform\Metadata\Put;
 use App\Content\Api\State\ArticleProcessor;
 use App\Content\Infrastructure\Repository\ArticleRepository;
 use App\Organization\Infrastructure\Entity\Department;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

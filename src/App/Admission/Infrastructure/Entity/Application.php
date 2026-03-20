@@ -6,7 +6,7 @@ use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Admission\Infrastructure\Validator as CustomAssert;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Organization\Infrastructure\Entity\Team;
-use App\Entity\User;
+use App\Identity\Infrastructure\Entity\User;
 use App\Shared\Contracts\DepartmentSemesterInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
