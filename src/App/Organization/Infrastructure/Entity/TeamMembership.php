@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
@@ -204,7 +206,7 @@ class TeamMembership implements TeamMembershipInterface, \Stringable
     /**
      * Get endSemester.
      *
-     * @return Semester
+     * @return Semester|null
      */
     public function getEndSemester()
     {

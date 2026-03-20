@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Repository;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;

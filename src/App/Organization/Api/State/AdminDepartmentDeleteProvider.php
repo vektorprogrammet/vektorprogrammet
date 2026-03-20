@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -19,7 +21,7 @@ class AdminDepartmentDeleteProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminDepartmentDeleteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $department = $id ? $this->em->getRepository(Department::class)->find($id) : null;
+        $department = $id !== null ? $this->em->getRepository(Department::class)->find($id) : null;
 
         if ($department === null) {
             throw new NotFoundHttpException('Department not found.');

@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Subscriber;
 
 use App\Organization\Domain\Events\TeamApplicationCreatedEvent;
 use App\Support\Infrastructure\Mailer\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\HttpFoundation\Session\FlashBagAwareSessionInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;
@@ -19,9 +22,9 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
     /**
      * Returns an array of event names this subscriber wants to listen to.
      *
-     * @return array The event names to listen to
+     * @return array<string, list<array{0: string, 1?: int}|int|string>|string>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             TeamApplicationCreatedEvent::NAME => [
@@ -72,8 +75,11 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
         $this->mailer->send($receipt);
     }
 
-    public function addFlashMessage()
+    public function addFlashMessage(): void
     {
-        $this->requestStack->getSession()->getFlashBag()->add('success', 'Søknaden er mottatt.');
+        $session = $this->requestStack->getSession();
+        if ($session instanceof FlashBagAwareSessionInterface) {
+            $session->getFlashBag()->add('success', 'Søknaden er mottatt.');
+        }
     }
 }

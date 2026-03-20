@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Identity\Infrastructure\Entity\User;
@@ -179,7 +181,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface, \Stringable
     }
 
     /**
-     * @return TeamInterface
+     * @return \App\Shared\Contracts\TeamInterface
      */
     public function getTeam()
     {

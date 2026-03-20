@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Controller;
 
 use App\Support\Controller\BaseController;
@@ -38,9 +40,11 @@ class ControlPanelController extends BaseController
 
     public function showSBSAction()
     {
-        $currentAdmissionPeriod = $this->getUser()->getDepartment()->getCurrentAdmissionPeriod();
+        /** @var \App\Identity\Infrastructure\Entity\User $user */
+        $user = $this->getUser();
+        $currentAdmissionPeriod = $user->getDepartment()->getCurrentAdmissionPeriod();
 
-        if ($currentAdmissionPeriod) {
+        if ($currentAdmissionPeriod !== null) {
             $this->sbsData->setAdmissionPeriod($currentAdmissionPeriod);
         }
 

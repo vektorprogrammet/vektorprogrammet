@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Form;
 
 use App\Shared\Repository\SemesterRepository;
@@ -25,8 +27,8 @@ class CreateExecutiveBoardMembershipType extends AbstractType
                 'label' => 'Bruker',
                 'class' => User::class,
                 'query_builder' => fn (UserRepository $ur) => $ur->createQueryBuilder('u')
-                    ->Join('u.fieldOfStudy', 'fos')
-                    ->Join('fos.department', 'd')
+                    ->join('u.fieldOfStudy', 'fos')
+                    ->join('fos.department', 'd')
                     ->where('d = :department')
                     ->setParameter('department', $this->departmentId)
                     ->addOrderBy('u.firstName', 'ASC'),

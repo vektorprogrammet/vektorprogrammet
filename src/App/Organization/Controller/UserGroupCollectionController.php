@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Controller;
 
 use App\Support\Controller\BaseController;
@@ -85,15 +87,12 @@ class UserGroupCollectionController extends BaseController
     public function deleteUserGroupCollectionAction(UserGroupCollection $userGroupCollection)
     {
         if (!$userGroupCollection->isDeletable()) {
-            $response['success'] = false;
-
-            return new JsonResponse($response);
+            return new JsonResponse(['success' => false]);
         }
 
         $this->em->remove($userGroupCollection);
         $this->em->flush();
-        $response['success'] = true;
 
-        return new JsonResponse($response);
+        return new JsonResponse(['success' => true]);
     }
 }

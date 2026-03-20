@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Identity\Infrastructure\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
@@ -13,6 +15,7 @@ use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Organization\Infrastructure\Entity\TeamMembership;
+use App\Shared\Contracts\TeamMembershipInterface;
 use App\Identity\Domain\Roles;
 use App\Identity\Api\State\PublicUserProfileProvider;
 use App\Identity\Infrastructure\Validator as CustomAssert;

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Domain\Events;
 
 use App\Organization\Infrastructure\Entity\TeamMembership;

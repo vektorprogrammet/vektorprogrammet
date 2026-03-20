@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -34,7 +36,7 @@ class MailingListProvider implements ProviderInterface
         $currentUser = $this->security->getUser();
 
         // Resolve department
-        $department = $departmentId
+        $department = $departmentId !== null
             ? $this->departmentRepo->find((int) $departmentId)
             : $currentUser->getDepartment();
 
@@ -43,7 +45,7 @@ class MailingListProvider implements ProviderInterface
         }
 
         // Resolve semester
-        $semester = $semesterId
+        $semester = $semesterId !== null
             ? $this->semesterRepo->find((int) $semesterId)
             : $this->semesterRepo->findOrCreateCurrentSemester();
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Subscriber;
 
 use App\Organization\Domain\Events\TeamMembershipEvent;
@@ -17,9 +19,9 @@ class IntroductionEmailSubscriber implements EventSubscriberInterface
     /**
      * Returns an array of event names this subscriber wants to listen to.
      *
-     * @return array The event names to listen to
+     * @return array<string, list<array{0: string, 1?: int}|int|string>|string>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             TeamMembershipEvent::CREATED => [

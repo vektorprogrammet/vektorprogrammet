@@ -1,9 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Contracts\TeamInterface;
+use App\Shared\Contracts\TeamMembershipInterface;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -28,18 +32,18 @@ class ExecutiveBoard implements TeamInterface, \Stringable
     private $description;
 
     #[ORM\Column(type: 'string', nullable: true, name: 'short_description')]
-    #[Assert\Length(maxMessage: 'Maks 125 Tegn', max: '125')]
+    #[Assert\Length(maxMessage: 'Maks 125 Tegn', max: 125)]
     private $shortDescription;
 
     /**
      * @var ExecutiveBoardMembership[]
      */
     #[ORM\OneToMany(targetEntity: ExecutiveBoardMembership::class, mappedBy: 'board')]
-    private $boardMemberships;
+    private array $boardMemberships = [];
 
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
     public function getType()
@@ -150,7 +154,7 @@ class ExecutiveBoard implements TeamInterface, \Stringable
     }
 
     /**
-     * @return ExecutiveBoardMembership[]
+     * @return TeamMembershipInterface[]
      */
     public function getTeamMemberships()
     {
@@ -174,7 +178,7 @@ class ExecutiveBoard implements TeamInterface, \Stringable
     }
 
     /**
-     * @return ExecutiveBoardMembership[]
+     * @return TeamMembershipInterface[]
      */
     public function getActiveTeamMemberships()
     {
@@ -192,12 +196,12 @@ class ExecutiveBoard implements TeamInterface, \Stringable
     /**
      * @return User[]
      */
-    public function getActiveUsers()
+    public function getActiveUsers(): array
     {
         $activeUsers = [];
 
         foreach ($this->getActiveTeamMemberships() as $activeExecutiveBoardHistory) {
-            if (!in_array($activeExecutiveBoardHistory->getUser(), $activeUsers)) {
+            if (!in_array($activeExecutiveBoardHistory->getUser(), $activeUsers, true)) {
                 $activeUsers[] = $activeExecutiveBoardHistory->getUser();
             }
         }

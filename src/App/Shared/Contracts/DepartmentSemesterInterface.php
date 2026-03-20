@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Shared\Contracts;
 
 /**
@@ -7,13 +9,7 @@ namespace App\Shared\Contracts;
  */
 interface DepartmentSemesterInterface
 {
-    /**
-     * @return Department
-     */
     public function getDepartment();
 
-    /**
-     * @return Semester
-     */
     public function getSemester();
 }

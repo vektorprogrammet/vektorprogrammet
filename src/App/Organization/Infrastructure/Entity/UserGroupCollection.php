@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Identity\Infrastructure\Entity\User;
@@ -32,34 +34,34 @@ class UserGroupCollection implements \Stringable
     private $numberUserGroups;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection<int, UserGroup>
      */
     #[ORM\OneToMany(targetEntity: UserGroup::class, mappedBy: 'userGroupCollection', cascade: ['remove'])]
-    private $userGroups;
+    private ArrayCollection $userGroups;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection<int, Team>
      */
     #[ORM\ManyToMany(targetEntity: Team::class)]
-    private $teams;
+    private ArrayCollection $teams;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection<int, Semester>
      */
     #[ORM\ManyToMany(targetEntity: Semester::class)]
-    private $semesters;
+    private ArrayCollection $semesters;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class)]
-    private $users;
+    private ArrayCollection $users;
 
     /**
-     * @var ArrayCollection
+     * @var ArrayCollection<int, Department>
      */
     #[ORM\ManyToMany(targetEntity: Department::class)]
-    private $assistantsDepartments;
+    private ArrayCollection $assistantsDepartments;
 
     /**
      * @var array
@@ -75,11 +77,11 @@ class UserGroupCollection implements \Stringable
 
     public function __construct()
     {
-        $this->userGroups = [];
+        $this->userGroups = new ArrayCollection();
         $this->name = '';
-        $this->teams = [];
-        $this->semesters = [];
-        $this->assistantsDepartments = [];
+        $this->teams = new ArrayCollection();
+        $this->semesters = new ArrayCollection();
+        $this->assistantsDepartments = new ArrayCollection();
         $this->assistantBolks = [];
         $this->numberUserGroups = 2;
         $this->deletable = true;
@@ -95,7 +97,7 @@ class UserGroupCollection implements \Stringable
      */
     public function setUserGroups(array $userGroups): void
     {
-        $this->userGroups = $userGroups;
+        $this->userGroups = new ArrayCollection($userGroups);
     }
 
     /**
@@ -107,33 +109,33 @@ class UserGroupCollection implements \Stringable
     }
 
     /**
-     * @return UserGroup[]
+     * @return ArrayCollection<int, UserGroup>
      */
-    public function getUserGroups()
+    public function getUserGroups(): ArrayCollection
     {
         return $this->userGroups;
     }
 
     /**
-     * @return Team[]
+     * @return ArrayCollection<int, Team>
      */
-    public function getTeams()
+    public function getTeams(): ArrayCollection
     {
         return $this->teams;
     }
 
     /**
-     * @return Semester[]
+     * @return ArrayCollection<int, Semester>
      */
-    public function getSemesters()
+    public function getSemesters(): ArrayCollection
     {
         return $this->semesters;
     }
 
     /**
-     * @return Department[]
+     * @return ArrayCollection<int, Department>
      */
-    public function getAssistantsDepartments()
+    public function getAssistantsDepartments(): ArrayCollection
     {
         return $this->assistantsDepartments;
     }
@@ -161,7 +163,7 @@ class UserGroupCollection implements \Stringable
      */
     public function setTeams(array $teams): void
     {
-        $this->teams = $teams;
+        $this->teams = new ArrayCollection($teams);
     }
 
     /**
@@ -169,7 +171,7 @@ class UserGroupCollection implements \Stringable
      */
     public function setSemesters(array $semesters): void
     {
-        $this->semesters = $semesters;
+        $this->semesters = new ArrayCollection($semesters);
     }
 
     /**
@@ -177,7 +179,7 @@ class UserGroupCollection implements \Stringable
      */
     public function setAssistantsDepartments(array $assistantsDepartments): void
     {
-        $this->assistantsDepartments = $assistantsDepartments;
+        $this->assistantsDepartments = new ArrayCollection($assistantsDepartments);
     }
 
     /**
@@ -208,11 +210,6 @@ class UserGroupCollection implements \Stringable
         return $numberUsers;
     }
 
-    public function setNumberTotalUsers(int $numberTotalUsers): void
-    {
-        $this->numberTotalUsers = $numberTotalUsers;
-    }
-
     public function isDeletable(): bool
     {
         return $this->deletable;
@@ -224,13 +221,16 @@ class UserGroupCollection implements \Stringable
     }
 
     /**
-     * @return ArrayCollection
+     * @return ArrayCollection<int, User>
      */
-    public function getUsers()
+    public function getUsers(): ArrayCollection
     {
         return $this->users;
     }
 
+    /**
+     * @param ArrayCollection<int, User> $users
+     */
     public function setUsers(ArrayCollection $users): void
     {
         $this->users = $users;

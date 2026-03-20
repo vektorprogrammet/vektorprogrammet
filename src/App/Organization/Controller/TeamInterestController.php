@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Controller;
 
 use App\Support\Controller\BaseController;
@@ -16,7 +18,6 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 
 class TeamInterestController extends BaseController
@@ -31,8 +32,6 @@ class TeamInterestController extends BaseController
     }
 
     /**
-     * @param Department|null $department
-     *
      * @return RedirectResponse|Response
      *
      * @throws NoResultException
@@ -42,9 +41,6 @@ class TeamInterestController extends BaseController
     public function showTeamInterestFormAction(Department $department, Request $request)
     {
         $semester = $this->getCurrentSemester();
-        if ($semester === null) {
-            throw new BadRequestHttpException('No current semester');
-        }
 
         $teamInterest = new TeamInterest();
         $teamInterest->setSemester($semester);
