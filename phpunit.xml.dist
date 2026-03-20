@@ -40,7 +40,7 @@
             <directory>vendor</directory>
             <directory>var</directory>
             <directory>tests</directory>
-            <directory suffix=".php">src/App/AssistantScheduling/Webapp</directory>
+
         </exclude>
     </coverage>
     <extensions>

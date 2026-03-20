@@ -42,9 +42,6 @@ services:
             App\Support\Infrastructure\Mailer\MailerInterface: '@App\Support\Infrastructure\Mailer\Mailer'
             App\Support\Infrastructure\Sms\SmsSenderInterface: '@App\Support\Infrastructure\Sms\SmsSender'
 
-    App\:
-        resource: "../src/App/{Command,Controller,EventSubscriber,Form,Role,Security,Service,State,Twig,Validator}"
-
     # Bounded context autodiscovery
     App\Admission\:
         resource: '../src/App/Admission/'
@@ -185,14 +182,6 @@ services:
         public: false
         tags: [serializer.normalizer]
 
-    # Event subscribers (from event_subscribers.yml)
-    App\EventSubscriber\:
-        resource: "../src/App/EventSubscriber"
-        tags:
-            - { name: kernel.event_subscriber }
-        bind:
-            Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
-
     App\Support\EventSubscriber\:
         resource: "../src/App/Support/EventSubscriber"
         tags:
@@ -214,12 +203,6 @@ services:
         class: App\Support\Form\FieldTypeHelpExtension
         tags:
             - { name: form.type_extension, extended_type: Symfony\Component\Form\Extension\Core\Type\FormType }
-
-    # Validator constraint validators (from validators.yml)
-    App\Validator\Constraints\:
-        resource: "../src/App/Validator/Constraints"
-        tags:
-            - { name: validator.constraint_validator }
 
     # Twig extensions (from twig.yml)
     App\Organization\Twig\:

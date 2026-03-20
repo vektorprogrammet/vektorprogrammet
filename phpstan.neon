@@ -9,6 +9,5 @@ parameters:
         - src/
     excludePaths:
         - var/ (?)
-        - src/App/AutoMapper/
     symfony:
         containerXmlPath: var/cache/dev/KernelDevDebugContainer.xml
