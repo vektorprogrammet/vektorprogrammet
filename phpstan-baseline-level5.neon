@@ -1,0 +1,2143 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Admission/Api/State/AdminApplicationCreateProcessor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Identity\\Infrastructure\\Entity\\User and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Admission/Api/State/AdminApplicationCreateProcessor.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: src/App/Admission/Api/State/AdminApplicationListProvider.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type App\\Interview\\Infrastructure\\Entity\\Interview\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 3
+			path: src/App/Admission/Api/State/AdminApplicationListProvider.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Admission/Api/State/AdminApplicationListProvider.php
+
+		-
+			message: '#^Property App\\Admission\\Api\\Resource\\AdminSubstituteResource\:\:\$yearOfStudy \(int\|null\) does not accept string\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Admission/Api/State/AdminSubstituteListProvider.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type App\\Organization\\Infrastructure\\Entity\\FieldOfStudy\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Admission/Api/State/AdmissionStatisticsProvider.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Admission/Api/State/AdmissionSubscriberProcessor.php
+
+		-
+			message: '#^Property App\\Admission\\Api\\State\\AdmissionSubscriberProcessor\:\:\$em is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/App/Admission/Api/State/AdmissionSubscriberProcessor.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/App/Admission/Api/State/AdmissionSubscriberProcessor.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type App\\Interview\\Infrastructure\\Entity\\Interview\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: src/App/Admission/Api/State/ApplicationDetailProvider.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: src/App/Admission/Api/State/ApplicationDetailProvider.php
+
+		-
+			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Admission/Api/State/ApplicationProcessor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Organization\\Infrastructure\\Entity\\FieldOfStudy and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Admission/Api/State/ExistingUserApplicationProcessor.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: src/App/Admission/Controller/AdmissionAdminController.php
+
+		-
+			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Semester\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Admission/Controller/AdmissionAdminController.php
+
+		-
+			message: '#^Offset ''id'' does not exist on bool\|float\|int\|string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: src/App/Admission/Controller/AdmissionAdminController.php
+
+		-
+			message: '#^Parameter \#1 \$array \(array\<App\\Interview\\Infrastructure\\Entity\\Interview\>\) to function array_filter does not contain falsy values, the array will always stay the same\.$#'
+			identifier: arrayFilter.same
+			count: 1
+			path: src/App/Admission/Controller/AdmissionAdminController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findAssignedByUserAndAdmissionPeriod\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Admission/Controller/AdmissionAdminController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Admission/Controller/AdmissionPeriodController.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Admission/Controller/AdmissionPeriodController.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Admission/Controller/AdmissionSubscriberController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/App/Admission/Controller/ExistingUserAdmissionController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\ApplicationAdmission\:\:createApplicationForExistingAssistant\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Admission/Controller/ExistingUserAdmissionController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\ApplicationAdmission\:\:renderErrorPage\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Admission/Controller/ExistingUserAdmissionController.php
+
+		-
+			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Semester\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/App/Admission/Controller/SubstituteController.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
+
+		-
+			message: '#^Property App\\Admission\\Infrastructure\\AdmissionNotifier\:\:\$validator is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Organization\\Infrastructure\\Entity\\FieldOfStudy and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Admission/Infrastructure/ApplicationAdmission.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/App/Admission/Infrastructure/ApplicationManager.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Interview\\Infrastructure\\Entity\\Interview and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Admission/Infrastructure/ApplicationManager.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type App\\Interview\\Infrastructure\\Entity\\Interview\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 4
+			path: src/App/Admission/Infrastructure/ApplicationManager.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Admission/Infrastructure/ApplicationManager.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between DateTime and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Admission/Infrastructure/Entity/AdmissionPeriod.php
+
+		-
+			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getDepartment\(\) has invalid return type App\\Shared\\Contracts\\Department\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Admission/Infrastructure/Entity/Application.php
+
+		-
+			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getDepartment\(\) should return App\\Shared\\Contracts\\Department but returns App\\Organization\\Infrastructure\\Entity\\Department\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Admission/Infrastructure/Entity/Application.php
+
+		-
+			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getSemester\(\) has invalid return type App\\Shared\\Contracts\\Semester\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Admission/Infrastructure/Entity/Application.php
+
+		-
+			message: '#^Method App\\Admission\\Infrastructure\\Entity\\Application\:\:getSemester\(\) should return App\\Shared\\Contracts\\Semester but returns App\\Shared\\Entity\\Semester\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Admission/Infrastructure/Entity/Application.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(User\)\: Unexpected token "\\n     ", expected variable at offset 22 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Admission/Infrastructure/Entity/Application.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between null and null will always evaluate to false\.$#'
+			identifier: notIdentical.alwaysFalse
+			count: 4
+			path: src/App/Admission/Infrastructure/Repository/ApplicationRepository.php
+
+		-
+			message: '#^Call to method getEmail\(\) on an unknown class App\\Shared\\Contracts\\Department\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Admission/Infrastructure/Subscriber/ApplicationSubscriber.php
+
+		-
+			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/ApplicationEmailValidator.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/ApplicationEmailValidator.php
+
+		-
+			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between DateTime and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
+
+		-
+			message: '#^Parameter \#1 \$author of method App\\Content\\Infrastructure\\Entity\\Article\:\:setAuthor\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Content/Controller/ArticleAdminController.php
+
+		-
+			message: '#^Parameter \#1 \$limit of method App\\Content\\Infrastructure\\Repository\\ArticleRepository\:\:findLatestArticles\(\) expects null, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Content/Controller/ArticleController.php
+
+		-
+			message: '#^Parameter \#2 \$limit of method App\\Content\\Infrastructure\\Repository\\ArticleRepository\:\:findLatestArticlesByDepartment\(\) expects null, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Content/Controller/ArticleController.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/App/Content/Controller/ContactController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Organization\\Infrastructure\\Entity\\Department and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Content/Controller/ContactController.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Content/Controller/StaticContentController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findAssignedByUserAndAdmissionPeriod\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Content/Controller/WidgetController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Survey\\Infrastructure\\Repository\\SurveyRepository\:\:findAllNotTakenByUserAndSemester\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Content/Controller/WidgetController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Content/Controller/WidgetController.php
+
+		-
+			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/App/Content/Infrastructure/Entity/Feedback.php
+
+		-
+			message: '#^Parameter \$min of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/App/Content/Infrastructure/Entity/Feedback.php
+
+		-
+			message: '#^Call to function is_null\(\) with null will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 3
+			path: src/App/Content/Infrastructure/Repository/ArticleRepository.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between false and true will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 3
+			path: src/App/Content/Infrastructure/Repository/ArticleRepository.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Content/Infrastructure/Subscriber/SupportTicketSubscriber.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Content/Twig/StaticContentExtension.php
+
+		-
+			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserCreateProcessor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Organization\\Infrastructure\\Entity\\Department and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserDeleteProcessor.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type App\\Organization\\Infrastructure\\Entity\\FieldOfStudy\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserDeleteProcessor.php
+
+		-
+			message: '#^Parameter \#1 \$gender of method App\\Identity\\Infrastructure\\Entity\\User\:\:setGender\(\) expects string, int\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Api/State/ProfileProcessor.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Identity/Api/State/ProfileProvider.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/App/Identity/Controller/PasswordResetController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getCompanyEmail\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of class App\\Identity\\Domain\\Events\\UserEvent constructor expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Identity\\Infrastructure\\RoleManager\:\:userIsGranted\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\AssistantHistoryRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\SignatureRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Organization\\Infrastructure\\Repository\\ExecutiveBoardMembershipRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Organization\\Infrastructure\\Repository\\TeamMembershipRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Operations\\Infrastructure\\Entity\\Signature and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findActiveByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/SecurityController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/App/Identity/Controller/UserAdminController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Identity/Controller/UserController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:isActive\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Identity/Controller/UserController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Admission\\Infrastructure\\Repository\\ApplicationRepository\:\:findByUserInAdmissionPeriod\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Controller/UserController.php
+
+		-
+			message: '#^Call to function is_countable\(\) with array\<App\\Identity\\Infrastructure\\Entity\\Role\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Call to function is_countable\(\) with array\<App\\Identity\\Infrastructure\\Entity\\User\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Call to function is_countable\(\) with array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Call to function is_countable\(\) with array\<App\\Organization\\Infrastructure\\Entity\\Team\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Instanceof between App\\Identity\\Infrastructure\\Entity\\Role and App\\Identity\\Infrastructure\\Entity\\Role will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Call to function is_countable\(\) with array\<App\\Identity\\Infrastructure\\Entity\\Role\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/AccessRule.php
+
+		-
+			message: '#^Call to function is_countable\(\) with array\<App\\Identity\\Infrastructure\\Entity\\User\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/AccessRule.php
+
+		-
+			message: '#^Call to function is_countable\(\) with array\<App\\Organization\\Infrastructure\\Entity\\Team\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/AccessRule.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getPassword\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Call to function is_array\(\) with array\<App\\Identity\\Infrastructure\\Entity\\Role\> will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Call to method getTeam\(\) on an unknown class App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Cannot call method removeElement\(\) on array\<App\\Identity\\Infrastructure\\Entity\\Role\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Cannot call method toArray\(\) on array\<App\\Operations\\Infrastructure\\Entity\\AssistantHistory\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Method App\\Identity\\Infrastructure\\Entity\\User\:\:getActiveMemberships\(\) has invalid return type App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Method App\\Identity\\Infrastructure\\Entity\\User\:\:getActiveMemberships\(\) should return array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\> but returns array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\|App\\Organization\\Infrastructure\\Entity\\TeamMembership\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(Receipt\)\: Unexpected token "\\n     ", expected variable at offset 25 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Parameter \$memberships of method App\\Identity\\Infrastructure\\Entity\\User\:\:setMemberships\(\) has invalid type App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Property App\\Identity\\Infrastructure\\Entity\\User\:\:\$executiveBoardMemberships \(array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\>\) does not accept list\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Property App\\Identity\\Infrastructure\\Entity\\User\:\:\$roles \(array\<App\\Identity\\Infrastructure\\Entity\\Role\>\) does not accept Doctrine\\Common\\Collections\\ArrayCollection\<\*NEVER\*, \*NEVER\*\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Property App\\Identity\\Infrastructure\\Entity\\User\:\:\$teamMemberships \(array\<App\\Organization\\Infrastructure\\Entity\\TeamMembership\>\) does not accept list\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Result of && is always true\.$#'
+			identifier: booleanAnd.alwaysTrue
+			count: 1
+			path: src/App/Identity/Infrastructure/PasswordManager.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Identity\\Infrastructure\\Entity\\PasswordReset and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Identity/Infrastructure/PasswordManager.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Identity\\Infrastructure\\Entity\\User and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Identity/Infrastructure/PasswordManager.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Identity\\Infrastructure\\Entity\\User and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Identity/Infrastructure/PasswordManager.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getId\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Repository/UserRepository.php
+
+		-
+			message: '#^Instantiated class Symfony\\Component\\Security\\Core\\Exception\\UsernameNotFoundException not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Repository/UserRepository.php
+
+		-
+			message: '#^Throwing object of an unknown class Symfony\\Component\\Security\\Core\\Exception\\UsernameNotFoundException\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Repository/UserRepository.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
+			message: '#^Class App\\DataTransferObject\\UserDto not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/UserMap.php
+
+		-
+			message: '#^Parameter \#1 \$newUserCode of method App\\Identity\\Infrastructure\\Entity\\User\:\:setNewUserCode\(\) expects string, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Identity/Infrastructure/UserRegistration.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Identity\\Infrastructure\\Entity\\User and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Identity/Infrastructure/UserRegistration.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Identity/Infrastructure/UserRegistration.php
+
+		-
+			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Validator/UniqueCompanyEmailValidator.php
+
+		-
+			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Identity/Infrastructure/Validator/VektorEmailValidator.php
+
+		-
+			message: '#^Property App\\Interview\\Api\\Resource\\InterviewConductInput\:\:\$interviewScore \(array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\}\) does not accept default value of type array\{\}\.$#'
+			identifier: property.defaultValue
+			count: 1
+			path: src/App/Interview/Api/Resource/InterviewConductInput.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Interview\\Infrastructure\\Entity\\Interview and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewListProvider.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 2
+			path: src/App/Interview/Api/State/AdminInterviewListProvider.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewListProvider.php
+
+		-
+			message: '#^Offset ''question'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewSchemaCreateProcessor.php
+
+		-
+			message: '#^Offset ''type'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewSchemaCreateProcessor.php
+
+		-
+			message: '#^Offset ''question'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewSchemaEditProcessor.php
+
+		-
+			message: '#^Offset ''type'' on array\{question\: string, type\: string, helpText\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewSchemaEditProcessor.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Interview/Api/State/InterviewAcceptProcessor.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Interview/Api/State/InterviewCancelProcessor.php
+
+		-
+			message: '#^Offset ''explanatoryPower'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/InterviewConductProcessor.php
+
+		-
+			message: '#^Offset ''questionId'' on array\{questionId\: int, answer\: mixed\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/InterviewConductProcessor.php
+
+		-
+			message: '#^Offset ''roleModel'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/InterviewConductProcessor.php
+
+		-
+			message: '#^Offset ''suitability'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/InterviewConductProcessor.php
+
+		-
+			message: '#^Offset ''suitableAssistant'' on array\{explanatoryPower\: int, roleModel\: int, suitability\: int, suitableAssistant\: string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Interview/Api/State/InterviewConductProcessor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between int and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Interview/Api/State/InterviewConductProcessor.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Interview/Api/State/InterviewNewTimeProcessor.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Interview/Api/State/InterviewResponseProvider.php
+
+		-
+			message: '#^Ternary operator condition is always true\.$#'
+			identifier: ternary.alwaysTrue
+			count: 1
+			path: src/App/Interview/Api/State/InterviewResponseProvider.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Interview/Api/State/InterviewResponseProvider.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Form\\FormInterface\:\:isClicked\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Department\.$#'
+			identifier: class.notFound
+			count: 2
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Call to method getId\(\) on an unknown class App\\Shared\\Contracts\\Semester\.$#'
+			identifier: class.notFound
+			count: 3
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Offset ''id'' does not exist on bool\|float\|int\|string\.$#'
+			identifier: offsetAccess.notFound
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Parameter \#1 \$coInterviewer of method App\\Interview\\Infrastructure\\Entity\\Interview\:\:setCoInterviewer\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Parameter \#1 \$department of method App\\Identity\\Infrastructure\\Repository\\UserRepository\:\:findUsersInDepartmentWithTeamMembershipInSemester\(\) expects App\\Organization\\Infrastructure\\Entity\\Department, App\\Shared\\Contracts\\Department given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Parameter \#1 \$interview of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setInterview\(\) expects App\\Interview\\Infrastructure\\Entity\\Interview, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Parameter \#2 \$semester of method App\\Identity\\Infrastructure\\Repository\\UserRepository\:\:findUsersInDepartmentWithTeamMembershipInSemester\(\) expects App\\Shared\\Entity\\Semester, App\\Shared\\Contracts\\Semester given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Interview\\Infrastructure\\Entity\\Interview and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between null and App\\Interview\\Infrastructure\\Entity\\Interview will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Interview/Infrastructure/Command/SendListOfScheduledInterviewsCommand.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(string mapLink\)\: Unexpected token "mapLink", expected variable at offset 25 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Interview/Infrastructure/Entity/Interview.php
+
+		-
+			message: '#^Property App\\Interview\\Infrastructure\\Entity\\Interview\:\:\$application is never written, only read\.$#'
+			identifier: property.onlyRead
+			count: 1
+			path: src/App/Interview/Infrastructure/Entity/Interview.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: src/App/Interview/Infrastructure/Entity/Interview.php
+
+		-
+			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Infrastructure/Entity/InterviewQuestion.php
+
+		-
+			message: '#^Call to function is_array\(\) with Doctrine\\Common\\Collections\\Collection will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Call to function is_null\(\) with App\\Identity\\Infrastructure\\Entity\\User will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 2
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Interview\\Infrastructure\\Entity\\Interview\:\:isCoInterviewer\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Interview\\Infrastructure\\Entity\\Interview\:\:isInterviewer\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Interview/Infrastructure/Repository/InterviewRepository.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Interview/Infrastructure/Repository/InterviewRepository.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
+
+		-
+			message: '#^Parameter \#1 \$department of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendApplicationCountNotification\(\) expects App\\Organization\\Infrastructure\\Entity\\Department, App\\Shared\\Contracts\\Department given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
+
+		-
+			message: '#^Parameter \#1 \$department of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendInterviewsCompletedNotification\(\) expects App\\Organization\\Infrastructure\\Entity\\Department, App\\Shared\\Contracts\\Department given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
+
+		-
+			message: '#^Parameter \#2 \$semester of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendApplicationCountNotification\(\) expects App\\Shared\\Entity\\Semester, App\\Shared\\Contracts\\Semester given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
+
+		-
+			message: '#^Parameter \#2 \$semester of method App\\Interview\\Infrastructure\\InterviewNotificationManager\:\:sendInterviewsCompletedNotification\(\) expects App\\Shared\\Entity\\Semester, App\\Shared\\Contracts\\Semester given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
+
+		-
+			message: '#^Access to an undefined property Symfony\\Component\\Validator\\Constraint\:\:\$message\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Interview/Infrastructure/Validator/InterviewAnswerValidator.php
+
+		-
+			message: '#^Instanceof between App\\Interview\\Infrastructure\\Entity\\InterviewAnswer and App\\Interview\\Infrastructure\\Entity\\InterviewAnswer will always evaluate to true\.$#'
+			identifier: instanceof.alwaysTrue
+			count: 1
+			path: src/App/Interview/Infrastructure/Validator/InterviewAnswerValidator.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Organization\\Infrastructure\\Entity\\Department and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Operations/Api/State/AdminAssistantHistoryCreateProcessor.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type App\\Organization\\Infrastructure\\Entity\\FieldOfStudy\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Operations/Api/State/AdminAssistantHistoryCreateProcessor.php
+
+		-
+			message: '#^Property App\\Operations\\Controller\\AssistantController\:\:\$applicationRepo is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/App/Operations/Controller/AssistantController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Operations/Controller/AssistantHistoryController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Entity\\Signature\:\:setUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Controller/CertificateController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\SignatureRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Controller/CertificateController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Operations\\Infrastructure\\Entity\\Signature and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Operations/Controller/CertificateController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Operations/Controller/ParticipantHistoryController.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Operations/Controller/ReceiptController.php
+
+		-
+			message: '#^Parameter \#1 \$picturePath of method App\\Operations\\Infrastructure\\Entity\\Receipt\:\:setPicturePath\(\) expects string, null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Controller/ReceiptController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Identity\\Infrastructure\\RoleManager\:\:userIsGranted\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Controller/ReceiptController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Entity\\Receipt\:\:setUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Controller/ReceiptController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\ReceiptRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Controller/ReceiptController.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/App/Operations/Controller/ReceiptController.php
+
+		-
+			message: '#^Call to an undefined method Psr\\Container\\ContainerInterface\:\:getParameter\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Operations/Controller/SignatureController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Operations\\Infrastructure\\Repository\\SignatureRepository\:\:findByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Controller/SignatureController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Operations\\Infrastructure\\Entity\\Signature and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Operations/Controller/SignatureController.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Operations/Domain/Rules/ReceiptStatistics.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between DateTime and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Operations/Domain/Rules/ReceiptStatistics.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Operations/Infrastructure/AssistantHistoryData.php
+
+		-
+			message: '#^Parameter \#1 \$num of function dechex expects int, float given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Infrastructure/Entity/Receipt.php
+
+		-
+			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Operations/Infrastructure/Entity/Receipt.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 6
+			path: src/App/Operations/Infrastructure/Subscriber/ReceiptSubscriber.php
+
+		-
+			message: '#^Expression on left side of \?\? is not nullable\.$#'
+			identifier: nullCoalesce.expr
+			count: 1
+			path: src/App/Organization/Api/State/AdminExecutiveBoardEditProvider.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFieldOfStudy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Organization/Api/State/AdminFieldOfStudyCreateProcessor.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFieldOfStudy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Organization/Api/State/AdminFieldOfStudyEditProvider.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Organization/Controller/ControlPanelController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Form\\FormInterface\:\:isClicked\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Organization/Controller/ExecutiveBoardController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\:\:setUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Organization/Controller/ExecutiveBoardController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFieldOfStudy\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/App/Organization/Controller/FieldOfStudyController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Form\\FormInterface\:\:isClicked\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/App/Organization/Controller/TeamAdminController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Organization/Controller/TeamAdminController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Organization\\Infrastructure\\Entity\\TeamMembership\:\:setUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User\|null, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Organization/Controller/TeamAdminController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Organization\\Infrastructure\\Repository\\TeamMembershipRepository\:\:findActiveTeamMembershipsByUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Organization/Controller/TeamAdminController.php
+
+		-
+			message: '#^Parameter \#2 \$user of method App\\Organization\\Infrastructure\\Repository\\TeamMembershipRepository\:\:findActiveTeamMembershipsByTeamAndUser\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/App/Organization/Controller/TeamApplicationController.php
+
+		-
+			message: '#^Right side of && is always true\.$#'
+			identifier: booleanAnd.rightAlwaysTrue
+			count: 1
+			path: src/App/Organization/Controller/TeamApplicationController.php
+
+		-
+			message: '#^PHPDoc tag @param for parameter \$department with type App\\Organization\\Infrastructure\\Entity\\Department\|null is not subtype of native type App\\Organization\\Infrastructure\\Entity\\Department\.$#'
+			identifier: parameter.phpDocType
+			count: 1
+			path: src/App/Organization/Controller/TeamInterestController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Organization/Controller/TeamInterestController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Organization/Domain/Rules/MembershipExpiration.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\Department\:\:getCurrentAdmissionPeriod\(\) should return App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Department.php
+
+		-
+			message: '#^Negated boolean expression is always false\.$#'
+			identifier: booleanNot.alwaysFalse
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Department.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between null and App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Department.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoard\:\:getActiveUsers\(\) has invalid return type App\\Organization\\Infrastructure\\Entity\\User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoard\:\:getActiveUsers\(\) should return array\<App\\Organization\\Infrastructure\\Entity\\User\> but returns list\<App\\Identity\\Infrastructure\\Entity\\User\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\ExecutiveBoard\:\:\$boardMemberships is never written, only read\.$#'
+			identifier: property.onlyRead
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Return type \(array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\>\) of method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoard\:\:getActiveTeamMemberships\(\) should be compatible with return type \(App\\Shared\\Contracts\\TeamMembershipInterface\) of method App\\Shared\\Contracts\\TeamInterface\:\:getActiveTeamMemberships\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Return type \(array\<App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\>\) of method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoard\:\:getTeamMemberships\(\) should be compatible with return type \(App\\Shared\\Contracts\\TeamMembershipInterface\) of method App\\Shared\\Contracts\\TeamInterface\:\:getTeamMemberships\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Return type \(array\<App\\Organization\\Infrastructure\\Entity\\User\>\) of method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoard\:\:getActiveUsers\(\) should be compatible with return type \(App\\Shared\\Contracts\\User\) of method App\\Shared\\Contracts\\TeamInterface\:\:getActiveUsers\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\:\:getTeam\(\) has invalid return type App\\Organization\\Infrastructure\\Entity\\TeamInterface\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoardMembership.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\:\:getTeam\(\) should return App\\Organization\\Infrastructure\\Entity\\TeamInterface but returns App\\Organization\\Infrastructure\\Entity\\ExecutiveBoard\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoardMembership.php
+
+		-
+			message: '#^Cannot call method toArray\(\) on array\<App\\Admission\\Infrastructure\\Entity\\Application\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Cannot call method toArray\(\) on array\<App\\Organization\\Infrastructure\\Entity\\TeamInterest\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\Team\:\:getActiveUsers\(\) has invalid return type App\\Organization\\Infrastructure\\Entity\\User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\Team\:\:getActiveUsers\(\) should return array\<App\\Organization\\Infrastructure\\Entity\\User\> but returns list\<App\\Identity\\Infrastructure\\Entity\\User\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Return type \(array\<App\\Organization\\Infrastructure\\Entity\\TeamMembership\>\) of method App\\Organization\\Infrastructure\\Entity\\Team\:\:getActiveTeamMemberships\(\) should be compatible with return type \(App\\Shared\\Contracts\\TeamMembershipInterface\) of method App\\Shared\\Contracts\\TeamInterface\:\:getActiveTeamMemberships\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Return type \(array\<App\\Organization\\Infrastructure\\Entity\\TeamMembership\>\) of method App\\Organization\\Infrastructure\\Entity\\Team\:\:getTeamMemberships\(\) should be compatible with return type \(App\\Shared\\Contracts\\TeamMembershipInterface\) of method App\\Shared\\Contracts\\TeamInterface\:\:getTeamMemberships\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Return type \(array\<App\\Organization\\Infrastructure\\Entity\\User\>\) of method App\\Organization\\Infrastructure\\Entity\\Team\:\:getActiveUsers\(\) should be compatible with return type \(App\\Shared\\Contracts\\User\) of method App\\Shared\\Contracts\\TeamInterface\:\:getActiveUsers\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Parameter \$max of attribute class Symfony\\Component\\Validator\\Constraints\\Length constructor expects int\|null, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/App/Organization/Infrastructure/Entity/TeamInterest.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/TeamMembership.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\UserGroup\:\:getUsers\(\) should return array\<App\\Identity\\Infrastructure\\Entity\\User\> but returns Doctrine\\Common\\Collections\\ArrayCollection\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroup.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroup\:\:\$users \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroup.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroup\:\:\$users \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\<App\\Identity\\Infrastructure\\Entity\\User\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroup.php
+
+		-
+			message: '#^Access to an undefined property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$numberTotalUsers\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:getAssistantsDepartments\(\) should return array\<App\\Organization\\Infrastructure\\Entity\\Department\> but returns Doctrine\\Common\\Collections\\ArrayCollection\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:getSemesters\(\) should return array\<App\\Shared\\Entity\\Semester\> but returns Doctrine\\Common\\Collections\\ArrayCollection\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:getTeams\(\) should return array\<App\\Organization\\Infrastructure\\Entity\\Team\> but returns Doctrine\\Common\\Collections\\ArrayCollection\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Method App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:getUserGroups\(\) should return array\<App\\Organization\\Infrastructure\\Entity\\UserGroup\> but returns Doctrine\\Common\\Collections\\ArrayCollection\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$assistantsDepartments \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$assistantsDepartments \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\<App\\Organization\\Infrastructure\\Entity\\Department\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$semesters \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$semesters \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\<App\\Shared\\Entity\\Semester\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$teams \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$teams \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\<App\\Organization\\Infrastructure\\Entity\\Team\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$userGroups \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Property App\\Organization\\Infrastructure\\Entity\\UserGroupCollection\:\:\$userGroups \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\<App\\Organization\\Infrastructure\\Entity\\UserGroup\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/UserGroupCollection.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Organization/Infrastructure/Repository/DepartmentRepository.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Organization/Infrastructure/Subscriber/TeamApplicationSubscriber.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between null and string will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 2
+			path: src/App/Organization/Infrastructure/Subscriber/TeamApplicationSubscriber.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Organization/Infrastructure/Subscriber/TeamInterestSubscriber.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\HttpFoundation\\Session\\SessionInterface\:\:getFlashBag\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/App/Organization/Infrastructure/Subscriber/TeamMembershipSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Organization/Infrastructure/Subscriber/TeamMembershipSubscriber.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Organization/Infrastructure/Subscriber/TeamMembershipSubscriber.php
+
+		-
+			message: '#^Cannot use \+\+ on literal\-string\.$#'
+			identifier: preInc.type
+			count: 1
+			path: src/App/Organization/Infrastructure/UserGroupCollectionManager.php
+
+		-
+			message: '#^Parameter \#1 \$memberships of method App\\Identity\\Infrastructure\\Entity\\User\:\:setMemberships\(\) expects array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\>, array\<App\\Shared\\Contracts\\TeamMembershipInterface\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Organization/Twig/TeamPositionSortExtension.php
+
+		-
+			message: '#^Parameter \#1 \$teamMemberships of method App\\Support\\FilterService\:\:filterTeamMembershipsByTeam\(\) expects array\<App\\Shared\\Contracts\\TeamMembershipInterface\>, array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Organization/Twig/TeamPositionSortExtension.php
+
+		-
+			message: '#^Result of && is always true\.$#'
+			identifier: booleanAnd.alwaysTrue
+			count: 1
+			path: src/App/Scheduling/Api/State/AdminSchedulingAssistantProvider.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Interview\\Infrastructure\\Entity\\Interview and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Scheduling/Api/State/AdminSchedulingAssistantProvider.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Interview\\Infrastructure\\Entity\\InterviewScore and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Scheduling/Api/State/AdminSchedulingAssistantProvider.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Scheduling/Controller/AssistantSchedulingController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFieldOfStudy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Scheduling/Controller/AssistantSchedulingController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 3
+			path: src/App/Scheduling/Controller/SchoolAdminController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFieldOfStudy\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Scheduling/Controller/SchoolAdminController.php
+
+		-
+			message: '#^Access to an undefined property App\\Scheduling\\Domain\\Rules\\Assistant\:\:\$id\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/App/Scheduling/Domain/Rules/Assistant.php
+
+		-
+			message: '#^Call to function is_null\(\) with string will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/App/Scheduling/Domain/Rules/Assistant.php
+
+		-
+			message: '#^Property App\\Scheduling\\Domain\\Rules\\Assistant\:\:\$group \(int\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Scheduling/Domain/Rules/Assistant.php
+
+		-
+			message: '#^Property App\\Scheduling\\Domain\\Rules\\Assistant\:\:\$preferredGroup \(int\) does not accept null\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Scheduling/Domain/Rules/Assistant.php
+
+		-
+			message: '#^Property App\\Scheduling\\Infrastructure\\Entity\\School\:\:\$assistantHistories is never written, only read\.$#'
+			identifier: property.onlyRead
+			count: 1
+			path: src/App/Scheduling/Infrastructure/Entity/School.php
+
+		-
+			message: '#^Property App\\Scheduling\\Infrastructure\\Entity\\School\:\:\$capacities is never written, only read\.$#'
+			identifier: property.onlyRead
+			count: 1
+			path: src/App/Scheduling/Infrastructure/Entity/School.php
+
+		-
+			message: '#^Method App\\Shared\\Contracts\\DepartmentSemesterInterface\:\:getDepartment\(\) has invalid return type App\\Shared\\Contracts\\Department\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Shared/Contracts/DepartmentSemesterInterface.php
+
+		-
+			message: '#^Method App\\Shared\\Contracts\\DepartmentSemesterInterface\:\:getSemester\(\) has invalid return type App\\Shared\\Contracts\\Semester\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Shared/Contracts/DepartmentSemesterInterface.php
+
+		-
+			message: '#^Method App\\Shared\\Contracts\\TeamInterface\:\:getActiveUsers\(\) has invalid return type App\\Shared\\Contracts\\User\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/App/Shared/Contracts/TeamInterface.php
+
+		-
+			message: '#^Property App\\Shared\\Entity\\Semester\:\:\$admissionPeriods \(array\<App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod\>\) does not accept App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Shared/Entity/Semester.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type App\\Interview\\Infrastructure\\Entity\\Interview\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 2
+			path: src/App/Support/Api/State/DashboardProvider.php
+
+		-
+			message: '#^Using nullsafe method call on non\-nullable type DateTime\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/App/Support/Api/State/DashboardProvider.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Support/Controller/BaseController.php
+
+		-
+			message: '#^Call to an undefined method Psr\\Container\\ContainerInterface\:\:getParameter\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Support/Controller/FileBrowserController.php
+
+		-
+			message: '#^Binary operation "\-" between 32 and string results in an error\.$#'
+			identifier: binaryOp.invalid
+			count: 1
+			path: src/App/Support/Controller/GitHubController.php
+
+		-
+			message: '#^Parameter \#1 \$year of method DateTime\:\:setDate\(\) expects int, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/App/Support/DataFixtures/ORM/LoadAdmissionPeriodData.php
+
+		-
+			message: '#^Parameter \#1 \$friday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setFriday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$monday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setMonday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$thursday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setThursday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$tuesday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setTuesday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$wednesday of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setWednesday\(\) expects bool, string given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$yearOfStudy of method App\\Admission\\Infrastructure\\Entity\\Application\:\:setYearOfStudy\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 10
+			path: src/App/Support/DataFixtures/ORM/LoadApplicationData.php
+
+		-
+			message: '#^Parameter \#1 \$workdays of method App\\Operations\\Infrastructure\\Entity\\AssistantHistory\:\:setWorkdays\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 4
+			path: src/App/Support/DataFixtures/ORM/LoadAssistantHistoryData.php
+
+		-
+			message: '#^Property App\\Support\\DataFixtures\\ORM\\LoadInfoMeetingData\:\:\$container is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadInfoMeetingData.php
+
+		-
+			message: '#^Parameter \#1 \$year of method App\\Shared\\Entity\\Semester\:\:setYear\(\) expects string, int given\.$#'
+			identifier: argument.type
+			count: 3
+			path: src/App/Support/DataFixtures/ORM/LoadSemesterData.php
+
+		-
+			message: '#^Property App\\Support\\DataFixtures\\ORM\\LoadUserData\:\:\$container is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadUserData.php
+
+		-
+			message: '#^Call to function is_int\(\) with int will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Support/EventSubscriber/ExceptionSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between Google\\Service\\Directory\\Group and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between Google\\Service\\Directory\\User and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between string and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/FilterService.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\FileUploader\:\:uploadArticleImage\(\) should return string but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Support/Infrastructure/FileUploader.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between array\<string\> and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Support/Infrastructure/Google/GoogleAPI.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleGroups\:\:createGroup\(\) should return Google\\Service\\Directory\\Group but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleGroups\:\:getGroup\(\) should return Google\\Service\\Directory\\Group but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleGroups\:\:updateGroup\(\) should return Google\\Service\\Directory\\Group but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleUsers\:\:createUser\(\) should return Google\\Service\\Directory\\User but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleUsers\:\:getUser\(\) should return Google\\Service\\Directory\\User but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
+
+		-
+			message: '#^Method App\\Support\\Infrastructure\\Google\\GoogleUsers\:\:updateUser\(\) should return Google\\Service\\Directory\\User but returns null\.$#'
+			identifier: return.type
+			count: 2
+			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
+
+		-
+			message: '#^Parameter \#1 \$level of method Monolog\\Logger\:\:log\(\) expects ''alert''\|''critical''\|''debug''\|''emergency''\|''error''\|''info''\|''notice''\|''warning''\|Monolog\\Level, 200 given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Support/Infrastructure/LogService.php
+
+		-
+			message: '#^Parameter \#1 \$teamMemberships of method App\\Support\\Sorter\:\:sortTeamMembershipsByPosition\(\) expects array\<App\\Shared\\Contracts\\TeamMembershipInterface\>, array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\> given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/App/Support/Sorter.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between array\<App\\Identity\\Infrastructure\\Entity\\TeamMembershipInterface\> and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 3
+			path: src/App/Support/Sorter.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Support/Twig/AssetExtension.php
+
+		-
+			message: '#^Call to function is_object\(\) with Symfony\\Component\\Security\\Core\\User\\UserInterface will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/App/Support/Twig/RoleExtension.php
+
+		-
+			message: '#^Offset ''question'' on array\{question\: string, type\: string, optional\?\: bool, help\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyCreateProcessor.php
+
+		-
+			message: '#^Offset ''type'' on array\{question\: string, type\: string, optional\?\: bool, help\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyCreateProcessor.php
+
+		-
+			message: '#^Offset ''question'' on array\{question\: string, type\: string, optional\?\: bool, help\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyEditProcessor.php
+
+		-
+			message: '#^Offset ''type'' on array\{question\: string, type\: string, optional\?\: bool, help\?\: string, alternatives\?\: array\<string\>\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyEditProcessor.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Survey/Api/State/SurveyPopupProvider.php
+
+		-
+			message: '#^Offset ''answer'' on array\{questionId\: int, answer\: array\<string\>\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Survey/Api/State/SurveyRespondProcessor.php
+
+		-
+			message: '#^Offset ''questionId'' on array\{questionId\: int, answer\: array\<string\>\|string\} on left side of \?\? always exists and is not nullable\.$#'
+			identifier: nullCoalesce.offset
+			count: 1
+			path: src/App/Survey/Api/State/SurveyRespondProcessor.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between int and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Survey/Api/State/SurveyRespondProcessor.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getDepartment\(\)\.$#'
+			identifier: method.notFound
+			count: 2
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:setLastPopUpTime\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Left side of && is always true\.$#'
+			identifier: booleanAnd.leftAlwaysTrue
+			count: 3
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Survey\\Infrastructure\\SurveyManager\:\:toggleReservedFromPopUp\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Parameter \#3 \$user of method App\\Survey\\Controller\\SurveyController\:\:showUserMainAction\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Form\\FormInterface\:\:isClicked\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Survey/Controller/SurveyNotifierController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getFirstName\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Survey/Controller/SurveyNotifierController.php
+
+		-
+			message: '#^If condition is always false\.$#'
+			identifier: if.alwaysFalse
+			count: 1
+			path: src/App/Survey/Controller/SurveyNotifierController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getLastPopUpTime\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Survey/Controller/SurveyPopupController.php
+
+		-
+			message: '#^Call to an undefined method Symfony\\Component\\Security\\Core\\User\\UserInterface\:\:getReservedFromPopUp\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/App/Survey/Controller/SurveyPopupController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Identity\\Infrastructure\\RoleManager\:\:userIsGranted\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Survey/Controller/SurveyPopupController.php
+
+		-
+			message: '#^Parameter \#1 \$user of method App\\Survey\\Infrastructure\\Repository\\SurveyRepository\:\:findAllNotTakenByUserAndSemester\(\) expects App\\Identity\\Infrastructure\\Entity\\User, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/App/Survey/Controller/SurveyPopupController.php
+
+		-
+			message: '#^Strict comparison using \!\=\= between App\\Shared\\Entity\\Semester and null will always evaluate to true\.$#'
+			identifier: notIdentical.alwaysTrue
+			count: 1
+			path: src/App/Survey/Controller/SurveyPopupController.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Scheduling\\Infrastructure\\Entity\\School and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Survey/Domain/Rules/SurveyDataTransformer.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Survey\\Infrastructure\\Entity\\SurveyTaken and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Survey/Domain/Rules/SurveyDataTransformer.php
+
+		-
+			message: '#^If condition is always true\.$#'
+			identifier: if.alwaysTrue
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/Survey.php
+
+		-
+			message: '#^PHPDoc tag @param has invalid value \(string surveyPopUpMessage\)\: Unexpected token "surveyPopUpMessage", expected variable at offset 25 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/Survey.php
+
+		-
+			message: '#^Property App\\Survey\\Infrastructure\\Entity\\Survey\:\:\$surveyQuestions \(array\<App\\Survey\\Infrastructure\\Entity\\SurveyQuestion\>\) does not accept Doctrine\\Common\\Collections\\ArrayCollection\<\*NEVER\*, \*NEVER\*\>\.$#'
+			identifier: assign.propertyType
+			count: 2
+			path: src/App/Survey/Infrastructure/Entity/Survey.php
+
+		-
+			message: '#^Method App\\Survey\\Infrastructure\\Entity\\SurveyNotification\:\:getSurveyLinkClicks\(\) should return array\<DateTime\> but returns array\<App\\Survey\\Infrastructure\\Entity\\SurveyLinkClick\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotification.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(DateTime\?\)\: Unexpected token "\?", expected TOKEN_HORIZONTAL_WS at offset 27 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotification.php
+
+		-
+			message: '#^Property App\\Survey\\Infrastructure\\Entity\\SurveyNotification\:\:\$surveyLinkClicks \(array\<App\\Survey\\Infrastructure\\Entity\\SurveyLinkClick\>\) does not accept array\<DateTime\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotification.php
+
+		-
+			message: '#^Method App\\Survey\\Infrastructure\\Entity\\SurveyNotificationCollection\:\:getSurveyNotifications\(\) should return array\<App\\Survey\\Infrastructure\\Entity\\SurveyNotification\> but returns Doctrine\\Common\\Collections\\ArrayCollection\.$#'
+			identifier: return.type
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotificationCollection.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(DateTime\?\)\: Unexpected token "\?", expected TOKEN_HORIZONTAL_WS at offset 27 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotificationCollection.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(Survey\?\)\: Unexpected token "\?", expected TOKEN_HORIZONTAL_WS at offset 25 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotificationCollection.php
+
+		-
+			message: '#^Property App\\Survey\\Infrastructure\\Entity\\SurveyNotificationCollection\:\:\$surveyNotifications \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotificationCollection.php
+
+		-
+			message: '#^Property App\\Survey\\Infrastructure\\Entity\\SurveyNotificationCollection\:\:\$surveyNotifications \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\<App\\Survey\\Infrastructure\\Entity\\SurveyNotification\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotificationCollection.php
+
+		-
+			message: '#^Property App\\Survey\\Infrastructure\\Entity\\SurveyNotificationCollection\:\:\$userGroups \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotificationCollection.php
+
+		-
+			message: '#^Property App\\Survey\\Infrastructure\\Entity\\SurveyNotificationCollection\:\:\$userGroups \(Doctrine\\Common\\Collections\\ArrayCollection\) does not accept array\<App\\Organization\\Infrastructure\\Entity\\UserGroup\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyNotificationCollection.php
+
+		-
+			message: '#^Cannot call method removeElement\(\) on array\<App\\Survey\\Infrastructure\\Entity\\SurveyAnswer\>\.$#'
+			identifier: method.nonObject
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyTaken.php
+
+		-
+			message: '#^Property App\\Survey\\Infrastructure\\Entity\\SurveyTaken\:\:\$surveyAnswers \(array\<App\\Survey\\Infrastructure\\Entity\\SurveyAnswer\>\) does not accept Doctrine\\Common\\Collections\\ArrayCollection\<\*NEVER\*, \*NEVER\*\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyTaken.php
+
+		-
+			message: '#^Result of && is always false\.$#'
+			identifier: booleanAnd.alwaysFalse
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyTaken.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between string and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyTaken.php
+
+		-
+			message: '#^PHPDoc tag @return has invalid value \(SurveyNotification\?\)\: Unexpected token "\?", expected TOKEN_HORIZONTAL_WS at offset 37 on line 2$#'
+			identifier: phpDoc.parseError
+			count: 1
+			path: src/App/Survey/Infrastructure/Repository/SurveyNotificationRepository.php
+
+		-
+			message: '#^Call to function is_null\(\) with App\\Scheduling\\Infrastructure\\Entity\\School will always evaluate to false\.$#'
+			identifier: function.impossibleType
+			count: 1
+			path: src/App/Survey/Infrastructure/SurveyManager.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between App\\Survey\\Infrastructure\\Entity\\SurveyTaken and null will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/App/Survey/Infrastructure/SurveyManager.php

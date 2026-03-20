@@ -107,6 +107,7 @@
         "test:unit": "@php bin/phpunit --testsuite=unit",
         "test:controller": "@php bin/phpunit --testsuite=controller",
         "test:availability": "@php bin/phpunit --testsuite=availability",
+        "syntax": "parallel-lint src/ tests/ --exclude vendor",
         "lint": "bin/php-cs-fixer fix --dry-run --diff",
         "fix": "bin/php-cs-fixer fix",
         "analyse": "bin/phpstan analyse --memory-limit=256M",
