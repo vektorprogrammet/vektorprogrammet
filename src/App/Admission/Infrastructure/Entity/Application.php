@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ApplicationRepository::class)]
 #[ORM\Table(name: 'application')]
+#[ORM\UniqueConstraint(name: 'unique_user_admission_period', columns: ['user_id', 'admission_period_id'])]
 #[CustomAssert\ApplicationEmail(groups: ['admission'])]
 class Application implements DepartmentSemesterInterface
 {
@@ -25,6 +26,7 @@ class Application implements DepartmentSemesterInterface
      * @var AdmissionPeriod
      */
     #[ORM\ManyToOne(targetEntity: AdmissionPeriod::class)]
+    #[Assert\NotNull]
     private $admissionPeriod;
 
     #[ORM\Column(type: 'string', length: 20)]

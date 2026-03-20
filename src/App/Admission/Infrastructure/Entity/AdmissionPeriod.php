@@ -18,6 +18,7 @@ use App\Shared\Entity\Semester;
  * DepartmentSpecificSemester.
  */
 #[ORM\Table]
+#[ORM\UniqueConstraint(name: 'unique_department_semester', columns: ['department_id', 'semester_id'])]
 #[ORM\Entity(repositoryClass: AdmissionPeriodRepository::class)]
 #[ApiResource(
     operations: [
