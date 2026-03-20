@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Post(
             uriTemplate: '/admin/interviews/assign',
             processor: InterviewAssignProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
             output: false,
             status: 201,
         ),
