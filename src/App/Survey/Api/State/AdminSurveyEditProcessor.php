@@ -27,7 +27,7 @@ class AdminSurveyEditProcessor implements ProcessorInterface
         \assert($data instanceof AdminSurveyWriteResource);
 
         $id = $uriVariables['id'] ?? null;
-        $survey = $id ? $this->surveyRepository->find($id) : null;
+        $survey = $id !== null ? $this->surveyRepository->find($id) : null;
 
         if ($survey === null) {
             throw new NotFoundHttpException('Survey not found.');
@@ -80,8 +80,8 @@ class AdminSurveyEditProcessor implements ProcessorInterface
             // Add new questions
             foreach ($data->questions as $questionData) {
                 $question = new SurveyQuestion();
-                $question->setQuestion($questionData['question'] ?? '');
-                $question->setType($questionData['type'] ?? 'text');
+                $question->setQuestion($questionData['question']);
+                $question->setType($questionData['type']);
                 $question->setOptional($questionData['optional'] ?? false);
                 if (isset($questionData['help'])) {
                     $question->setHelp($questionData['help']);

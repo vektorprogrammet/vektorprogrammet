@@ -18,7 +18,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyNotifierType extends AbstractType
 {
-    private $canEdit;
+    private bool $canEdit = true;
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {

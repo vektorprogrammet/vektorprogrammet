@@ -22,7 +22,7 @@ class AdminSurveyCopyProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): AdminSurveyCopyResource
     {
         $id = $uriVariables['id'] ?? null;
-        $survey = $id ? $this->surveyRepository->find($id) : null;
+        $survey = $id !== null ? $this->surveyRepository->find($id) : null;
 
         if ($survey === null) {
             throw new NotFoundHttpException('Survey not found.');

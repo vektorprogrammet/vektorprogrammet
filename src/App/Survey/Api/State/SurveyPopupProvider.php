@@ -44,12 +44,9 @@ class SurveyPopupProvider implements ProviderInterface
         }
 
         $semester = $this->semesterRepo->findCurrentSemester();
-        if ($semester === null) {
-            return new SurveyPopupResource();
-        }
 
         $surveys = $this->surveyRepo->findAllNotTakenByUserAndSemester($user, $semester);
-        if (empty($surveys)) {
+        if ($surveys === []) {
             return new SurveyPopupResource();
         }
 

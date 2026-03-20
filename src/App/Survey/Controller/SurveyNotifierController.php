@@ -2,6 +2,7 @@
 
 namespace App\Survey\Controller;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
@@ -35,14 +36,15 @@ class SurveyNotifierController extends BaseController
     #[Route('/kontrollpanel/undersokelsevarsel/rediger/{id}', name: 'survey_notifier_edit', requirements: ['id' => '\d+'], methods: ['GET', 'POST'])]
     public function createSurveyNotifierAction(Request $request, ?SurveyNotificationCollection $surveyNotificationCollection = null)
     {
-        $isUserGroupCollectionEmpty = empty($this->em->getRepository(UserGroupCollection::class)->findAll());
+        $isUserGroupCollectionEmpty = $this->em->getRepository(UserGroupCollection::class)->findAll() === [];
         if ($isUserGroupCollectionEmpty) {
             $this->addFlash('danger', 'Brukergruppesamling må lages først');
 
             return $this->redirect($this->generateUrl('survey_notifiers'));
         }
 
-        if ($isCreate = $surveyNotificationCollection === null) {
+        $isCreate = $surveyNotificationCollection === null;
+        if ($isCreate) {
             $surveyNotificationCollection = new SurveyNotificationCollection();
         }
         $canEdit = !$surveyNotificationCollection->isActive();
@@ -54,7 +56,8 @@ class SurveyNotifierController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            if ($form->get('preview')->isClicked()) {
+            $previewButton = $form->get('preview');
+            if ($previewButton instanceof \Symfony\Component\Form\ClickableInterface && $previewButton->isClicked()) {
                 $subject = $surveyNotificationCollection->getEmailSubject();
                 $emailType = $surveyNotificationCollection->getEmailType();
                 $view = 'survey/email_notification.html.twig';
@@ -65,11 +68,14 @@ class SurveyNotifierController extends BaseController
                     $subject = 'Hvordan var det på Blussvoll?';
                 }
 
+                $currentUser = $this->getUser();
+                $firstname = $currentUser instanceof User ? $currentUser->getFirstName() : '';
+
                 return $this->render(
                     $view,
                     [
                         'title' => $subject,
-                        'firstname' => $this->getUser()->getFirstName(),
+                        'firstname' => $firstname,
                         'route' => $this->generateUrl('survey_show', ['id' => $surveyNotificationCollection->getSurvey()->getId()], RouterInterface::ABSOLUTE_URL),
                         'day' => 'Mandag',
                         'mainMessage' => $surveyNotificationCollection->getEmailMessage(),
@@ -111,12 +117,13 @@ class SurveyNotifierController extends BaseController
         }
         $this->surveyNotifier->sendNotifications($surveyNotificationCollection);
 
-        if ($surveyNotificationCollection->isAllSent()) {
+        $allSent = $surveyNotificationCollection->isAllSent(); // state mutated by sendNotifications()
+        if ($allSent) { // @phpstan-ignore if.alwaysFalse
             $this->addFlash('success', 'Sendt');
-            $response['success'] = true;
+            $response = ['success' => true];
         } else {
             $this->addFlash('warning', 'Alle ble ikke sendt');
-            $response['success'] = false;
+            $response = ['success' => false];
         }
 
         return new JsonResponse($response);
@@ -130,7 +137,7 @@ class SurveyNotifierController extends BaseController
         }
 
         $this->em->remove($surveyNotificationCollection);
-        $response['success'] = true;
+        $response = ['success' => true];
 
         return new JsonResponse($response);
     }

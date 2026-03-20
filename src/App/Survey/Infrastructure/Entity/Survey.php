@@ -4,6 +4,7 @@ namespace App\Survey\Infrastructure\Entity;
 
 use App\Survey\Infrastructure\Repository\SurveyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -28,7 +29,7 @@ class Survey implements \JsonSerializable, \Stringable
     private $semester;
 
     /**
-     * @var Department
+     * @var Department|null
      */
     #[ORM\ManyToOne(targetEntity: Department::class)]
     #[Assert\Valid]
@@ -58,10 +59,10 @@ class Survey implements \JsonSerializable, \Stringable
     private $confidential;
 
     /**
-     * @var SurveyTaken[]
+     * @var Collection<int, SurveyTaken>
      */
     #[ORM\OneToMany(targetEntity: SurveyTaken::class, mappedBy: 'survey')]
-    private $surveysTaken;
+    private Collection $surveysTaken;
 
     /**
      * @var int
@@ -76,14 +77,14 @@ class Survey implements \JsonSerializable, \Stringable
     private $surveyPopUpMessage;
 
     /**
-     * @var SurveyQuestion[]
+     * @var Collection<int, SurveyQuestion>
      */
     #[ORM\ManyToMany(targetEntity: SurveyQuestion::class, cascade: ['persist'])]
     #[ORM\JoinTable(name: 'survey_surveys_questions')]
     #[ORM\JoinColumn(name: 'survey_id', referencedColumnName: 'id')]
     #[ORM\InverseJoinColumn(name: 'question_id', referencedColumnName: 'id')]
     #[Assert\Valid]
-    private $surveyQuestions;
+    private Collection $surveyQuestions;
 
     private $totalAnswered;
 
@@ -136,9 +137,9 @@ class Survey implements \JsonSerializable, \Stringable
     }
 
     /**
-     * @return Department
+     * @return Department|null
      */
-    public function getDepartment()
+    public function getDepartment(): ?Department
     {
         return $this->department;
     }
@@ -151,9 +152,9 @@ class Survey implements \JsonSerializable, \Stringable
     }
 
     /**
-     * @return SurveyQuestion[]
+     * @return Collection<int, SurveyQuestion>
      */
-    public function getSurveyQuestions()
+    public function getSurveyQuestions(): Collection
     {
         return $this->surveyQuestions;
     }
@@ -166,7 +167,7 @@ class Survey implements \JsonSerializable, \Stringable
         $this->surveyQuestions = new ArrayCollection();
         $this->confidential = false;
         $this->targetAudience = 0;
-        $this->surveysTaken = [];
+        $this->surveysTaken = new ArrayCollection();
         $this->showCustomPopUpMessage = false;
         $this->surveyPopUpMessage = '';
         $this->finishPageContent = '';
@@ -175,8 +176,9 @@ class Survey implements \JsonSerializable, \Stringable
     public function __toString(): string
     {
         $str = $this->name;
-        if ($this->getDepartment()) {
-            $str = $str.', '.$this->getDepartment();
+        $department = $this->getDepartment();
+        if ($department !== null) {
+            $str = $str.', '.$department;
         }
 
         return $str;
@@ -222,9 +224,9 @@ class Survey implements \JsonSerializable, \Stringable
         $ret = ['questions' => []];
         foreach ($this->surveyQuestions as $q) {
             // !$q->getOptional() &&
-            if ($q->getType() == 'radio' || $q->getType() == 'list') {
+            if ($q->getType() === 'radio' || $q->getType() === 'list') {
                 $ret['questions'][] = $q;
-            } elseif ($q->getType() == 'check') {
+            } elseif ($q->getType() === 'check') {
                 $ret['questions'][] = $q;
             }
         }
@@ -271,12 +273,8 @@ class Survey implements \JsonSerializable, \Stringable
     /**
      * @return string
      */
-    public function getFinishPageContent()
+    public function getFinishPageContent(): string
     {
-        if ($this->finishPageContent === null) {
-            return 'Takk for svaret!';
-        }
-
         return $this->finishPageContent;
     }
 
@@ -315,7 +313,7 @@ class Survey implements \JsonSerializable, \Stringable
     }
 
     /**
-     * @param string surveyPopUpMessage
+     * @param string|null $message
      */
     public function setSurveyPopUpMessage(?string $message)
     {
@@ -332,17 +330,17 @@ class Survey implements \JsonSerializable, \Stringable
     }
 
     /**
-     * @return SurveyTaken[]
+     * @return Collection<int, SurveyTaken>
      */
-    public function getSurveysTaken(): array
+    public function getSurveysTaken(): Collection
     {
         return $this->surveysTaken;
     }
 
     /**
-     * @param SurveyTaken[] $surveysTaken
+     * @param Collection<int, SurveyTaken> $surveysTaken
      */
-    public function setSurveysTaken(array $surveysTaken): void
+    public function setSurveysTaken(Collection $surveysTaken): void
     {
         $this->surveysTaken = $surveysTaken;
     }

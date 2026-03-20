@@ -19,7 +19,7 @@ class AdminSurveyNotifierDeleteProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): void
     {
         $id = $uriVariables['id'] ?? null;
-        $collection = $id ? $this->em->getRepository(SurveyNotificationCollection::class)->find($id) : null;
+        $collection = $id !== null ? $this->em->getRepository(SurveyNotificationCollection::class)->find($id) : null;
 
         if ($collection === null) {
             throw new NotFoundHttpException('SurveyNotificationCollection not found.');

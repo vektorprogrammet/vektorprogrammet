@@ -18,7 +18,7 @@ class AdminSurveyCopyProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminSurveyCopyResource
     {
         $id = $uriVariables['id'] ?? null;
-        $survey = $id ? $this->surveyRepository->find($id) : null;
+        $survey = $id !== null ? $this->surveyRepository->find($id) : null;
 
         if ($survey === null) {
             throw new NotFoundHttpException('Survey not found.');

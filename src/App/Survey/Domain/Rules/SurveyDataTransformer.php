@@ -26,7 +26,7 @@ class SurveyDataTransformer
 
         // Get all text questions
         foreach ($survey->getSurveyQuestions() as $question) {
-            if ($question->getType() == 'text') {
+            if ($question->getType() === 'text') {
                 $textQuestionArray[] = $question;
             }
         }
@@ -36,8 +36,7 @@ class SurveyDataTransformer
             $questionText = $textQuestion->getQuestion();
             $textQAarray[$questionText] = [];
             foreach ($textQuestion->getAnswers() as $answer) {
-                if ($answer->getSurveyTaken() === null
-                    || $answer->getSurveyTaken()->getSurvey() !== $survey
+                if ($answer->getSurveyTaken()->getSurvey() !== $survey
                     || $answer->getSurveyTaken()->getSchool() === null) {
                     continue;
                 }

@@ -68,7 +68,7 @@ class SurveyController extends BaseController
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isValid()) {
                 $this->em->persist($surveyTaken);
                 $this->em->flush();
 
@@ -103,7 +103,7 @@ class SurveyController extends BaseController
             return $this->redirectToRoute('survey_show', ['id' => $survey->getId()]);
         }
 
-        $sameSurvey = $notification->getSurveyNotificationCollection()->getSurvey() == $survey;
+        $sameSurvey = $notification->getSurveyNotificationCollection()->getSurvey() === $survey;
 
         if (!$sameSurvey) {
             return $this->redirectToRoute('survey_show', ['id' => $survey->getId()]);
@@ -125,7 +125,7 @@ class SurveyController extends BaseController
         $user = $this->getUser();
         if ($survey->getTargetAudience() === Survey::$SCHOOL_SURVEY) {
             return $this->redirectToRoute('survey_show', ['id' => $survey->getId()]);
-        } elseif ($user === null) {
+        } elseif (!$user instanceof User) {
             throw new AccessDeniedException('Logg inn for å ta undersøkelsen!');
         }
 
@@ -141,7 +141,7 @@ class SurveyController extends BaseController
         if ($survey->getTargetAudience() === Survey::$ASSISTANT_SURVEY) {
             $assistantHistory = $this->assistantHistoryRepo->findMostRecentByUser($user);
 
-            if (empty($assistantHistory)) {
+            if ($assistantHistory === []) {
                 return $this->redirectToRoute('survey_show', ['id' => $survey->getId()]);
             }
             $assistantHistory = $assistantHistory[0];
@@ -151,14 +151,12 @@ class SurveyController extends BaseController
 
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isValid()) {
                 $allTakenSurveys = $this->surveyTakenRepo
                     ->findAllBySurveyAndUser($survey, $user);
 
-                if (!empty($allTakenSurveys)) {
-                    foreach ($allTakenSurveys as $oldTakenSurvey) {
-                        $this->em->remove($oldTakenSurvey);
-                    }
+                foreach ($allTakenSurveys as $oldTakenSurvey) {
+                    $this->em->remove($oldTakenSurvey);
                 }
 
                 $user->setLastPopUpTime(new \DateTime());
@@ -212,7 +210,7 @@ class SurveyController extends BaseController
         if ($form->isSubmitted()) {
             $surveyTaken->removeNullAnswers();
 
-            if ($form->isSubmitted() && $form->isValid()) {
+            if ($form->isValid()) {
                 $this->em->persist($surveyTaken);
                 $this->em->flush();
 
@@ -236,7 +234,10 @@ class SurveyController extends BaseController
     public function createSurveyAction(Request $request)
     {
         $survey = new Survey();
-        $survey->setDepartment($this->getUser()->getDepartment());
+        $currentUser = $this->getUser();
+        if ($currentUser instanceof User) {
+            $survey->setDepartment($currentUser->getDepartment());
+        }
 
         if ($this->accessControlService->checkAccess('survey_admin')) {
             $form = $this->createForm(SurveyAdminType::class, $survey);
@@ -380,7 +381,7 @@ class SurveyController extends BaseController
 
         $this->em->remove($survey);
         $this->em->flush();
-        $response['success'] = true;
+        $response = ['success' => true];
 
         return new JsonResponse($response);
     }
@@ -443,11 +444,11 @@ class SurveyController extends BaseController
     public function toggleReservedFromPopUpAction()
     {
         $user = $this->getUser();
-        if ($user === null) {
+        if (!$user instanceof User) {
             return null;
         }
 
-        $this->surveyManager->toggleReservedFromPopUp($this->getUser());
+        $this->surveyManager->toggleReservedFromPopUp($user);
 
         return new JsonResponse();
     }
@@ -456,6 +457,9 @@ class SurveyController extends BaseController
     public function closePopUpAction()
     {
         $user = $this->getUser();
+        if (!$user instanceof User) {
+            return new JsonResponse();
+        }
         $user->setLastPopUpTime(new \DateTime());
         $this->em->persist($user);
         $this->em->flush();
@@ -476,7 +480,7 @@ class SurveyController extends BaseController
         $user = $this->getUser();
 
         $isSurveyAdmin = $this->accessControlService->checkAccess('survey_admin');
-        $isSameDepartment = $survey->getDepartment() === $user->getDepartment();
+        $isSameDepartment = $user instanceof User && $survey->getDepartment() === $user->getDepartment();
 
         if ($survey->isConfidential() && !$isSurveyAdmin) {
             throw new AccessDeniedException();

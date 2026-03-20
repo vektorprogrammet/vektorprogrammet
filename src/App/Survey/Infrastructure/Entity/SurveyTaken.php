@@ -6,6 +6,7 @@ use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
 use App\Identity\Infrastructure\Entity\User;
 use App\Scheduling\Infrastructure\Entity\School;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -33,7 +34,7 @@ class SurveyTaken implements \JsonSerializable
     protected $time;
 
     /**
-     * @var School
+     * @var School|null
      */
     #[ORM\ManyToOne(targetEntity: School::class, cascade: ['persist'])]
     #[Assert\NotNull(groups: ['schoolSpecific'])]
@@ -46,10 +47,10 @@ class SurveyTaken implements \JsonSerializable
     protected $survey;
 
     /**
-     * @var SurveyAnswer[]
+     * @var Collection<int, SurveyAnswer>
      */
     #[ORM\OneToMany(targetEntity: SurveyAnswer::class, mappedBy: 'surveyTaken', cascade: ['persist', 'remove'], orphanRemoval: true)]
-    protected $surveyAnswers;
+    protected Collection $surveyAnswers;
 
     /**
      * Constructor.
@@ -61,19 +62,19 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @return SurveyAnswer[]
+     * @return Collection<int, SurveyAnswer>
      */
-    public function getSurveyAnswers()
+    public function getSurveyAnswers(): Collection
     {
         return $this->surveyAnswers;
     }
 
-    public function addSurveyAnswer($answer)
+    public function addSurveyAnswer(SurveyAnswer $answer): void
     {
         $this->surveyAnswers[] = $answer;
     }
 
-    public function removeNullAnswers()
+    public function removeNullAnswers(): void
     {
         foreach ($this->surveyAnswers as $answer) {
             if ($answer->getSurveyQuestion()->getType() !== 'check' && $answer->getAnswer() === null) {
@@ -83,9 +84,9 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @param SurveyAnswer[] $surveyAnswers
+     * @param Collection<int, SurveyAnswer> $surveyAnswers
      */
-    public function setSurveyAnswers($surveyAnswers)
+    public function setSurveyAnswers(Collection $surveyAnswers): void
     {
         $this->surveyAnswers = $surveyAnswers;
     }
@@ -99,9 +100,9 @@ class SurveyTaken implements \JsonSerializable
     }
 
     /**
-     * @return School
+     * @return School|null
      */
-    public function getSchool()
+    public function getSchool(): ?School
     {
         return $this->school;
     }
@@ -164,11 +165,11 @@ class SurveyTaken implements \JsonSerializable
             foreach ($teamMemberships as $teamMembership) {
                 if (!$teamMembership->isActiveInSemester($semester)) {
                     continue;
-                } elseif (!in_array($teamMembership->getTeamName(), $teamNames)) {
+                } elseif (!in_array($teamMembership->getTeamName(), $teamNames, true)) {
                     $teamNames[] = $teamMembership->getTeamName();
                 }
             }
-            if (empty($teamNames)) {
+            if ($teamNames === []) {
                 $teamNames[] = 'Ikke teammedlem';
             }
 
@@ -180,9 +181,9 @@ class SurveyTaken implements \JsonSerializable
         $ret[] = $affiliationQuestion;
         foreach ($this->surveyAnswers as $a) {
             // !$a->getSurveyQuestion()->getOptional() && - If optional results are not wanted
-            if ($a->getSurveyQuestion()->getType() == 'radio' || $a->getSurveyQuestion()->getType() == 'list') {
+            if ($a->getSurveyQuestion()->getType() === 'radio' || $a->getSurveyQuestion()->getType() === 'list') {
                 $ret[] = $a;
-            } elseif ($a->getSurveyQuestion()->getType() == 'check') {
+            } elseif ($a->getSurveyQuestion()->getType() === 'check') {
                 $ret[] = $a;
             }
         }

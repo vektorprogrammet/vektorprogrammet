@@ -77,8 +77,8 @@ class AdminSurveyCreateProcessor implements ProcessorInterface
         if ($data->questions !== null) {
             foreach ($data->questions as $questionData) {
                 $question = new SurveyQuestion();
-                $question->setQuestion($questionData['question'] ?? '');
-                $question->setType($questionData['type'] ?? 'text');
+                $question->setQuestion($questionData['question']);
+                $question->setType($questionData['type']);
                 $question->setOptional($questionData['optional'] ?? false);
                 if (isset($questionData['help'])) {
                     $question->setHelp($questionData['help']);

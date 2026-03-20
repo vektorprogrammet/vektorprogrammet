@@ -2,6 +2,7 @@
 
 namespace App\Survey\Controller;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
@@ -27,21 +28,17 @@ class SurveyPopupController extends BaseController
     {
         $survey = null;
         $user = $this->getUser();
-        $userShouldSeePopUp = $user !== null
+        if ($user instanceof User
             && $this->roleManager->userIsGranted($user, Roles::TEAM_MEMBER)
             && !$user->getReservedFromPopUp()
-            && $user->getLastPopUpTime()->diff(new \DateTime())->days >= 1;
-
-        if ($userShouldSeePopUp) {
+            && $user->getLastPopUpTime()->diff(new \DateTime())->days >= 1
+        ) {
             $semester = $this->getCurrentSemester();
+            $surveys = $this->surveyRepo
+                ->findAllNotTakenByUserAndSemester($user, $semester);
 
-            if ($semester !== null) {
-                $surveys = $this->surveyRepo
-                    ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
-
-                if (!empty($surveys)) {
-                    $survey = end($surveys);
-                }
+            if ($surveys !== []) {
+                $survey = end($surveys);
             }
         }
 
