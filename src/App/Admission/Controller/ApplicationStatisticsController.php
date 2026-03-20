@@ -4,7 +4,7 @@ namespace App\Admission\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Admission\Infrastructure\ApplicationData;
 use App\Operations\Infrastructure\AssistantHistoryData;

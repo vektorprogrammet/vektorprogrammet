@@ -4,7 +4,7 @@ namespace App\Survey\Form;
 
 use App\Survey\Infrastructure\Entity\Survey;
 use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
-use App\Entity\UserGroup;
+use App\Organization\Infrastructure\Entity\UserGroup;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

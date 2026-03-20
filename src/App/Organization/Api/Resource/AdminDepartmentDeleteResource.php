@@ -1,0 +1,25 @@
+<?php
+
+namespace App\Organization\Api\Resource;
+
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use App\Organization\Api\State\AdminDepartmentDeleteProcessor;
+use App\Organization\Api\State\AdminDepartmentDeleteProvider;
+
+#[ApiResource(
+    operations: [
+        new Delete(
+            uriTemplate: '/admin/departments/{id}',
+            provider: AdminDepartmentDeleteProvider::class,
+            processor: AdminDepartmentDeleteProcessor::class,
+            security: "is_granted('ROLE_ADMIN')",
+            output: false,
+            status: 204,
+        ),
+    ],
+)]
+class AdminDepartmentDeleteResource
+{
+    public ?int $id = null;
+}

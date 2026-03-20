@@ -4,7 +4,7 @@ namespace App\Survey\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Survey\Infrastructure\Repository\SurveyNotificationRepository;
 use App\Survey\Infrastructure\Repository\SurveyRepository;

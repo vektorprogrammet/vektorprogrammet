@@ -4,12 +4,12 @@ namespace App\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\ExecutiveBoardMembershipRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\ExecutiveBoardMembershipRepository;
 use App\Entity\Repository\RoleRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Operations\Infrastructure\Repository\SignatureRepository;
-use App\Entity\Repository\TeamMembershipRepository;
+use App\Organization\Infrastructure\Repository\TeamMembershipRepository;
 use App\Operations\Infrastructure\Entity\Signature;
 use App\Entity\User;
 use App\Event\UserEvent;

@@ -3,7 +3,7 @@
 namespace App\Admission\Infrastructure\Repository;
 
 use App\Admission\Infrastructure\Entity\AdmissionSubscriber;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;

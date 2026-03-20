@@ -3,7 +3,7 @@
 namespace App\Admission\Form;
 
 use App\Support\Form\TelType;
-use App\Entity\FieldOfStudy;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

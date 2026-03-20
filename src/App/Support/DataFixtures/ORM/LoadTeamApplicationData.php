@@ -2,8 +2,8 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\Team;
-use App\Entity\TeamApplication;
+use App\Organization\Infrastructure\Entity\Team;
+use App\Organization\Infrastructure\Entity\TeamApplication;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

@@ -4,7 +4,7 @@ namespace App\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Role\Roles;
 use Doctrine\ORM\NonUniqueResultException;

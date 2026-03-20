@@ -6,7 +6,7 @@ use App\Shared\Entity\Semester;
 use App\Survey\Infrastructure\Entity\Survey;
 use App\Survey\Infrastructure\Entity\SurveyAnswer;
 use App\Survey\Infrastructure\Entity\SurveyTaken;
-use App\Entity\TeamMembership;
+use App\Organization\Infrastructure\Entity\TeamMembership;
 use App\Entity\User;
 use App\Support\Utils\CsvUtil;
 use Doctrine\ORM\EntityManagerInterface;

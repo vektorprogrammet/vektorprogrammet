@@ -7,7 +7,7 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'survey')]

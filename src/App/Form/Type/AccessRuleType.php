@@ -4,7 +4,7 @@ namespace App\Form\Type;
 
 use App\Entity\AccessRule;
 use App\Entity\Role;
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Team;
 use App\Entity\User;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;

@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Survey\Infrastructure\Entity\Survey;
 use App\Survey\Infrastructure\Entity\SurveyTaken;
 use App\Entity\User;

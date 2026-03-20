@@ -8,7 +8,7 @@ use App\Admission\Api\Resource\AdmissionStatisticsResource;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;

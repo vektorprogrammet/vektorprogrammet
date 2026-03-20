@@ -6,7 +6,7 @@ use App\Admission\Infrastructure\Entity\AdmissionNotification;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\AdmissionSubscriber;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\OptimisticLockException;

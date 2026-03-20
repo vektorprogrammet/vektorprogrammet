@@ -96,8 +96,8 @@ services:
     App\Organization\Infrastructure\Subscriber\:
         resource: '../src/App/Organization/Infrastructure/Subscriber/'
         bind:
+            App\Support\Infrastructure\Mailer\MailerInterface: '@App\Support\Infrastructure\Mailer\Mailer'
             Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
-            $env: '%kernel.environment%'
 
     App\Content\Infrastructure\Subscriber\:
         resource: '../src/App/Content/Infrastructure/Subscriber/'
@@ -193,7 +193,6 @@ services:
         tags:
             - { name: kernel.event_subscriber }
         bind:
-            App\Support\Infrastructure\Mailer\MailerInterface: '@App\Support\Infrastructure\Mailer\Mailer'
             Psr\Log\LoggerInterface: '@App\Support\Infrastructure\LogService'
 
     App\Support\EventSubscriber\:
@@ -225,8 +224,8 @@ services:
             - { name: validator.constraint_validator }
 
     # Twig extensions (from twig.yml)
-    App\Twig\Extension\:
-        resource: "../src/App/Twig/Extension"
+    App\Organization\Twig\:
+        resource: "../src/App/Organization/Twig"
         tags:
             - { name: twig.extension }
 

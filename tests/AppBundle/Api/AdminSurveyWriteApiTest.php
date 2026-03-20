@@ -246,7 +246,7 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
         // Create a fresh survey to delete (avoid fixture dependencies)
         $em = static::getContainer()->get(EntityManagerInterface::class);
         $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
-        $department = $em->getRepository(\App\Entity\Department::class)->findAll()[0];
+        $department = $em->getRepository(\App\Organization\Infrastructure\Entity\Department::class)->findAll()[0];
 
         $survey = new Survey();
         $survey->setName('To Be Deleted');
@@ -354,7 +354,7 @@ class AdminSurveyWriteApiTest extends BaseWebTestCase
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
         $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
-        $department = $em->getRepository(\App\Entity\Department::class)->findAll()[0];
+        $department = $em->getRepository(\App\Organization\Infrastructure\Entity\Department::class)->findAll()[0];
 
         // Create a survey with 2 questions
         $survey = new Survey();

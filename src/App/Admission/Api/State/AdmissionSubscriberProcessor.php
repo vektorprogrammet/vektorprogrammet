@@ -7,7 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Admission\Api\Resource\AdmissionSubscriberInput;
 use App\Admission\Infrastructure\Entity\AdmissionSubscriber;
 use App\Admission\Infrastructure\Repository\AdmissionSubscriberRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 

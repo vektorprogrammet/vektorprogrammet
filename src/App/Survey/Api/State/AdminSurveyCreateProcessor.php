@@ -48,7 +48,7 @@ class AdminSurveyCreateProcessor implements ProcessorInterface
         $survey->setDepartment($user->getDepartment());
 
         if ($data->departmentId !== null) {
-            $department = $this->em->getRepository(\App\Entity\Department::class)->find($data->departmentId);
+            $department = $this->em->getRepository(\App\Organization\Infrastructure\Entity\Department::class)->find($data->departmentId);
             if ($department !== null) {
                 $survey->setDepartment($department);
             }

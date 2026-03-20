@@ -4,7 +4,7 @@ namespace App\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Entity\FieldOfStudy;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Entity\Repository\RoleRepository;
 use App\Entity\User;
 use App\Role\Roles;

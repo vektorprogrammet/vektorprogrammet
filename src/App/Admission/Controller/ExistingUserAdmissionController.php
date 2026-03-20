@@ -3,9 +3,9 @@
 namespace App\Admission\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\TeamRepository;
+use App\Organization\Infrastructure\Repository\TeamRepository;
 use App\Admission\Domain\Events\ApplicationCreatedEvent;
 use App\Admission\Form\ApplicationExistingUserType;
 use App\Admission\Infrastructure\ApplicationAdmission;

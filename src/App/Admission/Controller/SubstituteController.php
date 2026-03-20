@@ -6,7 +6,7 @@ use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Admission\Form\ModifySubstituteType;
 use Doctrine\ORM\EntityManagerInterface;

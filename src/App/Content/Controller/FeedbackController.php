@@ -4,7 +4,7 @@ namespace App\Content\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Content\Infrastructure\Entity\Feedback;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Content\Infrastructure\Repository\FeedbackRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Content\Form\FeedbackType;

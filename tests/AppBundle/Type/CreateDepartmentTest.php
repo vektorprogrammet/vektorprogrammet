@@ -2,8 +2,8 @@
 
 namespace Tests\App\Type;
 
-use App\Entity\Department;
-use App\Form\Type\CreateDepartmentType;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Form\CreateDepartmentType;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class CreateDepartmentTest extends TypeTestCase

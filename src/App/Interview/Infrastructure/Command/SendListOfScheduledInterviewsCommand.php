@@ -2,7 +2,7 @@
 
 namespace App\Interview\Infrastructure\Command;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;

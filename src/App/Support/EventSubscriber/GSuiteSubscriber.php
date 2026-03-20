@@ -2,8 +2,8 @@
 
 namespace App\Support\EventSubscriber;
 
-use App\Event\TeamEvent;
-use App\Event\TeamMembershipEvent;
+use App\Organization\Domain\Events\TeamEvent;
+use App\Organization\Domain\Events\TeamMembershipEvent;
 use App\Event\UserEvent;
 use App\Support\Infrastructure\Google\GoogleAPI;
 use App\Support\Infrastructure\Google\GoogleDrive;

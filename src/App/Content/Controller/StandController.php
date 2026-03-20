@@ -6,7 +6,7 @@ use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\AdmissionSubscriberRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Admission\Infrastructure\AdmissionStatistics;
 use Doctrine\ORM\NonUniqueResultException;

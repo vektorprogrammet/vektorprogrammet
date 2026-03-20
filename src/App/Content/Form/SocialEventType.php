@@ -2,7 +2,7 @@
 
 namespace App\Content\Form;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Role;
 use App\Shared\Entity\Semester;

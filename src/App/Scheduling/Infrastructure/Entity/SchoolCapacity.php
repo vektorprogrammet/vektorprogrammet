@@ -2,7 +2,7 @@
 
 namespace App\Scheduling\Infrastructure\Entity;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Repository\SchoolCapacityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Entity\Semester;

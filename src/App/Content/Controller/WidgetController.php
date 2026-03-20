@@ -8,7 +8,7 @@ use App\Operations\Infrastructure\Entity\Receipt;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Content\Infrastructure\Repository\ChangeLogItemRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Survey\Infrastructure\Repository\SurveyRepository;

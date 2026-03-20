@@ -4,9 +4,9 @@ namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\TeamMembershipRepository;
+use App\Organization\Infrastructure\Repository\TeamMembershipRepository;
 use App\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

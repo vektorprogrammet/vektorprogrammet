@@ -3,7 +3,7 @@
 namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Operations\Infrastructure\Repository\SignatureRepository;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;

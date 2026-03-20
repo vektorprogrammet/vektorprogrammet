@@ -2,8 +2,8 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Department;
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Entity\Team;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 
@@ -263,9 +263,9 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
         $user = $em->getRepository(\App\Entity\User::class)->findOneBy(['user_name' => 'admin']);
         $semester = $em->getRepository(\App\Shared\Entity\Semester::class)->findAll()[0];
-        $position = $em->getRepository(\App\Entity\Position::class)->findOneBy(['name' => 'Medlem']);
+        $position = $em->getRepository(\App\Organization\Infrastructure\Entity\Position::class)->findOneBy(['name' => 'Medlem']);
 
-        $membership = new \App\Entity\TeamMembership();
+        $membership = new \App\Organization\Infrastructure\Entity\TeamMembership();
         $membership->setTeam($team);
         $membership->setUser($user);
         $membership->setStartSemester($semester);
@@ -283,7 +283,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
         // Verify the membership's deletedTeamName was preserved
         $em->clear();
-        $orphanedMembership = $em->getRepository(\App\Entity\TeamMembership::class)->find($membershipId);
+        $orphanedMembership = $em->getRepository(\App\Organization\Infrastructure\Entity\TeamMembership::class)->find($membershipId);
         $this->assertNotNull($orphanedMembership);
         $this->assertSame('Preserve Name Team', $orphanedMembership->getTeamName());
     }

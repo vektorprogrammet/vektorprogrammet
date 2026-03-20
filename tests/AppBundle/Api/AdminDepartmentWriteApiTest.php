@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 

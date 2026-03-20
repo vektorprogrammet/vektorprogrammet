@@ -2,9 +2,9 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Position;
-use App\Entity\Team;
-use App\Entity\TeamMembership;
+use App\Organization\Infrastructure\Entity\Position;
+use App\Organization\Infrastructure\Entity\Team;
+use App\Organization\Infrastructure\Entity\TeamMembership;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;
 

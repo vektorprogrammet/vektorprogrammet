@@ -8,7 +8,7 @@ use App\Scheduling\Domain\Rules\School;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Scheduling\Infrastructure\Repository\SchoolCapacityRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Scheduling\Infrastructure\Entity\SchoolCapacity;

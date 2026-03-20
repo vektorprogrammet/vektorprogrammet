@@ -6,7 +6,7 @@ use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Contracts\PeriodInterface;
 use App\Support\Utils\TimeUtil;
 use Doctrine\ORM\Mapping as ORM;

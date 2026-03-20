@@ -2,7 +2,7 @@
 
 namespace App\Content\Infrastructure\Entity;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use Symfony\Component\Validator\Constraints as Assert;
 
 class SupportTicket implements \Stringable

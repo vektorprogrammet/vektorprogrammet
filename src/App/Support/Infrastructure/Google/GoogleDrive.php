@@ -2,7 +2,7 @@
 
 namespace App\Support\Infrastructure\Google;
 
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Team;
 use Ramsey\Uuid\Uuid;
 
 class GoogleDrive extends GoogleService

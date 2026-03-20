@@ -2,7 +2,7 @@
 
 namespace App\Support\Infrastructure;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 

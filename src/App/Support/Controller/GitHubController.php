@@ -2,7 +2,7 @@
 
 namespace App\Support\Controller;
 
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Support\Infrastructure\LogService;
 use Symfony\Component\HttpFoundation\JsonResponse;

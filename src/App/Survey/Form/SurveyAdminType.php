@@ -2,8 +2,8 @@
 
 namespace App\Survey\Form;
 
-use App\Entity\Department;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\FormBuilderInterface;
 

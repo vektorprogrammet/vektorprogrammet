@@ -3,9 +3,9 @@
 namespace App\Content\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Department;
-use App\Entity\Repository\DepartmentRepository;
-use App\Entity\Repository\ExecutiveBoardRepository;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Content\Infrastructure\Entity\SupportTicket;
 use App\Content\Domain\Events\SupportTicketCreatedEvent;

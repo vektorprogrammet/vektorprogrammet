@@ -5,7 +5,7 @@ namespace App\Survey\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Survey\Api\Resource\AdminSurveyListResource;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
 use App\Survey\Infrastructure\Repository\SurveyTakenRepository;

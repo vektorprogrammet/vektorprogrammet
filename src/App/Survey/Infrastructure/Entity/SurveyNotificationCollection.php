@@ -2,7 +2,7 @@
 
 namespace App\Survey\Infrastructure\Entity;
 
-use App\Entity\UserGroup;
+use App\Organization\Infrastructure\Entity\UserGroup;
 use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;

@@ -2,7 +2,7 @@
 
 namespace App\Service;
 
-use App\Entity\ExecutiveBoardMembership;
+use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Entity\Role;
 use App\Shared\Entity\Semester;
 use App\Entity\User;

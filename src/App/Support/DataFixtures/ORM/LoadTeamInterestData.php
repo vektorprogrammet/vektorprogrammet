@@ -2,10 +2,10 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
-use App\Entity\Team;
-use App\Entity\TeamInterest;
+use App\Organization\Infrastructure\Entity\Team;
+use App\Organization\Infrastructure\Entity\TeamInterest;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

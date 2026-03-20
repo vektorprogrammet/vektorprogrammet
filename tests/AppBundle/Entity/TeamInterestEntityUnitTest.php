@@ -2,10 +2,10 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
-use App\Entity\Team;
-use App\Entity\TeamInterest;
+use App\Organization\Infrastructure\Entity\Team;
+use App\Organization\Infrastructure\Entity\TeamInterest;
 use PHPUnit\Framework\TestCase;
 
 class TeamInterestEntityUnitTest extends TestCase

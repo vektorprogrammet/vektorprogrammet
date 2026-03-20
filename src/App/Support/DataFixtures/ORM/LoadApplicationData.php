@@ -8,7 +8,7 @@ use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\Entity\InterviewAnswer;
 use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Interview\Infrastructure\Entity\InterviewScore;
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Team;
 use App\Entity\User;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use Doctrine\Common\DataFixtures\AbstractFixture;

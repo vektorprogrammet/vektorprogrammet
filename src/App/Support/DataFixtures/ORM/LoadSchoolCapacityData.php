@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use App\Shared\Entity\Semester;

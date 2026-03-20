@@ -3,10 +3,10 @@
 namespace Tests\App\Entity;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Entity\Department;
-use App\Entity\FieldOfStudy;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Scheduling\Infrastructure\Entity\School;
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Team;
 use PHPUnit\Framework\TestCase;
 
 class DepartmentEntityUnitTest extends TestCase

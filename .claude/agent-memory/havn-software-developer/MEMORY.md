@@ -52,6 +52,15 @@
 ### Cache
 - After creating/modifying API Platform resource classes, clear route cache: `php bin/console cache:clear --env=test`
 
+## DDD Namespace Migration Patterns
+
+- macOS `sed` does not support `\b` word boundaries — use `perl -pi` for namespace replacements
+- When moving entities to a new namespace, check for **unqualified class references** that relied on same-namespace resolution (e.g., `User::class` in Interview entities that was resolved via `App\Entity` namespace)
+- After moving entities, update `targetEntity:` references in **other** entities that point to the moved class (e.g., `User#interviews` → needs `use App\Interview\Infrastructure\Entity\Interview`)
+- Non-Doctrine classes in `Infrastructure/Entity/` (like InterviewDistribution) must be excluded from service autodiscovery — they have constructor args that aren't services
+- When moving subscribers out of `App\EventSubscriber\`, check if unused bindings remain (SmsSenderInterface, $env) — Symfony will error on unused bindings
+- DQL strings contain inline FQCNs (e.g., `FROM App\Entity\Interview i`) — must be updated alongside `use` statements
+
 ## Entity Gotchas
 
 ### User
@@ -86,7 +95,7 @@
 - `--filter DashboardApiTest` not `--filter Dashboard` (too broad)
 - `composer test:parallel` uses 256M — OOMs at ~1020+ tests. Use `php -d memory_limit=512M` directly.
 - SQLite column naming: entity `targetAudience` → column `target_audience` (snake_case in raw SQL)
-- Test baseline: 1001 tests, 2978 assertions (after removing 7 controller test files replaced by API tests)
+- Test baseline: 1011 tests, 2995 assertions
 
 ### Controller deprecation status
 - 11 controllers fully covered by API: Department, UserAdmin, Semester, ChangeLog, SocialEvent, InterviewSchema, FieldOfStudy, Position, ExecutiveBoard, PasswordReset, Contact

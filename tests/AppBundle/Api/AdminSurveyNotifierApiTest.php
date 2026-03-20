@@ -4,8 +4,8 @@ namespace Tests\AppBundle\Api;
 
 use App\Survey\Infrastructure\Entity\Survey;
 use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
-use App\Entity\UserGroup;
-use App\Entity\UserGroupCollection;
+use App\Organization\Infrastructure\Entity\UserGroup;
+use App\Organization\Infrastructure\Entity\UserGroupCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 

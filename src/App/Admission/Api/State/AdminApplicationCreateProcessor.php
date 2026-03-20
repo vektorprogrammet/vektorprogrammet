@@ -7,7 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Admission\Api\Resource\AdminApplicationCreateInput;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
-use App\Entity\Repository\FieldOfStudyRepository;
+use App\Organization\Infrastructure\Repository\FieldOfStudyRepository;
 use App\Entity\Repository\UserRepository;
 use App\Entity\User;
 use App\Admission\Domain\Events\ApplicationCreatedEvent;

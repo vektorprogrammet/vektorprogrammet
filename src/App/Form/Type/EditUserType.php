@@ -2,7 +2,7 @@
 
 namespace App\Form\Type;
 
-use App\Entity\FieldOfStudy;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -54,7 +54,7 @@ class EditUserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => \App\Entity\User::class,
-            'department' => \App\Entity\Department::class,
+            'department' => \App\Organization\Infrastructure\Entity\Department::class,
         ]);
     }
 

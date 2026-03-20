@@ -2,8 +2,8 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\ExecutiveBoard;
-use App\Entity\ExecutiveBoardMembership;
+use App\Organization\Infrastructure\Entity\ExecutiveBoard;
+use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Shared\Entity\Semester;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;

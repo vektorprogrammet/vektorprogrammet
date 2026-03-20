@@ -3,7 +3,7 @@
 namespace Tests\App\Entity;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Admission\Infrastructure\Entity\InfoMeeting;
 use DateTime;
 use PHPUnit\Framework\TestCase;

@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Entity\Repository\AccessRuleRepository;
+use App\Organization\Infrastructure\Entity\Team;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AccessRuleRepository::class)]

@@ -4,7 +4,7 @@ namespace App\Admission\Infrastructure;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Entity\Role;
 use App\Entity\User;

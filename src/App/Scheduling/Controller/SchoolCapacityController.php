@@ -3,7 +3,7 @@
 namespace App\Scheduling\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use App\Scheduling\Form\SchoolCapacityEditType;

@@ -4,7 +4,7 @@ namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Operations\Infrastructure\Entity\Receipt;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;

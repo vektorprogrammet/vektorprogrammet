@@ -5,7 +5,7 @@ namespace Tests\App\Service;
 use App\Entity\AccessRule;
 use App\Entity\Repository\UnhandledAccessRuleRepository;
 use App\Entity\Role;
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Team;
 use App\Entity\UnhandledAccessRule;
 use App\Entity\User;
 use App\Role\Roles;

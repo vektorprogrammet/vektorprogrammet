@@ -4,7 +4,7 @@ namespace App\Interview\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Interview\Infrastructure\Entity\InterviewSchema;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Interview\Form\InterviewSchemaType;
 use App\Role\Roles;

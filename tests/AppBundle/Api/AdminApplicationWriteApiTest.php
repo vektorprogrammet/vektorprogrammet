@@ -42,7 +42,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $fos = $em->getRepository(\App\Entity\FieldOfStudy::class)->findAll()[0];
+        $fos = $em->getRepository(\App\Organization\Infrastructure\Entity\FieldOfStudy::class)->findAll()[0];
         $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $payload = [
@@ -94,7 +94,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $fos = $em->getRepository(\App\Entity\FieldOfStudy::class)->findAll()[0];
+        $fos = $em->getRepository(\App\Organization\Infrastructure\Entity\FieldOfStudy::class)->findAll()[0];
         $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $payload = [
@@ -125,7 +125,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $em = $container->get(EntityManagerInterface::class);
         $existingUser = $em->getRepository(\App\Entity\User::class)->findOneBy(['user_name' => 'admin']);
         $existingEmail = $existingUser->getEmail();
-        $fos = $em->getRepository(\App\Entity\FieldOfStudy::class)->findAll()[0];
+        $fos = $em->getRepository(\App\Organization\Infrastructure\Entity\FieldOfStudy::class)->findAll()[0];
         $ap = $em->getRepository(\App\Admission\Infrastructure\Entity\AdmissionPeriod::class)->findAll()[0];
 
         $payload = [
@@ -160,7 +160,7 @@ class AdminApplicationWriteApiTest extends BaseWebTestCase
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
-        $fos = $em->getRepository(\App\Entity\FieldOfStudy::class)->findAll()[0];
+        $fos = $em->getRepository(\App\Organization\Infrastructure\Entity\FieldOfStudy::class)->findAll()[0];
 
         $payload = [
             'firstName' => 'Test',

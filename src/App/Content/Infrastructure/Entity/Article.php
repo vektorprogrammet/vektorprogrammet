@@ -10,7 +10,7 @@ use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Put;
 use App\Content\Api\State\ArticleProcessor;
 use App\Content\Infrastructure\Repository\ArticleRepository;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;

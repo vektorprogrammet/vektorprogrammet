@@ -2,8 +2,8 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Department;
-use App\Entity\FieldOfStudy;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use PHPUnit\Framework\TestCase;
 
 class FieldOfStudyEntityUnitTest extends TestCase

@@ -4,12 +4,12 @@ namespace App\Operations\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Entity\Repository\TeamRepository;
+use App\Organization\Infrastructure\Repository\TeamRepository;
 use App\Admission\Domain\Events\ApplicationCreatedEvent;
 use App\Admission\Form\ApplicationType;
 use App\Admission\Infrastructure\ApplicationAdmission;

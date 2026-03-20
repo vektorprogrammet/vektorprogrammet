@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\Position;
+use App\Organization\Infrastructure\Entity\Position;
 use PHPUnit\Framework\TestCase;
 
 class PositionEntityUnitTest extends TestCase

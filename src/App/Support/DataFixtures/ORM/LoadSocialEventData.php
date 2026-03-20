@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use App\Content\Infrastructure\Entity\SocialEvent;
 use Doctrine\Common\DataFixtures\AbstractFixture;

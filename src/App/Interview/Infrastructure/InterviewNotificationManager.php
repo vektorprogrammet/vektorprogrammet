@@ -4,7 +4,7 @@ namespace App\Interview\Infrastructure;
 
 use App\Admission\Infrastructure\ApplicationData;
 use App\Support\Infrastructure\Slack\SlackMessenger;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use Symfony\Component\Routing\Router;
 use Symfony\Component\Routing\RouterInterface;

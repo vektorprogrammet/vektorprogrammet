@@ -2,7 +2,7 @@
 
 namespace App\Admission\Form;
 
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Team;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

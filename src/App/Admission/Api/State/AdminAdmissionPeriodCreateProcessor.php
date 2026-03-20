@@ -5,7 +5,7 @@ namespace App\Admission\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;

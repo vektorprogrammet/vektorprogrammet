@@ -4,9 +4,9 @@ namespace App\Scheduling\Controller;
 
 use App\Support\Controller\BaseController;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Scheduling\Infrastructure\Repository\SchoolRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;

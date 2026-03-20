@@ -2,7 +2,7 @@
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Entity\FieldOfStudy;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Entity\Role;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;

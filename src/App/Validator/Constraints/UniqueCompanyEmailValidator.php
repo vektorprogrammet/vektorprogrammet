@@ -2,7 +2,7 @@
 
 namespace App\Validator\Constraints;
 
-use App\Entity\Team;
+use App\Organization\Infrastructure\Entity\Team;
 use App\Entity\User;
 use App\Support\Infrastructure\Google\GoogleAPI;
 use Doctrine\ORM\EntityManagerInterface;

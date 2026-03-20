@@ -7,7 +7,7 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Survey\Api\Resource\AdminSurveyNotifierWriteResource;
 use App\Survey\Infrastructure\Entity\Survey;
 use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
-use App\Entity\UserGroup;
+use App\Organization\Infrastructure\Entity\UserGroup;
 use App\Survey\Infrastructure\SurveyNotifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;

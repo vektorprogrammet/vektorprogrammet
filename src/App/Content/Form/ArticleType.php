@@ -2,7 +2,7 @@
 
 namespace App\Content\Form;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

@@ -2,7 +2,7 @@
 
 namespace App\Support\Infrastructure\Slack;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use GuzzleHttp\Client;
 use Monolog\Logger;
 

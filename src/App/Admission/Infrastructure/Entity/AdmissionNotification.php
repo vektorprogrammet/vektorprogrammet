@@ -3,7 +3,7 @@
 namespace App\Admission\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Repository\AdmissionNotificationRepository;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Entity\Semester;
 

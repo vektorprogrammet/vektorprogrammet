@@ -2,7 +2,7 @@
 
 namespace Tests\App\Entity;
 
-use App\Entity\FieldOfStudy;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Entity\Role;
 use App\Entity\User;
 use PHPUnit\Framework\TestCase;

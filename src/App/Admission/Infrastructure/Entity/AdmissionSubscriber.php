@@ -3,7 +3,7 @@
 namespace App\Admission\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Repository\AdmissionSubscriberRepository;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;

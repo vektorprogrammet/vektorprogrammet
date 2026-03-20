@@ -3,7 +3,7 @@
 namespace App\Support\DataFixtures\ORM;
 
 use App\Admission\Infrastructure\Entity\AdmissionSubscriber;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

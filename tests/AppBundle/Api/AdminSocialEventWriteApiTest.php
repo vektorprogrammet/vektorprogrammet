@@ -2,7 +2,7 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use App\Content\Infrastructure\Entity\SocialEvent;
 use Doctrine\ORM\EntityManagerInterface;

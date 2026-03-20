@@ -3,8 +3,8 @@
 namespace App\Controller;
 
 use App\Support\Controller\BaseController;
-use App\Entity\Department;
-use App\Entity\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Entity\Repository\RoleRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Entity\Repository\UserRepository;

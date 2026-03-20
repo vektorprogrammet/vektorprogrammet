@@ -2,7 +2,7 @@
 
 namespace App\Survey\Form;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Survey\Infrastructure\Entity\SurveyTaken;
 use Doctrine\ORM\EntityRepository;

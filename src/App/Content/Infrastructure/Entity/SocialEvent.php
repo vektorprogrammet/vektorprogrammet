@@ -3,7 +3,7 @@
 namespace App\Content\Infrastructure\Entity;
 
 use App\Content\Infrastructure\Repository\SocialEventRepository;
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Entity\Role;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;

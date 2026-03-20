@@ -2,7 +2,7 @@
 
 namespace App\Support;
 
-use App\Entity\Department;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Contracts\TeamInterface;
 use App\Shared\Contracts\TeamMembershipInterface;
 
