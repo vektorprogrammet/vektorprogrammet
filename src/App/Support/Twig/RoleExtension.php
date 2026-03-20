@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Twig;
 
 use App\Identity\Infrastructure\Entity\User;
@@ -101,7 +103,7 @@ class RoleExtension extends AbstractExtension
             $user = $token->getUser();
         }
 
-        if (!$user || !is_object($user) || $user::class !== User::class) {
+        if (!$user instanceof User) {
             return false;
         }
 

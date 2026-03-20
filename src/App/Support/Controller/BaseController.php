@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Controller;
 
 use App\Organization\Infrastructure\Entity\Department;
@@ -23,8 +25,9 @@ class BaseController extends AbstractController
         $department = null;
         $departmentId = $request->query->get('department');
         if ($departmentId === null) {
-            if ($this->getUser() !== null) {
-                $department = $this->getUser()->getDepartment();
+            $currentUser = $this->getUser();
+            if ($currentUser instanceof \App\Identity\Infrastructure\Entity\User) {
+                $department = $currentUser->getDepartment();
             }
         } else {
             $department = $this->departmentRepo->find($departmentId);

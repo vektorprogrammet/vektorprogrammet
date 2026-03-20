@@ -349,7 +349,7 @@ class Application implements DepartmentSemesterInterface
     }
 
     /**
-     * @return Interview
+     * @return Interview|null
      */
     public function getInterview()
     {

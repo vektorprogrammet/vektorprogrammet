@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -48,14 +50,15 @@ class DashboardProvider implements ProviderInterface
             if ($application !== null) {
                 $status = $this->applicationManager->getApplicationStatus($application);
                 $interview = $application->getInterview();
+                $scheduled = $interview !== null ? $interview->getScheduled() : null;
 
                 $dashboard->activeApplication = [
                     'id' => $application->getId(),
                     'status' => $status->getStep(),
                     'statusTitle' => $status->getText(),
                     'statusDescription' => $status->getNextAction(),
-                    'interviewScheduled' => $interview?->getScheduled()?->format('c'),
-                    'interviewRoom' => $interview?->getRoom(),
+                    'interviewScheduled' => $scheduled !== null ? $scheduled->format('c') : null,
+                    'interviewRoom' => $interview !== null ? $interview->getRoom() : null,
                 ];
             }
         }

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\DataFixtures\ORM;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
@@ -22,7 +24,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application0 = new Application();
         $application0->setUser($this->getReference('user-team-member', User::class));
         $application0->setPreviousParticipation(false);
-        $application0->setYearOfStudy(1);
+        $application0->setYearOfStudy('1');
         $application0->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $application0->setMonday(false);
         $application0->setTuesday(false);
@@ -36,7 +38,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application1 = new Application();
         $application1->setUser($this->getReference('user-10', User::class));
         $application1->setPreviousParticipation(true);
-        $application1->setYearOfStudy(1);
+        $application1->setYearOfStudy('1');
         $application1->setAdmissionPeriod($this->getReference('admission-period-5', AdmissionPeriod::class));
         $application1->setMonday(true);
         $application1->setTuesday(false);
@@ -50,7 +52,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application2 = new Application();
         $application2->setUser($this->getReference('user-11', User::class));
         $application2->setPreviousParticipation(false);
-        $application2->setYearOfStudy(1);
+        $application2->setYearOfStudy('1');
         $application2->setAdmissionPeriod($this->getReference('admission-period-1', AdmissionPeriod::class));
         $application2->setMonday(true);
         $application2->setTuesday(true);
@@ -64,7 +66,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application3 = new Application();
         $application3->setUser($this->getReference('user-12', User::class));
         $application3->setPreviousParticipation(false);
-        $application3->setYearOfStudy(1);
+        $application3->setYearOfStudy('1');
         $application3->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
 
         $manager->persist($application3);
@@ -116,7 +118,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application4 = new Application();
         $application4->setUser($this->getReference('user-13', User::class));
         $application4->setPreviousParticipation(false);
-        $application4->setYearOfStudy(1);
+        $application4->setYearOfStudy('1');
         $application4->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
 
         // The interview
@@ -162,7 +164,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application5 = new Application();
         $application5->setUser($this->getReference('user-assistant', User::class));
         $application5->setPreviousParticipation(false);
-        $application5->setYearOfStudy(1);
+        $application5->setYearOfStudy('1');
         $application5->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $interview5 = new Interview();
         $interview5->setInterviewed(false);
@@ -181,7 +183,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application6 = new Application();
         $application6->setUser($this->getReference('user-8', User::class));
         $application6->setPreviousParticipation(false);
-        $application6->setYearOfStudy(1);
+        $application6->setYearOfStudy('1');
         $application6->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $interview6 = new Interview();
         $interview6->setInterviewed(false);
@@ -208,7 +210,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application20->setUser($this->getReference('user-20', User::class));
         $this->setReference('application-2', $application2);
         $application20->setPreviousParticipation(false);
-        $application20->setYearOfStudy(1);
+        $application20->setYearOfStudy('1');
         $application20->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
 
         $application20->setMonday(false);
@@ -251,13 +253,13 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application21 = new Application();
         $application21->setUser($this->getReference('user-14', User::class));
         $application21->setPreviousParticipation(false);
-        $application21->setYearOfStudy(1);
+        $application21->setYearOfStudy('1');
         $application21->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
-        $application21->setMonday('Ikke');
-        $application21->setTuesday('Ikke');
-        $application21->setWednesday('Ikke');
-        $application21->setThursday('Ikke');
-        $application21->setFriday('Bra');
+        $application21->setMonday(false);
+        $application21->setTuesday(false);
+        $application21->setWednesday(false);
+        $application21->setThursday(false);
+        $application21->setFriday(true);
         $application21->setSubstitute(true);
         $application21->setPreferredGroup('Bolk 1');
         $interview21 = new Interview();
@@ -304,7 +306,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $application = new Application();
         $application->setUser($user);
         $application->setPreviousParticipation(mt_rand(0, 100) < 10 ? true : false);
-        $application->setYearOfStudy(1);
+        $application->setYearOfStudy('1');
         $application->setAdmissionPeriod($this->getReference('admission-period-current', AdmissionPeriod::class));
         $application->setCreated(new \DateTime('-'.mt_rand(0, 10).'days'));
         $randomArr = [true, false, false, false, false];

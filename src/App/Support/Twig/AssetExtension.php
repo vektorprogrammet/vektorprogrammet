@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Twig;
 
 use Symfony\Component\Asset\Packages;
@@ -33,9 +35,9 @@ class AssetExtension extends AbstractExtension
      *
      * @return string The public path of the asset
      */
-    public function getAssetUrl($path, $packageName = null)
+    public function getAssetUrl(?string $path, $packageName = null)
     {
-        if ($path === null || strlen((string) $path) === 0) {
+        if ($path === null || strlen($path) === 0) {
             return '';
         }
 
@@ -46,7 +48,7 @@ class AssetExtension extends AbstractExtension
 
         $version = '';
         if (file_exists($filePath)) {
-            $version = filemtime($filePath);
+            $version = (string) filemtime($filePath);
         }
 
         $url = $this->packages->getUrl($path, $packageName);

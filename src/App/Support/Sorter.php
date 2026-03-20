@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support;
 
 use App\Operations\Infrastructure\Entity\Receipt;
@@ -111,19 +113,21 @@ class Sorter
             $teamMemberships1 = $user1->getActiveMemberships();
             $teamMemberships2 = $user2->getActiveMemberships();
 
-            // Check if empty or null
-            if ($teamMemberships2 === null || empty($teamMemberships2)) {
-                if ($teamMemberships1 === null || empty($teamMemberships1)) {
-                    return 0; // Both null or empty
+            // Check if empty
+            if (empty($teamMemberships2)) {
+                if (empty($teamMemberships1)) {
+                    return 0; // Both empty
                 }
 
-                return -1; // If 2 is empty, but not 1:TeamMember 1 comes first
-            } elseif ($teamMemberships1 === null || empty($teamMemberships1)) {
+                return -1; // If 2 is empty, but not 1: TeamMember 1 comes first
+            } elseif (empty($teamMemberships1)) {
                 return 1; // If 1 is empty, but not 2: 2 comes first
             }
 
             // Sort team memberships by position
+            // @phpstan-ignore argument.type (Identity\TeamMembershipInterface implements Shared\TeamMembershipInterface)
             $this->sortTeamMembershipsByPosition($teamMemberships1);
+            // @phpstan-ignore argument.type (Identity\TeamMembershipInterface implements Shared\TeamMembershipInterface)
             $this->sortTeamMembershipsByPosition($teamMemberships2);
 
             $cmp = 0;

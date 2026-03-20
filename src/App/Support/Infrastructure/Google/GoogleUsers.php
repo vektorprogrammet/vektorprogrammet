@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Infrastructure\Google;
 
 use App\Identity\Infrastructure\Entity\User;
@@ -7,11 +9,11 @@ use App\Identity\Infrastructure\Entity\User;
 class GoogleUsers extends GoogleService
 {
     /**
-     * @param null $maxResults
+     * @param int|null $maxResults
      *
      * @return \Google_Service_Directory_User[]
      */
-    public function getUsers($maxResults = null)
+    public function getUsers(?int $maxResults = null)
     {
         if ($this->disabled) {
             return [];
@@ -24,7 +26,7 @@ class GoogleUsers extends GoogleService
             'customer' => 'my_customer',
         ];
 
-        if ($maxResults) {
+        if ($maxResults !== null) {
             $optParams['maxResults'] = $maxResults;
         }
         try {
@@ -39,7 +41,7 @@ class GoogleUsers extends GoogleService
     }
 
     /**
-     * @return \Google_Service_Directory_User
+     * @return \Google_Service_Directory_User|null
      */
     public function getUser(string $companyEmail)
     {
@@ -62,7 +64,7 @@ class GoogleUsers extends GoogleService
     }
 
     /**
-     * @return \Google_Service_Directory_User
+     * @return \Google_Service_Directory_User|null
      */
     public function createUser(User $user)
     {
@@ -90,7 +92,7 @@ class GoogleUsers extends GoogleService
     }
 
     /**
-     * @return \Google_Service_Directory_User
+     * @return \Google_Service_Directory_User|null
      */
     public function updateUser(string $userKey, User $user, $suspended = null)
     {

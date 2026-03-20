@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Infrastructure;
 
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
@@ -81,7 +83,7 @@ class FileUploader
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function uploadArticleImage(Request $request, string $id)
     {

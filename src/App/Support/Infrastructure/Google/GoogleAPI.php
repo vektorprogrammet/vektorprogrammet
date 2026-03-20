@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\Infrastructure\Google;
 
 class GoogleAPI
@@ -29,7 +31,7 @@ class GoogleAPI
         foreach ($groups as $group) {
             $emailsInUse[] = $group->getEmail();
             $aliases = $group->getAliases();
-            if ($aliases !== null) {
+            if ($aliases !== null && $aliases !== []) {
                 $emailsInUse = array_merge($emailsInUse, $aliases);
             }
         }

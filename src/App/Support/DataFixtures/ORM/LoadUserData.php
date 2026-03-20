@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Support\DataFixtures\ORM;
 
 use App\Organization\Infrastructure\Entity\FieldOfStudy;
@@ -13,11 +15,9 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class LoadUserData extends AbstractFixture implements OrderedFixtureInterface, ContainerAwareInterface
 {
-    private $container;
-
-    public function setContainer(?ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
-        $this->container = $container;
+        // container not used; method required by ContainerAwareInterface
     }
 
     public function load(ObjectManager $manager): void
