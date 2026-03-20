@@ -11,7 +11,7 @@ use App\Scheduling\Api\State\AdminSchedulingSchoolProvider;
         new GetCollection(
             uriTemplate: '/admin/scheduling/schools',
             provider: AdminSchedulingSchoolProvider::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
         ),
     ],
 )]

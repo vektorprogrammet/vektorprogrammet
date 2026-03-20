@@ -11,7 +11,7 @@ use App\Scheduling\Api\State\AdminSchedulingAssistantProvider;
         new GetCollection(
             uriTemplate: '/admin/scheduling/assistants',
             provider: AdminSchedulingAssistantProvider::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
         ),
     ],
 )]

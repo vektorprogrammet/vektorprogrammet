@@ -13,7 +13,7 @@ use App\Admission\Api\State\AdminAdmissionPeriodDeleteProvider;
             uriTemplate: '/admin/admission-periods/{id}',
             provider: AdminAdmissionPeriodDeleteProvider::class,
             processor: AdminAdmissionPeriodDeleteProcessor::class,
-            security: "is_granted('ROLE_TEAM_MEMBER')",
+            security: "is_granted('ROLE_TEAM_LEADER')",
             output: false,
             status: 204,
         ),
