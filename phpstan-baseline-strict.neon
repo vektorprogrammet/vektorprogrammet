@@ -1,0 +1,1471 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminAdmissionPeriodDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminAdmissionPeriodEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminApplicationDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, App\\Identity\\Infrastructure\\Entity\\User given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminApplicationListProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, string\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 2
+			path: src/App/Admission/Api/State/AdminApplicationListProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminSubstituteActivateProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminSubstituteActivateProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminSubstituteDeactivateProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminSubstituteDeactivateProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminSubstituteEditProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdminSubstituteEditProvider.php
+
+		-
+			message: '#^Casting to int something that''s already int\.$#'
+			identifier: cast.useless
+			count: 3
+			path: src/App/Admission/Api/State/AdmissionStatisticsProvider.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Admission\\Infrastructure\\Entity\\AdmissionSubscriber given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/AdmissionSubscriberProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Admission/Api/State/ApplicationProcessor.php
+
+		-
+			message: '#^Call to function array_filter\(\) requires parameter \#2 to be passed to avoid loose comparison semantics\.$#'
+			identifier: arrayFilter.strict
+			count: 1
+			path: src/App/Admission/Controller/AdmissionAdminController.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Admission\\Infrastructure\\Entity\\InfoMeeting given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Admission/Controller/AdmissionPeriodController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\AdmissionSubscriber given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Admission/Controller/AdmissionSubscriberController.php
+
+		-
+			message: '#^Call to method App\\Organization\\Infrastructure\\Entity\\Department\:\:getId\(\) with incorrect case\: getid$#'
+			identifier: method.nameCase
+			count: 1
+			path: src/App/Admission/Controller/SubstituteController.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Admission/Domain/Rules/AdmissionStatistics.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 4
+			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Admission\\Infrastructure\\Entity\\AdmissionSubscriber given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Admission/Infrastructure/AdmissionNotifier.php
+
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Admission/Infrastructure/Entity/AdmissionPeriod.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Admission/Infrastructure/Subscriber/ApplicationSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Admission\\Infrastructure\\Subscriber\\ApplicationSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Admission/Infrastructure/Subscriber/ApplicationSubscriber.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\Application given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/ApplicationEmailValidator.php
+
+		-
+			message: '#^Parameter \#1 \$application \(App\\Admission\\Infrastructure\\Entity\\Application\) of method App\\Admission\\Infrastructure\\Validator\\ApplicationEmailValidator\:\:validate\(\) should be contravariant with parameter \$value \(mixed\) of method Symfony\\Component\\Validator\\ConstraintValidatorInterface\:\:validate\(\)$#'
+			identifier: method.childParameterType
+			count: 2
+			path: src/App/Admission/Infrastructure/Validator/ApplicationEmailValidator.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\InfoMeeting given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
+
+		-
+			message: '#^Parameter \#1 \$infoMeeting \(App\\Admission\\Infrastructure\\Entity\\InfoMeeting\) of method App\\Admission\\Infrastructure\\Validator\\InfoMeetingValidator\:\:validate\(\) should be contravariant with parameter \$value \(mixed\) of method Symfony\\Component\\Validator\\ConstraintValidatorInterface\:\:validate\(\)$#'
+			identifier: method.childParameterType
+			count: 2
+			path: src/App/Admission/Infrastructure/Validator/InfoMeetingValidator.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminChangelogDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminChangelogEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminSocialEventDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminSocialEventEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/AdminStaticContentEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Content/Api/State/ArticleProcessor.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$response does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 2
+			path: src/App/Content/Controller/ArticleAdminController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: src/App/Content/Controller/ArticleAdminController.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 2
+			path: src/App/Content/Controller/ArticleAdminController.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Content/Controller/FeedbackController.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Content/Controller/SponsorsController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Content\\Infrastructure\\Entity\\StaticContent given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Controller/StaticContentController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Controller/StaticContentController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Content/Controller/WidgetController.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Content\\Infrastructure\\Entity\\SupportTicket\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Content/Infrastructure/Entity/SupportTicket.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Infrastructure/Subscriber/SupportTicketSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Content\\Infrastructure\\Subscriber\\SupportTicketSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Content/Infrastructure/Subscriber/SupportTicketSubscriber.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Content\\Infrastructure\\Entity\\StaticContent given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Content/Twig/StaticContentExtension.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserActivationProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string\|null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/AdminUserListProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/ProfilePhotoProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/ProfilePhotoProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Organization\\Infrastructure\\Entity\\FieldOfStudy given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Identity/Api/State/ProfileProvider.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: src/App/Identity/Controller/ProfileController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Controller/ProfilePhotoController.php
+
+		-
+			message: '#^Only booleans are allowed in an elseif condition, App\\Admission\\Infrastructure\\Entity\\Application\|null given\.$#'
+			identifier: elseif.condNotBoolean
+			count: 1
+			path: src/App/Identity/Controller/SecurityController.php
+
+		-
+			message: '#^Call to method App\\Identity\\Infrastructure\\Entity\\User\:\:getUserName\(\) with incorrect case\: getUsername$#'
+			identifier: method.nameCase
+			count: 1
+			path: src/App/Identity/Controller/SsoController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: src/App/Identity/Controller/SsoController.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Identity/Controller/UserAdminController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Identity/Controller/UserController.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 3
+			path: src/App/Identity/Domain/Rules/RoleHierarchy.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 3
+			path: src/App/Identity/Domain/Rules/RoleHierarchy.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Identity/Domain/Rules/RoleHierarchy.php
+
+		-
+			message: '#^Casting to \*NEVER\* something that''s already \*NEVER\*\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 6
+			path: src/App/Identity/Infrastructure/AccessControlService.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: src/App/Identity/Infrastructure/CompanyEmailMaker.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: src/App/Identity/Infrastructure/Entity/AccessRule.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Identity\\Infrastructure\\Entity\\User\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Identity/Infrastructure/Entity/User.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
+			message: '#^Only booleans are allowed in &&, string given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/RoleManager.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Identity\\Infrastructure\\Subscriber\\AccessControlSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Identity/Infrastructure/Subscriber/AccessControlSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Identity\\Infrastructure\\Subscriber\\UserSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Identity/Infrastructure/Subscriber/UserSubscriber.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Identity\\Infrastructure\\Entity\\User\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, App\\Identity\\Infrastructure\\Entity\\User\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/UserService.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Identity/Infrastructure/Validator/UniqueCompanyEmailValidator.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/Validator/UniqueCompanyEmailValidator.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Identity/Infrastructure/Validator/VektorEmailValidator.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, App\\Identity\\Infrastructure\\Entity\\User given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 2
+			path: src/App/Interview/Api/State/AdminInterviewListProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewSchemaDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/AdminInterviewSchemaEditProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\Interview given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewAcceptProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\InterviewSchema\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewAssignProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\InterviewSchema\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewBulkAssignProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\Interview given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewCancelProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewClearCoInterviewerProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewClearCoInterviewerProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewCoInterviewerProcessor.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Interview/Api/State/InterviewConductProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewDeleteProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewDeleteProvider.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Interview/Api/State/InterviewNewTimeProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\Interview given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewNewTimeProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\Interview given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewResponseProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, App\\Identity\\Infrastructure\\Entity\\User given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Interview/Api/State/InterviewResponseProvider.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Interview/Api/State/InterviewScheduleProcessor.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Only booleans are allowed in &&, mixed given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Controller/InterviewController.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$response does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 2
+			path: src/App/Interview/Controller/InterviewSchemaController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, int given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Controller/InterviewSchemaController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Infrastructure/Command/SendListOfScheduledInterviewsCommand.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: src/App/Interview/Infrastructure/Entity/Interview.php
+
+		-
+			message: '#^Only booleans are allowed in &&, App\\Identity\\Infrastructure\\Entity\\User given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 1
+			path: src/App/Interview/Infrastructure/Entity/Interview.php
+
+		-
+			message: '#^Only booleans are allowed in &&, App\\Identity\\Infrastructure\\Entity\\User\|null given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 2
+			path: src/App/Interview/Infrastructure/Entity/Interview.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Interview/Infrastructure/Entity/InterviewAnswer.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Interview\\Infrastructure\\Entity\\Interview given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Interview\\Infrastructure\\Entity\\Interview given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 3
+			path: src/App/Interview/Infrastructure/InterviewManager.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Interview/Infrastructure/Repository/InterviewRepository.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Identity\\Infrastructure\\Entity\\User given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Interview/Infrastructure/Repository/InterviewRepository.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Interview\\Infrastructure\\Subscriber\\InterviewSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Interview/Infrastructure/Subscriber/InterviewSubscriber.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Interview/Infrastructure/Validator/InterviewAnswerValidator.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Operations/Api/State/AdminAssistantHistoryCreateProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Operations/Api/State/AdminAssistantHistoryDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Operations/Api/State/AdminCertificateProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Operations/Api/State/AdminReceiptStatusProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in &&, Symfony\\Component\\HttpFoundation\\Request\|null given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: src/App/Operations/Api/State/ReceiptCreateProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in &&, Symfony\\Component\\HttpFoundation\\Request\|null given on the left side\.$#'
+			identifier: booleanAnd.leftNotBoolean
+			count: 1
+			path: src/App/Operations/Api/State/ReceiptEditProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Operations/Controller/AssistantController.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, DateTime given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Operations/Controller/ReceiptController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Operations/Domain/Rules/ReceiptStatistics.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, DateTime given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Operations/Domain/Rules/ReceiptStatistics.php
+
+		-
+			message: '#^Call to method Doctrine\\ORM\\QueryBuilder\:\:join\(\) with incorrect case\: JOIN$#'
+			identifier: method.nameCase
+			count: 1
+			path: src/App/Operations/Form/CreateAssistantHistoryType.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Operations/Infrastructure/AssistantHistoryData.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Operations\\Infrastructure\\Entity\\AssistantHistory\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Operations/Infrastructure/Entity/AssistantHistory.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Operations\\Infrastructure\\Entity\\CertificateRequest\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Operations/Infrastructure/Entity/CertificateRequest.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Operations\\Infrastructure\\Subscriber\\AssistantHistorySubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Operations/Infrastructure/Subscriber/AssistantHistorySubscriber.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminDepartmentDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminDepartmentEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminExecutiveBoardMemberDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminExecutiveBoardMemberEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminFieldOfStudyEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminTeamDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminTeamEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminTeamMemberAddProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminTeamMembershipDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Organization/Api/State/AdminTeamMembershipEditProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, string\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 2
+			path: src/App/Organization/Api/State/MailingListProvider.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Organization/Controller/TeamAdminController.php
+
+		-
+			message: '#^Call to method App\\Organization\\Infrastructure\\Repository\\TeamRepository\:\:findInActiveByDepartment\(\) with incorrect case\: findInactiveByDepartment$#'
+			identifier: method.nameCase
+			count: 1
+			path: src/App/Organization/Controller/TeamAdminController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: src/App/Organization/Controller/TeamApplicationController.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$response does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 2
+			path: src/App/Organization/Controller/UserGroupCollectionController.php
+
+		-
+			message: '#^Call to method Doctrine\\ORM\\QueryBuilder\:\:join\(\) with incorrect case\: Join$#'
+			identifier: method.nameCase
+			count: 2
+			path: src/App/Organization/Form/CreateExecutiveBoardMembershipType.php
+
+		-
+			message: '#^Call to method Doctrine\\ORM\\QueryBuilder\:\:join\(\) with incorrect case\: Join$#'
+			identifier: method.nameCase
+			count: 2
+			path: src/App/Organization/Form/CreateTeamMembershipType.php
+
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Department.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, App\\Admission\\Infrastructure\\Entity\\AdmissionPeriod given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Department.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Organization\\Infrastructure\\Entity\\Department\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Department.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoard.php
+
+		-
+			message: '#^Return type \(App\\Organization\\Infrastructure\\Entity\\TeamInterface\) of method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\:\:getTeam\(\) should be covariant with return type \(App\\Shared\\Contracts\\TeamInterface\) of method App\\Shared\\Contracts\\TeamMembershipInterface\:\:getTeam\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoardMembership.php
+
+		-
+			message: '#^Return type \(App\\Shared\\Entity\\Semester\|null\) of method App\\Organization\\Infrastructure\\Entity\\ExecutiveBoardMembership\:\:getEndSemester\(\) should be covariant with return type \(App\\Shared\\Entity\\Semester\) of method App\\Shared\\Contracts\\TeamMembershipInterface\:\:getEndSemester\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/ExecutiveBoardMembership.php
+
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Position.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Organization\\Infrastructure\\Entity\\Position\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Position.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Organization\\Infrastructure\\Entity\\Team\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/Team.php
+
+		-
+			message: '#^Return type \(App\\Organization\\Infrastructure\\Entity\\Department\) of method App\\Organization\\Infrastructure\\Entity\\TeamInterest\:\:getDepartment\(\) should be covariant with return type \(App\\Shared\\Contracts\\Department\) of method App\\Shared\\Contracts\\DepartmentSemesterInterface\:\:getDepartment\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/TeamInterest.php
+
+		-
+			message: '#^Return type \(App\\Shared\\Entity\\Semester\) of method App\\Organization\\Infrastructure\\Entity\\TeamInterest\:\:getSemester\(\) should be covariant with return type \(App\\Shared\\Contracts\\Semester\) of method App\\Shared\\Contracts\\DepartmentSemesterInterface\:\:getSemester\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Entity/TeamInterest.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Organization\\Infrastructure\\Subscriber\\IntroductionEmailSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Subscriber/IntroductionEmailSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Organization\\Infrastructure\\Subscriber\\TeamApplicationSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Subscriber/TeamApplicationSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Organization\\Infrastructure\\Subscriber\\TeamMembershipSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Organization/Infrastructure/Subscriber/TeamMembershipSubscriber.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Organization/Infrastructure/UserGroupCollectionManager.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Organization/Infrastructure/UserGroupCollectionManager.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Scheduling/Api/State/AdminSchoolDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Scheduling/Api/State/AdminSchoolEditProvider.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$response does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 4
+			path: src/App/Scheduling/Controller/SchoolAdminController.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 4
+			path: src/App/Scheduling/Domain/Rules/Assistant.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Scheduling\\Infrastructure\\Entity\\School\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Scheduling/Infrastructure/Entity/School.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: src/App/Scheduling/Infrastructure/SbsData.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Shared/Api/State/AdminSemesterDeleteProvider.php
+
+		-
+			message: '#^Class DateTime referenced with incorrect case\: Datetime\.$#'
+			identifier: class.nameCase
+			count: 2
+			path: src/App/Shared/Contracts/PeriodInterface.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 2
+			path: src/App/Shared/Entity/Semester.php
+
+		-
+			message: '#^Variable method call on \$this\(App\\Shared\\Entity\\Semester\)\.$#'
+			identifier: method.dynamicName
+			count: 1
+			path: src/App/Shared/Entity/Semester.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Shared/Repository/SemesterRepository.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Support/Controller/FileBrowserController.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Support/Controller/GitHubController.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Support/DataFixtures/ORM/LoadUserData.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Support/EventSubscriber/DbSubscriber.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/EventSubscriber/DbSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Support\\EventSubscriber\\DbSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string\>\) of method Doctrine\\Common\\EventSubscriber\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Support/EventSubscriber/DbSubscriber.php
+
+		-
+			message: '#^Only booleans are allowed in &&, string given on the right side\.$#'
+			identifier: booleanAnd.rightNotBoolean
+			count: 2
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Return type \(array\) of method App\\Support\\EventSubscriber\\GSuiteSubscriber\:\:getSubscribedEvents\(\) should be covariant with return type \(array\<string, list\<array\{0\: string, 1\?\: int\}\|int\|string\>\|string\>\) of method Symfony\\Component\\EventDispatcher\\EventSubscriberInterface\:\:getSubscribedEvents\(\)$#'
+			identifier: method.childReturnType
+			count: 1
+			path: src/App/Support/EventSubscriber/GSuiteSubscriber.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/BetaRedirecter.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
+			path: src/App/Support/Infrastructure/FileUploader.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, mixed given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Only booleans are allowed in \|\|, string\|null given on the right side\.$#'
+			identifier: booleanOr.rightNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/GeoLocation.php
+
+		-
+			message: '#^Call to function array_search\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, resource\|string\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, string given\.$#'
+			identifier: if.condNotBoolean
+			count: 4
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Google/Gmail.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Google/GoogleGroups.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, array given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Google/GoogleService.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, null given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Google/GoogleUsers.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, Symfony\\Component\\HttpFoundation\\Request\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 3
+			path: src/App/Support/Infrastructure/LogService.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Mailer/Mailer.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMailer.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, string given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMailer.php
+
+		-
+			message: '#^Short ternary operator is not allowed\. Use null coalesce operator if applicable or consider using long ternary\.$#'
+			identifier: ternary.shortNotAllowed
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMailer.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, string given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/Infrastructure/Slack/SlackMessenger.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 7
+			path: src/App/Support/Sorter.php
+
+		-
+			message: '#^Casting to string something that''s already string\.$#'
+			identifier: cast.useless
+			count: 1
+			path: src/App/Support/Twig/AssetExtension.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\Authentication\\Token\\TokenInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/Twig/RoleExtension.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 1
+			path: src/App/Support/Twig/RoleExtension.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyCopyProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyCopyProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyEditProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, string\|null given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 2
+			path: src/App/Survey/Api/State/AdminSurveyListProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyNotifierDeleteProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyNotifierDeleteProvider.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyNotifierEditProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyNotifierSendProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a ternary operator condition, mixed given\.$#'
+			identifier: ternary.condNotBoolean
+			count: 1
+			path: src/App/Survey/Api/State/AdminSurveyNotifierSendProvider.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Survey/Api/State/SurveyPopupProvider.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Survey/Api/State/SurveyRespondProcessor.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, Symfony\\Component\\Security\\Core\\User\\UserInterface\|null given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 2
+			path: src/App/Survey/Api/State/SurveyRespondProcessor.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$response does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 1
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Survey/Controller/SurveyController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Survey/Controller/SurveyNotifierController.php
+
+		-
+			message: '#^Implicit array creation is not allowed \- variable \$response does not exist\.$#'
+			identifier: variable.implicitArray
+			count: 3
+			path: src/App/Survey/Controller/SurveyNotifierController.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Survey/Controller/SurveyPopupController.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 1
+			path: src/App/Survey/Domain/Rules/SurveyDataTransformer.php
+
+		-
+			message: '#^Only booleans are allowed in a negated boolean, mixed given\.$#'
+			identifier: booleanNot.exprNotBoolean
+			count: 11
+			path: src/App/Survey/Form/SurveyNotifierType.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: src/App/Survey/Infrastructure/Entity/Survey.php
+
+		-
+			message: '#^Only booleans are allowed in an if condition, App\\Organization\\Infrastructure\\Entity\\Department given\.$#'
+			identifier: if.condNotBoolean
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/Survey.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyTaken.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 1
+			path: src/App/Survey/Infrastructure/Entity/SurveyTaken.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 3
+			path: src/App/Survey/Infrastructure/Entity/SurveyTaken.php
+
+		-
+			message: '#^Call to function array_keys\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 1
+			path: src/App/Survey/Infrastructure/SurveyManager.php
+
+		-
+			message: '#^Call to function in_array\(\) requires parameter \#3 to be set\.$#'
+			identifier: function.strict
+			count: 2
+			path: src/App/Survey/Infrastructure/SurveyManager.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 2
+			path: src/App/Survey/Infrastructure/SurveyManager.php
+
+		-
+			message: '#^Loose comparison via "\!\=" is not allowed\.$#'
+			identifier: notEqual.notAllowed
+			count: 1
+			path: src/App/Survey/Infrastructure/SurveyManager.php
+
+		-
+			message: '#^Loose comparison via "\=\=" is not allowed\.$#'
+			identifier: equal.notAllowed
+			count: 5
+			path: src/App/Survey/Infrastructure/SurveyManager.php
+
+		-
+			message: '#^Construct empty\(\) is not allowed\. Use more strict comparison\.$#'
+			identifier: empty.notAllowed
+			count: 4
+			path: src/App/Survey/Infrastructure/SurveyNotifier.php
