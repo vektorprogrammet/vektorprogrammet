@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Controller;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
@@ -27,7 +30,9 @@ class FieldOfStudyController extends BaseController
     #[Route('/kontrollpanel/linjer', name: 'show_field_of_studies', methods: ['GET'])]
     public function showAction()
     {
-        $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+        /** @var User $user */
+        $user = $this->getUser();
+        $department = $user->getFieldOfStudy()->getDepartment();
         $fieldOfStudies = $this->fieldOfStudyRepo->findByDepartment($department);
 
         return $this->render('field_of_study/show_all.html.twig', [
@@ -46,7 +51,9 @@ class FieldOfStudyController extends BaseController
             $isEdit = false;
         } else {
             // Check if user is trying to edit FOS from department other than his own
-            if ($fieldOfStudy->getDepartment() !== $this->getUser()->getFieldOfStudy()->getDepartment()) {
+            /** @var User $user */
+            $user = $this->getUser();
+            if ($fieldOfStudy->getDepartment() !== $user->getFieldOfStudy()->getDepartment()) {
                 throw new AccessDeniedException();
             }
         }
@@ -54,7 +61,9 @@ class FieldOfStudyController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $fieldOfStudy->setDepartment($this->getUser()->getFieldOfStudy()->getDepartment());
+            /** @var User $user */
+            $user = $this->getUser();
+            $fieldOfStudy->setDepartment($user->getFieldOfStudy()->getDepartment());
             $this->em->persist($fieldOfStudy);
             $this->em->flush();
 

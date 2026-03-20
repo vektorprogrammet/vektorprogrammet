@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Organization\Infrastructure\Repository\TeamInterestRepository;
@@ -28,7 +30,7 @@ class TeamInterest implements DepartmentSemesterInterface
      */
     #[ORM\Column(name: 'name', type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
-    #[Assert\Length(max: '255', maxMessage: 'Navnet ditt kan maksimalt være 255 tegn')]
+    #[Assert\Length(max: 255, maxMessage: 'Navnet ditt kan maksimalt være 255 tegn')]
     private $name;
 
     /**
@@ -36,7 +38,7 @@ class TeamInterest implements DepartmentSemesterInterface
      */
     #[ORM\Column(name: 'email', type: 'string', length: 255)]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
-    #[Assert\Length(max: '255', maxMessage: 'Emailen din kan maksimalt være 255 tegn')]
+    #[Assert\Length(max: 255, maxMessage: 'Emailen din kan maksimalt være 255 tegn')]
     #[Assert\Email(message: 'Emailen din er ikke formatert riktig')]
     private $email;
 

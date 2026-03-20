@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Controller;
 
 use App\Support\Controller\BaseController;
@@ -12,7 +14,9 @@ use App\Shared\Repository\SemesterRepository;
 use App\Organization\Form\CreateExecutiveBoardMembershipType;
 use App\Organization\Form\CreateExecutiveBoardType;
 use App\Identity\Infrastructure\RoleManager;
+use App\Identity\Infrastructure\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -69,7 +73,9 @@ class ExecutiveBoardController extends BaseController
 
         // Create a new TeamMembership entity
         $member = new ExecutiveBoardMembership();
-        $member->setUser($this->getUser());
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $member->setUser($currentUser);
 
         // Create a new formType with the needed variables
         $form = $this->createForm(CreateExecutiveBoardMembershipType::class, $member, [
@@ -122,7 +128,9 @@ class ExecutiveBoardController extends BaseController
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             // Don't persist if the preview button was clicked
-            if (!$form->get('preview')->isClicked()) {
+            /** @var \Symfony\Component\Form\SubmitButton $previewButton */
+            $previewButton = $form->get('preview');
+            if (!$previewButton->isClicked()) {
                 // Persist the board to the database
                 $this->em->persist($board);
                 $this->em->flush();

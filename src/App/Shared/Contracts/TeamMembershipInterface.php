@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Shared\Contracts;
 
 use App\Identity\Infrastructure\Entity\User;
@@ -30,7 +32,7 @@ interface TeamMembershipInterface
     public function setStartSemester(?Semester $semester = null);
 
     /**
-     * @return Semester
+     * @return Semester|null
      */
     public function getEndSemester();
 

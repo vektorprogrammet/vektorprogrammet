@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure;
 
 use App\Operations\Infrastructure\Entity\AssistantHistory;
@@ -19,13 +21,10 @@ class UserGroupCollectionManager
 
     public function initializeUserGroupCollection(UserGroupCollection $userGroupCollection)
     {
-        if (!empty($userGroupCollection->getUserGroups())) {
-            foreach ($userGroupCollection->getUserGroups() as $userGroup) {
-                $this->em->remove($userGroup);
-            }
+        foreach ($userGroupCollection->getUserGroups() as $userGroup) {
+            $this->em->remove($userGroup);
         }
         $users = $this->findUsers($userGroupCollection);
-        $userGroupCollection->setNumberTotalUsers(sizeof($users));
         $userGroupings = $this->distribution->distribute($users, $userGroupCollection->getNumberUserGroups());
 
         $this->em->persist($userGroupCollection);
@@ -35,7 +34,7 @@ class UserGroupCollectionManager
             $userGroup = new UserGroup();
             $userGroup->setName($groupName);
             $userGroup->setUserGroupCollection($userGroupCollection);
-            ++$groupName;
+            $groupName = str_increment($groupName);
             $userGroup->setUsers($userGrouping);
             $this->em->persist($userGroup);
         }
@@ -78,7 +77,7 @@ class UserGroupCollectionManager
 
         $assistantHistories = array_filter(
             $assistantHistories,
-            fn (AssistantHistory $assistantHistory) => in_array($assistantHistory->getBolk(), $bolks)
+            fn (AssistantHistory $assistantHistory) => in_array($assistantHistory->getBolk(), $bolks, true)
         );
 
         $assistantsFiltered = array_map(

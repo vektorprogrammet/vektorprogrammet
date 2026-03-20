@@ -1,15 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Entity\Application;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\TeamRepository;
 use App\Shared\Contracts\DepartmentSemesterInterface;
 use App\Shared\Contracts\TeamInterface;
+use App\Shared\Contracts\TeamMembershipInterface;
 use App\Identity\Infrastructure\Validator as CustomAssert;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -54,7 +59,7 @@ class Team implements TeamInterface, \Stringable
     private $description;
 
     #[ORM\Column(type: 'string', nullable: true, name: 'short_description')]
-    #[Assert\Length(maxMessage: 'Maks 125 Tegn', max: '125')]
+    #[Assert\Length(maxMessage: 'Maks 125 Tegn', max: 125)]
     #[Groups(['team:read', 'department:detail'])]
     private $shortDescription;
 
@@ -69,7 +74,7 @@ class Team implements TeamInterface, \Stringable
     /**
      * Applications with team interest.
      *
-     * @var Application[]
+     * @var Collection<int, Application>
      */
     #[ORM\ManyToMany(targetEntity: Application::class, mappedBy: 'potentialTeams')]
     private $potentialMembers;
@@ -77,7 +82,7 @@ class Team implements TeamInterface, \Stringable
     /**
      * TeamInterest entities not corresponding to any Application.
      *
-     * @var TeamInterest[]
+     * @var Collection<int, TeamInterest>
      */
     #[ORM\ManyToMany(targetEntity: TeamInterest::class, mappedBy: 'potentialTeams')]
     private $potentialApplicants;
@@ -132,7 +137,7 @@ class Team implements TeamInterface, \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
     public function getType()
@@ -201,12 +206,13 @@ class Team implements TeamInterface, \Stringable
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
+            // @phpstan-ignore method.dynamicName
             $this->$method($value);
         }
     }
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getEmail()
     {
@@ -291,7 +297,7 @@ class Team implements TeamInterface, \Stringable
     }
 
     /**
-     * @return TeamMembership[]
+     * @return TeamMembershipInterface[]
      */
     public function getTeamMemberships()
     {
@@ -299,7 +305,7 @@ class Team implements TeamInterface, \Stringable
     }
 
     /**
-     * @return TeamMembership[]
+     * @return TeamMembershipInterface[]
      */
     public function getActiveTeamMemberships()
     {
@@ -307,7 +313,7 @@ class Team implements TeamInterface, \Stringable
 
         foreach ($this->teamMemberships as $wh) {
             $semester = $wh->getUser()->getDepartment()->getCurrentOrLatestAdmissionPeriod()->getSemester();
-            if ($semester !== null && $wh->isActiveInSemester($semester)) {
+            if ($wh->isActiveInSemester($semester)) {
                 $histories[] = $wh;
             }
         }
@@ -318,12 +324,12 @@ class Team implements TeamInterface, \Stringable
     /**
      * @return User[]
      */
-    public function getActiveUsers()
+    public function getActiveUsers(): array
     {
         $activeUsers = [];
 
         foreach ($this->getActiveTeamMemberships() as $activeTeamMembership) {
-            if (!in_array($activeTeamMembership->getUser(), $activeUsers)) {
+            if (!in_array($activeTeamMembership->getUser(), $activeUsers, true)) {
                 $activeUsers[] = $activeTeamMembership->getUser();
             }
         }
@@ -332,7 +338,7 @@ class Team implements TeamInterface, \Stringable
     }
 
     /**
-     * @return Application[]
+     * @return Collection<int, Application>
      */
     public function getPotentialMembers()
     {
@@ -340,7 +346,7 @@ class Team implements TeamInterface, \Stringable
     }
 
     /**
-     * @param Application[] $potentialMembers
+     * @param Collection<int, Application> $potentialMembers
      */
     public function setPotentialMembers($potentialMembers)
     {
@@ -348,7 +354,7 @@ class Team implements TeamInterface, \Stringable
     }
 
     /**
-     * @return TeamInterest[]
+     * @return Collection<int, TeamInterest>
      */
     public function getPotentialApplicants()
     {
@@ -356,7 +362,7 @@ class Team implements TeamInterface, \Stringable
     }
 
     /**
-     * @param TeamInterest[] $potentialApplicants
+     * @param Collection<int, TeamInterest> $potentialApplicants
      *
      * @return Team
      */

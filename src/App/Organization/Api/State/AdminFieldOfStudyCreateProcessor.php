@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -18,6 +20,7 @@ class AdminFieldOfStudyCreateProcessor implements ProcessorInterface
 
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): array
     {
+        /** @var \App\Identity\Infrastructure\Entity\User $user */
         $user = $this->security->getUser();
 
         $fieldOfStudy = new FieldOfStudy();

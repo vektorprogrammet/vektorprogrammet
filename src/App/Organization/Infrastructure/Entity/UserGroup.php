@@ -1,9 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Identity\Infrastructure\Entity\User;
-use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
@@ -28,7 +29,7 @@ class UserGroup implements \Stringable
     private $active;
 
     /**
-     * @var ArrayCollection
+     * @var User[]
      */
     #[ORM\ManyToMany(targetEntity: User::class)]
     private $users;

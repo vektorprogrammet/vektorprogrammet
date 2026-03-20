@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -20,7 +22,7 @@ class AdminExecutiveBoardEditProvider implements ProviderInterface
 
         $resource = new AdminExecutiveBoardWriteResource();
         $resource->id = $board->getId();
-        $resource->name = $board->getName() ?? '';
+        $resource->name = $board->getName();
         $resource->description = $board->getDescription();
         $resource->shortDescription = $board->getShortDescription();
 

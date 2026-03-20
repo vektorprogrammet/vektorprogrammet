@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Twig;
 
 use App\Shared\Contracts\TeamInterface;
@@ -39,8 +41,10 @@ class TeamPositionSortExtension extends AbstractExtension
     {
         // Filter out any other team memberships and sort them by importance
         foreach ($users as $user) {
+            // @phpstan-ignore argument.type (User::getActiveMemberships() PHPDoc resolved without import)
             $memberships = $this->filterService->filterTeamMembershipsByTeam($user->getActiveMemberships(), $team);
             $this->sorter->sortTeamMembershipsByPosition($memberships);
+            // @phpstan-ignore argument.type (FilterService returns Shared\Contracts\TeamMembershipInterface[])
             $user->setMemberships($memberships);
         }
 

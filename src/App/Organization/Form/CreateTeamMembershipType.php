@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Form;
 
 use App\Organization\Infrastructure\Entity\Position;
@@ -29,8 +31,8 @@ class CreateTeamMembershipType extends AbstractType
                 'class' => User::class,
                 'query_builder' => fn (UserRepository $ur) => $ur->createQueryBuilder('u')
                     ->orderBy('u.firstName', 'ASC')
-                    ->Join('u.fieldOfStudy', 'fos')
-                    ->Join('fos.department', 'd')
+                    ->join('u.fieldOfStudy', 'fos')
+                    ->join('fos.department', 'd')
                     ->where('u.fieldOfStudy = fos.id')
                     ->andWhere('fos.department = d')
                     ->andWhere('d = ?1')

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
@@ -162,7 +164,7 @@ class Department implements \Stringable
     public function activeAdmission(): bool
     {
         $admissionPeriod = $this->getCurrentAdmissionPeriod();
-        if (!$admissionPeriod) {
+        if ($admissionPeriod === null) {
             return false;
         }
 
@@ -263,7 +265,7 @@ class Department implements \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->getCity();
+        return $this->getCity();
     }
 
     /**
@@ -449,6 +451,7 @@ class Department implements \Stringable
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
+            // @phpstan-ignore method.dynamicName
             $this->$method($value);
         }
     }

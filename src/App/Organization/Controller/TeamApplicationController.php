@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Controller;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
@@ -36,9 +39,10 @@ class TeamApplicationController extends BaseController
     #[Route('/kontrollpanel/team/application/{id}', name: 'team_application_show', methods: ['GET'])]
     public function showApplicationAction(TeamApplication $application)
     {
+        /** @var User $user */
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->teamMembershipRepo->findActiveTeamMembershipsByTeamAndUser($application->getTeam(), $user);
-        if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
+        if ($activeUserHistoriesInTeam === [] && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
 
@@ -51,9 +55,10 @@ class TeamApplicationController extends BaseController
     public function showAllApplicationsAction(Team $team)
     {
         $applications = $this->teamApplicationRepo->findByTeam($team);
+        /** @var User $user */
         $user = $this->getUser();
         $activeUserHistoriesInTeam = $this->teamMembershipRepo->findActiveTeamMembershipsByTeamAndUser($team, $user);
-        if (empty($activeUserHistoriesInTeam) && !$this->isGranted(Roles::TEAM_LEADER)) {
+        if ($activeUserHistoriesInTeam === [] && !$this->isGranted(Roles::TEAM_LEADER)) {
             throw new AccessDeniedException();
         }
 
@@ -82,7 +87,7 @@ class TeamApplicationController extends BaseController
         $form = $this->createForm(TeamApplicationType::class, $teamApplication);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid() && $team->getAcceptApplicationAndDeadline()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $teamApplication->setTeam($team);
 
             $this->em->persist($teamApplication);

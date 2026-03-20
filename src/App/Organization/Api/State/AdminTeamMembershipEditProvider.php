@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -19,7 +21,7 @@ class AdminTeamMembershipEditProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminTeamMembershipWriteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $membership = $id ? $this->em->getRepository(TeamMembership::class)->find($id) : null;
+        $membership = $id !== null ? $this->em->getRepository(TeamMembership::class)->find($id) : null;
 
         if ($membership === null) {
             throw new NotFoundHttpException('Team membership not found.');

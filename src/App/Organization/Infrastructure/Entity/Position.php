@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Organization\Infrastructure\Repository\PositionRepository;
@@ -24,7 +26,7 @@ class Position implements \Stringable
 
     public function __toString(): string
     {
-        return (string) $this->getName();
+        return $this->getName();
     }
 
     /**
@@ -66,6 +68,7 @@ class Position implements \Stringable
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
+            // @phpstan-ignore method.dynamicName
             $this->$method($value);
         }
     }

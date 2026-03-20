@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Controller;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
@@ -42,12 +45,14 @@ class TeamAdminController extends BaseController
     public function showAction(?Department $department = null)
     {
         if ($department === null) {
-            $department = $this->getUser()->getDepartment();
+            /** @var User $user */
+            $user = $this->getUser();
+            $department = $user->getDepartment();
         }
 
         // Find teams that are connected to the department of the user
         $activeTeams = $this->teamRepo->findActiveByDepartment($department);
-        $inactiveTeams = $this->teamRepo->findInactiveByDepartment($department);
+        $inactiveTeams = $this->teamRepo->findInActiveByDepartment($department);
 
         // Return the view with suitable variables
         return $this->render('team_admin/index.html.twig', [
@@ -92,7 +97,9 @@ class TeamAdminController extends BaseController
 
         // Create a new TeamMembership entity
         $teamMembership = new TeamMembership();
-        $teamMembership->setUser($this->getUser());
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $teamMembership->setUser($currentUser);
         $teamMembership->setPosition($this->positionRepo->findOneBy(['name' => 'Medlem']));
 
         // Create a new formType with the needed variables
@@ -131,11 +138,12 @@ class TeamAdminController extends BaseController
         usort($activeTeamMemberships, $this->sortTeamMembershipsByEndDate(...));
         usort($inActiveTeamMemberships, $this->sortTeamMembershipsByEndDate(...));
 
+        /** @var User $user */
         $user = $this->getUser();
         $currentUserTeamMembership = $this->teamMembershipRepo->findActiveTeamMembershipsByUser($user);
         $isUserInTeam = false;
         foreach ($currentUserTeamMembership as $wh) {
-            if (in_array($wh, $activeTeamMemberships)) {
+            if (in_array($wh, $activeTeamMemberships, true)) {
                 $isUserInTeam = true;
             }
         }
@@ -173,7 +181,9 @@ class TeamAdminController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Don't persist if the preview button was clicked
-            if (!$form->get('preview')->isClicked()) {
+            /** @var \Symfony\Component\Form\SubmitButton $previewButton */
+            $previewButton = $form->get('preview');
+            if (!$previewButton->isClicked()) {
                 // Persist the team to the database
                 $this->em->persist($team);
                 $this->em->flush();
@@ -230,7 +240,9 @@ class TeamAdminController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Don't persist if the preview button was clicked
-            if (!$form->get('preview')->isClicked()) {
+            /** @var \Symfony\Component\Form\SubmitButton $previewButton */
+            $previewButton = $form->get('preview');
+            if (!$previewButton->isClicked()) {
                 // Persist the team to the database
                 $this->em->persist($team);
                 $this->em->flush();
@@ -270,7 +282,9 @@ class TeamAdminController extends BaseController
     public function deleteTeamByIdAction(Team $team)
     {
         foreach ($team->getTeamMemberships() as $teamMembership) {
-            $teamMembership->setDeletedTeamName($team->getName());
+            if ($teamMembership instanceof TeamMembership) {
+                $teamMembership->setDeletedTeamName($team->getName());
+            }
             $this->em->persist($teamMembership);
         }
 

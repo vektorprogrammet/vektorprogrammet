@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -22,13 +24,14 @@ class AdminFieldOfStudyEditProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminFieldOfStudyWriteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $fieldOfStudy = $id ? $this->em->getRepository(FieldOfStudy::class)->find($id) : null;
+        $fieldOfStudy = $id !== null ? $this->em->getRepository(FieldOfStudy::class)->find($id) : null;
 
         if ($fieldOfStudy === null) {
             throw new NotFoundHttpException('Field of study not found.');
         }
 
         // Check department ownership
+        /** @var \App\Identity\Infrastructure\Entity\User $user */
         $user = $this->security->getUser();
         $userDepartment = $user->getFieldOfStudy()->getDepartment();
 

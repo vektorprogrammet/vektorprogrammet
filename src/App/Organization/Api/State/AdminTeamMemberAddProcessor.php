@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
@@ -28,13 +30,13 @@ class AdminTeamMemberAddProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): array
     {
         $teamId = $uriVariables['id'] ?? null;
-        $team = $teamId ? $this->em->getRepository(Team::class)->find($teamId) : null;
+        $team = $teamId !== null ? $this->em->getRepository(Team::class)->find($teamId) : null;
 
         if ($team === null) {
             throw new NotFoundHttpException('Team not found.');
         }
 
-        $user = $data->userId
+        $user = $data->userId !== null
             ? $this->em->getRepository(User::class)->find($data->userId)
             : null;
 
@@ -42,7 +44,7 @@ class AdminTeamMemberAddProcessor implements ProcessorInterface
             throw new UnprocessableEntityHttpException('Invalid userId.');
         }
 
-        $startSemester = $data->startSemesterId
+        $startSemester = $data->startSemesterId !== null
             ? $this->em->getRepository(Semester::class)->find($data->startSemesterId)
             : null;
 

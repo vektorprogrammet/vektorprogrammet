@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Shared\Contracts;
 
 use App\Identity\Infrastructure\Entity\User;
@@ -12,7 +14,7 @@ interface TeamInterface
     public function getName();
 
     /**
-     * @return string
+     * @return string|null
      */
     public function getEmail();
 
@@ -52,17 +54,17 @@ interface TeamInterface
     public function getAcceptApplication();
 
     /**
-     * @return TeamMembershipInterface
+     * @return TeamMembershipInterface[]
      */
     public function getTeamMemberships();
 
     /**
-     * @return TeamMembershipInterface
+     * @return TeamMembershipInterface[]
      */
     public function getActiveTeamMemberships();
 
     /**
-     * @return User
+     * @return \App\Identity\Infrastructure\Entity\User[]
      */
     public function getActiveUsers();
 }
