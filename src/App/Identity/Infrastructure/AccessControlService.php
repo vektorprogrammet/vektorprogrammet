@@ -2,11 +2,13 @@
 
 namespace App\Identity\Infrastructure;
 
+use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Entity\AccessRule;
 use App\Identity\Infrastructure\Entity\UnhandledAccessRule;
 use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Domain\Roles;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\Routing\Route;
 use Symfony\Component\Routing\RouterInterface;
 
@@ -105,6 +107,18 @@ class AccessControlService
         }
 
         return true;
+    }
+
+    public function assertDepartmentAccess(Department $department, User $user): void
+    {
+        if ($this->roleManager->userIsGranted($user, Roles::ADMIN)) {
+            return; // Admins can access all departments
+        }
+
+        $userDepartment = $user->getDepartment();
+        if ($userDepartment === null || $userDepartment->getId() !== $department->getId()) {
+            throw new AccessDeniedHttpException('You do not have access to this department.');
+        }
     }
 
     private function checkAccessToResourceAndMethod(?User $user, string $resource, string $method = 'GET'): bool
@@ -208,7 +222,7 @@ class AccessControlService
     {
         $userRoleStrings = $user->getRoles();
         foreach ($rule->getRoles() as $roleInRule) {
-            $roleString = $roleInRule instanceof \App\Identity\Infrastructure\Entity\Role ? $roleInRule->getRole() : (string) $roleInRule;
+            $roleString = $roleInRule instanceof Entity\Role ? $roleInRule->getRole() : (string) $roleInRule;
             if (in_array($roleString, $userRoleStrings, true)) {
                 return true;
             }
