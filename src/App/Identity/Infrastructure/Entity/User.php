@@ -169,8 +169,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
         return $this->id;
     }
 
-    public function getDepartment(): Department
+    public function getDepartment(): ?Department
     {
+        if ($this->fieldOfStudy === null) {
+            return null;
+        }
+
         return $this->getFieldOfStudy()->getDepartment();
     }
 

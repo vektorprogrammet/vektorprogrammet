@@ -12,7 +12,7 @@ use Symfony\Component\Validator\Constraints as Assert;
         new Put(
             uriTemplate: '/admin/receipts/{id}/status',
             processor: AdminReceiptStatusProcessor::class,
-            security: "is_granted('ROLE_TEAM_LEADER')",
+            security: "is_granted('ROLE_TEAM_MEMBER')",
             read: false,
             output: false,
             status: 204,

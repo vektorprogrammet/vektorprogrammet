@@ -4,8 +4,8 @@ namespace App\Interview\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Entity\Application;
 use App\Identity\Infrastructure\Entity\User;
-use App\Interview\Infrastructure\Repository\InterviewRepository;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
+use App\Interview\Infrastructure\Repository\InterviewRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
