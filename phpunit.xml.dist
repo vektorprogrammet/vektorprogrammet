@@ -21,6 +21,7 @@
             <directory>tests/AppBundle/Sms</directory>
             <directory>tests/AppBundle/Type</directory>
             <directory>tests/AppBundle/Util</directory>
+            <directory>tests/Unit</directory>
         </testsuite>
         <testsuite name="controller">
             <directory>tests/AppBundle/Controller</directory>
