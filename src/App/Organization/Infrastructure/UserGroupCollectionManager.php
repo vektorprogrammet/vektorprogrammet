@@ -3,6 +3,7 @@
 namespace App\Organization\Infrastructure;
 
 use App\Operations\Infrastructure\Entity\AssistantHistory;
+use App\Organization\Domain\Rules\UserGroupDistribution;
 use App\Organization\Infrastructure\Entity\TeamMembership;
 use App\Organization\Infrastructure\Entity\UserGroup;
 use App\Organization\Infrastructure\Entity\UserGroupCollection;
@@ -12,6 +13,7 @@ class UserGroupCollectionManager
 {
     public function __construct(
         private readonly EntityManagerInterface $em,
+        private readonly UserGroupDistribution $distribution,
     ) {
     }
 
@@ -24,25 +26,7 @@ class UserGroupCollectionManager
         }
         $users = $this->findUsers($userGroupCollection);
         $userGroupCollection->setNumberTotalUsers(sizeof($users));
-        shuffle($users);
-        $groupSize = intdiv(sizeof($users), $userGroupCollection->getNumberUserGroups());
-        if ($userGroupCollection->getNumberUserGroups() < 1) {
-            throw new \InvalidArgumentException('Ugyldig antall grupper. Må være over eller lik 1.');
-        } elseif ($groupSize < 1) {
-            throw new \UnexpectedValueException('Ugyldig inndeling. Valgt inndeling ga '.sizeof($users).' bruker(e)');
-        }
-
-        $userGroupings = array_chunk($users, $groupSize);
-
-        // Divide the remainder users over the first few groups
-        $i = 0;
-        while (sizeof($userGroupings) > $userGroupCollection->getNumberUserGroups()) {
-            $userRemainderGroup = array_pop($userGroupings);
-            foreach ($userRemainderGroup as $user) {
-                $userGroupings[$i][] = $user;
-                ++$i;
-            }
-        }
+        $userGroupings = $this->distribution->distribute($users, $userGroupCollection->getNumberUserGroups());
 
         $this->em->persist($userGroupCollection);
 
