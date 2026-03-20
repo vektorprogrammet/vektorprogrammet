@@ -2,8 +2,8 @@
 
 namespace App\Identity\Infrastructure;
 
-use App\Support\Infrastructure\LogService;
 use App\Identity\Infrastructure\Entity\User;
+use App\Support\Infrastructure\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 
 class CompanyEmailMaker
@@ -22,12 +22,12 @@ class CompanyEmailMaker
         $fullName = strtolower((string) $this->replaceNorwegianCharacters($user->getFullName()));
 
         $email = preg_replace('/\s+/', '.', $firstName).'@vektorprogrammet.no';
-        if (array_search($email, $allEmails) !== false) {
+        if (array_search($email, $allEmails, true) !== false) {
             $email = preg_replace('/\s+/', '.', $fullName).'@vektorprogrammet.no';
         }
 
         $i = 2;
-        while (array_search($email, $allEmails) !== false) {
+        while (array_search($email, $allEmails, true) !== false) {
             $email = preg_replace('/\s+/', '.', $fullName).$i.'@vektorprogrammet.no';
             ++$i;
         }

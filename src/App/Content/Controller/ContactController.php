@@ -2,14 +2,14 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Content\Domain\Events\SupportTicketCreatedEvent;
+use App\Content\Form\SupportTicketType;
+use App\Content\Infrastructure\Entity\SupportTicket;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Content\Infrastructure\Entity\SupportTicket;
-use App\Content\Domain\Events\SupportTicketCreatedEvent;
-use App\Content\Form\SupportTicketType;
+use App\Support\Controller\BaseController;
 use App\Support\Infrastructure\GeoLocation;
 use App\Support\Infrastructure\LogService;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -49,9 +49,6 @@ class ContactController extends BaseController
         ]);
 
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $supportTicket->getDepartment() === null) {
-            $this->logService->error("Could not send support ticket. Department was null.\n$supportTicket");
-        }
         if ($form->isSubmitted() && $form->isValid()) {
             $this->eventDispatcher
             ->dispatch(new SupportTicketCreatedEvent($supportTicket), SupportTicketCreatedEvent::NAME);

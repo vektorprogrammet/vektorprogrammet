@@ -8,6 +8,8 @@ use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Contracts\TeamInterface;
 use App\Shared\Contracts\TeamMembershipInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -36,10 +38,15 @@ class ExecutiveBoard implements TeamInterface, \Stringable
     private $shortDescription;
 
     /**
-     * @var ExecutiveBoardMembership[]
+     * @var Collection<int, ExecutiveBoardMembership>
      */
     #[ORM\OneToMany(targetEntity: ExecutiveBoardMembership::class, mappedBy: 'board')]
-    private array $boardMemberships = [];
+    private Collection $boardMemberships;
+
+    public function __construct()
+    {
+        $this->boardMemberships = new ArrayCollection();
+    }
 
     public function __toString(): string
     {

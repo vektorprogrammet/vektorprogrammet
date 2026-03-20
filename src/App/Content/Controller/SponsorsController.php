@@ -2,11 +2,11 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Content\Form\SponsorType;
+use App\Content\Infrastructure\Entity\Sponsor;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Content\Infrastructure\Entity\Sponsor;
-use App\Content\Form\SponsorType;
+use App\Support\Controller\BaseController;
 use App\Support\Infrastructure\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
@@ -89,7 +89,7 @@ class SponsorsController extends BaseController
     #[Route('/kontrollpanel/sponsor/delete/{id}', name: 'sponsor_delete')]
     public function deleteSponsorAction(Sponsor $sponsor)
     {
-        if ($sponsor->getLogoImagePath()) {
+        if ($sponsor->getLogoImagePath() !== '') {
             $this->fileUploader->deleteSponsor($sponsor->getLogoImagePath());
         }
 

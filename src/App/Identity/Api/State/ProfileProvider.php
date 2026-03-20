@@ -38,7 +38,7 @@ class ProfileProvider implements ProviderInterface
         $profile->profilePhoto = $user->getPicturePath();
 
         $fos = $user->getFieldOfStudy();
-        if ($fos) {
+        if ($fos !== null) {
             $profile->fieldOfStudy = [
                 'id' => $fos->getId(),
                 'name' => $fos->getName(),

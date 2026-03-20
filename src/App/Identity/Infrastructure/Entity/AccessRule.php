@@ -205,9 +205,9 @@ class AccessRule implements \Stringable
         $roles = $this->getRoles();
 
         return
-            count(is_countable($users) ? $users : []) == 0
-            && count(is_countable($teams) ? $teams : []) == 0
-            && count(is_countable($roles) ? $roles : []) == 0
+            count(is_countable($users) ? $users : []) === 0
+            && count(is_countable($teams) ? $teams : []) === 0
+            && count(is_countable($roles) ? $roles : []) === 0
             && !$this->isForExecutiveBoard();
     }
 

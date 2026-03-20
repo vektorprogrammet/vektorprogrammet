@@ -32,7 +32,7 @@ class ArticleProcessor implements ProcessorInterface
             $data->setAuthor($user);
         }
 
-        if ($data->getTitle()) {
+        if ($data->getTitle() !== '' && $data->getTitle() !== null) {
             $slug = $this->slugger->slug($data->getTitle())->lower()->toString();
             $existingSlugs = $this->articleRepo->findSlugs();
             $base = $slug;

@@ -19,7 +19,7 @@ class AdminStaticContentEditProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminStaticContentWriteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $content = $id ? $this->em->getRepository(StaticContent::class)->find($id) : null;
+        $content = $id !== null ? $this->em->getRepository(StaticContent::class)->find($id) : null;
 
         if ($content === null) {
             throw new NotFoundHttpException('Static content not found.');

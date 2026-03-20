@@ -2,10 +2,10 @@
 
 namespace App\Identity\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\NoResultException;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -31,7 +31,7 @@ class SsoController extends BaseController
         $username = $request->get('username');
         $password = $request->get('password');
 
-        if (!$username || !$password) {
+        if ($username === null || $username === '' || $password === null || $password === '') {
             $response->setStatusCode(401);
             $response->setContent('Username or password not provided');
 
@@ -65,7 +65,7 @@ class SsoController extends BaseController
 
         return new JsonResponse([
             'name' => $user->getFullName(),
-            'username' => $user->getUsername(),
+            'username' => $user->getUserName(),
             'email' => $user->getEmail(),
             'companyEmail' => $user->getCompanyEmail(),
         ]);

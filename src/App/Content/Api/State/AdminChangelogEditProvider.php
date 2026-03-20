@@ -19,7 +19,7 @@ class AdminChangelogEditProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminChangelogWriteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $item = $id ? $this->em->getRepository(ChangeLogItem::class)->find($id) : null;
+        $item = $id !== null ? $this->em->getRepository(ChangeLogItem::class)->find($id) : null;
 
         if ($item === null) {
             throw new NotFoundHttpException('Changelog item not found.');

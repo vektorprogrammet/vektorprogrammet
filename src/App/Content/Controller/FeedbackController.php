@@ -2,12 +2,12 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Content\Infrastructure\Entity\Feedback;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Content\Infrastructure\Repository\FeedbackRepository;
-use App\Shared\Repository\SemesterRepository;
 use App\Content\Form\FeedbackType;
+use App\Content\Infrastructure\Entity\Feedback;
+use App\Content\Infrastructure\Repository\FeedbackRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use App\Support\Infrastructure\Slack\SlackMessenger;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -38,8 +38,9 @@ class FeedbackController extends BaseController
         $form->handleRequest($request);
 
         $returnUri = $request->getUri();
-        if ($request->headers->get('referer')) {
-            $returnUri = $request->headers->get('referer');
+        $referer = $request->headers->get('referer');
+        if ($referer !== null) {
+            $returnUri = $referer;
         }
 
         if ($form->isSubmitted() && $form->isValid()) {

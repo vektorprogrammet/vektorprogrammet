@@ -19,7 +19,7 @@ class AdminUserActivationProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminUserActivationResource
     {
         $id = $uriVariables['id'] ?? null;
-        $user = $id ? $this->em->getRepository(User::class)->find($id) : null;
+        $user = $id !== null ? $this->em->getRepository(User::class)->find($id) : null;
 
         if ($user === null) {
             throw new NotFoundHttpException('User not found.');

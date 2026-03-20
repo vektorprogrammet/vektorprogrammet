@@ -2,25 +2,25 @@
 
 namespace App\Identity\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Organization\Infrastructure\Repository\ExecutiveBoardMembershipRepository;
-use App\Identity\Infrastructure\Repository\RoleRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Operations\Infrastructure\Repository\SignatureRepository;
-use App\Organization\Infrastructure\Repository\TeamMembershipRepository;
-use App\Operations\Infrastructure\Entity\Signature;
-use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Domain\Events\UserEvent;
+use App\Identity\Domain\Roles;
 use App\Identity\Form\EditUserPasswordType;
 use App\Identity\Form\EditUserType;
 use App\Identity\Form\NewUserType;
 use App\Identity\Form\UserCompanyEmailType;
-use App\Identity\Domain\Roles;
-use App\Support\Infrastructure\LogService;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Repository\RoleRepository;
 use App\Identity\Infrastructure\RoleManager;
 use App\Identity\Infrastructure\UserRegistration;
+use App\Operations\Infrastructure\Entity\Signature;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
+use App\Operations\Infrastructure\Repository\SignatureRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\ExecutiveBoardMembershipRepository;
+use App\Organization\Infrastructure\Repository\TeamMembershipRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
+use App\Support\Infrastructure\LogService;
 use Doctrine\ORM\EntityManagerInterface;
 use Dompdf\Dompdf;
 use Dompdf\Options;
@@ -61,6 +61,7 @@ class ProfileController extends BaseController
     public function showAction()
     {
         // Get the user currently signed in
+        /** @var User $user */
         $user = $this->getUser();
 
         // Fetch the assistant history of the user
@@ -95,9 +96,11 @@ class ProfileController extends BaseController
         // Find the executive board history of the user
         $executiveBoardMemberships = $this->executiveBoardMembershipRepo->findByUser($user);
 
-        $isGrantedAssistant = ($this->getUser() !== null && $this->roleManager->userIsGranted($this->getUser(), Roles::ASSISTANT));
+        /** @var User|null $currentUser */
+        $currentUser = $this->getUser();
+        $isGrantedAssistant = ($currentUser !== null && $this->roleManager->userIsGranted($currentUser, Roles::ASSISTANT));
 
-        if (empty($teamMemberships) && empty($executiveBoardMemberships) && !$isGrantedAssistant) {
+        if (count($teamMemberships) === 0 && count($executiveBoardMemberships) === 0 && !$isGrantedAssistant) {
             throw $this->createAccessDeniedException();
         }
 
@@ -206,16 +209,19 @@ class ProfileController extends BaseController
         $assistantHistory = $this->assistantHistoryRepo->findByUser($user);
         // Find the work history of the user
         $teamMembership = $this->teamMembershipRepo->findByUser($user);
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
         // Find the signature of the user creating the certificate
-        $signature = $this->signatureRepo->findByUser($this->getUser());
+        $signature = $this->signatureRepo->findByUser($currentUser);
         // Find department
-        $department = $this->getUser()->getDepartment();
-        // Find any additional comment
-        $additional_comment = $signature->getAdditionalComment();
+        $department = $currentUser->getDepartment();
 
         if ($signature === null) {
             return $this->redirectToRoute('certificate_show');
         }
+
+        // Find any additional comment
+        $additional_comment = $signature->getAdditionalComment();
 
         $html = $this->renderView('certificate/certificate.html.twig', [
             'user' => $user,
@@ -246,6 +252,7 @@ class ProfileController extends BaseController
     #[Route('/profil/rediger', name: 'profile_edit', methods: ['GET', 'POST'])]
     public function editProfileInformationAction(Request $request)
     {
+        /** @var User $user */
         $user = $this->getUser();
         $oldCompanyEmail = $user->getCompanyEmail();
 

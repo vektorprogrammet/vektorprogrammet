@@ -41,7 +41,7 @@ class Feedback
      * @var string
      */
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
-    #[Assert\Length(max: '55', maxMessage: 'Maks 55 tegn', min: '5', minMessage: 'Minimum 5 tegn')]
+    #[Assert\Length(max: 55, maxMessage: 'Maks 55 tegn', min: 5, minMessage: 'Minimum 5 tegn')]
     #[ORM\Column(name: 'title', type: 'string', length: 55)]
     #[Groups(['feedback:read'])]
     private $title;
@@ -50,7 +50,7 @@ class Feedback
      * @var string
      */
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
-    #[Assert\Length(max: '500', maxMessage: 'Maks 500 tegn', min: '10', minMessage: 'Minimum 10 tegn')]
+    #[Assert\Length(max: 500, maxMessage: 'Maks 500 tegn', min: 10, minMessage: 'Minimum 10 tegn')]
     #[ORM\Column(name: 'description', type: 'string', length: 500)]
     #[Groups(['feedback:read'])]
     private $description;

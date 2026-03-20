@@ -28,7 +28,7 @@ class ProfileProcessor implements ProcessorInterface
         $user->setLastName($data->lastName);
         $user->setEmail($data->email);
         $user->setPhone($data->phone);
-        $user->setGender($data->gender);
+        $user->setGender((bool) $data->gender);
 
         $this->em->flush();
 

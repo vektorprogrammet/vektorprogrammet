@@ -27,14 +27,14 @@ class StaticContentExtension extends AbstractExtension
 
     public function getContent($htmlId)
     {
-        if (!$htmlId) {
+        if ($htmlId === null || $htmlId === '') {
             return '';
         }
 
         $content = $this->em
             ->getRepository(StaticContent::class)
             ->findOneByHtmlId($htmlId);
-        if (!$content) {
+        if ($content === null) {
             $content = new StaticContent();
             $content->setHtmlId($htmlId);
             $content->setHtml('Dette er en ny statisk tekst for: '.$htmlId);

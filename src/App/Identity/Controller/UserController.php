@@ -2,14 +2,14 @@
 
 namespace App\Identity\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Admission\Infrastructure\ApplicationManager;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
+use App\Content\Infrastructure\ContentModeManager;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Admission\Infrastructure\ApplicationManager;
-use App\Content\Infrastructure\ContentModeManager;
+use App\Support\Controller\BaseController;
 use App\Support\Twig\RoleExtension;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -38,6 +38,7 @@ class UserController extends BaseController
     #[Route('/min-side', name: 'my_page')]
     public function myPageAction()
     {
+        /** @var \App\Identity\Infrastructure\Entity\User $user */
         $user = $this->getUser();
 
         $department = $user->getDepartment();
@@ -70,11 +71,13 @@ class UserController extends BaseController
     #[Route('/profil/partnere', name: 'my_partners')]
     public function myPartnerAction()
     {
-        if (!$this->getUser()->isActive()) {
+        /** @var \App\Identity\Infrastructure\Entity\User $currentUser */
+        $currentUser = $this->getUser();
+        if (!$currentUser->isActive()) {
             throw $this->createAccessDeniedException();
         }
-        $activeAssistantHistories = $this->assistantHistoryRepo->findActiveAssistantHistoriesByUser($this->getUser());
-        if (empty($activeAssistantHistories)) {
+        $activeAssistantHistories = $this->assistantHistoryRepo->findActiveAssistantHistoriesByUser($currentUser);
+        if (count($activeAssistantHistories) === 0) {
             throw $this->createNotFoundException();
         }
 

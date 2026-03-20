@@ -6,7 +6,10 @@ namespace App\Identity\Infrastructure\Entity;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
+use App\Identity\Api\State\PublicUserProfileProvider;
+use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Identity\Infrastructure\Validator as CustomAssert;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Operations\Infrastructure\Entity\CertificateRequest;
@@ -16,9 +19,6 @@ use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Organization\Infrastructure\Entity\TeamMembership;
 use App\Shared\Contracts\TeamMembershipInterface;
-use App\Identity\Domain\Roles;
-use App\Identity\Api\State\PublicUserProfileProvider;
-use App\Identity\Infrastructure\Validator as CustomAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -116,7 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface, Equatab
     private $lastPopUpTime;
 
     /**
-     * @var Role[]
+     * @var Collection<int, Role>
      */
     #[ORM\ManyToMany(targetEntity: Role::class, inversedBy: 'users')]
     #[ORM\JoinColumn(onDelete: 'cascade')]

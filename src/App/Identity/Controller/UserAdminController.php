@@ -2,16 +2,16 @@
 
 namespace App\Identity\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Identity\Domain\Roles;
+use App\Identity\Form\CreateUserType;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Repository\RoleRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Identity\Infrastructure\UserRegistration;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Identity\Infrastructure\Repository\RoleRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
-use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Form\CreateUserType;
-use App\Identity\Domain\Roles;
-use App\Identity\Infrastructure\UserRegistration;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
@@ -33,7 +33,9 @@ class UserAdminController extends BaseController
     public function createUserAction(Request $request, ?Department $department = null)
     {
         if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
-            $department = $this->getUser()->getDepartment();
+            /** @var User $currentUser */
+            $currentUser = $this->getUser();
+            $department = $currentUser->getDepartment();
         }
 
         // Create the user object
@@ -74,7 +76,9 @@ class UserAdminController extends BaseController
         $activeDepartments = $this->departmentRepo->findActive();
 
         // Finds the department for the current logged in user
-        $department = $this->getUser()->getDepartment();
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        $department = $currentUser->getDepartment();
 
         $activeUsers = $this->userRepo->findAllActiveUsersByDepartment($department);
         $inActiveUsers = $this->userRepo->findAllInActiveUsersByDepartment($department);
@@ -108,9 +112,11 @@ class UserAdminController extends BaseController
     #[Route('/kontrollpanel/brukeradmin/slett/{id}', name: 'useradmin_delete_user_by_id', requirements: ['id' => '\d+'], methods: ['POST'])]
     public function deleteUserByIdAction(User $user)
     {
-        if ($user === $this->getUser()) {
+        /** @var User $currentUser */
+        $currentUser = $this->getUser();
+        if ($user === $currentUser) {
             $this->addFlash('error', 'Du kan ikke slette deg selv.');
-        } elseif ($this->isGranted(Roles::ADMIN) || $user->getDepartment() == $this->getUser()->getDepartment()) {
+        } elseif ($this->isGranted(Roles::ADMIN) || $user->getDepartment() === $currentUser->getDepartment()) {
             $this->em->remove($user);
             $this->em->flush();
             $this->addFlash('success', "$user har blitt slettet.");

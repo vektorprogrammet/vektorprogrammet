@@ -2,21 +2,21 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Content\Infrastructure\Entity\Feedback;
-use App\Operations\Infrastructure\Entity\Receipt;
+use App\Admission\Domain\Rules\AdmissionStatistics;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Content\Infrastructure\Repository\ChangeLogItemRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Operations\Infrastructure\Repository\ReceiptRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Survey\Infrastructure\Repository\SurveyRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Content\Form\FeedbackType;
-use App\Admission\Domain\Rules\AdmissionStatistics;
-use App\Support\Sorter;
+use App\Content\Infrastructure\Entity\Feedback;
+use App\Content\Infrastructure\Repository\ChangeLogItemRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Operations\Domain\Rules\ReceiptStatistics;
+use App\Operations\Infrastructure\Entity\Receipt;
+use App\Operations\Infrastructure\Repository\ReceiptRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
+use App\Support\Sorter;
+use App\Survey\Infrastructure\Repository\SurveyRepository;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -49,7 +49,9 @@ class WidgetController extends BaseController
         $applicationsAssignedToUser = [];
 
         if ($admissionPeriod !== null) {
-            $applicationsAssignedToUser = $this->applicationRepo->findAssignedByUserAndAdmissionPeriod($this->getUser(), $admissionPeriod);
+            /** @var \App\Identity\Infrastructure\Entity\User $user */
+            $user = $this->getUser();
+            $applicationsAssignedToUser = $this->applicationRepo->findAssignedByUserAndAdmissionPeriod($user, $admissionPeriod);
         }
 
         return $this->render('widgets/interviews_widget.html.twig', ['applications' => $applicationsAssignedToUser]);
@@ -65,7 +67,7 @@ class WidgetController extends BaseController
         $pendingReceipts = $this->receiptRepo->findByStatus(Receipt::STATUS_PENDING);
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
 
-        $hasReceipts = !empty($pendingReceipts);
+        $hasReceipts = count($pendingReceipts) > 0;
 
         return $this->render('widgets/receipts_widget.html.twig', [
             'users_with_receipts' => $usersWithReceipts,
@@ -104,11 +106,9 @@ class WidgetController extends BaseController
     public function availableSurveysAction(Request $request)
     {
         $semester = $this->getSemesterOrThrow404($request);
-        $surveys = [];
-        if ($semester !== null) {
-            $surveys = $this->surveyRepo
-                ->findAllNotTakenByUserAndSemester($this->getUser(), $semester);
-        }
+        /** @var \App\Identity\Infrastructure\Entity\User $user */
+        $user = $this->getUser();
+        $surveys = $this->surveyRepo->findAllNotTakenByUserAndSemester($user, $semester);
 
         return $this->render('widgets/available_surveys_widget.html.twig', [
             'availableSurveys' => $surveys,

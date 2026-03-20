@@ -2,11 +2,11 @@
 
 namespace App\Identity\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Domain\Roles;
+use App\Support\Controller\BaseController;
 use App\Support\Infrastructure\FileUploader;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -46,9 +46,6 @@ class ProfilePhotoController extends BaseController
         }
 
         $picturePath = $this->fileUploader->uploadProfileImage($request);
-        if (!$picturePath) {
-            return new JsonResponse('Kunne ikke laste inn bildet', 400);
-        }
 
         $this->fileUploader->deleteProfileImage($user->getPicturePath());
         $user->setPicturePath($picturePath);

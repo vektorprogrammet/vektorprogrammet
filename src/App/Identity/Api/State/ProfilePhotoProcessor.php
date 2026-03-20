@@ -32,12 +32,9 @@ class ProfilePhotoProcessor implements ProcessorInterface
         }
 
         $path = $this->fileUploader->uploadProfileImage($request);
-        if (!$path) {
-            throw new BadRequestHttpException('Could not upload image');
-        }
 
         $oldPath = $user->getPicturePath();
-        if ($oldPath) {
+        if ($oldPath !== '' && $oldPath !== null) {
             $this->fileUploader->deleteProfileImage($oldPath);
         }
 

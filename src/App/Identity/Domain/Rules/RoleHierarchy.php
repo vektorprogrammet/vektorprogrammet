@@ -23,7 +23,7 @@ class RoleHierarchy
 
     public function isValidRole(string $role): bool
     {
-        return in_array($role, $this->roles) || in_array($role, $this->aliases);
+        return in_array($role, $this->roles, true) || in_array($role, $this->aliases, true);
     }
 
     public function canChangeToRole(string $role): bool
@@ -37,11 +37,11 @@ class RoleHierarchy
 
     public function mapAliasToRole(string $alias): string
     {
-        if (in_array($alias, $this->roles)) {
+        if (in_array($alias, $this->roles, true)) {
             return $alias;
         }
 
-        $index = array_search($alias, $this->aliases);
+        $index = array_search($alias, $this->aliases, true);
         if ($index === false) {
             throw new \InvalidArgumentException('Invalid alias: '.$alias);
         }
@@ -52,13 +52,13 @@ class RoleHierarchy
     public function userIsGranted(User $user, string $role): bool
     {
         $userRoles = $user->getRoles();
-        if (empty($userRoles)) {
+        if (count($userRoles) === 0) {
             return false;
         }
 
         $userRole = $userRoles[0];
-        $userAccessLevel = array_search($userRole, $this->roles);
-        $roleAccessLevel = array_search($role, $this->roles);
+        $userAccessLevel = array_search($userRole, $this->roles, true);
+        $roleAccessLevel = array_search($role, $this->roles, true);
 
         if ($userAccessLevel === false || $roleAccessLevel === false) {
             return false;

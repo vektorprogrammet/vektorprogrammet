@@ -19,7 +19,7 @@ class AdminChangelogDeleteProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminChangelogDeleteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $item = $id ? $this->em->getRepository(ChangeLogItem::class)->find($id) : null;
+        $item = $id !== null ? $this->em->getRepository(ChangeLogItem::class)->find($id) : null;
 
         if ($item === null) {
             throw new NotFoundHttpException('Changelog item not found.');

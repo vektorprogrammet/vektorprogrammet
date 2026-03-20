@@ -19,7 +19,7 @@ class AdminSocialEventDeleteProvider implements ProviderInterface
     public function provide(Operation $operation, array $uriVariables = [], array $context = []): AdminSocialEventDeleteResource
     {
         $id = $uriVariables['id'] ?? null;
-        $event = $id ? $this->em->getRepository(SocialEvent::class)->find($id) : null;
+        $event = $id !== null ? $this->em->getRepository(SocialEvent::class)->find($id) : null;
 
         if ($event === null) {
             throw new NotFoundHttpException('Social event not found.');

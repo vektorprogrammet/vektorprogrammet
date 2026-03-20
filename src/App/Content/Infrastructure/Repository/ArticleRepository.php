@@ -23,24 +23,21 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      * Finds articles ordered descending by date created.
      *
-     * @param null $limit
-     * @param null $excludeId
-     *
      * @return array
      */
-    public function findLatestArticles($limit = null, $excludeId = null)
+    public function findLatestArticles(?int $limit = null, ?int $excludeId = null)
     {
         $qb = $this->createQueryBuilder('a')
                    ->select('a')
                    ->where('a.published = true')
                    ->addOrderBy('a.created', 'DESC');
 
-        if (false === is_null($excludeId)) {
+        if ($excludeId !== null) {
             $qb->andWhere('a.id != :article_id')
                ->setParameter('article_id', $excludeId);
         }
 
-        if (false === is_null($limit)) {
+        if ($limit !== null) {
             $qb->setMaxResults($limit);
         }
 
@@ -50,12 +47,9 @@ class ArticleRepository extends ServiceEntityRepository
     /**
      * Finds articles for the given department.
      *
-     * @param null $limit
-     * @param null $department
-     *
      * @return array
      */
-    public function findLatestArticlesByDepartment($department, $limit = null)
+    public function findLatestArticlesByDepartment(mixed $department, ?int $limit = null)
     {
         $qb = $this->createQueryBuilder('a')
                    ->select('a')
@@ -65,7 +59,7 @@ class ArticleRepository extends ServiceEntityRepository
                    ->addOrderBy('a.created', 'DESC')
                    ->setParameter('department_id', $department);
 
-        if (false === is_null($limit)) {
+        if ($limit !== null) {
             $qb->setMaxResults($limit);
         }
 
@@ -80,7 +74,7 @@ class ArticleRepository extends ServiceEntityRepository
      *
      * @return array
      */
-    public function findStickyAndLatestArticles($limit = null)
+    public function findStickyAndLatestArticles(?int $limit = null)
     {
         // Get news that are newer than 30 days
         $d = new \DateTime();
@@ -96,7 +90,7 @@ class ArticleRepository extends ServiceEntityRepository
                    ->addOrderBy('a.created', 'DESC')
                    ->setParameter('date', $d);
 
-        if (false === is_null($limit)) {
+        if ($limit !== null) {
             $qb->setMaxResults($limit);
         }
 

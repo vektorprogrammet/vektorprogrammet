@@ -2,8 +2,8 @@
 
 namespace App\Content\Infrastructure\Subscriber;
 
-use App\Content\Domain\Events\SupportTicketCreatedEvent;
 use App\Admission\Infrastructure\EmailSender;
+use App\Content\Domain\Events\SupportTicketCreatedEvent;
 use App\Support\Infrastructure\Slack\SlackMessenger;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
@@ -18,9 +18,9 @@ class SupportTicketSubscriber implements EventSubscriberInterface
     /**
      * Returns an array of event names this subscriber wants to listen to.
      *
-     * @return array The event names to listen to
+     * @return array<string, list<array{0: string, 1?: int}|int|string>|string>
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return [
             SupportTicketCreatedEvent::NAME => [
@@ -51,7 +51,7 @@ class SupportTicketSubscriber implements EventSubscriberInterface
     public function sendTicketToDepartmentSlackChannel(SupportTicketCreatedEvent $event)
     {
         $supportTicket = $event->getSupportTicket();
-        if (!$supportTicket->getDepartment()->getSlackChannel()) {
+        if ($supportTicket->getDepartment()->getSlackChannel() === null || $supportTicket->getDepartment()->getSlackChannel() === '') {
             return;
         }
 
@@ -70,7 +70,9 @@ class SupportTicketSubscriber implements EventSubscriberInterface
         $supportTicket = $event->getSupportTicket();
         $message = 'Kontaktforespørsel sendt til '.$supportTicket->getDepartment()->getEmail().', takk for henvendelsen!';
 
-        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
+        $session = $this->requestStack->getSession();
+        assert($session instanceof \Symfony\Component\HttpFoundation\Session\Flash\FlashBagAwareSessionInterface);
+        $session->getFlashBag()->add('success', $message);
     }
 
     public function logEvent(SupportTicketCreatedEvent $event)

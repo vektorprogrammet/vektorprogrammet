@@ -39,8 +39,10 @@ class AdminUserDeleteProcessor implements ProcessorInterface
 
         // ADMIN can delete anyone; others can only delete users in same department
         if (!$this->security->isGranted('ROLE_ADMIN')) {
-            $userDept = $user->getFieldOfStudy()?->getDepartment();
-            $currentDept = $currentUser->getFieldOfStudy()?->getDepartment();
+            $userFieldOfStudy = $user->getFieldOfStudy();
+            $currentFieldOfStudy = $currentUser->getFieldOfStudy();
+            $userDept = $userFieldOfStudy !== null ? $userFieldOfStudy->getDepartment() : null;
+            $currentDept = $currentFieldOfStudy !== null ? $currentFieldOfStudy->getDepartment() : null;
             if ($userDept === null || $currentDept === null || $userDept->getId() !== $currentDept->getId()) {
                 throw new AccessDeniedHttpException('You can only delete users in your own department.');
             }

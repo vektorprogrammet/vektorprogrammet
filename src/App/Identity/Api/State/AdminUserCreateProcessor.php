@@ -4,11 +4,11 @@ namespace App\Identity\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Organization\Infrastructure\Entity\FieldOfStudy;
-use App\Identity\Infrastructure\Repository\RoleRepository;
-use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Repository\RoleRepository;
 use App\Identity\Infrastructure\UserRegistration;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -37,7 +37,7 @@ class AdminUserCreateProcessor implements ProcessorInterface
         $user->setLastName($data->lastName);
         $user->setEmail($data->email);
         $user->setPhone($data->phone);
-        $user->setGender(0);
+        $user->setGender(false);
 
         // Resolve field of study
         if ($data->fieldOfStudyId !== null) {

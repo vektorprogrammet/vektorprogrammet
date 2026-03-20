@@ -2,11 +2,11 @@
 
 namespace App\Identity\Controller;
 
-use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
+use App\Identity\Domain\Roles;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Domain\Roles;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\Routing\Attribute\Route;
@@ -54,7 +54,11 @@ class SecurityController extends BaseController
     {
         if ($this->authorizationChecker->isGranted(Roles::TEAM_MEMBER)) {
             return $this->redirectToRoute('control_panel');
-        } elseif ($this->applicationRepo->findActiveByUser($this->getUser())) {
+        }
+
+        /** @var \App\Identity\Infrastructure\Entity\User|null $currentUser */
+        $currentUser = $this->getUser();
+        if ($currentUser !== null && $this->applicationRepo->findActiveByUser($currentUser) !== null) {
             return $this->redirectToRoute('my_page');
         }
 

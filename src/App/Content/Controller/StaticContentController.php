@@ -2,10 +2,10 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Content\Infrastructure\Entity\StaticContent;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Content\Infrastructure\Entity\StaticContent;
+use App\Support\Controller\BaseController;
 use App\Support\Twig\RoleExtension;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -38,12 +38,12 @@ class StaticContentController extends BaseController
 
         $htmlId = $request->get('editorID');
         $newContent = $request->get('editabledata', '');
-        if (!$htmlId) {
+        if ($htmlId === null || $htmlId === '') {
             throw new BadRequestHttpException("Invalid htmlID $htmlId");
         }
 
         $content = $this->em->getRepository(StaticContent::class)->findOneByHtmlId($htmlId);
-        if (!$content) {
+        if ($content === null) {
             $content = new StaticContent();
             $content->setHtmlId($htmlId);
         }

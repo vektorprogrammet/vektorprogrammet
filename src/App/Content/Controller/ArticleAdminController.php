@@ -2,12 +2,12 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Content\Form\ArticleType;
 use App\Content\Infrastructure\Entity\Article;
 use App\Content\Infrastructure\Repository\ArticleRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Content\Form\ArticleType;
+use App\Support\Controller\BaseController;
 use App\Support\Infrastructure\FileUploader;
 use App\Support\Infrastructure\LogService;
 use Doctrine\ORM\EntityManagerInterface;
@@ -87,7 +87,7 @@ class ArticleAdminController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $slug = $this->slugger->slug($article->getTitle())->lower()->toString();
+            $slug = $this->slugger->slug((string) $article->getTitle())->lower()->toString();
             $existingSlugs = $this->articleRepo->findSlugs();
             $base = $slug;
             $i = 2;
@@ -100,11 +100,13 @@ class ArticleAdminController extends BaseController
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Set the author to the currently logged in user
-            $article->setAuthor($this->getUser());
+            /** @var \App\Identity\Infrastructure\Entity\User|null $currentUser */
+            $currentUser = $this->getUser();
+            $article->setAuthor($currentUser);
 
             $imageSmall = $this->fileUploader->uploadArticleImage($request, 'imgsmall');
             $imageLarge = $this->fileUploader->uploadArticleImage($request, 'imglarge');
-            if (!$imageSmall || !$imageLarge) {
+            if ($imageSmall === null || $imageLarge === null) {
                 return new JsonResponse('Error', 400);
             }
 
@@ -189,10 +191,10 @@ class ArticleAdminController extends BaseController
         try {
             if ($article->getSticky()) {
                 $article->setSticky(false);
-                $response['sticky'] = false;
+                $response = ['sticky' => false];
             } else {
                 $article->setSticky(true);
-                $response['sticky'] = true;
+                $response = ['sticky' => true];
             }
 
             $this->em->persist($article);
