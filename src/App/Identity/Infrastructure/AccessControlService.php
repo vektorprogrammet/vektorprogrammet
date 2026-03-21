@@ -129,12 +129,8 @@ class AccessControlService
             $this->markRuleAsUnhandledIfNotExists($resource, $method);
         }
 
-        if (empty($accessRules)) {
-            return false;
-        }
-
         $everyoneHasAccess = !empty(array_filter($accessRules, fn (AccessRule $rule) => $rule->isEmpty()));
-        if ($everyoneHasAccess) {
+        if (empty($accessRules) || $everyoneHasAccess) {
             return true;
         }
 
