@@ -10,7 +10,9 @@ use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Api\Resource\UserReceiptListResource;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use Symfony\Bundle\SecurityBundle\Security;
+use App\Operations\Infrastructure\Entity\Receipt;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class UserReceiptListProvider implements ProviderInterface
 {
@@ -32,6 +34,10 @@ class UserReceiptListProvider implements ProviderInterface
 
         $filters = $context['filters'] ?? [];
         $status = $filters['status'] ?? null;
+
+        if ($status !== null && !in_array($status, [Receipt::STATUS_PENDING, Receipt::STATUS_REFUNDED, Receipt::STATUS_REJECTED], true)) {
+            throw new BadRequestHttpException(sprintf('Invalid status filter "%s"', $status));
+        }
 
         $receipts = $this->receiptRepository->findByUserOrdered($user, $status);
 

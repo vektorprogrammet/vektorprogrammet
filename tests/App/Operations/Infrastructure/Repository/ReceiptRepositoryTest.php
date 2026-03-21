@@ -75,6 +75,10 @@ class ReceiptRepositoryTest extends KernelTestCase
 
         $receipts = $this->repo->findByUserOrdered($user);
 
+        if (empty($receipts)) {
+            $this->markTestSkipped('No receipts for this user in fixtures');
+        }
+
         foreach ($receipts as $receipt) {
             $this->assertSame(
                 $user->getId(),

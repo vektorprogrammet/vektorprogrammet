@@ -42,6 +42,10 @@ class PasswordManager
         $hashedResetCode = $this->hashCode($resetCode);
         $passwordReset = $this->em->getRepository(PasswordReset::class)->findPasswordResetByHashedResetCode($hashedResetCode);
 
+        if ($passwordReset === null) {
+            return true;
+        }
+
         $currentTime = new \DateTime();
         $timeDifference = date_diff($passwordReset->getResetTime(), $currentTime);
 
