@@ -61,4 +61,44 @@ class ReceiptRepositoryTest extends KernelTestCase
             $this->assertSame(Receipt::STATUS_PENDING, $receipt->getStatus());
         }
     }
+
+    public function testFindByUserOrderedReturnsOnlyUserReceipts(): void
+    {
+        /** @var \App\Identity\Infrastructure\Entity\User|null $user */
+        $user = self::getContainer()->get('doctrine')
+            ->getRepository(\App\Identity\Infrastructure\Entity\User::class)
+            ->findOneBy([]);
+
+        if ($user === null) {
+            $this->markTestSkipped('No user in fixtures');
+        }
+
+        $receipts = $this->repo->findByUserOrdered($user);
+
+        foreach ($receipts as $receipt) {
+            $this->assertSame(
+                $user->getId(),
+                $receipt->getUser()->getId(),
+                'Receipt must belong to the queried user'
+            );
+        }
+    }
+
+    public function testFindByUserOrderedWithStatusFilter(): void
+    {
+        /** @var \App\Identity\Infrastructure\Entity\User|null $user */
+        $user = self::getContainer()->get('doctrine')
+            ->getRepository(\App\Identity\Infrastructure\Entity\User::class)
+            ->findOneBy([]);
+
+        if ($user === null) {
+            $this->markTestSkipped('No user in fixtures');
+        }
+
+        $receipts = $this->repo->findByUserOrdered($user, Receipt::STATUS_PENDING);
+
+        foreach ($receipts as $receipt) {
+            $this->assertSame(Receipt::STATUS_PENDING, $receipt->getStatus());
+        }
+    }
 }
