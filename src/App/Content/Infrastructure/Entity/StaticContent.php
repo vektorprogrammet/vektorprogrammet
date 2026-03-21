@@ -5,6 +5,7 @@ namespace App\Content\Infrastructure\Entity;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Content\Api\State\StaticContentByHtmlIdProvider;
 use App\Content\Infrastructure\Repository\StaticContentRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -18,6 +19,11 @@ use Symfony\Component\Serializer\Attribute\Groups;
     operations: [
         new GetCollection(),
         new Get(),
+        new Get(
+            uriTemplate: '/static-content/by-html-id/{htmlId}',
+            uriVariables: ['htmlId'],
+            provider: StaticContentByHtmlIdProvider::class,
+        ),
     ],
     normalizationContext: ['groups' => ['static_content:read']],
 )]
