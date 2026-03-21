@@ -6,6 +6,7 @@ namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Organization\Api\Resource\MailingListResource;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class MailingListProvider implements ProviderInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
         private readonly Security $security,
         private readonly UserRepository $userRepo,
         private readonly DepartmentRepository $departmentRepo,
@@ -43,6 +45,8 @@ class MailingListProvider implements ProviderInterface
         if ($department === null) {
             return $this->emptyResult($type);
         }
+
+        $this->accessControl->assertDepartmentAccess($department, $currentUser);
 
         // Resolve semester
         $semester = $semesterId !== null

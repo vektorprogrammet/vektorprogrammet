@@ -5,14 +5,18 @@ namespace App\Identity\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Identity\Api\Resource\AdminUserListResource;
-use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Identity\Infrastructure\Entity\User;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 
 class AdminUserListProvider implements ProviderInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
+        private readonly Security $security,
         private readonly DepartmentRepository $departmentRepository,
         private readonly RequestStack $requestStack,
         private readonly UserRepository $userRepository,
@@ -24,7 +28,10 @@ class AdminUserListProvider implements ProviderInterface
         $request = $this->requestStack->getCurrentRequest();
         $departmentId = $request?->query->get('department');
 
-        if ($departmentId !== null && $departmentId !== '') {
+        /** @var \App\Identity\Infrastructure\Entity\User $user */
+        $user = $this->security->getUser();
+
+        if ($departmentId) {
             $department = $this->departmentRepository->find($departmentId);
         } else {
             $activeDepartments = $this->departmentRepository->findActive();
@@ -36,6 +43,8 @@ class AdminUserListProvider implements ProviderInterface
         if (!$department) {
             return $resource;
         }
+
+        $this->accessControl->assertDepartmentAccess($department, $user);
 
         $resource->departmentName = $department->getName();
 

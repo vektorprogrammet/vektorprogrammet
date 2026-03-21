@@ -7,6 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Survey\Api\Resource\AdminSurveyListResource;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
 use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
 use App\Survey\Infrastructure\Entity\Survey;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class AdminSurveyListProvider implements ProviderInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
         private readonly Security $security,
         private readonly SurveyRepository $surveyRepo,
         private readonly SurveyTakenRepository $surveyTakenRepo,
@@ -46,6 +48,8 @@ class AdminSurveyListProvider implements ProviderInterface
 
             return $resource;
         }
+
+        $this->accessControl->assertDepartmentAccess($department, $user);
 
         // Resolve semester
         $semester = $semesterId !== null

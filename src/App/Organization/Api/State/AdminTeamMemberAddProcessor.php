@@ -1,11 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Organization\Infrastructure\Entity\Position;
 use App\Shared\Entity\Semester;
 use App\Organization\Infrastructure\Entity\Team;
@@ -14,6 +13,7 @@ use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Domain\Events\TeamMembershipEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -21,6 +21,8 @@ use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 class AdminTeamMemberAddProcessor implements ProcessorInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
+        private readonly Security $security,
         private readonly EntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly LoggerInterface $logger,
@@ -30,13 +32,20 @@ class AdminTeamMemberAddProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): array
     {
         $teamId = $uriVariables['id'] ?? null;
-        $team = $teamId !== null ? $this->em->getRepository(Team::class)->find($teamId) : null;
+        $team = $teamId ? $this->em->getRepository(Team::class)->find($teamId) : null;
 
         if ($team === null) {
             throw new NotFoundHttpException('Team not found.');
         }
 
-        $user = $data->userId !== null
+        $department = $team->getDepartment();
+        if ($department !== null) {
+            /** @var User $user */
+            $user = $this->security->getUser();
+            $this->accessControl->assertDepartmentAccess($department, $user);
+        }
+
+        $user = $data->userId
             ? $this->em->getRepository(User::class)->find($data->userId)
             : null;
 
@@ -44,7 +53,7 @@ class AdminTeamMemberAddProcessor implements ProcessorInterface
             throw new UnprocessableEntityHttpException('Invalid userId.');
         }
 
-        $startSemester = $data->startSemesterId !== null
+        $startSemester = $data->startSemesterId
             ? $this->em->getRepository(Semester::class)->find($data->startSemesterId)
             : null;
 
