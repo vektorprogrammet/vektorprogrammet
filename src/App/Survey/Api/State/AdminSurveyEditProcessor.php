@@ -4,12 +4,15 @@ namespace App\Survey\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Survey\Api\Resource\AdminSurveyWriteResource;
 use App\Shared\Repository\SemesterRepository;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
 use App\Survey\Infrastructure\Entity\SurveyQuestion;
 use App\Survey\Infrastructure\Entity\SurveyQuestionAlternative;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
@@ -19,6 +22,8 @@ class AdminSurveyEditProcessor implements ProcessorInterface
         private readonly EntityManagerInterface $em,
         private readonly SurveyRepository $surveyRepository,
         private readonly SemesterRepository $semesterRepository,
+        private readonly Security $security,
+        private readonly AccessControlService $accessControlService,
     ) {
     }
 
@@ -31,6 +36,12 @@ class AdminSurveyEditProcessor implements ProcessorInterface
 
         if ($survey === null) {
             throw new NotFoundHttpException('Survey not found.');
+        }
+
+        $currentUser = $this->security->getUser();
+        $surveyDepartment = $survey->getDepartment();
+        if ($surveyDepartment !== null && $currentUser instanceof User) {
+            $this->accessControlService->assertDepartmentAccess($surveyDepartment, $currentUser);
         }
 
         if ($data->name !== null && $data->name !== '') {
