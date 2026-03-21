@@ -4,6 +4,7 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Interview\Api\Resource\InterviewConductInput;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\Entity\InterviewScore;
@@ -23,6 +24,7 @@ class InterviewConductProcessor implements ProcessorInterface
         private readonly InterviewManager $interviewManager,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly Security $security,
+        private readonly AccessControlService $accessControlService,
     ) {
     }
 
@@ -40,6 +42,11 @@ class InterviewConductProcessor implements ProcessorInterface
         }
 
         $currentUser = $this->security->getUser();
+
+        $interviewDepartment = $interview->getApplication()?->getDepartment();
+        if ($interviewDepartment !== null && $currentUser instanceof User) {
+            $this->accessControlService->assertDepartmentAccess($interviewDepartment, $currentUser);
+        }
         if ($currentUser instanceof User && $interview->getApplication() !== null
             && $currentUser->getId() === $interview->getApplication()->getUser()?->getId()) {
             throw new AccessDeniedHttpException('Cannot conduct your own interview.');

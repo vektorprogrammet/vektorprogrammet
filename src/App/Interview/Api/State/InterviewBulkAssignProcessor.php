@@ -4,12 +4,14 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Interview\Api\Resource\InterviewBulkAssignInput;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class InterviewBulkAssignProcessor implements ProcessorInterface
@@ -17,6 +19,8 @@ class InterviewBulkAssignProcessor implements ProcessorInterface
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly InterviewManager $interviewManager,
+        private readonly Security $security,
+        private readonly AccessControlService $accessControlService,
     ) {
     }
 
@@ -24,10 +28,16 @@ class InterviewBulkAssignProcessor implements ProcessorInterface
     {
         assert($data instanceof InterviewBulkAssignInput);
 
+        $currentUser = $this->security->getUser();
+
         foreach ($data->assignments as $assignment) {
             $application = $this->em->getRepository(Application::class)->find($assignment['applicationId']);
             if ($application === null) {
                 throw new NotFoundHttpException('Application not found: '.$assignment['applicationId']);
+            }
+
+            if ($currentUser instanceof User) {
+                $this->accessControlService->assertDepartmentAccess($application->getDepartment(), $currentUser);
             }
 
             $interviewer = $this->em->getRepository(User::class)->find($assignment['interviewerId']);

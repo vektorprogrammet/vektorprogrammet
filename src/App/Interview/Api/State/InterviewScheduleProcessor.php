@@ -4,11 +4,14 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Api\Resource\InterviewScheduleInput;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Domain\Events\InterviewEvent;
 use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
@@ -20,6 +23,8 @@ class InterviewScheduleProcessor implements ProcessorInterface
         private readonly EntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
         private readonly InterviewManager $interviewManager,
+        private readonly Security $security,
+        private readonly AccessControlService $accessControlService,
     ) {
     }
 
@@ -34,6 +39,12 @@ class InterviewScheduleProcessor implements ProcessorInterface
 
         if (!$this->interviewManager->loggedInUserCanSeeInterview($interview)) {
             throw new AccessDeniedHttpException('You do not have access to this interview.');
+        }
+
+        $currentUser = $this->security->getUser();
+        $interviewDepartment = $interview->getApplication()?->getDepartment();
+        if ($interviewDepartment !== null && $currentUser instanceof User) {
+            $this->accessControlService->assertDepartmentAccess($interviewDepartment, $currentUser);
         }
 
         if ($data->datetime === '') {
