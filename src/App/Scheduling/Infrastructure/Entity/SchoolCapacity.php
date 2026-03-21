@@ -6,9 +6,11 @@ use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Repository\SchoolCapacityRepository;
 use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Entity\Semester;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SchoolCapacityRepository::class)]
 #[ORM\Table(name: 'school_capacity')]
+#[ORM\UniqueConstraint(name: 'unique_school_semester', columns: ['school_id', 'semester_id'])]
 #[ORM\HasLifecycleCallbacks]
 class SchoolCapacity
 {
@@ -33,18 +35,23 @@ class SchoolCapacity
     protected $department;
 
     #[ORM\Column(name: 'monday', type: 'integer')]
+    #[Assert\PositiveOrZero(message: 'Kapasitet kan ikke være negativ.')]
     protected $monday;
 
     #[ORM\Column(name: 'tuesday', type: 'integer')]
+    #[Assert\PositiveOrZero(message: 'Kapasitet kan ikke være negativ.')]
     protected $tuesday;
 
     #[ORM\Column(name: 'wednesday', type: 'integer')]
+    #[Assert\PositiveOrZero(message: 'Kapasitet kan ikke være negativ.')]
     protected $wednesday;
 
     #[ORM\Column(name: 'thursday', type: 'integer')]
+    #[Assert\PositiveOrZero(message: 'Kapasitet kan ikke være negativ.')]
     protected $thursday;
 
     #[ORM\Column(name: 'friday', type: 'integer')]
+    #[Assert\PositiveOrZero(message: 'Kapasitet kan ikke være negativ.')]
     protected $friday;
 
     /**
