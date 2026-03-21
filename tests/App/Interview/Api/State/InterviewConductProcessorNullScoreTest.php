@@ -8,6 +8,7 @@ use App\Interview\Api\State\InterviewConductProcessor;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\InterviewManager;
 use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\AccessControlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;
@@ -39,8 +40,9 @@ class InterviewConductProcessorNullScoreTest extends TestCase
         $security->method('getUser')->willReturn($user);
 
         $dispatcher = $this->createMock(EventDispatcherInterface::class);
+        $accessControl = $this->createMock(AccessControlService::class);
 
-        $processor = new InterviewConductProcessor($em, $interviewManager, $dispatcher, $security);
+        $processor = new InterviewConductProcessor($em, $interviewManager, $dispatcher, $security, $accessControl);
 
         $input = new InterviewConductInput();
         $input->answers = [];
