@@ -7,7 +7,9 @@ use ApiPlatform\State\ProcessorInterface;
 use App\Interview\Api\Resource\InterviewScheduleInput;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Domain\Events\InterviewEvent;
+use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -17,6 +19,7 @@ class InterviewScheduleProcessor implements ProcessorInterface
     public function __construct(
         private readonly EntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly InterviewManager $interviewManager,
     ) {
     }
 
@@ -27,6 +30,10 @@ class InterviewScheduleProcessor implements ProcessorInterface
         $interview = $this->em->getRepository(Interview::class)->find($uriVariables['id'] ?? 0);
         if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
+        }
+
+        if (!$this->interviewManager->loggedInUserCanSeeInterview($interview)) {
+            throw new AccessDeniedHttpException('You do not have access to this interview.');
         }
 
         if ($data->datetime === '') {

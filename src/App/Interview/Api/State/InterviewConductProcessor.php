@@ -8,8 +8,11 @@ use App\Interview\Api\Resource\InterviewConductInput;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\Entity\InterviewScore;
 use App\Interview\Domain\Events\InterviewConductedEvent;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -19,6 +22,7 @@ class InterviewConductProcessor implements ProcessorInterface
         private readonly EntityManagerInterface $em,
         private readonly InterviewManager $interviewManager,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly Security $security,
     ) {
     }
 
@@ -29,6 +33,16 @@ class InterviewConductProcessor implements ProcessorInterface
         $interview = $this->em->getRepository(Interview::class)->find($uriVariables['id'] ?? 0);
         if ($interview === null) {
             throw new NotFoundHttpException('Interview not found.');
+        }
+
+        if (!$this->interviewManager->loggedInUserCanSeeInterview($interview)) {
+            throw new AccessDeniedHttpException('You do not have access to this interview.');
+        }
+
+        $currentUser = $this->security->getUser();
+        if ($currentUser instanceof User && $interview->getApplication() !== null
+            && $currentUser->getId() === $interview->getApplication()->getUser()?->getId()) {
+            throw new AccessDeniedHttpException('Cannot conduct your own interview.');
         }
 
         // Initialize answer stubs for any questions not yet answered
