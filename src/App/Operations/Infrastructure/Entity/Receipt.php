@@ -49,7 +49,7 @@ class Receipt implements \Stringable
     #[ORM\Column(type: 'string')]
     private $status;
 
-    #[ORM\Column(name: 'visual_id', type: 'string', nullable: true)]
+    #[ORM\Column(name: 'visual_id', type: 'string', nullable: true, unique: true)]
     private $visualId;
 
     public function __construct()
