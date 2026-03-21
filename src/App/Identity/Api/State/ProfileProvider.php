@@ -36,6 +36,7 @@ class ProfileProvider implements ProviderInterface
 
         $profile->role = $user->getRoles()[0] ?? 'ROLE_USER';
         $profile->profilePhoto = $user->getPicturePath();
+        $profile->accountNumber = $user->getAccountNumber();
 
         $fos = $user->getFieldOfStudy();
         if ($fos !== null) {
