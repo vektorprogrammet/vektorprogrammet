@@ -1,14 +1,21 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Operations\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\Receipt;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Operations\Domain\Events\ReceiptEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
+use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
+use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 class AdminReceiptStatusProcessor implements ProcessorInterface
@@ -17,6 +24,8 @@ class AdminReceiptStatusProcessor implements ProcessorInterface
         private readonly ReceiptRepository $receiptRepository,
         private readonly EntityManagerInterface $em,
         private readonly EventDispatcherInterface $eventDispatcher,
+        private readonly AccessControlService $accessControlService,
+        private readonly Security $security,
     ) {
     }
 
@@ -29,9 +38,27 @@ class AdminReceiptStatusProcessor implements ProcessorInterface
             throw new NotFoundHttpException('Receipt not found.');
         }
 
+        $currentUser = $this->security->getUser();
+        if (!$currentUser instanceof User) {
+            throw new AccessDeniedHttpException();
+        }
+
+        $receiptDepartment = $receipt->getUser()?->getDepartment();
+        if ($receiptDepartment === null) {
+            if (!$this->security->isGranted('ROLE_ADMIN')) {
+                throw new AccessDeniedHttpException('Receipt owner has no department.');
+            }
+        } else {
+            $this->accessControlService->assertDepartmentAccess($receiptDepartment, $currentUser);
+        }
+
         $status = $data->status;
 
-        $receipt->setStatus($status);
+        try {
+            $receipt->setStatus($status);
+        } catch (\InvalidArgumentException $e) {
+            throw new UnprocessableEntityHttpException($e->getMessage(), $e);
+        }
 
         if ($status === Receipt::STATUS_REFUNDED && !$receipt->getRefundDate()) {
             $receipt->setRefundDate(new \DateTime());
