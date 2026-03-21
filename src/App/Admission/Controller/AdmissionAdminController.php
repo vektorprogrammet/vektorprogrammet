@@ -75,7 +75,7 @@ class AdmissionAdminController extends BaseController
 
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment()?->getId() !== $department->getId()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -105,7 +105,7 @@ class AdmissionAdminController extends BaseController
             ->findOneByDepartmentAndSemester($department, $semester);
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment()?->getId() !== $department->getId()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -145,7 +145,7 @@ class AdmissionAdminController extends BaseController
             ->findOneByDepartmentAndSemester($department, $semester);
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment()?->getId() !== $department->getId()) {
             throw $this->createAccessDeniedException();
         }
 
@@ -181,7 +181,7 @@ class AdmissionAdminController extends BaseController
 
         /** @var User $currentUser */
         $currentUser = $this->getUser();
-        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment() !== $department) {
+        if (!$this->isGranted(Roles::TEAM_LEADER) && $currentUser->getDepartment()?->getId() !== $department->getId()) {
             throw $this->createAccessDeniedException();
         }
         $applications = [];
@@ -332,7 +332,7 @@ class AdmissionAdminController extends BaseController
         $admissionPeriod = $this->admissionPeriodRepo
             ->findOneByDepartmentAndSemester($department, $semester);
 
-        if (!$this->isGranted(Roles::ADMIN) && $currentUser->getDepartment() !== $department) {
+        if (!$this->isGranted(Roles::ADMIN) && $currentUser->getDepartment()?->getId() !== $department->getId()) {
             throw $this->createAccessDeniedException();
         }
 

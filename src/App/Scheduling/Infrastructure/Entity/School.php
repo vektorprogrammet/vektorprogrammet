@@ -237,7 +237,7 @@ class School implements \Stringable
     public function belongsToDepartment(Department $department): bool
     {
         foreach ($this->departments as $dep) {
-            if ($dep === $department) {
+            if ($dep->getId() === $department->getId()) {
                 return true;
             }
         }
