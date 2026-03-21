@@ -43,6 +43,19 @@ class AdminTeamEditProcessor implements ProcessorInterface
         if ($data->description !== null) {
             $team->setDescription($data->description);
         }
+        if ($data->acceptApplication !== null) {
+            $team->setAcceptApplication($data->acceptApplication);
+        }
+        if ($data->active !== null) {
+            $team->setActive($data->active);
+        }
+        if ($data->deadline !== null) {
+            try {
+                $team->setDeadline(new \DateTime($data->deadline));
+            } catch (\Exception) {
+                // ignore invalid date format
+            }
+        }
 
         $this->em->persist($team);
         $this->em->flush();

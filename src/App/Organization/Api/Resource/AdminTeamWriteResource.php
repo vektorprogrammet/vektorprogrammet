@@ -42,4 +42,10 @@ class AdminTeamWriteResource
     public ?string $description = null;
 
     public ?int $departmentId = null;
+
+    public ?bool $acceptApplication = null;
+
+    public ?bool $active = null;
+
+    public ?string $deadline = null;
 }
