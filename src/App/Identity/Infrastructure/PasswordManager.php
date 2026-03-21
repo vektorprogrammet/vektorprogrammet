@@ -45,7 +45,11 @@ class PasswordManager
         $currentTime = new \DateTime();
         $timeDifference = date_diff($passwordReset->getResetTime(), $currentTime);
 
-        $hasExpired = $timeDifference->d > 1;
+        // Use the total elapsed hours to correctly enforce a 24h TTL.
+        // $timeDifference->d counts only the day component, not total days,
+        // which causes tokens to appear valid for up to 48h.
+        $totalHours = ($timeDifference->days * 24) + $timeDifference->h;
+        $hasExpired = $totalHours >= 24;
 
         if ($hasExpired) {
             $this->em->getRepository(PasswordReset::class)->deletePasswordResetByHashedResetCode($hashedResetCode);
