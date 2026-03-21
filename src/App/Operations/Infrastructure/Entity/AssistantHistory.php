@@ -41,10 +41,12 @@ class AssistantHistory implements \Stringable
 
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\Regex(pattern: '/^\d+$/', message: 'Antall dager må være et tall.')]
     private $workdays;
 
     #[ORM\Column(type: 'string', nullable: true)]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\Regex(pattern: '/^Bolk \d+(, Bolk \d+)*$/', message: 'Ugyldig bolk-format. Bruk f.eks. "Bolk 1" eller "Bolk 1, Bolk 2".')]
     private $bolk;
 
     /**
@@ -52,6 +54,7 @@ class AssistantHistory implements \Stringable
      */
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\Regex(pattern: '/^(Mandag|Tirsdag|Onsdag|Torsdag|Fredag)$/', message: 'Ugyldig dag. Gyldige verdier: Mandag, Tirsdag, Onsdag, Torsdag, Fredag.')]
     private $day;
 
     public function activeInGroup($group): bool
