@@ -56,14 +56,18 @@ class RoleHierarchy
             return false;
         }
 
-        $userRole = $userRoles[0];
-        $userAccessLevel = array_search($userRole, self::ROLES, true);
         $roleAccessLevel = array_search($role, self::ROLES, true);
-
-        if ($userAccessLevel === false || $roleAccessLevel === false) {
+        if ($roleAccessLevel === false) {
             return false;
         }
 
-        return $userAccessLevel >= $roleAccessLevel;
+        foreach ($userRoles as $userRole) {
+            $userAccessLevel = array_search($userRole, self::ROLES, true);
+            if ($userAccessLevel !== false && $userAccessLevel >= $roleAccessLevel) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
