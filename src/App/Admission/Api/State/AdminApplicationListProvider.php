@@ -7,6 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Admission\Api\Resource\AdminApplicationListResource;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
+use App\Admission\Domain\Rules\ApplicationStatusRule;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Identity\Infrastructure\AccessControlService;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
@@ -25,6 +26,7 @@ class AdminApplicationListProvider implements ProviderInterface
         private readonly DepartmentRepository $departmentRepo,
         private readonly SemesterRepository $semesterRepo,
         private readonly RequestStack $requestStack,
+        private readonly ApplicationStatusRule $applicationStatusRule,
     ) {
     }
 
@@ -96,10 +98,21 @@ class AdminApplicationListProvider implements ProviderInterface
         $interview = $app->getInterview();
         $interviewer = $interview?->getInterviewer();
 
+        $status = $this->applicationStatusRule->determine(
+            isActiveAssistant: $user->isActiveAssistant(),
+            hasBeenAssistant: $app->getPreviousParticipation(),
+            hasInterview: $interview !== null,
+            isInterviewed: $interview?->getInterviewed() ?? false,
+            interviewStatus: $interview?->getInterviewStatus(),
+            interviewRoom: $interview?->getRoom(),
+            interviewScheduledFormatted: $interview?->getScheduled()?->format('d.m.Y H:i'),
+        );
+
         return [
             'id' => $app->getId(),
             'userName' => $user->getFirstName().' '.$user->getLastName(),
             'userEmail' => $user->getEmail(),
+            'applicationStatus' => $status->getStep(),
             'interviewStatus' => $interview?->getInterviewStatusAsString(),
             'interviewScheduled' => $interview?->getScheduled()?->format('c'),
             'interviewer' => $interviewer !== null ? $interviewer->getFirstName().' '.$interviewer->getLastName() : null,
