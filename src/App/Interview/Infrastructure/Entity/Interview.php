@@ -114,7 +114,7 @@ class Interview
     public function __construct()
     {
         $this->interviewAnswers = new ArrayCollection();
-        $this->conducted = new \DateTime();
+        $this->conducted = null;
         $this->interviewed = false;
         $this->interviewStatus = InterviewStatusType::NO_CONTACT;
         $this->newTimeMessage = '';
@@ -307,9 +307,9 @@ class Interview
     {
         if ($cancelled === true) {
             $this->cancel();
-        } else {
-            $this->acceptInterview();
         }
+        // setCancelled(false) is a no-op: clearing the cancelled flag does not
+        // imply acceptance. Use acceptInterview() explicitly when needed.
     }
 
     /**
