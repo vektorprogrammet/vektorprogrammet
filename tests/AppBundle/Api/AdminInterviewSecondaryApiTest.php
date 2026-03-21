@@ -84,7 +84,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
 
     public function testAssignCoInterviewerSelfAssign(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         // Find an interview ID from fixtures — interview5 is the one with responseCode='code'
         $interviewId = $this->getInterviewIdByResponseCode('code');
@@ -101,7 +101,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
 
     public function testAssignCoInterviewerNotFound(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('PUT', '/api/admin/interviews/99999/co-interviewer', [], [], [
@@ -177,7 +177,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
         $this->assertNotNull($conductedInterview, 'No conducted interview found in fixtures');
         $conductedId = $conductedInterview->getId();
 
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('PUT', '/api/admin/interviews/'.$conductedId.'/co-interviewer', [], [], [
@@ -191,7 +191,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
 
     public function testClearCoInterviewer(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $interviewId = $this->getInterviewIdByResponseCode('code');
 
@@ -206,7 +206,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
 
     public function testClearCoInterviewerNotFound(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('DELETE', '/api/admin/interviews/99999/co-interviewer', [], [], [
@@ -219,7 +219,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
 
     public function testDeleteInterview(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('admin', '1234');
 
         $interviewId = $this->getInterviewIdByResponseCode('code');
 
@@ -234,7 +234,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
 
     public function testDeleteInterviewNotFound(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('DELETE', '/api/admin/interviews/99999', [], [], [
@@ -247,7 +247,7 @@ class AdminInterviewSecondaryApiTest extends BaseWebTestCase
 
     public function testDeleteInterviewCascadeNullsApplication(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('admin', '1234');
 
         $interviewId = $this->getInterviewIdByResponseCode('code');
 

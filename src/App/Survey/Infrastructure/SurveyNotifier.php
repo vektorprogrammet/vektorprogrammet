@@ -218,7 +218,7 @@ class SurveyNotifier
     {
         if ($surveyNotificationCollection->isAllSent()) {
             return true;
-        } elseif ($surveyNotificationCollection->getSurveyNotifications() === []) {
+        } elseif ($surveyNotificationCollection->getSurveyNotifications()->isEmpty()) {
             return false;
         }
 

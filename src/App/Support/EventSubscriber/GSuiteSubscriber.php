@@ -132,7 +132,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $team = $event->getTeam();
         $department = $team->getDepartment();
 
-        if (!$this->teamExists($team)) {
+        if (!$this->teamExists($team->getEmail())) {
             $this->groupService->createGroup($team);
             $this->logger->info("New G Suite group created for *$department - $team*");
         }
@@ -159,7 +159,7 @@ class GSuiteSubscriber implements EventSubscriberInterface
         $team = $event->getTeam();
         $department = $team->getDepartment();
 
-        if (!$this->teamExists($team)) {
+        if (!$this->teamExists($team->getEmail())) {
             $this->driveService->createTeamDrive($team);
             $this->logger->info("New Team Drive created for *$department - $team*");
         }

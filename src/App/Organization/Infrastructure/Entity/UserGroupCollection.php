@@ -6,6 +6,7 @@ namespace App\Organization\Infrastructure\Entity;
 
 use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Shared\Entity\Semester;
@@ -34,34 +35,34 @@ class UserGroupCollection implements \Stringable
     private $numberUserGroups;
 
     /**
-     * @var ArrayCollection<int, UserGroup>
+     * @var Collection<int, UserGroup>
      */
     #[ORM\OneToMany(targetEntity: UserGroup::class, mappedBy: 'userGroupCollection', cascade: ['remove'])]
-    private ArrayCollection $userGroups;
+    private Collection $userGroups;
 
     /**
-     * @var ArrayCollection<int, Team>
+     * @var Collection<int, Team>
      */
     #[ORM\ManyToMany(targetEntity: Team::class)]
-    private ArrayCollection $teams;
+    private Collection $teams;
 
     /**
-     * @var ArrayCollection<int, Semester>
+     * @var Collection<int, Semester>
      */
     #[ORM\ManyToMany(targetEntity: Semester::class)]
-    private ArrayCollection $semesters;
+    private Collection $semesters;
 
     /**
-     * @var ArrayCollection<int, User>
+     * @var Collection<int, User>
      */
     #[ORM\ManyToMany(targetEntity: User::class)]
-    private ArrayCollection $users;
+    private Collection $users;
 
     /**
-     * @var ArrayCollection<int, Department>
+     * @var Collection<int, Department>
      */
     #[ORM\ManyToMany(targetEntity: Department::class)]
-    private ArrayCollection $assistantsDepartments;
+    private Collection $assistantsDepartments;
 
     /**
      * @var array
@@ -111,7 +112,7 @@ class UserGroupCollection implements \Stringable
     /**
      * @return ArrayCollection<int, UserGroup>
      */
-    public function getUserGroups(): ArrayCollection
+    public function getUserGroups(): Collection
     {
         return $this->userGroups;
     }
@@ -119,7 +120,7 @@ class UserGroupCollection implements \Stringable
     /**
      * @return ArrayCollection<int, Team>
      */
-    public function getTeams(): ArrayCollection
+    public function getTeams(): Collection
     {
         return $this->teams;
     }
@@ -127,7 +128,7 @@ class UserGroupCollection implements \Stringable
     /**
      * @return ArrayCollection<int, Semester>
      */
-    public function getSemesters(): ArrayCollection
+    public function getSemesters(): Collection
     {
         return $this->semesters;
     }
@@ -135,7 +136,7 @@ class UserGroupCollection implements \Stringable
     /**
      * @return ArrayCollection<int, Department>
      */
-    public function getAssistantsDepartments(): ArrayCollection
+    public function getAssistantsDepartments(): Collection
     {
         return $this->assistantsDepartments;
     }
@@ -221,17 +222,17 @@ class UserGroupCollection implements \Stringable
     }
 
     /**
-     * @return ArrayCollection<int, User>
+     * @return Collection<int, User>
      */
-    public function getUsers(): ArrayCollection
+    public function getUsers(): Collection
     {
         return $this->users;
     }
 
     /**
-     * @param ArrayCollection<int, User> $users
+     * @param Collection<int, User> $users
      */
-    public function setUsers(ArrayCollection $users): void
+    public function setUsers(Collection $users): void
     {
         $this->users = $users;
     }

@@ -42,7 +42,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testAddMemberSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -68,7 +68,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testAddMemberWithPosition(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -94,7 +94,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testAddMemberValidationRejectsMissingUser(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -116,7 +116,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testAddMemberTeamNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -165,7 +165,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testUpdateMembershipSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -191,7 +191,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testUpdateMembershipNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('PUT', '/api/admin/team-memberships/99999', [], [], [
@@ -229,7 +229,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testDeleteMembershipSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         // Create a membership to delete
@@ -263,7 +263,7 @@ class AdminTeamMembershipApiTest extends BaseWebTestCase
 
     public function testDeleteMembershipNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('DELETE', '/api/admin/team-memberships/99999', [], [], [

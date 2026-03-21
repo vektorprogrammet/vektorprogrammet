@@ -32,9 +32,9 @@ class AdminSchedulingApiTest extends BaseWebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
-    public function testAssistantsReturnsArrayForTeamMember(): void
+    public function testAssistantsReturnsArrayForTeamLeader(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
         $client->request('GET', '/api/admin/scheduling/assistants', [], [], [
             'HTTP_AUTHORIZATION' => 'Bearer '.$token,
@@ -109,9 +109,9 @@ class AdminSchedulingApiTest extends BaseWebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
-    public function testSchoolsReturnsArrayForTeamMember(): void
+    public function testSchoolsReturnsArrayForTeamLeader(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
         $client->request('GET', '/api/admin/scheduling/schools', [], [], [
             'HTTP_AUTHORIZATION' => 'Bearer '.$token,

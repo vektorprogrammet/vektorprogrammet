@@ -41,7 +41,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testCreateAdmissionPeriodSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('admin', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -71,7 +71,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testCreateAdmissionPeriodValidationRejectsBlankDates(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $payload = [
@@ -92,7 +92,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testCreateAdmissionPeriodDuplicateReturns409(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -119,7 +119,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testCreateAdmissionPeriodWithNonExistentDepartmentReturns422(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -143,7 +143,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testCreateAdmissionPeriodWithNonExistentSemesterReturns422(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('admin', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -193,7 +193,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testUpdateAdmissionPeriodSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -217,7 +217,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testUpdateAdmissionPeriodNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('PUT', '/api/admin/admission-periods/99999', [], [], [
@@ -231,7 +231,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testUpdateAdmissionPeriodValidationRejectsBlankDates(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -277,7 +277,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testDeleteAdmissionPeriodSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         // Create a fresh admission period to delete
@@ -308,7 +308,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testDeleteAdmissionPeriodWithInfoMeetingCascades(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         // Create admission period with an info meeting
@@ -348,7 +348,7 @@ class AdminAdmissionPeriodWriteApiTest extends BaseWebTestCase
 
     public function testDeleteAdmissionPeriodNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('DELETE', '/api/admin/admission-periods/99999', [], [], [

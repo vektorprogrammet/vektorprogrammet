@@ -4,6 +4,8 @@ namespace App\Survey\Infrastructure\Entity;
 
 use App\Organization\Infrastructure\Entity\UserGroup;
 use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -26,17 +28,17 @@ class SurveyNotificationCollection
     private $name;
 
     /**
-     * @var UserGroup[]
+     * @var Collection<int, UserGroup>
      */
     #[ORM\ManyToMany(targetEntity: UserGroup::class, cascade: ['persist'])]
     #[Assert\NotNull]
-    private array $userGroups;
+    private Collection $userGroups;
 
     /**
-     * @var SurveyNotification[]
+     * @var Collection<int, SurveyNotification>
      */
     #[ORM\OneToMany(targetEntity: SurveyNotification::class, mappedBy: 'surveyNotificationCollection', cascade: ['remove'])]
-    private array $surveyNotifications;
+    private Collection $surveyNotifications;
 
     /**
      * @var Survey
@@ -108,7 +110,7 @@ class SurveyNotificationCollection
     public function __construct()
     {
         $this->name = '';
-        $this->surveyNotifications = [];
+        $this->surveyNotifications = new ArrayCollection();
         $this->timeOfNotification = new \DateTime('tomorrow');
         $this->allSent = false;
         $this->active = false;
@@ -118,7 +120,7 @@ class SurveyNotificationCollection
         $this->emailEndMessage = '<p>Med vennlig hilsen,<br/>Vektorevaluering</p>';
         $this->emailSubject = 'Undersøkelse fra Vektor';
         $this->emailType = 0;
-        $this->userGroups = [];
+        $this->userGroups = new ArrayCollection();
         $this->emailFromName = 'Vektorprogrammet';
     }
 
@@ -131,19 +133,19 @@ class SurveyNotificationCollection
     }
 
     /**
-     * @return UserGroup[]
+     * @return Collection<int, UserGroup>
      */
-    public function getUserGroups(): array
+    public function getUserGroups(): Collection
     {
         return $this->userGroups;
     }
 
     /**
-     * @param UserGroup[] $userGroups
+     * @param UserGroup[]|Collection<int, UserGroup> $userGroups
      */
-    public function setUserGroups(array $userGroups): void
+    public function setUserGroups(array|Collection $userGroups): void
     {
-        $this->userGroups = $userGroups;
+        $this->userGroups = $userGroups instanceof Collection ? $userGroups : new ArrayCollection($userGroups);
     }
 
     /**
@@ -183,19 +185,19 @@ class SurveyNotificationCollection
     }
 
     /**
-     * @return SurveyNotification[]
+     * @return Collection<int, SurveyNotification>
      */
-    public function getSurveyNotifications(): array
+    public function getSurveyNotifications(): Collection
     {
         return $this->surveyNotifications;
     }
 
     /**
-     * @param SurveyNotification[] $surveyNotifications
+     * @param SurveyNotification[]|Collection<int, SurveyNotification> $surveyNotifications
      */
-    public function setSurveyNotifications(array $surveyNotifications): void
+    public function setSurveyNotifications(array|Collection $surveyNotifications): void
     {
-        $this->surveyNotifications = $surveyNotifications;
+        $this->surveyNotifications = $surveyNotifications instanceof Collection ? $surveyNotifications : new ArrayCollection($surveyNotifications);
     }
 
     public function isAllSent(): bool

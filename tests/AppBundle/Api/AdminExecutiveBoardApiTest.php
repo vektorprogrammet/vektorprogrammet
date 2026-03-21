@@ -202,7 +202,7 @@ class AdminExecutiveBoardApiTest extends BaseWebTestCase
 
     public function testDeleteBoardMemberSuccess(): void
     {
-        $token = $this->getJwtToken('teamleader', '1234');
+        $token = $this->getJwtToken('admin', '1234');
         $client = static::createClient();
 
         // Create a membership to delete

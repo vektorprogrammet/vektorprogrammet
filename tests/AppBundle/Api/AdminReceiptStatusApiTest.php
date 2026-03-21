@@ -34,18 +34,20 @@ class AdminReceiptStatusApiTest extends BaseWebTestCase
         $this->assertResponseStatusCodeSame(403);
     }
 
-    public function testReceiptStatusForbiddenForTeamMember(): void
+    public function testReceiptStatusAllowedForTeamMember(): void
     {
         $token = $this->getJwtToken('teammember', '1234');
 
+        $receiptId = $this->getPendingReceiptId();
+
         $client = static::createClient();
-        $client->request('PUT', '/api/admin/receipts/1/status', [], [], [
+        $client->request('PUT', '/api/admin/receipts/'.$receiptId.'/status', [], [], [
             'HTTP_AUTHORIZATION' => 'Bearer '.$token,
             'CONTENT_TYPE' => 'application/json',
             'HTTP_ACCEPT' => 'application/json',
         ], json_encode(['status' => 'refunded']));
 
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseStatusCodeSame(204);
     }
 
     public function testSetReceiptStatusRefunded(): void

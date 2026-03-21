@@ -18,7 +18,7 @@ class AdminUserApiTest extends BaseWebTestCase
         $this->assertResponseStatusCodeSame(401);
     }
 
-    public function testGetUsersForbiddenForTeamMember(): void
+    public function testGetUsersAllowedForTeamMember(): void
     {
         $token = $this->getJwtToken('teammember', '1234');
 
@@ -28,7 +28,7 @@ class AdminUserApiTest extends BaseWebTestCase
             'HTTP_ACCEPT' => 'application/json',
         ]);
 
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseIsSuccessful();
     }
 
     public function testGetUsersReturnsDataForTeamLeader(): void

@@ -39,7 +39,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testCreateTeamSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -67,7 +67,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testCreateTeamValidationRejectsBlankName(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -89,7 +89,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testCreateTeamValidationRejectsInvalidDepartment(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $payload = [
@@ -135,7 +135,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testUpdateTeamSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -161,7 +161,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testUpdateTeamNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('PUT', '/api/admin/teams/99999', [], [], [
@@ -175,7 +175,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testUpdateTeamValidationRejectsBlankName(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -218,7 +218,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testDeleteTeamSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         // Create a team to delete
@@ -248,7 +248,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testDeleteTeamPreservesDeletedTeamNameOnMemberships(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -290,7 +290,7 @@ class AdminTeamWriteApiTest extends BaseWebTestCase
 
     public function testDeleteTeamNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('DELETE', '/api/admin/teams/99999', [], [], [

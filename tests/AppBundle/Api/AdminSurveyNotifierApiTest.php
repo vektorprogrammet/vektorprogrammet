@@ -77,7 +77,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testCreateSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -108,7 +108,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testCreateValidationRejectsBlankName(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -131,7 +131,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testCreateRejectsInvalidSurveyId(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $payload = [
@@ -151,7 +151,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testCreateRejectsMissingSurveyId(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $payload = [
@@ -196,7 +196,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testEditSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -221,7 +221,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testEditNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('PUT', '/api/admin/survey-notifiers/99999', [], [], [
@@ -235,7 +235,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testEditRejectsActiveCollection(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -284,7 +284,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testDeleteSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -306,7 +306,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testDeleteNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('DELETE', '/api/admin/survey-notifiers/99999', [], [], [
@@ -319,7 +319,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testDeleteRejectsActiveCollection(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -365,7 +365,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testSendSuccess(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -385,7 +385,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testSendNotFoundReturns404(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $client->request('POST', '/api/admin/survey-notifiers/99999/send', [], [], [
@@ -399,7 +399,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testSendRejectsWhenTimeOfNotificationInFuture(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);
@@ -416,7 +416,7 @@ class AdminSurveyNotifierApiTest extends BaseWebTestCase
 
     public function testSendRejectsWhenAllSent(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
         $client = static::createClient();
 
         $em = static::getContainer()->get(EntityManagerInterface::class);

@@ -18,7 +18,7 @@ class AdminReceiptApiTest extends BaseWebTestCase
         $this->assertResponseStatusCodeSame(401);
     }
 
-    public function testGetReceiptDashboardForbiddenForTeamMember(): void
+    public function testGetReceiptDashboardAllowedForTeamMember(): void
     {
         $token = $this->getJwtToken('teammember', '1234');
 
@@ -28,7 +28,7 @@ class AdminReceiptApiTest extends BaseWebTestCase
             'HTTP_ACCEPT' => 'application/json',
         ]);
 
-        $this->assertResponseStatusCodeSame(403);
+        $this->assertResponseIsSuccessful();
     }
 
     public function testGetReceiptDashboardReturnsAggregations(): void

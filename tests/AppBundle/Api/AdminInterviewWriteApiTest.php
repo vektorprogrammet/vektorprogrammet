@@ -49,7 +49,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testAssignInterviewerToApplication(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $em = static::getContainer()->get('doctrine')->getManager();
         $application = $em->getRepository(Application::class)->findOneBy(['interview' => null]);
@@ -74,7 +74,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testAssignApplicationNotFound(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('POST', '/api/admin/interviews/assign', [], [], [
@@ -92,7 +92,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testAssignValidationRejectsZeroIds(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('POST', '/api/admin/interviews/assign', [], [], [
@@ -141,7 +141,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testBulkAssignEmptyAssignments(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('POST', '/api/admin/interviews/bulk-assign', [], [], [
@@ -157,7 +157,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testBulkAssignWithOneAssignment(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $em = static::getContainer()->get('doctrine')->getManager();
         $application = $em->getRepository(Application::class)->findOneBy(['interview' => null]);
@@ -203,7 +203,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testScheduleInterview(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $em = static::getContainer()->get('doctrine')->getManager();
         $interview = $em->getRepository(Interview::class)->findByResponseCode('code');
@@ -229,7 +229,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testScheduleInterviewNotFound(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('POST', '/api/admin/interviews/99999/schedule', [], [], [
@@ -247,7 +247,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testScheduleEmptyDatetimeReturns422(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $em = static::getContainer()->get('doctrine')->getManager();
         $interview = $em->getRepository(Interview::class)->findByResponseCode('code');
@@ -269,7 +269,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testScheduleInvalidDatetimeReturns422(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $em = static::getContainer()->get('doctrine')->getManager();
         $interview = $em->getRepository(Interview::class)->findByResponseCode('code');
@@ -312,7 +312,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testConductInterview(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         // Use interview5 (responseCode=code) which has ischema-1 (2 questions)
         $em = static::getContainer()->get('doctrine')->getManager();
@@ -339,7 +339,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testConductInterviewWithAnswers(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         // interview5 (responseCode=code) uses ischema-1 which has 2 questions (iq-1, iq-2)
         $em = static::getContainer()->get('doctrine')->getManager();
@@ -379,7 +379,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testConductInterviewNotFound(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('POST', '/api/admin/interviews/99999/conduct', [], [], [
@@ -432,7 +432,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testStatusUpdateInterview(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $em = static::getContainer()->get('doctrine')->getManager();
         $interview = $em->getRepository(Interview::class)->findByResponseCode('code');
@@ -452,7 +452,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testStatusUpdateInterviewNotFound(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $client = static::createClient();
         $client->request('PUT', '/api/admin/interviews/99999/status', [], [], [
@@ -468,7 +468,7 @@ class AdminInterviewWriteApiTest extends BaseWebTestCase
 
     public function testStatusUpdateInvalidStatus(): void
     {
-        $token = $this->getJwtToken('teammember', '1234');
+        $token = $this->getJwtToken('teamleader', '1234');
 
         $em = static::getContainer()->get('doctrine')->getManager();
         $interview = $em->getRepository(Interview::class)->findByResponseCode('code');
