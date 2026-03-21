@@ -312,7 +312,7 @@ class Team implements TeamInterface, \Stringable
         $histories = [];
 
         foreach ($this->teamMemberships as $wh) {
-            $semester = $wh->getUser()->getDepartment()->getCurrentOrLatestAdmissionPeriod()->getSemester();
+            $semester = $this->getDepartment()->getCurrentOrLatestAdmissionPeriod()->getSemester();
             if ($wh->isActiveInSemester($semester)) {
                 $histories[] = $wh;
             }
