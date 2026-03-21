@@ -106,9 +106,9 @@ class InterviewEntityUnitTest extends TestCase
     public function testInvalidInterviewStatusTransitionThrows()
     {
         $interview = new Interview();
-        // NO_CONTACT -> ACCEPTED is not a valid transition
+        // NO_CONTACT -> REQUEST_NEW_TIME is not a valid transition
         $this->expectException(\InvalidArgumentException::class);
-        $interview->setInterviewStatus(InterviewStatusType::ACCEPTED);
+        $interview->setInterviewStatus(InterviewStatusType::REQUEST_NEW_TIME);
     }
 
     public function testInterviewSelfTransitionAllowed()
