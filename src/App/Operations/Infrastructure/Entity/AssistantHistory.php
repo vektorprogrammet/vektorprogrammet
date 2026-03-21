@@ -11,6 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'assistant_history')]
+#[ORM\UniqueConstraint(name: 'unique_user_school_semester', columns: ['user_id', 'school_id', 'semester_id'])]
 #[ORM\Entity(repositoryClass: AssistantHistoryRepository::class)]
 class AssistantHistory implements \Stringable
 {
