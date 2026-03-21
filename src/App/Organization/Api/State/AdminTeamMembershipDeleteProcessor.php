@@ -30,13 +30,23 @@ class AdminTeamMembershipDeleteProcessor implements ProcessorInterface
             return;
         }
 
+        // Capture all needed data from the entity BEFORE removal so that
+        // event subscribers can still access the data after flush() detaches it.
+        $membershipId = $membership->getId();
+        // Force eager loading of relationships before removal
+        $membership->getUser();
+        $membership->getTeam();
+        $membership->getPosition();
+        $membership->getStartSemester();
+        $membership->getEndSemester();
+
         $this->em->remove($membership);
         $this->em->flush();
 
         try {
             $this->eventDispatcher->dispatch(new TeamMembershipEvent($membership), TeamMembershipEvent::DELETED);
         } catch (\Throwable $e) {
-            $this->logger->error('TeamMembershipEvent::DELETED dispatch failed: '.$e->getMessage());
+            $this->logger->error("TeamMembershipEvent::DELETED dispatch failed for membership $membershipId: ".$e->getMessage());
         }
     }
 }
