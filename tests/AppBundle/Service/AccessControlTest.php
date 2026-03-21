@@ -59,14 +59,14 @@ class AccessControlTest extends BaseKernelTestCase
     public function testHasAccessWhenRuleDoesNotExist()
     {
         $access = $this->service->checkAccess('nonexisting', $this->assistant);
-        $this->assertTrue($access);
+        $this->assertFalse($access);
     }
 
     public function testCreateEmptyRule()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
-        $this->assertTrue($this->service->checkAccess($resource, null));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, null));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -80,8 +80,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testCreateRuleForUser()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->teamMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, $this->teamMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -96,8 +96,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testCreateRuleForTeam()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->teamMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, $this->teamMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -114,8 +114,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testCreateRuleForRole()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->teamMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, $this->teamMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -130,8 +130,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testCreateRuleForExecutiveBoard()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->executiveBoardMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->teamMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->executiveBoardMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->teamMember));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -146,8 +146,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testOldTeamMemberDoesNotHaveAccess()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->teamMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->inactiveTeamMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->teamMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->inactiveTeamMember));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -162,8 +162,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testOldExecutiveTeamMemberDoesNotHaveAccess()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->executiveBoardMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->inactiveExecutiveBoardMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->executiveBoardMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->inactiveExecutiveBoardMember));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -178,8 +178,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testInactiveUserDoesNotHaveAccess()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->inactiveUser));
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, $this->inactiveUser));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -194,8 +194,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testAdminAlwaysHasAccess()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
-        $this->assertTrue($this->service->checkAccess($resource, $this->admin));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, $this->admin));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -210,8 +210,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testAllConditionsInRuleHaveToPass()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->teamMemberAndExecutiveBoardMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, $this->teamMemberAndExecutiveBoardMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -228,8 +228,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testOnlyOneOfAllRulesNeedsToPass()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess($resource, $this->teamMemberAndExecutiveBoardMember));
-        $this->assertTrue($this->service->checkAccess($resource, $this->assistant));
+        $this->assertFalse($this->service->checkAccess($resource, $this->teamMemberAndExecutiveBoardMember));
+        $this->assertFalse($this->service->checkAccess($resource, $this->assistant));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -253,8 +253,8 @@ class AccessControlTest extends BaseKernelTestCase
     {
         $resource = 'testRule';
         $resource2 = 'testRule2';
-        $this->assertTrue($this->service->checkAccess([$resource, $resource2], $this->teamMemberAndExecutiveBoardMember));
-        $this->assertTrue($this->service->checkAccess([$resource, $resource2], $this->assistant));
+        $this->assertFalse($this->service->checkAccess([$resource, $resource2], $this->teamMemberAndExecutiveBoardMember));
+        $this->assertFalse($this->service->checkAccess([$resource, $resource2], $this->assistant));
 
         $rule = new AccessRule();
         $rule->setName('testName');
@@ -277,8 +277,8 @@ class AccessControlTest extends BaseKernelTestCase
     public function testAccessToMethod()
     {
         $resource = 'testRule';
-        $this->assertTrue($this->service->checkAccess([$resource => 'POST'], $this->assistant));
-        $this->assertTrue($this->service->checkAccess([$resource => 'GET'], $this->teamMemberAndExecutiveBoardMember));
+        $this->assertFalse($this->service->checkAccess([$resource => 'POST'], $this->assistant));
+        $this->assertFalse($this->service->checkAccess([$resource => 'GET'], $this->teamMemberAndExecutiveBoardMember));
 
         $rule1 = new AccessRule();
         $rule1->setName('testName');
