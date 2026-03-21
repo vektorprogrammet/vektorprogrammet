@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'team_membership')]
+#[ORM\UniqueConstraint(name: 'unique_user_team_semester', columns: ['user_id', 'team_id', 'start_semester_id'])]
 #[ORM\Entity(repositoryClass: TeamMembershipRepository::class)]
 #[ApiResource(
     operations: [
