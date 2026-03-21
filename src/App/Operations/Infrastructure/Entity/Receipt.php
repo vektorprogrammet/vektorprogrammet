@@ -186,8 +186,20 @@ class Receipt implements \Stringable
     /**
      * @param string $status
      */
-    public function setStatus($status)
+    public function setStatus($status): void
     {
+        $validTransitions = [
+            self::STATUS_PENDING => [self::STATUS_REFUNDED, self::STATUS_REJECTED],
+            self::STATUS_REJECTED => [self::STATUS_PENDING],
+            self::STATUS_REFUNDED => [],
+        ];
+
+        if ($this->status !== null && $this->status !== $status
+            && array_key_exists($this->status, $validTransitions)
+            && !in_array($status, $validTransitions[$this->status], true)) {
+            throw new \InvalidArgumentException("Invalid receipt status transition from {$this->status} to {$status}");
+        }
+
         $this->status = $status;
     }
 

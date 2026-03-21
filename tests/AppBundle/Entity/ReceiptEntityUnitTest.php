@@ -60,4 +60,36 @@ class ReceiptEntityUnitTest extends TestCase
 
         $this->assertEquals(Receipt::STATUS_PENDING, $receipt->getStatus());
     }
+
+    public function testValidReceiptStatusTransitionPendingToRefunded()
+    {
+        $receipt = new Receipt();
+        $receipt->setStatus(Receipt::STATUS_REFUNDED);
+        $this->assertEquals(Receipt::STATUS_REFUNDED, $receipt->getStatus());
+    }
+
+    public function testValidReceiptStatusTransitionRejectedToPending()
+    {
+        $receipt = new Receipt();
+        $receipt->setStatus(Receipt::STATUS_REJECTED);
+        $receipt->setStatus(Receipt::STATUS_PENDING);
+        $this->assertEquals(Receipt::STATUS_PENDING, $receipt->getStatus());
+    }
+
+    public function testInvalidReceiptStatusTransitionRefundedToPendingThrows()
+    {
+        $receipt = new Receipt();
+        $receipt->setStatus(Receipt::STATUS_REFUNDED);
+        // REFUNDED is terminal
+        $this->expectException(\InvalidArgumentException::class);
+        $receipt->setStatus(Receipt::STATUS_PENDING);
+    }
+
+    public function testReceiptSelfTransitionAllowed()
+    {
+        $receipt = new Receipt();
+        // pending -> pending should not throw
+        $receipt->setStatus(Receipt::STATUS_PENDING);
+        $this->assertEquals(Receipt::STATUS_PENDING, $receipt->getStatus());
+    }
 }

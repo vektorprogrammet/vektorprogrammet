@@ -4,6 +4,7 @@ namespace Tests\App\Entity;
 
 use App\Interview\Infrastructure\Entity\InterviewScore;
 use PHPUnit\Framework\TestCase;
+use App\Interview\Domain\ValueObjects\Suitability;
 
 class InterviewScoreEntityUnitTest extends TestCase
 {
@@ -33,5 +34,19 @@ class InterviewScoreEntityUnitTest extends TestCase
         $intScore->setRoleModel(3);
 
         $this->assertEquals(6, $intScore->getSum());
+    }
+
+    public function testSetSuitableAssistantAcceptsValidValue()
+    {
+        $intScore = new InterviewScore();
+        $intScore->setSuitableAssistant(Suitability::Yes->value);
+        $this->assertEquals(Suitability::Yes->value, $intScore->getSuitableAssistant());
+    }
+
+    public function testSetSuitableAssistantRejectsInvalidValue()
+    {
+        $intScore = new InterviewScore();
+        $this->expectException(\InvalidArgumentException::class);
+        $intScore->setSuitableAssistant('invalid_value');
     }
 }

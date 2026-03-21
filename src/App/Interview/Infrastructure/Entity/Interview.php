@@ -485,8 +485,23 @@ class Interview
         return $this->interviewStatus === InterviewStatusType::PENDING;
     }
 
-    public function setInterviewStatus(int $interviewStatus)
+    public function setInterviewStatus(int $interviewStatus): void
     {
+        $validTransitions = [
+            InterviewStatusType::NO_CONTACT => [InterviewStatusType::PENDING],
+            InterviewStatusType::PENDING => [InterviewStatusType::ACCEPTED, InterviewStatusType::REQUEST_NEW_TIME, InterviewStatusType::CANCELLED],
+            InterviewStatusType::ACCEPTED => [InterviewStatusType::CANCELLED],
+            InterviewStatusType::REQUEST_NEW_TIME => [InterviewStatusType::PENDING, InterviewStatusType::CANCELLED],
+            InterviewStatusType::CANCELLED => [],
+        ];
+
+        $currentStatus = $this->interviewStatus;
+        if ($currentStatus !== null && $currentStatus !== $interviewStatus
+            && array_key_exists($currentStatus, $validTransitions)
+            && !in_array($interviewStatus, $validTransitions[$currentStatus], true)) {
+            throw new \InvalidArgumentException("Invalid interview status transition from $currentStatus to $interviewStatus");
+        }
+
         $this->interviewStatus = $interviewStatus;
     }
 
@@ -556,13 +571,12 @@ class Interview
         $this->cancelMessage = $cancelMessage;
     }
 
-    public function setStatus(int $newStatus)
+    public function setStatus(int $newStatus): void
     {
-        if ($newStatus >= 0 && $newStatus <= 4) {
-            $this->interviewStatus = $newStatus;
-        } else {
+        if ($newStatus < 0 || $newStatus > 4) {
             throw new \InvalidArgumentException('Invalid status');
         }
+        $this->setInterviewStatus($newStatus);
     }
 
     public function getNewTimeMessage(): string

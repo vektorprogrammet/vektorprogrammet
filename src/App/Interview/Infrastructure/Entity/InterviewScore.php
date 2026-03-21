@@ -2,6 +2,7 @@
 
 namespace App\Interview\Infrastructure\Entity;
 
+use App\Interview\Domain\ValueObjects\Suitability;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -133,8 +134,12 @@ class InterviewScore
     /**
      * @param string $suitableAssistant
      */
-    public function setSuitableAssistant($suitableAssistant)
+    public function setSuitableAssistant($suitableAssistant): void
     {
+        $valid = array_map(fn(Suitability $s) => $s->value, Suitability::cases());
+        if (!in_array($suitableAssistant, $valid, true)) {
+            throw new \InvalidArgumentException("Invalid suitability value: $suitableAssistant");
+        }
         $this->suitableAssistant = $suitableAssistant;
     }
 
