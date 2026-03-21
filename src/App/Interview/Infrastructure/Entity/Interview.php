@@ -488,7 +488,7 @@ class Interview
     public function setInterviewStatus(int $interviewStatus): void
     {
         $validTransitions = [
-            InterviewStatusType::NO_CONTACT => [InterviewStatusType::PENDING],
+            InterviewStatusType::NO_CONTACT => [InterviewStatusType::PENDING, InterviewStatusType::CANCELLED],
             InterviewStatusType::PENDING => [InterviewStatusType::ACCEPTED, InterviewStatusType::REQUEST_NEW_TIME, InterviewStatusType::CANCELLED],
             InterviewStatusType::ACCEPTED => [InterviewStatusType::CANCELLED],
             InterviewStatusType::REQUEST_NEW_TIME => [InterviewStatusType::PENDING, InterviewStatusType::CANCELLED],
