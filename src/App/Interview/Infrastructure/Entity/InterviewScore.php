@@ -17,14 +17,17 @@ class InterviewScore
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(groups: ['interview'], message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\Range(min: 0, max: 10)]
     protected $explanatoryPower;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(groups: ['interview'], message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\Range(min: 0, max: 10)]
     protected $roleModel;
 
     #[ORM\Column(type: 'integer')]
     #[Assert\NotBlank(groups: ['interview'], message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\Range(min: 0, max: 10)]
     protected $suitability;
 
     #[ORM\Column(type: 'string')]
