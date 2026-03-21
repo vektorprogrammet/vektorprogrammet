@@ -69,6 +69,9 @@ class AdminTeamMemberAddProcessor implements ProcessorInterface
         if ($position === null) {
             $position = $this->em->getRepository(Position::class)->findOneBy(['name' => 'Medlem']);
         }
+        if ($position === null) {
+            throw new UnprocessableEntityHttpException('Default position "Medlem" not found. Please create it before adding team members.');
+        }
 
         $endSemester = null;
         if ($data->endSemesterId !== null) {
