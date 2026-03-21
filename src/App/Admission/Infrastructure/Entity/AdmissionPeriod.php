@@ -47,6 +47,7 @@ class AdmissionPeriod implements PeriodInterface, \Stringable
 
     #[ORM\Column(name: 'start_date', type: 'datetime', length: 150)]
     #[Assert\NotBlank(message: 'Dette feltet kan ikke være tomt.')]
+    #[Assert\LessThan(propertyPath: 'endDate', message: 'Startdato må være før sluttdato.')]
     #[Groups(['admission:read'])]
     private $startDate;
 
