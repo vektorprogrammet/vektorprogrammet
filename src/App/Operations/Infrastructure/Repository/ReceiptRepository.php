@@ -46,6 +46,24 @@ class ReceiptRepository extends ServiceEntityRepository
     /**
      * @return Receipt[]
      */
+    public function findByUserOrdered(User $user, ?string $status = null): array
+    {
+        $qb = $this->createQueryBuilder('receipt')
+            ->where('receipt.user = :user')
+            ->setParameter('user', $user)
+            ->orderBy('receipt.submitDate', 'DESC');
+
+        if ($status !== null) {
+            $qb->andWhere('receipt.status = :status')
+                ->setParameter('status', $status);
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+    /**
+     * @return Receipt[]
+     */
     public function findByDepartment(Department $department, ?string $status = null): array
     {
         $qb = $this->createQueryBuilder('receipt')
