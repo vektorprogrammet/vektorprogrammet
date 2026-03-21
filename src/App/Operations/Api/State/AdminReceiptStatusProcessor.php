@@ -39,12 +39,16 @@ class AdminReceiptStatusProcessor implements ProcessorInterface
         }
 
         $currentUser = $this->security->getUser();
+        if (!$currentUser instanceof User) {
+            throw new AccessDeniedHttpException();
+        }
+
         $receiptDepartment = $receipt->getUser()?->getDepartment();
         if ($receiptDepartment === null) {
             if (!$this->security->isGranted('ROLE_ADMIN')) {
                 throw new AccessDeniedHttpException('Receipt owner has no department.');
             }
-        } elseif ($currentUser instanceof User) {
+        } else {
             $this->accessControlService->assertDepartmentAccess($receiptDepartment, $currentUser);
         }
 

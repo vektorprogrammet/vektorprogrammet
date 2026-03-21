@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\App\Operations\Infrastructure\Repository;
 
 use App\Operations\Infrastructure\Entity\Receipt;
@@ -29,6 +31,7 @@ class ReceiptRepositoryTest extends KernelTestCase
         }
 
         $receipts = $this->repo->findByDepartment($department);
+        $this->assertNotEmpty($receipts, 'Fixtures should contain receipts for this department');
 
         foreach ($receipts as $receipt) {
             $user = $receipt->getUser();

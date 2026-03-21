@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Tests\App\Operations\Api\State;
 
 use App\Identity\Infrastructure\AccessControlService;
