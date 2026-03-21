@@ -4,14 +4,19 @@ namespace App\Scheduling\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Entity\School;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminSchoolCreateProcessor implements ProcessorInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
+        private readonly Security $security,
         private readonly EntityManagerInterface $em,
     ) {
     }
@@ -26,6 +31,10 @@ class AdminSchoolCreateProcessor implements ProcessorInterface
         if ($department === null) {
             throw new UnprocessableEntityHttpException('Department not found.');
         }
+
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $this->accessControl->assertDepartmentAccess($department, $user);
 
         $school = new School();
         $school->setName($data->name);

@@ -5,16 +5,21 @@ namespace App\Admission\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminAdmissionPeriodCreateProcessor implements ProcessorInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
+        private readonly Security $security,
         private readonly EntityManagerInterface $em,
         private readonly AdmissionPeriodRepository $admissionPeriodRepository,
     ) {
@@ -26,6 +31,10 @@ class AdminAdmissionPeriodCreateProcessor implements ProcessorInterface
         if ($department === null) {
             throw new UnprocessableEntityHttpException('Department not found.');
         }
+
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $this->accessControl->assertDepartmentAccess($department, $user);
 
         $semester = $this->em->getRepository(Semester::class)->find($data->semesterId);
         if ($semester === null) {

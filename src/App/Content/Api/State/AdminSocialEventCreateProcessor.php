@@ -4,15 +4,20 @@ namespace App\Content\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use App\Content\Infrastructure\Entity\SocialEvent;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 
 class AdminSocialEventCreateProcessor implements ProcessorInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
+        private readonly Security $security,
         private readonly EntityManagerInterface $em,
     ) {
     }
@@ -26,6 +31,10 @@ class AdminSocialEventCreateProcessor implements ProcessorInterface
         if ($department === null) {
             throw new UnprocessableEntityHttpException('Invalid departmentId.');
         }
+
+        /** @var User $user */
+        $user = $this->security->getUser();
+        $this->accessControl->assertDepartmentAccess($department, $user);
 
         $semester = $data->semesterId
             ? $this->em->getRepository(Semester::class)->find($data->semesterId)

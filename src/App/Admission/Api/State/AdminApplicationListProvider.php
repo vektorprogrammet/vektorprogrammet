@@ -8,6 +8,7 @@ use App\Admission\Api\Resource\AdminApplicationListResource;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
 use App\Identity\Infrastructure\Entity\User;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class AdminApplicationListProvider implements ProviderInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
         private readonly Security $security,
         private readonly ApplicationRepository $applicationRepo,
         private readonly AdmissionPeriodRepository $admissionPeriodRepo,
@@ -44,6 +46,8 @@ class AdminApplicationListProvider implements ProviderInterface
         if ($department === null) {
             return $this->emptyResult($status);
         }
+
+        $this->accessControl->assertDepartmentAccess($department, $user);
 
         // Resolve semester
         $semester = $semesterId

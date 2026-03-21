@@ -7,6 +7,7 @@ use ApiPlatform\State\ProviderInterface;
 use App\Admission\Api\Resource\AdmissionStatisticsResource;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
@@ -17,6 +18,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class AdmissionStatisticsProvider implements ProviderInterface
 {
     public function __construct(
+        private readonly AccessControlService $accessControl,
         private readonly AdmissionPeriodRepository $admissionPeriodRepo,
         private readonly ApplicationRepository $applicationRepo,
         private readonly AssistantHistoryRepository $assistantHistoryRepo,
@@ -45,6 +47,10 @@ class AdmissionStatisticsProvider implements ProviderInterface
         $semester = $semesterId !== null
             ? $this->semesterRepo->find((int) $semesterId)
             : $this->semesterRepo->findOrCreateCurrentSemester();
+
+        if ($department !== null) {
+            $this->accessControl->assertDepartmentAccess($department, $user);
+        }
 
         $resource = new AdmissionStatisticsResource();
         $resource->departmentName = $department ? $department->getName() : '';
