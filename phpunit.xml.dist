@@ -14,14 +14,22 @@
         <env name="SYMFONY_DEPRECATIONS_HELPER" value="disabled" />
     </php>
     <testsuites>
+        <!--
+            The "unit" suite is declared by EXCLUSION, not enumeration: it is
+            "every test under tests/ that a slower, more specific suite below
+            does not claim". Suite membership is therefore a pure function of
+            the filesystem, so a newly added test directory cannot be silently
+            orphaned. (It was: tests/App/ existed for ~30 tests that no suite
+            declared, so `composer test` never ran them.)
+
+            Adding a new directory here is only correct when a suite below
+            claims it. tests/Unit/PhpUnitSuiteCoverageTest.php enforces that.
+        -->
         <testsuite name="unit">
-            <directory>tests/AppBundle/Entity</directory>
-            <directory>tests/AppBundle/Extension</directory>
-            <directory>tests/AppBundle/Service</directory>
-            <directory>tests/AppBundle/Sms</directory>
-            <directory>tests/AppBundle/Type</directory>
-            <directory>tests/AppBundle/Util</directory>
-            <directory>tests/Unit</directory>
+            <directory>tests</directory>
+            <exclude>tests/AppBundle/Controller</exclude>
+            <exclude>tests/AppBundle/Availability</exclude>
+            <exclude>tests/AppBundle/Api</exclude>
         </testsuite>
         <testsuite name="controller">
             <directory>tests/AppBundle/Controller</directory>
