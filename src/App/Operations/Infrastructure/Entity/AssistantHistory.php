@@ -11,7 +11,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'assistant_history')]
-#[ORM\UniqueConstraint(name: 'unique_user_school_semester', columns: ['user_id', 'school_id', 'semester_id'])]
+// Bolk is part of the key. A semester has two teaching blocks and an assistant is sent out
+// once per assigned bolk, on a possibly different weekday, so one person doing both bolks at
+// one school is TWO legitimate placements -- unique(user, school, semester) would make that
+// unrepresentable. This cannot be enforced in the database yet: 332 production rows still
+// store "both bolks" as a single 'Bolk 1, Bolk 2' row instead of two rows, and those must be
+// split first -- see docs/migrations-blocked-unique-constraints.md.
+#[ORM\UniqueConstraint(name: 'unique_user_school_semester_bolk', columns: ['user_id', 'school_id', 'semester_id', 'bolk'])]
 #[ORM\Entity(repositoryClass: AssistantHistoryRepository::class)]
 class AssistantHistory implements \Stringable
 {

@@ -16,7 +16,12 @@ use Symfony\Component\Validator\Constraints as Assert;
 use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'team_membership')]
-#[ORM\UniqueConstraint(name: 'unique_user_team_semester', columns: ['user_id', 'team_id', 'start_semester_id'])]
+// One person legitimately holds two positions in the same team and semester, so position
+// is part of the key. A production scan of (user_id, team_id, start_semester_id) alone
+// found 13 colliding groups, 6 of which differ only by position_id and are valid data.
+// The remaining 7 are true duplicates that must be reconciled before this can be enforced
+// in the database -- see docs/migrations-blocked-unique-constraints.md.
+#[ORM\UniqueConstraint(name: 'unique_user_team_semester_position', columns: ['user_id', 'team_id', 'start_semester_id', 'position_id'])]
 #[ORM\Entity(repositoryClass: TeamMembershipRepository::class)]
 #[ApiResource(
     operations: [

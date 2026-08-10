@@ -10,9 +10,52 @@ use App\Shared\Entity\Semester;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
+/**
+ * An assistant is placed at a school once PER BOLK.
+ *
+ * A semester has two teaching blocks (bolk 1 and bolk 2) and an assistant is sent out once
+ * per assigned bolk, possibly on a different weekday each time. So one person doing both
+ * bolks at one school is two legitimate placements, not a duplicate. The key includes bolk
+ * for exactly that reason; unique(user, school, semester) would make valid data
+ * unrepresentable.
+ */
 class AssistantHistoryUniqueConstraintTest extends KernelTestCase
 {
-    public function testDuplicateUserSchoolSemesterThrowsUniqueConstraintViolation(): void
+    public function testSameBolkTwiceThrowsUniqueConstraintViolation(): void
+    {
+        $em = $this->bootAndClearHistory($user, $school, $semester, $department);
+
+        $em->persist($this->placement($user, $school, $semester, $department, 'Bolk 1', 'Mandag', '4'));
+        $em->flush();
+
+        $this->expectException(UniqueConstraintViolationException::class);
+
+        $em->persist($this->placement($user, $school, $semester, $department, 'Bolk 1', 'Tirsdag', '2'));
+        $em->flush();
+    }
+
+    public function testBothBolksAtTheSameSchoolAreTwoValidPlacements(): void
+    {
+        $em = $this->bootAndClearHistory($user, $school, $semester, $department);
+
+        $em->persist($this->placement($user, $school, $semester, $department, 'Bolk 1', 'Mandag', '4'));
+        $em->persist($this->placement($user, $school, $semester, $department, 'Bolk 2', 'Torsdag', '2'));
+        $em->flush();
+
+        $placements = $em->getRepository(AssistantHistory::class)->findBy([
+            'user' => $user,
+            'school' => $school,
+            'semester' => $semester,
+        ]);
+
+        $this->assertCount(
+            2,
+            $placements,
+            'One assistant must be able to hold both bolks at one school in one semester'
+        );
+    }
+
+    private function bootAndClearHistory(?User &$user, ?School &$school, ?Semester &$semester, ?Department &$department): \Doctrine\ORM\EntityManagerInterface
     {
         self::bootKernel();
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
@@ -22,45 +65,29 @@ class AssistantHistoryUniqueConstraintTest extends KernelTestCase
         $semester = $em->getRepository(Semester::class)->findOneBy([]);
         $department = $em->getRepository(Department::class)->findOneBy([]);
 
-        if ($user === null || $school === null || $semester === null || $department === null) {
+        if (null === $user || null === $school || null === $semester || null === $department) {
             $this->markTestSkipped('Missing fixture data');
         }
 
-        // Remove any existing history for this user/school/semester combination
-        $existingHistories = $em->getRepository(AssistantHistory::class)->findBy([
-            'user' => $user,
-            'school' => $school,
-            'semester' => $semester,
-        ]);
-        foreach ($existingHistories as $existing) {
+        foreach ($em->getRepository(AssistantHistory::class)->findBy(['user' => $user, 'school' => $school, 'semester' => $semester]) as $existing) {
             $em->remove($existing);
         }
         $em->flush();
 
-        // Insert first
-        $ah1 = new AssistantHistory();
-        $ah1->setUser($user);
-        $ah1->setSchool($school);
-        $ah1->setSemester($semester);
-        $ah1->setDepartment($department);
-        $ah1->setWorkdays('4');
-        $ah1->setBolk('Bolk 1');
-        $ah1->setDay('Mandag');
-        $em->persist($ah1);
-        $em->flush();
+        return $em;
+    }
 
-        // Try to insert duplicate
-        $this->expectException(UniqueConstraintViolationException::class);
+    private function placement(User $user, School $school, Semester $semester, Department $department, string $bolk, string $day, string $workdays): AssistantHistory
+    {
+        $placement = new AssistantHistory();
+        $placement->setUser($user);
+        $placement->setSchool($school);
+        $placement->setSemester($semester);
+        $placement->setDepartment($department);
+        $placement->setWorkdays($workdays);
+        $placement->setBolk($bolk);
+        $placement->setDay($day);
 
-        $ah2 = new AssistantHistory();
-        $ah2->setUser($user);
-        $ah2->setSchool($school);
-        $ah2->setSemester($semester);
-        $ah2->setDepartment($department);
-        $ah2->setWorkdays('2');
-        $ah2->setBolk('Bolk 2');
-        $ah2->setDay('Tirsdag');
-        $em->persist($ah2);
-        $em->flush();
+        return $placement;
     }
 }

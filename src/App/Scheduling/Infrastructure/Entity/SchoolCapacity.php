@@ -10,7 +10,10 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: SchoolCapacityRepository::class)]
 #[ORM\Table(name: 'school_capacity')]
-#[ORM\UniqueConstraint(name: 'unique_school_semester', columns: ['school_id', 'semester_id'])]
+// A school legitimately has capacity in the same semester under two departments, so
+// department is part of the key. A production scan of (school_id, semester_id) alone
+// found 3 colliding groups; adding department_id leaves 0.
+#[ORM\UniqueConstraint(name: 'unique_school_semester_department', columns: ['school_id', 'semester_id', 'department_id'])]
 #[ORM\HasLifecycleCallbacks]
 class SchoolCapacity
 {
