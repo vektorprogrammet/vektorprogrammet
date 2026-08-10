@@ -57,8 +57,20 @@ class Receipt implements \Stringable
         $this->status = self::STATUS_PENDING;
         $this->submitDate = new \DateTime();
         $this->receiptDate = new \DateTime();
+        $this->visualId = self::generateVisualId();
+    }
+
+    /**
+     * A millisecond timestamp alone is not unique: two receipts created inside the same
+     * millisecond got the same id, which the `unique: true` on $visualId turns into a
+     * failed insert. The timestamp prefix keeps ids roughly time-ordered for humans; the
+     * random suffix is what makes them unique.
+     */
+    private static function generateVisualId(): string
+    {
         $currentTimeInMilliseconds = (int) round(microtime(true) * 1000);
-        $this->visualId = dechex($currentTimeInMilliseconds);
+
+        return dechex($currentTimeInMilliseconds).bin2hex(random_bytes(4));
     }
 
     /**
