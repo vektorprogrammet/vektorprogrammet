@@ -18,6 +18,10 @@ esac
 [ "${PREVIEW_RESOURCE_PREFIX:-vektor-p20}" = "vektor-p20" ] || { echo 'refusing unexpected resource prefix' >&2; exit 1; }
 
 if command -v mariadbd >/dev/null 2>&1 && ! pgrep -x mariadbd >/dev/null 2>&1; then
+  install -d -o "${MARIADB_OS_USER:-mysql}" -g "${MARIADB_OS_USER:-mysql}" "${MARIADB_DATA_DIR:-/var/lib/mysql}"
+  if [ ! -d "${MARIADB_DATA_DIR:-/var/lib/mysql}/mysql" ]; then
+    mariadb-install-db --user="${MARIADB_OS_USER:-mysql}" --datadir="${MARIADB_DATA_DIR:-/var/lib/mysql}" >/tmp/mariadb-init.log 2>&1
+  fi
   mariadbd --user="${MARIADB_OS_USER:-mysql}" --datadir="${MARIADB_DATA_DIR:-/var/lib/mysql}" --bind-address="${MARIADB_HOST}" --port="${MARIADB_PORT}" >/tmp/mariadb-preview.log 2>&1 &
 fi
 
