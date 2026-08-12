@@ -1,18 +1,31 @@
-import { createHash } from "node:crypto";
-import { readFile } from "node:fs/promises";
-import { resolve } from "node:path";
-const forbidden = /vektorprogrammet\.no|password|secret|token|@|\b[A-Z][a-z]+\s[A-Z][a-z]+/i;
-const hash = (value: string) => createHash("sha256").update(value).digest("hex");
-export async function verifySeed(seedDirectory: string, policyPath = new URL("./seed-policy.json", import.meta.url)): Promise<void> {
-  const policy = JSON.parse(await readFile(policyPath, "utf8")) as { tableCount: number; totalRowCount: number; app: string; stage: string };
-  const sqlPath = resolve(seedDirectory, "synthetic-seed.sql");
-  const manifestPath = resolve(seedDirectory, "synthetic-seed.manifest.json");
-  const sql = await readFile(sqlPath, "utf8");
-  const manifest = JSON.parse(await readFile(manifestPath, "utf8")) as { tableCount: number; totalRowCount: number; digest: string };
-  if (forbidden.test(sql) || forbidden.test(JSON.stringify(manifest))) throw new Error("Forbidden value in synthetic artifact");
-  const tableCount = (sql.match(/CREATE TABLE IF NOT EXISTS/g) ?? []).length;
-  const rowCount = (sql.match(/INSERT INTO/g) ?? []).length;
-  if (tableCount !== policy.tableCount || rowCount !== policy.totalRowCount) throw new Error("Synthetic table/row count mismatch");
-  if (manifest.tableCount !== policy.tableCount || manifest.totalRowCount !== policy.totalRowCount || manifest.digest !== `sha256:${hash(sql)}`) throw new Error("Synthetic manifest mismatch");
+#!/usr/bin/env bun
+import { readFile } from 'node:fs/promises';
+import { resolve } from 'node:path';
+import { generateSeed, loadPolicy, canonicalJson, sha256 } from './generate-seed';
+
+const forbidden = [/vektorprogrammet\.no/i, /password/i, /passwd/i, /secret/i, /token/i, /credential/i, /raw[_ -]?backup/i, /source[_ -]?row/i, /https?:\/\//i, /@[A-Za-z]/];
+function fail(message: string): never { throw new Error(`synthetic seed verification failed: ${message}`); }
+function arg(name: string, args: string[]): string { const index = args.indexOf(name); const value = index >= 0 ? args[index + 1] : undefined; if (!value || value.startsWith('-')) fail(`missing ${name}`); return value; }
+
+export async function verifySeed(outputDir: string, policyPath?: string): Promise<Record<string, unknown>> {
+  const policy = await loadPolicy(policyPath);
+  const expected = generateSeed(policy);
+  const sql = await readFile(resolve(outputDir, 'seed.sql'), 'utf8');
+  const manifest = JSON.parse(await readFile(resolve(outputDir, 'manifest.json'), 'utf8')) as typeof expected.manifest;
+  if (sql !== expected.sql) fail('artifact does not match deterministic replay');
+  if (manifest.digests.artifactSha256 !== sha256(sql)) fail('artifact digest mismatch');
+  const withoutManifestDigest = { ...manifest, digests: { ...manifest.digests } };
+  delete withoutManifestDigest.digests.manifestSha256;
+  if (manifest.digests.manifestSha256 !== sha256(canonicalJson(withoutManifestDigest))) fail('manifest digest mismatch');
+  if (manifest.tableCount !== 65 || manifest.totalRowCount !== 45955 || manifest.tableNames.length !== 65) fail('exact table/row contract mismatch');
+  if (manifest.generation.generatedRowCount !== 45955 || manifest.generation.rawSourceRead || manifest.generation.networkUsed || manifest.generation.randomUsed || manifest.generation.currentTimeUsed) fail('generation safety flags mismatch');
+  for (const pattern of forbidden) if (pattern.test(sql)) fail(`forbidden artifact pattern ${pattern}`);
+  const second = generateSeed(policy);
+  if (second.artifactSha256 !== manifest.digests.artifactSha256 || second.manifestSha256 !== manifest.digests.manifestSha256) fail('replay digest mismatch');
+  return { outputDir: resolve(outputDir), tableCount: manifest.tableCount, totalRowCount: manifest.totalRowCount, artifactSha256: manifest.digests.artifactSha256, manifestSha256: manifest.digests.manifestSha256, forbiddenFindings: 0, deterministicReplay: true };
 }
-if (process.argv[1] && resolve(process.argv[1]) === resolve(new URL(import.meta.url).pathname)) verifySeed(process.argv[2] ?? ".preview-seed").then(() => console.log("synthetic seed verified")).catch((error) => { console.error(error); process.exitCode = 1; });
+
+if (process.argv[1] && resolve(process.argv[1]) === resolve(new URL(import.meta.url).pathname)) {
+  const outputDir = arg('--output-dir', process.argv.slice(2));
+  process.stdout.write(`${canonicalJson(await verifySeed(outputDir))}\n`);
+}

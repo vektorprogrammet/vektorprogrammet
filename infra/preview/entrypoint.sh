@@ -1,44 +1,56 @@
-#!/usr/bin/env bash
-set -Eeuo pipefail
+#!/bin/sh
+set -eu
 
-: "${DATABASE_URL:?DATABASE_URL is required}"
-: "${PREVIEW_SEED_DIR:=/tmp/preview-seed}"
-: "${PREVIEW_APP:=vektor}"
-: "${PREVIEW_STAGE:=p20}"
-: "${PREVIEW_SOURCE_SHA:=unknown}"
-: "${PREVIEW_IMAGE_DIGEST:=unknown}"
-: "${PREVIEW_SEED_DIGEST:=unknown}"
+: "${DATABASE_NAME:=vektor_p20}"
+: "${DATABASE_USER:=vektor_p20}"
+: "${DATABASE_PASSWORD:=vektor_p20}"
+: "${DATABASE_ROOT_PASSWORD:=vektor_p20_root}"
+: "${MARIADB_HOST:=127.0.0.1}"
+: "${MARIADB_PORT:=3306}"
+: "${SEED_OUTPUT_DIR:=/app/var/preview-seed}"
+: "${MIGRATION_ENV:=prod}"
+: "${HTTP_PORT:=8000}"
 
-if [[ "${PREVIEW_APP}" != "vektor" || "${PREVIEW_STAGE}" != "p20" ]]; then
-  echo "Preview identity mismatch" >&2
-  exit 64
+case "${PREVIEW_HOST:-p20.vektor.phibkro.org}" in
+  *vektorprogrammet.no*) echo 'refusing forbidden preview host' >&2; exit 1 ;;
+esac
+[ "${PREVIEW_CONTAINER_NAME:-vektor-p20-container}" = "vektor-p20-container" ] || { echo 'refusing unexpected container name' >&2; exit 1; }
+[ "${PREVIEW_RESOURCE_PREFIX:-vektor-p20}" = "vektor-p20" ] || { echo 'refusing unexpected resource prefix' >&2; exit 1; }
+
+if command -v mariadbd >/dev/null 2>&1 && ! pgrep -x mariadbd >/dev/null 2>&1; then
+  mariadbd --user="${MARIADB_OS_USER:-mysql}" --datadir="${MARIADB_DATA_DIR:-/var/lib/mysql}" --bind-address="${MARIADB_HOST}" --port="${MARIADB_PORT}" >/tmp/mariadb-preview.log 2>&1 &
 fi
-if [[ "${DATABASE_URL}" == *vektorprogrammet.no* || "${PREVIEW_SEED_DIR}" == *backup* ]]; then
-  echo "Forbidden preview input" >&2
-  exit 65
+
+wait_for_mariadb() {
+  i=0
+  while ! mariadb-admin ping -h "${MARIADB_HOST}" -P "${MARIADB_PORT}" -u root --password="${DATABASE_ROOT_PASSWORD}" --silent >/dev/null 2>&1; do
+    i=$((i + 1)); [ "$i" -le "${MARIADB_WAIT_ATTEMPTS:-60}" ] || { echo 'MariaDB readiness timeout' >&2; exit 1; }; sleep 1
+  done
+}
+wait_for_mariadb
+
+mariadb -h "${MARIADB_HOST}" -P "${MARIADB_PORT}" -u root --password="${DATABASE_ROOT_PASSWORD}" <<SQL
+CREATE DATABASE IF NOT EXISTS \`${DATABASE_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE USER IF NOT EXISTS '${DATABASE_USER}'@'localhost' IDENTIFIED BY '${DATABASE_PASSWORD}';
+GRANT ALL PRIVILEGES ON \`${DATABASE_NAME}\`.* TO '${DATABASE_USER}'@'localhost';
+FLUSH PRIVILEGES;
+SQL
+
+if [ "${SKIP_MIGRATIONS:-0}" != "1" ]; then
+  php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --env="${MIGRATION_ENV}"
 fi
 
-install -d -o mysql -g mysql /run/mysqld /var/lib/mysql
-if [[ ! -d /var/lib/mysql/mysql ]]; then
-  mariadb-install-db --user=mysql --datadir=/var/lib/mysql --skip-test-db >/dev/null
-fi
-mariadbd --user=mysql --datadir=/var/lib/mysql --bind-address=127.0.0.1 --port=3306 >/tmp/mariadb.log 2>&1 &
-for attempt in {1..60}; do
-  mariadb-admin --protocol=tcp --host=127.0.0.1 --port=3306 ping >/dev/null 2>&1 && break
-  [[ "$attempt" == 60 ]] && { cat /tmp/mariadb.log >&2; exit 70; }
-  sleep 1
-done
+[ -f "${SEED_OUTPUT_DIR}/seed.sql" ] || { echo "missing generated seed artifact: ${SEED_OUTPUT_DIR}/seed.sql" >&2; exit 1; }
+[ -f "${SEED_OUTPUT_DIR}/manifest.json" ] || { echo "missing generated seed manifest: ${SEED_OUTPUT_DIR}/manifest.json" >&2; exit 1; }
+SEED_SHA256=$(sha256sum "${SEED_OUTPUT_DIR}/seed.sql" | cut -d ' ' -f 1)
+EXPECTED_SHA256=$(php -r '$m=json_decode(file_get_contents($argv[1]), true, 512, JSON_THROW_ON_ERROR); echo $m["digests"]["artifactSha256"];' "${SEED_OUTPUT_DIR}/manifest.json")
+[ "${SEED_SHA256}" = "${EXPECTED_SHA256}" ] || { echo 'seed artifact digest mismatch' >&2; exit 1; }
+mariadb -h "${MARIADB_HOST}" -P "${MARIADB_PORT}" -u "${DATABASE_USER}" --password="${DATABASE_PASSWORD}" "${DATABASE_NAME}" < "${SEED_OUTPUT_DIR}/seed.sql"
 
-php bin/console doctrine:database:create --if-not-exists --env=prod --no-interaction
-php bin/console doctrine:migrations:migrate --no-interaction --allow-no-migration --env=prod
-if [[ ! -f "${PREVIEW_SEED_DIR}/synthetic-seed.sql" ]]; then
-  echo "Digest-bound synthetic seed artifact is missing" >&2
-  exit 71
-fi
-php bin/console doctrine:query:sql "SOURCE ${PREVIEW_SEED_DIR}/synthetic-seed.sql" --env=prod >/dev/null 2>&1 || mariadb --protocol=tcp --host=127.0.0.1 --port=3306 < "${PREVIEW_SEED_DIR}/synthetic-seed.sql"
+TABLE_COUNT=$(mariadb -N -s -h "${MARIADB_HOST}" -P "${MARIADB_PORT}" -u "${DATABASE_USER}" --password="${DATABASE_PASSWORD}" "${DATABASE_NAME}" -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema = '${DATABASE_NAME}'")
+[ "$TABLE_COUNT" -ge 65 ] || { echo "migration/seed table count too low: ${TABLE_COUNT}" >&2; exit 1; }
+echo "preview MariaDB ready: database=${DATABASE_NAME} container=vektor-p20-container tables=${TABLE_COUNT} seed_sha256=${SEED_SHA256} replacement_rehydrates=true"
 
-export PREVIEW_DATABASE_AUTHORITY=container-local-mariadb
-export PREVIEW_REHYDRATION=synthetic-seed-on-container-replacement
-php bin/console cache:clear --env=prod --no-debug
-php-fpm -D
-exec nginx -g 'daemon off;'
+if [ "${START_SYMFONY:-1}" = "1" ]; then
+  exec php -S "0.0.0.0:${HTTP_PORT}" -t public
+fi
