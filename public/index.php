@@ -12,10 +12,20 @@ if (is_file($envFile)) {
     (new Dotenv())->usePutenv()->bootEnv($envFile);
 } elseif (is_file($envFile.'.test')) {
     (new Dotenv())->usePutenv()->loadEnv($envFile.'.test', 'APP_ENV', 'dev');
-} else {
-    $_SERVER['APP_ENV'] = $_SERVER['APP_ENV'] ?? $_ENV['APP_ENV'] ?? 'dev';
-    $_SERVER['APP_DEBUG'] = $_SERVER['APP_DEBUG'] ?? $_ENV['APP_DEBUG'] ?? '1';
 }
+
+$resolveEnvironmentVariable = static function (string $name, string $default): string {
+    foreach ([$_SERVER[$name] ?? null, $_ENV[$name] ?? null, getenv($name)] as $value) {
+        if (is_string($value) && '' !== trim($value)) {
+            return $value;
+        }
+    }
+
+    return $default;
+};
+
+$_SERVER['APP_ENV'] = $resolveEnvironmentVariable('APP_ENV', 'dev');
+$_SERVER['APP_DEBUG'] = $resolveEnvironmentVariable('APP_DEBUG', '1');
 
 if ($_SERVER['APP_DEBUG']) {
     umask(0000);
