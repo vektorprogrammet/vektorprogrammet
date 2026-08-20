@@ -180,7 +180,7 @@ services:
     get_set_method_normalizer:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         public: false
-        tags: [serializer.normalizer]
+        tags: [{ name: serializer.normalizer, priority: -999 }]
 
     App\Support\EventSubscriber\:
         resource: "../src/App/Support/EventSubscriber"
