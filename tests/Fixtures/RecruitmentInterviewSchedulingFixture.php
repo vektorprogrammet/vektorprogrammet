@@ -103,7 +103,7 @@ final class RecruitmentInterviewSchedulingFixture extends AbstractFixture implem
         $interview->setUser($applicant);
         $interview->setInterviewer($interviewer);
         $interview->setInterviewSchema($schema);
-        $interview->setResponseCode('recruitment-response-0029');
+        $interview->setResponseCode('recruitment_response_0029');
 
         $application = new Application();
         $application->setUser($applicant);
