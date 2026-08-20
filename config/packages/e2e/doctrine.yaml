@@ -1,0 +1,5 @@
+doctrine:
+    dbal:
+        url: '%env(resolve:E2E_DATABASE_URL)%'
+        driver: pdo_sqlite
+        charset: utf8

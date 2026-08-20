@@ -1,0 +1,3 @@
+services:
+    Tests\Fixtures\RecruitmentAssignmentFixture:
+        tags: ['doctrine.fixture.orm']
