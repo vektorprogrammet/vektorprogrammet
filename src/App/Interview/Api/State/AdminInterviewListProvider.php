@@ -116,6 +116,9 @@ class AdminInterviewListProvider implements ProviderInterface
             'status' => $interview->getInterviewStatusAsString(),
             'interviewed' => $interview->getInterviewed(),
             'coInterviewer' => $coInterviewer !== null ? $coInterviewer->getFirstName().' '.$coInterviewer->getLastName() : null,
+            'room' => $interview->getRoom(),
+            'campus' => $interview->getCampus(),
+            'mapLink' => $interview->getMapLink(),
         ];
     }
 }

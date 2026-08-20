@@ -51,7 +51,6 @@ class AdminInterviewListApiTest extends BaseWebTestCase
         // Fixtures have applications with interviews in admission-period-current
         $this->assertNotEmpty($data['interviews'], 'Expected at least one interview');
 
-        $interview = $data['interviews'][0];
         $this->assertArrayHasKey('id', $interview);
         $this->assertArrayHasKey('applicantName', $interview);
         $this->assertArrayHasKey('interviewerName', $interview);
@@ -59,6 +58,9 @@ class AdminInterviewListApiTest extends BaseWebTestCase
         $this->assertArrayHasKey('interviewed', $interview);
         $this->assertArrayHasKey('scheduled', $interview);
         $this->assertArrayHasKey('coInterviewer', $interview);
+        $this->assertArrayHasKey('room', $interview);
+        $this->assertArrayHasKey('campus', $interview);
+        $this->assertArrayHasKey('mapLink', $interview);
         $this->assertIsBool($interview['interviewed']);
     }
 

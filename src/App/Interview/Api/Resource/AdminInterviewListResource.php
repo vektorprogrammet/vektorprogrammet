@@ -17,5 +17,19 @@ use App\Interview\Api\State\AdminInterviewListProvider;
 )]
 class AdminInterviewListResource
 {
+    /**
+     * @var list<array{
+     *   id: int,
+     *   applicantName: string,
+     *   interviewerName: string|null,
+     *   scheduled: string|null,
+     *   status: string,
+     *   interviewed: bool,
+     *   coInterviewer: string|null,
+     *   room: string|null,
+     *   campus: string|null,
+     *   mapLink: string|null
+     * }>
+     */
     public array $interviews = [];
 }
