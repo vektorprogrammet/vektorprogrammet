@@ -3,4 +3,6 @@ monolog:
         main:
             type: stream
             path: '%kernel.logs_dir%/%kernel.environment%.log'
+            formatter: monolog.formatter.json
+            include_stacktraces: false
             level: debug
