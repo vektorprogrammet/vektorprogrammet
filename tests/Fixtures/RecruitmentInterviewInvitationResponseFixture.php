@@ -27,11 +27,15 @@ final class RecruitmentInterviewInvitationResponseFixture extends AbstractFixtur
 
     public function load(ObjectManager $manager): void
     {
-        $scheduledAt = new \DateTime('2026-09-14 15:00:00', new \DateTimeZone('Europe/Oslo'));
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Oslo'));
+        $scheduledAt = (clone $now)->modify('+7 days')->setTime(15, 0);
 
         $teamLeaderRole = new Role('ROLE_TEAM_LEADER');
         $teamLeaderRole->setName('E2E response team leader');
         $manager->persist($teamLeaderRole);
+        $interviewerRole = new Role('ROLE_TEAM_MEMBER');
+        $interviewerRole->setName('E2E response interviewer');
+        $manager->persist($interviewerRole);
 
         $userRole = new Role('ROLE_USER');
         $userRole->setName('E2E response applicant');
@@ -78,8 +82,7 @@ final class RecruitmentInterviewInvitationResponseFixture extends AbstractFixtur
             'recruitment-response-interviewer-0031',
             'recruitment-response-interviewer-0031@example.invalid',
             'Intervjuer',
-            '0031',
-            $teamLeaderRole,
+            $interviewerRole,
             $fieldOfStudy,
             'recruitment-response-e2e-0031',
         );
