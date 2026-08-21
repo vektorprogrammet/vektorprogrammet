@@ -87,6 +87,31 @@ class AdminApplicationListApiTest extends BaseWebTestCase
         $this->assertIsArray($data['applications']);
     }
 
+    public function testGetApplicationsReturnsCancelledApplications(): void
+    {
+        $token = $this->getJwtToken('teammember', '1234');
+
+        $client = static::createClient();
+        $client->request('GET', '/api/admin/applications?status=cancelled', [], [], [
+            'HTTP_AUTHORIZATION' => 'Bearer '.$token,
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseIsSuccessful();
+        $data = json_decode($client->getResponse()->getContent(), true);
+
+        $this->assertSame('cancelled', $data['status']);
+        $this->assertNotEmpty($data['applications']);
+        $this->assertSame(
+            -1,
+            $data['applications'][0]['applicationStatus'],
+        );
+        $this->assertSame(
+            'Kansellert',
+            $data['applications'][0]['interviewStatus'],
+        );
+    }
+
     public function testGetApplicationsReturnsExistingApplications(): void
     {
         $token = $this->getJwtToken('teammember', '1234');

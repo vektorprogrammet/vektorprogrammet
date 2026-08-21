@@ -3,3 +3,5 @@ services:
         tags: ['doctrine.fixture.orm']
     Tests\Fixtures\RecruitmentInterviewSchedulingFixture:
         tags: ['doctrine.fixture.orm']
+    Tests\Fixtures\RecruitmentInterviewInvitationResponseFixture:
+        tags: ['doctrine.fixture.orm']

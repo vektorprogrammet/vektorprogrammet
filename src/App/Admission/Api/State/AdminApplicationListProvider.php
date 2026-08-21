@@ -72,6 +72,7 @@ class AdminApplicationListProvider implements ProviderInterface
             'new' => $this->applicationRepo->findNewApplicationsByAdmissionPeriod($admissionPeriod),
             'assigned' => $this->applicationRepo->findAssignedApplicants($admissionPeriod),
             'interviewed' => $this->applicationRepo->findInterviewedApplicants($admissionPeriod),
+            'cancelled' => $this->applicationRepo->findCancelledApplicants($admissionPeriod),
             'existing' => $this->applicationRepo->findExistingApplicants($admissionPeriod),
             default => [],
         };

@@ -19,6 +19,7 @@ use App\Interview\Api\State\InterviewResponseProvider;
         ),
         new Post(
             uriTemplate: '/interview-responses/{responseCode}/accept',
+            read: false,
             processor: InterviewAcceptProcessor::class,
             output: false,
             status: 204,
@@ -27,12 +28,16 @@ use App\Interview\Api\State\InterviewResponseProvider;
         ),
         new Post(
             uriTemplate: '/interview-responses/{responseCode}/cancel',
+            read: false,
+            input: InterviewResponseRejectInput::class,
             processor: InterviewCancelProcessor::class,
             output: false,
             status: 204,
         ),
         new Post(
             uriTemplate: '/interview-responses/{responseCode}/request-new-time',
+            read: false,
+            input: InterviewResponseNewTimeInput::class,
             processor: InterviewNewTimeProcessor::class,
             output: false,
             status: 204,

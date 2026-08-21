@@ -2,6 +2,9 @@
 
 namespace Tests\AppBundle\Api;
 
+use App\Interview\Domain\ValueObjects\InterviewStatusType;
+use App\Interview\Infrastructure\Entity\Interview;
+use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 
 class InterviewResponseApiTest extends BaseWebTestCase
@@ -29,6 +32,16 @@ class InterviewResponseApiTest extends BaseWebTestCase
     {
         $client = static::createClient();
         $client->request('GET', '/api/interview-responses/nonexistent', [], [], [
+            'HTTP_ACCEPT' => 'application/json',
+        ]);
+
+        $this->assertResponseStatusCodeSame(404);
+    }
+
+    public function testGetInterviewResponseMalformedCapability(): void
+    {
+        $client = static::createClient();
+        $client->request('GET', '/api/interview-responses/not-valid-capability!', [], [], [
             'HTTP_ACCEPT' => 'application/json',
         ]);
 
@@ -122,6 +135,15 @@ class InterviewResponseApiTest extends BaseWebTestCase
         ]));
 
         $this->assertResponseStatusCodeSame(422);
+
+        /** @var EntityManagerInterface $entityManager */
+        $entityManager = static::getContainer()->get(EntityManagerInterface::class);
+        $entityManager->clear();
+        /** @var Interview|null $interview */
+        $interview = $entityManager->getRepository(Interview::class)->findOneBy(['responseCode' => 'code']);
+        self::assertNotNull($interview);
+        self::assertSame(InterviewStatusType::ACCEPTED, $interview->getInterviewStatus());
+        self::assertSame('', $interview->getCancelMessage());
     }
 
     public function testRequestNewTime(): void
