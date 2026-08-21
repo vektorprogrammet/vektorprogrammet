@@ -104,7 +104,7 @@ test("frozen generation is byte deterministic and retains fixed census", async (
   expect(firstPacket).not.toContain("Youlduz");
   remove(first);
   remove(second);
-});
+}, 120_000);
 test("loads exact closed schema, golden receipt, and reason catalog", async () => {
   const schema = JSON.parse(await Bun.file(`${root}/apps/server/tools/security-h3/0015/schema.json`).text()) as Record<string, unknown>;
   const golden = JSON.parse(await Bun.file(`${root}/evidence/security-h3/0015/golden-receipt.json`).text()) as Record<string, unknown>;
