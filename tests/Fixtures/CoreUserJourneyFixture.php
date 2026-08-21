@@ -36,11 +36,15 @@ final class CoreUserJourneyFixture extends AbstractFixture implements FixtureGro
         $role->setName('Core journey team member');
         $manager->persist($role);
 
+        $userRole = new Role('ROLE_USER');
+        $userRole->setName('Core journey user');
+        $manager->persist($userRole);
+
         $department = new Department();
         $department->setName('Core journey department');
         $department->setShortName('CORE');
         $department->setEmail('core-journeys@example.invalid');
-        $department->setCity('Core City');
+        $department->setCity('CoreCity');
         $department->setAddress('Core journey only');
         $department->setLatitude('63.4305');
         $department->setLongitude('10.3951');

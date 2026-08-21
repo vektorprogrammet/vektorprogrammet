@@ -71,8 +71,9 @@ class SupportTicketSubscriber implements EventSubscriberInterface
         $message = 'Kontaktforespørsel sendt til '.$supportTicket->getDepartment()->getEmail().', takk for henvendelsen!';
 
         $session = $this->requestStack->getSession();
-        assert($session instanceof \Symfony\Component\HttpFoundation\Session\Flash\FlashBagAwareSessionInterface);
-        $session->getFlashBag()->add('success', $message);
+        $flashBag = $session->getBag('flashes');
+        assert($flashBag instanceof \Symfony\Component\HttpFoundation\Session\Flash\FlashBagInterface);
+        $flashBag->add('success', $message);
     }
 
     public function logEvent(SupportTicketCreatedEvent $event)
