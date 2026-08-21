@@ -19,7 +19,7 @@ use App\Interview\Api\State\InterviewResponseProvider;
         ),
         new Post(
             uriTemplate: '/interview-responses/{responseCode}/accept',
-            read: false,
+            provider: InterviewResponseProvider::class,
             processor: InterviewAcceptProcessor::class,
             output: false,
             status: 204,
