@@ -56,7 +56,7 @@ final class RecruitmentInterviewInvitationResponseFixture extends AbstractFixtur
         $department->addFieldOfStudy($fieldOfStudy);
         $manager->persist($fieldOfStudy);
 
-        $semester = SemesterUtil::timeToSemester($scheduledAt);
+        $semester = SemesterUtil::timeToSemester($now);
         $manager->persist($semester);
 
         $admissionPeriod = new AdmissionPeriod();
@@ -82,6 +82,7 @@ final class RecruitmentInterviewInvitationResponseFixture extends AbstractFixtur
             'recruitment-response-interviewer-0031',
             'recruitment-response-interviewer-0031@example.invalid',
             'Intervjuer',
+            '0031',
             $interviewerRole,
             $fieldOfStudy,
             'recruitment-response-e2e-0031',
