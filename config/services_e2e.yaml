@@ -1,4 +1,12 @@
+parameters:
+    e2e_receipt_images_default: 'images/receipts'
+    e2e_profile_photos_default: 'images/Profile photos'
+    receipt_images: '%env(default:e2e_receipt_images_default:E2E_RECEIPT_IMAGES)%'
+    profile_photos: '%env(default:e2e_profile_photos_default:E2E_PROFILE_PHOTOS)%'
+
 services:
+    Tests\Fixtures\CoreUserJourneyFixture:
+        tags: ['doctrine.fixture.orm']
     Tests\Fixtures\RecruitmentAssignmentFixture:
         tags: ['doctrine.fixture.orm']
     Tests\Fixtures\RecruitmentInterviewSchedulingFixture:
