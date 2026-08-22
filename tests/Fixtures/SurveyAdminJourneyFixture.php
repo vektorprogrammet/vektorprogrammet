@@ -42,11 +42,9 @@ final class SurveyAdminJourneyFixture extends AbstractFixture implements Fixture
         $department->addFieldOfStudy($fieldOfStudy);
         $manager->persist($fieldOfStudy);
 
-        $now = new \DateTimeImmutable('now');
-
         $semester = new Semester();
-        $semester->setSemesterTime($now->format('n') < 8 ? 'Vår' : 'Høst');
-        $semester->setYear($now->format('Y'));
+        $semester->setSemesterTime('Vår');
+        $semester->setYear('2032');
         $manager->persist($semester);
 
         $operator = $this->user(

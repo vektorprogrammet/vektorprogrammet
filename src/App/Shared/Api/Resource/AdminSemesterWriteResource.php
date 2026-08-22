@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/admin/semesters',
             processor: AdminSemesterCreateProcessor::class,
             security: "is_granted('ROLE_ADMIN')",
-            output: false,
             status: 201,
         ),
     ],

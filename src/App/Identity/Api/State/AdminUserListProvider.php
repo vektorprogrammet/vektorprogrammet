@@ -34,8 +34,7 @@ class AdminUserListProvider implements ProviderInterface
         if ($departmentId) {
             $department = $this->departmentRepository->find($departmentId);
         } else {
-            $activeDepartments = $this->departmentRepository->findActive();
-            $department = $activeDepartments[0] ?? null;
+            $department = $user->getDepartment();
         }
 
         $resource = new AdminUserListResource();

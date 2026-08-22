@@ -107,7 +107,7 @@ final class BackgroundDeliveryFixture extends AbstractFixture implements Fixture
         $interview->setRoom('Background delivery room');
         $interview->setCampus('Background delivery campus');
         $interview->setMapLink('https://maps.example.invalid/background-delivery-0032');
-        $interview->setResponseCode('background-delivery-reminder-response-0032');
+        $interview->setResponseCode('background_delivery_reminder_response_0032');
         $interview->setInterviewStatus(InterviewStatusType::PENDING);
         $lastScheduleChanged = new \ReflectionProperty(Interview::class, 'lastScheduleChanged');
         $lastScheduleChanged->setAccessible(true);

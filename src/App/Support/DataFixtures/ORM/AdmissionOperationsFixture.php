@@ -28,7 +28,7 @@ final class AdmissionOperationsFixture extends AbstractFixture implements Fixtur
         $department->setName('Background admission department');
         $department->setShortName('BG-ADM');
         $department->setEmail('background-admission@example.invalid');
-        $department->setCity('Background Admission City');
+        $department->setCity('BackgroundAdmissionCity');
         $department->setAddress('Disposable admission fixture');
         $department->setActive(true);
         $manager->persist($department);
