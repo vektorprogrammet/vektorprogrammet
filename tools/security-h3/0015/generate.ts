@@ -65,9 +65,9 @@ type ReasonCode =
 
 export const FROZEN_POLICY_PATH = "/srv/share/projects/vektorprogrammet/docs/live-access-policy-2026-08-10.md";
 export const FROZEN_POLICY_SHA256 = "sha256:f981132f0e8ba6c7e3fcae07bb47ad96b85788ef994bd6706c5f4e7d6ba034ca";
-export const SOURCE_CHECKPOINT = "56dff95f7eef822cad574b542736a6dbb2c404e6";
+export const SOURCE_CHECKPOINT = "273dbfd071ecda970f7f3d809e0747bddf7a7e42";
 export const ROUTE_COLLECTOR_SHA256 = "sha256:afefbafcf6fc837f439352020ceab5704bd2b25b7c8a453e76cce872697cabfd";
-export const SOURCE_MANIFEST_SHA256 = "sha256:27dd8304b675730c5e612dd5e2859823f80dff1aeff2ed96c63d9ab78ea0469a";
+export const SOURCE_MANIFEST_SHA256 = "sha256:721102e4a04a32f6fe28b80f503a061925e068ef4e81dab41d6123a18acc3928";
 export const FIXTURE_MANIFEST_SHA256 = "sha256:d4f043a1c97a61d83fa3127c09d16266ac5ca62e9e337300f23c80fe0e203f1a";
 export const SIDE_EFFECT_VOCABULARY_SHA256 = "sha256:e1477008c6e35e258d576f674794100d5db800e4355c48c871d327b156b2fd6f";
 export const CANDIDATE_PROJECTION_SHA256 = "sha256:7c0b235011ec0e1473a40219ff1f248b016c5aa073c851b0fdda5dc6d2c165a3";
@@ -75,7 +75,7 @@ export const SLOT_PROJECTION_SHA256 = "sha256:6391905e31dbc3e4e6c7b195d5ab54f45c
 export const CANDIDATE_ORDINALS = [1, 2, 7, 14, 15, 16, 17, 19, 20, 21, 22, 24, 26, 27, 31, 32, 33, 41, 42, 43, 44, 45, 68, 72, 78, 79, 80, 81, 82, 83, 84, 85, 94, 95, 96, 97, 98, 99, 100, 103, 104, 107, 119, 132, 133, 134, 138, 148, 155, 157, 172, 173, 174, 175, 176, 177, 178, 183, 184, 185, 186, 187] as const;
 const CANDIDATE_IDS = new Set(CANDIDATE_ORDINALS.map((ordinal) => `policy-row-${String(ordinal).padStart(3, "0")}`));
 
-const EXPECTED_SOURCE_BYTES = 1_375_001;
+const EXPECTED_SOURCE_BYTES = 1_374_945;
 const EXPECTED_SOURCE_FILES = 339;
 const FIXED_CONFIG_HASHES: Record<string, string> = {
   "apps/server/config/routes.yaml": "c0c785912847355728f6c88a99c82c7432bc10f9892a02795d40dcbdda5d6614",
