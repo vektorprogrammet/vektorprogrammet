@@ -181,7 +181,7 @@ class SchoolAdminControllerTest extends BaseWebTestCase
         // Change the value of a field
         $form['createAssistantHistory[Semester]']->select(1);
         $form['createAssistantHistory[workdays]']->select('4');
-        $form['createAssistantHistory[School]']->select(2);
+        $form['createAssistantHistory[School]']->select(1);
         $form['createAssistantHistory[bolk]']->select('Bolk 2');
         $form['createAssistantHistory[day]']->select('Onsdag');
 

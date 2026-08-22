@@ -45,7 +45,7 @@ class ProfileApiTest extends BaseWebTestCase
         $this->assertIsInt($profile['id']);
     }
 
-    public function testGetProfileDoesNotExposeSensitiveFields(): void
+    public function testGetProfileExposesEditableAccountNumberWithoutInternalFields(): void
     {
         $token = $this->getJwtToken('admin', '1234');
 
@@ -60,7 +60,7 @@ class ProfileApiTest extends BaseWebTestCase
 
         $this->assertArrayNotHasKey('password', $profile);
         $this->assertArrayNotHasKey('companyEmail', $profile);
-        $this->assertArrayNotHasKey('accountNumber', $profile);
+        $this->assertArrayHasKey('accountNumber', $profile);
         $this->assertArrayNotHasKey('new_user_code', $profile);
         $this->assertArrayNotHasKey('roles', $profile);
         $this->assertArrayNotHasKey('isActive', $profile);

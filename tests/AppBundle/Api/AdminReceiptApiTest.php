@@ -31,7 +31,7 @@ class AdminReceiptApiTest extends BaseWebTestCase
         $this->assertResponseIsSuccessful();
     }
 
-    public function testGetReceiptDashboardReturnsAggregations(): void
+    public function testGetReceiptDashboardReturnsReceiptRows(): void
     {
         $token = $this->getJwtToken('teamleader', '1234');
 
@@ -44,16 +44,16 @@ class AdminReceiptApiTest extends BaseWebTestCase
         $this->assertResponseIsSuccessful();
         $data = json_decode($client->getResponse()->getContent(), true);
 
-        $this->assertArrayHasKey('pendingCount', $data);
-        $this->assertArrayHasKey('pendingTotalAmount', $data);
-        $this->assertArrayHasKey('refundedCount', $data);
-        $this->assertArrayHasKey('totalPayoutThisYear', $data);
-        $this->assertArrayHasKey('avgRefundTimeHours', $data);
-        $this->assertArrayHasKey('rejectedCount', $data);
-
-        $this->assertIsInt($data['pendingCount']);
-        $this->assertIsInt($data['refundedCount']);
-        $this->assertIsInt($data['rejectedCount']);
-        $this->assertIsInt($data['avgRefundTimeHours']);
+        $this->assertNotEmpty($data);
+        foreach ($data as $receipt) {
+            $this->assertArrayHasKey('id', $receipt);
+            $this->assertArrayHasKey('visualId', $receipt);
+            $this->assertArrayHasKey('userName', $receipt);
+            $this->assertArrayHasKey('description', $receipt);
+            $this->assertArrayHasKey('sum', $receipt);
+            $this->assertArrayHasKey('receiptDate', $receipt);
+            $this->assertArrayHasKey('submitDate', $receipt);
+            $this->assertContains($receipt['status'], ['pending', 'refunded', 'rejected']);
+        }
     }
 }

@@ -116,6 +116,11 @@ services:
     # Support DataFixtures
     App\Support\DataFixtures\ORM\:
         resource: '../src/App/Support/DataFixtures/ORM'
+        exclude:
+            - '../src/App/Support/DataFixtures/ORM/AdmissionOperationsFixture.php'
+            - '../src/App/Support/DataFixtures/ORM/BackgroundAutomationFixture.php'
+            - '../src/App/Support/DataFixtures/ORM/BackgroundDeliveryFixture.php'
+            - '../src/App/Support/DataFixtures/ORM/InterviewRecruiterFixture.php'
         tags: ['doctrine.fixture.orm']
 
     App\Identity\Infrastructure\ReversedRoleHierarchy:

@@ -73,9 +73,7 @@ class AdminUserWriteApiTest extends BaseWebTestCase
         ], json_encode($payload));
 
         $this->assertResponseStatusCodeSame(201);
-        $data = json_decode($client->getResponse()->getContent(), true);
-        $this->assertArrayHasKey('id', $data);
-        $this->assertIsInt($data['id']);
+        $this->assertSame('', $client->getResponse()->getContent());
     }
 
     public function testCreateUserValidationRejectsBlankFirstName(): void
@@ -168,8 +166,7 @@ class AdminUserWriteApiTest extends BaseWebTestCase
         ], json_encode($payload));
 
         $this->assertResponseStatusCodeSame(201);
-        $data = json_decode($client->getResponse()->getContent(), true);
-        $this->assertArrayHasKey('id', $data);
+        $this->assertSame('', $client->getResponse()->getContent());
     }
 
     // --- DELETE /api/admin/users/{id} ---

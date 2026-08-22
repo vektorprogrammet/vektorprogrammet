@@ -5,6 +5,14 @@ parameters:
     profile_photos: '%env(default:e2e_profile_photos_default:E2E_PROFILE_PHOTOS)%'
 
 services:
+    App\Support\DataFixtures\ORM\AdmissionOperationsFixture:
+        tags: ['doctrine.fixture.orm']
+    App\Support\DataFixtures\ORM\BackgroundAutomationFixture:
+        tags: ['doctrine.fixture.orm']
+    App\Support\DataFixtures\ORM\BackgroundDeliveryFixture:
+        tags: ['doctrine.fixture.orm']
+    App\Support\DataFixtures\ORM\InterviewRecruiterFixture:
+        tags: ['doctrine.fixture.orm']
     Tests\Fixtures\CoreUserJourneyFixture:
         tags: ['doctrine.fixture.orm']
     Tests\Fixtures\RecruitmentAssignmentFixture:
