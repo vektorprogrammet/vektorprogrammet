@@ -44,7 +44,7 @@ final class PlatformOpsJourneyFixture extends AbstractFixture implements Fixture
 
         $semester = new Semester();
         $semester->setSemesterTime('Høst');
-        $semester->setYear('2032');
+        $semester->setYear('2033');
         $manager->persist($semester);
 
         $admin = $this->user(

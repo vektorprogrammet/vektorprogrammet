@@ -13,3 +13,13 @@ services:
         tags: ['doctrine.fixture.orm']
     Tests\Fixtures\RecruitmentInterviewInvitationResponseFixture:
         tags: ['doctrine.fixture.orm']
+    Tests\Fixtures\ContentPublicationJourneyFixture:
+        tags: ['doctrine.fixture.orm']
+    Tests\Fixtures\FrameworkRuntimePlumbingJourneyFixture:
+        tags: ['doctrine.fixture.orm']
+    Tests\Fixtures\OrgOperationsJourneyFixture:
+        tags: ['doctrine.fixture.orm']
+    Tests\Fixtures\PlatformOpsJourneyFixture:
+        tags: ['doctrine.fixture.orm']
+    Tests\Fixtures\SurveyAdminJourneyFixture:
+        tags: ['doctrine.fixture.orm']

@@ -16,6 +16,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/admin/changelogs',
             processor: AdminChangelogCreateProcessor::class,
             security: "is_granted('ROLE_TEAM_MEMBER')",
+            output: false,
             status: 201,
         ),
         new Put(
