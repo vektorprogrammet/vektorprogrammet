@@ -7,6 +7,7 @@ namespace Tests\Fixtures;
 use App\Identity\Infrastructure\Entity\Role;
 use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\Receipt;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Scheduling\Infrastructure\Entity\School;
@@ -61,6 +62,14 @@ final class OrgOperationsJourneyFixture extends AbstractFixture implements Fixtu
 
         $currentSemester = SemesterUtil::timeToSemester(new \DateTime('now'));
         $manager->persist($currentSemester);
+        $admissionPeriod = new AdmissionPeriod();
+        $admissionPeriod->setDepartment($department);
+        $admissionPeriod->setSemester($currentSemester);
+        $admissionPeriod->setStartDate(new \DateTime('yesterday'));
+        $admissionPeriod->setEndDate(new \DateTime('+14 days'));
+        $department->addAdmissionPeriod($admissionPeriod);
+        $manager->persist($admissionPeriod);
+
 
         $school = new School();
         $school->setName('Org operations scheduling school');

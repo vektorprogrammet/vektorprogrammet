@@ -13,6 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
             uriTemplate: '/admin/users',
             processor: AdminUserCreateProcessor::class,
             security: "is_granted('ROLE_TEAM_LEADER')",
+            output: false,
             status: 201,
         ),
     ],
