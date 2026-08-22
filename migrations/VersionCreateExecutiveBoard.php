@@ -1,9 +1,9 @@
 <?php
 
-namespace Application\Migrations;
+namespace App\Migrations;
 
 use App\Entity\ExecutiveBoard;
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
@@ -15,7 +15,7 @@ class VersionCreateExecutiveBoard extends AbstractMigration implements Container
      */
     private $container;
 
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
@@ -25,7 +25,7 @@ class VersionCreateExecutiveBoard extends AbstractMigration implements Container
         $this->addSql('ALTER TABLE executive_board_member ADD CONSTRAINT FK_1B0352A4E7EC5785 FOREIGN KEY (board_id) REFERENCES executive_board (id)');
     }
 
-    public function postUp(Schema $schema)
+    public function postUp(Schema $schema): void
     {
         $executiveBoard = new ExecutiveBoard();
         $executiveBoard->setName('Hovedstyret');
@@ -38,7 +38,7 @@ class VersionCreateExecutiveBoard extends AbstractMigration implements Container
         $em->flush();
     }
 
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
         $this->abortIf($this->connection->getDatabasePlatform()->getName() != 'mysql', 'Migration can only be executed safely on \'mysql\'.');
 
@@ -47,7 +47,7 @@ class VersionCreateExecutiveBoard extends AbstractMigration implements Container
         $this->addSql('DROP TABLE executive_board');
     }
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }

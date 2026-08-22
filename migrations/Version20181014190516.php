@@ -1,8 +1,8 @@
 <?php
 
-namespace Application\Migrations;
+namespace App\Migrations;
 
-use Doctrine\DBAL\Migrations\AbstractMigration;
+use Doctrine\Migrations\AbstractMigration;
 use Doctrine\DBAL\Schema\Schema;
 
 /**
@@ -13,7 +13,7 @@ class Version20181014190516 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function up(Schema $schema)
+    public function up(Schema $schema): void
     {
 	    $this->addSql("UPDATE role SET name='Bruker' WHERE role = 'ROLE_USER'");
 	    $this->addSql("UPDATE role SET role = 'ROLE_TEAM_MEMBER', name='Teammedlem' WHERE role = 'ROLE_ADMIN'");
@@ -24,7 +24,7 @@ class Version20181014190516 extends AbstractMigration
     /**
      * @param Schema $schema
      */
-    public function down(Schema $schema)
+    public function down(Schema $schema): void
     {
 	    $this->addSql("UPDATE role SET name='User' WHERE role = 'ROLE_USER'");
 	    $this->addSql("UPDATE role SET role = 'ROLE_SUPER_ADMIN', name='Superadmin' WHERE role = 'ROLE_TEAM_LEADER'");
