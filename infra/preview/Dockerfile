@@ -18,9 +18,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends mariadb-server 
   && docker-php-ext-install gd intl mbstring xml zip pdo_mysql
 COPY --from=composer:2 /usr/bin/composer /usr/bin/composer
 COPY composer.json composer.lock ./
-RUN composer install --no-dev --no-progress --prefer-dist --no-interaction --no-autoloader \
-  && composer dump-autoload --classmap-authoritative --no-dev --no-interaction
+RUN composer install --no-dev --no-progress --prefer-dist --no-interaction --no-autoloader
 COPY . .
+RUN composer dump-autoload --classmap-authoritative --no-dev --no-interaction
 COPY --from=preview-seed /generated/seed.sql /app/var/preview-seed/seed.sql
 COPY --from=preview-seed /generated/manifest.json /app/var/preview-seed/manifest.json
 COPY infra/preview/entrypoint.sh /usr/local/bin/preview-entrypoint
