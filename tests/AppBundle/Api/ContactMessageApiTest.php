@@ -3,6 +3,9 @@
 namespace Tests\AppBundle\Api;
 
 use App\Organization\Infrastructure\Entity\Department;
+use App\Support\Infrastructure\Mailer\Mailer;
+use App\Support\Infrastructure\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Tests\BaseWebTestCase;
 
 class ContactMessageApiTest extends BaseWebTestCase
@@ -39,9 +42,29 @@ class ContactMessageApiTest extends BaseWebTestCase
 
     public function testCreateContactMessageSuccess(): void
     {
-        $deptId = $this->findDepartmentId();
+        $client = static::createClient();
+        $em = self::getContainer()->get('doctrine')->getManager();
+        $department = $em->getRepository(Department::class)->findAll()[0];
+        $this->assertNotNull($department, 'Fixtures must contain at least one department');
 
-        $this->postContactMessage($this->getValidPayload($deptId));
+        $mailer = $this->createMock(MailerInterface::class);
+        $mailer
+            ->expects($this->once())
+            ->method('send')
+            ->with($this->callback(function (Email $email) use ($department): bool {
+                $this->assertSame($department->getEmail(), $email->getTo()[0]->getAddress());
+                $this->assertSame('ola@example.com', $email->getReplyTo()[0]->getAddress());
+                $this->assertSame('[Kontaktskjema] Test henvendelse', $email->getSubject());
+                $this->assertStringContainsString('Ola Nordmann', $email->getTextBody());
+
+                return true;
+            }));
+        self::getContainer()->set(Mailer::class, $mailer);
+
+        $client->request('POST', '/api/contact_messages', [], [], [
+            'CONTENT_TYPE' => 'application/json',
+            'HTTP_ACCEPT' => 'application/json',
+        ], json_encode($this->getValidPayload($department->getId())));
 
         $this->assertResponseStatusCodeSame(201);
     }
