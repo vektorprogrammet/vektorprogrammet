@@ -31,6 +31,15 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
             provider: chain_provider
+        api_login:
+            pattern: ^/api/login$
+            stateless: true
+            provider: chain_provider
+            user_checker: App\Identity\Infrastructure\UserChecker
+            json_login:
+                check_path: /api/login
+                success_handler: lexik_jwt_authentication.handler.authentication_success
+                failure_handler: lexik_jwt_authentication.handler.authentication_failure
         api:
             pattern: ^/api
             stateless: true
@@ -67,6 +76,7 @@ security:
                 interval: '15 minutes'
 
     access_control:
+        - { path: ^/api/login$, roles: PUBLIC_ACCESS }
         - { path: ^/api/docs, roles: PUBLIC_ACCESS }
         - { path: ^/api/sponsors, roles: PUBLIC_ACCESS }
         - { path: ^/api/articles, roles: PUBLIC_ACCESS }
