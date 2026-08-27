@@ -1,6 +1,7 @@
 <?php
 
 declare(strict_types=1);
+
 namespace App\Support\DataFixtures\ORM;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
@@ -18,6 +19,7 @@ use App\Shared\Entity\Semester;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\Clock\Clock;
 
 final class BackgroundDeliveryFixture extends AbstractFixture implements FixtureGroupInterface
 {
@@ -28,7 +30,9 @@ final class BackgroundDeliveryFixture extends AbstractFixture implements Fixture
 
     public function load(ObjectManager $manager): void
     {
-        $now = new \DateTime('now', new \DateTimeZone('Europe/Oslo'));
+        $now = \DateTime::createFromInterface(
+            Clock::get()->withTimeZone(new \DateTimeZone('Europe/Oslo'))->now(),
+        );
         $semester = $this->getCurrentSemester($manager, $now);
         $teamMemberRole = $this->getOrCreateRole($manager, 'ROLE_TEAM_MEMBER', 'Background team member');
         $userRole = $this->getOrCreateRole($manager, 'ROLE_USER', 'Background user');
