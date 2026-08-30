@@ -3,15 +3,16 @@
 namespace App\Interview\Infrastructure;
 
 use App\Admission\Infrastructure\Entity\Application;
+use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\User;
+use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\Entity\InterviewAnswer;
-use App\Identity\Infrastructure\Entity\User;
 use App\Support\Infrastructure\Mailer\MailerInterface;
-use App\Identity\Domain\Roles;
 use App\Support\Infrastructure\Sms\Sms;
 use App\Support\Infrastructure\Sms\SmsSenderInterface;
-use App\Interview\Domain\ValueObjects\InterviewStatusType;
 use Doctrine\ORM\EntityManagerInterface;
+use Psr\Clock\ClockInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Routing\RouterInterface;
@@ -28,6 +29,7 @@ class InterviewManager
         private readonly AuthorizationCheckerInterface $authorizationChecker,
         private readonly MailerInterface $mailer,
         private readonly Environment $twig,
+        private readonly ClockInterface $clock,
         private readonly LoggerInterface $logger,
         private readonly EntityManagerInterface $em,
         private readonly RouterInterface $router,
@@ -41,7 +43,7 @@ class InterviewManager
     public function loggedInUserCanSeeInterview(Interview $interview): bool
     {
         $user = $this->tokenStorage->getToken()->getUser();
-        /** @var User|null $user */
+        /* @var User|null $user */
 
         return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER)
                || $interview->isInterviewer($user)
@@ -203,19 +205,19 @@ class InterviewManager
 
     public function sendAcceptInterviewReminders()
     {
-        $interviews = $this->em->getRepository(Interview::class)->findAcceptInterviewNotificationRecipients(new \DateTime());
+        $now = $this->clock->now();
+        $reminderThreshold = $now->sub(new \DateInterval('P1D'));
+        $interviews = $this->em->getRepository(Interview::class)->findAcceptInterviewNotificationRecipients($now);
         /** @var Interview $interview */
         foreach ($interviews as $interview) {
-            $oneDay = new \DateInterval('P1D');
-            $now = new \DateTime();
-            $moreThan24HoursSinceScheduled = $now->sub($oneDay) > $interview->getLastScheduleChanged();
+            $moreThan24HoursSinceScheduled = $reminderThreshold > $interview->getLastScheduleChanged();
             if ($interview->getNumAcceptInterviewRemindersSent() < self::MAX_NUM_ACCEPT_INTERVIEW_REMINDERS_SENT && $moreThan24HoursSinceScheduled) {
-                $this->sendAcceptInterviewReminderToInterviewee($interview);
+                $this->sendAcceptInterviewReminderToInterviewee($interview, $now);
             }
         }
     }
 
-    private function sendAcceptInterviewReminderToInterviewee(Interview $interview)
+    private function sendAcceptInterviewReminderToInterviewee(Interview $interview, \DateTimeImmutable $now)
     {
         $message = (new Email())
             ->subject('Påminnelse om intervju med Vektorprogrammet')
@@ -240,9 +242,7 @@ class InterviewManager
             Accept interview reminder sent to {$interview->getUser()}.
             ({$interview->getNumAcceptInterviewRemindersSent()}/$maxNum reminders sent)");
 
-        $oneDay = new \DateInterval('P1D');
-        $now = new \DateTime();
-        $lessThan24HoursUntilInterview = $now->add($oneDay) > $interview->getScheduled();
+        $lessThan24HoursUntilInterview = $now->add(new \DateInterval('P1D')) > $interview->getScheduled();
         if ($lessThan24HoursUntilInterview) {
             $smsMessage =
                 "Hei {$interview->getUser()->getFirstName()}\n".

@@ -3,10 +3,10 @@
 namespace App\Interview\Infrastructure\Repository;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Interview\Infrastructure\Entity\Interview;
-use App\Shared\Entity\Semester;
 use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
+use App\Interview\Infrastructure\Entity\Interview;
+use App\Shared\Entity\Semester;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -162,7 +162,7 @@ class InterviewRepository extends ServiceEntityRepository
      *
      * @return array
      */
-    public function findAcceptInterviewNotificationRecipients(\DateTime $time)
+    public function findAcceptInterviewNotificationRecipients(\DateTimeInterface $time)
     {
         return $this->createQueryBuilder('i')
             ->select('i')
