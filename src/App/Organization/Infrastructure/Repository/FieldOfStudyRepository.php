@@ -32,7 +32,6 @@ class FieldOfStudyRepository extends ServiceEntityRepository
 
         return $stmt->fetchAll();
     }
-<<<<<<< Updated upstream
     */
 
     public function findAllFieldOfStudy()
