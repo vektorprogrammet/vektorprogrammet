@@ -35,8 +35,7 @@ use Doctrine\Migrations\AbstractMigration;
  *          by position_id and are valid data. The entity was corrected to include
  *          position_id; the residual 7 are true duplicates.
  *
- * See docs/migrations-blocked-unique-constraints.md for the cleanup queries and the
- * follow-up migration those two need.
+ * A2 and A7 stay blocked until an operator-authorized cleanup and a fresh live scan.
  *
  * DATA SAFETY
  * ===========

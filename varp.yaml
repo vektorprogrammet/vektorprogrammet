@@ -265,16 +265,9 @@ templates:
 
 config:
   path: ./config
-  docs:
-    - docs/architecture.md
-    - .claude/rules/php.md
 
 tests:
   path: ./tests
-  docs:
-    - docs/testing.md
-    - docs/testing-details.md
-    - .claude/rules/testing.md
 
 infrastructure:
   path:
@@ -285,9 +278,3 @@ infrastructure:
     - ./composer.lock
     - ./package.json
     - ./package-lock.json
-  docs:
-    - docs/local-setup.md
-    - docs/overview.md
-
-docs:
-  path: ./docs

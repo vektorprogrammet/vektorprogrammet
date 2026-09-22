@@ -15,8 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 // once per assigned bolk, on a possibly different weekday, so one person doing both bolks at
 // one school is TWO legitimate placements -- unique(user, school, semester) would make that
 // unrepresentable. This cannot be enforced in the database yet: 332 production rows still
-// store "both bolks" as a single 'Bolk 1, Bolk 2' row instead of two rows, and those must be
-// split first -- see docs/migrations-blocked-unique-constraints.md.
+// store "both bolks" as one row instead of two. Split those rows before adding the index.
 #[ORM\UniqueConstraint(name: 'unique_user_school_semester_bolk', columns: ['user_id', 'school_id', 'semester_id', 'bolk'])]
 #[ORM\Entity(repositoryClass: AssistantHistoryRepository::class)]
 class AssistantHistory implements \Stringable
