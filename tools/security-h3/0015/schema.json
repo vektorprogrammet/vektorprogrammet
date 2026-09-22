@@ -38,7 +38,7 @@
         "fixture_manifest_sha256": {"anyOf": [{"$ref": "#/$defs/sha256"}, {"type": "null"}]}
       },
       "allOf": [
-        {"if": {"properties": {"input_mode": {"const": "frozen"}}}, "then": {"properties": {"policy_path": {"const": "/srv/share/projects/vektorprogrammet/docs/live-access-policy-2026-08-10.md"}}}},
+        {"if": {"properties": {"input_mode": {"const": "frozen"}}}, "then": {"properties": {"policy_path": {"const": "/srv/share/projects/vektorprogrammet/mono-web-assistant-0906/tools/parity/data/security-h3/0015/live-access-policy.md"}}}},
         {"if": {"properties": {"input_mode": {"const": "fixture_injection"}}}, "then": {"properties": {"policy_path": {"pattern": "^fixture://h3-0015/"}}}},
         {"if": {"properties": {"input_mode": {"const": "fixture_injection"}}}, "then": {"properties": {"fixture_manifest_sha256": {"const": "sha256:d4f043a1c97a61d83fa3127c09d16266ac5ca62e9e337300f23c80fe0e203f1a"}}}},
         {"if": {"properties": {"input_mode": {"const": "frozen"}}}, "then": {"properties": {"fixture_manifest_sha256": {"type": "null"}}}}

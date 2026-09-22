@@ -8,8 +8,8 @@
     "test": "echo 'Run: php -d memory_limit=512M bin/phpunit'",
     "lint": "echo 'Run: composer lint (requires vendor/)'",
     "fix": "echo 'Run: composer fix (requires vendor/)'",
-    "api:spec": "php bin/console api:openapi:export --output=var/legacy-openapi.raw.json && bun run ../../tools/parity/legacy-openapi-cli.ts -- --input var/legacy-openapi.raw.json --output ../../evidence/legacy-contract/legacy-symfony-openapi.snapshot.json --server-root . --php php --mode write",
-    "api:spec:check": "php bin/console api:openapi:export --output=var/legacy-openapi.raw.json && bun run ../../tools/parity/legacy-openapi-cli.ts -- --input var/legacy-openapi.raw.json --output ../../evidence/legacy-contract/legacy-symfony-openapi.snapshot.json --server-root . --php php --mode check"
+    "api:spec": "php bin/console api:openapi:export --output=var/legacy-openapi.raw.json && bun run ../../tools/parity/legacy-openapi-cli.ts -- --input var/legacy-openapi.raw.json --output ../../tools/parity/data/legacy-contract/legacy-symfony-openapi.snapshot.json --server-root . --php php --mode write",
+    "api:spec:check": "php bin/console api:openapi:export --output=var/legacy-openapi.raw.json && bun run ../../tools/parity/legacy-openapi-cli.ts -- --input var/legacy-openapi.raw.json --output ../../tools/parity/data/legacy-contract/legacy-symfony-openapi.snapshot.json --server-root . --php php --mode check"
   },
   "dependencies": {
     "@coreui/coreui": "2.0.18",

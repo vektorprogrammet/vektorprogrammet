@@ -63,7 +63,7 @@ type ReasonCode =
   | "H3_FIXTURE_MANIFEST_DRIFT"
   | "H3_FIXTURE_SOURCE_FORBIDDEN";
 
-export const FROZEN_POLICY_PATH = "/srv/share/projects/vektorprogrammet/docs/live-access-policy-2026-08-10.md";
+export const FROZEN_POLICY_PATH = "/srv/share/projects/vektorprogrammet/mono-web-assistant-0906/tools/parity/data/security-h3/0015/live-access-policy.md";
 export const FROZEN_POLICY_SHA256 = "sha256:f981132f0e8ba6c7e3fcae07bb47ad96b85788ef994bd6706c5f4e7d6ba034ca";
 export const SOURCE_CHECKPOINT = "273dbfd071ecda970f7f3d809e0747bddf7a7e42";
 export const ROUTE_COLLECTOR_SHA256 = "sha256:afefbafcf6fc837f439352020ceab5704bd2b25b7c8a453e76cce872697cabfd";
