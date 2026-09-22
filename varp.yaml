@@ -175,8 +175,8 @@ api:
     - ./src/App/State
   deps: [user, admission, content, organization, messaging, security]
   docs:
-    - docs/architecture.md
-    - docs/conventions.md
+    - ../../docs/architecture.md
+    - ../../docs/system.md
     - .claude/rules/php.md
 
 # === Infrastructure ===
@@ -195,7 +195,7 @@ security:
     - ./src/App/Service/AccessControlService.php
     - ./src/App/Service/RoleManager.php
   docs:
-    - docs/architecture.md
+    - ../../docs/architecture.md
 
 messaging:
   path:
@@ -247,15 +247,15 @@ core:
     - ./src/App/Form
   deps: [security]
   docs:
-    - docs/architecture.md
-    - docs/conventions.md
+    - ../../docs/architecture.md
+    - ../../docs/system.md
 
 # === Frontend & Meta ===
 
 frontend:
   path: ./assets
   docs:
-    - docs/overview.md
+    - ../../docs/system.md
 
 templates:
   path: ./templates
