@@ -2,10 +2,10 @@
 
 namespace Tests\AppBundle\Api;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\ExecutiveBoard;
 use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Shared\Entity\Semester;
-use App\Identity\Infrastructure\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 

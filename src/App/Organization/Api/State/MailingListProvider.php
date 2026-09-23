@@ -7,11 +7,11 @@ namespace App\Organization\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Organization\Api\Resource\MailingListResource;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
-use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 

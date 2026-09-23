@@ -2,8 +2,8 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 

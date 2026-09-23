@@ -8,11 +8,11 @@ use ApiPlatform\Metadata\GetCollection;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Contracts\PeriodInterface;
+use App\Shared\Entity\Semester;
 use App\Support\Utils\TimeUtil;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Shared\Entity\Semester;
 
 /**
  * DepartmentSpecificSemester.

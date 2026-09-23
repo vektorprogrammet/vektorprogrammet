@@ -4,8 +4,8 @@ namespace App\Identity\Form;
 
 use App\Identity\Infrastructure\Entity\AccessRule;
 use App\Identity\Infrastructure\Entity\Role;
-use App\Organization\Infrastructure\Entity\Team;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\Team;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

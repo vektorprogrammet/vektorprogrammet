@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Organization\Infrastructure\Repository;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
-use App\Shared\Entity\Semester;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamMembership;
-use App\Identity\Infrastructure\Entity\User;
+use App\Shared\Entity\Semester;
 use App\Shared\SemesterUtil;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

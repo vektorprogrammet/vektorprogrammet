@@ -2,8 +2,8 @@
 
 namespace Tests\App\Service;
 
-use App\Operations\Infrastructure\Entity\Receipt;
 use App\Identity\Infrastructure\Entity\User;
+use App\Operations\Infrastructure\Entity\Receipt;
 use App\Support\Sorter;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 

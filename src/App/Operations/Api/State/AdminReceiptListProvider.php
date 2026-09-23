@@ -45,11 +45,11 @@ class AdminReceiptListProvider implements ProviderInterface
             $resource = new AdminReceiptListResource();
             $resource->id = $receipt->getId();
             $resource->visualId = $receipt->getVisualId();
-            $resource->userName = $receipt->getUser()?->getFullName();
+            $resource->userName = $receipt->getUser()->getFullName();
             $resource->description = $receipt->getDescription();
             $resource->sum = $receipt->getSum();
-            $resource->receiptDate = $receipt->getReceiptDate()?->format('Y-m-d');
-            $resource->submitDate = $receipt->getSubmitDate()?->format('Y-m-d');
+            $resource->receiptDate = $receipt->getReceiptDate()->format('Y-m-d');
+            $resource->submitDate = $receipt->getSubmitDate()->format('Y-m-d');
             $resource->status = $receipt->getStatus();
             $resources[] = $resource;
         }

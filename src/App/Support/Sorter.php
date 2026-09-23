@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Support;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\Receipt;
 use App\Shared\Contracts\TeamMembershipInterface;
-use App\Identity\Infrastructure\Entity\User;
 
 class Sorter
 {

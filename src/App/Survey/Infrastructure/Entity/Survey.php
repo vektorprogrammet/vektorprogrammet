@@ -2,14 +2,14 @@
 
 namespace App\Survey\Infrastructure\Entity;
 
+use App\Organization\Infrastructure\Entity\Department;
+use App\Shared\Entity\Semester;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use JsonSerializable;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Organization\Infrastructure\Entity\Department;
-use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'survey')]
 #[ORM\Entity(repositoryClass: SurveyRepository::class)]
@@ -136,9 +136,6 @@ class Survey implements \JsonSerializable, \Stringable
         return $this->semester;
     }
 
-    /**
-     * @return Department|null
-     */
     public function getDepartment(): ?Department
     {
         return $this->department;
@@ -270,9 +267,6 @@ class Survey implements \JsonSerializable, \Stringable
         $this->showCustomPopUpMessage = $showCustomPopUpMessage;
     }
 
-    /**
-     * @return string
-     */
     public function getFinishPageContent(): string
     {
         return $this->finishPageContent;
@@ -312,9 +306,6 @@ class Survey implements \JsonSerializable, \Stringable
         return $this->targetAudience;
     }
 
-    /**
-     * @param string|null $message
-     */
     public function setSurveyPopUpMessage(?string $message)
     {
         if ($message === null) {

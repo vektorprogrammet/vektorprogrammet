@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Organization\Form\CreatePositionType;
 use App\Organization\Infrastructure\Entity\Position;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Organization\Infrastructure\Repository\PositionRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Organization\Form\CreatePositionType;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;

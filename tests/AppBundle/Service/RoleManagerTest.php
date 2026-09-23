@@ -2,8 +2,8 @@
 
 namespace Tests\App\Service;
 
-use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Infrastructure\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

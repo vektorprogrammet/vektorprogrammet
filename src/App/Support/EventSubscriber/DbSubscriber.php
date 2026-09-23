@@ -3,19 +3,19 @@
 namespace App\Support\EventSubscriber;
 
 use App\Admission\Infrastructure\Entity\AdmissionNotification;
+use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\PasswordReset;
+use App\Identity\Infrastructure\Entity\Role;
+use App\Identity\Infrastructure\Entity\UnhandledAccessRule;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Infrastructure\Entity\InterviewAnswer;
 use App\Interview\Infrastructure\Entity\InterviewQuestion;
 use App\Interview\Infrastructure\Entity\InterviewQuestionAlternative;
 use App\Interview\Infrastructure\Entity\InterviewScore;
-use App\Identity\Infrastructure\Entity\PasswordReset;
-use App\Identity\Infrastructure\Entity\Role;
 use App\Survey\Infrastructure\Entity\SurveyAnswer;
 use App\Survey\Infrastructure\Entity\SurveyQuestion;
 use App\Survey\Infrastructure\Entity\SurveyQuestionAlternative;
 use App\Survey\Infrastructure\Entity\SurveyTaken;
-use App\Identity\Infrastructure\Entity\UnhandledAccessRule;
-use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Domain\Roles;
 use Doctrine\Common\EventSubscriber;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\Persistence\Event\LifecycleEventArgs;

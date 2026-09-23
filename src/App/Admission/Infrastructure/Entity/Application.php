@@ -4,10 +4,10 @@ namespace App\Admission\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Admission\Infrastructure\Validator as CustomAssert;
-use App\Interview\Infrastructure\Entity\Interview;
-use App\Organization\Infrastructure\Entity\Team;
 use App\Identity\Infrastructure\Entity\User;
+use App\Interview\Infrastructure\Entity\Interview;
 use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Entity\Team;
 use App\Shared\Contracts\DepartmentSemesterInterface;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;

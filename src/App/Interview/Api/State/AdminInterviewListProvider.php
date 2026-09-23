@@ -4,13 +4,13 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Interview\Api\Resource\AdminInterviewListResource;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
+use App\Identity\Infrastructure\Entity\User;
+use App\Interview\Api\Resource\AdminInterviewListResource;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;

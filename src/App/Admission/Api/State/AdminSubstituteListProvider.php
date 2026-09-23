@@ -7,9 +7,9 @@ use ApiPlatform\State\ProviderInterface;
 use App\Admission\Api\Resource\AdminSubstituteResource;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 

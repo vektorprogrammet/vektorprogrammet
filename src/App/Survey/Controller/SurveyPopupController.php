@@ -2,13 +2,13 @@
 
 namespace App\Survey\Controller;
 
+use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Entity\User;
-use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\RoleManager;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
-use App\Identity\Domain\Roles;
-use App\Identity\Infrastructure\RoleManager;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 

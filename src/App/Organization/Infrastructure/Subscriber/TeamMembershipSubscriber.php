@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Organization\Infrastructure\Subscriber;
 
-use App\Organization\Domain\Events\TeamMembershipEvent;
 use App\Identity\Infrastructure\RoleManager;
+use App\Organization\Domain\Events\TeamMembershipEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

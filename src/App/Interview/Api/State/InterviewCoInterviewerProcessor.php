@@ -4,9 +4,9 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Interview\Infrastructure\Repository\InterviewRepository;
 use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Domain\Events\InterviewEvent;
+use App\Interview\Infrastructure\Repository\InterviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

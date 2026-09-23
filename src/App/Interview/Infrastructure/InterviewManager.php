@@ -42,12 +42,11 @@ class InterviewManager
      */
     public function loggedInUserCanSeeInterview(Interview $interview): bool
     {
-        $user = $this->tokenStorage->getToken()->getUser();
-        /* @var User|null $user */
+        $user = $this->tokenStorage->getToken()?->getUser();
 
         return $this->authorizationChecker->isGranted(Roles::TEAM_LEADER)
-               || $interview->isInterviewer($user)
-               || $interview->isCoInterviewer($user);
+               || ($user instanceof User
+                   && ($interview->isInterviewer($user) || $interview->isCoInterviewer($user)));
     }
 
     /**

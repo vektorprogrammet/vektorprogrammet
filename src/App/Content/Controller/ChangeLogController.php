@@ -2,12 +2,12 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Content\Form\ChangeLogType;
 use App\Content\Infrastructure\Entity\ChangeLogItem;
 use App\Content\Infrastructure\Repository\ChangeLogItemRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Content\Form\ChangeLogType;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;

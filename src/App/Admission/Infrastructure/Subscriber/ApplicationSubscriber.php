@@ -3,9 +3,9 @@
 namespace App\Admission\Infrastructure\Subscriber;
 
 use App\Admission\Domain\Events\ApplicationCreatedEvent;
-use App\Support\Infrastructure\Mailer\MailerInterface;
 use App\Admission\Infrastructure\AdmissionNotifier;
 use App\Identity\Infrastructure\UserRegistration;
+use App\Support\Infrastructure\Mailer\MailerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\Mime\Email;
 use Twig\Environment;

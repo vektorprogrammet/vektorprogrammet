@@ -3,7 +3,6 @@
 namespace App\Interview\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Admission\Infrastructure\Entity\Application;
 use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
 

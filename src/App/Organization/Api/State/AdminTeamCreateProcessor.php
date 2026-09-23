@@ -6,9 +6,9 @@ namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Organization\Domain\Events\TeamEvent;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\Team;
-use App\Organization\Domain\Events\TeamEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;

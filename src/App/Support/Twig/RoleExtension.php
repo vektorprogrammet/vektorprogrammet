@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Support\Twig;
 
-use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Infrastructure\RoleManager;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 use Symfony\Component\Security\Core\Authorization\AuthorizationCheckerInterface;

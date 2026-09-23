@@ -4,8 +4,8 @@ namespace App\Admission\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Repository\AdmissionNotificationRepository;
 use App\Organization\Infrastructure\Entity\Department;
-use Doctrine\ORM\Mapping as ORM;
 use App\Shared\Entity\Semester;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: AdmissionNotificationRepository::class)]
 #[ORM\Table(name: 'admission_notification')]

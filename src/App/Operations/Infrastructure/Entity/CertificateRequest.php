@@ -55,7 +55,7 @@ class CertificateRequest
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
-            /** @phpstan-ignore method.dynamicName */
+            /* @phpstan-ignore method.dynamicName */
             $this->$method($value);
         }
     }

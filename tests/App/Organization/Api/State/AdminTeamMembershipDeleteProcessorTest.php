@@ -3,11 +3,11 @@
 namespace App\Tests\App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Delete;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Api\State\AdminTeamMembershipDeleteProcessor;
 use App\Organization\Infrastructure\Entity\Position;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamMembership;
-use App\Identity\Infrastructure\Entity\User;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;

@@ -6,11 +6,11 @@ namespace App\Organization\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\RoleManager;
 use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Entity\Semester;
-use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Infrastructure\RoleManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;

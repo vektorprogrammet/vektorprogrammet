@@ -2,9 +2,9 @@
 
 namespace App\Content\Infrastructure\Repository;
 
+use App\Content\Infrastructure\Entity\SocialEvent;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
-use App\Content\Infrastructure\Entity\SocialEvent;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

@@ -4,8 +4,8 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Interview\Infrastructure\Repository\InterviewRepository;
 use App\Interview\Infrastructure\InterviewManager;
+use App\Interview\Infrastructure\Repository\InterviewRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;

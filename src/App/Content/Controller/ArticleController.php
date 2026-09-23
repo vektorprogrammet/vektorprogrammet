@@ -2,12 +2,12 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
 use App\Content\Infrastructure\Entity\Article;
-use App\Organization\Infrastructure\Entity\Department;
 use App\Content\Infrastructure\Repository\ArticleRepository;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

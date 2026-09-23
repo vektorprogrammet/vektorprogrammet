@@ -15,6 +15,7 @@ class InterviewScoreValidationTest extends TestCase
         $score->setRoleModel($roleModel);
         $score->setSuitability($suitability);
         $score->setSuitableAssistant('Ja');
+
         return $score;
     }
 
@@ -26,7 +27,7 @@ class InterviewScoreValidationTest extends TestCase
         $violations = $validator->validate($score);
 
         $this->assertGreaterThan(0, count($violations));
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('explanatoryPower', $paths);
     }
 
@@ -38,7 +39,7 @@ class InterviewScoreValidationTest extends TestCase
         $violations = $validator->validate($score);
 
         $this->assertGreaterThan(0, count($violations));
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('roleModel', $paths);
     }
 

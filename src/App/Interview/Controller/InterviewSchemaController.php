@@ -2,12 +2,12 @@
 
 namespace App\Interview\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Identity\Domain\Roles;
+use App\Interview\Form\InterviewSchemaType;
 use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Interview\Form\InterviewSchemaType;
-use App\Identity\Domain\Roles;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

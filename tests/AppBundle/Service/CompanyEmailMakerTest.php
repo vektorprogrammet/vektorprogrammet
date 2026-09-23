@@ -2,8 +2,8 @@
 
 namespace Tests\App\Service;
 
-use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Infrastructure\CompanyEmailMaker;
+use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 
 class CompanyEmailMakerTest extends KernelTestCase

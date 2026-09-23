@@ -185,7 +185,7 @@ final class BackgroundDeliveryFixture extends AbstractFixture implements Fixture
         $user->setEmail($email);
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
-        $user->setGender(false);
+        $user->setGender('0');
         $user->setPhone('90000034');
         $user->setUserName($username);
         $user->setPassword($password);

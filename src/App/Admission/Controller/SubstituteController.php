@@ -2,13 +2,13 @@
 
 namespace App\Admission\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Admission\Form\ModifySubstituteType;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Admission\Form\ModifySubstituteType;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

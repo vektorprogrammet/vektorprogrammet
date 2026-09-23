@@ -2,8 +2,8 @@
 
 namespace Tests\App\Entity;
 
-use App\Operations\Infrastructure\Entity\CertificateRequest;
 use App\Identity\Infrastructure\Entity\User;
+use App\Operations\Infrastructure\Entity\CertificateRequest;
 use PHPUnit\Framework\TestCase;
 
 class CertificateRequestEntityUnitTest extends TestCase

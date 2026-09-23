@@ -15,8 +15,6 @@ class SurveyNotificationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return SurveyNotification|null
-     *
      * @throws NonUniqueResultException
      */
     public function findByUserIdentifier(string $identifier): ?SurveyNotification

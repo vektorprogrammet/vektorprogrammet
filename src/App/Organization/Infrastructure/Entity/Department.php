@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Organization\Infrastructure\Entity;
 
-use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Scheduling\Infrastructure\Entity\School;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -135,7 +135,7 @@ class Department implements \Stringable
         /** @var AdmissionPeriod[] $admissionPeriods */
         $admissionPeriods = $this->getAdmissionPeriods()->toArray();
 
-        if (empty($admissionPeriods)) {
+        if ($admissionPeriods === []) {
             return null;
         }
 

@@ -7,9 +7,9 @@ namespace App\Organization\Infrastructure\Entity;
 use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardMembershipRepository;
 use App\Shared\Contracts\TeamMembershipInterface;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'executive_board_membership')]
 #[ORM\Entity(repositoryClass: ExecutiveBoardMembershipRepository::class)]

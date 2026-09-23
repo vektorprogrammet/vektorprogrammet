@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace App\Tests\App\Operations\Api\State;
 
+use ApiPlatform\Metadata\Put;
 use App\Identity\Infrastructure\AccessControlService;
 use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Api\Resource\AdminReceiptStatusInput;
@@ -11,13 +12,12 @@ use App\Operations\Api\State\AdminReceiptStatusProcessor;
 use App\Operations\Infrastructure\Entity\Receipt;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use App\Organization\Infrastructure\Entity\Department;
-use ApiPlatform\Metadata\Put;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
-use Symfony\Bundle\SecurityBundle\Security;
 
 class AdminReceiptStatusProcessorTest extends TestCase
 {

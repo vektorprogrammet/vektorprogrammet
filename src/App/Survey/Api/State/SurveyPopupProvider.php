@@ -4,12 +4,12 @@ namespace App\Survey\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Survey\Api\Resource\SurveyPopupResource;
-use App\Shared\Repository\SemesterRepository;
-use App\Survey\Infrastructure\Repository\SurveyRepository;
-use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Domain\Roles;
+use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Infrastructure\RoleManager;
+use App\Shared\Repository\SemesterRepository;
+use App\Survey\Api\Resource\SurveyPopupResource;
+use App\Survey\Infrastructure\Repository\SurveyRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class SurveyPopupProvider implements ProviderInterface

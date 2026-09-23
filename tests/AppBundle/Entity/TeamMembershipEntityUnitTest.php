@@ -2,10 +2,10 @@
 
 namespace Tests\App\Entity;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Position;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamMembership;
-use App\Identity\Infrastructure\Entity\User;
 use PHPUnit\Framework\TestCase;
 
 class TeamMembershipEntityUnitTest extends TestCase

@@ -5,14 +5,14 @@ namespace App\Admission\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Admission\Api\Resource\AdminApplicationListResource;
+use App\Admission\Domain\Rules\ApplicationStatusRule;
 use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
-use App\Admission\Domain\Rules\ApplicationStatusRule;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 

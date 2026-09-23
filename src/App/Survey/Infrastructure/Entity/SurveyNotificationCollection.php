@@ -3,7 +3,6 @@
 namespace App\Survey\Infrastructure\Entity;
 
 use App\Organization\Infrastructure\Entity\UserGroup;
-use DateTime;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -148,9 +147,6 @@ class SurveyNotificationCollection
         $this->userGroups = $userGroups instanceof Collection ? $userGroups : new ArrayCollection($userGroups);
     }
 
-    /**
-     * @return Survey|null
-     */
     public function getSurvey(): ?Survey
     {
         return $this->survey;
@@ -161,9 +157,6 @@ class SurveyNotificationCollection
         $this->survey = $survey;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getTimeOfNotification(): ?\DateTime
     {
         return $this->timeOfNotification;

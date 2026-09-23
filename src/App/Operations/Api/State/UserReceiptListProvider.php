@@ -8,9 +8,9 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Api\Resource\UserReceiptListResource;
+use App\Operations\Infrastructure\Entity\Receipt;
 use App\Operations\Infrastructure\Repository\ReceiptRepository;
 use Symfony\Bundle\SecurityBundle\Security;
-use App\Operations\Infrastructure\Entity\Receipt;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
@@ -48,8 +48,8 @@ class UserReceiptListProvider implements ProviderInterface
             $resource->visualId = $receipt->getVisualId();
             $resource->description = $receipt->getDescription();
             $resource->sum = $receipt->getSum();
-            $resource->receiptDate = $receipt->getReceiptDate()?->format('Y-m-d');
-            $resource->submitDate = $receipt->getSubmitDate()?->format('Y-m-d');
+            $resource->receiptDate = $receipt->getReceiptDate()->format('Y-m-d');
+            $resource->submitDate = $receipt->getSubmitDate()->format('Y-m-d');
             $resource->status = $receipt->getStatus();
             $resource->refundDate = $receipt->getRefundDate()?->format('Y-m-d');
             $resources[] = $resource;

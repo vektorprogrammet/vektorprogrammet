@@ -9,8 +9,6 @@ use App\Identity\Infrastructure\Entity\User;
 class GoogleUsers extends GoogleService
 {
     /**
-     * @param int|null $maxResults
-     *
      * @return \Google_Service_Directory_User[]
      */
     public function getUsers(?int $maxResults = null)

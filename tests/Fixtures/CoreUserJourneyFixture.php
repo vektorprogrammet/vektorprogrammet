@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures;
 
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Content\Infrastructure\Entity\Article;
 use App\Identity\Infrastructure\Entity\Role;
 use App\Identity\Infrastructure\Entity\User;
-use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\ExecutiveBoard;
@@ -65,8 +65,8 @@ final class CoreUserJourneyFixture extends AbstractFixture implements FixtureGro
         $admissionPeriod = new AdmissionPeriod();
         $admissionPeriod->setDepartment($department);
         $admissionPeriod->setSemester($semester);
-        $admissionPeriod->setStartDate((new \DateTime('yesterday')));
-        $admissionPeriod->setEndDate((new \DateTime('+14 days')));
+        $admissionPeriod->setStartDate(new \DateTime('yesterday'));
+        $admissionPeriod->setEndDate(new \DateTime('+14 days'));
         $department->addAdmissionPeriod($admissionPeriod);
         $manager->persist($admissionPeriod);
 

@@ -17,7 +17,7 @@ class AssistantHistoryValidationTest extends TestCase
         $ah->setBolk('Bolk 1');
 
         $violations = $validator->validate($ah);
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('workdays', $paths, 'Expected violation on workdays for non-numeric value');
     }
 
@@ -30,7 +30,7 @@ class AssistantHistoryValidationTest extends TestCase
         $ah->setBolk('Bolk 1');
 
         $violations = $validator->validate($ah);
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertNotContains('workdays', $paths, 'Valid workdays should produce no violation');
     }
 
@@ -43,7 +43,7 @@ class AssistantHistoryValidationTest extends TestCase
         $ah->setBolk('invalid format');
 
         $violations = $validator->validate($ah);
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('bolk', $paths, 'Expected violation on bolk for invalid format');
     }
 
@@ -58,7 +58,7 @@ class AssistantHistoryValidationTest extends TestCase
             $ah->setBolk($bolk);
 
             $violations = $validator->validate($ah);
-            $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+            $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
             $this->assertNotContains('bolk', $paths, "Valid bolk '$bolk' should produce no violation");
         }
     }
@@ -72,7 +72,7 @@ class AssistantHistoryValidationTest extends TestCase
         $ah->setBolk('Bolk 1');
 
         $violations = $validator->validate($ah);
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('day', $paths, 'Expected violation on day for non-Norwegian day name');
     }
 
@@ -87,7 +87,7 @@ class AssistantHistoryValidationTest extends TestCase
             $ah->setBolk('Bolk 1');
 
             $violations = $validator->validate($ah);
-            $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+            $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
             $this->assertNotContains('day', $paths, "Valid day '$day' should produce no violation");
         }
     }

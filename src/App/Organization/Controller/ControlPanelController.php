@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
 use App\Scheduling\Infrastructure\SbsData;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;
 

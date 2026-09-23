@@ -4,11 +4,11 @@ namespace App\Scheduling\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Scheduling\Api\Resource\AdminSchedulingAssistantResource;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Shared\Repository\SemesterRepository;
 use App\Identity\Infrastructure\Entity\User;
+use App\Scheduling\Api\Resource\AdminSchedulingAssistantResource;
+use App\Shared\Repository\SemesterRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class AdminSchedulingAssistantProvider implements ProviderInterface

@@ -2,15 +2,15 @@
 
 namespace App\Admission\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Identity\Infrastructure\Entity\User;
-use App\Organization\Infrastructure\Entity\Department;
-use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
 use App\Admission\Form\CreateAdmissionPeriodType;
 use App\Admission\Form\EditAdmissionPeriodType;
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
+use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Attribute\Route;

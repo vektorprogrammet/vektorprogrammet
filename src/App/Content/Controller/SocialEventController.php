@@ -2,12 +2,12 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Content\Form\SocialEventType;
+use App\Content\Infrastructure\Entity\SocialEvent;
+use App\Content\Infrastructure\Repository\SocialEventRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Content\Infrastructure\Repository\SocialEventRepository;
-use App\Content\Infrastructure\Entity\SocialEvent;
-use App\Content\Form\SocialEventType;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;

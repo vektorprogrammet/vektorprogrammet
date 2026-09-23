@@ -2,8 +2,8 @@
 
 namespace App\Scheduling\Form;
 
-use App\Scheduling\Infrastructure\Repository\SchoolRepository;
 use App\Scheduling\Infrastructure\Entity\School;
+use App\Scheduling\Infrastructure\Repository\SchoolRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\IntegerType;

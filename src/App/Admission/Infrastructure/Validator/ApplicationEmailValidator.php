@@ -2,8 +2,8 @@
 
 namespace App\Admission\Infrastructure\Validator;
 
-use App\Admission\Infrastructure\Entity\Application;
 use App\Admission\Infrastructure\ApplicationAdmission;
+use App\Admission\Infrastructure\Entity\Application;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 
@@ -25,7 +25,7 @@ class ApplicationEmailValidator extends ConstraintValidator
             return;
         }
 
-        assert($constraint instanceof \App\Admission\Infrastructure\Validator\ApplicationEmail);
+        assert($constraint instanceof ApplicationEmail);
 
         $user = $application->getUser();
         $hasAlreadyApplied = $this->admissionManager->userHasAlreadyApplied($user);

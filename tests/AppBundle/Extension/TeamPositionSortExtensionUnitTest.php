@@ -3,17 +3,17 @@
 namespace Tests\App\Extension;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\ExecutiveBoard;
 use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Organization\Infrastructure\Entity\Position;
-use App\Shared\Entity\Semester;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamMembership;
-use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Twig\TeamPositionSortExtension;
+use App\Shared\Entity\Semester;
 use App\Support\FilterService;
 use App\Support\Sorter;
-use App\Organization\Twig\TeamPositionSortExtension;
 use PHPUnit\Framework\TestCase;
 
 class TeamPositionSortExtensionUnitTest extends TestCase

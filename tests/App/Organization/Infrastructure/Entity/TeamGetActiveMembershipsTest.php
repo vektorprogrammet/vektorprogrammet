@@ -3,10 +3,10 @@
 namespace App\Tests\App\Organization\Infrastructure\Entity;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamMembership;
-use App\Identity\Infrastructure\Entity\User;
 use App\Shared\Entity\Semester;
 use PHPUnit\Framework\TestCase;
 

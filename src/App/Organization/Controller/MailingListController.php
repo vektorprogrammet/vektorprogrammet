@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
 use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Organization\Form\GenerateMailingListType;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;

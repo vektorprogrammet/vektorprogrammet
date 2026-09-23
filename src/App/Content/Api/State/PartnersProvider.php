@@ -5,8 +5,8 @@ namespace App\Content\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Content\Api\Resource\PartnersResource;
-use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Identity\Infrastructure\Entity\User;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class PartnersProvider implements ProviderInterface

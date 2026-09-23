@@ -3,8 +3,8 @@
 namespace App\Support\DataFixtures\ORM;
 
 use App\Content\Infrastructure\Entity\Article;
-use App\Organization\Infrastructure\Entity\Department;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

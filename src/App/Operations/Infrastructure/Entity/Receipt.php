@@ -137,9 +137,6 @@ class Receipt implements \Stringable
         return $this->picturePath;
     }
 
-    /**
-     * @param string|null $picturePath
-     */
     public function setPicturePath(?string $picturePath): void
     {
         $this->picturePath = $picturePath;
@@ -220,9 +217,6 @@ class Receipt implements \Stringable
         return $this->visualId;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getRefundDate(): ?\DateTime
     {
         return $this->refundDate;

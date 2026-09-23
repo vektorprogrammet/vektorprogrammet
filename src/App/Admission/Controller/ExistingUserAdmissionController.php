@@ -2,14 +2,14 @@
 
 namespace App\Admission\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Identity\Infrastructure\Entity\User;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Organization\Infrastructure\Repository\TeamRepository;
 use App\Admission\Domain\Events\ApplicationCreatedEvent;
 use App\Admission\Form\ApplicationExistingUserType;
 use App\Admission\Infrastructure\ApplicationAdmission;
+use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\TeamRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

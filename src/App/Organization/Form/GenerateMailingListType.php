@@ -6,8 +6,8 @@ namespace App\Organization\Form;
 
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
 use App\Shared\Entity\Semester;
+use App\Shared\Repository\SemesterRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;

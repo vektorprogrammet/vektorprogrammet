@@ -4,9 +4,9 @@ namespace App\Admission\Infrastructure\Repository;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Organization\Infrastructure\Entity\Department;
 use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Domain\ValueObjects\InterviewStatusType;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
@@ -111,7 +111,7 @@ class ApplicationRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Department|null     $department
+     * @param Department|null      $department
      * @param AdmissionPeriod|null $admissionPeriod
      *
      * @return Application[]

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace App\Organization\Infrastructure\Entity;
 
-use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Identity\Infrastructure\Entity\User;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Repository\TeamMembershipRepository;
 use App\Shared\Contracts\TeamMembershipInterface;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Shared\Entity\Semester;
 
 #[ORM\Table(name: 'team_membership')]
 // One person legitimately holds two positions in the same team and semester, so position

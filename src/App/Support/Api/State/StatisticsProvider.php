@@ -4,9 +4,9 @@ namespace App\Support\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Support\Api\Resource\Statistics;
-use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
+use App\Support\Api\Resource\Statistics;
 
 class StatisticsProvider implements ProviderInterface
 {

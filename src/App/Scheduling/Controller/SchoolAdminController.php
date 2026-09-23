@@ -2,20 +2,20 @@
 
 namespace App\Scheduling\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Operations\Infrastructure\Entity\AssistantHistory;
-use App\Organization\Infrastructure\Entity\Department;
-use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Scheduling\Infrastructure\Repository\SchoolRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
-use App\Scheduling\Infrastructure\Entity\School;
+use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
 use App\Operations\Form\CreateAssistantHistoryType;
+use App\Operations\Infrastructure\Entity\AssistantHistory;
+use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Scheduling\Form\CreateSchoolType;
-use App\Identity\Domain\Roles;
+use App\Scheduling\Infrastructure\Entity\School;
+use App\Scheduling\Infrastructure\Repository\SchoolRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

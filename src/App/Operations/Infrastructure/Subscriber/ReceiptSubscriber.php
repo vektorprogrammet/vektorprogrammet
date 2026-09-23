@@ -2,8 +2,8 @@
 
 namespace App\Operations\Infrastructure\Subscriber;
 
-use App\Operations\Domain\Events\ReceiptEvent;
 use App\Admission\Infrastructure\EmailSender;
+use App\Operations\Domain\Events\ReceiptEvent;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RequestStack;

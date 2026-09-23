@@ -2,9 +2,9 @@
 
 namespace App\Scheduling\Infrastructure\Entity;
 
+use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Repository\SchoolRepository;
-use App\Operations\Infrastructure\Entity\AssistantHistory;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Operations\Infrastructure\Repository;
 
-use App\Operations\Infrastructure\Entity\Receipt;
 use App\Identity\Infrastructure\Entity\User;
+use App\Operations\Infrastructure\Entity\Receipt;
 use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;

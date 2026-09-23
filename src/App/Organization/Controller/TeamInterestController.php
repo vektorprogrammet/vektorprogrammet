@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Organization\Infrastructure\Entity\Department;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Organization\Infrastructure\Entity\TeamInterest;
 use App\Organization\Domain\Events\TeamInterestCreatedEvent;
 use App\Organization\Form\TeamInterestType;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Entity\TeamInterest;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

@@ -4,9 +4,9 @@ namespace App\Survey\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
+use App\Identity\Infrastructure\Entity\User;
 use App\Survey\Api\Resource\SurveyResultResource;
 use App\Survey\Infrastructure\Repository\SurveyRepository;
-use App\Identity\Infrastructure\Entity\User;
 use App\Survey\Infrastructure\SurveyManager;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;

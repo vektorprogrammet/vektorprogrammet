@@ -2,14 +2,14 @@
 
 namespace App\Admission\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Admission\Infrastructure\Entity\AdmissionSubscriber;
-use App\Organization\Infrastructure\Entity\Department;
-use App\Admission\Infrastructure\Repository\AdmissionSubscriberRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
 use App\Admission\Form\AdmissionSubscriberType;
 use App\Admission\Infrastructure\AdmissionNotifier;
+use App\Admission\Infrastructure\Entity\AdmissionSubscriber;
+use App\Admission\Infrastructure\Repository\AdmissionSubscriberRepository;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\RedirectResponse;

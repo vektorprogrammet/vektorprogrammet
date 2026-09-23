@@ -43,7 +43,7 @@ class PasswordResetRepository extends ServiceEntityRepository
     }
 
     /**
-     * @return PasswordReset
+     * @return PasswordReset|null
      *
      * @throws NoResultException
      * @throws NonUniqueResultException

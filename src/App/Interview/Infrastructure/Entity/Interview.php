@@ -496,7 +496,7 @@ class Interview
         ];
 
         $currentStatus = $this->interviewStatus;
-        if ($currentStatus !== null && $currentStatus !== $interviewStatus
+        if ($currentStatus !== $interviewStatus
             && array_key_exists($currentStatus, $validTransitions)
             && !in_array($interviewStatus, $validTransitions[$currentStatus], true)) {
             throw new \InvalidArgumentException("Invalid interview status transition from $currentStatus to $interviewStatus");

@@ -2,12 +2,12 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
 use App\Content\Infrastructure\Repository\ArticleRepository;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Support\Controller\BaseController;
 use App\Support\Infrastructure\GeoLocation;
 use Symfony\Component\Routing\Attribute\Route;
 

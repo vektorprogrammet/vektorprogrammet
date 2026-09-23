@@ -18,7 +18,7 @@ class AdmissionPeriodValidationTest extends TestCase
 
         $violations = $validator->validate($period);
 
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('startDate', $paths, 'Expected a violation on startDate when startDate >= endDate');
     }
 
@@ -32,7 +32,7 @@ class AdmissionPeriodValidationTest extends TestCase
 
         $violations = $validator->validate($period);
 
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('startDate', $paths, 'Expected a violation on startDate when startDate == endDate');
     }
 
@@ -46,7 +46,7 @@ class AdmissionPeriodValidationTest extends TestCase
 
         $violations = $validator->validate($period);
 
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertNotContains('startDate', $paths, 'Expected no violation on startDate when startDate < endDate');
     }
 }

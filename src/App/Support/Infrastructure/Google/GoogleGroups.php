@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace App\Support\Infrastructure\Google;
 
-use App\Organization\Infrastructure\Entity\Team;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\Team;
 
 class GoogleGroups extends GoogleService
 {
     /**
-     * @param int|null $maxResults
-     *
      * @return \Google_Service_Directory_Group[]
      */
     public function getGroups(?int $maxResults = null)

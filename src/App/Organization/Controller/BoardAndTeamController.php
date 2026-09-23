@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Support\Controller\BaseController;
 use App\Support\Infrastructure\GeoLocation;
 use Symfony\Component\Routing\Attribute\Route;
 

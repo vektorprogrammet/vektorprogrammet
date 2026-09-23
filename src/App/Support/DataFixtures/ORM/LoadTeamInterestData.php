@@ -3,9 +3,9 @@
 namespace App\Support\DataFixtures\ORM;
 
 use App\Organization\Infrastructure\Entity\Department;
-use App\Shared\Entity\Semester;
 use App\Organization\Infrastructure\Entity\Team;
 use App\Organization\Infrastructure\Entity\TeamInterest;
+use App\Shared\Entity\Semester;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

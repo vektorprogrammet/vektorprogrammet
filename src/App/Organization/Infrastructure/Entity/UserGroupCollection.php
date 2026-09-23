@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace App\Organization\Infrastructure\Entity;
 
 use App\Identity\Infrastructure\Entity\User;
+use App\Shared\Entity\Semester;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Shared\Entity\Semester;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'user_group_collection')]

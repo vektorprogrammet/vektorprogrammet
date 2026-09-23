@@ -2,17 +2,17 @@
 
 namespace App\Identity\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Identity\Infrastructure\Entity\AccessRule;
-use App\Identity\Infrastructure\Repository\AccessRuleRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Repository\UnhandledAccessRuleRepository;
+use App\Identity\Domain\Roles;
 use App\Identity\Form\AccessRuleType;
 use App\Identity\Form\RoutingAccessRuleType;
-use App\Identity\Infrastructure\ReversedRoleHierarchy;
-use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\AccessRule;
+use App\Identity\Infrastructure\Repository\AccessRuleRepository;
+use App\Identity\Infrastructure\Repository\UnhandledAccessRuleRepository;
+use App\Identity\Infrastructure\ReversedRoleHierarchy;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

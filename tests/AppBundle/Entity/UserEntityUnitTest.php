@@ -2,9 +2,9 @@
 
 namespace Tests\App\Entity;
 
-use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Identity\Infrastructure\Entity\Role;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use PHPUnit\Framework\TestCase;
 
 class UserEntityUnitTest extends TestCase

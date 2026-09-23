@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace App\Organization\Form;
 
-use App\Shared\Repository\SemesterRepository;
+use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Shared\Entity\Semester;
-use App\Identity\Infrastructure\Entity\User;
+use App\Shared\Repository\SemesterRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;

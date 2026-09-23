@@ -4,10 +4,10 @@ namespace App\Survey\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Organization\Infrastructure\Entity\UserGroup;
 use App\Survey\Api\Resource\AdminSurveyNotifierWriteResource;
 use App\Survey\Infrastructure\Entity\Survey;
 use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
-use App\Organization\Infrastructure\Entity\UserGroup;
 use App\Survey\Infrastructure\SurveyNotifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpKernel\Exception\ConflictHttpException;

@@ -2,10 +2,10 @@
 
 namespace App\Identity\Infrastructure;
 
+use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Entity\Role;
 use App\Identity\Infrastructure\Entity\User;
 use App\Support\Infrastructure\Mailer\MailerInterface;
-use App\Identity\Domain\Roles;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Mime\Address;
 use Symfony\Component\Mime\Email;

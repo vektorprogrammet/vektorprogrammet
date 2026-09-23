@@ -2,10 +2,10 @@
 
 namespace App\Operations\Infrastructure\Entity;
 
-use App\Organization\Infrastructure\Entity\Department;
-use App\Scheduling\Infrastructure\Entity\School;
 use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
+use App\Organization\Infrastructure\Entity\Department;
+use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -227,7 +227,7 @@ class AssistantHistory implements \Stringable
     {
         foreach ($data as $property => $value) {
             $method = "set{$property}";
-            /** @phpstan-ignore method.dynamicName */
+            /* @phpstan-ignore method.dynamicName */
             $this->$method($value);
         }
     }

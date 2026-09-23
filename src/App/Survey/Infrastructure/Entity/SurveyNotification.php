@@ -4,7 +4,6 @@ namespace App\Survey\Infrastructure\Entity;
 
 use App\Identity\Infrastructure\Entity\User;
 use App\Survey\Infrastructure\Repository\SurveyNotificationRepository;
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
@@ -97,9 +96,6 @@ class SurveyNotification
         return $this->surveyLinkClicks;
     }
 
-    /**
-     * @return \DateTime|null
-     */
     public function getTimeNotificationSent(): ?\DateTime
     {
         return $this->timeNotificationSent;

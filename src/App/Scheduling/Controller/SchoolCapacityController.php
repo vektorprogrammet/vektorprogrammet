@@ -2,12 +2,12 @@
 
 namespace App\Scheduling\Controller;
 
-use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
 use App\Scheduling\Form\SchoolCapacityEditType;
 use App\Scheduling\Form\SchoolCapacityType;
+use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

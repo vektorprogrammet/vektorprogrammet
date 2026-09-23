@@ -3,8 +3,8 @@
 namespace Tests\AppBundle\Api;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
-use App\Organization\Infrastructure\Entity\Department;
 use App\Admission\Infrastructure\Entity\InfoMeeting;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;

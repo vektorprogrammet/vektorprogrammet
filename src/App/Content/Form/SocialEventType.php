@@ -2,10 +2,10 @@
 
 namespace App\Content\Form;
 
-use App\Organization\Infrastructure\Entity\Department;
-use App\Shared\Repository\SemesterRepository;
 use App\Identity\Infrastructure\Entity\Role;
+use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
+use App\Shared\Repository\SemesterRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

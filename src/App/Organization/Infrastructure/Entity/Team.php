@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace App\Organization\Infrastructure\Entity;
 
-use App\Admission\Infrastructure\Entity\Application;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use App\Admission\Infrastructure\Entity\Application;
 use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Validator as CustomAssert;
 use App\Organization\Infrastructure\Repository\TeamRepository;
 use App\Shared\Contracts\DepartmentSemesterInterface;
 use App\Shared\Contracts\TeamInterface;
 use App\Shared\Contracts\TeamMembershipInterface;
-use App\Identity\Infrastructure\Validator as CustomAssert;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;

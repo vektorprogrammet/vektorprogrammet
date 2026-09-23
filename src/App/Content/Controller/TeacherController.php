@@ -2,9 +2,9 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Symfony\Component\Routing\Attribute\Route;
 
 class TeacherController extends BaseController

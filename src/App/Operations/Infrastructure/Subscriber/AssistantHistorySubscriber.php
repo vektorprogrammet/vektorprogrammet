@@ -2,9 +2,9 @@
 
 namespace App\Operations\Infrastructure\Subscriber;
 
-use App\Shared\Entity\Semester;
-use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
 use App\Identity\Infrastructure\UserRegistration;
+use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
@@ -48,7 +48,7 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
         $user = $assistantHistory->getUser();
 
         // Check if user already has user name and password
-        /** @phpstan-ignore notIdentical.alwaysTrue, booleanAnd.alwaysFalse */
+        /* @phpstan-ignore notIdentical.alwaysTrue, booleanAnd.alwaysFalse */
         if ($user->getUserName() !== null && $user->getPassword() !== null) {
             $user->setActive(true);
             $this->em->persist($user);
@@ -58,7 +58,7 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
                 ->findOrCreateCurrentSemester();
 
             // Send new user code only if assistant history is added to current semester
-            /** @phpstan-ignore identical.alwaysFalse */
+            /* @phpstan-ignore identical.alwaysFalse */
             if ($assistantHistory->getSemester() === $currentSemester && $user->getNewUserCode() === null) {
                 $this->userRegistrationService->sendActivationCode($user);
             }

@@ -2,9 +2,9 @@
 
 namespace App\Survey\Infrastructure\Entity;
 
-use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
 use App\Identity\Infrastructure\Entity\User;
 use App\Scheduling\Infrastructure\Entity\School;
+use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -99,9 +99,6 @@ class SurveyTaken implements \JsonSerializable
         return $this->id;
     }
 
-    /**
-     * @return School|null
-     */
     public function getSchool(): ?School
     {
         return $this->school;

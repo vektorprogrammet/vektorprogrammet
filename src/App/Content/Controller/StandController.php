@@ -2,13 +2,13 @@
 
 namespace App\Content\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Admission\Domain\Rules\AdmissionStatistics;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\AdmissionSubscriberRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Admission\Domain\Rules\AdmissionStatistics;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

@@ -4,10 +4,10 @@ namespace App\Interview\Infrastructure\Subscriber;
 
 use App\Interview\Domain\Events\InterviewConductedEvent;
 use App\Interview\Domain\Events\InterviewEvent;
-use App\Support\Infrastructure\Mailer\MailerInterface;
 use App\Interview\Infrastructure\InterviewManager;
 use App\Interview\Infrastructure\InterviewNotificationManager;
 use App\Scheduling\Infrastructure\SbsData;
+use App\Support\Infrastructure\Mailer\MailerInterface;
 use App\Support\Infrastructure\Sms\Sms;
 use App\Support\Infrastructure\Sms\SmsSenderInterface;
 use Psr\Log\LoggerInterface;

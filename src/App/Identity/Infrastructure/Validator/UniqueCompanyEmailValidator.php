@@ -2,8 +2,8 @@
 
 namespace App\Identity\Infrastructure\Validator;
 
-use App\Organization\Infrastructure\Entity\Team;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\Team;
 use App\Support\Infrastructure\Google\GoogleAPI;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Validator\Constraint;

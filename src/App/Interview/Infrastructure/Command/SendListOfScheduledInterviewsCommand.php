@@ -2,9 +2,9 @@
 
 namespace App\Interview\Infrastructure\Command;
 
-use App\Organization\Infrastructure\Entity\Department;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\InterviewManager;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;

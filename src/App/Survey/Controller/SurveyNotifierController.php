@@ -3,12 +3,12 @@
 namespace App\Survey\Controller;
 
 use App\Identity\Infrastructure\Entity\User;
-use App\Support\Controller\BaseController;
+use App\Organization\Infrastructure\Entity\UserGroupCollection;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
-use App\Organization\Infrastructure\Entity\UserGroupCollection;
+use App\Support\Controller\BaseController;
 use App\Survey\Form\SurveyNotifierType;
+use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
 use App\Survey\Infrastructure\SurveyNotifier;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;

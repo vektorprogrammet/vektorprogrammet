@@ -2,28 +2,28 @@
 
 namespace App\Interview\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Admission\Infrastructure\ApplicationManager;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Interview\Infrastructure\Entity\Interview;
-use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Organization\Infrastructure\Repository\TeamRepository;
+use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Repository\UserRepository;
-use App\Organization\Infrastructure\Entity\Team;
+use App\Identity\Infrastructure\ReversedRoleHierarchy;
 use App\Interview\Domain\Events\InterviewConductedEvent;
 use App\Interview\Domain\Events\InterviewEvent;
-use App\Interview\Form\InterviewNewTimeType;
 use App\Interview\Form\AddCoInterviewerType;
 use App\Interview\Form\ApplicationInterviewType;
 use App\Interview\Form\CancelInterviewConfirmationType;
 use App\Interview\Form\CreateInterviewType;
+use App\Interview\Form\InterviewNewTimeType;
 use App\Interview\Form\ScheduleInterviewType;
-use App\Identity\Infrastructure\ReversedRoleHierarchy;
-use App\Identity\Domain\Roles;
-use App\Admission\Infrastructure\ApplicationManager;
+use App\Interview\Infrastructure\Entity\Interview;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Interview\Infrastructure\InterviewManager;
+use App\Organization\Infrastructure\Entity\Team;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\TeamRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
@@ -31,7 +31,6 @@ use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Routing\Attribute\Route;
 
 /**

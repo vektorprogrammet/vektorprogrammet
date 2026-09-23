@@ -196,7 +196,7 @@ final class InterviewRecruiterFixture extends AbstractFixture implements Fixture
         $user->setEmail($email);
         $user->setFirstName($firstName);
         $user->setLastName($lastName);
-        $user->setGender(false);
+        $user->setGender('0');
         $user->setPhone('90000032');
         $user->setUserName($username);
         $user->setPassword($password);

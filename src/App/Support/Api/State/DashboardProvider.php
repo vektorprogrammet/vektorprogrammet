@@ -6,13 +6,13 @@ namespace App\Support\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
-use App\Support\Api\Resource\DashboardResource;
+use App\Admission\Infrastructure\ApplicationManager;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Entity\User;
-use App\Admission\Infrastructure\ApplicationManager;
+use App\Support\Api\Resource\DashboardResource;
 use Symfony\Bundle\SecurityBundle\Security;
 
 class DashboardProvider implements ProviderInterface

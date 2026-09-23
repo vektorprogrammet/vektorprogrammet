@@ -4,12 +4,12 @@ namespace App\Admission\Infrastructure;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Organization\Infrastructure\Entity\Department;
-use App\Interview\Infrastructure\Entity\Interview;
+use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\Entity\Role;
 use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\LoginManager;
+use App\Interview\Infrastructure\Entity\Interview;
+use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;

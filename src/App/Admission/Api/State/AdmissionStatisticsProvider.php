@@ -8,10 +8,10 @@ use App\Admission\Api\Resource\AdmissionStatisticsResource;
 use App\Admission\Infrastructure\Repository\AdmissionPeriodRepository;
 use App\Admission\Infrastructure\Repository\ApplicationRepository;
 use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Identity\Infrastructure\Entity\User;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 

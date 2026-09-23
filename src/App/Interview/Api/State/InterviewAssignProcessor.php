@@ -4,15 +4,14 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Identity\Infrastructure\AccessControlService;
-use App\Interview\Api\Resource\InterviewAssignInput;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Interview\Infrastructure\Entity\InterviewSchema;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Identity\Infrastructure\Entity\User;
+use App\Interview\Api\Resource\InterviewAssignInput;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\HttpKernel\Exception\AccessDeniedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 class InterviewAssignProcessor implements ProcessorInterface

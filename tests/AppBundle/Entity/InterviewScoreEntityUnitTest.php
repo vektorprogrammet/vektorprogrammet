@@ -2,9 +2,9 @@
 
 namespace Tests\App\Entity;
 
+use App\Interview\Domain\ValueObjects\Suitability;
 use App\Interview\Infrastructure\Entity\InterviewScore;
 use PHPUnit\Framework\TestCase;
-use App\Interview\Domain\ValueObjects\Suitability;
 
 class InterviewScoreEntityUnitTest extends TestCase
 {

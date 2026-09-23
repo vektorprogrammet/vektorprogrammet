@@ -3,8 +3,8 @@
 namespace App\Tests\App\Identity\Infrastructure;
 
 use App\Identity\Infrastructure\Entity\PasswordReset;
-use App\Identity\Infrastructure\Repository\PasswordResetRepository;
 use App\Identity\Infrastructure\PasswordManager;
+use App\Identity\Infrastructure\Repository\PasswordResetRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
 

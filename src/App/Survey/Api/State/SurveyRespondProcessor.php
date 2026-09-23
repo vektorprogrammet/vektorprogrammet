@@ -5,8 +5,8 @@ namespace App\Survey\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
 use App\Survey\Infrastructure\Entity\Survey;
+use App\Survey\Infrastructure\Repository\SurveyTakenRepository;
 use App\Survey\Infrastructure\SurveyManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -108,7 +108,7 @@ class SurveyRespondProcessor implements ProcessorInterface
     /**
      * Map answer data from the input onto the SurveyAnswer entities created by SurveyManager.
      *
-     * @param \App\Survey\Infrastructure\Entity\SurveyTaken            $surveyTaken
+     * @param \App\Survey\Infrastructure\Entity\SurveyTaken          $surveyTaken
      * @param array<array{questionId: int, answer: string|string[]}> $answers
      */
     private function mapAnswers($surveyTaken, array $answers): void

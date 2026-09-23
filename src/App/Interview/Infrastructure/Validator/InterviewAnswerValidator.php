@@ -16,7 +16,7 @@ class InterviewAnswerValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        \assert($constraint instanceof \App\Interview\Infrastructure\Validator\InterviewAnswer);
+        \assert($constraint instanceof InterviewAnswer);
 
         $interviewAnswer = $this->context->getObject();
         if (!$interviewAnswer instanceof InterviewAnswerEntity) {

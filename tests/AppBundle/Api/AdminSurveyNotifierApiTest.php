@@ -2,10 +2,10 @@
 
 namespace Tests\AppBundle\Api;
 
-use App\Survey\Infrastructure\Entity\Survey;
-use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
 use App\Organization\Infrastructure\Entity\UserGroup;
 use App\Organization\Infrastructure\Entity\UserGroupCollection;
+use App\Survey\Infrastructure\Entity\Survey;
+use App\Survey\Infrastructure\Entity\SurveyNotificationCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Tests\BaseWebTestCase;
 

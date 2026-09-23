@@ -2,11 +2,11 @@
 
 namespace App\Operations\Infrastructure;
 
-use App\Support\Infrastructure\GeoLocation;
 use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
+use App\Support\Infrastructure\GeoLocation;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

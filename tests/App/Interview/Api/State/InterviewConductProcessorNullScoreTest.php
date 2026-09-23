@@ -3,12 +3,12 @@
 namespace App\Tests\App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Put;
+use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Api\Resource\InterviewConductInput;
 use App\Interview\Api\State\InterviewConductProcessor;
 use App\Interview\Infrastructure\Entity\Interview;
 use App\Interview\Infrastructure\InterviewManager;
-use App\Identity\Infrastructure\Entity\User;
-use App\Identity\Infrastructure\AccessControlService;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use PHPUnit\Framework\TestCase;

@@ -2,7 +2,6 @@
 
 namespace App\Tests\App\Operations\Infrastructure\Entity;
 
-use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\Receipt;
 use Doctrine\DBAL\Exception\UniqueConstraintViolationException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
@@ -14,7 +13,7 @@ class ReceiptUniqueVisualIdTest extends KernelTestCase
         self::bootKernel();
         $em = self::getContainer()->get('doctrine.orm.entity_manager');
 
-        $visualId = 'test-unique-visual-' . uniqid();
+        $visualId = 'test-unique-visual-'.uniqid();
 
         $receipt1 = new Receipt();
         $receipt1->setVisualId($visualId);

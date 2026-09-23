@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
 use App\Operations\Infrastructure\Repository\AssistantHistoryRepository;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Organization\Infrastructure\Entity\UserGroupCollection;
 use App\Organization\Form\UserGroupCollectionType;
+use App\Organization\Infrastructure\Entity\UserGroupCollection;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Organization\Infrastructure\UserGroupCollectionManager;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;

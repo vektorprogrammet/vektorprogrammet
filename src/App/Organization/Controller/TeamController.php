@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Shared\Repository\SemesterRepository;
-use App\Organization\Infrastructure\Repository\TeamRepository;
-use App\Organization\Infrastructure\Entity\Team;
 use App\Identity\Domain\Roles;
+use App\Organization\Infrastructure\Entity\Team;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
+use App\Organization\Infrastructure\Repository\TeamRepository;
+use App\Shared\Repository\SemesterRepository;
+use App\Support\Controller\BaseController;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Attribute\Route;
 

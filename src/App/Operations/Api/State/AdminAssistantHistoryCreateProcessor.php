@@ -4,11 +4,11 @@ namespace App\Operations\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Identity\Infrastructure\Entity\User;
+use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
-use App\Identity\Infrastructure\Entity\User;
-use App\Operations\Domain\Events\AssistantHistoryCreatedEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;

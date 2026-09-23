@@ -4,9 +4,9 @@ namespace App\Admission\Infrastructure;
 
 use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Admission\Infrastructure\Entity\Application;
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
-use App\Identity\Infrastructure\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
 

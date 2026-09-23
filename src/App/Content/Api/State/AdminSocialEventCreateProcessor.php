@@ -4,11 +4,11 @@ namespace App\Content\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
+use App\Content\Infrastructure\Entity\SocialEvent;
 use App\Identity\Infrastructure\AccessControlService;
 use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
-use App\Content\Infrastructure\Entity\SocialEvent;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpKernel\Exception\UnprocessableEntityHttpException;

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace App\Support\DataFixtures\ORM;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\AssistantHistory;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
-use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

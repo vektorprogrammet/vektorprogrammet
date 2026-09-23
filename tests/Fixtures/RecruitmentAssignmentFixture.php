@@ -11,7 +11,6 @@ use App\Identity\Infrastructure\Entity\User;
 use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\FieldOfStudy;
-use App\Shared\Entity\Semester;
 use App\Shared\SemesterUtil;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;

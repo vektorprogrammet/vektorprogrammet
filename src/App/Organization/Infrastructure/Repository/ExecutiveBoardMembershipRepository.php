@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace App\Organization\Infrastructure\Repository;
 
-use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

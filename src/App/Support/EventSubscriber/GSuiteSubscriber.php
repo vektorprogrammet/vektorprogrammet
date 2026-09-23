@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace App\Support\EventSubscriber;
 
+use App\Identity\Domain\Events\UserEvent;
+use App\Identity\Infrastructure\CompanyEmailMaker;
 use App\Organization\Domain\Events\TeamEvent;
 use App\Organization\Domain\Events\TeamMembershipEvent;
-use App\Identity\Domain\Events\UserEvent;
 use App\Support\Infrastructure\Google\GoogleAPI;
 use App\Support\Infrastructure\Google\GoogleDrive;
 use App\Support\Infrastructure\Google\GoogleGroups;
 use App\Support\Infrastructure\Google\GoogleUsers;
-use App\Identity\Infrastructure\CompanyEmailMaker;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 

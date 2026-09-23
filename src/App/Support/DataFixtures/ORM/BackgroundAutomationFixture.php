@@ -62,7 +62,7 @@ final class BackgroundAutomationFixture extends AbstractFixture implements Fixtu
         $user->setEmail('background-automation-user-0032@example.invalid');
         $user->setFirstName('Automation');
         $user->setLastName('User 0032');
-        $user->setGender(false);
+        $user->setGender('0');
         $user->setPhone('90000033');
         $user->setUserName('background-automation-user-0032');
         $user->setPassword('background-automation-password-0032');

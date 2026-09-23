@@ -2,8 +2,8 @@
 
 namespace Tests\App\Type;
 
-use App\Organization\Infrastructure\Entity\Position;
 use App\Organization\Form\CreatePositionType;
+use App\Organization\Infrastructure\Entity\Position;
 use Symfony\Component\Form\Test\TypeTestCase;
 
 class CreatePositionTest extends TypeTestCase

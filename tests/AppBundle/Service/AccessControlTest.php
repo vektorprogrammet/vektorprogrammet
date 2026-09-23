@@ -2,14 +2,14 @@
 
 namespace Tests\App\Service;
 
-use App\Identity\Infrastructure\Entity\AccessRule;
-use App\Identity\Infrastructure\Repository\UnhandledAccessRuleRepository;
-use App\Identity\Infrastructure\Entity\Role;
-use App\Organization\Infrastructure\Entity\Team;
-use App\Identity\Infrastructure\Entity\UnhandledAccessRule;
-use App\Identity\Infrastructure\Entity\User;
 use App\Identity\Domain\Roles;
 use App\Identity\Infrastructure\AccessControlService;
+use App\Identity\Infrastructure\Entity\AccessRule;
+use App\Identity\Infrastructure\Entity\Role;
+use App\Identity\Infrastructure\Entity\UnhandledAccessRule;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Repository\UnhandledAccessRuleRepository;
+use App\Organization\Infrastructure\Entity\Team;
 use Tests\BaseKernelTestCase;
 
 class AccessControlTest extends BaseKernelTestCase

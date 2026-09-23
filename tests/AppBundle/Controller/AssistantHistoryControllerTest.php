@@ -45,7 +45,7 @@ class AssistantHistoryControllerTest extends BaseWebTestCase
         $this->assertNotNull($crossDeptHistory, 'Expected an AssistantHistory in a department other than NTNU');
 
         $client = $this->createTeamLeaderClient();
-        $client->request('POST', '/kontrollpanel/deltakerhistorikk/slett/' . $crossDeptHistory->getId());
+        $client->request('POST', '/kontrollpanel/deltakerhistorikk/slett/'.$crossDeptHistory->getId());
 
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }

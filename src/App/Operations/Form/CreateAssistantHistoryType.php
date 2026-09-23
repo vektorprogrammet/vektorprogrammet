@@ -2,9 +2,9 @@
 
 namespace App\Operations\Form;
 
-use App\Shared\Repository\SemesterRepository;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Shared\Entity\Semester;
+use App\Shared\Repository\SemesterRepository;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

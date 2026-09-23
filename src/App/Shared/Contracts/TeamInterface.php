@@ -64,7 +64,7 @@ interface TeamInterface
     public function getActiveTeamMemberships();
 
     /**
-     * @return \App\Identity\Infrastructure\Entity\User[]
+     * @return User[]
      */
     public function getActiveUsers();
 }

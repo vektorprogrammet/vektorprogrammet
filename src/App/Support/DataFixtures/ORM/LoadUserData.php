@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace App\Support\DataFixtures\ORM;
 
-use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Identity\Infrastructure\Entity\Role;
 use App\Identity\Infrastructure\Entity\User;
+use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 use Doctrine\Persistence\ObjectManager;

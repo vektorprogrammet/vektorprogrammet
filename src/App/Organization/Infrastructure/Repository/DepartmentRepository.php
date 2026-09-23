@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace App\Organization\Infrastructure\Repository;
 
-use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Organization\Infrastructure\Entity\Department;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\QueryBuilder;

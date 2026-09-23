@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace App\Organization\Controller;
 
-use App\Support\Controller\BaseController;
+use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\RoleManager;
+use App\Organization\Form\CreateExecutiveBoardMembershipType;
+use App\Organization\Form\CreateExecutiveBoardType;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\ExecutiveBoardMembership;
 use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardMembershipRepository;
 use App\Organization\Infrastructure\Repository\ExecutiveBoardRepository;
 use App\Shared\Repository\SemesterRepository;
-use App\Organization\Form\CreateExecutiveBoardMembershipType;
-use App\Organization\Form\CreateExecutiveBoardType;
-use App\Identity\Infrastructure\RoleManager;
-use App\Identity\Infrastructure\Entity\User;
+use App\Support\Controller\BaseController;
 use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;

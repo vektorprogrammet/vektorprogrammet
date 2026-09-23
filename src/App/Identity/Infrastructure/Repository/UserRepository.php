@@ -2,9 +2,9 @@
 
 namespace App\Identity\Infrastructure\Repository;
 
+use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Shared\Entity\Semester;
-use App\Identity\Infrastructure\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;

@@ -6,9 +6,9 @@ use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProviderInterface;
 use App\Identity\Api\Resource\AdminUserListResource;
 use App\Identity\Infrastructure\AccessControlService;
-use App\Organization\Infrastructure\Repository\DepartmentRepository;
-use App\Identity\Infrastructure\Repository\UserRepository;
 use App\Identity\Infrastructure\Entity\User;
+use App\Identity\Infrastructure\Repository\UserRepository;
+use App\Organization\Infrastructure\Repository\DepartmentRepository;
 use Symfony\Bundle\SecurityBundle\Security;
 use Symfony\Component\HttpFoundation\RequestStack;
 
@@ -28,10 +28,10 @@ class AdminUserListProvider implements ProviderInterface
         $request = $this->requestStack->getCurrentRequest();
         $departmentId = $request?->query->get('department');
 
-        /** @var \App\Identity\Infrastructure\Entity\User $user */
+        /** @var User $user */
         $user = $this->security->getUser();
 
-        if ($departmentId) {
+        if ($departmentId !== null && $departmentId !== '') {
             $department = $this->departmentRepository->find($departmentId);
         } else {
             $department = $user->getDepartment();

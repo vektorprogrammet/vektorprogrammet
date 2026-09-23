@@ -5,12 +5,12 @@ namespace App\Organization\Api\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\Identity\Infrastructure\AccessControlService;
-use App\Organization\Infrastructure\Entity\Position;
-use App\Shared\Entity\Semester;
-use App\Organization\Infrastructure\Entity\Team;
-use App\Organization\Infrastructure\Entity\TeamMembership;
 use App\Identity\Infrastructure\Entity\User;
 use App\Organization\Domain\Events\TeamMembershipEvent;
+use App\Organization\Infrastructure\Entity\Position;
+use App\Organization\Infrastructure\Entity\Team;
+use App\Organization\Infrastructure\Entity\TeamMembership;
+use App\Shared\Entity\Semester;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -32,7 +32,7 @@ class AdminTeamMemberAddProcessor implements ProcessorInterface
     public function process(mixed $data, Operation $operation, array $uriVariables = [], array $context = []): array
     {
         $teamId = $uriVariables['id'] ?? null;
-        $team = $teamId ? $this->em->getRepository(Team::class)->find($teamId) : null;
+        $team = $teamId !== null ? $this->em->getRepository(Team::class)->find($teamId) : null;
 
         if ($team === null) {
             throw new NotFoundHttpException('Team not found.');

@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace Tests\Fixtures;
 
+use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Identity\Infrastructure\Entity\Role;
 use App\Identity\Infrastructure\Entity\User;
 use App\Operations\Infrastructure\Entity\Receipt;
-use App\Admission\Infrastructure\Entity\AdmissionPeriod;
 use App\Organization\Infrastructure\Entity\Department;
 use App\Organization\Infrastructure\Entity\FieldOfStudy;
 use App\Scheduling\Infrastructure\Entity\School;
 use App\Scheduling\Infrastructure\Entity\SchoolCapacity;
-use App\Shared\Entity\Semester;
 use App\Shared\SemesterUtil;
 use Doctrine\Bundle\FixturesBundle\FixtureGroupInterface;
 use Doctrine\Common\DataFixtures\AbstractFixture;
@@ -69,7 +68,6 @@ final class OrgOperationsJourneyFixture extends AbstractFixture implements Fixtu
         $admissionPeriod->setEndDate(new \DateTime('+14 days'));
         $department->addAdmissionPeriod($admissionPeriod);
         $manager->persist($admissionPeriod);
-
 
         $school = new School();
         $school->setName('Org operations scheduling school');

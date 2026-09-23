@@ -17,7 +17,7 @@ class SchoolCapacityValidationTest extends TestCase
 
         $violations = $validator->validate($capacity);
 
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         $this->assertContains('monday', $paths, 'Expected a violation on monday when value is -1');
     }
 
@@ -29,7 +29,7 @@ class SchoolCapacityValidationTest extends TestCase
         // Constructor defaults all to 0
         $violations = $validator->validate($capacity);
 
-        $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+        $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
         foreach (['monday', 'tuesday', 'wednesday', 'thursday', 'friday'] as $day) {
             $this->assertNotContains($day, $paths, "Expected no violation on $day when value is 0");
         }
@@ -45,7 +45,7 @@ class SchoolCapacityValidationTest extends TestCase
             $capacity->$setter(-5);
 
             $violations = $validator->validate($capacity);
-            $paths = array_map(fn($v) => $v->getPropertyPath(), iterator_to_array($violations));
+            $paths = array_map(fn ($v) => $v->getPropertyPath(), iterator_to_array($violations));
             $this->assertContains($day, $paths, "Expected a violation on $day when value is -5");
         }
     }

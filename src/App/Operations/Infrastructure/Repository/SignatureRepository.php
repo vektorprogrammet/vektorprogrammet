@@ -2,8 +2,8 @@
 
 namespace App\Operations\Infrastructure\Repository;
 
-use App\Operations\Infrastructure\Entity\Signature;
 use App\Identity\Infrastructure\Entity\User;
+use App\Operations\Infrastructure\Entity\Signature;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

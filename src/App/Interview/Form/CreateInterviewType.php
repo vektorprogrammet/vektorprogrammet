@@ -2,8 +2,8 @@
 
 namespace App\Interview\Form;
 
-use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Identity\Infrastructure\Entity\User;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
 use Doctrine\ORM\EntityRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;

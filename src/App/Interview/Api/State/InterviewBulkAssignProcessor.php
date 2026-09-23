@@ -4,11 +4,11 @@ namespace App\Interview\Api\State;
 
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
-use App\Identity\Infrastructure\AccessControlService;
-use App\Interview\Api\Resource\InterviewBulkAssignInput;
 use App\Admission\Infrastructure\Entity\Application;
-use App\Interview\Infrastructure\Entity\InterviewSchema;
+use App\Identity\Infrastructure\AccessControlService;
 use App\Identity\Infrastructure\Entity\User;
+use App\Interview\Api\Resource\InterviewBulkAssignInput;
+use App\Interview\Infrastructure\Entity\InterviewSchema;
 use App\Interview\Infrastructure\InterviewManager;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\SecurityBundle\Security;
