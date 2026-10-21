@@ -8,11 +8,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SurveyAdminType extends SurveyType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('department', EntityType::class, array(
         'label' => 'Region',
-        'class' => 'AppBundle:Department',
+        'class' => 'AppBundle\Entity\Department',
         'placeholder' => 'Alle regioner',
         'empty_data' => null,
         'query_builder' => function (DepartmentRepository $er) {

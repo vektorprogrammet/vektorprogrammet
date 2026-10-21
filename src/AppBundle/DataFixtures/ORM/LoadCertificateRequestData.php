@@ -2,14 +2,14 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use AppBundle\Entity\CertificateRequest;
 
 class LoadCertificateRequestData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $cr1 = new CertificateRequest();
         $cr1->setUser($this->getReference('user-assistant'));
@@ -19,7 +19,7 @@ class LoadCertificateRequestData extends AbstractFixture implements OrderedFixtu
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

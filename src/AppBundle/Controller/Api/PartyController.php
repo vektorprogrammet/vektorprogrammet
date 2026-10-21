@@ -7,7 +7,7 @@ use AppBundle\Entity\Application;
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
 use Doctrine\ORM\NonUniqueResultException;
-use FOS\RestBundle\Controller\AbstractFOSRestController;
+use AppBundle\Controller\BaseController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,7 +15,7 @@ use Symfony\Component\Serializer\Encoder\JsonEncoder;
 use Symfony\Component\Serializer\Normalizer\ObjectNormalizer;
 use Symfony\Component\Serializer\Serializer;
 
-class PartyController extends AbstractFOSRestController
+class PartyController extends BaseController
 {
     const NUM_APPLICATIONS = 5;
 

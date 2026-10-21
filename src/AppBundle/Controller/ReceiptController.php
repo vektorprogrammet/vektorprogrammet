@@ -32,7 +32,7 @@ class ReceiptController extends BaseController
         $pendingReceiptStatistics = new ReceiptStatistics($pendingReceipts);
         $rejectedReceiptStatistics = new ReceiptStatistics($rejectedReceipts);
 
-        $sorter = $this->container->get(Sorter::class);
+        $sorter = $this->get(Sorter::class);
 
         $sorter->sortUsersByReceiptSubmitTime($usersWithReceipts);
         $sorter->sortUsersByReceiptStatus($usersWithReceipts);
@@ -52,7 +52,7 @@ class ReceiptController extends BaseController
     {
         $receipts = $this->getDoctrine()->getRepository(Receipt::class)->findByUser($user);
 
-        $sorter = $this->container->get(Sorter::class);
+        $sorter = $this->get(Sorter::class);
         $sorter->sortReceiptsBySubmitTime($receipts);
         $sorter->sortReceiptsByStatus($receipts);
 
@@ -69,7 +69,7 @@ class ReceiptController extends BaseController
 
         $receipts = $this->getDoctrine()->getRepository(Receipt::class)->findByUser($this->getUser());
 
-        $sorter = $this->container->get(Sorter::class);
+        $sorter = $this->get(Sorter::class);
         $sorter->sortReceiptsBySubmitTime($receipts);
         $sorter->sortReceiptsByStatus($receipts);
 
@@ -87,12 +87,12 @@ class ReceiptController extends BaseController
             $em->persist($receipt);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::CREATED, new ReceiptEvent($receipt));
+            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::CREATED);
 
             return $this->redirectToRoute('receipt_create');
         }
 
-        if (!$form->isValid()) {
+        if ($form->isSubmitted() && !$form->isValid()) {
             $receipt->setPicturePath(null);
         }
 
@@ -136,12 +136,12 @@ class ReceiptController extends BaseController
             $em->persist($receipt);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
+            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::EDITED);
 
             return $this->redirectToRoute('receipt_create');
         }
 
-        if (!$form->isValid()) {
+        if ($form->isSubmitted() && !$form->isValid()) {
             $receipt->setPicturePath($oldPicturePath);
         }
 
@@ -174,11 +174,11 @@ class ReceiptController extends BaseController
         $em->flush();
 
         if ($status === Receipt::STATUS_REFUNDED) {
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::REFUNDED, new ReceiptEvent($receipt));
+            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::REFUNDED);
         } elseif ($status === Receipt::STATUS_REJECTED) {
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::REJECTED, new ReceiptEvent($receipt));
+            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::REJECTED);
         } elseif ($status === Receipt::STATUS_PENDING) {
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::PENDING, new ReceiptEvent($receipt));
+            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::PENDING);
         }
 
         return $this->redirectToRoute('receipts_show_individual', ['user' => $receipt->getUser()->getId()]);
@@ -209,12 +209,12 @@ class ReceiptController extends BaseController
             $em->persist($receipt);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ReceiptEvent::EDITED, new ReceiptEvent($receipt));
+            $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::EDITED);
 
             return $this->redirectToRoute('receipts_show_individual', array('user' => $receipt->getUser()->getId()));
         }
 
-        if (!$form->isValid()) {
+        if ($form->isSubmitted() && !$form->isValid()) {
             $receipt->setPicturePath($oldPicturePath);
         }
 
@@ -243,8 +243,8 @@ class ReceiptController extends BaseController
         $em->remove($receipt);
         $em->flush();
 
-        $this->get('event_dispatcher')->dispatch(ReceiptEvent::DELETED, new ReceiptEvent($receipt));
+        $this->get('event_dispatcher')->dispatch(new ReceiptEvent($receipt), ReceiptEvent::DELETED);
 
-        return $this->redirect($request->headers->get('referer'));
+        return $this->redirect($request->headers->get('referer') ?: $this->generateUrl('receipt_create'));
     }
 }

@@ -13,7 +13,7 @@ use AppBundle\Sms\SmsSenderInterface;
 use Psr\Log\LoggerInterface;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 
@@ -21,7 +21,7 @@ class InterviewSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
-    private $session;
+    private $requestStack;
     private $logger;
     private $sbsData;
     private $notificationManager;
@@ -32,7 +32,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     public function __construct(
         MailerInterface $mailer,
         Environment $twig,
-        SessionInterface $session,
+        RequestStack $requestStack,
         LoggerInterface $logger,
         SbsData $sbsData,
         InterviewNotificationManager $notificationManager,
@@ -42,7 +42,7 @@ class InterviewSubscriber implements EventSubscriberInterface
     ) {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->logger = $logger;
         $this->sbsData = $sbsData;
         $this->notificationManager = $notificationManager;
@@ -56,7 +56,7 @@ class InterviewSubscriber implements EventSubscriberInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             InterviewConductedEvent::NAME => array(
@@ -99,7 +99,7 @@ class InterviewSubscriber implements EventSubscriberInterface
         $user = $event->getApplication()->getUser();
         $message = "Intervjuet med $user ble lagret. En kvittering med et sammendrag av praktisk informasjon fra intervjuet blir sendt til {$user->getEmail()}.";
 
-        $this->session->getFlashBag()->add('success', $message);
+        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
     }
 
     public function logEvent(InterviewConductedEvent $event)

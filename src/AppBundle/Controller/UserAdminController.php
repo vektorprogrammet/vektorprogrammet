@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 class UserAdminController extends BaseController
 {
-    public function createUserAction(Request $request, Department $department = null)
+    public function createUserAction(Request $request, ?Department $department = null)
     {
         if (!$this->isGranted(Roles::TEAM_LEADER) || $department === null) {
             $department = $this->getUser()->getDepartment();

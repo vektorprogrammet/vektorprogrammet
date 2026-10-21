@@ -5,7 +5,7 @@ namespace AppBundle\Form\Type;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyNotificationCollection;
 use AppBundle\Entity\UserGroup;
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -19,7 +19,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 class SurveyNotifierType extends AbstractType
 {
     private $canEdit;
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->canEdit = $options['canEdit'];
         $builder
@@ -30,6 +30,7 @@ class SurveyNotifierType extends AbstractType
             ])
 
             ->add("timeOfNotification", DateTimeType::class, [
+                'html5' => false,
                 'label' => "Varsel skal sendes fra (merk: vil bare tillate å sende fra gitt dato, vil ikke skje automatisk)",
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
@@ -117,7 +118,7 @@ class SurveyNotifierType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             "data_class" => SurveyNotificationCollection::class,

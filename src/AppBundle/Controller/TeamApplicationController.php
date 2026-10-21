@@ -63,14 +63,14 @@ class TeamApplicationController extends BaseController
         $form = $this->createForm(TeamApplicationType::class, $teamApplication);
         $form->handleRequest($request);
 
-        if ($form->isValid() && $form->isSubmitted() && $team->getAcceptApplicationAndDeadline()) {
+        if ($form->isSubmitted() && $form->isValid() && $team->getAcceptApplicationAndDeadline()) {
             $teamApplication->setTeam($team);
 
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($teamApplication);
             $manager->flush();
 
-            $this->get('event_dispatcher')->dispatch(TeamApplicationCreatedEvent::NAME, new TeamApplicationCreatedEvent($teamApplication));
+            $this->get('event_dispatcher')->dispatch(new TeamApplicationCreatedEvent($teamApplication), TeamApplicationCreatedEvent::NAME);
 
             return $this->redirectToRoute('team_application_confirmation', array(
                 'team_name' => $team->getName(),

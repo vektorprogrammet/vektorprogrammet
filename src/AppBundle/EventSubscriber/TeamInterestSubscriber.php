@@ -6,30 +6,30 @@ use AppBundle\Event\TeamInterestCreatedEvent;
 use AppBundle\Mailer\MailerInterface;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 
 class TeamInterestSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
-    private $session;
+    private $requestStack;
 
     /**
      * TeamInterestSubscriber constructor.
      *
      * @param MailerInterface $mailer
      * @param Environment $twig
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      */
-    public function __construct(MailerInterface $mailer, Environment $twig, SessionInterface $session)
+    public function __construct(MailerInterface $mailer, Environment $twig, RequestStack $requestStack)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(TeamInterestCreatedEvent::NAME => array(
             array('sendConfirmationMail', 0),
@@ -48,7 +48,7 @@ class TeamInterestSubscriber implements EventSubscriberInterface
             ->setFrom(array($fromEmail => "Vektorprogrammet $department"))
             ->setReplyTo($fromEmail)
             ->setTo($teamInterest->getEmail())
-            ->setBody($this->twig->render(":team_interest:team_interest_receipt.html.twig", array(
+            ->setBody($this->twig->render("team_interest/team_interest_receipt.html.twig", array(
                 'teamInterest' => $teamInterest,
             )))
             ->setContentType('text/html');
@@ -57,6 +57,6 @@ class TeamInterestSubscriber implements EventSubscriberInterface
 
     public function addFlashMessage()
     {
-        $this->session->getFlashBag()->add('success', 'Takk! Vi kontakter deg så fort som mulig.');
+        $this->requestStack->getSession()->getFlashBag()->add('success', 'Takk! Vi kontakter deg så fort som mulig.');
     }
 }

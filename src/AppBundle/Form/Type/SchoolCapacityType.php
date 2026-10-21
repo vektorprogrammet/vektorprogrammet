@@ -12,13 +12,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SchoolCapacityType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $department = $builder->getData()->getDepartment();
         $builder
             ->add('school', EntityType::class, array(
                 'label' => 'Skole',
-                'class' => 'AppBundle:School',
+                'class' => 'AppBundle\Entity\School',
                 'query_builder' => function (SchoolRepository $er) use ($department) {
                     return $er->findActiveSchoolsWithoutCapacity($department);
                 },
@@ -33,14 +33,14 @@ class SchoolCapacityType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SchoolCapacity',
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'schoolCapacity';
     }

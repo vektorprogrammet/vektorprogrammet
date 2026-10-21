@@ -12,7 +12,7 @@ use AppBundle\Entity\Feedback;
 
 class FeedbackType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, array(
@@ -39,6 +39,6 @@ class FeedbackType extends AbstractType
                 'data' => 'question'
 
             ))
-            ->add('Send inn', SubmitType::class);
+            ->add('submit', SubmitType::class, ['label' => 'Send inn']);
     }
 }

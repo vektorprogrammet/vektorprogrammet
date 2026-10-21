@@ -15,7 +15,7 @@ class InfoMeetingValidator extends ConstraintValidator
      * @param InfoMeeting $infoMeeting The info meeting that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($infoMeeting, Constraint $constraint)
+    public function validate($infoMeeting, Constraint $constraint): void
     {
         if (!$infoMeeting) {
             return;

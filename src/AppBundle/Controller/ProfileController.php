@@ -127,9 +127,9 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $token = new UsernamePasswordToken($user, null, 'secured_area', $user->getRoles());
+            $token = new UsernamePasswordToken($user, 'secured_area', $user->getRoles());
             $this->get('security.token_storage')->setToken($token);
-            $this->get('session')->set('_security_secured_area', serialize($token));
+            $this->get('request_stack')->getSession()->set('_security_secured_area', serialize($token));
 
             $this->get(LogService::class)->info("User $user activated with new user code");
 
@@ -233,7 +233,7 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+            $this->get('event_dispatcher')->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::EDITED);
 
             return $this->redirect($this->generateUrl('profile'));
         }
@@ -281,7 +281,7 @@ class ProfileController extends BaseController
             $em->persist($user);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(UserEvent::EDITED, new UserEvent($user, $oldCompanyEmail));
+            $this->get('event_dispatcher')->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::EDITED);
 
             return $this->redirect($this->generateUrl('specific_profile', array( 'id' => $user->getId() )));
         }
@@ -302,7 +302,7 @@ class ProfileController extends BaseController
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(UserEvent::COMPANY_EMAIL_EDITED, new UserEvent($user, $oldCompanyEmail));
+            $this->get('event_dispatcher')->dispatch(new UserEvent($user, $oldCompanyEmail), UserEvent::COMPANY_EMAIL_EDITED);
 
             return $this->redirectToRoute('specific_profile', [ 'id' => $user->getId() ]);
         }

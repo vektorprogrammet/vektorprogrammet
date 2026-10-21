@@ -2,7 +2,6 @@
 
 namespace AppBundle\Entity;
 
-use Symfony\Component\Security\Core\Role\Role as SymfonyRole;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -11,7 +10,7 @@ use Doctrine\ORM\Mapping as ORM;
  * @ORM\Entity()
  * @ORM\Entity(repositoryClass="AppBundle\Entity\Repository\RoleRepository")
  */
-class Role extends SymfonyRole
+class Role
 {
     /**
      * @ORM\Column(name="id", type="integer", length=11)

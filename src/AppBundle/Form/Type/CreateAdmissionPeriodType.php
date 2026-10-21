@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateAdmissionPeriodType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $semesters = array_map(function (AdmissionPeriod $admissionPeriod) {
             return $admissionPeriod->getSemester()->getId();
@@ -31,11 +31,13 @@ class CreateAdmissionPeriodType extends AbstractType
                 },
             ))
             ->add('startDate', DateTimeType::class, array(
+                'html5' => false,
                 'label' => 'Opptak starttidspunkt',
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
             ))
             ->add('endDate', DateTimeType::class, array(
+                'html5' => false,
                 'label' => 'Opptak sluttidspunkt',
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
@@ -45,7 +47,7 @@ class CreateAdmissionPeriodType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\AdmissionPeriod',

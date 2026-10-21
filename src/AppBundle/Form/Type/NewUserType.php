@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 class NewUserType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('user_name', TextType::class, array(
@@ -36,14 +36,14 @@ class NewUserType extends AbstractType
                 'label' => 'Opprett bruker', ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'createNewUser';
     }

@@ -167,7 +167,7 @@ class SurveyTaken implements JsonSerializable
      *
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $ret = array();
 

@@ -114,11 +114,11 @@ class RoleManager
             Roles::ADMIN,
         );
 
-        if (empty($user->getRoles())) {
+        if (empty($user->getRoleEntities())) {
             return false;
         }
 
-        $userRole = $user->getRoles()[0]->getRole();
+        $userRole = $user->getRoleEntities()[0]->getRole();
 
         $userAccessLevel = array_search($userRole, $roles);
         $roleAccessLevel = array_search($role, $roles);
@@ -195,7 +195,7 @@ class RoleManager
         }
 
         $role = $this->em->getRepository(Role::class)->findByRoleName($role);
-        $roleNeedsToUpdate = array_search($role, $user->getRoles()) === false;
+        $roleNeedsToUpdate = array_search($role, $user->getRoleEntities()) === false;
 
         if ($roleNeedsToUpdate) {
             $user->setRoles([$role]);

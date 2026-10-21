@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CreateSignatureType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('description', TextType::class, array(

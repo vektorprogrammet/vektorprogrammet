@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -14,7 +14,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateTeamType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('name', TextType::class, array(
@@ -35,6 +35,7 @@ class CreateTeamType extends AbstractType
                 'required' => false,
             ))
             ->add('deadline', DateTimeType::class, array(
+                'html5' => false,
                 'label' => 'Søknadsfrist',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
@@ -55,14 +56,14 @@ class CreateTeamType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Team',
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'createTeam';
     }

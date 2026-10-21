@@ -45,7 +45,7 @@ class SchoolRepository extends EntityRepository
         $qb = $this->_em->createQueryBuilder();
         $exclude = $qb
             ->select('IDENTITY(capacity.school)')
-            ->from('AppBundle:SchoolCapacity', 'capacity')
+            ->from('AppBundle\Entity\SchoolCapacity', 'capacity')
             ->where('capacity.semester = :semester');
 
         return $this->getSchoolsByDepartmentQueryBuilder($department)

@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SurveyExecuteType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $semester = $builder->getData()->getSurvey()->getSemester();
         /** @var Department $department */
@@ -21,7 +21,7 @@ class SurveyExecuteType extends AbstractType
         $builder->add('school', EntityType::class, array(
             'label' => 'School',
             'placeholder' => 'Velg Skole',
-            'class' => 'AppBundle:School',
+            'class' => 'AppBundle\Entity\School',
             'query_builder' => function (EntityRepository $er) use ($semester, $department) {
                 return $er
                     ->createQueryBuilder('school')
@@ -46,14 +46,14 @@ class SurveyExecuteType extends AbstractType
         ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\SurveyTaken',
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'surveyTaken';
     }

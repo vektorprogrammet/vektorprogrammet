@@ -15,10 +15,10 @@ class ProfileControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/profile');
 
         // Assert that we have the correct profile user
-        $this->assertContains('Petter Johansen', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Petter Johansen', $client->getResponse()->getContent());
         // Assert that we have the correct team and position
-        $this->assertContains('Styret', $client->getResponse()->getContent());
-        $this->assertContains('Leder', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Styret', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Leder', $client->getResponse()->getContent());
 
         // Check the count for Styret, Leder and Petter Johansen
         $this->assertEquals(1, $crawler->filter('html:contains("Styret")')->count());
@@ -34,12 +34,12 @@ class ProfileControllerTest extends BaseWebTestCase
         $crawler = $client->request('GET', '/profile/4');
 
         // Assert that we have the correct profile user
-        $this->assertContains('Thomas Alm', $client->getResponse()->getContent());
-        $this->assertContains('alm@mail.com', $client->getResponse()->getContent());
-        $this->assertContains('Brukeren er aktiv', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Thomas Alm', $client->getResponse()->getContent());
+        $this->assertStringContainsString('alm@mail.com', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Brukeren er aktiv', $client->getResponse()->getContent());
         // Assert that we have the correct user level and department
-        $this->assertContains('Teammedlem', $client->getResponse()->getContent());
-        $this->assertContains('NTNU', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Teammedlem', $client->getResponse()->getContent());
+        $this->assertStringContainsString('NTNU', $client->getResponse()->getContent());
 
         // Check the count for the different parameters
         $this->assertEquals(1, $crawler->filter('html:contains("NTNU")')->count());
@@ -83,13 +83,13 @@ class ProfileControllerTest extends BaseWebTestCase
         $crawler = $this->goTo('/profile/4', $client);
 
         // Assert that we have the correct profile user
-        $this->assertContains('Thomas Alm', $client->getResponse()->getContent());
-        $this->assertContains('alm@mail.com', $client->getResponse()->getContent());
-        $this->assertContains('Brukeren er aktiv', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Thomas Alm', $client->getResponse()->getContent());
+        $this->assertStringContainsString('alm@mail.com', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Brukeren er aktiv', $client->getResponse()->getContent());
         // Assert that we have the correct user level, department, and field of study
-        $this->assertContains('Teammedlem', $client->getResponse()->getContent());
-        $this->assertContains('NTNU', $client->getResponse()->getContent());
-        $this->assertContains('MIDT', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Teammedlem', $client->getResponse()->getContent());
+        $this->assertStringContainsString('NTNU', $client->getResponse()->getContent());
+        $this->assertStringContainsString('MIDT', $client->getResponse()->getContent());
 
         // Check the count for the different parameters
         $this->assertEquals(1, $crawler->filter('html:contains("NTNU")')->count());
@@ -128,11 +128,11 @@ class ProfileControllerTest extends BaseWebTestCase
         $crawler = $client->followRedirect();
 
         // Assert that we have the correct profile user
-        $this->assertContains('Petter Johansen', $client->getResponse()->getContent());
-        $this->assertContains('petjo@mail.com', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Petter Johansen', $client->getResponse()->getContent());
+        $this->assertStringContainsString('petjo@mail.com', $client->getResponse()->getContent());
         // Assert that we have the correct user level, department, and field of study
-        $this->assertContains('NTNU', $client->getResponse()->getContent());
-        $this->assertContains('MIDT', $client->getResponse()->getContent());
+        $this->assertStringContainsString('NTNU', $client->getResponse()->getContent());
+        $this->assertStringContainsString('MIDT', $client->getResponse()->getContent());
 
         // Check the count for the different parameters
         $this->assertEquals(1, $crawler->filter('html:contains("MIDT")')->count());

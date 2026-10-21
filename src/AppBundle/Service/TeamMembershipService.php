@@ -28,7 +28,7 @@ class TeamMembershipService
             if ($endSemester) {
                 if ($endSemester->getEndDate() <= $currentSemesterStartDate) {
                     $teamMembership->setIsSuspended(true);
-                    $this->dispatcher->dispatch(TeamMembershipEvent::EXPIRED, new TeamMembershipEvent($teamMembership));
+                    $this->dispatcher->dispatch(new TeamMembershipEvent($teamMembership), TeamMembershipEvent::EXPIRED);
                 }
             }
         }

@@ -7,14 +7,14 @@ use AppBundle\Entity\InterviewAnswer;
 use AppBundle\Entity\InterviewScore;
 use AppBundle\Entity\User;
 use DateTime;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use AppBundle\Entity\Application;
 
 class LoadApplicationData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $application0 = new Application();
         $application0->setUser($this->getReference('user-team-member'));
@@ -288,7 +288,7 @@ class LoadApplicationData extends AbstractFixture implements OrderedFixtureInter
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

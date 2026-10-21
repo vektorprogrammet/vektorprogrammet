@@ -31,7 +31,7 @@ class RoleExtension extends AbstractExtension
         return 'role_extension';
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('is_granted_assistant', [$this, 'isGrantedAssistant']),
@@ -101,7 +101,7 @@ class RoleExtension extends AbstractExtension
         return $this->roleManager->userIsInExecutiveBoard($user);
     }
 
-    public function userCanEditPage(User $user = null)
+    public function userCanEditPage(?User $user = null)
     {
         if ($user === null) {
             $token = $this->tokenStorage->getToken();

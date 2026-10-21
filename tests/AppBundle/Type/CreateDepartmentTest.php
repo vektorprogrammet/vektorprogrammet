@@ -4,13 +4,14 @@ namespace Tests\AppBundle\Type;
 
 use AppBundle\Form\Type\CreateDepartmentType;
 use AppBundle\Entity\Department;
-use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
-class CreateDepartmentTest extends TypeTestCase
+class CreateDepartmentTest extends FormIntegrationTestCase
 {
     /**
      * @dataProvider getValidTestData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getValidTestData')]
     public function testForm($data)
     {
         $type = CreateDepartmentType::class;
@@ -34,7 +35,7 @@ class CreateDepartmentTest extends TypeTestCase
         }
     }
 
-    public function getValidTestData()
+    public static function getValidTestData()
     {
         return array(
             array(

@@ -3,13 +3,13 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\TeamInterest;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadTeamInterestData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $teamInterest1 = new TeamInterest();
         $teamInterest1
@@ -36,7 +36,7 @@ class LoadTeamInterestData extends AbstractFixture implements OrderedFixtureInte
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

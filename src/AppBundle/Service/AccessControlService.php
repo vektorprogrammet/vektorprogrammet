@@ -75,7 +75,7 @@ class AccessControlService
         $this->preloadCache();
     }
 
-    public function checkAccess($resources, User $user = null): bool
+    public function checkAccess($resources, ?User $user = null): bool
     {
         if ($user === null) {
             $user = $this->getLoggedInUser();
@@ -130,7 +130,7 @@ class AccessControlService
             return true;
         }
 
-        if ($user === null || empty($user->getRoles())) {
+        if ($user === null || empty($user->getRoleEntities())) {
             return false;
         }
 
@@ -217,7 +217,7 @@ class AccessControlService
     private function userRoleHasAccessToRule(User $user, AccessRule $rule): bool
     {
         foreach ($rule->getRoles() as $roleInRule) {
-            foreach ($user->getRoles() as $userRole) {
+            foreach ($user->getRoleEntities() as $userRole) {
                 if ($roleInRule === $userRole) {
                     return true;
                 }

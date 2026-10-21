@@ -3,13 +3,13 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\TeamMembership;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadTeamMembershipData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $tm = new TeamMembership();
         $tm->setTeam($this->getReference('team-1'));
@@ -110,7 +110,7 @@ class LoadTeamMembershipData extends AbstractFixture implements OrderedFixtureIn
         $this->addReference('tm-3', $tm3);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

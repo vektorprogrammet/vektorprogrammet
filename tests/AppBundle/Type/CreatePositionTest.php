@@ -4,13 +4,14 @@ namespace Tests\AppBundle\Type;
 
 use AppBundle\Form\Type\CreatePositionType;
 use AppBundle\Entity\Position;
-use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
-class CreatePositionTest extends TypeTestCase
+class CreatePositionTest extends FormIntegrationTestCase
 {
     /**
      * @dataProvider getValidTestData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getValidTestData')]
     public function testForm($data)
     {
         $type = CreatePositionType::class;
@@ -34,7 +35,7 @@ class CreatePositionTest extends TypeTestCase
         }
     }
 
-    public function getValidTestData()
+    public static function getValidTestData()
     {
         return array(
             array(

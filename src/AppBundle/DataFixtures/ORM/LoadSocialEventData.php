@@ -4,13 +4,13 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\SocialEvent;
 use DateTime;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadSocialEventData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $socialEvent1 = new SocialEvent();
         $socialEvent1->setStartTime(DateTime::createFromFormat('Y-m-d H:i:s', '2015-08-28 17:15:00'));
@@ -78,7 +78,7 @@ class LoadSocialEventData extends AbstractFixture implements OrderedFixtureInter
         $this->setReference('social-event-6', $socialEvent6);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

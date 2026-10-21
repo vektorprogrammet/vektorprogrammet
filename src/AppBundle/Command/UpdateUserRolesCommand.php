@@ -4,12 +4,12 @@ namespace AppBundle\Command;
 
 use AppBundle\Entity\User;
 use AppBundle\Service\RoleManager;
-use Doctrine\Common\Persistence\ObjectManager;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Doctrine\Persistence\ObjectManager;
+
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class UpdateUserRolesCommand extends ContainerAwareCommand
+class UpdateUserRolesCommand extends ContainerCommand
 {
     /**
      * @var ObjectManager
@@ -29,7 +29,7 @@ class UpdateUserRolesCommand extends ContainerAwareCommand
     /**
      * {@inheritdoc}
      */
-    protected function configure()
+    protected function configure(): void
     {
         $this
             // a good practice is to use the 'app:' prefix to group all your custom application commands
@@ -48,7 +48,7 @@ HELP
      * This method is executed before the the execute() method. It's main purpose
      * is to initialize the variables used in the rest of the command methods.
      */
-    protected function initialize(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output): void
     {
         $this->entityManager = $this->getContainer()->get('doctrine')->getManager();
         $this->roleManager = $this->getContainer()->get(RoleManager::class);
@@ -59,7 +59,7 @@ HELP
      * This method is executed after initialize(). It usually contains the logic
      * to execute to complete this command task.
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $startTime = microtime(true);
 
@@ -78,5 +78,6 @@ HELP
         $elapsedTime = ($finishTime - $startTime) * 1000;
 
         $output->writeln(sprintf('%d roles updated in %d ms', $this->rolesUpdatedCount, $elapsedTime));
+        return self::SUCCESS;
     }
 }

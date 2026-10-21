@@ -10,7 +10,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CropImageType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('image', TextType::class, array(
@@ -25,7 +25,7 @@ class CropImageType extends AbstractType
             ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'crop';
     }

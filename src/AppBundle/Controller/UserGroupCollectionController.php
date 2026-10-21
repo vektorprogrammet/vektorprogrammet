@@ -13,7 +13,7 @@ use UnexpectedValueException;
 
 class UserGroupCollectionController extends BaseController
 {
-    public function createUserGroupCollectionAction(Request $request, UserGroupCollection $userGroupCollection = null)
+    public function createUserGroupCollectionAction(Request $request, ?UserGroupCollection $userGroupCollection = null)
     {
         if ($isCreate = $userGroupCollection === null) {
             $userGroupCollection = new UserGroupCollection();

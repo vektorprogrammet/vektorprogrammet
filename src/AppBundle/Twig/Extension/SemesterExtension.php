@@ -21,7 +21,7 @@ class SemesterExtension extends AbstractExtension
         return 'semester_extension';
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('get_semesters', array($this, 'getSemesters')),

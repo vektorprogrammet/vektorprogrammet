@@ -12,11 +12,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class GenerateMailingListType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('semester', EntityType::class, array(
-                'class' => 'AppBundle:Semester',
+                'class' => 'AppBundle\Entity\Semester',
                 'label' => 'Velg semester',
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
@@ -24,7 +24,7 @@ class GenerateMailingListType extends AbstractType
                 'required' => true,
             ))
             ->add('department', EntityType::class, array(
-                'class' => 'AppBundle:Department',
+                'class' => 'AppBundle\Entity\Department',
                 'label' => 'Velg region',
                 'query_builder' => function (DepartmentRepository $dr) {
                     return $dr->queryForActive();

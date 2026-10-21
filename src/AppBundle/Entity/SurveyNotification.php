@@ -35,7 +35,7 @@ class SurveyNotification
 
     /**
      * @var SurveyNotificationCollection
-     * @ORM\ManyToOne(targetEntity="SurveyNotificationCollection", inversedBy="surveyNotification")
+     * @ORM\ManyToOne(targetEntity="SurveyNotificationCollection", inversedBy="surveyNotifications")
      */
     private $surveyNotificationCollection;
 

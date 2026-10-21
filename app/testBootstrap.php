@@ -5,15 +5,17 @@ require __DIR__.'/../vendor/autoload.php';
 use Symfony\Bundle\FrameworkBundle\Console\Application;
 use Symfony\Component\Console\Input\ArrayInput;
 
+TestDataManager::deleteDatabase();
+
 $kernel = new AppKernel('test', true); // create a "test" kernel
 $kernel->boot();
 
 $application = new Application($kernel);
 $application->setAutoExit(false);
 
-TestDataManager::deleteDatabase();
 TestDataManager::executeCommand($application, "doctrine:schema:create");
 TestDataManager::executeCommand($application, "doctrine:fixtures:load");
+$kernel->shutdown();
 TestDataManager::backupDatabase();
 
 class TestDataManager
@@ -34,7 +36,9 @@ class TestDataManager
         $options = array_merge(array('command' => $command), $options);
         $arrayInput = new ArrayInput($options);
         $arrayInput->setInteractive(false);
-        $application->run($arrayInput);
+        if ($application->run($arrayInput) !== 0) {
+            throw new \RuntimeException("Test database setup failed: ".$command);
+        }
     }
 
     public static function deleteDatabase() {

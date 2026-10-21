@@ -238,7 +238,7 @@ class Survey implements JsonSerializable
      *
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         $ret = array('questions' => array());
         foreach ($this->surveyQuestions as $q) {

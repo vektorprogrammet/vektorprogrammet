@@ -14,14 +14,14 @@ class CreateExecutiveBoardMembershipType extends AbstractType
 {
     private $departmentId;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->departmentId = $options['departmentId'];
 
         $builder
             ->add('user', EntityType::class, array(
                 'label' => 'Bruker',
-                'class' => 'AppBundle:User',
+                'class' => 'AppBundle\Entity\User',
                 'query_builder' => function (UserRepository $ur) {
                     return $ur->createQueryBuilder('u')
                         ->Join('u.fieldOfStudy', 'fos')
@@ -39,14 +39,14 @@ class CreateExecutiveBoardMembershipType extends AbstractType
             ))
             ->add('startSemester', EntityType::class, array(
                 'label' => 'Start semester',
-                'class' => 'AppBundle:Semester',
+                'class' => 'AppBundle\Entity\Semester',
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
             ))
             ->add('endSemester', EntityType::class, array(
                 'label' => 'Slutt semester (Valgfritt)',
-                'class' => 'AppBundle:Semester',
+                'class' => 'AppBundle\Entity\Semester',
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
@@ -54,7 +54,7 @@ class CreateExecutiveBoardMembershipType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\ExecutiveBoardMembership',
@@ -62,7 +62,7 @@ class CreateExecutiveBoardMembershipType extends AbstractType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'createExecutiveBoardMembership';
     }

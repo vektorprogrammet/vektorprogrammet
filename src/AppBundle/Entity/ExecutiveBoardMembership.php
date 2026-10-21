@@ -85,7 +85,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
      *
      * @return ExecutiveBoardMembership
      */
-    public function setUser(User $user = null)
+    public function setUser(?User $user = null)
     {
         $this->user = $user;
 
@@ -109,7 +109,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
      *
      * @return ExecutiveBoardMembership
      */
-    public function setBoard(ExecutiveBoard $board = null)
+    public function setBoard(?ExecutiveBoard $board = null)
     {
         $this->board = $board;
 
@@ -150,7 +150,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
      *
      * @return ExecutiveBoardMembership
      */
-    public function setStartSemester(Semester $semester = null)
+    public function setStartSemester(?Semester $semester = null)
     {
         $this->startSemester = $semester;
         return $this;
@@ -169,7 +169,7 @@ class ExecutiveBoardMembership implements TeamMembershipInterface
      *
      * @return ExecutiveBoardMembership
      */
-    public function setEndSemester(Semester $semester = null)
+    public function setEndSemester(?Semester $semester = null)
     {
         $this->endSemester = $semester;
         return $this;

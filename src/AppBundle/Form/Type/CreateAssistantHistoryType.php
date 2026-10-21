@@ -15,13 +15,13 @@ class CreateAssistantHistoryType extends AbstractType
 {
     private $department;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->department = $options['department'];
         $builder
             ->add('Semester', EntityType::class, array(
                 'label' => 'Semester',
-                'class' => 'AppBundle:Semester',
+                'class' => 'AppBundle\Entity\Semester',
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
                 },
@@ -41,7 +41,7 @@ class CreateAssistantHistoryType extends AbstractType
             ))
             ->add('School', EntityType::class, array(
                 'label' => 'Skole',
-                'class' => 'AppBundle:School',
+                'class' => 'AppBundle\Entity\School',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('s')
                         ->orderBy('s.name', 'ASC')
@@ -75,7 +75,7 @@ class CreateAssistantHistoryType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\AssistantHistory',
@@ -83,7 +83,7 @@ class CreateAssistantHistoryType extends AbstractType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'createAssistantHistory';
     }

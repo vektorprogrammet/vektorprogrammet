@@ -3,7 +3,7 @@
 namespace AppBundle\Sms;
 
 use AppBundle\Service\SlackMessenger;
-use Nexy\Slack\Attachment;
+use AppBundle\Slack\Attachment;
 
 class SlackSms implements SmsSenderInterface
 {

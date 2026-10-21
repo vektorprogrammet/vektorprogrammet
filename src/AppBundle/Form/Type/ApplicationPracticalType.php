@@ -11,7 +11,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ApplicationPracticalType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('days', DaysType::class, array(
             'label' => 'Er det noen dager som IKKE passer for deg?',
@@ -74,7 +74,7 @@ class ApplicationPracticalType extends AbstractType
 
         $builder->add('potentialTeams', EntityType::class, array(
             'label' => 'Hvilke team er du eventuelt interessert i?',
-            'class' => 'AppBundle:Team',
+            'class' => 'AppBundle\Entity\Team',
             'query_builder' => function (EntityRepository $entityRepository) {
                 return $entityRepository->createQueryBuilder('c');
             },
@@ -84,7 +84,7 @@ class ApplicationPracticalType extends AbstractType
         ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Application',
@@ -93,7 +93,7 @@ class ApplicationPracticalType extends AbstractType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'application';
     }

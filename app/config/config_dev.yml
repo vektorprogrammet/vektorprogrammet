@@ -42,8 +42,6 @@ monolog:
         #    type:   chromephp
         #    level:  info
 
-swiftmailer:
-  disable_delivery: true
 
 nelmio_cors:
         defaults:

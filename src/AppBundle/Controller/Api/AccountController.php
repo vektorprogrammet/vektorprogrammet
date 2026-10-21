@@ -12,7 +12,6 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
-use BCC\AutoMapperBundle\Mapper\Exception\InvalidClassConstructorException;
 use Exception;
 
 class AccountController extends BaseController
@@ -24,7 +23,6 @@ class AccountController extends BaseController
      * @param Request $request
      *
      * @return Response
-     * @throws InvalidClassConstructorException
      * @throws NonUniqueResultException
      */
     public function loginAction(Request $request)
@@ -48,21 +46,18 @@ class AccountController extends BaseController
             return $response;
         }
 
-        $validPassword = $this->get('security.password_encoder')->isPasswordValid($user, $password);
+        $validPassword = $this->get('security.user_password_hasher')->isPasswordValid($user, $password);
         if (!$validPassword) {
             $response->setStatusCode(401);
             $response->setContent('Wrong password');
             return $response;
         }
 
-        $token = new UsernamePasswordToken($user, null, 'secured_area', $user->getRoles());
+        $token = new UsernamePasswordToken($user, 'secured_area', $user->getRoles());
         $this->get('security.token_storage')->setToken($token);
-        $this->get('session')->set('_security_secured_area', serialize($token));
+        $this->get('request_stack')->getSession()->set('_security_secured_area', serialize($token));
 
-        $mapper = $this->get('bcc_auto_mapper.mapper');
-        $mapper->createMap(User::class, UserDto::class);
-        $userDto = new UserDto();
-        $mapper->map($user, $userDto);
+        $userDto = UserDto::fromUser($user);
 
         return new JsonResponse($userDto);
     }
@@ -89,7 +84,6 @@ class AccountController extends BaseController
      * @Route(path="api/account/user", methods={"GET"})
      *
      * @return Response
-     * @throws InvalidClassConstructorException
      */
     public function getUserAction()
     {
@@ -97,10 +91,7 @@ class AccountController extends BaseController
             return new JsonResponse(null);
         }
 
-        $mapper = $this->get('bcc_auto_mapper.mapper');
-        $mapper->createMap(User::class, UserDto::class);
-        $userDto = new UserDto();
-        $mapper->map($this->getUser(), $userDto);
+        $userDto = UserDto::fromUser($this->getUser());
 
         return new JsonResponse($userDto);
     }

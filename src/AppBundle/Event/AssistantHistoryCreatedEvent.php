@@ -3,7 +3,7 @@
 namespace AppBundle\Event;
 
 use AppBundle\Entity\AssistantHistory;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class AssistantHistoryCreatedEvent extends Event
 {

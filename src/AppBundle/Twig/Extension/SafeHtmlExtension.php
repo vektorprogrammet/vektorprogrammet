@@ -9,7 +9,7 @@ class SafeHtmlExtension extends AbstractExtension
 {
     private $blacklistedTags = ['script', 'iframe'];
 
-    public function getFilters()
+    public function getFilters(): array
     {
         return array(
             new TwigFilter('safe_html', array($this, 'htmlFilter'), array(

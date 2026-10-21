@@ -3,13 +3,13 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\SchoolCapacity;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadSchoolCapacityData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 10; ++$i) {
             $randomArr = array(true, false, false, false, false);
@@ -31,7 +31,7 @@ class LoadSchoolCapacityData extends AbstractFixture implements OrderedFixtureIn
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 4;
     }

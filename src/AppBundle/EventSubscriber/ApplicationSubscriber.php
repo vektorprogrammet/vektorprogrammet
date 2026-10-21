@@ -42,7 +42,7 @@ class ApplicationSubscriber implements EventSubscriberInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             ApplicationCreatedEvent::NAME => array(

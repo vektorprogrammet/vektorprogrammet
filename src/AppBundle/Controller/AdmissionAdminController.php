@@ -224,7 +224,7 @@ class AdmissionAdminController extends BaseController
     public function bulkDeleteApplicationAction(Request $request)
     {
         // Get the ids from the form
-        $applicationIds = array_map('intval', $request->request->get('application')['id']);
+        $applicationIds = array_map('intval', $request->request->all('application')['id']);
 
 
         $em = $this->getDoctrine()->getManager();
@@ -277,12 +277,12 @@ class AdmissionAdminController extends BaseController
 
             $this->addFlash('admission-notice', 'Søknaden er registrert.');
 
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->get('event_dispatcher')->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
 
             return $this->redirectToRoute('register_applicant', array('id' => $department->getId()));
         }
 
-        return $this->render(':admission_admin:create_application.html.twig', array(
+        return $this->render('admission_admin/create_application.html.twig', array(
             'department' => $department,
             'semester' => $currentSemester,
             'form' => $form->createView(),

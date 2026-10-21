@@ -24,7 +24,7 @@ class SchoolCapacityRepository extends EntityRepository
     {
         $schoolCapacities = $this->getEntityManager()->createQuery('
 		SELECT sc
-		FROM AppBundle:SchoolCapacity sc
+		FROM AppBundle\Entity\SchoolCapacity sc
 		WHERE sc.school = :school
 		AND sc.semester = :semester
 		')

@@ -9,10 +9,11 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class EditAdmissionPeriodType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('startDate', DateTimeType::class, array(
+                'html5' => false,
                 'label' => 'Opptak starttidspunkt',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
@@ -21,6 +22,7 @@ class EditAdmissionPeriodType extends AbstractType
                 ),
             ))
             ->add('endDate', DateTimeType::class, array(
+                'html5' => false,
                 'label' => 'Opptak sluttidspunkt',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'widget' => 'single_text',
@@ -34,14 +36,14 @@ class EditAdmissionPeriodType extends AbstractType
             ]);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\AdmissionPeriod',
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'editAdmissionPeriod';
     }

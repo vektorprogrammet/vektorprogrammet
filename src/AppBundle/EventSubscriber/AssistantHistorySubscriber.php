@@ -10,11 +10,11 @@ use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 
 class AssistantHistorySubscriber implements EventSubscriberInterface
 {
-    private $session;
+    private $requestStack;
     private $em;
     private $userRegistrationService;
 
@@ -25,9 +25,9 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
      * @param EntityManagerInterface    $em
      * @param UserRegistration $userRegistrationService
      */
-    public function __construct(SessionInterface $session, EntityManagerInterface $em, UserRegistration $userRegistrationService)
+    public function __construct(RequestStack $requestStack, EntityManagerInterface $em, UserRegistration $userRegistrationService)
     {
-        $this->session = $session;
+        $this->requestStack = $requestStack;
         $this->em = $em;
         $this->userRegistrationService = $userRegistrationService;
     }
@@ -37,7 +37,7 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             AssistantHistoryCreatedEvent::NAME => array(
@@ -80,6 +80,6 @@ class AssistantHistorySubscriber implements EventSubscriberInterface
         $assistantHistory = $event->getAssistantHistory();
         $message = "{$assistantHistory->getUser()} har blitt fordelt til {$assistantHistory->getSchool()}.";
 
-        $this->session->getFlashBag()->add('success', $message);
+        $this->requestStack->getSession()->getFlashBag()->add('success', $message);
     }
 }

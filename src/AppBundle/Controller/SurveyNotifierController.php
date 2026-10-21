@@ -21,7 +21,7 @@ class SurveyNotifierController extends BaseController
      * @param SurveyNotificationCollection|null $surveyNotificationCollection
      * @return Response
      */
-    public function createSurveyNotifierAction(Request $request, SurveyNotificationCollection $surveyNotificationCollection = null)
+    public function createSurveyNotifierAction(Request $request, ?SurveyNotificationCollection $surveyNotificationCollection = null)
     {
         $isUserGroupCollectionEmpty = empty($this->getDoctrine()->getManager()->getRepository(UserGroupCollection::class)->findAll());
         if ($isUserGroupCollectionEmpty) {

@@ -72,7 +72,7 @@ class SurveyQuestionAlternative implements JsonSerializable
      *
      * @return SurveyQuestionAlternative
      */
-    public function setSurveyQuestion(SurveyQuestion $surveyQuestion = null)
+    public function setSurveyQuestion(?SurveyQuestion $surveyQuestion = null)
     {
         $this->surveyQuestion = $surveyQuestion;
 
@@ -105,7 +105,7 @@ class SurveyQuestionAlternative implements JsonSerializable
      *
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return $this->getAlternative();
     }

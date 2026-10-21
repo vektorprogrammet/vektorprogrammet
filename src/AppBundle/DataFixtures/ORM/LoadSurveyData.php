@@ -5,13 +5,13 @@ namespace AppBundle\DataFixtures\ORM;
 use AppBundle\Entity\Survey;
 use AppBundle\Entity\SurveyQuestion;
 use AppBundle\Entity\SurveyQuestionAlternative;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $surveyQuestion1 = new SurveyQuestion();
         $surveyQuestion2 = new SurveyQuestion();
@@ -122,7 +122,7 @@ class LoadSurveyData extends AbstractFixture implements OrderedFixtureInterface
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 6;
     }

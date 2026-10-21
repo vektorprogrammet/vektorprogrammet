@@ -19,7 +19,7 @@ class PositionController extends BaseController
         ));
     }
 
-    public function editPositionAction(Request $request, Position $position = null)
+    public function editPositionAction(Request $request, ?Position $position = null)
     {
         $isCreate = $position === null;
         if ($isCreate) {

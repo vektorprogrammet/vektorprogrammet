@@ -11,6 +11,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('publicUrlProvider')]
     public function testPublicPageIsSuccessful($url)
     {
         $client = self::createClient();
@@ -24,6 +25,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('assistantUrlProvider')]
     public function testAssistantPageIsSuccessful($url)
     {
         $client = $this->createAssistantClient();
@@ -37,6 +39,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('assistantUrlProvider')]
     public function testAssistantPageIsDenied($url)
     {
         //Check if anonymous users gets denied
@@ -51,6 +54,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamMemberUrlProvider')]
     public function testTeamMemberPageIsSuccessful($url)
     {
         $client = $this->createTeamMemberClient();
@@ -64,6 +68,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamMemberUrlProvider')]
     public function testTeamMemberPageIsDenied($url)
     {
         //Check if assistants gets denied
@@ -78,6 +83,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamLeaderUrlProvider')]
     public function testTeamLeaderPageIsSuccessful($url)
     {
         $client = $this->createTeamLeaderClient();
@@ -91,6 +97,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('teamLeaderUrlProvider')]
     public function testTeamLeaderPageIsDenied($url)
     {
         //Check if team member gets denied
@@ -105,6 +112,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('adminUrlProvider')]
     public function testAdminPageIsSuccessful($url)
     {
         $client = $this->createAdminClient();
@@ -118,6 +126,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
      *
      * @param $url
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('adminUrlProvider')]
     public function testAdminPageIsDenied($url)
     {
         //Check if team leader gets denied
@@ -127,7 +136,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
         $this->assertEquals(403, $client->getResponse()->getStatusCode());
     }
 
-    public function publicUrlProvider()
+    public static function publicUrlProvider()
     {
         return array(
             array('/'),
@@ -155,7 +164,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
         );
     }
 
-    public function assistantUrlProvider()
+    public static function assistantUrlProvider()
     {
         return array(
             array('/profile'),
@@ -165,7 +174,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
         );
     }
 
-    public function teamMemberUrlProvider()
+    public static function teamMemberUrlProvider()
     {
         return array(
             array('/kontrollpanel'),
@@ -232,7 +241,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
         );
     }
 
-    public function teamLeaderUrlProvider()
+    public static function teamLeaderUrlProvider()
     {
         return array(
 
@@ -273,7 +282,7 @@ class AvailabilityFunctionalTest extends BaseWebTestCase
         );
     }
 
-    public function adminUrlProvider()
+    public static function adminUrlProvider()
     {
         return array(
             array('/kontrollpanel/avdelingadmin/opprett'),

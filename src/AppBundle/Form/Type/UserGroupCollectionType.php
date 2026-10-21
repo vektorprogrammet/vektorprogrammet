@@ -19,7 +19,7 @@ class UserGroupCollectionType extends AbstractType
 {
     private $isEdit;
     private $bolkNames;
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->isEdit =  $options['isEdit'];
         $this->bolkNames =  $options['bolkNames'];
@@ -91,7 +91,7 @@ class UserGroupCollectionType extends AbstractType
             );
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             "data_class" => UserGroupCollection::class,

@@ -7,7 +7,7 @@ use AppBundle\Validator\Constraints as CustomAssert;
 use DateTime;
 use Doctrine\Common\Collections\Collection;
 use Serializable;
-use Symfony\Component\Security\Core\User\AdvancedUserInterface;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -32,7 +32,7 @@ use Symfony\Component\Security\Core\User\EquatableInterface;
  *      groups={"create_user", "username", "edit_user"}
  * )
  */
-class User implements EquatableInterface, AdvancedUserInterface, Serializable
+class User implements EquatableInterface, UserInterface, PasswordAuthenticatedUserInterface, Serializable
 {
     /**
      * @ORM\Column(type="integer")
@@ -247,7 +247,7 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
     /**
      * {@inheritdoc}
      */
-    public function getPassword()
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -270,7 +270,27 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
     /**
      * @return Role[]
      */
-    public function getRoles()
+    public function getRoles(): array
+    {
+        return array_map(static fn ($role) => $role instanceof Role ? $role->getRole() : $role, $this->getRoleEntities());
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) ($this->user_name ?: $this->email);
+    }
+
+    public function __serialize(): array
+    {
+        return [$this->id, $this->user_name, $this->password];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        [$this->id, $this->user_name, $this->password] = $data;
+    }
+
+    public function getRoleEntities(): array
     {
         if (is_array($this->roles)) {
             return $this->roles;
@@ -416,7 +436,7 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
      *
      * @return User
      */
-    public function setFieldOfStudy(FieldOfStudy $fieldOfStudy = null)
+    public function setFieldOfStudy(?FieldOfStudy $fieldOfStudy = null)
     {
         $this->fieldOfStudy = $fieldOfStudy;
 
@@ -583,14 +603,14 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
     /**
      * {@inheritdoc}
      */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
     }
 
     /**
      * @see \Serializable::serialize()
      */
-    public function serialize()
+    public function serialize(): string
     {
         return serialize(array(
             $this->id,
@@ -606,7 +626,7 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
      *
      * @param $serialized
      */
-    public function unserialize($serialized)
+    public function unserialize($serialized): void
     {
         list(
             $this->id,
@@ -871,7 +891,7 @@ class User implements EquatableInterface, AdvancedUserInterface, Serializable
         return false;
     }
 
-    public function isEqualTo(UserInterface $user)
+    public function isEqualTo(UserInterface $user): bool
     {
         return $this->password === $user->getPassword() && $this->user_name === $user->getUsername();
     }
