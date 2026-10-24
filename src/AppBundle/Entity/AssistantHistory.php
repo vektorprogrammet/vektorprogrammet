@@ -78,7 +78,7 @@ class AssistantHistory
      *
      * @return AssistantHistory
      */
-    public function setUser(User $user = null)
+    public function setUser(?User $user = null)
     {
         $this->user = $user;
 
@@ -102,7 +102,7 @@ class AssistantHistory
      *
      * @return AssistantHistory
      */
-    public function setSemester(Semester $semester = null)
+    public function setSemester(?Semester $semester = null)
     {
         $this->semester = $semester;
 
@@ -145,7 +145,7 @@ class AssistantHistory
      *
      * @return AssistantHistory
      */
-    public function setSchool(School $school = null)
+    public function setSchool(?School $school = null)
     {
         $this->school = $school;
 

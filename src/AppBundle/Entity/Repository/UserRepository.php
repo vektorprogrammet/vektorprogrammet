@@ -8,7 +8,7 @@ use AppBundle\Entity\User;
 use Doctrine\ORM\NonUniqueResultException;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Core\User\UserProviderInterface;
-use Symfony\Component\Security\Core\Exception\UsernameNotFoundException;
+use Symfony\Component\Security\Core\Exception\UserNotFoundException;
 use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
 use Doctrine\ORM\EntityRepository;
 use Doctrine\ORM\NoResultException;
@@ -72,7 +72,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         $users = $this->getEntityManager()->createQuery('
 		
 		SELECT u
-		FROM AppBundle:User u
+		FROM AppBundle\Entity\User u
 		JOIN u.fieldOfStudy fos
 		JOIN fos.department d
 		WHERE d.id = :department
@@ -89,7 +89,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         $users = $this->getEntityManager()->createQuery('
 		
 		SELECT u
-		FROM AppBundle:User u
+		FROM AppBundle\Entity\User u
 		JOIN u.fieldOfStudy fos
 		JOIN fos.department d
 		WHERE d.id = :department
@@ -235,6 +235,11 @@ class UserRepository extends EntityRepository implements UserProviderInterface
     These functions are used by UserProviderInterface
     */
 
+    public function loadUserByIdentifier(string $identifier): UserInterface
+    {
+        return $this->loadUserByUsername($identifier);
+    }
+
     public function loadUserByUsername($username)
     {
         $q = $this
@@ -253,13 +258,13 @@ class UserRepository extends EntityRepository implements UserProviderInterface
                 'Unable to find an active admin VektorVektorBundle:User object identified by "%s".',
                 $username
             );
-            throw new UsernameNotFoundException($message, 0, $e);
+            throw new UserNotFoundException($message, 0, $e);
         }
 
         return $user;
     }
 
-    public function refreshUser(UserInterface $user)
+    public function refreshUser(UserInterface $user): UserInterface
     {
         $class = get_class($user);
         if (!$this->supportsClass($class)) {
@@ -274,7 +279,7 @@ class UserRepository extends EntityRepository implements UserProviderInterface
         return $this->find($user->getId());
     }
 
-    public function supportsClass($class)
+    public function supportsClass(string $class): bool
     {
         return $this->getEntityName() === $class
         || is_subclass_of($class, $this->getEntityName());

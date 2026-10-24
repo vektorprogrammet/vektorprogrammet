@@ -2,14 +2,14 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use AppBundle\Entity\InterviewSchema;
 
 class LoadInterviewSchemaData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $schema1 = new InterviewSchema();
         $schema1->setName('Intervjuskjema HiST, 2015');
@@ -35,7 +35,7 @@ class LoadInterviewSchemaData extends AbstractFixture implements OrderedFixtureI
         $this->setReference('ischema-2', $schema2);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 3;
     }

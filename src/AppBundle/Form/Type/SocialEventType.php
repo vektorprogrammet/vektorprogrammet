@@ -18,7 +18,7 @@ class SocialEventType extends AbstractType
     private $department;
     private $semester;
 
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $this->department = $options['department'];
         $this->semester = $options['semester'];
@@ -43,6 +43,7 @@ class SocialEventType extends AbstractType
                 ),
             ))
             ->add('startTime', DateTimeType::class, array(
+                'html5' => false,
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Starttid for arrangement',
@@ -53,6 +54,7 @@ class SocialEventType extends AbstractType
             ))
 
             ->add('endTime', DateTimeType::class, array(
+                'html5' => false,
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Sluttid for arrangement',
@@ -67,7 +69,7 @@ class SocialEventType extends AbstractType
 
             ->add('department', EntityType::class, array(
                 'label' => 'Hvilken region skal arrangementet gjelde for?',
-                'class' => 'AppBundle:Department',
+                'class' => 'AppBundle\Entity\Department',
                 'data' => $this->department,
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('d')
@@ -77,7 +79,7 @@ class SocialEventType extends AbstractType
             ))
             ->add('semester', EntityType::class, array(
                 'label' => 'Hvilket semester skal arrangementet gjelde for?',
-                'class' => 'AppBundle:Semester',
+                'class' => 'AppBundle\Entity\Semester',
                 'data' => $this->semester,
                 'query_builder' => function (SemesterRepository $sr) {
                     return $sr->queryForAllSemestersOrderedByAge();
@@ -86,7 +88,7 @@ class SocialEventType extends AbstractType
             ))
             ->add('role', EntityType::class, array(
                 'label' => 'Hvilke type brukere kan melde seg på arrangementet?',
-                'class' => 'AppBundle:Role',
+                'class' => 'AppBundle\Entity\Role',
                 'query_builder' => function (EntityRepository $er) {
                     return $er->createQueryBuilder('r')
                         ->select('r')
@@ -98,7 +100,7 @@ class SocialEventType extends AbstractType
             ))
         ;
     }
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'department' => 'AppBundle\Entity\Department',

@@ -3,7 +3,7 @@
 namespace AppBundle\Event;
 
 use AppBundle\Entity\SupportTicket;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 class SupportTicketCreatedEvent extends Event
 {

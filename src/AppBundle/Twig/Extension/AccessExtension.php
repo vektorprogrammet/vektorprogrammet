@@ -21,7 +21,7 @@ class AccessExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('has_access_to', array($this, 'hasAccessTo')),

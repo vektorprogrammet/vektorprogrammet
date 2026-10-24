@@ -49,7 +49,7 @@ class SecurityControllerTest extends BaseWebTestCase
      * @param string $username
      * @param string $password
      *
-     * @return \Symfony\Bundle\FrameworkBundle\Client
+     * @return \Symfony\Bundle\FrameworkBundle\KernelBrowser
      */
     private function login($username, $password)
     {

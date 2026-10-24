@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class ArticleType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('title', TextType::class, array(
@@ -30,7 +30,7 @@ class ArticleType extends AbstractType
             ))
             ->add('departments', EntityType::class, array(
                 'label' => 'Regioner',
-                'class' => 'AppBundle:Department',
+                'class' => 'AppBundle\Entity\Department',
                 'multiple' => true,
                 'expanded' => true,
             ))
@@ -46,7 +46,7 @@ class ArticleType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'allow_extra_fields' => true,
@@ -54,7 +54,7 @@ class ArticleType extends AbstractType
         ]);
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'article';
     }

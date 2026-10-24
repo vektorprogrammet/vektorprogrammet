@@ -10,13 +10,13 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\AdmissionPeriod;
 use DateTime;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadAdmissionPeriodData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $now = new DateTime();
         $jan = 1;
@@ -98,7 +98,7 @@ class LoadAdmissionPeriodData extends AbstractFixture implements OrderedFixtureI
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 4;
     }

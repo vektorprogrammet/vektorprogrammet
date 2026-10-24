@@ -10,7 +10,7 @@ use AppBundle\Role\ReversedRoleHierarchy;
 use AppBundle\Role\Roles;
 use AppBundle\Service\AccessControlService;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AppBundle\Controller\BaseController as Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -48,7 +48,7 @@ class AccessRuleController extends Controller
      * @param AccessRule|null $accessRule
      * @return Response
      */
-    public function createRuleAction(Request $request, AccessRule $accessRule = null)
+    public function createRuleAction(Request $request, ?AccessRule $accessRule = null)
     {
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();
@@ -92,7 +92,7 @@ class AccessRuleController extends Controller
      * @param AccessRule|null $accessRule
      * @return Response
      */
-    public function createRoutingRuleAction(Request $request, AccessRule $accessRule = null)
+    public function createRoutingRuleAction(Request $request, ?AccessRule $accessRule = null)
     {
         if ($isCreate = $accessRule === null) {
             $accessRule = new AccessRule();

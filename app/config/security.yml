@@ -2,7 +2,7 @@
 # http://symfony.com/doc/current/book/security.html
 security:
     # http://symfony.com/doc/current/book/security.html#encoding-the-user-s-password
-    encoders:
+    password_hashers:
         AppBundle\Entity\User:
             algorithm: bcrypt
             cost: 12
@@ -20,15 +20,15 @@ security:
                 providers: [db_username, db_email, db_company_email]
         db_username:
             entity:
-                class: AppBundle:User
+                class: AppBundle\Entity\User
                 property: user_name
         db_email:
             entity:
-                class: AppBundle:User
+                class: AppBundle\Entity\User
                 property: email
         db_company_email:
             entity:
-                class: AppBundle:User
+                class: AppBundle\Entity\User
                 property: companyEmail
 
     # the main part of the security, where you can set up firewalls
@@ -40,12 +40,13 @@ security:
             security: false
             provider: chain_provider
         admin_area:
+            user_checker: AppBundle\Security\UserChecker
             pattern:    ^/admin
-            logout_on_user_change: true
             http_basic: ~
             provider: chain_provider
         secured_area:
-            anonymous: ~
+            entry_point: form_login
+            user_checker: AppBundle\Security\UserChecker
             http_basic: ~
             provider: chain_provider
             form_login:
@@ -53,7 +54,6 @@ security:
                 check_path: /login_check
                 always_use_default_target_path: false
                 default_target_path: /login/redirect
-                require_previous_session: false
                 #Added this line to prevent the SessionUnavailable Exception
                 #See here for explanation: http://stackoverflow.com/questions/32802932/symfony2-sessionunavailable-exception
             remember_me:
@@ -64,7 +64,6 @@ security:
             logout:
                 path:  /logout
                 target:  /
-            logout_on_user_change: true
 
 
     # with these settings you can restrict or allow access for different parts
@@ -92,10 +91,10 @@ security:
         - { path: ^/kontrollpanel/brukeradmin/slett, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/brukeradmin/avdeling, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/brukeradmin/sendaktivering, roles: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/brukeradmin/jubileum, role: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, role: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, role: ROLE_TEAM_LEADER }
-        - { path: ^/kontrollpanel/deltakerhistorikk/slett, role: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/betalt, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/brukeradmin/jubileum/slettbetaling, roles: ROLE_TEAM_LEADER }
+        - { path: ^/kontrollpanel/deltakerhistorikk/slett, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/semesteradmin/update, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/semesteradmin/avdeling/, roles: ROLE_TEAM_LEADER }
         - { path: ^/kontrollpanel/skoleadmin/avdeling, roles: ROLE_TEAM_LEADER }
@@ -141,9 +140,9 @@ security:
         - { path: ^/kontrollpanel/attest, roles: ROLE_TEAM_LEADER }
         - { path: ^/profile/attest, roles: ROLE_TEAM_LEADER }
         - { path: ^/profile/edit, roles: ROLE_TEAM_MEMBER }
-        - { path: ^/efconnect, role: ROLE_TEAM_MEMBER }
-        - { path: ^/elfinder, role: ROLE_TEAM_MEMBER }
-        - { path: ^/kontrollpanel, role: ROLE_TEAM_MEMBER }
+        - { path: ^/efconnect, roles: ROLE_TEAM_MEMBER }
+        - { path: ^/elfinder, roles: ROLE_TEAM_MEMBER }
+        - { path: ^/kontrollpanel, roles: ROLE_TEAM_MEMBER }
         - { path: ^/api/party, roles: ROLE_TEAM_MEMBER }
 
 
@@ -154,4 +153,4 @@ security:
         - { path: ^/utlegg, roles: ROLE_USER }
         - { path: ^/api/myreceipts, roles: ROLE_USER }
         - { path: ^/min-side, roles: ROLE_USER }
-        - { path: ^/eksisterendeopptak, roles: ROLE_USER, method: POST }
+        - { path: ^/eksisterendeopptak, roles: ROLE_USER, methods: [POST] }

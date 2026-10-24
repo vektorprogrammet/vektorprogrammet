@@ -5,9 +5,9 @@ namespace AppBundle\Service;
 use AppBundle\Entity\Department;
 use Exception;
 use Monolog\Logger;
-use Nexy\Slack\Attachment;
-use Nexy\Slack\Client;
-use Nexy\Slack\Message;
+use AppBundle\Slack\Attachment;
+use AppBundle\Slack\Message;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 class SlackMessenger
 {
@@ -16,6 +16,7 @@ class SlackMessenger
     private $logChannel;
     private $logger;
     private $disableDelivery;
+    private $endpoint;
 
     /**
      * SlackMessenger constructor.
@@ -26,9 +27,10 @@ class SlackMessenger
      * @param bool   $disableDelivery
      * @param Logger $logger
      */
-    public function __construct(Client $slackClient, string $notificationChannel, string $logChannel, bool $disableDelivery, Logger $logger)
+    public function __construct(HttpClientInterface $slackClient, string $endpoint, string $notificationChannel, string $logChannel, bool $disableDelivery, Logger $logger)
     {
         $this->slackClient = $slackClient;
+        $this->endpoint = $endpoint;
         $this->notificationChannel = $notificationChannel;
         $this->logChannel = $logChannel;
         $this->logger = $logger;
@@ -37,7 +39,7 @@ class SlackMessenger
 
     public function notify(string $messageBody)
     {
-        $message = $this->slackClient->createMessage();
+        $message = $this->createMessage();
 
         $message
             ->to($this->notificationChannel)
@@ -48,7 +50,7 @@ class SlackMessenger
 
     public function log(string $messageBody, array $attachmentData = [])
     {
-        $message = $this->slackClient->createMessage();
+        $message = $this->createMessage();
         $message->to($this->logChannel);
         $attachment = $this->createAttachment($attachmentData);
 
@@ -67,7 +69,7 @@ class SlackMessenger
             return;
         }
 
-        $message = $this->slackClient->createMessage();
+        $message = $this->createMessage();
 
         $message
             ->to($department->getSlackChannel())
@@ -84,18 +86,27 @@ class SlackMessenger
 
         if (!$this->disableDelivery) {
             try {
-                $this->slackClient->sendMessage($message);
+                $response = $this->slackClient->request('POST', $this->endpoint, [
+                    'json' => $message->jsonSerialize(),
+                    'timeout' => 2,
+                ]);
+                if ($response->getStatusCode() !== 200) {
+                    $this->logger->error('Slack returned an unsuccessful response.');
+                    return;
+                }
             } catch (Exception $e) {
-                $this->logger->error("Sending message to Slack failed! {$e->getMessage()}");
+                // HTTP exception messages may contain the secret webhook URL.
+                $this->logger->error('Sending message to Slack failed.', ['exception_class' => get_class($e)]);
+                return;
             }
         }
 
-        $this->logger->info("Slack message sent to {$message->getChannel()}: {$message->getText()}");
+        $this->logger->info($this->disableDelivery ? 'Slack delivery disabled.' : 'Slack message sent.', ['channel' => $message->getChannel()]);
     }
     
     public function createMessage(): Message
     {
-        return $this->slackClient->createMessage();
+        return new Message();
     }
 
     private function createAttachment(array $data)

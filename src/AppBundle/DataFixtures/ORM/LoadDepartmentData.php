@@ -2,14 +2,14 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use AppBundle\Entity\Department;
 
 class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $department1 = new Department();
         $department1->setName('Norges teknisk-naturvitenskapelige universitet');
@@ -79,7 +79,7 @@ class LoadDepartmentData extends AbstractFixture implements OrderedFixtureInterf
         $this->addReference('dep-4', $department4);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 2;
     }

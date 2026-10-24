@@ -3,13 +3,13 @@
 namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\AssistantHistory;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $ah1 = new AssistantHistory();
         $ah1->setUser($this->getReference('user-1'));
@@ -56,7 +56,7 @@ class LoadAssistantHistoryData extends AbstractFixture implements OrderedFixture
         $this->addReference('ah-1', $ah1);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

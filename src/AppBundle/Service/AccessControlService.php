@@ -20,6 +20,7 @@ class AccessControlService
     private $userService;
     private $accessRulesCache;
     private $unhandledRulesCache;
+    private bool $rulesLoaded = false;
 
     /**
      * ResourceAccessSubscriber constructor.
@@ -37,27 +38,38 @@ class AccessControlService
         $this->userService   = $userService;
         $this->accessRulesCache = [];
         $this->unhandledRulesCache = [];
-        $this->preloadCache();
     }
 
     private function preloadCache()
     {
+        $this->rulesLoaded = false;
+        // Twig builds this service during warmup, before a fresh database has
+        // its schema. Read rules only when an access check needs them.
+        $accessRulesCache = [];
+        $unhandledRulesCache = [];
         $accessRules = $this->entityManager->getRepository(AccessRule::class)->findAll();
         foreach ($accessRules as $rule) {
             $key = $this->getKey($rule->getResource(), $rule->getMethod());
-            if (!key_exists($key, $this->accessRulesCache)) {
-                $this->accessRulesCache[$key] = [];
-            }
-            $this->accessRulesCache[$key][] = $rule;
+            $accessRulesCache[$key][] = $rule;
         }
 
         $unhandledRules = $this->entityManager->getRepository(UnhandledAccessRule::class)->findAll();
         foreach ($unhandledRules as $rule) {
             $key = $this->getKey($rule->getResource(), $rule->getMethod());
-            if (!key_exists($key, $this->unhandledRulesCache)) {
-                $this->unhandledRulesCache[$key] = [];
-            }
-            $this->unhandledRulesCache[$key][] = $rule;
+            $unhandledRulesCache[$key][] = $rule;
+        }
+
+        // Publish only after both queries succeed. Database failures must
+        // propagate rather than turn into an empty permission rule set.
+        $this->accessRulesCache = $accessRulesCache;
+        $this->unhandledRulesCache = $unhandledRulesCache;
+        $this->rulesLoaded = true;
+    }
+
+    private function ensureRulesLoaded(): void
+    {
+        if (!$this->rulesLoaded) {
+            $this->preloadCache();
         }
     }
 
@@ -75,7 +87,7 @@ class AccessControlService
         $this->preloadCache();
     }
 
-    public function checkAccess($resources, User $user = null): bool
+    public function checkAccess($resources, ?User $user = null): bool
     {
         if ($user === null) {
             $user = $this->getLoggedInUser();
@@ -130,7 +142,7 @@ class AccessControlService
             return true;
         }
 
-        if ($user === null || empty($user->getRoles())) {
+        if ($user === null || empty($user->getRoleEntities())) {
             return false;
         }
 
@@ -217,7 +229,7 @@ class AccessControlService
     private function userRoleHasAccessToRule(User $user, AccessRule $rule): bool
     {
         foreach ($rule->getRoles() as $roleInRule) {
-            foreach ($user->getRoles() as $userRole) {
+            foreach ($user->getRoleEntities() as $userRole) {
                 if ($roleInRule === $userRole) {
                     return true;
                 }
@@ -294,6 +306,7 @@ class AccessControlService
 
     private function getAccessRules(string $resource, string $method)
     {
+        $this->ensureRulesLoaded();
         $key = $this->getKey($resource, $method);
         if (key_exists($key, $this->accessRulesCache)) {
             return $this->accessRulesCache[$key];
@@ -304,6 +317,7 @@ class AccessControlService
 
     private function getUnhandledRules(string $resource, string $method)
     {
+        $this->ensureRulesLoaded();
         $key = $this->getKey($resource, $method);
         if (key_exists($key, $this->unhandledRulesCache)) {
             return $this->unhandledRulesCache[$key];

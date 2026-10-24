@@ -1,39 +1,24 @@
-FROM debian:buster-slim
+FROM node:14.21.3-buster AS node
 
-SHELL ["/bin/bash", "-c"] 
-
-# nvm environment variables
-ENV NVM_DIR /usr/local/nvm
-ENV NODE_VERSION 14.21.3
+FROM php:8.5.12-cli-bookworm
 
 RUN apt-get update \
-    && apt-get -y install curl git gnupg unzip wget python2 build-essential \
-        lsb-release apt-transport-https ca-certificates \
-    #
-    # Set up php-repo for apt
-    && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" | tee /etc/apt/sources.list.d/php.list \
-    #
-    # Install php
-    && apt-get update \
-    && apt-get -y install php7.4 php7.4-mbstring php7.4-sqlite \
-                php7.4-gd php7.4-curl php7.4-xml php7.4-zip \
-    #
-    # Install NodeJS
-    && mkdir $NVM_DIR \
-    # https://github.com/creationix/nvm#install-script
-    && curl --silent -o- https://raw.githubusercontent.com/creationix/nvm/v0.39.5/install.sh | bash \
-    && source $NVM_DIR/nvm.sh \
-    && nvm install $NODE_VERSION \
-    && nvm alias default $NODE_VERSION \
-    && nvm use default
+    && apt-get install -y --no-install-recommends \
+        git unzip libfreetype6-dev libjpeg62-turbo-dev libpng-dev \
+        libicu-dev libonig-dev libzip-dev \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install -j"$(nproc)" gd intl mbstring pdo_mysql zip \
+    && rm -rf /var/lib/apt/lists/*
 
-# add node and npm to path so the commands are available
-ENV NODE_PATH $NVM_DIR/v$NODE_VERSION/lib/node_modules
-ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
+# The existing Gulp/node-sass pipeline still uses Node 14.
+# Build with --platform=linux/amd64 for its published node-sass binary.
+COPY --from=node /usr/local/bin/node /usr/local/bin/node
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s ../lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+    && ln -s ../lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
 
 WORKDIR /app
-
 EXPOSE 8000
 
-CMD ["npm", "run", "start"]
+# Development only; production uses a patched PHP-FPM service behind nginx.
+CMD ["php", "-S", "0.0.0.0:8000", "-t", "web", "web/router.php"]

@@ -75,7 +75,7 @@ class AssistantController extends BaseController
      * @throws NoResultException
      * @throws NonUniqueResultException
      */
-    public function admissionAction(Request $request, Department $department = null)
+    public function admissionAction(Request $request, ?Department $department = null)
     {
         return $this->indexAction($request, $department);
     }
@@ -87,7 +87,7 @@ class AssistantController extends BaseController
      *
      * @return Response
      */
-    public function indexAction(Request $request, Department $specificDepartment = null, $scrollToAdmissionForm = false)
+    public function indexAction(Request $request, ?Department $specificDepartment = null, $scrollToAdmissionForm = false)
     {
         $admissionManager = $this->get(ApplicationAdmission::class);
         $em = $this->getDoctrine()->getManager();
@@ -140,7 +140,7 @@ class AssistantController extends BaseController
                 $em->persist($application);
                 $em->flush();
 
-                $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+                $this->get('event_dispatcher')->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
 
                 return $this->redirectToRoute('application_confirmation');
             }
@@ -210,7 +210,7 @@ class AssistantController extends BaseController
             $em->persist($application);
             $em->flush();
 
-            $this->get('event_dispatcher')->dispatch(ApplicationCreatedEvent::NAME, new ApplicationCreatedEvent($application));
+            $this->get('event_dispatcher')->dispatch(new ApplicationCreatedEvent($application), ApplicationCreatedEvent::NAME);
 
             $this->addFlash('success', $application->getUser()->getEmail().' har blitt registrert. Du vil få en e-post med kvittering på søknaden.');
             return $this->redirectToRoute('application_stand_form', ['shortName' => $department->getShortName()]);

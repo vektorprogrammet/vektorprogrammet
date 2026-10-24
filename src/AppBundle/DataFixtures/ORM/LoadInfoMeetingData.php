@@ -4,9 +4,9 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\InfoMeeting;
 use DateTime;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
@@ -14,12 +14,12 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
 {
     private $container;
 
-    public function setContainer(ContainerInterface $container = null)
+    public function setContainer(?ContainerInterface $container = null): void
     {
         $this->container = $container;
     }
 
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $infoMeetingUiO = new InfoMeeting();
         $date = new DateTime('now');
@@ -43,7 +43,7 @@ class LoadInfoMeetingData extends AbstractFixture implements ContainerAwareInter
      *
      * @return integer
      */
-    public function getOrder()
+    public function getOrder(): int
     {
         return 28;
     }

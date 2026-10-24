@@ -34,7 +34,7 @@ class SurveyPopupController extends BaseController
             }
         }
 
-        $routeName = $this->container->get('request_stack')->getMasterRequest()->get('_route');
+        $routeName = $this->get('request_stack')->getMainRequest()->get('_route');
         if (strpos($routeName, "survey_show") !== false) {
             return new Response();
         }

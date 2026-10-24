@@ -6,27 +6,27 @@ use AppBundle\Event\TeamApplicationCreatedEvent;
 use AppBundle\Mailer\MailerInterface;
 use Swift_Message;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Environment;
 
 class TeamApplicationSubscriber implements EventSubscriberInterface
 {
     private $mailer;
     private $twig;
-    private $session;
+    private $requestStack;
 
     /**
      * ApplicationAdmissionSubscriber constructor.
      *
      * @param MailerInterface $mailer
      * @param Environment $twig
-     * @param SessionInterface $session
+     * @param RequestStack $requestStack
      */
-    public function __construct(MailerInterface $mailer, Environment $twig, SessionInterface $session)
+    public function __construct(MailerInterface $mailer, Environment $twig, RequestStack $requestStack)
     {
         $this->mailer = $mailer;
         $this->twig = $twig;
-        $this->session = $session;
+        $this->requestStack = $requestStack;
     }
 
     /**
@@ -34,7 +34,7 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
      *
      * @return array The event names to listen to
      */
-    public static function getSubscribedEvents()
+    public static function getSubscribedEvents(): array
     {
         return array(
             TeamApplicationCreatedEvent::NAME => array(
@@ -87,6 +87,6 @@ class TeamApplicationSubscriber implements EventSubscriberInterface
 
     public function addFlashMessage()
     {
-        $this->session->getFlashBag()->add('success', 'Søknaden er mottatt.');
+        $this->requestStack->getSession()->getFlashBag()->add('success', 'Søknaden er mottatt.');
     }
 }

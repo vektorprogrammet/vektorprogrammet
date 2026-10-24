@@ -3,7 +3,6 @@
 namespace AppBundle\Role;
 
 use Symfony\Component\Security\Core\Role\RoleHierarchy;
-use Symfony\Component\Security\Core\Role\Role;
 
 /**
  * ReversedRoleHierarchy defines a reversed role hierarchy.
@@ -38,16 +37,6 @@ class ReversedRoleHierarchy extends RoleHierarchy
      */
     public function getParentRoles(array $roleNames)
     {
-        $roles = [];
-        foreach ($roleNames as $roleName) {
-            $roles[] = new Role($roleName);
-        }
-
-        $results = [];
-        foreach ($this->getReachableRoles($roles) as $parent) {
-            $results[] = $parent->getRole();
-        }
-
-        return $results;
+        return $this->getReachableRoleNames($roleNames);
     }
 }

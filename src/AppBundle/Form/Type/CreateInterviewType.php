@@ -10,10 +10,10 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateInterviewType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('interviewer', EntityType::class, array(
-            'class' => 'AppBundle:User',
+            'class' => 'AppBundle\Entity\User',
             'query_builder' => function (EntityRepository $er) use ($options) {
                 return $er->createQueryBuilder('u')
                     ->select('u')
@@ -26,7 +26,7 @@ class CreateInterviewType extends AbstractType
         ));
 
         $builder->add('interviewSchema', EntityType::class, array(
-            'class' => 'AppBundle:InterviewSchema',
+            'class' => 'AppBundle\Entity\InterviewSchema',
             'query_builder' => function (EntityRepository $er) {
                 return $er->createQueryBuilder('i')
                     ->select('i')
@@ -35,7 +35,7 @@ class CreateInterviewType extends AbstractType
         ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\Interview',
@@ -43,7 +43,7 @@ class CreateInterviewType extends AbstractType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'interview';
     }

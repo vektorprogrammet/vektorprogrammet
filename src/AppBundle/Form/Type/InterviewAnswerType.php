@@ -14,7 +14,7 @@ use Symfony\Component\Form\FormEvents;
 
 class InterviewAnswerType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         // Have to use form events to access entity properties in an embedded form
         $builder->addEventListener(FormEvents::PRE_SET_DATA, function (FormEvent $event) use (&$interviewAnswer) {
@@ -82,14 +82,14 @@ class InterviewAnswerType extends AbstractType
         return array_combine($values, $values);
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\InterviewAnswer',
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'interviewAnswer';
     }

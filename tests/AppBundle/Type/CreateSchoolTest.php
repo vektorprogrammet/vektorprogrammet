@@ -4,13 +4,14 @@ namespace Tests\AppBundle\Type;
 
 use AppBundle\Form\Type\CreateSchoolType;
 use AppBundle\Entity\School;
-use Symfony\Component\Form\Test\TypeTestCase;
+use Symfony\Component\Form\Test\FormIntegrationTestCase;
 
-class CreateSchoolTest extends TypeTestCase
+class CreateSchoolTest extends FormIntegrationTestCase
 {
     /**
      * @dataProvider getValidTestData
      */
+    #[\PHPUnit\Framework\Attributes\DataProvider('getValidTestData')]
     public function testForm($data)
     {
         $type = CreateSchoolType::class;
@@ -34,7 +35,7 @@ class CreateSchoolTest extends TypeTestCase
         }
     }
 
-    public function getValidTestData()
+    public static function getValidTestData()
     {
         return array(
             array(

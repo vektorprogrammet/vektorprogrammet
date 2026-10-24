@@ -2,14 +2,14 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use AppBundle\Entity\School;
 
 class LoadSchoolData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $school1 = new School();
         $school1->setName('Gimse');
@@ -61,7 +61,7 @@ class LoadSchoolData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('school-4', $school4);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 1;
     }

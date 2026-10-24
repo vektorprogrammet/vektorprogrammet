@@ -8,7 +8,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class CancelInterviewConfirmationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('message', TextareaType::class, array(
@@ -18,7 +18,7 @@ class CancelInterviewConfirmationType extends AbstractType
             ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'CancelInterviewConfirmation';
     }

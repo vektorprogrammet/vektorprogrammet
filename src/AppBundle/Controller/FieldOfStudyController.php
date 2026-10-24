@@ -20,7 +20,7 @@ class FieldOfStudyController extends BaseController
         ));
     }
 
-    public function editAction(Request $request, FieldOfStudy $fieldOfStudy = null)
+    public function editAction(Request $request, ?FieldOfStudy $fieldOfStudy = null)
     {
         $isEdit = true;
         if ($fieldOfStudy === null) {

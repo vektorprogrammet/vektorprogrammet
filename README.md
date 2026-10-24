@@ -1,125 +1,94 @@
-<img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/master/app/Resources/assets/images/vektor_stor.png" alt="alt text" width="400" height="auto">
+<img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/master/app/Resources/assets/images/vektor_stor.png" alt="Vektorprogrammet" width="400">
 
-![Build Status](https://travis-ci.com/vektorprogrammet/vektorprogrammet.svg?branch=master)
+# Development setup
 
+## Requirements
 
+- PHP **8.5.12 or newer**, with PDO, SQLite (development/tests), MySQL (production), GD, intl, mbstring, curl, XML, fileinfo, OpenSSL and zip.
+- Composer 2 (the repository includes `composer.phar`).
+- Node **14.21.3** for the existing Gulp/node-sass asset build. On Apple Silicon, use the Docker asset build below.
+- Git; Docker is optional for building assets.
 
-# Set up development environment
-## Requirements:
-- [PHP](http://php.net/downloads.php) version 7.4
-- [Node](https://nodejs.org/en/) version 14
-- [Git](https://git-scm.com/)
+The application uses Symfony 6.4, Twig 3 and Doctrine ORM 2.20. The PHP upgrade does not modernize the older JavaScript toolchain.
 
-##### Required PHP-dependencies:
-* ext-pdo_sqlite
-* ext-gd2
-* ext-mbstring
-* ext-curl
-* ext-xml
+## Install PHP dependencies
 
-#### How to install the php-dependencies
+From the repository root:
 
-Please find the file `php.ini`. (On Linux it is located at `/etc/php/version/cli/php.ini`).
-
-Uncomment all lines with the required PHP-dependencies.
-
-Example for dependency `mbstring`:
-
-`;extension=mbstring`       ---> `extension=mbstring`
-
-
-To install the PHP-dependencies on Ubuntu 
-(Example with Ubuntu as operating system and a php-version of 7.4)
-```
-sudo apt-get install php7.4-mbstring
-sudo apt-get install php7.4-sqlite (php7.4-mysql for prod)
-sudo apt-get install php7.4-gd
-sudo apt-get install php7.4-curl
-sudo apt-get install php7.4-xml
+```sh
+php -v
+php composer.phar install --no-interaction
 ```
 
-Alternatively install Composer dependency manager from [here](https://getcomposer.org/).
-Then run `composer install`.
+The first install creates the ignored `app/config/parameters.yml`. Keep local credentials there. The default configuration uses `var/data/dev.db` (SQLite). Local mail, SMS and Slack delivery are disabled; do not copy production integration credentials into this file.
 
+For a **new, empty local database only**:
 
+```sh
+php bin/console doctrine:schema:create --env=dev
+php bin/console doctrine:fixtures:load --env=dev --no-interaction
+```
 
+Fixtures replace database contents. Preserve an existing development database instead of reloading fixtures. Never run these commands against production.
 
-## Setup:
+## Build assets
 
-### Clone files:
-`git clone https://github.com/vektorprogrammet/vektorprogrammet.git`
+Using Node 14 on a compatible x86 Linux machine:
 
-#### UNIX:
-`npm run setup`
-#### Windows:
-`npm run setup:win`
+```sh
+npm ci
+npm run build:dev
+```
 
-### Start server on http://localhost:8000
-`npm start`
+On a Mac with Docker, run:
 
+```sh
+docker run --rm --platform=linux/amd64 \
+  -v "$PWD:/app" --tmpfs /app/node_modules:exec \
+  -w /app node:14.21.3-buster \
+  bash -lc 'npm ci --ignore-scripts && node node_modules/node-sass/scripts/install.js && node node_modules/gulp/bin/gulp.js build:dev'
+```
 
-### Build static files
-When adding new images or other non-code files, you can run:
+Gulp copies images from `app/Resources/assets/images` into the ignored `web/images` directory. Rebuild after adding an image. The Docker command above builds assets only; PHP runs natively on your Mac.
 
-`npm run build`
+## Run locally
 
-so that the files are put in the correct places. (this is automatically
-done when doing `npm start`)
+```sh
+php -S 127.0.0.1:8000 -t web web/router.php
+```
 
-## Users
-| Position     | Username   | Password |        Role        |
-| :----------: | :--------: |:--------:|:------------------:|
-| Assistent    | assistent  |   1234   |      ROLE_USER     |
-| Teammedlem   | teammember |   1234   |  ROLE_TEAM_MEMBER  |
-| Teamleder    | teamleader |   1234   |  ROLE_TEAM_LEADER  |
-| Admin        | admin      |   1234   |      ROLE_ADMIN    |
+Open <http://127.0.0.1:8000>. The router serves assets and forwards application routes to the development front controller. It replaces the removed Symfony `server:run` command. With local Node dependencies installed, `npm start` also starts Gulp's watcher.
 
+The fixture accounts all use password `1234`:
 
-## Code style
-Code style should follow a certain set of rules. Make sure your code 
-adheres to these rules before opening a PR. 
+| Role | Username |
+| --- | --- |
+| Assistant | `assistent` |
+| Team member | `teammember` |
+| Team leader | `teamleader` |
+| Admin | `admin` |
 
-### Fix style
-##### UNIX/LINUX:
-`npm run -s cs`
-##### Windows:
-`npm run -s cs:win`
+These accounts are for development fixtures only.
 
-## Testing
-Tests should be run before opening a PR.
-##### UNIX/LINUX:
-`npm run test`
+## Checks
 
-##### Windows:
-`npm run test:win`
+```sh
+php composer.phar validate --strict
+php composer.phar audit
+php bin/console lint:container
+php bin/console lint:twig app/Resources/views
+php bin/console doctrine:schema:validate --skip-sync
+php -d memory_limit=512M bin/phpunit --configuration app/phpunit.xml.dist
+```
 
-#### File specific test: 
+The test bootstrap recreates `var/data/test.db`, loads fixtures and restores it between tests. It must remain separate from the development or production database. To run one test class, append `--filter ClassName` to the PHPUnit command.
 
-`npm run test "tests/PATH_TO_TEST" `
+`npm run cs` runs the PHP style fixer.
 
-or *(without needing the exact path)*
+## PHP Docker development image
 
-`npm run test -- --filter "NAME_OF_FILE" `
+The Dockerfile targets `php:8.5.12-cli-bookworm` and includes the legacy Node 14 build tools. Build with `docker build --platform=linux/amd64 -t vektorprogrammet .`, then run with `docker run --rm -p 8000:8000 -v "$PWD:/app" vektorprogrammet`. The PHP base image is available upstream. Native PHP 8.5.12 is the verified local path; the complete Docker image has not been built and verified as part of this migration.
 
+## Production upgrade
 
-
-## Database
-
-### Add new entities to the database and reload fixtures
-`npm run db:update`
-
-### Reload database
-`npm run db:reload`
-
-## Docker:
-Build docker image:
-`npm run docker:build`
-
-Set up docker image:
-`npm run docker:setup`
-
-Run commands in docker image
-`npm run docker:run  -- <CMD>`
-
-e.g.
-`npm run docker:run -- npm run db:update`
+See [the PHP 8.5 migration guide](docs/php-8.5-upgrade.md). This branch requires a patched PHP runtime and a reviewed database migration history before deployment.

@@ -8,7 +8,7 @@ services:
             AppBundle\Sms\SmsSenderInterface: '@AppBundle\Sms\SmsSender'
 
     AppBundle\:
-        resource: "../../src/AppBundle/{Service, Role, Mailer, Sms}"
+        resource: "../../src/AppBundle/{Service,Role,Mailer,Sms,Security,Command}"
 
     AppBundle\DataFixtures\ORM\:
         resource: '../../src/AppBundle/DataFixtures/ORM'
@@ -21,6 +21,10 @@ services:
     AppBundle\Service\AdmissionNotifier:
         arguments:
             $sendLimit: '%admission_notifier_limit%'
+
+    AppBundle\Service\MigrationMetadataUpgrader:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
 
     guzzle.slack:
         class: GuzzleHttp\Client
@@ -63,6 +67,7 @@ services:
     AppBundle\Service\SlackMessenger:
         arguments:
             $logger: '@logger'
+            $endpoint: '%slack_endpoint%'
             $notificationChannel: '%slack.notification_channel%'
             $logChannel: '%slack.log_channel%'
             $disableDelivery: '%slack.disable_delivery%'
@@ -80,3 +85,35 @@ services:
         class: Symfony\Component\Serializer\Normalizer\GetSetMethodNormalizer
         public: false
         tags: [serializer.normalizer]
+
+    AppBundle\Controller\:
+        resource: '../../src/AppBundle/Controller'
+        tags: ['controller.service_arguments']
+        calls:
+            - [setLegacyContainer, ['@service_container']]
+
+    Swift_Mailer:
+        class: Swift_Mailer
+        factory: ['AppBundle\Mailer\SwiftMailerFactory', 'create']
+        public: true
+
+    AppBundle\DataCollector\MailCollector:
+        tags:
+            - { name: data_collector, id: swiftmailer }
+
+    Monolog\Logger:
+        alias: logger
+        public: true
+
+    security.user_password_hasher:
+        class: Symfony\Component\PasswordHasher\Hasher\UserPasswordHasher
+        arguments: ['@security.password_hasher_factory']
+        public: true
+
+    parameter_bag:
+        class: Symfony\Component\DependencyInjection\ParameterBag\ContainerBag
+        arguments: ['@service_container']
+        public: true
+
+    Symfony\Component\DependencyInjection\ContainerInterface:
+        alias: service_container

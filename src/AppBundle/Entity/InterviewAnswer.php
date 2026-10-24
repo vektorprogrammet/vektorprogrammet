@@ -77,7 +77,7 @@ class InterviewAnswer
      *
      * @return InterviewAnswer
      */
-    public function setInterview(Interview $interview = null)
+    public function setInterview(?Interview $interview = null)
     {
         $this->interview = $interview;
 
@@ -101,7 +101,7 @@ class InterviewAnswer
      *
      * @return InterviewAnswer
      */
-    public function setInterviewQuestion(InterviewQuestion $interviewQuestion = null)
+    public function setInterviewQuestion(?InterviewQuestion $interviewQuestion = null)
     {
         $this->interviewQuestion = $interviewQuestion;
 

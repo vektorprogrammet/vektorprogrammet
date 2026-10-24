@@ -16,13 +16,13 @@ class ParticipantHistoryControllerTest extends BaseWebTestCase
         $this->assertEquals(1, $crawler->filter('h2:contains("Assistenter")')->count());
 
         // Assert that we have the correct data
-        $this->assertContains('Petter Johansen', $client->getResponse()->getContent());
-        $this->assertContains('petter@stud.ntnu.no', $client->getResponse()->getContent());
-        $this->assertContains('Hovedstyret', $client->getResponse()->getContent());
-        $this->assertContains('NTNU', $client->getResponse()->getContent());
-        $this->assertContains('Bolk 2', $client->getResponse()->getContent());
-        $this->assertContains('Onsdag', $client->getResponse()->getContent());
-        $this->assertContains('Gimse', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Petter Johansen', $client->getResponse()->getContent());
+        $this->assertStringContainsString('petter@stud.ntnu.no', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Hovedstyret', $client->getResponse()->getContent());
+        $this->assertStringContainsString('NTNU', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Bolk 2', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Onsdag', $client->getResponse()->getContent());
+        $this->assertStringContainsString('Gimse', $client->getResponse()->getContent());
 
         // Check the count for the different variables
         $this->assertEquals(1, $crawler->filter('td a:contains("Petter Johansen")')->count());

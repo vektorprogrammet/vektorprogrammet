@@ -4,12 +4,42 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\Department;
 use AppBundle\Entity\Semester;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use FOS\RestBundle\Controller\AbstractFOSRestController;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
-class BaseController extends Controller
+class BaseController extends AbstractFOSRestController
 {
+    private \Psr\Container\ContainerInterface $legacyContainer;
+
+    public function setLegacyContainer(\Psr\Container\ContainerInterface $container): void
+    {
+        $this->legacyContainer = $container;
+    }
+
+    public static function getSubscribedServices(): array
+    {
+        return parent::getSubscribedServices() + [
+            'doctrine' => ManagerRegistry::class,
+            'event_dispatcher' => \Symfony\Contracts\EventDispatcher\EventDispatcherInterface::class,
+            'security.authentication_utils' => \Symfony\Component\Security\Http\Authentication\AuthenticationUtils::class,
+            'security.user_password_hasher' => \Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface::class,
+            'knp_paginator' => \Knp\Component\Pager\PaginatorInterface::class,
+            'form.factory' => \Symfony\Component\Form\FormFactoryInterface::class,
+        ];
+    }
+
+    protected function get(string $id): mixed
+    {
+        return $this->container->has($id) ? $this->container->get($id) : $this->legacyContainer->get($id);
+    }
+
+    protected function getDoctrine(): ManagerRegistry
+    {
+        return $this->get('doctrine');
+    }
+
     /**
      * Tries to get department from the Request and opts to the user's department if none is found.
      * Returns null if none can be found this way.

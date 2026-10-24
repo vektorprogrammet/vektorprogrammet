@@ -13,7 +13,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CreateUserOnApplicationType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('firstName', TextType::class, array(
@@ -41,7 +41,7 @@ class CreateUserOnApplicationType extends AbstractType
             ))
             ->add('fieldOfStudy', EntityType::class, array(
                 'label' => 'Linje',
-                'class' => 'AppBundle:FieldOfStudy',
+                'class' => 'AppBundle\Entity\FieldOfStudy',
                 'query_builder' => function (EntityRepository $er) use ($options) {
                     return $er->createQueryBuilder('f')
                         ->orderBy('f.shortName', 'ASC')
@@ -52,7 +52,7 @@ class CreateUserOnApplicationType extends AbstractType
             ));
     }
 
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\User',
@@ -60,7 +60,7 @@ class CreateUserOnApplicationType extends AbstractType
         ));
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'createUser';
     }

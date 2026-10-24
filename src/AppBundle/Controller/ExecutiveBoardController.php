@@ -37,7 +37,7 @@ class ExecutiveBoardController extends BaseController
             }
         }
 
-        return $this->render(':executive_board:index.html.twig', array(
+        return $this->render('executive_board/index.html.twig', array(
             'board_name' => $board->getName(),
             'active_members' => $activeMembers,
             'inactive_members' => $inactiveMembers,

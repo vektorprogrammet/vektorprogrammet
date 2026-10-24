@@ -129,7 +129,7 @@ class SurveyController extends BaseController
         return $this->showUserMainAction($request, $survey, $user);
     }
 
-    private function showUserMainAction(Request $request, Survey $survey, User $user, string $identifier = null)
+    private function showUserMainAction(Request $request, Survey $survey, User $user, ?string $identifier = null)
     {
         $surveyTaken = $this->get(SurveyManager::class)->initializeUserSurveyTaken($survey, $user);
         $form = $this->createForm(SurveyExecuteType::class, $surveyTaken);

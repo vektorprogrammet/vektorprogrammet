@@ -4,13 +4,13 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\Team;
 use DateTime;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $team1 = new Team();
         $team1->setDepartment($this->getReference('dep-1'));
@@ -159,7 +159,7 @@ class LoadTeamData extends AbstractFixture implements OrderedFixtureInterface
         $this->addReference('team-2', $team2);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 3;
     }

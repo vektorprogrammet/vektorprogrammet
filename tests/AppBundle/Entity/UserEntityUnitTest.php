@@ -154,7 +154,7 @@ class UserEntityUnitTest extends TestCase
         $user->addRole($role1);
 
         // Roles is stored in an array
-        $roles = $user->getRoles();
+        $roles = $user->getRoleEntities();
 
         // Loop through the array and check for matches
         foreach ($roles as $role) {

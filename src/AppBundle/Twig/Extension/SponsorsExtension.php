@@ -21,7 +21,7 @@ class SponsorsExtension extends AbstractExtension
         return 'SponsorsExtension';
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('get_sponsors', [$this, 'getSponsors']),

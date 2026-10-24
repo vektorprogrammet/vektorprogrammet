@@ -50,9 +50,6 @@ parameters:
     google_api_client_secret: 'xxxxx'
     google_api_refresh_token: 'xxxxx'
 
-    gateway_api_token: xxxxx
-    sms_disable: true
-
     ipinfo_token: ''
     geo_ignored_asns: []
 

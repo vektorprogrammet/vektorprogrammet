@@ -21,7 +21,7 @@ class RouteDisplayExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('get_path', array( $this, 'getPath' )),

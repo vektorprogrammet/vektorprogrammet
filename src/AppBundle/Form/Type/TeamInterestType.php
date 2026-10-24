@@ -16,7 +16,7 @@ class TeamInterestType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array $options
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $department = $builder->getData()->getDepartment();
 
@@ -29,7 +29,7 @@ class TeamInterestType extends AbstractType
             ))
             ->add('potentialTeams', EntityType::class, array(
                 'label' => 'Hvilke team er du interessert i?',
-                'class' => 'AppBundle:Team',
+                'class' => 'AppBundle\Entity\Team',
                 'query_builder' => function (EntityRepository $entityRepository) use ($department) {
                     return $entityRepository->createQueryBuilder('team')
                         ->select('team')
@@ -46,7 +46,7 @@ class TeamInterestType extends AbstractType
     /**
      * @param OptionsResolver $resolver
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults(array(
             'data_class' => 'AppBundle\Entity\TeamInterest',
@@ -57,7 +57,7 @@ class TeamInterestType extends AbstractType
     /**
      * @return string
      */
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'appbundle_teaminterest';
     }

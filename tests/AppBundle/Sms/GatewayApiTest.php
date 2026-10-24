@@ -14,9 +14,9 @@ class GatewayApiTest extends TestCase
      */
     private $gatewayApi;
 
-    protected function setUp()
+    protected function setUp(): void
     {
-        $loggerMock = $this->createMock(LogService::class);
+        $loggerMock = $this->createStub(LogService::class);
         $this->gatewayApi = new GatewayAPI([
         	'disable_delivery' => true,
 	        'max_length' => 2000,

@@ -24,7 +24,7 @@ class ApplicationEmailValidator extends ConstraintValidator
      * @param Application $application The value that should be validated
      * @param Constraint $constraint The constraint for the validation
      */
-    public function validate($application, Constraint $constraint)
+    public function validate($application, Constraint $constraint): void
     {
         if (!$application) {
             return;

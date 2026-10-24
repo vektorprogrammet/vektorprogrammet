@@ -4,7 +4,7 @@ namespace AppBundle\Form\Type;
 
 use AppBundle\Entity\Repository\SemesterRepository;
 use AppBundle\Entity\Survey;
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -15,11 +15,11 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class SurveyType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('semester', EntityType::class, array(
             'label' => 'Semester',
-            'class' => 'AppBundle:Semester',
+            'class' => 'AppBundle\Entity\Semester',
             'query_builder' => function (SemesterRepository $sr) {
                 return $sr->queryForAllSemestersOrderedByAge();
             },
@@ -94,7 +94,7 @@ class SurveyType extends AbstractType
     }
     
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'survey';
     }

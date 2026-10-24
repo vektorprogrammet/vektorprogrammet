@@ -52,14 +52,14 @@ class TeamInterestController extends BaseController
             $manager->persist($teamInterest);
             $manager->flush();
 
-            $this->get('event_dispatcher')->dispatch(TeamInterestCreatedEvent::NAME, new TeamInterestCreatedEvent($teamInterest));
+            $this->get('event_dispatcher')->dispatch(new TeamInterestCreatedEvent($teamInterest), TeamInterestCreatedEvent::NAME);
 
             return $this->redirectToRoute('team_interest_form', array(
                 'id' => $department->getId(),
             ));
         }
 
-        return $this->render(':team_interest:team_interest.html.twig', array(
+        return $this->render('team_interest/team_interest.html.twig', array(
             'form' => $form->createView(),
         ));
     }

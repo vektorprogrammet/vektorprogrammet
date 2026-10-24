@@ -2,14 +2,14 @@
 
 namespace AppBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 use AppBundle\Entity\FieldOfStudy;
 
 class LoadFieldOfStudyData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         $fos1 = new FieldOfStudy();
         $fos1->setName('Bachelor i informatikk');
@@ -50,7 +50,7 @@ class LoadFieldOfStudyData extends AbstractFixture implements OrderedFixtureInte
         $this->addReference('fos-5', $fos5);
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 3;
     }

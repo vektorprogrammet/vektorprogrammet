@@ -36,7 +36,14 @@ class GitHubController extends BaseController
                 "```$message```\n".
                 "Deploying changes..."
             );
-            shell_exec($this->getParameter('kernel.root_dir').'/../deploy.sh');
+            $deployOutput = array();
+            $deployExitCode = 0;
+            exec(escapeshellarg($this->getParameter('kernel.root_dir').'/../deploy.sh'), $deployOutput, $deployExitCode);
+            if ($deployExitCode !== 0) {
+                $this->get(LogService::class)->error('Deploy failed. Check var/logs/deploy.log for details.');
+
+                return new JsonResponse(['status' => 'Deployment failed'], 500);
+            }
             $this->get(LogService::class)->info('Deploy complete');
 
             return new JsonResponse(['status' => 'Deployed']);

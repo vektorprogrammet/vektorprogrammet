@@ -36,7 +36,7 @@ class SponsorsController extends BaseController
      *
      * @return RedirectResponse|Response
      */
-    public function sponsorEditAction(Sponsor $sponsor = null, Request $request)
+    public function sponsorEditAction(Request $request, ?Sponsor $sponsor = null)
     {
         $isCreate = $sponsor === null;
         $oldImgPath = "";

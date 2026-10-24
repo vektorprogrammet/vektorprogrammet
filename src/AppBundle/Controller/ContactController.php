@@ -30,7 +30,7 @@ class ContactController extends BaseController
      *
      * @return Response
      */
-    public function indexAction(Request $request, Department $department = null)
+    public function indexAction(Request $request, ?Department $department = null)
     {
         if ($department === null) {
             $department = $this->get(GeoLocation::class)
@@ -49,7 +49,7 @@ class ContactController extends BaseController
         }
         if ($form->isSubmitted() && $form->isValid()) {
             $this->get('event_dispatcher')
-            ->dispatch(SupportTicketCreatedEvent::NAME, new SupportTicketCreatedEvent($supportTicket));
+            ->dispatch(new SupportTicketCreatedEvent($supportTicket), SupportTicketCreatedEvent::NAME);
 
             return $this->redirectToRoute('contact_department', array('id' => $supportTicket->getDepartment()->getId()));
         }

@@ -21,7 +21,7 @@ class StaticContentExtension extends AbstractExtension
         return 'Static_contentExtension';
     }
 
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('get_content', [$this, 'getContent']),

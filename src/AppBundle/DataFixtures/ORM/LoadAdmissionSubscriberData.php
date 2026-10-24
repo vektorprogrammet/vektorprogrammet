@@ -4,13 +4,13 @@ namespace AppBundle\DataFixtures\ORM;
 
 use AppBundle\Entity\AdmissionSubscriber;
 use DateTime;
-use Doctrine\Common\DataFixtures\AbstractFixture;
+use AppBundle\DataFixtures\Fixture as AbstractFixture;
 use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
-use Doctrine\Common\Persistence\ObjectManager;
+use Doctrine\Persistence\ObjectManager;
 
 class LoadAdmissionSubscriberData extends AbstractFixture implements OrderedFixtureInterface
 {
-    public function load(ObjectManager $manager)
+    public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 365; $i++) {
             $date = new DateTime("-$i days");
@@ -26,7 +26,7 @@ class LoadAdmissionSubscriberData extends AbstractFixture implements OrderedFixt
         $manager->flush();
     }
 
-    public function getOrder()
+    public function getOrder(): int
     {
         return 5;
     }

@@ -3,7 +3,7 @@
 namespace Tests\AppBundle\Controller;
 
 use Tests\BaseWebTestCase;
-use Symfony\Bundle\FrameworkBundle\Client;
+use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 
 class PasswordResetControllerTest extends BaseWebTestCase
 {
@@ -19,17 +19,16 @@ class PasswordResetControllerTest extends BaseWebTestCase
      */
     private function loginSuccessful($password)
     {
-        $crawler = $this->anonymousGoTo('/login');
-
+        // Each attempt starts without an authenticated session from the previous attempt.
+        $client = self::createClient();
+        $crawler = $client->request('GET', '/login');
         $form = $crawler->selectButton('Logg inn')->form();
         $form['_username'] = self::username;
         $form['_password'] = $password;
         $form['_remember_me'] = false;
-        $client = $this->createAnonymousClient();
         $client->submit($form);
-
-        $crawler = $client->request('GET', '/');
-        return $crawler->filter('nav span:contains("Logg inn")')->count() == 0;
+        $client->request('GET', '/kontrollpanel');
+        return $client->getResponse()->isSuccessful();
     }
 
     /**
@@ -69,7 +68,7 @@ class PasswordResetControllerTest extends BaseWebTestCase
     /**
      * @param $client Client with profiler enabled
      */
-    private function assertNoEmailSent(Client $client)
+    private function assertNoEmailSent(KernelBrowser $client)
     {
         $mailCollector = $client->getProfile()->getCollector('swiftmailer');
         $this->assertEquals(0, $mailCollector->getMessageCount());

@@ -8,7 +8,6 @@ imports:
     - { resource: services_google.yml }
     - { resource: event_subscribers.yml }
     - { resource: forms.yml }
-    - { resource: automapper.yml }
 
 parameters:
   google_api:
@@ -63,12 +62,11 @@ framework:
     router:
         resource: "%kernel.root_dir%/config/routing.yml"
         strict_requirements: ~
+    assets:          ~
+    http_client:     ~
     form:            ~
     csrf_protection: ~
     validation:      { enable_annotations: true }
-    templating:
-        engines: ['twig']
-        #assets_version: SomeVersionScheme
     default_locale:  "%locale%"
     trusted_hosts:   ~
     session:
@@ -81,6 +79,7 @@ framework:
 
 # Twig Configuration
 twig:
+    default_path: '%kernel.project_dir%/app/Resources/views'
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"
     globals:
@@ -116,27 +115,8 @@ doctrine:
         auto_mapping: true
 
 
-# Swiftmailer Configuration
-swiftmailer:
-    default_mailer: standard_mailer
-    mailers:
-        standard_mailer:
-            transport: "%mailer_transport%"
-            host:      "%mailer_host%"
-            username:  "%mailer_user%"
-            password:  "%mailer_password%"
-            port:      "%mailer_port%"
-            spool:     { type: memory }
-        newsletter:
-            transport: "%newsletter_transport%"
-            host:      "%newsletter_hostname%"
-            username:  "%newsletter_username%"
-            password:  "%newsletter_password%"
-            port:      "%newsletter_port%"
-            spool:     { type: memory }
 
-
-ivory_ck_editor:
+fos_ck_editor:
     base_path: "vendor/ckeditor/"
     js_path: "vendor/ckeditor/ckeditor.js"
     default_config: default
@@ -157,7 +137,6 @@ fm_elfinder:
             locale: '%locale%' # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
             fullscreen: false # defaults true, applies to simple and ckeditor editors
-            include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
             connector:
                 debug: false # defaults to false
                 roots:       # at least one root must be defined
@@ -172,7 +151,6 @@ fm_elfinder:
                     locale: '%locale%' # defaults to current request locale
                     editor: simple # other options are tinymce, tinymce4, form, custom and ckeditor
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
-                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
                     connector:
                         debug: false # defaults to false
                         roots:       # at least one root must be defined
@@ -194,7 +172,6 @@ fm_elfinder:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
-                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
                     connector:
                         debug: false # defaults to false
                         roots:       # at least one root must be defined
@@ -217,7 +194,6 @@ fm_elfinder:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
-                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
                     connector:
                         debug: false # defaults to false
                         roots:       # at least one root must be defined
@@ -233,7 +209,6 @@ fm_elfinder:
                     locale: '%locale%' # defaults to current request locale
                     editor: form # other choices are tinymce or simple, and form
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
-                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
                     connector:
                         debug: false # defaults to false
                         roots:       # at least one root must be defined
@@ -247,7 +222,6 @@ fm_elfinder:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
-                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
                     connector:
                       debug: false # defaults to false
                       roots:       # at least one root must be defined
@@ -263,7 +237,6 @@ fm_elfinder:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
-                    include_assets: true # disable if you want to handle loading of the javascript and css assets yourself
                     connector:
                       debug: false # defaults to false
                       roots:       # at least one root must be defined
@@ -275,21 +248,6 @@ fm_elfinder:
                           upload_deny: ['all']
                           upload_max_size: 5M
 
-httplug:
-    plugins:
-        logger: ~
-    clients:
-        acme:
-            factory: 'httplug.factory.guzzle6'
-            plugins: ['httplug.plugin.logger']
-            config:
-                timeout: 2
-
-nexy_slack:
-    endpoint: "%slack_endpoint%"
-    username: 'vektorbot'
-    icon: ':robot_face:'
-    channel: '%slack.log_channel%'
 
 knp_paginator:
     template:
@@ -300,15 +258,10 @@ ewz_recaptcha:
     public_key: ''
     private_key: ''
 
-sensio_framework_extra:
-  view:    { annotations: true }
-  router:  { annotations: true }
-  request: { converters: true }
 
 fos_rest:
   param_fetcher_listener: true
   body_listener: true
-  routing_loader: false
   format_listener:
     enabled: true
     rules:
@@ -318,3 +271,12 @@ fos_rest:
   versioning: true
   view:
     view_response_listener: 'force'
+
+# Keep the existing entity annotations and migration identifiers during the runtime upgrade.
+doctrine_migrations:
+    migrations_paths:
+        'Application\Migrations': '%kernel.project_dir%/app/DoctrineMigrations'
+    storage:
+        table_storage:
+            table_name: migration_versions
+            version_column_length: 191

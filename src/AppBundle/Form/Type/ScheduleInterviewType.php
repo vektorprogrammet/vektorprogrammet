@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ScheduleInterviewType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('from', EmailType::class, array(
@@ -23,6 +23,7 @@ class ScheduleInterviewType extends AbstractType
             ))
 
             ->add('datetime', DateTimeType::class, array(
+                'html5' => false,
                 'widget' => 'single_text',
                 'format' => 'dd.MM.yyyy HH:mm',
                 'label' => 'Tidspunkt',
@@ -53,7 +54,7 @@ class ScheduleInterviewType extends AbstractType
         ;
     }
 
-    public function getBlockPrefix()
+    public function getBlockPrefix(): string
     {
         return 'scheduleInterview';
     }

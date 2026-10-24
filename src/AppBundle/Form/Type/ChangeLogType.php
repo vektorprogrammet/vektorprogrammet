@@ -2,7 +2,7 @@
 
 namespace AppBundle\Form\Type;
 
-use Ivory\CKEditorBundle\Form\Type\CKEditorType;
+use FOS\CKEditorBundle\Form\Type\CKEditorType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -13,7 +13,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 
 class ChangeLogType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder->add('title', TextType::class, array(
                 'required' => true,
@@ -28,6 +28,7 @@ class ChangeLogType extends AbstractType
 
             ))
         ->add('date', DateTimeType::class, array(
+                'html5' => false,
             'label' => 'Velg dato endringen blir gjort',
             'format' => 'dd.MM.yyyy HH:mm',
             'widget' => 'single_text',

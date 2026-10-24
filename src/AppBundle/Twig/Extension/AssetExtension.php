@@ -26,7 +26,7 @@ class AssetExtension extends AbstractExtension
     /**
      * {@inheritdoc}
      */
-    public function getFunctions()
+    public function getFunctions(): array
     {
         return array(
             new TwigFunction('asset_with_version', array($this, 'getAssetUrl')),
@@ -44,10 +44,10 @@ class AssetExtension extends AbstractExtension
      *
      * @return string The public path of the asset
      */
-    public function getAssetUrl($path, $packageName = null)
+    public function getAssetUrl(?string $path, ?string $packageName = null): string
     {
-        if (strlen($path) === 0) {
-            return $path;
+        if ($path === null || $path === '') {
+            return '';
         }
 
         if ($path[0] !== '/') {
@@ -61,7 +61,7 @@ class AssetExtension extends AbstractExtension
         }
 
         $url = $this->packages->getUrl($path, $packageName);
-        if (strlen($version) > 0) {
+        if ($version !== '') {
             $url .= '?v='.$version;
         }
 

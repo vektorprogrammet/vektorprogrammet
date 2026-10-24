@@ -5,12 +5,10 @@ namespace Tests\AppBundle\Service;
 use AppBundle\Entity\Department;
 use AppBundle\Service\GeoLocation;
 use AppBundle\Service\LogService;
-use Doctrine\Common\Persistence\ObjectRepository;
+use Doctrine\Persistence\ObjectRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use PHPUnit\Framework\TestCase;
-use Symfony\Component\HttpFoundation\HeaderBag;
 use Symfony\Component\HttpFoundation\RequestStack;
-use Symfony\Component\HttpFoundation\Session\SessionInterface;
 
 class GeoLocationTest extends TestCase
 {
@@ -27,7 +25,7 @@ class GeoLocationTest extends TestCase
      */
     private $dep2;
 
-    protected function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
         $this->dep1 = new Department();
@@ -38,42 +36,22 @@ class GeoLocationTest extends TestCase
         $this->dep2->setLatitude('63.446057');
         $this->dep2->setLongitude('10.428514');
 
-        $departmentRepo = $this->getMockBuilder(ObjectRepository::class)->getMock();
-        $departmentRepo->expects($this->any())
-                       ->method('findAll')
+        $departmentRepo = $this->createStub(ObjectRepository::class);
+        $departmentRepo->method('findAll')
                        ->willReturn([ $this->dep1, $this->dep2 ]);
 
-        $entityManager = $this->getMockBuilder(EntityManagerInterface::class)->getMock();
-        $entityManager->expects($this->any())
-                      ->method('getRepository')
+        $entityManager = $this->createStub(EntityManagerInterface::class);
+        $entityManager->method('getRepository')
                       ->willReturn($departmentRepo);
 
-        $sessionStorage = $this->getMockBuilder(SessionInterface::class)->getMock();
-        $sessionStorage->expects($this->any())
-                       ->method('get')
-                       ->willReturn(null);
-        $sessionStorage->expects($this->any())
-                       ->method('set')
-                       ->willReturn(null);
+        $request = \Symfony\Component\HttpFoundation\Request::create('/');
+        $request->setSession(new \Symfony\Component\HttpFoundation\Session\Session(new \Symfony\Component\HttpFoundation\Session\Storage\MockArraySessionStorage()));
+        $requestStack = new RequestStack();
+        $requestStack->push($request);
 
+        $logger = $this->createStub(LogService::class);
 
-        $requestStack = $this->getMockBuilder(RequestStack::class)->getMock();
-        $requestStack->expects($this->any())
-                     ->method('getMasterRequest')
-                     ->willReturn(new class {
-                         public $headers;
-
-                         public function __construct()
-                         {
-                             $this->headers = new HeaderBag();
-                         }
-                     });
-
-        $logger = $this->getMockBuilder(LogService::class)
-            ->disableOriginalConstructor()
-            ->getMock();
-
-        $this->geoLocation = new GeoLocation('xxxxx', [], $entityManager, $sessionStorage, $requestStack, $logger);
+        $this->geoLocation = new GeoLocation('xxxxx', [], $entityManager, $requestStack, $logger);
     }
 
     public function testDistance()
