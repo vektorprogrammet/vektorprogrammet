@@ -58,7 +58,47 @@ php bin/console doctrine:migrations:migrate --dry-run --env=prod
 
 An already deployed database should not suddenly list the historical migrations as pending. Review all proposed SQL before applying any genuinely new migration. Do not use `doctrine:schema:update --force` or reload fixtures on production.
 
-`deploy.sh` now checks the CLI PHP version and refuses to run migrations if legacy identifiers remain. The backup script must exist, and installation/build failures stop deployment. The script still pulls `master`; complete and review this migration before merging into the branch that triggers the production webhook.
+## Deploy subsequent updates
+
+Run the repository's `deploy.sh` manually as root on the replacement server. It defaults to branch `master` and production mode. The checkout must already be on the selected branch; it refuses tracked local changes, backward updates, and concurrent runs. It never resets local changes. The legacy HTTP webhook cannot run this root-only script: do not grant the web service sudo access. Before merging this upgrade to master, disable or redirect any existing deployment webhook on the old server, which may still execute an older script.
+
+Default branch, latest fetched commit:
+
+```bash
+cd /var/www/vektorprogrammet
+bash ./deploy.sh
+```
+
+Custom branch and a reviewed commit:
+
+```bash
+DEPLOY_BRANCH=php-8.5-compatibility bash ./deploy.sh REVIEWED_COMMIT_SHA
+```
+
+The script updates code in place, installs locked Composer dependencies, checks platform requirements, builds assets using the tested Node 14 Docker image, clears production cache, repairs runtime permissions even on failure, and checks the local production endpoint. It requires MySQL root access through the local client configuration and active mysql, nginx, and PHP-FPM services. It assumes this server's existing www-data account and web directory layout.
+
+Configuration environment variables:
+
+| Variable | Default |
+| --- | --- |
+| `DEPLOY_BRANCH` | `master` |
+| `DEPLOY_APP_DIR` | Directory containing the script |
+| `DEPLOY_COMMIT` | Latest fetched branch tip; positional SHA overrides this |
+| `DEPLOY_BACKUP_DIR` | `/root/vektor-deploy-backups` |
+| `DEPLOY_HEALTH_URL` | `http://127.0.0.1:8081` (retain the private production listener) |
+| `DEPLOY_PHP_BIN` | `php` |
+| `DEPLOY_DATABASE` | `vektorprogrammet` |
+| `DEPLOY_FPM_SERVICE` | `php8.5-fpm` |
+| `DEPLOY_RUN_MIGRATIONS` | `0`; fail on pending migrations |
+
+Only after reviewing pending migration SQL and confirming a restorable backup, set `DEPLOY_RUN_MIGRATIONS=1` to execute migrations. Legacy migration identifiers must already be converted. Do not use schema-update or fixtures as deployment steps.
+
+Each run saves a local SQL dump, parameters, web/files, signatures, previous/target SHAs, build-overwritten image paths, and a deployment log under its backup directory. It does not back up all uploaded photos/receipts, node_modules, vendor, or server settings. These local backups are not a substitute for a full Droplet snapshot or external uploaded-file backup. Retention is manual.
+
+A failure stops the script and repairs runtime permissions but does not automatically roll back code or database changes. Inspect the deployment log and saved SHAs before recovery. A deployment can briefly interrupt requests because code, dependencies, and assets are updated in place.
+
+For the initial upgrade of the deployment script itself, fetch and copy its reviewed version outside the checkout, then invoke that copy with `DEPLOY_APP_DIR=/var/www/vektorprogrammet` and the selected branch/SHA. This avoids executing the old script to obtain its replacement. Normal runs make a private temporary copy of themselves before updating Git so Bash's input remains stable.
+
 
 ## Verify and cut over
 
