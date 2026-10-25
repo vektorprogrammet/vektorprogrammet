@@ -2,16 +2,23 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Department;
 use AppBundle\Entity\FieldOfStudy;
 use AppBundle\Form\Type\FieldOfStudyType;
+use AppBundle\Role\Roles;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 class FieldOfStudyController extends BaseController
 {
-    public function showAction()
+    public function showAction(Request $request)
     {
-        $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+        $departmentId = $request->query->get("departmentId");
+        if ($this->isGranted(Roles::ADMIN) && !is_null($departmentId)) {
+            $department  = $this->getDoctrine()->getRepository(Department::class)->findDepartmentById($departmentId)[0];
+        } else {
+            $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+        }
         $fieldOfStudies = $this->getDoctrine()->getRepository(FieldOfStudy::class)->findByDepartment($department);
 
         return $this->render('field_of_study/show_all.html.twig', array(
@@ -27,16 +34,27 @@ class FieldOfStudyController extends BaseController
             $fieldOfStudy = new FieldOfStudy();
             $isEdit = false;
         } else {
-            // Check if user is trying to edit FOS from department other than his own
-            if ($fieldOfStudy->getDepartment() !== $this->getUser()->getFieldOfStudy()->getDepartment()) {
+            // Check if a non-admin user is trying to edit FOS from department other than his own
+            if (!$this->isGranted(Roles::ADMIN) && $fieldOfStudy->getDepartment() !==
+                $this->getUser()->getFieldOfStudy()->getDepartment()) {
                 throw new AccessDeniedException();
             }
         }
         $form = $this->createForm(FieldOfStudyType::class, $fieldOfStudy);
         $form->handleRequest($request);
 
+        $departmentId = $request->query->get("departmentId");
+        // Use department from request if admin is creating a new field_of_study with id,
+        // else use department from current user
+        if ($this->isGranted(Roles::ADMIN) && !$isEdit && !is_null($departmentId)) {
+            $department = $this->getDoctrine()->getRepository(Department::class)->findDepartmentById($departmentId)[0];
+            $fieldOfStudy->setDepartment($department);
+        } else {
+            $department = $this->getUser()->getFieldOfStudy()->getDepartment();
+            $fieldOfStudy->setDepartment($department);
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
-            $fieldOfStudy->setDepartment($this->getUser()->getFieldOfStudy()->getDepartment());
             $manager = $this->getDoctrine()->getManager();
             $manager->persist($fieldOfStudy);
             $manager->flush();
@@ -48,6 +66,7 @@ class FieldOfStudyController extends BaseController
             'form' => $form->createView(),
             'isEdit' => $isEdit,
             'fieldOfStudy' => $fieldOfStudy,
+            'department' => $department,
         ));
     }
 }

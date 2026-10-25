@@ -1,53 +1,75 @@
 {% extends 'adminBase.html.twig' %}
 
 {% block breadcrumb %}
-    <li class="breadcrumb-item active">
-        Linjer
-    </li>
+	<li class="breadcrumb-item">
+		{% if is_granted_team_leader() %}
+			<a href="{{ path('show_field_of_studies') }}">
+		{% else %}
+			<a href="{{ path('show_field_of_studies') }}">
+		{% endif %}
+			Linjer
+			</a>
+	</li>
 {% endblock %}
 
 {% block breadcrumb_menu %}
-    <a class="btn text-success" href="{{ path('create_field_of_study') }}"><i
-                class="fa fa-plus"></i> Ny linje</a>
+	<div class="btn-group">
+		{% include 'common/department_dropdown.html.twig' with {
+        'pathForDepartment': 'show_field_of_studies',
+        'departmentParameterName': 'departmentId',
+        'currentDepartment': department
+    } %}
+		{% set departmentParameterName = departmentParameterName is defined ? departmentParameterName : 'departmentId' %}
+		<a class="btn text-success" href="{{ path('create_field_of_study', { (departmentParameterName): department.id }) }}">
+			<em class="fa fa-plus"></em>
+			Ny linje
+		</a>
+	</div>
 {% endblock %}
 
 {% block body %}
-    <div class="row">
-        <div class="col-12 col-lg-6">
-            <div class="card">
-                <div class="card-header">
-                    <i class="fa fa-align-justify"></i> Linjer {{ department }} ({{ fieldOfStudies|length }})
-                </div>
-                <div class="table-responsive">
-                    <table class="table">
-                        <tr>
-                            <th></th>
-                            <th>Navn</th>
-                            <th>Forkortelse</th>
-                        </tr>
-                        {% for fieldOfStudy in fieldOfStudies %}
-                            <tr>
-                                <td class="table-menu">
-                                    <div class="dropdown">
-                                        <div class="clickable px-2" id="options-{{ fieldOfStudy.id }}" data-toggle="dropdown"
-                                             aria-haspopup="true" aria-expanded="false">
-                                            <i class="fa fa-ellipsis-v text-secondary"></i>
-                                        </div>
-                                        <div class="dropdown-menu pt-0" aria-labelledby="options-{{ fieldOfStudy.id }}">
-                                            <div class="dropdown-header mb-2"><strong>{{ fieldOfStudy.name }}</strong></div>
-                                            <a href="{{ path('edit_field_of_study', { 'id': fieldOfStudy.id }) }}"
-                                               class="dropdown-item"><i class="fa fa-pencil text-primary"></i> Rediger
-                                            </a>
-                                        </div>
-                                    </div>
-                                </td>
-                                <td>{{ fieldOfStudy.name }}</td>
-                                <td>{{ fieldOfStudy.shortName }}</td>
-                            </tr>
-                        {% endfor %}
-                    </table>
-                </div>
-            </div>
-        </div>
-    </div>
+	<div class="row">
+		<div class="col-12 col-lg-6">
+			<div class="card">
+				<div class="card-header">
+					<em class="fa fa-align-justify"></em>
+					Linjer
+					{{ department }}
+					({{ fieldOfStudies|length }})
+				</div>
+				<div class="table-responsive">
+					<table class="table">
+						<tr>
+							<th></th>
+							<th>Navn</th>
+							<th>Forkortelse</th>
+						</tr>
+						{% for fieldOfStudy in fieldOfStudies %}
+							<tr>
+								<td class="table-menu">
+									<div class="dropdown">
+										<div class="clickable px-2" id="options-{{ fieldOfStudy.id }}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+											<em class="fa fa-ellipsis-v text-secondary"></em>
+										</div>
+										<div class="dropdown-menu pt-0" aria-labelledby="options-{{ fieldOfStudy.id }}">
+											<div class="dropdown-header mb-2">
+												<strong>{{ fieldOfStudy.name }}</strong>
+											</div>
+											<a href="{{ path('edit_field_of_study', { 'id': fieldOfStudy.id }) }}" class="dropdown-item">
+												<em class="fa fa-pencil text-primary"></em>
+												Rediger
+											</a>
+										</div>
+									</div>
+								</td>
+								<td>{{ fieldOfStudy.name }}</td>
+								<td>{{ fieldOfStudy.shortName }}</td>
+							</tr>
+						{% endfor %}
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+</li>
 {% endblock %}
