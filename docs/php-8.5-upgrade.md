@@ -102,9 +102,12 @@ For the initial upgrade of the deployment script itself, fetch and copy its revi
 
 ## Receipt upload limits
 
-PHP-FPM must allow receipt files larger than PHP's default 2 MiB limit. The
-versioned configuration in `deploy/php/99-vektor-uploads.ini` sets
-`upload_max_filesize = 8M` and `post_max_size = 10M`. These are server settings:
+Receipt uploads are limited to **2 MiB per file**. The receipt form displays
+this limit and validates it in the application, even if the server allows larger
+uploads. Invalid submissions keep the form open with a visible upload error.
+The versioned configuration in `deploy/php/99-vektor-uploads.ini` also sets
+`upload_max_filesize = 2M` and `post_max_size = 10M`. The larger POST limit leaves
+room for multipart fields and does not raise the per-file limit. These are server settings:
 Composer and `deploy.sh` do not install them automatically, and application PHP
 cannot raise the upload limit after the request has arrived.
 
@@ -125,13 +128,14 @@ location block; validate with `nginx -t` before reloading nginx. Pool-level
 `php_admin_value` overrides can supersede the INI file. Checking `php -i` alone
 checks CLI settings, not the FPM pool serving the website.
 
-Verify by submitting a real receipt between 2 and 8 MiB through the browser,
-then confirm it appears in the receipt list. Also verify that an oversized file
-shows a visible error with the form left open. A rendered form with HTTP 200
+Verify by submitting a real receipt smaller than 2 MiB through the browser,
+then confirm it appears in the receipt list. Also submit a file larger than
+2 MiB and verify that it is rejected with a visible error and the form left open. A rendered form with HTTP 200
 does not mean that the receipt was saved. An upload rejected by nginx before
 PHP runs will instead return HTTP 413.
 
-The production upload was verified after applying these FPM settings. When
+The live server temporarily had an 8 MiB limit during diagnosis. Reinstall this
+2 MiB configuration and reload FPM to restore the intended limit. When
 deploying the edit-mode controller fix, remember that a manually patched
 `UserController.php` is a tracked local change: save and compare it against the
 reviewed repository version before reconciling it. Do not discard other local
