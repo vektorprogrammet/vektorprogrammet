@@ -1,94 +1,69 @@
 <img src="https://github.com/vektorprogrammet/vektorprogrammet/blob/master/app/Resources/assets/images/vektor_stor.png" alt="Vektorprogrammet" width="400">
 
-# Development setup
+# Vektorprogrammet
 
-## Requirements
+The existing Symfony website. Backend: **PHP 8.5.12+**, Symfony 6.4, Twig 3 and
+Doctrine ORM. Frontend assets: the existing **Node 14.21.3** Gulp toolchain.
 
-- PHP **8.5.12 or newer**, with PDO, SQLite (development/tests), MySQL (production), GD, intl, mbstring, curl, XML, fileinfo, OpenSSL and zip.
-- Composer 2 (the repository includes `composer.phar`).
-- Node **14.21.3** for the existing Gulp/node-sass asset build. On Apple Silicon, use the Docker asset build below.
-- Git; Docker is optional for building assets.
+## Local quick start
 
-The application uses Symfony 6.4, Twig 3 and Doctrine ORM 2.20. The PHP upgrade does not modernize the older JavaScript toolchain.
+Requirements: Git, PHP **8.5.12 or newer** with the extensions listed in the
+[local development guide](docs/local-development.md#requirements), and a running
+Docker installation for the legacy asset build. No local MySQL server is needed:
+development and automated tests use separate SQLite files.
 
-## Install PHP dependencies
+**Use these commands only in a fresh local clone.** Loading fixtures replaces
+database contents. Do not use a production configuration or run `deploy.sh` locally.
 
-From the repository root:
+```bash
+git clone https://github.com/vektorprogrammet/vektorprogrammet.git
+cd vektorprogrammet
 
-```sh
+unset APP_ENV SYMFONY_ENV SYMFONY_DEBUG
 php -v
+mkdir -p var/data var/cache var/logs web/media/cache signatures
 php composer.phar install --no-interaction
-```
+php composer.phar check-platform-reqs
 
-The first install creates the ignored `app/config/parameters.yml`. Keep local credentials there. The default configuration uses `var/data/dev.db` (SQLite). Local mail, SMS and Slack delivery are disabled; do not copy production integration credentials into this file.
-
-For a **new, empty local database only**:
-
-```sh
 php bin/console doctrine:schema:create --env=dev
 php bin/console doctrine:fixtures:load --env=dev --no-interaction
-```
 
-Fixtures replace database contents. Preserve an existing development database instead of reloading fixtures. Never run these commands against production.
-
-## Build assets
-
-Using Node 14 on a compatible x86 Linux machine:
-
-```sh
-npm ci
-npm run build:dev
-```
-
-On a Mac with Docker, run:
-
-```sh
 docker run --rm --platform=linux/amd64 \
   -v "$PWD:/app" --tmpfs /app/node_modules:exec \
   -w /app node:14.21.3-buster \
-  bash -lc 'npm ci --ignore-scripts && node node_modules/node-sass/scripts/install.js && node node_modules/gulp/bin/gulp.js build:dev'
+  bash -lc 'NODE_ENV=development npm ci --ignore-scripts && node node_modules/node-sass/scripts/install.js && node node_modules/gulp/bin/gulp.js build:dev'
+
+php -d upload_max_filesize=2M -d post_max_size=10M \
+  -S 127.0.0.1:8000 -t web web/router.php
 ```
 
-Gulp copies images from `app/Resources/assets/images` into the ignored `web/images` directory. Rebuild after adding an image. The Docker command above builds assets only; PHP runs natively on your Mac.
+Open **<http://127.0.0.1:8000>**. Log in with username **`admin`** and password
+**`1234`**. These are fixture credentials for local development only.
+PHP runs natively; the Docker command builds CSS, JavaScript and images, then exits.
 
-## Run locally
+On later runs, start just the PHP command. Rebuild assets when changing SCSS,
+JavaScript or source images; PHP and Twig changes normally appear on refresh.
 
-```sh
-php -S 127.0.0.1:8000 -t web web/router.php
-```
+## Run tests
 
-Open <http://127.0.0.1:8000>. The router serves assets and forwards application routes to the development front controller. It replaces the removed Symfony `server:run` command. With local Node dependencies installed, `npm start` also starts Gulp's watcher.
+In a second terminal at the repository root:
 
-The fixture accounts all use password `1234`:
-
-| Role | Username |
-| --- | --- |
-| Assistant | `assistent` |
-| Team member | `teammember` |
-| Team leader | `teamleader` |
-| Admin | `admin` |
-
-These accounts are for development fixtures only.
-
-## Checks
-
-```sh
-php composer.phar validate --strict
-php composer.phar audit
-php bin/console lint:container
-php bin/console lint:twig app/Resources/views
-php bin/console doctrine:schema:validate --skip-sync
+```bash
 php -d memory_limit=512M bin/phpunit --configuration app/phpunit.xml.dist
 ```
 
-The test bootstrap recreates `var/data/test.db`, loads fixtures and restores it between tests. It must remain separate from the development or production database. To run one test class, append `--filter ClassName` to the PHPUnit command.
+The test bootstrap recreates `var/data/test.db`; it does not reuse the development
+database. See the guide before changing database configuration or running tests
+alongside another test process.
 
-`npm run cs` runs the PHP style fixer.
+## Guides
 
-## PHP Docker development image
+- **[Local development and testing](docs/local-development.md):** requirements,
+  step-by-step setup, fixture users, daily workflow, test filters, browser checks,
+  logs and troubleshooting.
+- **[Production migration and deployment](docs/php-8.5-upgrade.md):** server setup,
+  backups, migration history and the manual production deployment script.
 
-The Dockerfile targets `php:8.5.12-cli-bookworm` and includes the legacy Node 14 build tools. Build with `docker build --platform=linux/amd64 -t vektorprogrammet .`, then run with `docker run --rm -p 8000:8000 -v "$PWD:/app" vektorprogrammet`. The PHP base image is available upstream. Native PHP 8.5.12 is the verified local path; the complete Docker image has not been built and verified as part of this migration.
-
-## Production upgrade
-
-See [the PHP 8.5 migration guide](docs/php-8.5-upgrade.md). This branch requires a patched PHP runtime and a reviewed database migration history before deployment.
+The separate timetable Vue application is not included in the main asset build.
+Its current rebuild does not match the preserved production styling. See the
+[timetable notes](docs/local-development.md#timetable-timeplan) before testing it.
