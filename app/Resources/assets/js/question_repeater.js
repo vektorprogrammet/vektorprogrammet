@@ -22,24 +22,36 @@ const QuestionManager = {
   // The prototype for a question
   qPrototype: $('#prototypes').data('prototype-q'),
 
+  // Collection keys may be sparse after a failed submission or deletion.
+  nextIndex: function (items) {
+    var next = 0;
+    items.each(function () {
+      var value = String($(this).attr('data-collection-index'));
+      if (/^\d+$/.test(value)) {
+        next = Math.max(next, Number(value) + 1);
+      }
+    });
+    return next;
+  },
+
   onReady: function () {
     // Set up the questions that are already in the database (add buttons etc)
-    QuestionManager.questions.find('.card').each(QuestionManager.setUp);
+    QuestionManager.questions.find('.question-card').each(QuestionManager.setUp);
 
-    // Find the initial number of questions in the schema
-    QuestionManager.questions.data('q-index', QuestionManager.questions.length);
+    // Use the highest rendered key, not the number of container elements.
+    QuestionManager.questions.data('q-index', QuestionManager.nextIndex(QuestionManager.questions.find('.question-card')));
 
     // Bind the add question functionality to the add question button
     QuestionManager.addQuestionButton.on('click', QuestionManager.addQuestion);
   },
 
-  setUp: function (i) {
+  setUp: function () {
     var alternativeList = $(this).find('.alternatives');
     var alternatives = alternativeList.find('.form-group');
     var type = $(this).find('select');
 
-    alternativeList.data('a-index', alternatives.length);
-    alternativeList.data('q-index', i);
+    alternativeList.data('a-index', QuestionManager.nextIndex(alternativeList.find('.alternative')));
+    alternativeList.data('q-index', $(this).attr('data-collection-index'));
 
     QuestionManager.addQuestionDeleteButton($(this));
 
@@ -67,7 +79,7 @@ const QuestionManager = {
     newAlternatives.data('a-index', 0);
     newAlternatives.data('q-index', qIndex);
 
-    var question = $('<div></div>').addClass('card question-card');
+    var question = $('<div></div>').addClass('card question-card').attr('data-collection-index', qIndex);
     var questionHeader = $('<div>Spørsmål</div>').addClass('card-header');
 
     var cardBody = $('<div></div>').addClass('card-body')
@@ -151,7 +163,7 @@ const QuestionManager = {
 
     var newAlternative = $(QuestionManager.aPrototype.replace(/__a_prot__/g, aIndex).replace(/__q_prot__/g, qIndex));
 
-    var alternativeRow = $('<div class="alternative"></div>');
+    var alternativeRow = $('<div class="alternative"></div>').attr('data-collection-index', aIndex);
     alternativeRow.append(newAlternative).append(upButton).append(downButton);
 
     newAlternative.append(upButton);
