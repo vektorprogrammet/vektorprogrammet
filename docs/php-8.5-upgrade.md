@@ -141,6 +141,33 @@ deploying the edit-mode controller fix, remember that a manually patched
 reviewed repository version before reconciling it. Do not discard other local
 changes to get past the deployment check.
 
+## Preserve the working timetable application
+
+The timetable at `/kontrollpanel/skole/timeplan/` is a separate Vue application.
+Its verified production artifact is `web/js/scheduling/build.js`, which is
+ignored by Git. Rebuilding the current source/dependencies produced a different
+layout during migration, so deployments intentionally preserve the working
+artifact instead of running `build:scheduling` or rebuilding that Vue app.
+
+Before changing code, `deploy.sh` requires a nonempty timetable bundle and saves
+it as `timetable-build.js` in the deployment backup. It checks that the asset
+build leaves this file unchanged and downloads the served JavaScript from the
+local production endpoint to compare its exact contents. An HTTP 200 login or
+HTML fallback page therefore does not count as a successful timetable check.
+If a build changes or removes the bundle, the failure handler attempts to restore
+this artifact from the deployment backup and repairs permissions; the deployment
+still fails. This is only timetable artifact recovery, not a code/database rollback.
+
+A fresh checkout must be supplied with the verified working bundle from a
+trusted server or deployment backup before deploying. The latest downloaded
+check is saved as `timetable-served.js` in each successful deployment backup.
+Back up this artifact when migrating or replacing the server.
+
+Changes to `src/AppBundle/AssistantScheduling/Webapp` will not appear in the
+deployed timetable until its build and styling have been corrected and separately
+verified. Browser-test the timetable after backend changes as well: an unchanged
+bundle and successful HTTP check do not verify school selection or generation.
+
 ## Verify and cut over
 
 On staging, check public pages, HS_25.jpg, login/logout, role permissions, receipts (upload, edit, download), admissions, surveys, certificates, scheduled jobs and each external integration. Test with a copy of production data; SQLite fixtures do not reproduce MySQL behavior or real account history. Confirm backups, nginx's web root (`web`), TLS, FPM socket, cron paths and PHP executable version.
