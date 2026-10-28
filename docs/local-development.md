@@ -217,13 +217,11 @@ only one test process per checkout: the suite shares those test database files.
 
 ```bash
 php -d memory_limit=512M bin/phpunit --configuration app/phpunit.xml.dist --filter ReceiptControllerTest
-php -d memory_limit=512M bin/phpunit --configuration app/phpunit.xml.dist --filter 'InterviewControllerTest::testEditSchemas'
+php -d memory_limit=512M bin/phpunit --configuration app/phpunit.xml.dist --filter 'ReceiptControllerTest::testCreate'
 ```
 
 BrowserKit functional tests make HTTP-style requests but **do not execute browser
-JavaScript**. The interview schema test edits a title, so it does not cover
-JavaScript-generated question indexes or drag/order interactions. See the
-[interview editing investigation](known-issues/interview-schema-editing.md).
+JavaScript**. Test interactive browser behavior separately.
 
 ### Dependency, configuration and style checks
 
@@ -251,7 +249,6 @@ The PHPUnit workflow in `.github/workflows/tests.yml` defines the core CI checks
 | Page editing | As admin, enter edit mode, open an editor, save and reload a local change |
 | Receipts (`/utlegg`) | Save a real image/PDF below 2 MiB; reject a larger file with the form open and an error visible |
 | Profile photos | Load an original image and its generated thumbnail; `web/media/cache` must be writable |
-| Interviews | Open a schema and change its title; separately investigate existing-question/add/remove/order behavior |
 | Integrations | Local forms can be checked, but disabled mail/SMS/Google delivery is not an integration test |
 
 ### Timetable (Timeplan)

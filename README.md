@@ -63,8 +63,6 @@ alongside another test process.
   logs and troubleshooting.
 - **[Production migration and deployment](docs/php-8.5-upgrade.md):** server setup,
   backups, migration history and the manual production deployment script.
-- **[Known interview form editing issue](docs/known-issues/interview-schema-editing.md):**
-  investigation of collection indexes and question ordering; not fixed here.
 
 The separate timetable Vue application is not included in the main asset build.
 Its current rebuild does not match the preserved production styling. See the
