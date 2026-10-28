@@ -113,9 +113,9 @@ class UserController extends BaseController
      *
      * @return RedirectResponse
      */
-    public function changeContentModeAction(Request $request, string $mode)
+    public function changeContentModeAction(Request $request, string $mode, RoleExtension $roleExtension)
     {
-        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
+        if (!$roleExtension->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 

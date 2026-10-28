@@ -100,6 +100,43 @@ A failure stops the script and repairs runtime permissions but does not automati
 For the initial upgrade of the deployment script itself, fetch and copy its reviewed version outside the checkout, then invoke that copy with `DEPLOY_APP_DIR=/var/www/vektorprogrammet` and the selected branch/SHA. This avoids executing the old script to obtain its replacement. Normal runs make a private temporary copy of themselves before updating Git so Bash's input remains stable.
 
 
+## Receipt upload limits
+
+PHP-FPM must allow receipt files larger than PHP's default 2 MiB limit. The
+versioned configuration in `deploy/php/99-vektor-uploads.ini` sets
+`upload_max_filesize = 8M` and `post_max_size = 10M`. These are server settings:
+Composer and `deploy.sh` do not install them automatically, and application PHP
+cannot raise the upload limit after the request has arrived.
+
+On the Ubuntu replacement server, install the configuration as root:
+
+```bash
+# Back up an existing file before replacing it.
+CONFIG=/etc/php/8.5/fpm/conf.d/99-vektor-uploads.ini
+if [ -e "$CONFIG" ]; then
+    cp -a "$CONFIG" "$CONFIG.before-$(date -u +%Y%m%dT%H%M%SZ)"
+fi
+install -o root -g root -m 0644 deploy/php/99-vektor-uploads.ini "$CONFIG"
+php-fpm8.5 -t && systemctl reload php8.5-fpm
+```
+
+Keep nginx's `client_max_body_size` at least `10m` in the applicable server or
+location block; validate with `nginx -t` before reloading nginx. Pool-level
+`php_admin_value` overrides can supersede the INI file. Checking `php -i` alone
+checks CLI settings, not the FPM pool serving the website.
+
+Verify by submitting a real receipt between 2 and 8 MiB through the browser,
+then confirm it appears in the receipt list. Also verify that an oversized file
+shows a visible error with the form left open. A rendered form with HTTP 200
+does not mean that the receipt was saved. An upload rejected by nginx before
+PHP runs will instead return HTTP 413.
+
+The production upload was verified after applying these FPM settings. When
+deploying the edit-mode controller fix, remember that a manually patched
+`UserController.php` is a tracked local change: save and compare it against the
+reviewed repository version before reconciling it. Do not discard other local
+changes to get past the deployment check.
+
 ## Verify and cut over
 
 On staging, check public pages, HS_25.jpg, login/logout, role permissions, receipts (upload, edit, download), admissions, surveys, certificates, scheduled jobs and each external integration. Test with a copy of production data; SQLite fixtures do not reproduce MySQL behavior or real account history. Confirm backups, nginx's web root (`web`), TLS, FPM socket, cron paths and PHP executable version.
