@@ -100,6 +100,74 @@ A failure stops the script and repairs runtime permissions but does not automati
 For the initial upgrade of the deployment script itself, fetch and copy its reviewed version outside the checkout, then invoke that copy with `DEPLOY_APP_DIR=/var/www/vektorprogrammet` and the selected branch/SHA. This avoids executing the old script to obtain its replacement. Normal runs make a private temporary copy of themselves before updating Git so Bash's input remains stable.
 
 
+## Receipt upload limits
+
+Receipt uploads are limited to **2 MiB per file**. The receipt form displays
+this limit and validates it in the application, even if the server allows larger
+uploads. Invalid submissions keep the form open with a visible upload error.
+The versioned configuration in `deploy/php/99-vektor-uploads.ini` also sets
+`upload_max_filesize = 2M` and `post_max_size = 10M`. The larger POST limit leaves
+room for multipart fields and does not raise the per-file limit. These are server settings:
+Composer and `deploy.sh` do not install them automatically, and application PHP
+cannot raise the upload limit after the request has arrived.
+
+On the Ubuntu replacement server, install the configuration as root:
+
+```bash
+# Back up an existing file before replacing it.
+CONFIG=/etc/php/8.5/fpm/conf.d/99-vektor-uploads.ini
+if [ -e "$CONFIG" ]; then
+    cp -a "$CONFIG" "$CONFIG.before-$(date -u +%Y%m%dT%H%M%SZ)"
+fi
+install -o root -g root -m 0644 deploy/php/99-vektor-uploads.ini "$CONFIG"
+php-fpm8.5 -t && systemctl reload php8.5-fpm
+```
+
+Keep nginx's `client_max_body_size` at least `10m` in the applicable server or
+location block; validate with `nginx -t` before reloading nginx. Pool-level
+`php_admin_value` overrides can supersede the INI file. Checking `php -i` alone
+checks CLI settings, not the FPM pool serving the website.
+
+Verify by submitting a real receipt smaller than 2 MiB through the browser,
+then confirm it appears in the receipt list. Also submit a file larger than
+2 MiB and verify that it is rejected with a visible error and the form left open. A rendered form with HTTP 200
+does not mean that the receipt was saved. An upload rejected by nginx before
+PHP runs will instead return HTTP 413.
+
+The live server temporarily had an 8 MiB limit during diagnosis. Reinstall this
+2 MiB configuration and reload FPM to restore the intended limit. When
+deploying the edit-mode controller fix, remember that a manually patched
+`UserController.php` is a tracked local change: save and compare it against the
+reviewed repository version before reconciling it. Do not discard other local
+changes to get past the deployment check.
+
+## Preserve the working timetable application
+
+The timetable at `/kontrollpanel/skole/timeplan/` is a separate Vue application.
+Its verified production artifact is `web/js/scheduling/build.js`, which is
+ignored by Git. Rebuilding the current source/dependencies produced a different
+layout during migration, so deployments intentionally preserve the working
+artifact instead of running `build:scheduling` or rebuilding that Vue app.
+
+Before changing code, `deploy.sh` requires a nonempty timetable bundle and saves
+it as `timetable-build.js` in the deployment backup. It checks that the asset
+build leaves this file unchanged and downloads the served JavaScript from the
+local production endpoint to compare its exact contents. An HTTP 200 login or
+HTML fallback page therefore does not count as a successful timetable check.
+If a build changes or removes the bundle, the failure handler attempts to restore
+this artifact from the deployment backup and repairs permissions; the deployment
+still fails. This is only timetable artifact recovery, not a code/database rollback.
+
+A fresh checkout must be supplied with the verified working bundle from a
+trusted server or deployment backup before deploying. The latest downloaded
+check is saved as `timetable-served.js` in each successful deployment backup.
+Back up this artifact when migrating or replacing the server.
+
+Changes to `src/AppBundle/AssistantScheduling/Webapp` will not appear in the
+deployed timetable until its build and styling have been corrected and separately
+verified. Browser-test the timetable after backend changes as well: an unchanged
+bundle and successful HTTP check do not verify school selection or generation.
+
 ## Verify and cut over
 
 On staging, check public pages, HS_25.jpg, login/logout, role permissions, receipts (upload, edit, download), admissions, surveys, certificates, scheduled jobs and each external integration. Test with a copy of production data; SQLite fixtures do not reproduce MySQL behavior or real account history. Confirm backups, nginx's web root (`web`), TLS, FPM socket, cron paths and PHP executable version.

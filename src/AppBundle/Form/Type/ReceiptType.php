@@ -10,6 +10,7 @@ use Symfony\Component\Form\Extension\Core\Type\MoneyType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\File;
 
 class ReceiptType extends AbstractType
 {
@@ -38,9 +39,17 @@ class ReceiptType extends AbstractType
                 'label' => false,
             ))
             ->add('picturePath', FileType::class, array(
-                'label' => 'Velg/endre bilde av kvitteringen: ',
+                'label' => 'Velg/endre kvittering (maks 2 MiB): ',
                 'required' => $options['picture_required'],
                 'data_class' => null,
+                'help' => 'Last opp et bilde eller en PDF.',
+                'constraints' => [
+                    new File([
+                        'maxSize' => '2Mi',
+                        'maxSizeMessage' => 'Filen er for stor. Maksimal filstørrelse er 2 MiB.',
+                        'uploadIniSizeErrorMessage' => 'Filen er for stor. Maksimal filstørrelse er 2 MiB.',
+                    ]),
+                ],
                 'attr' => array('class' => 'receipt-upload-hack', 'accept' => 'image/*,application/pdf'),
                 'label_attr' => array('class' => 'button tiny'),
             ));

@@ -32,6 +32,7 @@ RUN_MIGRATIONS=${DEPLOY_RUN_MIGRATIONS:-0}
 TARGET=${1:-${DEPLOY_COMMIT:-}}
 BACKUP=
 CHANGES_STARTED=0
+TIMETABLE_BUNDLE=web/js/scheduling/build.js
 
 cd "$APP"
 git check-ref-format --branch "$BRANCH" >/dev/null
@@ -57,6 +58,13 @@ finish() {
   local result=$?
   trap - EXIT
   if (( CHANGES_STARTED )); then
+    # Restore only the frozen timetable artifact if a build changed or removed it.
+    if [[ -s "$BACKUP/timetable-build.js" ]] &&
+       ! cmp -s "$BACKUP/timetable-build.js" "$TIMETABLE_BUNDLE"; then
+      echo "Timetable bundle changed unexpectedly; restoring the saved working bundle." >&2
+      cp -- "$BACKUP/timetable-build.js" "$TIMETABLE_BUNDLE" || result=1
+      result=1
+    fi
     if ! repair_permissions; then
       echo "Permission repair failed." >&2
       result=1
@@ -91,6 +99,13 @@ nginx -t
 curl -fsS --max-time 20 -o /dev/null "$HEALTH_URL/"
 test -r app/config/parameters.yml
 
+# This legacy Vue app cannot yet be rebuilt with matching production styling.
+# Preserve its reviewed artifact; fail before changing code if it is missing.
+if [[ ! -s "$TIMETABLE_BUNDLE" ]]; then
+  echo "Missing timetable bundle: $TIMETABLE_BUNDLE. Restore the verified working artifact before deploying." >&2
+  exit 1
+fi
+
 git fetch --no-tags origin "refs/heads/$BRANCH:refs/remotes/origin/$BRANCH"
 COMMIT=$(git rev-parse --verify "${TARGET:-origin/$BRANCH}^{commit}")
 if ! git merge-base --is-ancestor "$COMMIT" "origin/$BRANCH" ||
@@ -111,6 +126,7 @@ mysqldump --single-transaction --quick --no-tablespaces \
 grep -q '^-- Dump completed on ' "$BACKUP/database.sql"
 cp app/config/parameters.yml "$BACKUP/parameters.yml"
 chmod 600 "$BACKUP/parameters.yml"
+cp -- "$TIMETABLE_BUNDLE" "$BACKUP/timetable-build.js"
 for path in web/files signatures; do
   if [[ -d "$path" ]]; then
     install -d -m 700 "$BACKUP/$path"
@@ -154,10 +170,21 @@ docker run --rm --name vektor-production-assets \
     fi
   '
 
+if ! cmp -s "$BACKUP/timetable-build.js" "$TIMETABLE_BUNDLE"; then
+  echo "Asset build changed the frozen timetable bundle; stopping." >&2
+  exit 1
+fi
+
 "$PHP_BIN" bin/console cache:clear --env=prod --no-debug
 repair_permissions
 nginx -t
 curl -fsS --max-time 20 -o /dev/null "$HEALTH_URL/"
 curl -fsS --max-time 20 -o /dev/null "$HEALTH_URL/images/HS_24.jpg"
+# Check the actual JavaScript body, not just a 200 HTML/login response.
+curl -fsS --max-time 20 -o "$BACKUP/timetable-served.js" "$HEALTH_URL/js/scheduling/build.js"
+if ! cmp -s "$BACKUP/timetable-build.js" "$BACKUP/timetable-served.js"; then
+  echo "Timetable HTTP response does not match the preserved JavaScript bundle." >&2
+  exit 1
+fi
 CHANGES_STARTED=0
 echo "PRODUCTION_DEPLOY_OK branch=$BRANCH commit=$COMMIT backup=$BACKUP"
