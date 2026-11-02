@@ -132,6 +132,7 @@ fos_ck_editor:
             toolbar: standard
 
 fm_elfinder:
+    assets_path: ''
     instances:
         default:
             locale: '%locale%' # defaults to current request locale
