@@ -105,6 +105,7 @@
         "symfony-scripts": [
             "Incenteev\\ParameterHandler\\ScriptHandler::buildParameters",
             "@php bin/console cache:clear",
+            "@php bin/console elfinder:install",
             "@php bin/console assets:install web --relative"
         ],
         "post-install-cmd": [
