@@ -38,7 +38,7 @@ class AssistantHistoryController extends BaseController
         ]);
         $form->handleRequest($request);
 
-        if ($form -> isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $em->persist($assistantHistory);
             $em->flush();
             return $this->redirectToRoute('participanthistory_show');
