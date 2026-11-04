@@ -87,6 +87,7 @@ twig:
        filebrowser_window_height: 800
     form_themes:
         - 'form/bootstrap_4_layout.html.twig'
+        - '@FOSCKEditor/Form/ckeditor_widget.html.twig'
 
 # Doctrine Configuration
 doctrine:
