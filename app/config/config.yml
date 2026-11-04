@@ -133,10 +133,13 @@ fos_ck_editor:
             toolbar: standard
 
 fm_elfinder:
+    assets_path: ''
     instances:
         default:
             locale: '%locale%' # defaults to current request locale
             editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+            # Keep the connector URL; prefixing it can produce //images/ URLs.
+            relative_path: false
             fullscreen: false # defaults true, applies to simple and ckeditor editors
             connector:
                 debug: false # defaults to false
@@ -172,6 +175,8 @@ fm_elfinder:
         ck_editor:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+                    # Keep the connector URL; prefixing it can produce //images/ URLs.
+                    relative_path: false
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     connector:
                         debug: false # defaults to false
@@ -194,6 +199,8 @@ fm_elfinder:
         article_editor:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+                    # Keep the connector URL; prefixing it can produce //images/ URLs.
+                    relative_path: false
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     connector:
                         debug: false # defaults to false
@@ -222,6 +229,8 @@ fm_elfinder:
         newsletter_editor:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+                    # Keep the connector URL; prefixing it can produce //images/ URLs.
+                    relative_path: false
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     connector:
                       debug: false # defaults to false
@@ -237,6 +246,8 @@ fm_elfinder:
         team_editor:
                     locale: '%locale%' # defaults to current request locale
                     editor: ckeditor # other options are tinymce, tinymce4, form, custom and simple
+                    # Keep the connector URL; prefixing it can produce //images/ URLs.
+                    relative_path: false
                     fullscreen: true # defaults true, applies to simple and ckeditor editors
                     connector:
                       debug: false # defaults to false

@@ -16,9 +16,9 @@ class StaticContentController extends BaseController
      * @param Request $request
      * @return JsonResponse
      */
-    public function updateAction(Request $request)
+    public function updateAction(Request $request, RoleExtension $roleExtension)
     {
-        if (!$this->get(RoleExtension::class)->userCanEditPage()) {
+        if (!$roleExtension->userCanEditPage()) {
             throw $this->createAccessDeniedException();
         }
 
