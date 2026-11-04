@@ -10,7 +10,7 @@
 
 <div id="questions">
     {% for question in questions %}
-        <div class="card question-card">
+        <div class="card question-card" data-collection-index="{{ question.vars.name }}">
             <div class="card-header">Spørsmål</div>
             <div class="card-body">
                 {{ form_row(question.question) }}
@@ -22,7 +22,7 @@
                 <div class="row">
                     <div class="alternatives col-12">
                         {% for alternative in question.alternatives %}
-                            <div class="alternative">
+                            <div class="alternative" data-collection-index="{{ alternative.vars.name }}">
                                 {{ form_row(alternative.alternative) }}
                             </div>
                         {% endfor %}

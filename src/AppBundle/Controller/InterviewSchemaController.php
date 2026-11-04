@@ -10,6 +10,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\InterviewSchema;
 use AppBundle\Form\Type\InterviewSchemaType;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 /**
  * InterviewController is the controller responsible for interview actions,
@@ -47,9 +48,37 @@ class InterviewSchemaController extends BaseController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $questionForms = $form->get('interviewQuestions');
+            $keys = array_map('strval', array_keys($questionForms->all()));
+            $submittedOrder = $form->get('questionOrder')->getData();
+            $order = $submittedOrder ? json_decode($submittedOrder, true) : $keys;
+            if (!is_array($order) || array_values($order) !== $order) {
+                throw new BadRequestHttpException('Invalid question order.');
+            }
+            foreach ($order as $key) {
+                if (!is_string($key) || !in_array($key, $keys, true)) {
+                    throw new BadRequestHttpException('Invalid question order.');
+                }
+            }
+            if (count($order) !== count($keys) || count(array_unique($order)) !== count($keys)) {
+                throw new BadRequestHttpException('Invalid question order.');
+            }
+            $questions = array_map(static function ($key) use ($questionForms) {
+                return $questionForms->get($key)->getData();
+            }, $order);
+
             $em = $this->getDoctrine()->getManager();
-            $em->persist($schema);
-            $em->flush();
+            $em->getConnection()->beginTransaction();
+            try {
+                $em->persist($schema);
+                $em->flush(); // Assign IDs to newly added questions before recording their order.
+                $schema->setQuestionOrder($questions);
+                $em->flush();
+                $em->getConnection()->commit();
+            } catch (\Throwable $exception) {
+                $em->getConnection()->rollBack();
+                throw $exception;
+            }
             return $this->redirect($this->generateUrl('interview_schema'));
         }
 
