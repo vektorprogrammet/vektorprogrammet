@@ -37,6 +37,12 @@ class InterviewSchema
     protected $interviewQuestions; // Unidirectional, may turn out to be bidirectional
 
     /**
+     * Question IDs in display order, scoped to this schema (questions may be shared).
+     * @ORM\Column(name="question_order", type="json", nullable=true)
+     */
+    private $questionOrder;
+
+    /**
      * Constructor.
      */
     public function __construct()
@@ -85,7 +91,24 @@ class InterviewSchema
      */
     public function getInterviewQuestions()
     {
-        return $this->interviewQuestions;
+        if (!$this->questionOrder) {
+            return $this->interviewQuestions;
+        }
+
+        $rank = array_flip($this->questionOrder);
+        $questions = $this->interviewQuestions->toArray();
+        uasort($questions, static function (InterviewQuestion $a, InterviewQuestion $b) use ($rank) {
+            return ($rank[$a->getId()] ?? PHP_INT_MAX) <=> ($rank[$b->getId()] ?? PHP_INT_MAX);
+        });
+
+        return new ArrayCollection($questions);
+    }
+
+    public function setQuestionOrder(array $questions): void
+    {
+        $this->questionOrder = array_map(static function (InterviewQuestion $question) {
+            return $question->getId();
+        }, $questions);
     }
 
     /**
