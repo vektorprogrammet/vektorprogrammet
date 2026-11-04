@@ -35,6 +35,9 @@ const QuestionManager = {
   },
 
   onReady: function () {
+    QuestionManager.restoreOrder();
+    QuestionManager.questions.closest('form').on('submit', QuestionManager.writeOrder);
+
     // Set up the questions that are already in the database (add buttons etc)
     QuestionManager.questions.find('.question-card').each(QuestionManager.setUp);
 
@@ -43,6 +46,37 @@ const QuestionManager = {
 
     // Bind the add question functionality to the add question button
     QuestionManager.addQuestionButton.on('click', QuestionManager.addQuestion);
+  },
+
+  // Keep stable collection keys; submit the visual order separately.
+  orderField: function () {
+    return QuestionManager.questions.closest('form').find('input[name$="[questionOrder]"]');
+  },
+
+  writeOrder: function () {
+    var keys = [];
+    QuestionManager.questions.children('.question-card').each(function () {
+      keys.push(String($(this).attr('data-collection-index')));
+    });
+    QuestionManager.orderField().val(JSON.stringify(keys));
+  },
+
+  restoreOrder: function () {
+    var value = QuestionManager.orderField().val();
+    if (!value) return;
+    try {
+      var keys = JSON.parse(value);
+      if (!Array.isArray(keys)) return;
+      keys.forEach(function (key) {
+        QuestionManager.questions.children('.question-card').each(function () {
+          if (String($(this).attr('data-collection-index')) === String(key)) {
+            QuestionManager.questions.append(this);
+          }
+        });
+      });
+    } catch (error) {
+      // The server validates submitted order; do not prevent rendering the form.
+    }
   },
 
   setUp: function () {
@@ -54,6 +88,7 @@ const QuestionManager = {
     alternativeList.data('q-index', $(this).attr('data-collection-index'));
 
     QuestionManager.addQuestionDeleteButton($(this));
+    QuestionManager.addOrderButtons($(this));
 
     var alternativeButton = QuestionManager.addAlternativeAddButton($(this));
 
