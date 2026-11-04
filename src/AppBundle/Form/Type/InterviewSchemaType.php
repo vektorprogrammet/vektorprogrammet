@@ -4,6 +4,7 @@ namespace AppBundle\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\HiddenType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -20,10 +21,13 @@ class InterviewSchemaType extends AbstractType
 
         $builder->add('interviewQuestions', CollectionType::class, array(
             'entry_type' => InterviewQuestionType::class,
+            'by_reference' => false,
             'allow_add' => true,
             'allow_delete' => true,
             'prototype_name' => '__q_prot__',
         ));
+
+        $builder->add('questionOrder', HiddenType::class, ['mapped' => false, 'required' => false]);
 
         $builder->add('save', SubmitType::class, array(
             'label' => 'Lagre',
