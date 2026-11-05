@@ -48,7 +48,10 @@
                                 </div>
                                 <div class="row">
                                     <div class="form-group col-12 col-sm-6">
-                                        {{ form_row(form.user.email, { 'attr': {'tabindex': '3'}}) }}
+                                        {{ form_label(form.user.email) }}
+                                        <small class="text-muted">Helst ikke bruk en skole e-post.</small>
+                                        {{ form_widget(form.user.email, { 'attr': {'tabindex': '3'}}) }}
+                                        {{ form_errors(form.user.email) }}
                                     </div>
 
                                     <div class="form-group col-12 col-sm-6">

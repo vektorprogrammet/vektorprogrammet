@@ -19,7 +19,7 @@ class TeamApplicationType extends AbstractType
                 'label' => 'Navn',
             ))
             ->add('email', EmailType::class, array(
-                'label' => 'Email',
+                'label' => 'E-post',
             ))
             ->add('phone', TelType::class, array(
                 'label' => 'Telefon',
