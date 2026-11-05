@@ -332,7 +332,8 @@ class InterviewManager
 
         $message = "Hei, {$interview->getUser()->getFirstName()}!
          
-Vi har satt opp et intervju for deg angående opptak til vektorprogrammet. 
+Vi har satt opp et intervju for deg angående opptak til Vektorprogrammet.
+Vi setter stor pris på om du har det klart for deg hvilke ukedager som er aktuelle for deg å bli sendt ut til en ungdomsskole.
 Vennligst gi beskjed til meg hvis tidspunktet ikke passer.";
 
         return array(
