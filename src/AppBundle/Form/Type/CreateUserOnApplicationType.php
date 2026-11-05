@@ -30,6 +30,7 @@ class CreateUserOnApplicationType extends AbstractType
             ))
             ->add('email', EmailType::class, array(
                 'label' => 'E-post',
+                'help' => 'Ikke bruk skole-e-post. Bruk en privat adresse du beholder tilgang til.',
                 'attr' => array('autocomplete' => 'email')
             ))
             ->add('gender', ChoiceType::class, array(
