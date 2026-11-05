@@ -15,7 +15,12 @@
         {{ form_start(form) }}
         <div class="col-12">
             {{ form_row(form.name) }}
-            {{ form_row(form.email) }}
+            <div class="form-group">
+                {{ form_label(form.email) }}
+                <small class="text-muted">Helst ikke bruk en skole e-post.</small>
+                {{ form_widget(form.email) }}
+                {{ form_errors(form.email) }}
+            </div>
             {{ form_row(form.phone) }}
             {{ form_row(form.yearOfStudy) }}
             {{ form_row(form.fieldOfStudy) }}
